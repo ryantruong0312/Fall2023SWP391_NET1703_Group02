@@ -56,8 +56,8 @@
                                 <li class="scroll-to-section"><a href="../RenderHomeController" class="active">Home</a></li>
                                 <li class="scroll-to-section"><a href="birds.jsp">Birds</a></li>
                                 <li class="scroll-to-section"><a href="accessories.jsp">Accessories</a></li>
-                                <li class="scroll-to-section"><a href="compair-birds.jsp">Bird Compare</a></li>
-                                <li class="scroll-to-section"><a href="compair-birds.jsp">Breed Select</a></li>
+                                <li class="scroll-to-section"><a href="bird-compare.jsp">Bird Compare</a></li>
+                                <li class="scroll-to-section"><a href="bird-pair.jsp">Breed Select</a></li>
                                 <li class="scroll-to-section"><a href="shop/cart-view.jsp">Cart</a></li>
                                 <li class="submenu">
                                     <a href="javascript:;">Customer 1</a>
