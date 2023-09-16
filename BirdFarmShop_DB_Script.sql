@@ -214,3 +214,17 @@ VALUES
 	('GA001', N'Máy ghi âm', 600000, 25, N'Dùng cho việc huấn luyện vẹt nói', 0, 'Available'),
 	('CT001', N'Còi huấn luyện vẹt', 90000, 15, N'Huấn luyện trong việc nghe tín hiệu', 0, 'Available')
 
+INSERT INTO [dbo].[User]
+           ([username],[password],[full_name],[phone],[email],[role],[address],[point],[register_date],[status])
+     VALUES
+		   ('customer','123','Hung','1234567890','hung@gmail.com','customer','Ha Noi',12,'2023-06-15','active'),
+		   ('toan','123','Toan','1234567890','toan@gmail.com','customer','Ha Noi',12,'2023-06-15','active'),
+		   ('hoang','123','Hoang','1234567890','hoang@gmail.com','customer','Ha Noi',12,'2023-06-15','active'),
+		   ('hai','123','Hai','1234567890','hai@gmail.com','customer','Ha Noi',12,'2023-06-15','active'),
+		   ('tu','123','Tu','1234567890','tu@gmail.com','customer','Ha Noi',12,'2023-06-15','inactive'),
+		   ('staff','123','staff','1234567890','staff@gmail.com','staff','Ha Noi',12,'2023-06-15','active'),
+		   ('staff1','123','staff','1234567890','staff@gmail.com','staff','Ha Noi',12,'2023-06-15','inactive'),
+		   ('manager','123','manager','1234567890','manager@gmail.com','manager','Ha Noi',12,'2023-06-15','active'),
+		   ('admin','123','admin','1234567890','admin@gmail.com','admin','Ha Noi',12,'2023-06-15','active')
+GO
+
