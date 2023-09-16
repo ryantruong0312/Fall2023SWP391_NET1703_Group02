@@ -191,9 +191,21 @@ VALUES
     ('CP401', N'Vẹt cổ trắng', N'Xanh lá, đỏ', 2, 1, 0, N'Vẹt Châu Phi', N'Chưa có', 1, 
 	19000000, NULL, NULL, NULL, 0, N'Đang sinh sản'),
 
-    ('CP501', N'Vẹt Lovebird', N'Xanh, vàng, cam', 2, 1, 1, N'Vẹt Châu Phi', N'Chưa có', 1, 
-	2000000, NULL, NULL, NULL, 0, N'Đang sinh sản');
+    ('CP501', N'Vẹt Lovebird', N'Xanh, vàng, cam', 2, 1, 1, N'Vẹt Châu Phi', N'Chưa có', 1, 2000000, NULL, NULL, NULL, 0, N'Đang sinh sản'),
+
+	('WA301',N'Orange Winged Amazon',N'xanh lá, vàng',2,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',0,3000000,null,null,null,0,N'Còn Hàng'),
+
+	('BA6002',N'Blue-fronted Amazon',N'xanh lá, xanh dương',3,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',null,3000000,null,null,null,0,N'Còn Hàng'),
+
+	('FA303',N'Red Faced Amazon',N'xanh lá, đỏ',2,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',null,3000000,null,null,null,0,N'Còn Hàng'),
+
+	('HA104',N'Double Yellow Headed Amazon',N'xanh lá, vàng, đỏ',4,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',0,4500000,null,null,null,0,N'Còn Hàng'),
+
+	('NA505',N'Yellow Naped Amazon',N'xanh lá, vàng',5,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',0,9000000,null,null,null,0,N'Còn Hàng')
 	
+GO
+
+INSERT INTO [Bird] VALUES ('NA505',N'Yellow Naped Amazon',N'xanh lá, vàng',5,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',0,9000000,null,null,null,0,N'Còn Hàng')
 GO
 
 INSERT INTO [Accessory] (accessory_id, accessory_name, unit_price, stock_quantity, description, discount, status) 
