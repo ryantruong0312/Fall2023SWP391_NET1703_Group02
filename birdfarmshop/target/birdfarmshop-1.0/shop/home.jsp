@@ -41,7 +41,43 @@
         <!-- ***** Preloader End ***** -->
 
         <!-- ***** Header Area Start ***** -->
-        <%@include file="../common/header.jsp"%>
+        <header class="header-area header-sticky">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <nav class="main-nav">
+                            <!-- ***** Logo Start ***** -->
+                            <a href="#" class="logo scroll-to-section">
+                                <img src="assets/images/logo.png">
+                            </a>
+                            <!-- ***** Logo End ***** -->
+                            <!-- ***** Menu Start ***** -->
+                            <ul class="nav">
+                                <li class="scroll-to-section"><a href="#" class="active">Home</a></li>
+                                <li class="scroll-to-section"><a href="shop/birds.jsp">Birds</a></li>
+                                <li class="scroll-to-section"><a href="shop/accessories.jsp">Accessories</a></li>
+                                <li class="scroll-to-section"><a href="shop/bird-compare.jsp">Bird Compare</a></li>
+                                <li class="scroll-to-section"><a href="shop/bird-pair.jsp">Breed Select</a></li>
+                                <li class="scroll-to-section"><a href="shop/cart-view.jsp">Cart</a></li>
+                                <li class="submenu">
+                                    <a href="javascript:;">Customer 1</a>
+                                    <ul>
+                                        <li><a href="#">Profile</a></li>
+                                        <li><a href="#">Sign out</a></li>
+                                        <!--<li><a href="#">Features Page 3</a></li>-->
+                                    </ul>
+                                </li>
+                                <!--<li class="scroll-to-section"><a href="#explore">Explore</a></li>-->
+                            </ul>           
+                            <a class='menu-trigger'>
+                                <span>Menu</span>
+                            </a>
+                            <!-- ***** Menu End ***** -->
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
         <!-- ***** Header Area End ***** -->
 
         <!-- ***** Main Banner Area Start ***** -->
@@ -692,8 +728,64 @@
         </div>
         <!-- ***** Subscribe Area Ends ***** -->
 
-        <!-- ***** Footer Area Starts ***** -->
-        <%@include file="../common/footer.jsp"%>
+        <!-- ***** Footer Start ***** -->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="first-item">
+                            <div class="logo">
+                                <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
+                            </div>
+                            <ul>
+                                <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
+                                <li><a href="#">hexashop@company.com</a></li>
+                                <li><a href="#">010-020-0340</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <h4>Shopping &amp; Categories</h4>
+                        <ul>
+                            <li><a href="#">Men’s Shopping</a></li>
+                            <li><a href="#">Women’s Shopping</a></li>
+                            <li><a href="#">Kid's Shopping</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3">
+                        <h4>Useful Links</h4>
+                        <ul>
+                            <li><a href="#">Homepage</a></li>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Help</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3">
+                        <h4>Help &amp; Information</h4>
+                        <ul>
+                            <li><a href="#">Help</a></li>
+                            <li><a href="#">FAQ's</a></li>
+                            <li><a href="#">Shipping</a></li>
+                            <li><a href="#">Tracking ID</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="under-footer">
+                            <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
+
+                                <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
+                            <ul>
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
         <!-- ***** Footer Area Ends ***** -->
 
         <!-- jQuery -->
