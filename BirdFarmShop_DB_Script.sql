@@ -180,39 +180,52 @@ VALUES
 	NULL, NULL, 0, N'pairing'),
 
 	('CP101', N'Vẹt xám', N'Xám', 2, 5, 0, N'Vẹt Châu Phi', N'Chưa có', 0, 
-	2500000, NULL, NULL, NULL, 15, N'Đang nuổi dưỡng'),
+	2500000, NULL, NULL, NULL, 15, N'available'),
 
     ('CP201', N'Vẹt Cape Parrot', N'Xám, xanh', 3, 4, 1, N'Vẹt Châu Phi', N'Chưa có', 0, 
-	3000000, NULL, NULL, NULL, 0, N'Đang nuôi dưỡng'),
+	3000000, NULL, NULL, NULL, 0, N'available'),
 
     ('CP301', N'Vẹt Senegal', N'Xanh lá, vàng', 3, 1, 0, N'Vẹt Châu Phi', N'Chưa có', 2, 
-	8000000, NULL, NULL, NULL, 0, N'Đang nuôi dưỡng'),
+	8000000, NULL, NULL, NULL, 0, N'available'),
 
     ('CP401', N'Vẹt cổ trắng', N'Xanh lá, đỏ', 2, 1, 0, N'Vẹt Châu Phi', N'Chưa có', 1, 
-	19000000, NULL, NULL, NULL, 0, N'Đang sinh sản'),
+	19000000, NULL, NULL, NULL, 0, N'pairing'),
 
-    ('CP501', N'Vẹt Lovebird', N'Xanh, vàng, cam', 2, 1, 1, N'Vẹt Châu Phi', N'Chưa có', 1, 2000000, NULL, NULL, NULL, 0, N'Đang sinh sản'),
+    ('CP501', N'Vẹt Lovebird', N'Xanh, vàng, cam', 2, 1, 1, N'Vẹt Châu Phi', N'Chưa có', 1, 2000000, NULL, NULL, NULL, 0, N'pairing'),
 
-	('WA301',N'Orange Winged Amazon',N'xanh lá, vàng',2,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',0,3000000,null,null,null,0,N'Còn Hàng'),
+	('WA301',N'Orange Winged Amazon',N'xanh lá, vàng',2,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',0,3000000,null,null,null,0,N'available'),
 
-	('BA6002',N'Blue-fronted Amazon',N'xanh lá, xanh dương',3,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',null,3000000,null,null,null,0,N'Còn Hàng'),
+	('BA6002',N'Blue-fronted Amazon',N'xanh lá, xanh dương',3,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',null,3000000,null,null,null,0,N'pairing'),
 
-	('FA303',N'Red Faced Amazon',N'xanh lá, đỏ',2,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',null,3000000,null,null,null,0,N'Còn Hàng'),
+	('FA303',N'Red Faced Amazon',N'xanh lá, đỏ',2,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',null,3000000,null,null,null,0,N'pairing'),
 
-	('HA104',N'Double Yellow Headed Amazon',N'xanh lá, vàng, đỏ',4,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',0,4500000,null,null,null,0,N'Còn Hàng'),
+	('HA104',N'Double Yellow Headed Amazon',N'xanh lá, vàng, đỏ',4,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',0,4500000,null,null,null,0,N'available'),
 
-	('NA505',N'Yellow Naped Amazon',N'xanh lá, vàng',5,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',0,9000000,null,null,null,0,N'Còn Hàng')
+	('NA505',N'Yellow Naped Amazon',N'xanh lá, vàng',5,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',0,9000000,null,null,null,0,N'available'),
+
+	('CL201',N'Cockatiel Lutino',N'xám, vàng, cam',5,2,1,N'Vẹt Châu Úc',NULL,0,2500000,N'Vẹt Cockatiel Lutino nổi bật với lớp lông màu vàng cam ánh hồng, đầu có mảng màu tương tự, mắt đỏ rực, và đuôi dài màu cam. Loài vẹt này thường rất tình cảm, thân thiện, và dễ huấn luyện, làm cho nó trở thành một thú cưng lý tưởng cho người mới nuôi vẹt.',null,null,0,N'available'),
+
+	('CW192',N'Cockatiel White Face',N'xám, trắng',4,2,0,N'Vẹt Châu Úc',NULL,1,3500000,N' Lông trắng mịn, mắt đỏ, không vùng màu cam trên mặt. Tính cách thân thiện, tinh quái. Dễ huấn luyện, thích tương tác.',null,null,0,N'available'),
+
+	('RL391',N'Rainbow Lory',N'đen, đỏ, tím',5,4,0,N'Vẹt Châu Úc',NULL,0,9500000,N'Lông nhiều màu sắc rực rỡ, mỏ cam, tính cách vui vẻ, tươi mới, yêu đời. Yêu thích tương tác và cần chế độ ăn uống đa dạng, hoạt động vui chơi để duy trì sức khỏe tốt và làm phong phú cuộc sống của người nuôi.',null,null,0,N'pairing'),
 	
+	('RL409', N'Red Lory', N'đỏ', 5, 2, 1, N'Vẹt Châu Úc', NULL, 1, 15000000, N'Lông đỏ tươi sáng, mỏ và mắt đen nổi bật, tính cách hòa đồng, thích hát hò và tương tác, yêu thích ăn uống đa dạng, làm phong phú cuộc sống gia đình bằng niềm vui vẹt.', NULL, NULL, 0, N'pairing'),
+
+	('VE358', N'Vẹt Eclectus', N'Xanh lá', 4, 2, 1, N'Vẹt Châu Úc', NULL, 1, 25000000, N'Vẹt Eclectus là một loài vẹt đa dạng màu sắc, với đực thường có lông màu xanh smaragd và cái có lông màu đỏ tươi. Chúng có mỏ mạnh mẽ và đôi mắt nâu sáng. Eclectus thích tương tác, thông minh và thích học tiếng nói. Tính cách độc lập và thích khám phá, yêu thích chế độ ăn uống chứa nhiều rau quả tươi ngon.', NULL, NULL, 0, N'available')
 GO
 
-INSERT INTO [Bird] VALUES ('NA505',N'Yellow Naped Amazon',N'xanh lá, vàng',5,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',0,9000000,null,null,null,0,N'Còn Hàng')
+INSERT INTO [Bird] VALUES ('NA605',N'Yellow Naped Amazon',N'xanh lá, vàng',5,4,0,N'Vẹt Nam Mỹ Amazon',N'Top 1 hot líu lo',0,9000000,null,null,null,0,N'Còn Hàng')
 GO
 
 INSERT INTO [Accessory] (accessory_id, accessory_name, unit_price, stock_quantity, description, discount, status) 
 VALUES 
 	('GT001', N'Găng tay bắt vẹt', 120000, 50, N'Dùng cho việc huấn luyện vẹt, tránh trầy xước hoặc bị đau', 0, 'Available'),
 	('GA001', N'Máy ghi âm', 600000, 25, N'Dùng cho việc huấn luyện vẹt nói', 0, 'Available'),
-	('CT001', N'Còi huấn luyện vẹt', 90000, 15, N'Huấn luyện trong việc nghe tín hiệu', 0, 'Available')
+	('CT001', N'Còi huấn luyện vẹt', 90000, 15, N'Huấn luyện trong việc nghe tín hiệu', 0, 'Available'),
+	('SU231', N'Sữa tắm vẹt', 80000, 50, N'Loại bỏ mùi hôi, diệt khuẩn, triệt hạ vi trùng.', 0, 'Available'),
+	('MV157', N'Muối tắm vẹt', 220000, 30, N'Làm mềm lông, tránh đóng vẩy, giảm stress, làm sạch da lông.', 0, 'Available'),
+	('OB356', N'Ống bơm bột', 130000, 50, N'Ống bơm bột cao cấp dành cho vẹt non.', 0, 'Available')
+
 
 INSERT INTO [dbo].[User]
            ([username],[password],[full_name],[phone],[email],[role],[address],[point],[register_date],[status])
