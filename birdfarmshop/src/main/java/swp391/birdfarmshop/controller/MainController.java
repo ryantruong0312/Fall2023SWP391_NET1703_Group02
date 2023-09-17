@@ -26,10 +26,11 @@ public class MainController extends HttpServlet {
         try {
             String action = request.getParameter("action");
             switch (action) {
-                case ACT_NAV_HOME ->
+                case ACT_NAV_HOME:
                     url = DEST_NAV_HOME;
-                default -> {
-                }
+                    break;
+                default:
+                    break;
             }
         } catch (Exception ex) {
             log("Error at MainController: " + ex.toString());
