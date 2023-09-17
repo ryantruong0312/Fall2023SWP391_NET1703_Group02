@@ -26,20 +26,20 @@ public class UserDAO {
                 String sql = "SELECT [username],[password], [full_name],[phone],[email],[role],[address],[point],[register_date],[status] FROM [User] \n"
                         + "WHERE username = ? OR email = ? AND [password] = ? COLLATE Latin1_General_CS_AS";
                 PreparedStatement pst = cnn.prepareStatement(sql);
-                pst.setString(0, username);
                 pst.setString(1, username);
-                pst.setString(2, password);
+                pst.setString(2, username);
+                pst.setString(3, password);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null && rs.next()) {
-                    String user = rs.getString("[username]");
-                    String fullName = rs.getString("[full_name]");
-                    String phone = rs.getString("[phone]");
-                    String email = rs.getString("[email]");
-                    String role = rs.getString("[role]");
-                    String address = rs.getString("[address]");
-                    int point = rs.getInt("[point]");
-                    Date registerDate = rs.getDate("[register_date]");
-                    String status = rs.getString("[status]");
+                    String user = rs.getString("username");
+                    String fullName = rs.getString("full_name");
+                    String phone = rs.getString("phone");
+                    String email = rs.getString("email");
+                    String role = rs.getString("role");
+                    String address = rs.getString("address");
+                    int point = rs.getInt("point");
+                    Date registerDate = rs.getDate("register_date");
+                    String status = rs.getString("status");
                     u = new User(user, password, fullName, phone, email, role, address, point, registerDate, status);
                 }
             }
@@ -55,8 +55,5 @@ public class UserDAO {
             }
         }
         return u;
-    }
-    public static void main(String[] args) {
-        System.out.println(getUser("customer", "123abc"));
     }
 }
