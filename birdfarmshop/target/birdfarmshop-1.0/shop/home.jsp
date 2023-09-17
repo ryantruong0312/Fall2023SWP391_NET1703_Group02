@@ -9,7 +9,7 @@
 <html lang="en">
 
     <head>
-<
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
@@ -58,14 +58,14 @@
                                 <li class="scroll-to-section"><a href="shop/bird-compare.jsp">Bird Compare</a></li>
                                 <li class="scroll-to-section"><a href="shop/bird-pair.jsp">Breed Select</a></li>
                                 <li class="scroll-to-section"><a href="shop/cart-view.jsp">Cart</a></li>
-                                <li class="submenu">
-                                    <a href="javascript:;">Customer 1</a>
+                                <li  class="scroll-to-section"> <a href="MainController?action=Login">Login</a></li>
+<!--                                <li class="submenu">
                                     <ul>
                                         <li><a href="#">Profile</a></li>
                                         <li><a href="#">Sign out</a></li>
-                                        <!--<li><a href="#">Features Page 3</a></li>-->
+                                        <li><a href="#">Features Page 3</a></li>
                                     </ul>
-                                </li>
+                                </li>-->
                                 <!--<li class="scroll-to-section"><a href="#explore">Explore</a></li>-->
                             </ul>           
                             <a class='menu-trigger'>

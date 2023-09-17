@@ -8,9 +8,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import swp391.birdfarmshop.dao.UserDAO;
+import swp391.birdfarmshop.model.User;
 
 /**
  *
@@ -18,6 +22,10 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
 public class LoginController extends HttpServlet {
+
+    private static final String DEST_NAV_LOGIN_PAGE = "/authentication/login.jsp";
+    private static final String DEST_NAV_HOME = "RenderHomeController";
+    private static final String ERROR = "/WEB-INF/errorpages/error.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,16 +40,42 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoginController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String username = request.getParameter("account");
+            String password = request.getParameter("password");
+            String checkbox = request.getParameter("checkbox");
+            User u = UserDAO.getUser(username, password);
+            String message = null;
+            String url = ERROR;
+            HttpSession session = request.getSession();
+            if (u != null) {
+                if (u.getStatus().equals("active")) {
+                    if (checkbox != null) {
+                        session.setAttribute("user", u.getUsername());
+                        session.setAttribute("name", u.getFullName());
+                        session.setAttribute("img", "");
+                        session.setMaxInactiveInterval(5 * 60);
+                    }
+                    if (u.getRole().equals("customer")) {
+                        request.setAttribute("user", u.getUsername());
+                        request.setAttribute("name", u.getFullName());
+                        request.setAttribute("img", "");
+                        url = DEST_NAV_HOME;
+                    }
+                } else if (u.getStatus().equals("not active")){
+                    request.setAttribute("error", "Please activate your account by clicking on the link in the registered email.");
+                    url = DEST_NAV_LOGIN_PAGE;
+                } else {
+                    request.setAttribute("error", "Your account has been locked, please contact the store.");
+                    url = DEST_NAV_LOGIN_PAGE;
+                }
+            } else {
+                message = "Email or password incorrect.";
+                request.setAttribute("error", message);
+                url = DEST_NAV_LOGIN_PAGE;
+            }
+            request.getRequestDispatcher(url).forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
