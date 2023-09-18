@@ -29,7 +29,7 @@ DROP TABLE IF EXISTS [Bird]
 CREATE TABLE [Bird]
 (
 	[bird_id] VARCHAR(10) NOT NULL,
-	[bird_name] NVARCHAR(30),
+	[bird_name] NVARCHAR(50),
 	[color] NVARCHAR(20),
 	[age] SMALLINT,
 	[grown_age] SMALLINT,
@@ -53,7 +53,7 @@ DROP TABLE IF EXISTS [Accessory]
 CREATE TABLE [Accessory]
 (
 	[accessory_id] VARCHAR(10) NOT NULL,
-	[accessory_name] NVARCHAR(30),
+	[accessory_name] NVARCHAR(50),
 	[unit_price] INT,
 	[stock_quantity] SMALLINT,
 	[description] NVARCHAR(MAX),
@@ -137,17 +137,40 @@ CREATE TABLE [OrderTracking]
 )
 GO
 
+DROP TABLE IF EXISTS [BirdNest]
+CREATE TABLE [BirdNest]
+(
+	[nest_id] INT IDENTITY,
+	[nest_name] NVARCHAR(50),
+	[is_thumbnail] BIT,
+	[dad_bird_id] VARCHAR(10),
+	[mom_bird_id] VARCHAR(10),
+	[baby_quantity] SMALLINT,
+	[status] NVARCHAR(20),
+	[price] INT,
+	[description] NVARCHAR(MAX),
+	CONSTRAINT PK_BirdNest PRIMARY KEY ([nest_id]),
+	CONSTRAINT FK_BirdNest_Bird_dadbird FOREIGN KEY ([dad_bird_id]) REFERENCES [Bird]([bird_id]),
+	CONSTRAINT FK_BirdNest_Bird_mombird FOREIGN KEY ([mom_bird_id]) REFERENCES [Bird]([bird_id])
+)
+GO
+
 DROP TABLE IF EXISTS [Image]
 CREATE TABLE [Image]
 (
 	[image_id] INT IDENTITY,
-	[image_data] VARBINARY(MAX),
+	[image_url] VARCHAR(MAX),
+	[is_thumbnail] BIT,
 	[bird_id] VARCHAR(10),
+	[nest_id] INT,
 	[accessory_id] VARCHAR(10),
 	CONSTRAINT FK_Image_Bird FOREIGN KEY ([bird_id]) REFERENCES [Bird]([bird_id]),
-	CONSTRAINT FK_Image_Accessory FOREIGN KEY ([accessory_id]) REFERENCES [Accessory]([accessory_id])
+	CONSTRAINT FK_Image_Accessory FOREIGN KEY ([accessory_id]) REFERENCES [Accessory]([accessory_id]),
+	CONSTRAINT FK_Image_BirdNest FOREIGN KEY ([nest_id]) REFERENCES [BirdNest]([nest_id])
 )
 GO
+
+
 
 
 INSERT INTO [Bird] ([bird_id], [bird_name], [color], [age], [grown_age], [gender], [breed], [achievement], [reproduction_history], [price], [description], [dad_bird_id], [mom_bird_id], [discount], [status]) 
@@ -227,7 +250,27 @@ INSERT INTO [Accessory] ([accessory_id], [accessory_name], [unit_price], [stock_
 VALUES 
 	('GT001', N'Găng tay bắt vẹt', 120000, 50, N'Dùng cho việc huấn luyện vẹt, tránh trầy xước hoặc bị đau', 0, 'available'),
 	('GA001', N'Máy ghi âm', 600000, 25, N'Dùng cho việc huấn luyện vẹt nói', 0, 'available'),
-	('CT001', N'Còi huấn luyện vẹt', 90000, 15, N'Huấn luyện trong việc nghe tín hiệu', 0, 'available')
+	('CT001', N'Còi huấn luyện vẹt', 90000, 15, N'Huấn luyện trong việc nghe tín hiệu', 0, 'available'),
+	('LN001', N'Lồng Ngoại Nhập Lớn Inox Cho Vẹt Size M',  13800000, 0,
+	N'Lồng nuôi vẹt inox với chất liệu là inox tránh được chuột cắn phá như các lồng gỗ, tre không những thế còn không bị móc mọt gặm. Là lựa chọn tối ưu cho sự an toàn của vẹt.
+	Kích thước: 61x52x151cm
+	Không gian bên trong lồng lớn.
+	Có thể biến tấu khi vẹt sinh sản.
+	Chốt khóa chắc chắn và dễ thao tác khóa.
+	Nan lồng chắc chắn dễ dàng chịu được tác động của chiếc mỏ vẹt.',
+	0, 'out of stock'),
+	('BL001', N'Balo Du Lịch Vận Chuyển Vẹt', 500000, 12, 
+	N'Pet Me Shop chuyên bán và cung cấp Balo du lịch ngoại nhập chuyên dụng dành cho vẹt. Thiết kế chuyên dụng, chất liệu bền bỉ, phù hợp cho các loại vẹt size nhỏ và vừa. Giúp bạn đi đâu cũng có thể mang thú cưng đi bên cạnh mình một cách thoải mái nhất, tiện lợi nhất. Thiết kế chắc chắn, hiện đại mang phong cách thời trang.
+	Kích thước: Size M (31x28x41)
+	Xuất xứ: Đài Loan
+	Chất liệu: Nhựa cao cấp',
+	5, 'available'),
+	('LM001', N'Lồng Màu (Mái Vòm)', 450000, 20,
+	N'Lồng chim thép sơn tĩnh điện rất an toàn cho chim. Lồng rất chắc chắn và khoảng không gian rộng cho chú chim thoải mái hơn. Chuồng Nuôi Chim được sản xuất theo tiêu chuẩn công nghiệp bền đẹp, được hàn từ dây thép chất lượng cao, qua quy trình sơn tĩnh điện theo tiêu chuẩn.
+	Size: 37x28x46
+	Xuất xứ: Đài Loan
+	Chất liệu: thép sơn tĩnh điện',
+	10, 'available')
 GO
 
 INSERT INTO [dbo].[User] ([username],[password],[full_name],[phone],[email],[role],[address],[point],[register_date],[status])
@@ -243,3 +286,22 @@ VALUES
 	('admin','123','admin','1234567890','admin@gmail.com','admin','Ha Noi',12,'2023-06-15','active')
 GO
 
+
+INSERT INTO [dbo].[Image] ([image_url],[is_thumbnail],[bird_id],[nest_id],[accessory_id])
+VALUES
+    ('https://petmeshop.com/wp-content/uploads/2020/09/Long-ngoai-nhap-inox-lon-cho-vet-4.jpg', 
+    1, NULL, NULL, 'LN001'),
+	('https://petmeshop.com/wp-content/uploads/2020/09/Long-ngoai-nhap-inox-lon-cho-vet-6.jpg', 
+    0, NULL, NULL, 'LN001'),
+	('https://petmeshop.com/wp-content/uploads/2020/09/Long-ngoai-nhap-inox-lon-cho-vet-7.jpg', 
+    0, NULL, NULL, 'LN001'),
+	('https://petmeshop.com/wp-content/uploads/2020/09/Long-ngoai-nhap-inox-lon-cho-vet-8.jpg', 
+    0, NULL, NULL, 'LN001'),
+
+	('https://petmeshop.com/wp-content/uploads/2020/09/Ba-lo-van-chuyen-vet-0.jpg', 
+    0, NULL, NULL, 'LN001'),
+	('https://petmeshop.com/wp-content/uploads/2020/09/Ba-lo-van-chuyen-vet-4.jpg', 
+    0, NULL, NULL, 'LN001'),
+	('https://petmeshop.com/wp-content/uploads/2020/09/Ba-lo-van-chuyen-vet-1.jpg', 
+    1, NULL, NULL, 'LN001')
+GO
