@@ -59,6 +59,8 @@ public class LoginController extends HttpServlet {
                         request.setAttribute("user", u.getUsername());
                         request.setAttribute("name", u.getFullName());
                         request.setAttribute("img", "");
+                        u.setPassword("*****");
+                        session.setAttribute("LOGIN_USER", u);
                         url = DEST_NAV_HOME;
                     }
                 } else if (u.getStatus().equals("not active")){

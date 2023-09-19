@@ -19,7 +19,7 @@ public class MainController extends HttpServlet {
     private static final String ERROR = "/WEB-INF/errorpages/error.jsp";
     private static final String ACT_NAV_HOME = "NavToHome";
     private static final String DEST_NAV_HOME = "RenderHomeController";
-    private static final String ACT_NAV_LOGIN_PAGE = "Login";
+    private static final String ACT_NAV_LOGIN_PAGE = "NavToLogin";
     private static final String DEST_NAV_LOGIN_PAGE = "/authentication/login.jsp";
     private static final String ACT_NAV_REGISTER_PAGE = "Register";
     private static final String DEST_NAV_REGISTER_PAGE = "/authentication/register.jsp";
