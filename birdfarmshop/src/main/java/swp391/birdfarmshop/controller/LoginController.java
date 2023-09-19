@@ -50,8 +50,8 @@ public class LoginController extends HttpServlet {
             if (u != null) {
                 if(u.getStatus().equals("active")) {
                       if(session != null){
-                          session.setAttribute("LOGIN_NAME", u.getFullName());
-                          session.setAttribute("LOGIN_ROLE", u.getRole());
+                          u.setPassword(null);
+                          session.setAttribute("LOGIN_USER", u);
                           if(save != null){
                               Cookie cookie = new Cookie("token", u.getEmail());
                               cookie.setMaxAge(5*60);

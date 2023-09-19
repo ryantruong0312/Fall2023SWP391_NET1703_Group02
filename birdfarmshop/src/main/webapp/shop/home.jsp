@@ -4,11 +4,16 @@
     Author     : tlminh
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 190bce8403c337c0bafaee3e0339a33585cc7c80
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
@@ -58,6 +63,7 @@
                                 <li class="scroll-to-section"><a href="shop/bird-pair.jsp">Breed Select</a></li>
                                 <li class="scroll-to-section"><a href="shop/cart-view.jsp">Cart</a></li>
                                 <li  class="scroll-to-section"> <a href="MainController?action=NavToLogin">Login</a></li>
+                                <li><c:out value="${sessionScope.LOGIN_NAME}"/></li>
 <!--                                <li class="submenu">
                                     <ul>
                                         <li><a href="#">Profile</a></li>
