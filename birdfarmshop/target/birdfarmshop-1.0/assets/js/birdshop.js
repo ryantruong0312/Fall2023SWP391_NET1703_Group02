@@ -24,6 +24,7 @@ $('.show-re-password').click(function () {
         $(this).html('<i class="fa fa-eye" aria-hidden="true"></i>');
     }
 });
+<<<<<<< HEAD
 $('.input').focus(function () {
     $('.error-notification').css('visibility', 'hidden');
 });
@@ -34,14 +35,34 @@ $(".form-login").validate({
         },
         password: {
             required: true
+=======
+$(".form-login").validate({
+    rules: {
+        account: {
+            required: true,
+            minlength: 5
+        },
+        password: {
+            required: true,
+            regex: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+>>>>>>> ccf0256ee7b0b5099143a1e6106dc727a7030bcb
         }
     },
     messages: {
         account: {
+<<<<<<< HEAD
             required: 'Please enter your account'
         },
         password: {
             required: 'Please enter your password'   
+=======
+            required: 'Please enter your account',
+            minlength: 'Password must be at least 5 characters'
+        },
+        password: {
+            required: 'Please enter your password',
+            regex: 'Password must be at least 8 characters, including uppercase letters, lowercase letters, numbers and special characters'
+>>>>>>> ccf0256ee7b0b5099143a1e6106dc727a7030bcb
         }
     }
 });

@@ -2419,7 +2419,11 @@ responsive
     padding: 0 3px;
     background: white;
 }
+<<<<<<< HEAD
 .form-outline .show-password,
+=======
+.form-outline .show-password, 
+>>>>>>> ccf0256ee7b0b5099143a1e6106dc727a7030bcb
 .form-outline .show-re-password
 {
     display: none;

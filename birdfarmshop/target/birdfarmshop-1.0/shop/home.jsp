@@ -62,8 +62,12 @@
                                 <li class="scroll-to-section"><a href="shop/bird-compare.jsp">Bird Compare</a></li>
                                 <li class="scroll-to-section"><a href="shop/bird-pair.jsp">Breed Select</a></li>
                                 <li class="scroll-to-section"><a href="shop/cart-view.jsp">Cart</a></li>
+<<<<<<< HEAD
                                 <li  class="scroll-to-section"> <a href="MainController?action=NavToLogin">Login</a></li>
                                 <li><c:out value="${sessionScope.LOGIN_NAME}"/></li>
+=======
+                                <li  class="scroll-to-section"> <a href="MainController?action=Login">Login</a></li>
+>>>>>>> ccf0256ee7b0b5099143a1e6106dc727a7030bcb
 <!--                                <li class="submenu">
                                     <ul>
                                         <li><a href="#">Profile</a></li>

@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author tlminh
  */
-
 public class RenderHomeController extends HttpServlet {
 
     private static final String ERROR = "errorpages/error.jsp";
@@ -23,7 +22,7 @@ public class RenderHomeController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = SUCCESS;
+        String url = ERROR;
         try {
             url = SUCCESS;
         } catch (Exception e) {

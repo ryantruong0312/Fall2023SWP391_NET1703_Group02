@@ -5,64 +5,48 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import swp391.birdfarmshop.dao.BirdDAO;
+import swp391.birdfarmshop.model.Bird;
 
 /**
  *
  * @author tlminh
  */
-public class MainController extends HttpServlet {
+@WebServlet(name = "RenderBirdCompareController", urlPatterns = {"/RenderBirdCompareController"})
+public class RenderBirdCompareController extends HttpServlet {
 
-    private static final String ERROR = "/WEB-INF/errorpages/error.jsp";
-    private static final String ACT_NAV_HOME = "NavToHome";
-    private static final String DEST_NAV_HOME = "RenderHomeController";
-    private static final String ACT_NAV_LOGIN = "NavToLogin";
-    private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
-    private static final String ACT_NAV_REGISTER = "NavToRegister";
-    private static final String DEST_NAV_REGISTER = "/authentication/register.jsp";
-    private static final String ACT_NAV_BIRD_COMPARE_PAGE = "NavToCompare";
-    private static final String DEST_NAV_BIRD_COMPARE_PAGE = "RenderBirdCompareController";
-
-//  PAGE
-
-    private static final String ACT_LOGIN = "login";
-    private static final String DEST_LOGIN = "LoginController";
-
-    private static final String ACT_REGISTER = "register";
-    private static final String DEST_REGISTER = "RegisterController";
+    private static final String ERROR = "errorpages/error.jsp";
+    private static final String SUCCESS = "shop/bird-compare.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String action = request.getParameter("action");
-            switch (action) {
-                case ACT_NAV_HOME:
-                    url = DEST_NAV_HOME;
-                    break;
-                case ACT_NAV_LOGIN:
-                    url = DEST_NAV_LOGIN;
-                    break;
-                case ACT_NAV_REGISTER:
-                    url = DEST_NAV_REGISTER;
-                    break;
-                case ACT_LOGIN:
-                    url = DEST_LOGIN;
-                    break;
-                case ACT_REGISTER:
-                    url = DEST_REGISTER;
-                    break;
-                case ACT_NAV_BIRD_COMPARE_PAGE:
-                    url = DEST_NAV_BIRD_COMPARE_PAGE;
-                    break;
-                default:
-                    break;
+            List<Bird> birdList = new ArrayList<>();
+            Set<String> breedList = new HashSet<>();
+            BirdDAO dao = new BirdDAO();
+            birdList = dao.getBirds();
+            if (birdList != null) {
+                for (Bird bird : birdList) {
+                    breedList.add(bird.getBreed());
+                }
+                request.setAttribute("BIRD_BREEDS", breedList);
+                request.setAttribute("BIRDS", birdList);
+                url = SUCCESS;
             }
-        } catch (Exception ex) {
-            log("Error at MainController: " + ex.toString());
+        } catch (Exception e) {
+            log("Error at RenderBirdCompareController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
