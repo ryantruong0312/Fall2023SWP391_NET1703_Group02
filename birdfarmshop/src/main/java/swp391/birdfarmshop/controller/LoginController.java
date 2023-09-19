@@ -23,7 +23,7 @@ import swp391.birdfarmshop.model.User;
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
 public class LoginController extends HttpServlet {
 
-    private static final String DEST_NAV_LOGIN_PAGE = "/authentication/login.jsp";
+    private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
     private static final String DEST_NAV_HOME = "RenderHomeController";
     private static final String ERROR = "/WEB-INF/errorpages/error.jsp";
 
@@ -42,36 +42,34 @@ public class LoginController extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             String username = request.getParameter("account");
             String password = request.getParameter("password");
-            String checkbox = request.getParameter("checkbox");
+            String save = request.getParameter("checkbox");
             User u = UserDAO.getUser(username, password);
             String message = null;
             String url = ERROR;
-            HttpSession session = request.getSession();
+            HttpSession session = request.getSession(true);
             if (u != null) {
-                if (u.getStatus().equals("active")) {
-                    if (checkbox != null) {
-                        session.setAttribute("user", u.getUsername());
-                        session.setAttribute("name", u.getFullName());
-                        session.setAttribute("img", "");
-                        session.setMaxInactiveInterval(5 * 60);
-                    }
-                    if (u.getRole().equals("customer")) {
-                        request.setAttribute("user", u.getUsername());
-                        request.setAttribute("name", u.getFullName());
-                        request.setAttribute("img", "");
-                        url = DEST_NAV_HOME;
-                    }
+                if(u.getStatus().equals("active")) {
+                      if(session != null){
+                          session.setAttribute("LOGIN_NAME", u.getFullName());
+                          session.setAttribute("LOGIN_ROLE", u.getRole());
+                          if(save != null){
+                              Cookie cookie = new Cookie("token", u.getEmail());
+                              cookie.setMaxAge(5*60);
+                              response.addCookie(cookie);
+                          }
+                          response.sendRedirect(DEST_NAV_HOME);
+                      } 
                 } else if (u.getStatus().equals("not active")){
                     request.setAttribute("error", "Please activate your account by clicking on the link in the registered email.");
-                    url = DEST_NAV_LOGIN_PAGE;
+                    url = DEST_NAV_LOGIN;
                 } else {
                     request.setAttribute("error", "Your account has been locked, please contact the store.");
-                    url = DEST_NAV_LOGIN_PAGE;
+                    url = DEST_NAV_LOGIN;
                 }
             } else {
                 message = "Email or password incorrect.";
                 request.setAttribute("error", message);
-                url = DEST_NAV_LOGIN_PAGE;
+                url = DEST_NAV_LOGIN;
             }
             request.getRequestDispatcher(url).forward(request, response);
         } catch (Exception e) {

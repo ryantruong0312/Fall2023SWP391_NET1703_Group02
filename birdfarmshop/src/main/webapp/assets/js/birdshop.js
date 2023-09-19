@@ -24,25 +24,24 @@ $('.show-re-password').click(function () {
         $(this).html('<i class="fa fa-eye" aria-hidden="true"></i>');
     }
 });
+$('.input').focus(function () {
+    $('.error-notification').css('visibility', 'hidden');
+});
 $(".form-login").validate({
     rules: {
         account: {
-            required: true,
-            minlength: 5
+            required: true
         },
         password: {
-            required: true,
-            regex: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+            required: true
         }
     },
     messages: {
         account: {
-            required: 'Please enter your account',
-            minlength: 'Password must be at least 5 characters'
+            required: 'Please enter your account'
         },
         password: {
-            required: 'Please enter your password',
-            regex: 'Password must be at least 8 characters, including uppercase letters, lowercase letters, numbers and special characters'
+            required: 'Please enter your password'   
         }
     }
 });

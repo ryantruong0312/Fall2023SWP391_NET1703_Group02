@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -55,7 +55,7 @@
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </div>
                             </div>
-                            <p class="error-notification" style="color: red"><%= request.getAttribute("error")%></p>
+                            <p class="error-notification" style="color: red"><c:out value="${requestScope.error}" /></p>
                             <div class="d-flex justify-content-around align-items-center mb-4">
                                 <!-- Checkbox -->
                                 <div class="form-check">
@@ -67,7 +67,7 @@
 
                             <!-- Submit button -->
                             <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
-                            <div class="mt-2">Don't have an account?   <a href="MainController?action=Register">Register</a></div>
+                            <div class="mt-2">Don't have an account?   <a href="MainController?action=NavToRegister">Register</a></div>
                             <div class="divider d-flex align-items-center my-4">
                                 <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
                             </div>
@@ -78,7 +78,7 @@
                             </a>    
                             <a class="btn btn-primary btn-lg btn-block border-0" style="background-color: #d0463b" href="#!"
                                role="button">
-                                <i class="fa fa-google-plus mr-3"></i>Continue with Gmail</a>
+                                <i class="fa fa-google-plus mr-3"></i>Continue with Google</a>
 
                         </form>
                     </div>
