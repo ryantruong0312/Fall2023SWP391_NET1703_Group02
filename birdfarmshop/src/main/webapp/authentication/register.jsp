@@ -40,12 +40,14 @@
                                          class="img-fluid"  alt="Bird image">
                                 </a>
                                 <div class="d-flex align-items-center logo-register">
-                                    <!--                             <p>Sign up</p>-->
                                     <a href="#">
                                         <img src="assets/images/facebook.png"
                                              class="img-fluid logo"  alt="Bird image">
                                     </a>
-                                    <a href="#">
+                                    <a href="https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email
+                                       &redirect_uri=http://localhost:8080/birdfarmshop/LoginGoogleController&response_type=code
+                                       &client_id=911997830678-hnnf8alt3ehncr0mdo75f4kc2ckkdm6q.apps.googleusercontent.com&approval_prompt=force"
+                                       role="button">
                                         <img src="assets/images/google.png"
                                              class="img-fluid logo"  alt="Bird image">
                                     </a>
@@ -103,7 +105,7 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="https://www.google.com/recaptcha/api.js"></script>
         <script type="text/javascript" src="assets/js/birdshop.js"></script>  
-                <!-- Plugins -->
+        <!-- Plugins -->
         <script src="assets/js/owl-carousel.js"></script>
         <script src="assets/js/accordions.js"></script>
         <script src="assets/js/datepicker.js"></script>
@@ -117,6 +119,6 @@
 
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
- 
+
     </body>
 </html>

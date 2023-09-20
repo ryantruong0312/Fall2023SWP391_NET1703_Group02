@@ -96,13 +96,13 @@ public class UserDAO {
         return u;
     }
 
-    public static int createUser(String user, String email, String password, String name, String mobile) {
+    public static int createUser(String user, String email, String password, String name, String mobile, String status) {
         int result = 0;
         Connection cnn = null;
         try {
             cnn = DBUtils.getConnection();
             String sql = "INSERT INTO [User](username,[password],full_name,phone,email,register_date,[role],[status])\n"
-                    + "VALUES(?,?,?,?,?,?,'customer','not active')";
+                    + "VALUES(?,?,?,?,?,?,'customer',?)";
             PreparedStatement pst = cnn.prepareStatement(sql);
             pst.setString(1, user);
             pst.setString(2, password);
@@ -111,6 +111,7 @@ public class UserDAO {
             pst.setString(5, email);
             LocalDate currentDate = LocalDate.now();
             pst.setString(6, "" + currentDate);
+            pst.setString(7, status);
             result = pst.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();

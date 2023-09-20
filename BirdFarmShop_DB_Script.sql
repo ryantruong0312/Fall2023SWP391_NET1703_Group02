@@ -1,4 +1,7 @@
-﻿DROP DATABASE IF EXISTS BirdFarmShop
+﻿USE master
+GO
+
+DROP DATABASE IF EXISTS BirdFarmShop
 CREATE DATABASE BirdFarmShop
 GO
 
@@ -9,8 +12,8 @@ GO
 DROP TABLE IF EXISTS [User]
 CREATE TABLE [User]
 (
-	[username] VARCHAR(20) NOT NULL,
-	[password] VARCHAR(50) NOT NULL,
+	[username] VARCHAR(25) NOT NULL,
+	[password] VARCHAR(150),
 	[full_name] NVARCHAR(50),
 	[phone] VARCHAR(15),
 	[email] VARCHAR(100),
@@ -20,8 +23,6 @@ CREATE TABLE [User]
 	[register_date] DATE,
 	[status] NVARCHAR(20),
 	CONSTRAINT PK_Profile PRIMARY KEY ([username]),
-	CONSTRAINT CK_Profile_email CHECK([email] LIKE '%[A-Za-z0-9]@[A-Za-z0-9]%.[A-Za-z0-9]%'),
-	CONSTRAINT CK_Profile_phone CHECK([phone] LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
 )
 GO
 
@@ -67,7 +68,7 @@ DROP TABLE IF EXISTS [Order]
 CREATE TABLE [Order]
 (
 	[order_id] VARCHAR(10) NOT NULL,
-	[customer] VARCHAR(20),
+	[customer] VARCHAR(25),
 	[order_date] DATETIME,
 	[order_status] NVARCHAR(20),
 	[ship_address] NVARCHAR(50),
@@ -114,7 +115,7 @@ DROP TABLE IF EXISTS [Feedback]
 CREATE TABLE [Feedback]
 (
 	[feedback_id] INT IDENTITY,
-	[customer] VARCHAR(20),
+	[customer] VARCHAR(25),
 	[order_item_id] INT,
 	[rating] SMALLINT,
 	[comment] NVARCHAR(100),
@@ -314,15 +315,15 @@ GO
 
 INSERT INTO [dbo].[User] ([username],[password],[full_name],[phone],[email],[role],[address],[point],[register_date],[status])
 VALUES
-	('customer','123','Hung','0912345678','hung@gmail.com','customer','353/7 Nguyễn Trãi, phường Nguyễn Cư Trinh, quận 1, TP.HCM',12,'2023-06-15','active'),
-	('toan','123','Toan','0998765432','toan@gmail.com','customer','18/5/6 Trương Phước Phan, phường Bình Trị Đông, quận Bình Tân',12,'2023-06-15','active'),
-	('hoang','123','Hoang','0987654321','hoang@gmail.com','customer','73/7 Trần Bình Trọng, phường 1, quận 5',12,'2023-06-15','active'),
-	('hai','123','Hai','0923456789','hai@gmail.com','customer','199/5 Trần Bình Trọng, phường 3, quận 5',12,'2023-06-15','active'),
-	('tu','123','Tu','0954321678','tu@gmail.com','customer','56/1/2A Bùi Minh Trực, phường 5, quận 8',12,'2023-06-15','inactive'),
-	('staff','123','staff','0934567890','staff@gmail.com','staff','Ha Noi',12,'2023-06-15','active'),
-	('staff1','123','staff','0987654321','staff@gmail.com','staff','Ha Noi',12,'2023-06-15','inactive'),
-	('manager','123','manager','0965432109','manager@gmail.com','manager','Ha Noi',12,'2023-06-15','active'),
-	('admin','123','admin','0978901234','admin@gmail.com','admin','Ha Noi',12,'2023-06-15','active')
+	('customer','123','Hung','0912345678','hung@gmail.com','customer',N'353/7 Nguyễn Trãi, phường Nguyễn Cư Trinh, quận 1, TP.HCM',12,'2023-06-15','active'),
+	('toan','123','Toan','0998765432','toan@gmail.com','customer',N'18/5/6 Trương Phước Phan, phường Bình Trị Đông, quận Bình Tân',12,'2023-06-15','active'),
+	('hoang','123','Hoang','0987654321','hoang@gmail.com','customer',N'73/7 Trần Bình Trọng, phường 1, quận 5',12,'2023-06-15','active'),
+	('hai','123','Hai','0923456789','hai@gmail.com','customer',N'199/5 Trần Bình Trọng, phường 3, quận 5',12,'2023-06-15','active'),
+	('tu','123','Tu','0954321678','tu@gmail.com','customer',N'56/1/2A Bùi Minh Trực, phường 5, quận 8',12,'2023-06-15','inactive'),
+	('staff','123','staff','0934567890','staff@gmail.com','staff',N'Ha Noi',12,'2023-06-15','active'),
+	('staff1','123','staff','0987654321','staff@gmail.com','staff',N'Ha Noi',12,'2023-06-15','inactive'),
+	('manager','123','manager','0965432109','manager@gmail.com','manager',N'Ha Noi',12,'2023-06-15','active'),
+	('admin','123','admin','0978901234','admin@gmail.com','admin',N'Ha Noi',12,'2023-06-15','active')
 GO
 
 

@@ -11,20 +11,21 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import swp391.birdfarmshop.dao.UserDAO;
 import swp391.birdfarmshop.model.User;
-import swp391.birdfarmshop.util.JWTUtils;
+import swp391.birdfarmshop.util.FacebookUtils;
 
 /**
  *
- * @author tlminh
+ * @author Admin
  */
-@WebServlet(name = "RegisterController", urlPatterns = {"/RegisterController"})
-public class RegisterController extends HttpServlet {
+@WebServlet(name = "LoginFacebookController", urlPatterns = {"/LoginFacebookController"})
+public class LoginFacebookController extends HttpServlet {
 
     private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
+    private static final String DEST_NAV_HOME = "RenderHomeController";
     private static final String ERROR = "/WEB-INF/errorpages/error.jsp";
-    private static final String DEST_NAV_REGISTER = "/authentication/register.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,31 +40,33 @@ public class RegisterController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            String name = request.getParameter("name");
-            String email = request.getParameter("email");
-            String mobile = request.getParameter("mobile");
-            String account = request.getParameter("account");
-            String password = request.getParameter("password");
-            User u = UserDAO.findUser(name, email);
+            String code = request.getParameter("code");
             String message = null;
             String url = ERROR;
-            if (u == null) {
-                String endcodePassword = JWTUtils.encodeJWT(password);
-                int result = UserDAO.createUser(account, email, endcodePassword, name, mobile,"inactive");
-                if (result == 0) {
-                    message = "Create new user account fail !";
-                    request.setAttribute("error", message);
-                    url = DEST_NAV_REGISTER;
-                } else {
-                    url = DEST_NAV_LOGIN;
-                }
-
+//           out.print("<h1>"+code+"</h1>");
+            if (code == null || code.isEmpty()) {
+                message = "Can't connect to Google, you should try another way";
             } else {
-                message = "This username or email existed already !";
-                request.setAttribute("error", message);
-                url = DEST_NAV_REGISTER;
+                String accessToken = FacebookUtils.getToken(code);
+                out.print("<h1>"+accessToken+"</h1>");
+//                User u = UserDAO.findUser(account.getId(), account.getEmail());
+//                if (u != null) {
+//                    HttpSession session = request.getSession(true);
+//                    session.setAttribute("LOGIN_USER", u);
+//                    response.sendRedirect(DEST_NAV_HOME);
+//                } else {
+//                    int createUser = UserDAO.createUser(account.getId(), account.getEmail(), "", account.getName(), "", "active");
+//                    if (createUser == 0) {
+//                        message = "Create account by Google fail!";
+//                        url = DEST_NAV_LOGIN;
+//                    } else {
+//                        HttpSession session = request.getSession(true);
+//                        User newUser = UserDAO.findUser(account.getId(), account.getEmail());
+//                        session.setAttribute("LOGIN_USER", u);
+//                        response.sendRedirect(DEST_NAV_HOME);
+//                    }
+//                }
             }
-            request.getRequestDispatcher(url).forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

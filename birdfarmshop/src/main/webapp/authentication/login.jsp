@@ -72,11 +72,13 @@
                                 <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
                             </div>
 
-                            <a class="btn btn-primary btn-lg btn-block border-0" style="background-color: #3b5998" href="#!"
+                            <a class="btn btn-primary btn-lg btn-block border-0" style="background-color: #3b5998"  href="https://www.facebook.com/v13.0/dialog/oauth?client_id=334333278988069&redirect_uri=http://localhost:8080/birdfarmshop/LoginFacebookController&scope=email"
                                role="button">
                                 <i class="fa fa-facebook mr-3"></i>Continue with Facebook
                             </a>    
-                            <a class="btn btn-primary btn-lg btn-block border-0" style="background-color: #d0463b" href="#!"
+                            <a class="btn btn-primary btn-lg btn-block border-0" style="background-color: #d0463b" href="https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email
+                               &redirect_uri=http://localhost:8080/birdfarmshop/LoginGoogleController&response_type=code
+                               &client_id=911997830678-hnnf8alt3ehncr0mdo75f4kc2ckkdm6q.apps.googleusercontent.com&approval_prompt=force"
                                role="button">
                                 <i class="fa fa-google-plus mr-3"></i>Continue with Google</a>
 
