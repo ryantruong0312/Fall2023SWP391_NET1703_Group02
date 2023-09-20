@@ -280,9 +280,22 @@ VALUES
 
 	('VE358', N'Vẹt Eclectus', N'Xanh lá', 4, 2, 1, 'australian', NULL, 1, 25000000, 
 	N'Vẹt Eclectus là một loài vẹt đa dạng màu sắc, với đực thường có lông màu xanh smaragd và cái có lông màu đỏ tươi. Chúng có mỏ mạnh mẽ và đôi mắt nâu sáng. Eclectus thích tương tác, thông minh và thích học tiếng nói. Tính cách độc lập và thích khám phá, yêu thích chế độ ăn uống chứa nhiều rau quả tươi ngon.', 
-	NULL, NULL, 0, N'available')
+	NULL, NULL, 0, N'available'),
 
+	('HM350', N'Hahn’s Macaw', N'xanh lá, đỏ', 12, 45, 1, N'South American Macaw', N'chưa có',0, 15000000 ,N'Hahn’s Macaw rất thông minh và nổi bật với khả năng nói rất tốt nên chúng vẫn là một lựa chọn tốt cho những người yêu chim muốn có vẹt đuôi dài nhưng chưa sẵn sàng đón tiếp một thành viên quá to lớn.',
+	NULL, NULL, 0, 'available'),
 	
+	('YC090', N'Yellow Collared Macaw', N'xanh lá', 11, 50, 1, N'South American Macaw', N'chưa có',0, 25000000 ,N'Vẹt Yellow-collared Macaw có kích thước nhỏ hơn so với một số loài vẹt khác, với chiều dài khoảng 35-37 cm. Bộ lông của chúng chủ yếu màu xanh da trời và vàng, với cổ màu vàng rực rỡ, đó là nguồn gốc của tên gọi của loài vẹt này. Chúng có vẻ ngoài dễ thương và thu hút, và thường được nuôi làm vật nuôi trong các gia đình',
+	NULL, NULL, 0, 'available'),
+	
+	('SM808', N'Scarlet Macaw', N'đỏ, vàng, xanh dương', 15, 60, 1, N'South American Macaw', N'chưa có',0, 200000000 ,N'Scarlet thông minh, xinh đẹp và cũng rất ham học hỏi. Scarlet được huấn luyện đúng cách sẽ có thể làm được nhiều trò cũng như có tài ăn nói rất giỏi. Scarlet tràn đầy năng lượng, thích chơi đùa và tương tác với chủ nuôi, khá ồn ào và thích gây sự chú ý.',
+	NULL, NULL, 0, 'available'),
+	
+	('HM101', N'Hyacinth Macaw', N'xanh dương', 17, 60, 1, N'South American Macaw', N'chưa có',0, 700000000 ,N'Hyacinth là giống vẹt đắt đỏ nhất thế giới và cũng là giống vẹt được cho là một trong những loài vẹt lớn nhất thế giới. Vẹt khá thuần và trầm tính, và là vật nuôi tuyệt vời. Chúng ngọt ngào, dịu dàng và không thích làm ồn cũng như rất thích vui đùa và gắn bó với gia đình, đặc biệt là chúng rất thân thiện với trẻ con.',
+	NULL, NULL, 0, 'available'),
+	
+	('GW125', N'Green Winged Macaw', N'đỏ, xanh dương, xanh lá', 20, 60, 1, N'South American Macaw', N'chưa có',0, 160000000 ,N'Green Winged thuộc trong top những loài vẹt Nam Mỹ có kích thước lớn nhất, to thứ nhì sau Vẹt Hyacinth. Green-winged tuy lớn con nhưng lại nổi tiếng là loài vẹt hiền hoà, được ví von như gã khổng lồ dịu dàng. Loài vẹt này do đó được yêu thích không phải chỉ bởi bộ lông xinh đẹp với ba màu đỏ, xanh lá và xanh dương nhưng còn vì sự dịu dàng, trầm tính hơn những loài Macaw khác. Do đó, Green-winged được chọn là người bạn đồng hành hoặc vật nuôi gia đình rất tốt.',
+	NULL, NULL, 0, 'available')	
 GO
 
 INSERT INTO [Accessory] ([accessory_id], [accessory_name], [unit_price], [stock_quantity], [description], [discount], [status]) 
@@ -326,8 +339,13 @@ VALUES
 
 	('OB356', N'Ống bơm bột', 130000, 50, 
 	N'Ống bơm bột cao cấp dành cho vẹt non.', 
-	0, 'Available')
+	0, 'Available'), 
 
+	('KC213', N'Kéo Cắt Móng Vẹt', 100000, 50, N'Kéo cắt móng chân chuyên dụng dành cho vẹt với thiết kế cao cấp, an toàn, giúp bạn có thể tự làm đẹp móng chân cho bé vẹt tại nhà.', 0, 'available'),
+
+	('DX202', N'Dây xích đeo chân dành cho chim vẹt', 70000, 50, N'Dây xích deo chân dành choc him vẹt giúp bạn giữ vẹt trong khoản không giới hạn', 0, 'available'),
+
+	('NK200', N'Máy Nhiệt Kế Điện Tử Pha Bột Cho Vẹt', 120000, 25, N'Nhiệt kế điện tử hỗ trợ người nuôi canh đo nhiệt độ bột thích hợp không quá nguội hoặc quá nóng ảnh hưởng đến sức khỏe bé vẹt nhà bạn.', 0, 'available')
 GO
 
 INSERT INTO [dbo].[User] ([username],[password],[full_name],[phone],[email],[role],[address],[point],[register_date],[status])
