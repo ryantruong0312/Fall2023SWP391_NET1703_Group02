@@ -4,23 +4,22 @@
     Author     : tlminh
 --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="LOGIN_USER" scope="session" value="${sessionScope.LOGIN_USER}" />
+
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
-<<<<<<< HEAD
-=======
 
->>>>>>> 190bce8403c337c0bafaee3e0339a33585cc7c80
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>Bird Farm Shop</title>
+        <title>Bird Farm Shop - Home</title>
 
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -28,11 +27,22 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
+        <style>
+            .breed-img{
+                width: 350px;
+                height: 370px;
+            }
+            .breed-name{
+                text-align: center;
+            }
+        </style>
 
     </head>
 
     <body>
-
+        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
+        <c:url var="toLogin" value="MainController?action=NavToLogin"/>
+        <c:url var="logout" value="MainController?action=Logout"/>
         <!-- ***** Preloader Start ***** -->
         <div id="preloader">
             <div class="jumper">
@@ -56,26 +66,49 @@
                             <!-- ***** Logo End ***** -->
                             <!-- ***** Menu Start ***** -->
                             <ul class="nav">
-                                <li class="scroll-to-section"><a href="#" class="active">Home</a></li>
-                                <li class="scroll-to-section"><a href="shop/birds.jsp">Birds</a></li>
-                                <li class="scroll-to-section"><a href="shop/accessories.jsp">Accessories</a></li>
-                                <li class="scroll-to-section"><a href="shop/bird-compare.jsp">Bird Compare</a></li>
-                                <li class="scroll-to-section"><a href="shop/bird-pair.jsp">Breed Select</a></li>
-                                <li class="scroll-to-section"><a href="shop/cart-view.jsp">Cart</a></li>
-<<<<<<< HEAD
-                                <li  class="scroll-to-section"> <a href="MainController?action=NavToLogin">Login</a></li>
-                                <li><c:out value="${sessionScope.LOGIN_NAME}"/></li>
-=======
-                                <li  class="scroll-to-section"> <a href="MainController?action=Login">Login</a></li>
->>>>>>> ccf0256ee7b0b5099143a1e6106dc727a7030bcb
-<!--                                <li class="submenu">
-                                    <ul>
-                                        <li><a href="#">Profile</a></li>
-                                        <li><a href="#">Sign out</a></li>
-                                        <li><a href="#">Features Page 3</a></li>
-                                    </ul>
-                                </li>-->
-                                <!--<li class="scroll-to-section"><a href="#explore">Explore</a></li>-->
+                                <li class="scroll-to-section"><a href="#" class="active">Trang chủ</a></li>
+                                    <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
+                                    <li class="submenu"><a href="">Sản phẩm</a>
+                                        <ul>
+                                            <li><a href="shop/birds.jsp">Chim vẹt</a></li>
+                                            <li><a href="shop/bird-nest.jsp">Tổ chim non</a></li>
+                                            <li><a href="shop/accessories.jsp">Phụ kiện</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
+                                        <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
+                                        <li class="scroll-to-section"><a href="">Đơn hàng</a></li>
+                                        </c:if>
+                                        <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
+                                        <li class="scroll-to-section"><a href="">Ghép cặp</a></li>
+                                        <li class="scroll-to-section"><a href="shop/cart-view.jsp">Giỏ hàng</a></li>
+
+                                        <c:if test="${sessionScope.LOGIN_USER == null}">
+                                            <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
+                                            </c:if>
+                                        </c:if>
+                                    </c:if>
+                                    <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
+                                    <li class="submenu"><a href="">Products</a>
+                                        <ul>
+                                            <li><a href="#">Sản phẩm</a></li>
+                                            <li><a href="#">Tổ chim non</a></li>
+                                            <li><a href="#">Phụ kiện</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
+                                    <li class="scroll-to-section"><a href="">Đơn hàng</a></li>
+                                    <li class="scroll-to-section"><a href="shop/accounts.jsp">Tài khoản</a></li>
+                                    <li class="scroll-to-section"><a href="shop/reports.jsp">Thống kê</a></li>
+                                    </c:if>
+                                    <c:if test="${sessionScope.LOGIN_USER != null}">
+                                    <li class="submenu"><a href="#">${LOGIN_USER.fullName}</a>
+                                        <ul>
+                                            <li><a href="#">Cá nhân</a></li>
+                                            <li><a href="${logout}">Đăng xuất</a></li>
+                                        </ul>
+                                    </li>
+                                </c:if>
                             </ul>           
                             <a class='menu-trigger'>
                                 <span>Menu</span>
@@ -96,10 +129,10 @@
                         <div class="left-content">
                             <div class="thumb">
                                 <div class="inner-content">
-                                    <h4>We Are Hexashop</h4>
-                                    <span>Awesome, clean &amp; creative HTML5 Template</span>
+                                    <h4>Bird Farm Shop</h4>
+                                    <span>Đặt niềm yêu thú cưng của bạn vào tay chuyên gia về chim vẹt.</span>
                                     <div class="main-border-button">
-                                        <a href="#">Purchase Now!</a>
+                                        <a href="#">Tìm hiểu ngay!</a>
                                     </div>
                                 </div>
                                 <img src="assets/images/left-banner-image.jpg" alt="">
@@ -113,15 +146,15 @@
                                     <div class="right-first-image">
                                         <div class="thumb">
                                             <div class="inner-content">
-                                                <h4>Women</h4>
-                                                <span>Best Clothes For Women</span>
+                                                <h4>Chim vẹt</h4>
+                                                <span>Bạn Đồng Hành Tuyệt Vời Cho Người Mê Thú Cưng</span>
                                             </div>
                                             <div class="hover-content">
                                                 <div class="inner">
-                                                    <h4>Women</h4>
-                                                    <p>Lorem ipsum dolor sit amet, conservisii ctetur adipiscing elit incid.</p>
+                                                    <h4>Chim vẹt</h4>
+                                                    <p>Khám phá thế giới đầy màu sắc với các loài chim vẹt từ khắp nơi trên thế giới!</p>
                                                     <div class="main-border-button">
-                                                        <a href="#">Discover More</a>
+                                                        <a href="#">Xem thêm</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -133,15 +166,15 @@
                                     <div class="right-first-image">
                                         <div class="thumb">
                                             <div class="inner-content">
-                                                <h4>Men</h4>
-                                                <span>Best Clothes For Men</span>
+                                                <h4>Phụ kiện</h4>
+                                                <span>Vật phẩm hàng đầu cho loài lông vũ</span>
                                             </div>
                                             <div class="hover-content">
                                                 <div class="inner">
-                                                    <h4>Men</h4>
-                                                    <p>Lorem ipsum dolor sit amet, conservisii ctetur adipiscing elit incid.</p>
+                                                    <h4>Phụ kiện</h4>
+                                                    <p>Tự hào giới thiệu bộ sưu tập phụ kiện cho chim vẹt!</p>
                                                     <div class="main-border-button">
-                                                        <a href="#">Discover More</a>
+                                                        <a href="#">Xem thêm</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -153,15 +186,15 @@
                                     <div class="right-first-image">
                                         <div class="thumb">
                                             <div class="inner-content">
-                                                <h4>Kids</h4>
-                                                <span>Best Clothes For Kids</span>
+                                                <h4>Tổ chim non</h4>
+                                                <span>Các tổ chim đang trong quá trình nuôi dưỡng</span>
                                             </div>
                                             <div class="hover-content">
                                                 <div class="inner">
-                                                    <h4>Kids</h4>
-                                                    <p>Lorem ipsum dolor sit amet, conservisii ctetur adipiscing elit incid.</p>
+                                                    <h4>Tổ chim non</h4>
+                                                    <p>Hãy khám phá các tổ chim non đáng yêu của chúng tôi!</p>
                                                     <div class="main-border-button">
-                                                        <a href="#">Discover More</a>
+                                                        <a href="#">Xem thêm</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -173,15 +206,15 @@
                                     <div class="right-first-image">
                                         <div class="thumb">
                                             <div class="inner-content">
-                                                <h4>Accessories</h4>
-                                                <span>Best Trend Accessories</span>
+                                                <h4>Ghép cặp</h4>
+                                                <span>Nhân giống chim vẹt theo yêu cầu</span>
                                             </div>
                                             <div class="hover-content">
                                                 <div class="inner">
-                                                    <h4>Accessories</h4>
-                                                    <p>Lorem ipsum dolor sit amet, conservisii ctetur adipiscing elit incid.</p>
+                                                    <h4>Ghép cặp</h4>
+                                                    <p>Cùng nhau tạo ra cá thể vẹt mới đầy sự đáng yêu, độc đáo.</p>
                                                     <div class="main-border-button">
-                                                        <a href="#">Discover More</a>
+                                                        <a href="#">Xem thêm</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -197,14 +230,14 @@
         </div>
         <!-- ***** Main Banner Area End ***** -->
 
-        <!-- ***** Men Area Starts ***** -->
+        <!-- ***** Bird Breeds Area Starts ***** -->
         <section class="section" id="men">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="section-heading">
-                            <h2>Men's Latest</h2>
-                            <span>Details to details is what makes Hexashop different from the other themes.</span>
+                            <h2>Đa dạng chủng loài</h2>
+                            <span>Đắm chìm trong vẻ đẹp và sự quý giá của những chú vẹt tại cửa hàng của chúng tôi!</span>
                         </div>
                     </div>
                 </div>
@@ -214,114 +247,37 @@
                     <div class="col-lg-12">
                         <div class="men-item-carousel">
                             <div class="owl-men-item owl-carousel">
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
+                                <c:forEach var="breed" items="${requestScope.BREEDS}">
+                                    <div class="item">
+                                        <div class="thumb">
+                                            <div class="hover-content">
+                                                <ul>
+                                                    <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
+                                                </ul>
+                                            </div>
+                                            <img class="breed-img" src="${breed.breed_thumbnail}" alt="">
                                         </div>
-                                        <img src="assets/images/men-01.jpg" alt="">
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>Classic Spring</h4>
-                                        <span>$120.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
+                                        <div class="down-content">
+                                            <h4 class="breed-name">${breed.breed_name}</h4>
                                         </div>
-                                        <img src="assets/images/men-02.jpg" alt="">
                                     </div>
-                                    <div class="down-content">
-                                        <h4>Air Force 1 X</h4>
-                                        <span>$90.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <img src="assets/images/men-03.jpg" alt="">
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>Love Nana ‘20</h4>
-                                        <span>$150.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <img src="assets/images/men-01.jpg" alt="">
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>Classic Spring</h4>
-                                        <span>$120.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                </c:forEach>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- ***** Men Area Ends ***** -->
+        <!-- ***** Bird Breeds Area Ends ***** -->
 
-        <!-- ***** Women Area Starts ***** -->
+        <!-- ***** Accessories Area Starts ***** -->
         <section class="section" id="women">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="section-heading">
-                            <h2>Women's Latest</h2>
-                            <span>Details to details is what makes Hexashop different from the other themes.</span>
+                            <h2>Thế giới phụ kiện</h2>
+                            <span>Những sản phẩm chăm sóc thú cưng được tin dùng bởi giới mê vẹt cảnh.</span>
                         </div>
                     </div>
                 </div>
@@ -429,124 +385,7 @@
                 </div>
             </div>
         </section>
-        <!-- ***** Women Area Ends ***** -->
-
-        <!-- ***** Kids Area Starts ***** -->
-        <section class="section" id="kids">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="section-heading">
-                            <h2>Kid's Latest</h2>
-                            <span>Details to details is what makes Hexashop different from the other themes.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="kid-item-carousel">
-                            <div class="owl-kid-item owl-carousel">
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <img src="assets/images/kid-01.jpg" alt="">
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>School Collection</h4>
-                                        <span>$80.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <img src="assets/images/kid-02.jpg" alt="">
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>Summer Cap</h4>
-                                        <span>$12.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <img src="assets/images/kid-03.jpg" alt="">
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>Classic Kid</h4>
-                                        <span>$30.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <img src="assets/images/kid-01.jpg" alt="">
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>Classic Spring</h4>
-                                        <span>$120.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- ***** Kids Area Ends ***** -->
+        <!-- ***** Accessories Area Ends ***** -->
 
         <!-- ***** Explore Area Starts ***** -->
         <section class="section" id="explore">
@@ -554,15 +393,15 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="left-content">
-                            <h2>Explore Our Products</h2>
-                            <span>You are allowed to use this HexaShop HTML CSS template. You can feel free to modify or edit this layout. You can convert this template as any kind of ecommerce CMS theme as you wish.</span>
+                            <h2>Các sản phẩm và dịch vụ tại Bird Farm Shop</h2>
+                            <span>Chào mừng đến với Shop Bán Chim Cảnh - nơi bạn có thể khám phá một thế giới tuyệt vời của động vật cưng với sự đa dạng loài chim độc đáo và dịch vụ chất lượng hàng đầu. Với hơn một thập kỷ kinh nghiệm trong việc nuôi và chăm sóc chim, chúng tôi tự hào là địa chỉ đáng tin cậy cho những người yêu thú cưng lông mịn.</span>
                             <div class="quote">
-                                <i class="fa fa-quote-left"></i><p>You are not allowed to redistribute this template ZIP file on any other website.</p>
+                                <i class="fa fa-quote-left"></i><p>Chúng tôi cam kết cung cấp các con vật cưng khỏe mạnh và được nuôi dưỡng cẩn thận, để bạn có thể đón những người bạn mới vào gia đình mình.</p>
                             </div>
-                            <p>There are 5 pages included in this HexaShop Template and we are providing it to you for absolutely free of charge at our TemplateMo website. There are web development costs for us.</p>
-                            <p>If this template is beneficial for your website or business, please kindly <a rel="nofollow" href="https://paypal.me/templatemo" target="_blank">support us</a> a little via PayPal. Please also tell your friends about our great website. Thank you.</p>
+                            <p>Bên cạnh việc bán chim, chúng tôi còn cung cấp các sản phẩm chất lượng để giúp bạn chăm sóc chim cưng của mình, từ lồng cho đến thức ăn và đồ chơi.</p>
+                            <p>Chúng tôi luôn sẵn sàng tư vấn và hỗ trợ bạn trong việc nuôi dưỡng và chăm sóc chim cảnh của mình. Bạn cũng có thể yên tâm về việc giao hàng, với dịch vụ vận chuyển an toàn và đảm bảo đến tận tay bạn.</p>
                             <div class="main-border-button">
-                                <a href="products.html">Discover More</a>
+                                <a href="products.html">Tìm hiểu thêm</a>
                             </div>
                         </div>
                     </div>
@@ -571,8 +410,8 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="leather">
-                                        <h4>Leather Bags</h4>
-                                        <span>Latest Collection</span>
+                                        <h4>Đa dạng giống loài</h4>
+                                        <span>Gần 100 cá thể vẹt quý giá</span>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -587,8 +426,8 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="types">
-                                        <h4>Different Types</h4>
-                                        <span>Over 304 Products</span>
+                                        <h4>Thế giới phụ kiện</h4>
+                                        <span>Hơn 50 dòng sản phẩm</span>
                                     </div>
                                 </div>
                             </div>
@@ -599,110 +438,25 @@
         </section>
         <!-- ***** Explore Area Ends ***** -->
 
-        <!-- ***** Social Area Starts ***** -->
-        <section class="section" id="social">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-heading">
-                            <h2>Social Media</h2>
-                            <span>Details to details is what makes Hexashop different from the other themes.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row images">
-                    <div class="col-2">
-                        <div class="thumb">
-                            <div class="icon">
-                                <a href="http://instagram.com">
-                                    <h6>Fashion</h6>
-                                    <i class="fa fa-instagram"></i>
-                                </a>
-                            </div>
-                            <img src="assets/images/instagram-01.jpg" alt="">
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div class="thumb">
-                            <div class="icon">
-                                <a href="http://instagram.com">
-                                    <h6>New</h6>
-                                    <i class="fa fa-instagram"></i>
-                                </a>
-                            </div>
-                            <img src="assets/images/instagram-02.jpg" alt="">
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div class="thumb">
-                            <div class="icon">
-                                <a href="http://instagram.com">
-                                    <h6>Brand</h6>
-                                    <i class="fa fa-instagram"></i>
-                                </a>
-                            </div>
-                            <img src="assets/images/instagram-03.jpg" alt="">
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div class="thumb">
-                            <div class="icon">
-                                <a href="http://instagram.com">
-                                    <h6>Makeup</h6>
-                                    <i class="fa fa-instagram"></i>
-                                </a>
-                            </div>
-                            <img src="assets/images/instagram-04.jpg" alt="">
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div class="thumb">
-                            <div class="icon">
-                                <a href="http://instagram.com">
-                                    <h6>Leather</h6>
-                                    <i class="fa fa-instagram"></i>
-                                </a>
-                            </div>
-                            <img src="assets/images/instagram-05.jpg" alt="">
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <div class="thumb">
-                            <div class="icon">
-                                <a href="http://instagram.com">
-                                    <h6>Bag</h6>
-                                    <i class="fa fa-instagram"></i>
-                                </a>
-                            </div>
-                            <img src="assets/images/instagram-06.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- ***** Social Area Ends ***** -->
-
         <!-- ***** Subscribe Area Starts ***** -->
         <div class="subscribe">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="section-heading">
-                            <h2>By Subscribing To Our Newsletter You Can Get 30% Off</h2>
-                            <span>Details to details is what makes Hexashop different from the other themes.</span>
+                            <h2>Đăng ký thông tin để có cơ hội nhận ưu đãi lên đến 30%</h2>
+                            <span>Ưu đãi và tích lũy điểm thưởng giúp bạn mua sắm thả ga tại Bird Farm Shop.</span>
                         </div>
                         <form id="subscribe" action="" method="get">
                             <div class="row">
                                 <div class="col-lg-5">
                                     <fieldset>
-                                        <input name="name" type="text" id="name" placeholder="Your Name" required="">
+                                        <input name="name" type="text" id="name" placeholder="Họ và tên của bạn" required="">
                                     </fieldset>
                                 </div>
                                 <div class="col-lg-5">
                                     <fieldset>
-                                        <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email Address" required="">
+                                        <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Địa chỉ email của bạn" required="">
                                     </fieldset>
                                 </div>
                                 <div class="col-lg-2">
@@ -717,16 +471,15 @@
                         <div class="row">
                             <div class="col-6">
                                 <ul>
-                                    <li>Store Location:<br><span>Sunny Isles Beach, FL 33160, United States</span></li>
-                                    <li>Phone:<br><span>010-020-0340</span></li>
-                                    <li>Office Location:<br><span>North Miami Beach</span></li>
+                                    <li>Địa chỉ:<br><span>284 Pasteur, P.8 Q.3, TP.HCM</span></li>
+                                    <li>Điện thoại:<br><span>0913-244-567</span></li>
+                                    <li>Kênh thông tin:<br><span><a href="#">Facebook</a>, <a href="#">Instagram</a>, <a href="#">Zalo</a>, <a href="#">Shopee</a></span></li>
                                 </ul>
                             </div>
                             <div class="col-6">
                                 <ul>
-                                    <li>Work Hours:<br><span>07:30 AM - 9:30 PM Daily</span></li>
-                                    <li>Email:<br><span>info@company.com</span></li>
-                                    <li>Social Media:<br><span><a href="#">Facebook</a>, <a href="#">Instagram</a>, <a href="#">Behance</a>, <a href="#">Linkedin</a></span></li>
+                                    <li>Giờ làm việc:<br><span>07:30 - 19:30 <br>Từ T2 đến T6</span></li>
+                                    <li>Email:<br><span>birdfarmshop@petshop.com</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -746,48 +499,49 @@
                                 <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
                             </div>
                             <ul>
-                                <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
-                                <li><a href="#">hexashop@company.com</a></li>
-                                <li><a href="#">010-020-0340</a></li>
+                                <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
+                                <li><a href="#">birdfarmshop@petshop.com</a></li>
+                                <li><a href="#">0913-244-567</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <h4>Shopping &amp; Categories</h4>
+                        <h4>Sản phẩm và dịch vụ</h4>
                         <ul>
-                            <li><a href="#">Men’s Shopping</a></li>
-                            <li><a href="#">Women’s Shopping</a></li>
-                            <li><a href="#">Kid's Shopping</a></li>
+                            <li><a href="#">Chim vẹt</a></li>
+                            <li><a href="#">Tổ chim non</a></li>
+                            <li><a href="#">Phụ kiện</a></li>
+                            <li><a href="#">So sánh</a></li>
+                            <li><a href="#">Ghép cặp</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
-                        <h4>Useful Links</h4>
+                        <h4>Đường dẫn hữu ích</h4>
                         <ul>
-                            <li><a href="#">Homepage</a></li>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Help</a></li>
-                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="#">Về chúng tôi</a></li>
+                            <li><a href="#">Hỗ trợ</a></li>
+                            <li><a href="#">Liên hệ</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
-                        <h4>Help &amp; Information</h4>
+                        <h4>Thông tin hỗ trợ</h4>
                         <ul>
-                            <li><a href="#">Help</a></li>
-                            <li><a href="#">FAQ's</a></li>
-                            <li><a href="#">Shipping</a></li>
-                            <li><a href="#">Tracking ID</a></li>
+                            <li><a href="#">Hỗ trợ</a></li>
+                            <li><a href="#">Câu hỏi thường gặp</a></li>
+                            <li><a href="#">Giao hàng</a></li>
+                            <li><a href="#">Theo dõi đơn hàng</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-12">
                         <div class="under-footer">
-                            <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
+                            <p>Copyright © 2023 BirdFarmShop Co., Ltd. All Rights Reserved. 
 
                                 <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
                             <ul>
                                 <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
                                 <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="#"><i class="fa fa-behance"></i></a></li>
                             </ul>
                         </div>
                     </div>

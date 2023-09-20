@@ -38,7 +38,7 @@ public class BirdDAO {
                     int age = rs.getInt("age");
                     int grown_age = rs.getInt("grown_age");
                     boolean gender = rs.getBoolean("gender");
-                    String breed = rs.getString("breed");
+                    String breed = rs.getString("breed_id");
                     String achievement = rs.getString("achievement");
                     int reproduction_history = rs.getInt("reproduction_history");
                     int price = rs.getInt("price");
