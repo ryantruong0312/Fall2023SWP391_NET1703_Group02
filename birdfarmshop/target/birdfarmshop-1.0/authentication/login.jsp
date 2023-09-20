@@ -5,11 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<<<<<<< HEAD
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-=======
-
->>>>>>> ccf0256ee7b0b5099143a1e6106dc727a7030bcb
 <!DOCTYPE html>
 <html>
     <head>
@@ -59,11 +55,7 @@
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </div>
                             </div>
-<<<<<<< HEAD
                             <p class="error-notification" style="color: red"><c:out value="${requestScope.error}" /></p>
-=======
-                            <p class="error-notification" style="color: red"><%= request.getAttribute("error")%></p>
->>>>>>> ccf0256ee7b0b5099143a1e6106dc727a7030bcb
                             <div class="d-flex justify-content-around align-items-center mb-4">
                                 <!-- Checkbox -->
                                 <div class="form-check">
@@ -75,11 +67,7 @@
 
                             <!-- Submit button -->
                             <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
-<<<<<<< HEAD
                             <div class="mt-2">Don't have an account?   <a href="MainController?action=NavToRegister">Register</a></div>
-=======
-                            <div class="mt-2">Don't have an account?   <a href="MainController?action=Register">Register</a></div>
->>>>>>> ccf0256ee7b0b5099143a1e6106dc727a7030bcb
                             <div class="divider d-flex align-items-center my-4">
                                 <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
                             </div>
@@ -90,11 +78,7 @@
                             </a>    
                             <a class="btn btn-primary btn-lg btn-block border-0" style="background-color: #d0463b" href="#!"
                                role="button">
-<<<<<<< HEAD
                                 <i class="fa fa-google-plus mr-3"></i>Continue with Google</a>
-=======
-                                <i class="fa fa-google-plus mr-3"></i>Continue with Gmail</a>
->>>>>>> ccf0256ee7b0b5099143a1e6106dc727a7030bcb
 
                         </form>
                     </div>

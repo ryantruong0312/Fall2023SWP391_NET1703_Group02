@@ -33,6 +33,8 @@ public class MainController extends HttpServlet {
 
     private static final String ACT_REGISTER = "register";
     private static final String DEST_REGISTER = "RegisterController";
+    private static final String ACT_LOGOUT = "Logout";
+    private static final String DEST_LOGOUT = "LogoutController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -57,6 +59,9 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_NAV_BIRD_COMPARE_PAGE:
                     url = DEST_NAV_BIRD_COMPARE_PAGE;
+                    break;
+                case ACT_LOGOUT:
+                    url = DEST_LOGOUT;
                     break;
                 default:
                     break;
