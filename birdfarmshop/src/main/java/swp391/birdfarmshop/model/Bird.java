@@ -15,7 +15,7 @@ public class Bird {
     private int age;
     private int grown_age;
     private boolean gender;
-    private String breed;
+    private String breed_id;
     private String achievement;
     private int reproduction_history;
     private int price;
@@ -26,14 +26,14 @@ public class Bird {
     private String status;
 
 
-    public Bird(String bird_id, String bird_name, String color, int age, int grown_age, boolean gender, String breed, String achievement, int reproduction_history, int price, String description, String dad_bird_id, String mom_bird_id, int discount, String status) {
+    public Bird(String bird_id, String bird_name, String color, int age, int grown_age, boolean gender, String breed_id, String achievement, int reproduction_history, int price, String description, String dad_bird_id, String mom_bird_id, int discount, String status) {
         this.bird_id = bird_id;
         this.bird_name = bird_name;
         this.color = color;
         this.age = age;
         this.grown_age = grown_age;
         this.gender = gender;
-        this.breed = breed;
+        this.breed_id = breed_id;
         this.achievement = achievement;
         this.reproduction_history = reproduction_history;
         this.price = price;
@@ -92,12 +92,12 @@ public class Bird {
         this.gender = gender;
     }
 
-    public String getBreed() {
-        return breed;
+    public String getBreed_id() {
+        return breed_id;
     }
 
-    public void setBreed(String breed) {
-        this.breed = breed;
+    public void setBreed_id(String breed_id) {
+        this.breed_id = breed_id;
     }
 
     public String getAchievement() {

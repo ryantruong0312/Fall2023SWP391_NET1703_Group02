@@ -15,8 +15,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import swp391.birdfarmshop.dao.BirdBreedDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.model.Bird;
+import swp391.birdfarmshop.model.BirdBreed;
 
 /**
  *
@@ -34,17 +36,15 @@ public class RenderBirdCompareController extends HttpServlet {
         String url = ERROR;
         try {
             List<Bird> birdList = new ArrayList<>();
-            Set<String> breedList = new HashSet<>();
+            List<BirdBreed> breedList = new ArrayList<>();
             BirdDAO dao = new BirdDAO();
+            BirdBreedDAO breedDao = new BirdBreedDAO();
+            breedList = breedDao.getBirdBreeds();
             birdList = dao.getBirds();
-            if (birdList != null) {
-                for (Bird bird : birdList) {
-                    breedList.add(bird.getBreed());
-                }
-                request.setAttribute("BIRD_BREEDS", breedList);
-                request.setAttribute("BIRDS", birdList);
-                url = SUCCESS;
-            }
+            request.setAttribute("BIRD_BREEDS", breedList);
+            request.setAttribute("BIRDS", birdList);
+            url = SUCCESS;
+
         } catch (Exception e) {
             log("Error at RenderBirdCompareController: " + e.toString());
         } finally {
