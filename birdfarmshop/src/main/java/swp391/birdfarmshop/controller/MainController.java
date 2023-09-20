@@ -25,7 +25,7 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_REGISTER = "/authentication/register.jsp";
     private static final String ACT_NAV_BIRD_COMPARE_PAGE = "NavToCompare";
     private static final String DEST_NAV_BIRD_COMPARE_PAGE = "RenderBirdCompareController";
-    
+
 //  PAGE
 
     private static final String ACT_LOGIN = "login";
