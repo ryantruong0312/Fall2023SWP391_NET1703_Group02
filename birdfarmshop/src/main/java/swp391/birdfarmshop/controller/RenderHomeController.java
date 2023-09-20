@@ -9,12 +9,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import swp391.birdfarmshop.dao.BirdBreedDAO;
+import swp391.birdfarmshop.model.BirdBreed;
 
 /**
  *
  * @author tlminh
  */
-
 public class RenderHomeController extends HttpServlet {
 
     private static final String ERROR = "errorpages/error.jsp";
@@ -23,8 +26,12 @@ public class RenderHomeController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = SUCCESS;
+        String url = ERROR;
         try {
+            List<BirdBreed> breeds = new ArrayList<>();
+            BirdBreedDAO dao = new BirdBreedDAO();
+            breeds = dao.getBirdBreeds();
+            request.setAttribute("BREEDS", breeds);
             url = SUCCESS;
         } catch (Exception e) {
             log("Error at RenderHomeController: " + e.toString());

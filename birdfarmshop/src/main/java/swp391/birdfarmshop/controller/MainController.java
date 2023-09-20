@@ -19,14 +19,26 @@ public class MainController extends HttpServlet {
     private static final String ERROR = "/WEB-INF/errorpages/error.jsp";
     private static final String ACT_NAV_HOME = "NavToHome";
     private static final String DEST_NAV_HOME = "RenderHomeController";
-    private static final String ACT_NAV_LOGIN_PAGE = "Login";
-    private static final String DEST_NAV_LOGIN_PAGE = "/authentication/login.jsp";
-    private static final String ACT_NAV_REGISTER_PAGE = "Register";
-    private static final String DEST_NAV_REGISTER_PAGE = "/authentication/register.jsp";
-//  PAGE
+    private static final String ACT_NAV_LOGIN = "NavToLogin";
+    private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
+    private static final String ACT_NAV_REGISTER = "NavToRegister";
+    private static final String DEST_NAV_REGISTER = "/authentication/register.jsp";
+    private static final String ACT_NAV_BIRD_COMPARE_PAGE = "NavToCompare";
+    private static final String DEST_NAV_BIRD_COMPARE_PAGE = "RenderBirdCompareController";
     
-    private static final String ACT_NAV_LOGIN = "login";
-    private static final String DEST_NAV_LOGIN = "LoginController";
+//  PAGE
+
+    private static final String ACT_LOGIN = "login";
+    private static final String DEST_LOGIN = "LoginController";
+
+    private static final String ACT_REGISTER = "register";
+    private static final String DEST_REGISTER = "RegisterController";
+    private static final String ACT_LOGOUT = "Logout";
+    private static final String DEST_LOGOUT = "LogoutController";
+    private static final String ACT_NAV_ACCESSORY = "NavToAccessory";
+    private static final String DEST_NAV_ACCESSORY = "RenderAccessoryController";
+    private static final String ACT_NAV_ACCESSORY_DETAILS = "NavToAccessoryDetails";
+    private static final String DEST_NAV_ACCESSORY_DETAILS = "RenderAccessoryDetailsController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -37,14 +49,29 @@ public class MainController extends HttpServlet {
                 case ACT_NAV_HOME:
                     url = DEST_NAV_HOME;
                     break;
-                case ACT_NAV_LOGIN_PAGE:
-                    url = DEST_NAV_LOGIN_PAGE;
-                    break;
-                case ACT_NAV_REGISTER_PAGE:
-                    url = DEST_NAV_REGISTER_PAGE;
-                    break;
                 case ACT_NAV_LOGIN:
                     url = DEST_NAV_LOGIN;
+                    break;
+                case ACT_NAV_REGISTER:
+                    url = DEST_NAV_REGISTER;
+                    break;
+                case ACT_LOGIN:
+                    url = DEST_LOGIN;
+                    break;
+                case ACT_REGISTER:
+                    url = DEST_REGISTER;
+                    break;
+                case ACT_NAV_BIRD_COMPARE_PAGE:
+                    url = DEST_NAV_BIRD_COMPARE_PAGE;
+                    break;
+                case ACT_LOGOUT:
+                    url = DEST_LOGOUT;
+                    break;
+                case ACT_NAV_ACCESSORY:
+                    url = DEST_NAV_ACCESSORY;
+                    break;
+                case ACT_NAV_ACCESSORY_DETAILS:
+                    url = DEST_NAV_ACCESSORY_DETAILS;
                     break;
                 default:
                     break;

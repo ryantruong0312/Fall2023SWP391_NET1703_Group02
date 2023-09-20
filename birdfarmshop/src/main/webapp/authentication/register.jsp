@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,7 +33,7 @@
                              class="img-fluid" style="height: 90%"; width="90%" alt="Logo image">
                     </div>
                     <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-                        <form action="#" class="form-register" method="POST">  
+                        <form action="MainController?action=register" class="form-register" method="POST">  
                             <div class="form-outline d-flex align-items-center justify-content-between mb-4">
                                 <a href="MainController?action=NavToHome">
                                     <img src="assets/images/logo.png"
@@ -49,19 +50,20 @@
                                              class="img-fluid logo"  alt="Bird image">
                                     </a>
                                 </div>
-                            </div>
+                            </div>  
+                            <p class="error-notification mb-2" style="color: red"><c:out value="${requestScope.error}"/></p>
                             <!-- name input -->
                             <div class="form-outline">
                                 <input type="text" id="name" name="name" class="input form-control form-control-lg" required=""/>
                                 <label class="form-label" for="name">Full name</label>
                             </div>
                             <!-- email input -->
-                            <div class="form-outline mt-3">
+                            <div class="form-outline mt-2">
                                 <input type="text" id="email" name="email" class="input form-control form-control-lg" required=""/>
                                 <label class="form-label" for="email">Email</label>
                             </div>
                             <!-- mobile input -->
-                            <div class="form-outline mt-3">
+                            <div class="form-outline mt-2">
                                 <input type="text" id="mobile" name="mobile" class="input form-control form-control-lg" required=""/>
                                 <label class="form-label" for="mobile">Phone</label>
                             </div>
@@ -72,7 +74,7 @@
                             </div>
 
                             <!-- Password input -->
-                            <div class="form-outline  mt-3">
+                            <div class="form-outline  mt-2">
                                 <input type="password" id="password" name="password" class="input form-control form-control-lg" required=""/>
                                 <label class="form-label" for="password">Password</label>
                                 <div class="show-password">
@@ -80,7 +82,7 @@
                                 </div>
                             </div>
                             <!--Password input -->
-                            <div class="form-outline mt-3">
+                            <div class="form-outline mt-2">
                                 <input type="password" id="re-password" name="re-password" class="input form-control form-control-lg" required=""/>
                                 <label class="form-label" for="re-password">Enter password again</label>
                                 <div class="show-re-password">
@@ -89,7 +91,7 @@
                             </div>
                             <!-- Submit button -->
                             <button type="submit" class="btn btn-primary btn-lg btn-block mt-2">Sign up</button>
-                            <div class="mt-2">If you have an account already?   <a href="MainController?action=Login">Login</a></div>
+                            <div class="mt-2">If you have an account already?   <a href="MainController?action=NavToLogin">Login</a></div>
                         </form>
                     </div>
                 </div>
