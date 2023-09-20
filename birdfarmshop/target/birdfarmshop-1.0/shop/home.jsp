@@ -6,21 +6,21 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="LOGIN_USER" scope="session" value="${sessionScope.LOGIN_USER}" />
+
 <!DOCTYPE html>
 <html lang="en">
 
     <head>
-<<<<<<< HEAD
-=======
-
->>>>>>> 190bce8403c337c0bafaee3e0339a33585cc7c80
+       
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>Bird Farm Shop</title>
+        <title>Bird Farm Shop - Home</title>
 
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -32,7 +32,7 @@
     </head>
 
     <body>
-
+        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
         <!-- ***** Preloader Start ***** -->
         <div id="preloader">
             <div class="jumper">
@@ -57,25 +57,54 @@
                             <!-- ***** Menu Start ***** -->
                             <ul class="nav">
                                 <li class="scroll-to-section"><a href="#" class="active">Home</a></li>
-                                <li class="scroll-to-section"><a href="shop/birds.jsp">Birds</a></li>
-                                <li class="scroll-to-section"><a href="shop/accessories.jsp">Accessories</a></li>
-                                <li class="scroll-to-section"><a href="shop/bird-compare.jsp">Bird Compare</a></li>
-                                <li class="scroll-to-section"><a href="shop/bird-pair.jsp">Breed Select</a></li>
-                                <li class="scroll-to-section"><a href="shop/cart-view.jsp">Cart</a></li>
-<<<<<<< HEAD
-                                <li  class="scroll-to-section"> <a href="MainController?action=NavToLogin">Login</a></li>
-                                <li><c:out value="${sessionScope.LOGIN_NAME}"/></li>
-=======
-                                <li  class="scroll-to-section"> <a href="MainController?action=Login">Login</a></li>
->>>>>>> ccf0256ee7b0b5099143a1e6106dc727a7030bcb
-<!--                                <li class="submenu">
-                                    <ul>
-                                        <li><a href="#">Profile</a></li>
-                                        <li><a href="#">Sign out</a></li>
-                                        <li><a href="#">Features Page 3</a></li>
-                                    </ul>
-                                </li>-->
-                                <!--<li class="scroll-to-section"><a href="#explore">Explore</a></li>-->
+                                    <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'staff'}">
+                                    <li class="submenu"><a href="">Products</a>
+                                        <ul>
+                                            <li><a href="shop/birds.jsp">Birds</a></li>
+                                            <li><a href="shop/bird-nest.jsp">Bird Nests</a></li>
+                                            <li><a href="shop/accessories.jsp">Accessories</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">Bird Compare</a></li>
+                                        <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer'}">
+                                        <li class="scroll-to-section"><a href="">Breed Select</a></li>
+                                        <li class="scroll-to-section"><a href="shop/cart-view.jsp">Cart</a></li>
+                                            <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
+                                            <li class="scroll-to-section"><a href="">Orders</a></li>
+                                            </c:if>
+                                            <c:if test="${sessionScope.LOGIN_USER == null}">
+                                            <li  class="scroll-to-section"> <a href="MainController?action=NavToLogin">Login</a></li>
+                                            </c:if>
+                                        </c:if>
+                                    </c:if>
+                                    <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
+                                    <li class="submenu"><a href="shop/birds.jsp">Birds</a>
+                                        <ul>
+                                            <li><a href="#">Add a bird</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="submenu"><a href="shop/accessories.jsp">Accessories</a>
+                                        <ul>
+                                            <li><a href="#">Add an accessory</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="scroll-to-section"><a href="MainController">Bird Compare</a></li>
+                                    <li class="scroll-to-section"><a href="">Orders</a></li>
+                                    <li class="scroll-to-section"><a href="shop/bird-compare.jsp">Accounts</a>
+                                        <ul>
+                                            <li><a href="#">Create an account</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="scroll-to-section"><a href="shop/reports.jsp">Reports</a></li>
+                                    </c:if>
+                                    <c:if test="${sessionScope.LOGIN_USER != null}">
+                                    <li class="submenu"><span>${sessionScope.LOGIN_USER.name}</span>
+                                        <ul>
+                                            <li><a href="#">Profile</a></li>
+                                            <li><a href="#">Sign out</a></li>
+                                        </ul>
+                                    </li>
+                                </c:if>
                             </ul>           
                             <a class='menu-trigger'>
                                 <span>Menu</span>
