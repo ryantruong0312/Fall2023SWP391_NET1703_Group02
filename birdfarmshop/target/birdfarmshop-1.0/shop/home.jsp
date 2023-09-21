@@ -70,9 +70,9 @@
                                     <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
                                     <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
-                                            <li><a href="shop/birds.jsp">Chim vẹt</a></li>
+                                            <li><a href="MainController?action=NavToBird&amount=0">Chim vẹt</a></li>
                                             <li><a href="shop/bird-nest.jsp">Tổ chim non</a></li>
-                                            <li><a href="shop/accessories.jsp">Phụ kiện</a></li>
+                                            <li><a href="MainController?action=NavToAccessory">Phụ kiện</a></li>
                                         </ul>
                                     </li>
                                     <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
@@ -93,7 +93,7 @@
                                         <ul>
                                             <li><a href="#">Sản phẩm</a></li>
                                             <li><a href="#">Tổ chim non</a></li>
-                                            <li><a href="#">Phụ kiện</a></li>
+                                            <li><a href="MainController?action=NavToAccessory">Phụ kiện</a></li>
                                         </ul>
                                     </li>
                                     <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
