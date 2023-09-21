@@ -12,8 +12,8 @@ GO
 DROP TABLE IF EXISTS [User]
 CREATE TABLE [User]
 (
-	[username] VARCHAR(20) NOT NULL,
-	[password] VARCHAR(50) NOT NULL,
+	[username] VARCHAR(25) NOT NULL,
+	[password] VARCHAR(150),
 	[full_name] NVARCHAR(50),
 	[phone] VARCHAR(15),
 	[email] VARCHAR(100),
@@ -21,10 +21,9 @@ CREATE TABLE [User]
 	[address] NVARCHAR(100),
 	[point] SMALLINT,
 	[register_date] DATE,
+	[login_by] VARCHAR(10),
 	[status] NVARCHAR(20),
 	CONSTRAINT PK_Profile PRIMARY KEY ([username]),
-	CONSTRAINT CK_Profile_email CHECK([email] LIKE '%[A-Za-z0-9]@[A-Za-z0-9]%.[A-Za-z0-9]%'),
-	CONSTRAINT CK_Profile_phone CHECK([phone] LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
 )
 GO
 
@@ -81,7 +80,7 @@ DROP TABLE IF EXISTS [Order]
 CREATE TABLE [Order]
 (
 	[order_id] VARCHAR(10) NOT NULL,
-	[customer] VARCHAR(20),
+	[customer] VARCHAR(25),
 	[order_date] DATETIME,
 	[order_status] NVARCHAR(20),
 	[ship_address] NVARCHAR(50),
@@ -128,7 +127,7 @@ DROP TABLE IF EXISTS [Feedback]
 CREATE TABLE [Feedback]
 (
 	[feedback_id] INT IDENTITY,
-	[customer] VARCHAR(20),
+	[customer] VARCHAR(25),
 	[order_item_id] INT,
 	[rating] SMALLINT,
 	[comment] NVARCHAR(100),
@@ -320,7 +319,7 @@ VALUES
 	0, 'out of stock'),
 
 	('BL001', N'Balo Du Lịch Vận Chuyển Vẹt', 500000, 12, 
-	N'Pet Me Shop chuyên bán và cung cấp Balo du lịch ngoại nhập chuyên dụng dành cho vẹt. Thiết kế chuyên dụng, chất liệu bền bỉ, phù hợp cho các loại vẹt size nhỏ và vừa. Giúp bạn đi đâu cũng có thể mang thú cưng đi bên cạnh mình một cách thoải mái nhất, tiện lợi nhất. Thiết kế chắc chắn, hiện đại mang phong cách thời trang.
+	N'Bird Farm Shop chuyên bán và cung cấp Balo du lịch ngoại nhập chuyên dụng dành cho vẹt. Thiết kế chuyên dụng, chất liệu bền bỉ, phù hợp cho các loại vẹt size nhỏ và vừa. Giúp bạn đi đâu cũng có thể mang thú cưng đi bên cạnh mình một cách thoải mái nhất, tiện lợi nhất. Thiết kế chắc chắn, hiện đại mang phong cách thời trang.
 	Kích thước: Size M (31x28x41)
 	Xuất xứ: Đài Loan
 	Chất liệu: Nhựa cao cấp',
@@ -358,17 +357,17 @@ VALUES
 	0, 'available')
 GO
 
-INSERT INTO [dbo].[User] ([username],[password],[full_name],[phone],[email],[role],[address],[point],[register_date],[status])
+INSERT INTO [dbo].[User] ([username],[password],[full_name],[phone],[email],[role],[address],[point],[register_date],[login_by],[status])
 VALUES
-	('customer','123','Hung','0912345678','hung@gmail.com','customer', N'353/7 Nguyễn Trãi, phường Nguyễn Cư Trinh, quận 1, TP.HCM',12,'2023-06-15','active'),
-	('toan','123','Toan','0998765432','toan@gmail.com','customer', N'18/5/6 Trương Phước Phan, phường Bình Trị Đông, quận Bình Tân',12,'2023-06-15','active'),
-	('hoang','123','Hoang','0987654321','hoang@gmail.com','customer', N'73/7 Trần Bình Trọng, phường 1, quận 5',12,'2023-06-15','active'),
-	('hai','123','Hai','0923456789','hai@gmail.com','customer', N'199/5 Trần Bình Trọng, phường 3, quận 5',12,'2023-06-15','active'),
-	('tu','123','Tu','0954321678','tu@gmail.com','customer', N'56/1/2A Bùi Minh Trực, phường 5, quận 8',12,'2023-06-15','inactive'),
-	('staff','123','staff','0934567890','staff@gmail.com','staff','Ha Noi',12,'2023-06-15','active'),
-	('staff1','123','staff','0987654321','staff@gmail.com','staff','Ha Noi',12,'2023-06-15','inactive'),
-	('manager','123','manager','0965432109','manager@gmail.com','manager','Ha Noi',12,'2023-06-15','active'),
-	('admin','123','admin','0978901234','admin@gmail.com','admin','Ha Noi',12,'2023-06-15','active')
+	('customer','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','Hung','0912345678','hung@gmail.com','customer',N'353/7 Nguyễn Trãi, phường Nguyễn Cư Trinh, quận 1, TP.HCM',12,'2023-06-15','form','active'),
+	('toan','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','Toan','0998765432','toan@gmail.com','customer',N'18/5/6 Trương Phước Phan, phường Bình Trị Đông, quận Bình Tân',12,'2023-06-15','form','active'),
+	('hoang','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','Hoang','0987654321','hoang@gmail.com','customer',N'73/7 Trần Bình Trọng, phường 1, quận 5',12,'2023-06-15','form','active'),
+	('hai','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','Hai','0923456789','hai@gmail.com','customer',N'199/5 Trần Bình Trọng, phường 3, quận 5',12,'2023-06-15','form','active'),
+	('tu','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','Tu','0954321678','tu@gmail.com','customer',N'56/1/2A Bùi Minh Trực, phường 5, quận 8',12,'2023-06-15','form','inactive'),
+	('staff','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','staff','0934567890','staff@gmail.com','staff',N'Ha Noi',12,'2023-06-15','form','active'),
+	('staff1','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','staff','0987654321','staff@gmail.com','staff',N'Ha Noi',12,'2023-06-15','form','inactive'),
+	('manager','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','manager','0965432109','manager@gmail.com','manager',N'Ha Noi',12,'2023-06-15','form','active'),
+	('admin','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','admin','0978901234','admin@gmail.com','admin',N'Ha Noi',12,'2023-06-15','form','active')
 GO
 
 
@@ -384,9 +383,9 @@ VALUES
     0, NULL, NULL, 'LN001'),
 
 	('https://petmeshop.com/wp-content/uploads/2020/09/Ba-lo-van-chuyen-vet-0.jpg', 
-    0, NULL, NULL, 'LN001'),
+    0, NULL, NULL, 'BL001'),
 	('https://petmeshop.com/wp-content/uploads/2020/09/Ba-lo-van-chuyen-vet-4.jpg', 
-    0, NULL, NULL, 'LN001'),
+    0, NULL, NULL, 'BL001'),
 	('https://petmeshop.com/wp-content/uploads/2020/09/Ba-lo-van-chuyen-vet-1.jpg', 
-    1, NULL, NULL, 'LN001')
+    1, NULL, NULL, 'BL001')
 GO

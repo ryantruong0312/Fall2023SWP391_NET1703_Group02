@@ -17,7 +17,7 @@ main {
 .comparison-container {
     display: flex;
     justify-content: space-between; /* Separate columns */
-    gap: 20px; /* Add space between columns */
+    gap: 100px; /* Add space between columns */
 }
 
 /* Style for comparison columns */

@@ -29,7 +29,7 @@
         <link rel="stylesheet" href="assets/css/lightbox.css">
         <style>
             .breed-img{
-                width: 350px;
+                width: 100%;
                 height: 370px;
             }
             .breed-name{
@@ -43,6 +43,7 @@
         <c:url var="toCompare" value="MainController?action=NavToCompare"/>
         <c:url var="toLogin" value="MainController?action=NavToLogin"/>
         <c:url var="logout" value="MainController?action=Logout"/>
+        <c:url var="toAccessories" value="MainController?action=NavToAccessory"/>
         <!-- ***** Preloader Start ***** -->
         <div id="preloader">
             <div class="jumper">
@@ -72,7 +73,7 @@
                                         <ul>
                                             <li><a href="shop/birds.jsp">Chim vẹt</a></li>
                                             <li><a href="shop/bird-nest.jsp">Tổ chim non</a></li>
-                                            <li><a href="MainController?action=NavToAccessory">Phụ kiện</a></li>
+                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
                                     </li>
                                     <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
@@ -93,7 +94,7 @@
                                         <ul>
                                             <li><a href="#">Sản phẩm</a></li>
                                             <li><a href="#">Tổ chim non</a></li>
-                                            <li><a href="MainController?action=NavToAccessory">Phụ kiện</a></li>
+                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
                                     </li>
                                     <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
@@ -105,7 +106,7 @@
                                     <li class="submenu"><a href="#">${LOGIN_USER.fullName}</a>
                                         <ul>
                                             <li><a href="#">Cá nhân</a></li>
-                                            <li><a href="${logout}">Đăng xuất</a></li>
+                                            <li><a href="${pageScope.logout}">Đăng xuất</a></li>
                                         </ul>
                                     </li>
                                 </c:if>

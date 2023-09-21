@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import swp391.birdfarmshop.dao.UserDAO;
 import swp391.birdfarmshop.model.User;
+import swp391.birdfarmshop.util.JWTUtils;
 
 /**
  *
@@ -47,9 +48,10 @@ public class RegisterController extends HttpServlet {
             String message = null;
             String url = ERROR;
             if (u == null) {
-                int result = UserDAO.createUser(account, email, password, name, mobile);
+                String endcodePassword = JWTUtils.encodeJWT(password);
+                int result = UserDAO.createUser(account, email, endcodePassword, name, mobile,"form","inactive");
                 if (result == 0) {
-                    message = "Create new user account fail !";
+                    message = "Tạo tài khoản không thành công!";
                     request.setAttribute("error", message);
                     url = DEST_NAV_REGISTER;
                 } else {
@@ -57,7 +59,7 @@ public class RegisterController extends HttpServlet {
                 }
 
             } else {
-                message = "This username or email existed already !";
+                message = "Têntài khoản hoặc email đã tồn tại!    ";
                 request.setAttribute("error", message);
                 url = DEST_NAV_REGISTER;
             }

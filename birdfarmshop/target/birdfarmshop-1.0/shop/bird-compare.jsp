@@ -23,6 +23,8 @@
     <body>
         <c:url var="toHome" value="MainController?action=NavToHome"/>
         <c:url var="toLogin" value="MainController?action=NavToLogin"/>
+        <c:url var="logout" value="MainController?action=Logout"/>
+        <c:url var="toAccessories" value="MainController?action=NavToAccessory"/>
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
             <div class="container">
@@ -42,7 +44,7 @@
                                         <ul>
                                             <li><a href="shop/birds.jsp">Chim vẹt</a></li>
                                             <li><a href="shop/bird-nest.jsp">Tổ chim non</a></li>
-                                            <li><a href="shop/accessories.jsp">Phụ kiện</a></li>
+                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
                                     </li>
                                     <li class="scroll-to-section"><a href="#" class="active">So sánh</a></li>
@@ -62,7 +64,7 @@
                                         <ul>
                                             <li><a href="#">Sản phẩm</a></li>
                                             <li><a href="#">Tổ chim non</a></li>
-                                            <li><a href="#">Phụ kiện</a></li>
+                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
                                     </li>
                                     <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
@@ -74,7 +76,7 @@
                                     <li class="submenu"><a href="#">${LOGIN_USER.fullName}</a>
                                         <ul>
                                             <li><a href="#">Cá nhân</a></li>
-                                            <li><a href="${logout}">Đăng xuất</a></li>
+                                            <li><a href="${pageScope.logout}">Đăng xuất</a></li>
                                         </ul>
                                     </li>
                                 </c:if>

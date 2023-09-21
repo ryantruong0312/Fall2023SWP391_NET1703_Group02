@@ -39,23 +39,12 @@
                                     <img src="assets/images/logo.png"
                                          class="img-fluid"  alt="Bird image">
                                 </a>
-                                <div class="d-flex align-items-center logo-register">
-                                    <!--                             <p>Sign up</p>-->
-                                    <a href="#">
-                                        <img src="assets/images/facebook.png"
-                                             class="img-fluid logo"  alt="Bird image">
-                                    </a>
-                                    <a href="#">
-                                        <img src="assets/images/google.png"
-                                             class="img-fluid logo"  alt="Bird image">
-                                    </a>
-                                </div>
                             </div>  
                             <p class="error-notification mb-2" style="color: red"><c:out value="${requestScope.error}"/></p>
                             <!-- name input -->
                             <div class="form-outline">
                                 <input type="text" id="name" name="name" class="input form-control form-control-lg" required=""/>
-                                <label class="form-label" for="name">Full name</label>
+                                <label class="form-label" for="name">Họ và tên</label>
                             </div>
                             <!-- email input -->
                             <div class="form-outline mt-2">
@@ -65,18 +54,18 @@
                             <!-- mobile input -->
                             <div class="form-outline mt-2">
                                 <input type="text" id="mobile" name="mobile" class="input form-control form-control-lg" required=""/>
-                                <label class="form-label" for="mobile">Phone</label>
+                                <label class="form-label" for="mobile">Số điện thoại</label>
                             </div>
                             <!-- user input -->
                             <div class="form-outline mt-2">
                                 <input type="text" id="account" name="account" class="input form-control form-control-lg" required=""/>
-                                <label class="form-label" for="account">User name</label>
+                                <label class="form-label" for="account">Tên đăng nhập</label>
                             </div>
 
                             <!-- Password input -->
                             <div class="form-outline  mt-2">
                                 <input type="password" id="password" name="password" class="input form-control form-control-lg" required=""/>
-                                <label class="form-label" for="password">Password</label>
+                                <label class="form-label" for="password">Mật khẩu</label>
                                 <div class="show-password">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </div>
@@ -84,14 +73,14 @@
                             <!--Password input -->
                             <div class="form-outline mt-2">
                                 <input type="password" id="re-password" name="re-password" class="input form-control form-control-lg" required=""/>
-                                <label class="form-label" for="re-password">Enter password again</label>
+                                <label class="form-label" for="re-password">Xác nhận mật khẩu</label>
                                 <div class="show-re-password">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </div>
                             </div>
                             <!-- Submit button -->
-                            <button type="submit" class="btn btn-primary btn-lg btn-block mt-2">Sign up</button>
-                            <div class="mt-2">If you have an account already?   <a href="MainController?action=NavToLogin">Login</a></div>
+                            <button type="submit" class="btn btn-primary btn-lg btn-block mt-2">Đăng kí</button>
+                            <div class="mt-2">Nếu bạn có tài khoản rồi <a href="MainController?action=NavToLogin">đăng nhập</a> ở đây</div>
                         </form>
                     </div>
                 </div>
@@ -103,7 +92,7 @@
         <script src="assets/js/bootstrap.min.js"></script>
         <script src="https://www.google.com/recaptcha/api.js"></script>
         <script type="text/javascript" src="assets/js/birdshop.js"></script>  
-                <!-- Plugins -->
+        <!-- Plugins -->
         <script src="assets/js/owl-carousel.js"></script>
         <script src="assets/js/accordions.js"></script>
         <script src="assets/js/datepicker.js"></script>
@@ -117,6 +106,6 @@
 
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
- 
+
     </body>
 </html>

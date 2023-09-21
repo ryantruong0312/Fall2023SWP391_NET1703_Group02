@@ -2453,6 +2453,19 @@ label.error  {
     font-size: 0.8rem;
     margin-bottom: -10px;
 }
+.btn-custom {
+   line-height: 30px;
+}
+.btn-custom img{
+    height: 20px;
+    width: 20px;
+}
+@media (max-width: 992px){
+    .item-login{
+        display: block !important;
+    }
+}
+
 /*
 register*/
 .logo-register .logo {
