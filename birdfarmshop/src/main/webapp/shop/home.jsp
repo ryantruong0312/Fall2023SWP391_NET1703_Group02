@@ -70,7 +70,7 @@
                                     <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
                                     <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
-                                            <li><a href="shop/birds.jsp">Chim vẹt</a></li>
+                                            <li><a href="MainController?action=NavToBird&amount=0">Chim vẹt</a></li>
                                             <li><a href="shop/bird-nest.jsp">Tổ chim non</a></li>
                                             <li><a href="MainController?action=NavToAccessory">Phụ kiện</a></li>
                                         </ul>
