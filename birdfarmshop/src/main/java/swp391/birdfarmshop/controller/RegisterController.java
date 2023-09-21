@@ -49,9 +49,9 @@ public class RegisterController extends HttpServlet {
             String url = ERROR;
             if (u == null) {
                 String endcodePassword = JWTUtils.encodeJWT(password);
-                int result = UserDAO.createUser(account, email, endcodePassword, name, mobile,"inactive");
+                int result = UserDAO.createUser(account, email, endcodePassword, name, mobile,"form","inactive");
                 if (result == 0) {
-                    message = "Create new user account fail !";
+                    message = "Tạo tài khoản không thành công!";
                     request.setAttribute("error", message);
                     url = DEST_NAV_REGISTER;
                 } else {
@@ -59,7 +59,7 @@ public class RegisterController extends HttpServlet {
                 }
 
             } else {
-                message = "This username or email existed already !";
+                message = "Têntài khoản hoặc email đã tồn tại!    ";
                 request.setAttribute("error", message);
                 url = DEST_NAV_REGISTER;
             }

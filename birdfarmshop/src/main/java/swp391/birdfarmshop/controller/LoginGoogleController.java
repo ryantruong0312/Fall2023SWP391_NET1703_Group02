@@ -45,25 +45,26 @@ public class LoginGoogleController extends HttpServlet {
             String message = null;
             String url = ERROR;
             if (code == null || code.isEmpty()) {
-                message = "Can't connect to Google, you should try another way";
+                message = "Không thể kết nối với Google, bạn nên thử cách khác";
             } else {
                 String accessToken = GoogleUtils.getToken(code);
                 GooglePojo account = GoogleUtils.getUserInfo(accessToken);
                 User u = UserDAO.findUser(account.getId(), account.getEmail());
                 if (u != null) {
                     HttpSession session = request.getSession(true);
-                    session.setAttribute("LOGIN_USER", u);
-                    response.sendRedirect(DEST_NAV_HOME);
+                        session.setAttribute("LOGIN_USER", u);
+                        response.sendRedirect(DEST_NAV_HOME); 
                 } else {
-                    int createUser = UserDAO.createUser(account.getId(), account.getEmail(), "", account.getName(), "","active");
+                    int createUser = UserDAO.createUser(account.getId(), account.getEmail(), "", account.getName(), "","google","active");
                     if (createUser == 0) {
-                        message = "Create account by Google fail!";
+                        message = "Tạo tài khoản bằng Google thất bại!";
                         url = DEST_NAV_LOGIN;
                     }else{
                         HttpSession session = request.getSession(true);
                         User newUser = UserDAO.findUser(account.getId(), account.getEmail());
-                        session.setAttribute("LOGIN_USER", u);
+                        session.setAttribute("LOGIN_USER", newUser);
                         response.sendRedirect(DEST_NAV_HOME);
+
                     }
                 }
             }

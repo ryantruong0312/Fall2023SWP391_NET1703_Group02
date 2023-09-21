@@ -31,12 +31,9 @@ public class JWTUtils {
             byte[] KeyByByte = DatatypeConverter.parseBase64Binary(Constants.JWT_KEY);
             Key signingKey = new SecretKeySpec(KeyByByte, SignatureAlgorithm.HS256.getJcaName());
             long currentTimeMilis = System.currentTimeMillis();
-            //1h = 3600000 ms
-            long expirationTimeMilis = currentTimeMilis + 3600000;
             code = Jwts.builder()
                     .setSubject(content)
                     .setIssuedAt(new Date(currentTimeMilis))
-                    .setExpiration(new Date(expirationTimeMilis))
                     .signWith(signingKey, SignatureAlgorithm.HS256)
                     .compact();
 

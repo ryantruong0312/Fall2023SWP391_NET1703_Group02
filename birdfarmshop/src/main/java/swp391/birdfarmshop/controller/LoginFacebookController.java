@@ -45,7 +45,7 @@ public class LoginFacebookController extends HttpServlet {
             String url = ERROR;
 //           out.print("<h1>"+code+"</h1>");
             if (code == null || code.isEmpty()) {
-                message = "Can't connect to Google, you should try another way";
+                message = "Không kết nối được với Facebook, bạn nên thử cách khác";
             } else {
                 String accessToken = FacebookUtils.getToken(code);
                 out.print("<h1>"+accessToken+"</h1>");
@@ -57,7 +57,7 @@ public class LoginFacebookController extends HttpServlet {
 //                } else {
 //                    int createUser = UserDAO.createUser(account.getId(), account.getEmail(), "", account.getName(), "", "active");
 //                    if (createUser == 0) {
-//                        message = "Create account by Google fail!";
+//                        message = "Tạo tài khoản bằng Facebook thất bại!";
 //                        url = DEST_NAV_LOGIN;
 //                    } else {
 //                        HttpSession session = request.getSession(true);
