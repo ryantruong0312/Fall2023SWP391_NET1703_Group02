@@ -1,0 +1,82 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Sep 21, 2023, 7:58:40 AM
+    Author     : tlminh
+*/
+
+/* Center the main container */
+main {
+    width: 80%;
+    margin: 0 auto; /* Center horizontally */
+}
+
+/* Style for comparison container */
+.comparison-container {
+    display: flex;
+    justify-content: space-between; /* Separate columns */
+    gap: 20px; /* Add space between columns */
+}
+
+/* Style for comparison columns */
+.comparison-column {
+    flex: 1; /* Each column takes equal width */
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for column content */
+.column-content {
+    padding: 20px;
+}
+
+/* Style for combo boxes */
+.combo-box {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px; /* Add space between combo boxes */
+}
+
+/* Style for headings */
+h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Style for rows */
+.bird-info-row {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #666;
+}
+
+/* Highlight titles for rows */
+.bird-info-row span {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Unique styling for the bird image */
+#birdImage1,
+#birdImage2 {
+    max-width: 100%;
+    height: 450px; /* Fixed height for the bird image */
+    display: block;
+    margin: 0 auto; /* Center the image horizontally */
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Unique styling for bird price */
+#birdPrice1,
+#birdPrice2 {
+    font-weight: bold;
+    color: #ff5733; /* Orange color for price */
+}
+
