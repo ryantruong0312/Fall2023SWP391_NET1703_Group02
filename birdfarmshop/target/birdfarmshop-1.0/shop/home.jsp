@@ -56,7 +56,7 @@
 
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
-            <div class="container">
+            <div class="container home-custom">
                 <div class="row">
                     <div class="col-12">
                         <nav class="main-nav">
@@ -71,7 +71,7 @@
                                     <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
                                     <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
-                                            <li><a href="shop/birds.jsp">Chim vẹt</a></li>
+                                            <li><a href="MainController?action=NavToBird&amount=0">Chim vẹt</a></li>
                                             <li><a href="shop/bird-nest.jsp">Tổ chim non</a></li>
                                             <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
@@ -103,7 +103,7 @@
                                     <li class="scroll-to-section"><a href="shop/reports.jsp">Thống kê</a></li>
                                     </c:if>
                                     <c:if test="${sessionScope.LOGIN_USER != null}">
-                                    <li class="submenu"><a href="#">${LOGIN_USER.fullName}</a>
+                                    <li class="submenu"><a class="user-name text-right" href="#">${LOGIN_USER.fullName}</a>
                                         <ul>
                                             <li><a href="#">Cá nhân</a></li>
                                             <li><a href="${pageScope.logout}">Đăng xuất</a></li>

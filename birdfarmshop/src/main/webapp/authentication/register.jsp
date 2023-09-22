@@ -15,6 +15,8 @@
         <link rel="stylesheet" href="assets/css/font-awesome.css"/>
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css"/>
     </head>
+    <style>
+    </style>
     <body
         <!-- ***** Preloader Start ***** -->
         <div id="preloader">
@@ -25,16 +27,12 @@
             </div>
         </div>  
         <!-- ***** Preloader End ***** -->
-        <section class="vh-100">
-            <div class="container py-5 h-100">
-                <div class="row d-flex h-100 justify-content-center align-items-center test">
-                    <div class="col-md-8 col-lg-7 col-xl-6 text-center">
-                        <img src="assets/images/register.jpg"
-                             class="img-fluid" style="height: 90%"; width="90%" alt="Logo image">
-                    </div>
-                    <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+        <section class="vh-100 bg-register">
+            <div class="container pt-5 h-75">
+                <div class="row d-flex h-75 align-items-center justify-content-end form-custom">
+                    <div class="col-md-6 col-lg-5 col-xl-5">
                         <form action="MainController?action=register" class="form-register" method="POST">  
-                            <div class="form-outline d-flex align-items-center justify-content-between mb-4">
+                            <div class="form-outline text-center mb-3">
                                 <a href="MainController?action=NavToHome">
                                     <img src="assets/images/logo.png"
                                          class="img-fluid"  alt="Bird image">
@@ -43,44 +41,44 @@
                             <p class="error-notification mb-2" style="color: red"><c:out value="${requestScope.error}"/></p>
                             <!-- name input -->
                             <div class="form-outline">
-                                <input type="text" id="name" name="name" class="input form-control form-control-lg" required=""/>
                                 <label class="form-label" for="name">Họ và tên</label>
+                                <input type="text" id="name" name="name" class="input form-control form-control-lg" required=""/>
                             </div>
                             <!-- email input -->
                             <div class="form-outline mt-2">
-                                <input type="text" id="email" name="email" class="input form-control form-control-lg" required=""/>
                                 <label class="form-label" for="email">Email</label>
+                                <input type="text" id="email" name="email" class="input form-control form-control-lg" required=""/>                          
                             </div>
                             <!-- mobile input -->
                             <div class="form-outline mt-2">
-                                <input type="text" id="mobile" name="mobile" class="input form-control form-control-lg" required=""/>
                                 <label class="form-label" for="mobile">Số điện thoại</label>
+                                <input type="text" id="mobile" name="mobile" class="input form-control form-control-lg" required=""/>      
                             </div>
                             <!-- user input -->
                             <div class="form-outline mt-2">
-                                <input type="text" id="account" name="account" class="input form-control form-control-lg" required=""/>
                                 <label class="form-label" for="account">Tên đăng nhập</label>
+                                <input type="text" id="account" name="account" class="input form-control form-control-lg" required=""/>
                             </div>
 
                             <!-- Password input -->
                             <div class="form-outline  mt-2">
-                                <input type="password" id="password" name="password" class="input form-control form-control-lg" required=""/>
                                 <label class="form-label" for="password">Mật khẩu</label>
+                                <input type="password" id="password" name="password" class="input form-control form-control-lg" required=""/>
                                 <div class="show-password">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </div>
                             </div>
                             <!--Password input -->
                             <div class="form-outline mt-2">
-                                <input type="password" id="re-password" name="re-password" class="input form-control form-control-lg" required=""/>
                                 <label class="form-label" for="re-password">Xác nhận mật khẩu</label>
+                                <input type="password" id="re-password" name="re-password" class="input form-control form-control-lg" required=""/>
                                 <div class="show-re-password">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </div>
                             </div>
                             <!-- Submit button -->
-                            <button type="submit" class="btn btn-primary btn-lg btn-block mt-2">Đăng kí</button>
-                            <div class="mt-2">Nếu bạn có tài khoản rồi <a href="MainController?action=NavToLogin">đăng nhập</a> ở đây</div>
+                            <button type="submit" class="btn btn-primary btn-lg btn-block mt-3">Đăng kí</button>
+                            <div class="mt-2 pb-5"style="color: white">Đã có tài khoản? <a href="MainController?action=NavToLogin"> Đăng nhập ngay</a></div>
                         </form>
                     </div>
                 </div>
