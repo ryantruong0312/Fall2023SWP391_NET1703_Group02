@@ -20,12 +20,13 @@ public class User {
     private String address;
     private int point;
     private Date registerDate;
+    private String loginBy;
     private String status;
 
     public User() {
     }
 
-    public User(String username, String password, String fullName, String phone, String email, String role, String address, int point, Date registerDate, String status) {
+    public User(String username, String password, String fullName, String phone, String email, String role, String address, int point, Date registerDate, String loginBy, String status) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;
@@ -35,8 +36,11 @@ public class User {
         this.address = address;
         this.point = point;
         this.registerDate = registerDate;
+        this.loginBy = loginBy;
         this.status = status;
     }
+
+
 
     public String getUsername() {
         return username;
@@ -118,10 +122,12 @@ public class User {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "User{" + "username=" + username + ", password=" + password + ", fullName=" + fullName + ", phone=" + phone + ", email=" + email + ", role=" + role + ", address=" + address + ", point=" + point + ", registerDate=" + registerDate + ", status=" + status + '}';
+    public String getLoginBy() {
+        return loginBy;
     }
 
-  
+    public void setLoginBy(String loginBy) {
+        this.loginBy = loginBy;
+    }
+    
 }

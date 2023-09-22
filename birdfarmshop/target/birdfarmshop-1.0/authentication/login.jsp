@@ -25,14 +25,10 @@
             </div>
         </div>  
         <!-- ***** Preloader End ***** -->
-        <section class="vh-100">
+        <section class="vh-100 bg-login">
             <div class="container py-5 h-100">
-                <div class="row d-flex h-100 justify-content-center align-items-center">
-                    <div class="col-md-8 col-lg-7 col-xl-6 text-center">
-                        <img src="assets/images/login.jpg"
-                             class="img-fluid" style="height: 90%"; width="90%" alt="Bird image">
-                    </div>
-                    <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+                <div class="row d-flex h-100 align-items-center justify-content-end form-custom">
+                    <div class="col-md-6 col-lg-5 col-xl-5">
                         <form action="MainController?action=login" class="form-login" method="POST">
                             <!-- Email input -->
                             <div class="form-outline mb-4 text-center">
@@ -43,43 +39,57 @@
                             </div>
 
                             <div class="form-outline mb-3">
-                                <input type="text" id="account" name="account" class="input form-control form-control-lg" required=""/>
-                                <label class="form-label" for="account">User or Email</label>
+                                <label class="form-label mb-1" for="account">Email/Tên đăng nhập</label>
+                                <input type="text" id="account" name="account" class="input form-control form-control-lg" required=""/>          
                             </div>
 
                             <!-- Password input -->
-                            <div class="form-outline mb-2">
+                            <div class="form-outline mb-3">
+                                <label class="form-label mb-1" for="password">Mật khẩu</label>
                                 <input type="password" id="password" name="password" class="input form-control form-control-lg" required=""/>
-                                <label class="form-label" for="password">Password</label>
                                 <div class="show-password">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </div>
                             </div>
                             <p class="error-notification" style="color: red"><c:out value="${requestScope.error}" /></p>
-                            <div class="d-flex justify-content-around align-items-center mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
                                 <!-- Checkbox -->
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="checkbox" value="" id="form1Example3"/>
-                                    <label class="form-check-label" for="form1Example3"> Remember me </label>
+                                    <label style="color: #007bff" class="form-check-label" for="form1Example3"> Ghi nhớ đăng nhập </label>
                                 </div>
-                                <a href="#!">Forgot password?</a>
+                                <a href="#!">Quên mật khẩu?</a>
                             </div>
 
                             <!-- Submit button -->
-                            <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
-                            <div class="mt-2">Don't have an account?   <a href="MainController?action=NavToRegister">Register</a></div>
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">Đăng nhập</button>
+                            <div style="color: white" class="mt-2">Bạn mới biết đến BirdFarmShop ?   <a href="MainController?action=NavToRegister">Đăng kí</a></div>
                             <div class="divider d-flex align-items-center my-4">
-                                <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
+                                <p class="text-center fw-bold mx-3 mb-0 text-muted">Hoặc</p>
                             </div>
+                            <div class="d-flex item-login">
+                                <div class="col-md-12 col-lg-5 col-xl-5 text-center p-0 mb-3">
+                                    <a class="btn btn-md  btn-block border btn-custom"href="https://www.facebook.com/v13.0/dialog/oauth?client_id=334333278988069&redirect_uri=http://localhost:8080/birdfarmshop/LoginFacebookController&scope=email"
+                                       role="button">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <img src="assets/images/facebook.png" alt="facebook icon"/>
+                                            <p style="color: white" class="ml-2">Facebook</p>
+                                        </div>
+                                    </a>    
+                                </div>  
+                                <div class="col-md-12 col-lg-5 col-xl-5 p-0 offset-lg-2 offset-xl-2">
+                                    <a class="btn btn-md btn-block border btn-custom"href="https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email
+                                       &redirect_uri=http://localhost:8080/birdfarmshop/LoginGoogleController&response_type=code
+                                       &client_id=911997830678-hnnf8alt3ehncr0mdo75f4kc2ckkdm6q.apps.googleusercontent.com&approval_prompt=force"
+                                       role="button">
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <img src="assets/images/google.png" alt="facebook icon"/> 
+                                            <p style="color: white" class="ml-2">Google</p>
+                                        </div>
+                                    </a>
+                                </div>
 
-                            <a class="btn btn-primary btn-lg btn-block border-0" style="background-color: #3b5998" href="#!"
-                               role="button">
-                                <i class="fa fa-facebook mr-3"></i>Continue with Facebook
-                            </a>    
-                            <a class="btn btn-primary btn-lg btn-block border-0" style="background-color: #d0463b" href="#!"
-                               role="button">
-                                <i class="fa fa-google-plus mr-3"></i>Continue with Google</a>
-
+                            </div>
                         </form>
                     </div>
                 </div>

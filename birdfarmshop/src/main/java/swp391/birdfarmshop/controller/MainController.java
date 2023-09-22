@@ -35,6 +35,12 @@ public class MainController extends HttpServlet {
     private static final String DEST_REGISTER = "RegisterController";
     private static final String ACT_LOGOUT = "Logout";
     private static final String DEST_LOGOUT = "LogoutController";
+    private static final String ACT_NAV_ACCESSORY = "NavToAccessory";
+    private static final String DEST_NAV_ACCESSORY = "RenderAccessoryController";
+    private static final String ACT_NAV_ACCESSORY_DETAILS = "NavToAccessoryDetails";
+    private static final String DEST_NAV_ACCESSORY_DETAILS = "RenderAccessoryDetailsController";
+    private static final String ACT_NAV_BIRD = "NavToBird";
+    private static final String DEST_NAV_BIRD = "RenderBirdController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -64,6 +70,15 @@ public class MainController extends HttpServlet {
                 case ACT_LOGOUT:
                     url = DEST_LOGOUT;
                     break;
+                case ACT_NAV_ACCESSORY:
+                    url = DEST_NAV_ACCESSORY;
+                    break;
+                case ACT_NAV_ACCESSORY_DETAILS:
+                    url = DEST_NAV_ACCESSORY_DETAILS;
+                    break;
+                case ACT_NAV_BIRD:
+                    url = DEST_NAV_BIRD;
+                    break;    
                 default:
                     break;
             }

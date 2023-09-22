@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,9 +28,12 @@ public class LogoutController extends HttpServlet {
             throws ServletException, IOException {
         String url = ERROR;
         try {
-
+            PrintWriter out = response.getWriter();
             HttpSession session = request.getSession(true);
             session.removeAttribute("LOGIN_USER");
+            Cookie c = new Cookie("token","");
+            c.setMaxAge(0);
+            response.addCookie(c);
             url = SUCCESS;
         } catch (Exception ex) {
             log("Error at LogoutController: " + ex.toString());
