@@ -40,6 +40,7 @@ public class MainController extends HttpServlet {
             throws ServletException, IOException {
         String url = ERROR;
         try {
+            System.out.print("helloworld");
             String action = request.getParameter("action");
             switch (action) {
                 case ACT_NAV_HOME:
