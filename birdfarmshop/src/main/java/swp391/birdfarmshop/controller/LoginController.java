@@ -39,8 +39,7 @@ public class LoginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try  {
             String username = request.getParameter("account");
             String password = request.getParameter("password");
             String save = request.getParameter("checkbox");
@@ -62,6 +61,7 @@ public class LoginController extends HttpServlet {
                                 response.addCookie(cookie);
                             }
                             response.sendRedirect(DEST_NAV_HOME);
+                            return ;
                         }
                     } else if (u.getStatus().equals("inactive")) {
                         request.setAttribute("error", "Vui lòng kích hoạt tài khoản của bạn bằng cách nhấp vào liên kết trong email đã đăng ký.");
