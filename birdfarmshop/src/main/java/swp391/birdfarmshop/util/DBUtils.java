@@ -13,10 +13,10 @@ import java.sql.SQLException;
  * @author tlminh
  */
 public class DBUtils {
-     public static Connection getConnection() throws SQLException, ClassNotFoundException {
+    public static Connection getConnection() throws SQLException, ClassNotFoundException {
         Connection conn = null;
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=BirdFarmShop;";
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=BirdFarmShop;encrypt=true;trustServerCertificate=true;";
         conn = DriverManager.getConnection(url, "sa", "12345");
         return conn;
     }
