@@ -52,8 +52,8 @@ public class LoginGoogleController extends HttpServlet {
                 User u = UserDAO.findUser(account.getId(), account.getEmail());
                 if (u != null) {
                     HttpSession session = request.getSession(true);
-                        session.setAttribute("LOGIN_USER", u);
-                        response.sendRedirect(DEST_NAV_HOME); 
+                    session.setAttribute("LOGIN_USER", u);
+                    response.sendRedirect(DEST_NAV_HOME); 
                 } else {
                     int createUser = UserDAO.createUser(account.getId(), account.getEmail(), "", account.getName(), "","google","active");
                     if (createUser == 0) {
