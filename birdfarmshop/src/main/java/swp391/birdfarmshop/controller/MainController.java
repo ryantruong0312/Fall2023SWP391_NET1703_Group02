@@ -37,11 +37,14 @@ public class MainController extends HttpServlet {
     private static final String DEST_LOGOUT = "LogoutController";
     private static final String ACT_NAV_ACCESSORY = "NavToAccessory";
     private static final String DEST_NAV_ACCESSORY = "RenderAccessoryController";
+    private static final String ACT_NAV_BIRD = "NavToBird";
+    private static final String DEST_NAV_BIRD = "RenderBirdController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
         try {
+            System.out.print("helloworld");
             String action = request.getParameter("action");
             switch (action) {
                 case ACT_NAV_HOME:
@@ -68,6 +71,9 @@ public class MainController extends HttpServlet {
                 case ACT_NAV_ACCESSORY:
                     url = DEST_NAV_ACCESSORY;
                     break;
+                case ACT_NAV_BIRD:
+                    url = DEST_NAV_BIRD;
+                    break;    
                 default:
                     break;
             }

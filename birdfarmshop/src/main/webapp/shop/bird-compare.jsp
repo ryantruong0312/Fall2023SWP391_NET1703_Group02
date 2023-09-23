@@ -10,317 +10,394 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Product Comparison</title>
-        <style>
-            /* Styles for the main content */
-            .comparison-container {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                margin: 20px;
-            }
+        <title>Bird Farm Shop - So sánh</title>
+        <!-- Additional CSS Files -->
+        <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
+        <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
+        <link rel="stylesheet" href="assets/css/owl-carousel.css">
+        <link rel="stylesheet" href="assets/css/lightbox.css">
+        <link rel="stylesheet" href="assets/css/bird-compare.css">
+    </head>
 
-            .comparison-column {
-                flex: 1;
-                margin: 10px;
-                padding: 20px;
-                border: 1px solid #ccc;
-                box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-            }
-
-            /* Styles for the combo boxes */
-            .combo-box {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-
-            /* Styles for the bird image */
-            .bird-image {
-                max-width: 100%;
-                height: auto;
-                margin: 10px 0;
-            }
-
-            /* Styles for the information rows */
-            .info-row {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 10px;
-            }
-            /* Add more styling as needed */
-        </style>
-    </style>
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
-    <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
-    <link rel="stylesheet" href="assets/css/owl-carousel.css">
-    <link rel="stylesheet" href="assets/css/lightbox.css">
-</head>
-
-<body>
-    <c:url var="toHome" value="MainController?action=NavToHome"/>
-    <c:url var="toLogin" value="MainController?action=NavToLogin"/>
-    <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <a href="#" class="logo scroll-to-section">
-                            <img src="assets/images/logo.png">
-                        </a>
-                        <!-- ***** Logo End ***** -->
-                        <!-- ***** Menu Start ***** -->
-                        <ul class="nav">
-                            <li class="scroll-to-section"><a href="${pageScope.toHome}">Trang chủ</a></li>
-                                <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'staff'}">
-                                <li class="submenu"><a href="">Sản phẩm</a>
-                                    <ul>
-                                        <li><a href="shop/birds.jsp">Chim vẹt</a></li>
-                                        <li><a href="shop/bird-nest.jsp">Tổ chim non</a></li>
-                                        <li><a href="shop/accessories.jsp">Phụ kiện</a></li>
-                                    </ul>
-                                </li>
-                                <li class="scroll-to-section"><a href="#" class="active">So sánh</a></li>
-                                    <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer'}">
-                                        <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
-                                        <li class="scroll-to-section"><a href="">Đơn hàng</a></li>
-                                        </c:if>
-                                    <li class="scroll-to-section"><a href="">Ghép cặp</a></li>
-                                    <li class="scroll-to-section"><a href="../cart-view.jsp">Giỏ hàng</a></li>
-                                        <c:if test="${sessionScope.LOGIN_USER == null}">
-                                        <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
+    <body>
+        <c:url var="toHome" value="MainController?action=NavToHome"/>
+        <c:url var="toLogin" value="MainController?action=NavToLogin"/>
+        <c:url var="logout" value="MainController?action=Logout"/>
+        <c:url var="toAccessories" value="MainController?action=NavToAccessory"/>
+        <!-- ***** Header Area Start ***** -->
+        <header class="header-area header-sticky">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <nav class="main-nav">
+                            <!-- ***** Logo Start ***** -->
+                            <a href="#" class="logo scroll-to-section">
+                                <img src="assets/images/logo.png">
+                            </a>
+                            <!-- ***** Logo End ***** -->
+                            <!-- ***** Menu Start ***** -->
+                            <ul class="nav">
+                                <li class="scroll-to-section"><a href="${pageScope.toHome}">Trang chủ</a></li>
+                                    <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'staff'}">
+                                    <li class="submenu"><a href="">Sản phẩm</a>
+                                        <ul>
+                                            <li><a href="shop/birds.jsp">Chim vẹt</a></li>
+                                            <li><a href="shop/bird-nest.jsp">Tổ chim non</a></li>
+                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="scroll-to-section"><a href="#" class="active">So sánh</a></li>
+                                        <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer'}">
+                                            <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
+                                            <li class="scroll-to-section"><a href="">Đơn hàng</a></li>
+                                            </c:if>
+                                        <li class="scroll-to-section"><a href="">Ghép cặp</a></li>
+                                        <li class="scroll-to-section"><a href="../cart-view.jsp">Giỏ hàng</a></li>
+                                            <c:if test="${sessionScope.LOGIN_USER == null}">
+                                            <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
+                                            </c:if>
                                         </c:if>
                                     </c:if>
+                                    <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
+                                    <li class="submenu"><a href="">Products</a>
+                                        <ul>
+                                            <li><a href="#">Sản phẩm</a></li>
+                                            <li><a href="#">Tổ chim non</a></li>
+                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="scroll-to-section"><a href="#">So sánh</a></li>
+                                    <li class="scroll-to-section"><a href="">Đơn hàng</a></li>
+                                    <li class="scroll-to-section"><a href="../shop/accounts.jsp">Tài khoản</a></li>
+                                    <li class="scroll-to-section"><a href="shop/reports.jsp">Thống kê</a></li>
+                                    </c:if>
+                                    <c:if test="${sessionScope.LOGIN_USER != null}">
+                                    <li class="submenu"><a href="#">${LOGIN_USER.fullName}</a>
+                                        <ul>
+                                            <li><a href="#">Cá nhân</a></li>
+                                            <li><a href="${pageScope.logout}">Đăng xuất</a></li>
+                                        </ul>
+                                    </li>
                                 </c:if>
-                                <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
-                                <li class="submenu"><a href="">Products</a>
-                                    <ul>
-                                        <li><a href="#">Sản phẩm</a></li>
-                                        <li><a href="#">Tổ chim non</a></li>
-                                        <li><a href="#">Phụ kiện</a></li>
-                                    </ul>
-                                </li>
-                                <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                <li class="scroll-to-section"><a href="">Đơn hàng</a></li>
-                                <li class="scroll-to-section"><a href="../shop/accounts.jsp">Tài khoản</a></li>
-                                <li class="scroll-to-section"><a href="shop/reports.jsp">Thống kê</a></li>
-                                </c:if>
-                                <c:if test="${sessionScope.LOGIN_USER != null}">
-                                <li class="submenu"><a href="#">${LOGIN_USER.fullName}</a>
-                                    <ul>
-                                        <li><a href="#">Cá nhân</a></li>
-                                        <li><a href="${logout}">Đăng xuất</a></li>
-                                    </ul>
-                                </li>
-                            </c:if>
-                        </ul>           
-                        <a class='menu-trigger'>
-                            <span>Menu</span>
-                        </a>
-                        <!-- ***** Menu End ***** -->
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- ***** Header Area End ***** -->
-
-    <!-- ***** Main Banner Area Start ***** -->
-    <div class="page-heading" id="top">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="inner-content">
-                        <h2>So sánh thông tin</h2>
-                        <span>Xem và đánh giá sự tương quan giữa hai cá thể vẹt của shop</span>
+                            </ul>           
+                            <a class='menu-trigger'>
+                                <span>Menu</span>
+                            </a>
+                            <!-- ***** Menu End ***** -->
+                        </nav>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- ***** Main Banner Area End ***** -->
+        </header>
+        <!-- ***** Header Area End ***** -->
 
-
-    <main>
-        <div class="comparison-container">
-            <!-- First Column -->
-            <div class="comparison-column">
-                <h2>Chọn loài vẹt</h2>
-
-                <!-- EL to populate the category combo box -->
-                <select class="combo-box" id="breedSelect" onchange="updateBirdNames()">
-                    <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                        <option value="${breed.breed_id}">${breed.breed_name}</option>
-                    </c:forEach>
-                </select>
-
-                <!-- EL to populate the bird name combo box -->
-                <select class="combo-box" id="birdSelect1">
-                    <!-- This is initially empty and will be populated dynamically based on the selected breed -->
-                </select>
-
-                <!-- Additional rows to display bird information -->
-                <div id="birdInformation">
-                    <div class="bird-info-row">
-                        <!-- Placeholder for bird image -->
-                        <img id="birdImage" src="" alt="Bird Image">
-                    </div>
-                    <div class="bird-info-row">
-                        <span id="birdAge"></span>
-                    </div>
-                    <div class="bird-info-row">
-                        <pre id="birdAchievement"></pre>
-                    </div>
-                    <div class="bird-info-row">
-                        <p id="birdReproductionHistory"></p>
-                    </div>
-                    <div class="bird-info-row">
-                        <p id="birdStatus"></p>
-                    </div>
-                    <div class="bird-info-row">
-                        <p id="birdPrice"></p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Second Column -->
-            <div class="comparison-column">
-                <h2>Select a bird</h2>
-
-                <!-- EL to populate the category combo box -->
-                <select class="combo-box" onchange="showBirdNames(this.value, 'birdSelect2')">
-                    <option value="">Select Category</option>
-                    <c:forEach items="${categories}" var="category">
-                        <option value="${category}">${category}</option>
-                    </c:forEach>
-                </select>
-
-                <!-- EL to populate the bird name combo box -->
-                <select class="combo-box" id="birdSelect2">
-                    <option value="">Select Bird</option>
-                    <c:forEach items="${birdNames2}" var="birdName">
-                        <option value="${birdName}">${birdName}</option>
-                    </c:forEach>
-                </select>
-                <img class="bird-image" src="bird2.jpg" alt="Bird 2 Image">
-                <div class="info-row">
-                    <div>Color: Green</div>
-                    <div>Achievement: Silver Medal</div>
-                </div>
-                <div class="info-row">
-                    <div>Age: 2 years</div>
-                    <div>Price: $150</div>
-                </div>
-            </div>
-        </div>
-
-    </main>
-    <!-- ***** Footer Start ***** -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="first-item">
-                        <div class="logo">
-                            <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
+        <!-- ***** Main Banner Area Start ***** -->
+        <div class="page-heading" id="top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="inner-content">
+                            <h2>So sánh thông tin</h2>
+                            <span>Xem và đánh giá sự tương quan giữa hai cá thể vẹt của shop</span>
                         </div>
-                        <ul>
-                            <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                            <li><a href="#">birdfarmshop@petshop.com</a></li>
-                            <li><a href="#">0913-244-567</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <h4>Sản phẩm và dịch vụ</h4>
-                    <ul>
-                        <li><a href="#">Chim vẹt</a></li>
-                        <li><a href="#">Tổ chim non</a></li>
-                        <li><a href="#">Phụ kiện</a></li>
-                        <li><a href="#">So sánh</a></li>
-                        <li><a href="#">Ghép cặp</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h4>Đường dẫn hữu ích</h4>
-                    <ul>
-                        <li><a href="#">Trang chủ</a></li>
-                        <li><a href="#">Về chúng tôi</a></li>
-                        <li><a href="#">Hỗ trợ</a></li>
-                        <li><a href="#">Liên hệ</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h4>Thông tin hỗ trợ</h4>
-                    <ul>
-                        <li><a href="#">Hỗ trợ</a></li>
-                        <li><a href="#">Câu hỏi thường gặp</a></li>
-                        <li><a href="#">Giao hàng</a></li>
-                        <li><a href="#">Theo dõi đơn hàng</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-12">
-                    <div class="under-footer">
-                        <p>Copyright © 2023 BirdFarmShop Co., Ltd. All Rights Reserved. 
-
-                            <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
-                        <ul>
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-    </footer>
-    <!-- ***** Footer Area Ends ***** -->
-</body>
-<script>
-    var birdData = []; // Initialize an empty JavaScript array
+        <!-- ***** Main Banner Area End ***** -->
 
-    // Use JSTL to populate the JavaScript array from ${requestScope.BIRDS}
-    <c:forEach items="${requestScope.BIRDS}" var="bird">
-    birdData.push({
-        birdId:"${bird.bird_id}",
-        breedId: "${bird.breed_id}", // Assuming 'breedId' is the property in Bird class
-        birdName: "${bird.bird_name}", // Assuming 'name' is the property in Bird class
-        birdAge: "${bird.age}", // Assuming 'age' is the property in Bird class
-        birdAchievement: "${bird.achievement}", // Assuming 'achievement' is the property in Bird class
-        birdReproductionHistory: "${bird.reproduction_history}", // Assuming 'reproductionHistory' is the property in Bird class
-        birdStatus: "${bird.status}", // Assuming 'status' is the property in Bird class
-        birdPrice: "${bird.price}" // Assuming 'price' is the property in Bird class
-    });
-    </c:forEach>
-    function updateBirdNames() {
-        var breedSelect = document.getElementById("breedSelect");
-        var selectedBreedId = breedSelect.options[breedSelect.selectedIndex].value;
-        var birdSelect = document.getElementById("birdSelect1");
-        var selectedBirdId = birdSelect.options[birdSelect.selectedIndex].value;
-        birdSelect.innerHTML = ""; // Clear existing options
+        <main>
+            <div class="comparison-container">
+                <!-- First Column -->
+                <div class="comparison-column">
+                    <div class="column-content">
+                        <h2>Chọn loài vẹt</h2>
 
-        // Reset all information fields
-        document.getElementById("birdAge").textContent = "";
-        document.getElementById("birdAchievement").textContent = "";
-        document.getElementById("birdReproductionHistory").textContent = "";
-        document.getElementById("birdStatus").textContent = "";
-        document.getElementById("birdPrice").textContent = "";
+                        <!-- EL to populate the category combo box -->
+                        <select class="combo-box" id="breedSelect1" onchange="updateBirdNames1()">
+                            <option>Chọn giống vẹt</option>
+                            <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
+                                <option value="${breed.breed_id}">${breed.breed_name}</option>
+                            </c:forEach>
+                        </select>
 
-        // Populate the bird name combo box based on the selected breed
-        for (var i = 0; i < birdData.length; i++) {
-            var birdEntry = birdData[i];
-            if (birdEntry.breedId === selectedBreedId) {
-                var option = document.createElement("option");
-                option.text = birdEntry.birdName;
-                option.value = birdEntry.birdId;
-                birdSelect.appendChild(option);
-            }
-        }
+                        <!-- EL to populate the bird name combo box -->
+                        <select class="combo-box" id="birdSelect1">
+                            <!-- This is initially empty and will be populated dynamically based on the selected breed -->
+                        </select>
 
-    }
-</script>
+                        <!-- Additional rows to display bird information -->
+                        <div id="birdInformation1">
+                            <div class="bird-info-row">
+                                <!-- Placeholder for bird image -->
+                                <img id="birdImage1" src="assets/images/bird-compare-1.jpg" alt="Bird Image">
+                            </div>
+                            <div class="bird-info-row">
+                                <span id="birdName1" class="info-name"></span>
+                            </div>
+                            <div class="bird-info-row">
+                                <span class="info-title">Tuổi</span>
+                                <span id="birdAge1" class="info-content"></span>
+                            </div>
+                            <div class="bird-info-row">
+                                <span class="info-title">Thành tích</span>
+                                <pre id="birdAchievement1" class="info-content"></pre>
+                            </div>
+                            <div class="bird-info-row">
+                                <span class="info-title">Số lứa sinh sản</span>
+                                <span id="birdReproductionHistory1" class="info-content"></span>
+                            </div>
+                            <div class="bird-info-row">
+                                <span class="info-title">Tình trạng</span>
+                                <span id="birdStatus1" class="info-content"></span>
+                            </div>
+                            <div class="bird-info-row">
+                                <span class="info-title">Giá</span>
+                                <span id="birdPrice1" class="info-content"></span>
+                            </div>
+                        </div>
+                        <div class="btn-detail">
+                            <button>Xem thêm</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Second Column -->
+                <div class="comparison-column">
+                    <div class="column-content">
+                        <h2>Chọn loài vẹt</h2>
+
+                        <!-- EL to populate the category combo box -->
+                        <select class="combo-box" id="breedSelect2" onchange="updateBirdNames2()">
+                            <option>Chọn giống vẹt</option>
+                            <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
+                                <option value="${breed.breed_id}">${breed.breed_name}</option>
+                            </c:forEach>
+                        </select>
+
+                        <!-- EL to populate the bird name combo box -->
+                        <select class="combo-box" id="birdSelect2">
+                            <!-- This is initially empty and will be populated dynamically based on the selected breed -->
+                        </select>
+
+                        <!-- Additional rows to display bird information -->
+                        <div id="birdInformation2">
+                            <div class="bird-info-row">
+                                <!-- Placeholder for bird image -->
+                                <img id="birdImage2" src="assets/images/bird-compare-2.jpg" alt="Bird Image">
+                            </div>
+                            <div class="bird-info-row">
+                                <span id="birdName2" class="info-name"></span>
+                            </div>
+                            <div class="bird-info-row">
+                                <span class="info-title">Tuổi</span>
+                                <span id="birdAge2" class="info-content"></span>
+                            </div>
+                            <div class="bird-info-row">
+                                <span class="info-title">Thành tích</span>
+                                <pre id="birdAchievement2" class="info-content"></pre>
+                            </div>  
+                            <div class="bird-info-row">
+                                <span class="info-title">Số lứa sinh sản</span>
+                                <span id="birdReproductionHistory2" class="info-content"></span>
+                            </div>
+                            <div class="bird-info-row">
+                                <span class="info-title">Tình trạng</span>
+                                <span id="birdStatus2" class="info-content"></span>
+                            </div>
+                            <div class="bird-info-row">
+                                <span class="info-title">Giá</span>
+                                <span id="birdPrice2" class="info-content"></span>
+                            </div>
+                        </div>
+                        <div class="btn-detail">
+                            <button>Xem thêm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- ***** Footer Start ***** -->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="first-item">
+                            <div class="logo">
+                                <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
+                            </div>
+                            <ul>
+                                <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
+                                <li><a href="#">birdfarmshop@petshop.com</a></li>
+                                <li><a href="#">0913-244-567</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <h4>Sản phẩm và dịch vụ</h4>
+                        <ul>
+                            <li><a href="#">Chim vẹt</a></li>
+                            <li><a href="#">Tổ chim non</a></li>
+                            <li><a href="#">Phụ kiện</a></li>
+                            <li><a href="#">So sánh</a></li>
+                            <li><a href="#">Ghép cặp</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3">
+                        <h4>Đường dẫn hữu ích</h4>
+                        <ul>
+                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="#">Về chúng tôi</a></li>
+                            <li><a href="#">Hỗ trợ</a></li>
+                            <li><a href="#">Liên hệ</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3">
+                        <h4>Thông tin hỗ trợ</h4>
+                        <ul>
+                            <li><a href="#">Hỗ trợ</a></li>
+                            <li><a href="#">Câu hỏi thường gặp</a></li>
+                            <li><a href="#">Giao hàng</a></li>
+                            <li><a href="#">Theo dõi đơn hàng</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="under-footer">
+                            <p>Copyright © 2023 BirdFarmShop Co., Ltd. All Rights Reserved. 
+
+                                <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
+                            <ul>
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- ***** Footer Area Ends ***** -->
+        <script>
+            var birdData1 = []; // Initialize an empty JavaScript array
+            var birdData2 = [];
+            <c:forEach items="${requestScope.BIRDS}" var="bird">
+            birdData1.push({
+                birdId: "${bird.bird_id}",
+                birdImage: "${bird.image_url}",
+                breedId: "${bird.breed_id}", // Assuming 'breedId' is the property in Bird class
+                birdName: "${bird.bird_name}", // Assuming 'name' is the property in Bird class
+                birdAge: "${bird.age}", // Assuming 'age' is the property in Bird class
+                birdAchievement: "${bird.achievement}", // Assuming 'achievement' is the property in Bird class
+                birdReproductionHistory: "${bird.reproduction_history}", // Assuming 'reproductionHistory' is the property in Bird class
+                birdStatus: "${bird.status}", // Assuming 'status' is the property in Bird class
+                birdPrice: "${bird.price}" // Assuming 'price' is the property in Bird class
+            });
+            birdData2.push({
+                birdId: "${bird.bird_id}",
+                birdImage: "${bird.image_url}",
+                breedId: "${bird.breed_id}", // Assuming 'breedId' is the property in Bird class
+                birdName: "${bird.bird_name}", // Assuming 'name' is the property in Bird class
+                birdAge: "${bird.age}", // Assuming 'age' is the property in Bird class
+                birdAchievement: "${bird.achievement}", // Assuming 'achievement' is the property in Bird class
+                birdReproductionHistory: "${bird.reproduction_history}", // Assuming 'reproductionHistory' is the property in Bird class
+                birdStatus: "${bird.status}", // Assuming 'status' is the property in Bird class
+                birdPrice: "${bird.price}" // Assuming 'price' is the property in Bird class
+            });
+            </c:forEach>
+
+            function updateBirdNames1() {
+                console.log("abc called");
+                var breedSelect = document.getElementById("breedSelect1");
+                var selectedBreedId = breedSelect.options[breedSelect.selectedIndex].value;
+                var birdSelect = document.getElementById("birdSelect1");
+                birdSelect.innerHTML = ""; // Clear existing options
+
+                // Reset all information fields
+                document.getElementById("birdName1").textContent = "";
+                document.getElementById("birdImage1").src = "assets/images/bird-compare-1.jpg";
+                document.getElementById("birdAge1").textContent = "";
+                document.getElementById("birdAchievement1").textContent = "";
+                document.getElementById("birdReproductionHistory1").textContent = "";
+                document.getElementById("birdStatus1").textContent = "";
+                document.getElementById("birdPrice1").textContent = "";
+
+                // Populate the bird name combo box based on the selected breed
+                for (var i = 0; i < birdData1.length; i++) {
+                    var birdEntry = birdData1[i];
+                    if (birdEntry.breedId === selectedBreedId) {
+                        var option = document.createElement("option");
+                        option.text = birdEntry.birdName;
+                        option.value = birdEntry.birdId;
+                        birdSelect.appendChild(option);
+                    }
+                }
+            };
+            
+            function updateBirdNames2() {
+                console.log("Update Bird Names 1 called");
+                var breedSelect = document.getElementById("breedSelect2");
+                var selectedBreedId = breedSelect.options[breedSelect.selectedIndex].value;
+                var birdSelect = document.getElementById("birdSelect2");
+                birdSelect.innerHTML = ""; // Clear existing options
+
+                // Reset all information fields
+                document.getElementById("birdName2").textContent = "";
+                document.getElementById("birdImage2").src = "assets/images/bird-compare-2.jpg";
+                document.getElementById("birdAge2").textContent = "";
+                document.getElementById("birdAchievement2").textContent = "";
+                document.getElementById("birdReproductionHistory2").textContent = "";
+                document.getElementById("birdStatus2").textContent = "";
+                document.getElementById("birdPrice2").textContent = "";
+
+                // Populate the bird name combo box based on the selected breed
+                for (var i = 0; i < birdData2.length; i++) {
+                    var birdEntry = birdData2[i];
+                    if (birdEntry.breedId === selectedBreedId) {
+                        var option = document.createElement("option");
+                        option.text = birdEntry.birdName;
+                        option.value = birdEntry.birdId;
+                        birdSelect.appendChild(option);
+                    }
+                }
+            };
+
+            // Add an event handler for the birdSelect1 element
+            var birdSelect1 = document.getElementById("birdSelect1");
+            birdSelect1.addEventListener("change", function () {
+                var selectedBirdId = birdSelect1.options[birdSelect1.selectedIndex].value;
+                // Find the corresponding bird data in birdData array
+                var selectedBird = birdData1.find(function (birdEntry) {
+                    return birdEntry.birdId === selectedBirdId;
+                });
+                // Update the information in the bird-information div
+                document.getElementById("birdImage1").src = selectedBird.birdImage;
+                document.getElementById("birdName1").textContent = selectedBird.birdName;
+                document.getElementById("birdAge1").textContent = selectedBird.birdAge;
+                document.getElementById("birdAchievement1").textContent = selectedBird.birdAchievement;
+                document.getElementById("birdReproductionHistory1").textContent = selectedBird.birdReproductionHistory;
+                document.getElementById("birdStatus1").textContent = selectedBird.birdStatus;
+                document.getElementById("birdPrice1").textContent = selectedBird.birdPrice;
+            });
+
+            // Add an event handler for the birdSelect2 element
+            var birdSelect2 = document.getElementById("birdSelect2");
+            birdSelect2.addEventListener("change", function () {
+                var selectedBirdId = birdSelect2.options[birdSelect2.selectedIndex].value;
+                // Find the corresponding bird data in birdData array
+                var selectedBird = birdData2.find(function (birdEntry) {
+                    return birdEntry.birdId === selectedBirdId;
+                });
+                // Update the information in the bird-information div
+
+                document.getElementById("birdImage2").src = selectedBird.birdImage;
+                document.getElementById("birdName2").textContent = selectedBird.birdName;
+                document.getElementById("birdAge2").textContent = selectedBird.birdAge;
+                document.getElementById("birdAchievement2").textContent = selectedBird.birdAchievement;
+                document.getElementById("birdReproductionHistory2").textContent = selectedBird.birdReproductionHistory;
+                document.getElementById("birdStatus2").textContent = selectedBird.birdStatus;
+                document.getElementById("birdPrice2").textContent = selectedBird.birdPrice;
+            });
+        </script>
+    </body>
 </html>
 

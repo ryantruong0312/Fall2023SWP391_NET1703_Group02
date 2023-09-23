@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import swp391.birdfarmshop.dao.UserDAO;
 import swp391.birdfarmshop.model.User;
+import swp391.birdfarmshop.util.JWTUtils;
 
 /**
  *
@@ -38,36 +39,44 @@ public class LoginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try  {
             String username = request.getParameter("account");
             String password = request.getParameter("password");
             String save = request.getParameter("checkbox");
-            User u = UserDAO.getUser(username, password);
+            String encodePassword = JWTUtils.encodeJWT(password);
+            User u = UserDAO.findUser(username, username);
             String message = null;
             String url = ERROR;
             HttpSession session = request.getSession(true);
             if (u != null) {
-                if(u.getStatus().equals("active")) {
-                      if(session != null){
-                          u.setPassword(null);
-                          session.setAttribute("LOGIN_USER", u);
-                          if(save != null){
-                              Cookie cookie = new Cookie("token", u.getEmail());
-                              cookie.setMaxAge(5*60);
-                              response.addCookie(cookie);
-                          }
-                          response.sendRedirect(DEST_NAV_HOME);
-                      } 
-                } else if (u.getStatus().equals("not active")){
-                    request.setAttribute("error", "Please activate your account by clicking on the link in the registered email.");
-                    url = DEST_NAV_LOGIN;
+                String decodePassword = JWTUtils.decodeJWT(u.getPassword());
+                if (password.equals(decodePassword)) {
+                    if (u.getStatus().equals("active")) {
+                        if (session != null) {
+                            session.setAttribute("LOGIN_USER", u);
+                            if (save != null) {
+                                String encodeEmail = JWTUtils.encodeJWT(u.getEmail());
+                                Cookie cookie = new Cookie("token", encodeEmail);
+                                cookie.setMaxAge(24 * 60 * 60);
+                                response.addCookie(cookie);
+                            }
+                            response.sendRedirect(DEST_NAV_HOME);
+                            return ;
+                        }
+                    } else if (u.getStatus().equals("inactive")) {
+                        request.setAttribute("error", "Vui lòng kích hoạt tài khoản của bạn bằng cách nhấp vào liên kết trong email đã đăng ký.");
+                        url = DEST_NAV_LOGIN;
+                    } else {
+                        request.setAttribute("error", "Tài khoản của bạn đã bị khóa, vui lòng liên hệ với cửa hàng.");
+                        url = DEST_NAV_LOGIN;
+                    }
                 } else {
-                    request.setAttribute("error", "Your account has been locked, please contact the store.");
+                    message = "Email hoặc mật khẩu không chính xác.";
+                    request.setAttribute("error", message);
                     url = DEST_NAV_LOGIN;
                 }
             } else {
-                message = "Email or password incorrect.";
+                message = "Email hoặc mật khẩu không chính xác.";
                 request.setAttribute("error", message);
                 url = DEST_NAV_LOGIN;
             }

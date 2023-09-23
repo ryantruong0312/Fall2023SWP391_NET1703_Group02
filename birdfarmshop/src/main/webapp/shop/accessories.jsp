@@ -17,7 +17,7 @@
         <meta name="author" content="">
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>Bird Farm Shop - Accessories</title>
+        <title>Bird Farm Shop - Phụ Kiện</title>
 
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -149,14 +149,12 @@
                                         <li><a href="bird-details.jsp"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
-                                <img src="assets/images/men-01.jpg" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>${accessory.accessory_name}</h4>
-                                <span>${accessory.unit_price}</span>
+                                <div class="down-content">
+                                    <h4>${accessory.accessory_name}</h4>
+                                    <span>${accessory.unit_price}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     </c:forEach>
                     <div class="col-lg-12">
                         <div class="pagination">
