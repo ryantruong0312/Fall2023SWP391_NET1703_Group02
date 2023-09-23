@@ -51,13 +51,30 @@ h2 {
 
 /* Style for rows */
 .bird-info-row {
-    margin-top: 15px;
+    margin-top: 20px;
     font-size: 16px;
     color: #666;
 }
 
+.info-title{
+    display: inline-block; /* Make the span a block-level element to apply styling */
+    padding: 5px 10px; /* Add padding to create some spacing around the text */
+    border: 1px solid #ccc; /* Add a light grey border */
+    border-radius: 5px; /* Apply a corner radius */
+    background-color: #f5f5f5; /* Set a background color (light grey) */
+    color: #333; /* Set text color */
+    text-align: center; /* Center the text horizontally */
+}
+.info-content{
+    padding-left: 20px;
+}
+.info-name{
+    text-align: center;
+    font-size: 25px;
+}
+
 /* Highlight titles for rows */
-.bird-info-row span {
+.bird-info-row span:first-child {
     font-weight: bold;
     color: #333;
 }
@@ -76,7 +93,23 @@ h2 {
 /* Unique styling for bird price */
 #birdPrice1,
 #birdPrice2 {
+    font-size: 20px;
     font-weight: bold;
     color: #ff5733; /* Orange color for price */
 }
 
+.btn-detail{
+    margin-top: 20px;
+    text-align: center;
+}
+.btn-detail button{
+    display: inline-block; /* Make the span a block-level element to apply styling */
+    padding: 5px 10px; /* Add padding to create some spacing around the text */
+    border: 1px solid #ccc; /* Add a light grey border */
+    border-radius: 5px; /* Apply a corner radius */
+    background-color: #f5f5f5; /* Set a background color (light grey) */
+    color: #333; /* Set text color */
+}
+.btn-detail button:hover{
+    background-color: #bcbcbc;
+}

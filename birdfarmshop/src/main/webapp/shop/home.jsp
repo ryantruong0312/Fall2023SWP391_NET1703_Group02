@@ -28,11 +28,15 @@
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
         <style>
-            .breed-img{
+            .breed-img,
+            .category-img
+            {
                 width: 100%;
                 height: 370px;
             }
-            .breed-name{
+            .breed-name,
+            .category-name
+            {
                 text-align: center;
             }
         </style>
@@ -248,7 +252,7 @@
                     <div class="col-lg-12">
                         <div class="men-item-carousel">
                             <div class="owl-men-item owl-carousel">
-                                <c:forEach var="breed" items="${requestScope.BREEDS}">
+                                <c:forEach var="breed" items="${requestScope.BIRD_BREEDS}">
                                     <div class="item">
                                         <div class="thumb">
                                             <div class="hover-content">
@@ -288,98 +292,21 @@
                     <div class="col-lg-12">
                         <div class="women-item-carousel">
                             <div class="owl-women-item owl-carousel">
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
+                                <c:forEach var="category" items="${requestScope.ACCESSORY_CATEGORIES}">
+                                    <div class="item">
+                                        <div class="thumb">
+                                            <div class="hover-content">
+                                                <ul>
+                                                    <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
+                                                </ul>
+                                            </div>
+                                            <img class="category-img" src="${category.category_thumbnail}" alt="">
                                         </div>
-                                        <img src="assets/images/women-01.jpg" alt="">
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>New Green Jacket</h4>
-                                        <span>$75.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
+                                        <div class="down-content">
+                                            <h4 class="category-name">${category.category_name}</h4>
                                         </div>
-                                        <img src="assets/images/women-02.jpg" alt="">
                                     </div>
-                                    <div class="down-content">
-                                        <h4>Classic Dress</h4>
-                                        <span>$45.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <img src="assets/images/women-03.jpg" alt="">
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>Spring Collection</h4>
-                                        <span>$130.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <img src="assets/images/women-01.jpg" alt="">
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>Classic Spring</h4>
-                                        <span>$120.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                </c:forEach>
                             </div>
                         </div>
                     </div>
@@ -402,7 +329,7 @@
                             <p>Bên cạnh việc bán chim, chúng tôi còn cung cấp các sản phẩm chất lượng để giúp bạn chăm sóc chim cưng của mình, từ lồng cho đến thức ăn và đồ chơi.</p>
                             <p>Chúng tôi luôn sẵn sàng tư vấn và hỗ trợ bạn trong việc nuôi dưỡng và chăm sóc chim cảnh của mình. Bạn cũng có thể yên tâm về việc giao hàng, với dịch vụ vận chuyển an toàn và đảm bảo đến tận tay bạn.</p>
                             <div class="main-border-button">
-                                <a href="products.html">Tìm hiểu thêm</a>
+                                <a href="">Tìm hiểu thêm</a>
                             </div>
                         </div>
                     </div>
