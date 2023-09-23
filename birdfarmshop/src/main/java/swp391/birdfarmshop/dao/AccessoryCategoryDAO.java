@@ -10,35 +10,34 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import swp391.birdfarmshop.model.Bird;
-import swp391.birdfarmshop.model.BirdBreed;
+import swp391.birdfarmshop.model.AccessoryCategory;
 import swp391.birdfarmshop.util.DBUtils;
 
 /**
  *
  * @author tlminh
  */
-public class BirdBreedDAO {
+public class AccessoryCategoryDAO {
 
-    private static final String GET_BIRD_BREED_LIST = "SELECT * FROM BirdBreed";
-    private static final String GET_BREED_NAME_BY_ID = "SELECT [breed_name] FROM [BirdBreed] WHERE [breed_id] = ?";
+    private static final String GET_ACCESSORY_CATEGORY_LIST = "SELECT * FROM [AccessoryCategory]";
+    private static final String GET_ACCESSORY_CATEGORY_NAME_BY_ID = "SELECT [category_name] FROM [AccessoryCategory] WHERE [category_id] = ?";
 
-    public List<BirdBreed> getBirdBreeds() throws SQLException {
-        List<BirdBreed> birdBreedList = new ArrayList<>();
+    public List<AccessoryCategory> getAccessoryCategories() throws SQLException {
+        List<AccessoryCategory> categoryList = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement(GET_BIRD_BREED_LIST);
+                stm = con.prepareStatement(GET_ACCESSORY_CATEGORY_LIST);
                 rs = stm.executeQuery();
                 while (rs.next()) {
-                    String breed_id = rs.getString("breed_id");
-                    String breed_name = rs.getString("breed_name");
-                    String breed_thumbnail = rs.getString("breed_thumbnail");
-                    BirdBreed birdBreed = new BirdBreed(breed_id, breed_name, breed_thumbnail);
-                    birdBreedList.add(birdBreed);
+                    String category_id = rs.getString("category_id");
+                    String category_name = rs.getString("category_name");
+                    String category_thumbnail = rs.getString("category_thumbnail");
+                    AccessoryCategory category = new AccessoryCategory(category_id, category_name, category_thumbnail);
+                    categoryList.add(category);
                 }
             }
         } catch (Exception e) {
@@ -51,22 +50,22 @@ public class BirdBreedDAO {
                 con.close();
             }
         }
-        return birdBreedList;
+        return categoryList;
     }
 
-    public String getBreedNameById(String breed_id) throws SQLException {
-        String breed_name = "";
+    public String getAccessoryCategoryNameById(String category_id) throws SQLException {
+        String category_name = "";
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement(GET_BREED_NAME_BY_ID);
-                stm.setString(1, breed_id);
+                stm = con.prepareStatement(GET_ACCESSORY_CATEGORY_NAME_BY_ID);
+                stm.setString(1, category_id);
                 rs = stm.executeQuery();
                 if (rs.next()) {
-                    breed_name = rs.getString("breed_name");
+                    category_name = rs.getString("category_name");
                 }
             }
         } catch (Exception e) {
@@ -79,6 +78,6 @@ public class BirdBreedDAO {
                 con.close();
             }
         }
-        return breed_name;
+        return category_name;
     }
 }

@@ -26,6 +26,18 @@
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
 
+        <style>
+            .thumb{
+                width: 370px;
+                height: 390px;
+            }
+            .bird-thumbnail{
+                max-width: 100%; /* Set the maximum width to ensure it fits within the parent container */
+                max-height: 100%; /* Set the maximum height to ensure it fits within the parent container */
+                width: auto; /* Let the width adjust to maintain the aspect ratio */
+                height: auto;
+            }
+        </style>
     </head>
 
     <body>
@@ -56,9 +68,9 @@
                             <!-- ***** Logo End ***** -->
                             <!-- ***** Menu Start ***** -->
                             <ul class="nav">
-                                    <li class="scroll-to-section"><a href="MainController?action=NavToHome">Trang chủ</a></li>
+                                <li class="scroll-to-section"><a href="MainController?action=NavToHome">Trang chủ</a></li>
                                     <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'staff'}">
-                                    
+
                                     <li class="submenu"><a href="" class="active">Sản phẩm</a>
                                         <ul>
                                             <li><a href="MainController?action=NavToBird&amount=0">Chim vẹt</a></li>
@@ -66,7 +78,7 @@
                                             <li><a href="MainController?action=NavToAccessory">Phụ kiện</a></li>
                                         </ul>
                                     </li>
-                                    
+
                                     <li class="scroll-to-section"><a href="MainController?action=NavToCompare">So sánh</a></li>
                                         <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer'}">
                                             <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
@@ -100,31 +112,31 @@
                                     <li class="scroll-to-section"><a href="shop/reports.jsp">Thống kê</a></li>
                                     </c:if>
 
-                                    <c:if test="${sessionScope.LOGIN_USER != null}">
-                                        <li class="submenu"><a href="#">${LOGIN_USER.fullName}</a>
-                                            <ul>
-                                                <li><a href="#">Cá nhân</a></li>
-                                                <li><a href="${logout}">Đăng xuất</a></li>
-                                            </ul>
-                                        </li>
-                                    </c:if>
-<!--                                    <li class="scroll-to-section">
-                                        <form action="MainController" method="post">
-                                            <input type="text" name="txtBirdName" value="" placeholder="Tìm kiếm"/>
-                                            <button type="submit" name="action" value="SearchBird">
-                                                <img style="width: 15px; height: 15px;" src="assets\images\search.png">
-                                            </button></br>
-                                            </select><br/>
-                                        </form>
-                                    </li>-->
+                                <c:if test="${sessionScope.LOGIN_USER != null}">
+                                    <li class="submenu"><a href="#">${LOGIN_USER.fullName}</a>
+                                        <ul>
+                                            <li><a href="#">Cá nhân</a></li>
+                                            <li><a href="${logout}">Đăng xuất</a></li>
+                                        </ul>
+                                    </li>
+                                </c:if>
+                                <!--                                    <li class="scroll-to-section">
+                                                                        <form action="MainController" method="post">
+                                                                            <input type="text" name="txtBirdName" value="" placeholder="Tìm kiếm"/>
+                                                                            <button type="submit" name="action" value="SearchBird">
+                                                                                <img style="width: 15px; height: 15px;" src="assets\images\search.png">
+                                                                            </button></br>
+                                                                            </select><br/>
+                                                                        </form>
+                                                                    </li>-->
                             </ul>
-                            
+
                             <ul style="padding-right: 800px;float: left;" class="nav">
                             </ul>
                             <a class='menu-trigger'>
                                 <span>Menu</span>
                             </a>
-                            
+
                             <form action="MainController" method="post">
                                 <input style="width: 200px;" type="text" name="txtBirdName" value="" placeholder="Tìm kiếm"/>
                                 <button type="submit" name="action" value="SearchBird">
@@ -192,6 +204,7 @@
                                                     <span>${bird.price}</span>
                                                 </div>
                                             </div>
+                                            <img class="bird-thumbnail" src="${bird.image_url}" alt="">
                                         </div>
                                     </c:if>
                                 </c:forEach>

@@ -9,12 +9,15 @@ package swp391.birdfarmshop.model;
  * @author tlminh
  */
 public class Image {
-    String image_id;
-    String image_url;
-    boolean is_thumbnail; 
-    String bird_id; 
-    String nest_id; 
-    String accessory_id;
+    private String image_id;
+    private String image_url;
+    private boolean is_thumbnail;
+    private String bird_id;
+    private String nest_id;
+    private String accessory_id;
+
+    public Image() {
+    }
 
     public Image(String image_id, String image_url, boolean is_thumbnail, String bird_id, String nest_id, String accessory_id) {
         this.image_id = image_id;
@@ -72,5 +75,6 @@ public class Image {
     public void setAccessory_id(String accessory_id) {
         this.accessory_id = accessory_id;
     }
+    
     
 }
