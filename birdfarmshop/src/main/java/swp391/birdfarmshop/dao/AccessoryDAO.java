@@ -58,4 +58,44 @@ public class AccessoryDAO {
         return list;
     }
 
+    public Accessory getAccessory(String accessory_id) throws SQLException {
+        Accessory a = null;
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String sql = "SELECT * FROM [BirdFarmShop].[dbo].[Accessory] WHERE [accessory_id] = ?";
+                st = con.prepareStatement(sql);
+                st.setString(1, accessory_id);
+                rs = st.executeQuery();
+                while (rs.next()) {
+                    String id = rs.getString("accessory_id");
+                    String accessory_name = rs.getString("accessory_name");
+                    int unit_price = rs.getInt("unit_price");
+                    int stock_quantity = rs.getInt("stock_quantity");
+                    String description = rs.getString("description");
+                    int discount = rs.getInt("discount");
+                    String status = rs.getString("status");
+                    a = new Accessory(id, accessory_name, unit_price, stock_quantity, description, discount, status);
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (st != null) {
+                st.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return a;
+    }
 }
