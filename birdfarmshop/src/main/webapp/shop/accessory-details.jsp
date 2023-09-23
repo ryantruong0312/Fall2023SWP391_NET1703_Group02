@@ -154,8 +154,9 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="left-images">
-                        <img src="../assets/images/single-product-01.jpg" alt="">
-                        <img src="../assets/images/single-product-02.jpg" alt="">
+                        <c:forEach var="accessory" items="${requestScope.accessoryImageList}">
+                            <<img src="${accessory}" alt="alt"/>
+                        </c:forEach>
                     </div>
                 </div>
                 <div class="col-lg-4">

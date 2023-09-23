@@ -5,7 +5,7 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.servlet.ServletException;
@@ -14,8 +14,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import swp391.birdfarmshop.dao.AccessoryDAO;
+import swp391.birdfarmshop.dao.ImageDAO;
 import swp391.birdfarmshop.model.Accessory;
-import swp391.birdfarmshop.model.AccessoryBreed;
+//import swp391.birdfarmshop.model.AccessoryBreed;
+import swp391.birdfarmshop.model.Image;
 
 /**
  *
@@ -36,9 +38,13 @@ public class RenderAccessoryController extends HttpServlet {
             AccessoryDAO dao = new AccessoryDAO();
             accessoryList = dao.getAccessories();
             
-            List<AccessoryBreed> accessoryListBreed = new ArrayList<>();
+            String idAccessory = request.getParameter("accessory_id");
+            List<String> accessoryImageList = new ArrayList<>();
+            ImageDAO IDList = new ImageDAO();
+            accessoryImageList = IDList.getImagesByBirdId(idAccessory);
             
             request.setAttribute("accessoryList", accessoryList);
+            request.setAttribute("accessoryImageList", accessoryImageList);
             url = SUCCESS;
 
         } catch (Exception e) {

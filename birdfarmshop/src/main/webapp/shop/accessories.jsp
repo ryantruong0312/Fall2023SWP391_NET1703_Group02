@@ -145,7 +145,7 @@
                             <div class="thumb">
                                 <div class="hover-content">
                                     <ul>
-                                        <li><a href="RenderAccessoryDetailsController?action=NavToAccessoryDetails&accessory_id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a></li>
+                                        <li><a href="RenderAccessoryDetailsController?accessory_id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a></li>
                                         <li><a href="bird-details.jsp"><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
