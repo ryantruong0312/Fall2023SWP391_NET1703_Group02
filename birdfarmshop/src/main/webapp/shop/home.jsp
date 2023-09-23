@@ -77,7 +77,7 @@
                                         <ul>
                                             <li><a href="MainController?action=NavToBird&amount=0">Chim vẹt</a></li>
                                             <li><a href="shop/bird-nest.jsp">Tổ chim non</a></li>
-                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
+                                            <li><a href="MainController?action=NavToAccessory&amount=0">Phụ kiện</a></li>
                                         </ul>
                                     </li>
                                     <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>

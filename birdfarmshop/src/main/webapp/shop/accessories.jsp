@@ -139,37 +139,45 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <c:forEach var="accessory" items="${requestScope.accessoryList}">
-                    <div class="col-lg-4">
-                        <div class="item">
-                            <div class="thumb">
-                                <div class="hover-content">
-                                    <ul>
-                                        <li><a href="RenderAccessoryDetailsController?accessory_id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a></li>
-                                        <li><a href="bird-details.jsp"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
+                    <c:if test="${requestScope.accessoryList != null}">
+                        <c:set var="accessoryList" value="${requestScope.accessoryList}"/>
+                        <c:if test="${not empty accessoryList}">
+                            <c:forEach items="${accessoryList}" var="accessory" varStatus="counter">
+                                <div class="bird col-lg-4">
+                                    <div class="item">
+                                        <div class="thumb">
+                                            <div class="hover-content">
+                                                <ul>
+                                                    <li><a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a></li>
+                                                    <li><a href="bird-details.jsp"><i class="fa fa-shopping-cart"></i></a></li>
+                                                </ul>
+                                            </div>
+                                            <img class="bird-thumbnail" src="${accessory.image_url}" alt="">
+                                        </div>
+                                        <div class="down-content">
+                                            <h4>${accessory.accessory_name}</h4>
+                                            <span>${accessory.unit_price}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="down-content">
-                                    <h4>${accessory.accessory_name}</h4>
-                                    <span>${accessory.unit_price}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </c:forEach>
+                            </c:forEach>
+                            <!--                            <button onClick="loadMoreBird()">Load More </button>-->
+                        </c:if>
+                    </c:if>      
                     <div class="col-lg-12">
                         <div class="pagination">
                             <ul>
-                                <li>
-                                    <a href="#">1</a>
-                                </li>
                                 <li class="active">
-                                    <a href="#">2</a>
+                                    <a href="MainController?action=NavToAccessory&amount=0">1</a>
                                 </li>
                                 <li>
-                                    <a href="#">3</a>
+                                    <a href="MainController?action=NavToAccessory&amount=9">2</a>
                                 </li>
                                 <li>
-                                    <a href="#">4</a>
+                                    <a href="MainController?action=NavToAccessory&amount=18">3</a>
+                                </li>
+                                <li>
+                                    <a href="#" id="page-4">4</a>
                                 </li>
                                 <li>
                                     <a href="#">></a>

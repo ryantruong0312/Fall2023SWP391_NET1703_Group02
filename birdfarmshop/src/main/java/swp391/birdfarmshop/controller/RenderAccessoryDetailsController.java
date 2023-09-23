@@ -12,7 +12,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import swp391.birdfarmshop.dao.AccessoryDAO;
-import swp391.birdfarmshop.model.Accessory;
+import swp391.birdfarmshop.dto.AccessoryDTO;
+//import swp391.birdfarmshop.model.Accessory;
 
 /**
  *
@@ -31,7 +32,7 @@ public class RenderAccessoryDetailsController extends HttpServlet {
         try {
             String accessory_id = request.getParameter("accessory_id");
             AccessoryDAO dao = new AccessoryDAO();
-            Accessory a = dao.getAccessory(accessory_id);
+            AccessoryDTO a = dao.getAccessoriesByID(accessory_id);
             if (a != null) {
                 request.setAttribute("a", a);
                 url = SUCCESS;
