@@ -14,7 +14,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dao.BirdDAO;
+import swp391.birdfarmshop.dao.ImageDAO;
 import swp391.birdfarmshop.model.Bird;
+import swp391.birdfarmshop.model.Image;
 
 /**
  *
@@ -33,14 +35,14 @@ public class RenderBirdController extends HttpServlet {
             String sAmount = request.getParameter("amount");
             int amount = Integer.parseInt(sAmount);
             List<Bird> birdList = new ArrayList<Bird>();
-            BirdDAO dao = new BirdDAO();
-            birdList = dao.getNext9Birds(amount);
-            int numberOfBirds = 0;
-            for (; numberOfBirds < dao.getBirds().size();) {
-                numberOfBirds++;
-            }
+            BirdDAO birdDao = new BirdDAO();
+            birdList = birdDao.getNext9Birds(amount);
+            
+            List<Image> imageBirdList = new ArrayList<Image>();
+            ImageDAO imageDao = new ImageDAO();
+            imageBirdList = imageDao.getBirdImages();
             request.setAttribute("BIRDLIST", birdList);
-            request.setAttribute("MAX", numberOfBirds);
+            request.setAttribute("IMAGEBIRDLIST", imageBirdList);
             url = SUCCESS;
         } catch (SQLException e) {
             log("Error at RenderHomeController: " + e.toString());

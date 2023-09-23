@@ -169,27 +169,32 @@
             </div>
             <div class="container">
                 <div id="content" class="row">
-                    <c:if test="${requestScope.BIRDLIST != null}">
-                        <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
-                        <c:if test="${not empty BIRDLIST}">
-                            <c:forEach items="${BIRDLIST}" var="bird" varStatus="counter">
-                                <div class="bird col-lg-4">
-                                    <div class="item">
-                                        <div class="thumb">
-                                            <div class="hover-content">
-                                                <ul>
-                                                    <li><a href="MainController?action=NavToBirdDetails"><i class="fa fa-eye"></i></a></li>
-                                                    <li><a href="bird-details.jsp"><i class="fa fa-shopping-cart"></i></a></li>
-                                                </ul>
+                    <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
+                    <c:set var="IMAGEBIRDLIST" value="${requestScope.IMAGEBIRDLIST}"/>
+                    <c:if test="${BIRDLIST != null && IMAGEBIRDLIST != null}">
+                        <c:if test="${not empty BIRDLIST && not empty IMAGEBIRDLIST}">
+                            <c:forEach items="${BIRDLIST}" var="bird">
+                                <c:forEach items="${IMAGEBIRDLIST}" var="imagebird">
+                                    <c:if test="${bird.bird_id == imagebird.bird_id}">    
+                                        <div class="bird col-lg-4">
+                                            <div class="item">
+                                                <div class="thumb">
+                                                    <div class="hover-content">
+                                                        <ul>
+                                                            <li><a href="MainController?action=NavToBirdDetails"><i class="fa fa-eye"></i></a></li>
+                                                            <li><a href="bird-details.jsp"><i class="fa fa-shopping-cart"></i></a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <img src="${imagebird.image_url}" alt="">
+                                                </div>
+                                                <div class="down-content">
+                                                    <h4>${bird.bird_name}</h4>
+                                                    <span>${bird.price}</span>
+                                                </div>
                                             </div>
-                                            <img src="assets/images/men-01.jpg" alt="">
                                         </div>
-                                        <div class="down-content">
-                                            <h4>${bird.bird_name}</h4>
-                                            <span>${bird.price}</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                    </c:if>
+                                </c:forEach>
                             </c:forEach>
                             <!--                            <button onClick="loadMoreBird()">Load More </button>-->
                         </c:if>
