@@ -9,6 +9,7 @@ package swp391.birdfarmshop.model;
  * @author tlminh
  */
 public class Bird {
+
     private String bird_id;
     private String bird_name;
     private String color;
@@ -24,9 +25,9 @@ public class Bird {
     private String mom_bird_id;
     private int discount;
     private String status;
+    private String image_url;
 
-
-    public Bird(String bird_id, String bird_name, String color, int age, int grown_age, boolean gender, String breed_id, String achievement, int reproduction_history, int price, String description, String dad_bird_id, String mom_bird_id, int discount, String status) {
+    public Bird(String bird_id, String bird_name, String color, int age, int grown_age, boolean gender, String breed_id, String achievement, int reproduction_history, int price, String description, String dad_bird_id, String mom_bird_id, int discount, String status, String image_url) {
         this.bird_id = bird_id;
         this.bird_name = bird_name;
         this.color = color;
@@ -42,6 +43,15 @@ public class Bird {
         this.mom_bird_id = mom_bird_id;
         this.discount = discount;
         this.status = status;
+        this.image_url = image_url;
+    }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
     }
 
     public String getBird_id() {
