@@ -41,7 +41,8 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_ACCESSORY_DETAILS = "RenderAccessoryDetailsController";
     private static final String ACT_NAV_BIRD = "NavToBird";
     private static final String DEST_NAV_BIRD = "RenderBirdController";
-
+    private static final String ACT_NAV_BIRD_DETAILS = "NavToBirdDetails";
+    private static final String DEST_NAV_BIRD_DETAILS = "RenderBirdDetailsController";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
@@ -79,6 +80,9 @@ public class MainController extends HttpServlet {
                 case ACT_NAV_BIRD:
                     url = DEST_NAV_BIRD;
                     break;    
+                case ACT_NAV_BIRD_DETAILS:
+                    url = DEST_NAV_BIRD_DETAILS;
+                    break;
                 default:
                     break;
             }

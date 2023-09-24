@@ -27,15 +27,9 @@
         <link rel="stylesheet" href="assets/css/lightbox.css">
 
         <style>
-            .thumb{
-                width: 370px;
-                height: 390px;
-            }
             .bird-thumbnail{
-                max-width: 100%; /* Set the maximum width to ensure it fits within the parent container */
-                max-height: 100%; /* Set the maximum height to ensure it fits within the parent container */
-                width: auto; /* Let the width adjust to maintain the aspect ratio */
-                height: auto;
+                width: 350px;
+                height: 368px;
             }
         </style>
     </head>
@@ -86,13 +80,6 @@
                                             </c:if>
                                         <li class="scroll-to-section"><a href="">Ghép cặp</a></li>
                                         <li class="scroll-to-section"><a href="../cart-view.jsp">Giỏ hàng</a></li>
-                                        <li class="submenu"><a href="">Sắp xếp theo</a>
-                                            <ul>
-                                                <li><a href="MainController?action=NavToBird&amount=0">Thấp đến cao</a></li>
-                                                <li><a href="MainController?action=NavToBird&amount=0">Cao đến thấp</a></li>
-                                                <li><a href="MainController?action=NavToBird&amount=0">Giống</a></li>
-                                            </ul>
-                                        </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
                                             </c:if>
@@ -120,29 +107,17 @@
                                         </ul>
                                     </li>
                                 </c:if>
-                                <!--                                    <li class="scroll-to-section">
-                                                                        <form action="MainController" method="post">
-                                                                            <input type="text" name="txtBirdName" value="" placeholder="Tìm kiếm"/>
-                                                                            <button type="submit" name="action" value="SearchBird">
-                                                                                <img style="width: 15px; height: 15px;" src="assets\images\search.png">
-                                                                            </button></br>
-                                                                            </select><br/>
-                                                                        </form>
-                                                                    </li>-->
-                            </ul>
-
-                            <ul style="padding-right: 800px;float: left;" class="nav">
                             </ul>
                             <a class='menu-trigger'>
                                 <span>Menu</span>
                             </a>
 
-                            <form action="MainController" method="post">
+<!--                            <form action="MainController" method="post">
                                 <input style="width: 200px;" type="text" name="txtBirdName" value="" placeholder="Tìm kiếm"/>
                                 <button type="submit" name="action" value="SearchBird">
                                     <img style="width: 15px; height: 15px;" src="assets\images\search.png">
                                 </button></br>
-                            </form>
+                            </form>-->
                             <!-- ***** Menu End ***** -->
                         </nav>
                     </div>
@@ -182,32 +157,26 @@
             <div class="container">
                 <div id="content" class="row">
                     <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
-                    <c:set var="IMAGEBIRDLIST" value="${requestScope.IMAGEBIRDLIST}"/>
-                    <c:if test="${BIRDLIST != null && IMAGEBIRDLIST != null}">
-                        <c:if test="${not empty BIRDLIST && not empty IMAGEBIRDLIST}">
+                    <c:if test="${BIRDLIST != null}">
+                        <c:if test="${not empty BIRDLIST}">
                             <c:forEach items="${BIRDLIST}" var="bird">
-                                <c:forEach items="${IMAGEBIRDLIST}" var="imagebird">
-                                    <c:if test="${bird.bird_id == imagebird.bird_id}">    
                                         <div class="bird col-lg-4">
                                             <div class="item">
                                                 <div class="thumb">
                                                     <div class="hover-content">
                                                         <ul>
-                                                            <li><a href="MainController?action=NavToBirdDetails"><i class="fa fa-eye"></i></a></li>
+                                                            <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
                                                             <li><a href="bird-details.jsp"><i class="fa fa-shopping-cart"></i></a></li>
                                                         </ul>
                                                     </div>
-                                                    <img src="${imagebird.image_url}" alt="">
+                                                    <img class="bird-thumbnail" src="${bird.image_url}" alt="">
                                                 </div>
                                                 <div class="down-content">
                                                     <h4>${bird.bird_name}</h4>
                                                     <span>${bird.price}</span>
                                                 </div>
                                             </div>
-                                            <img class="bird-thumbnail" src="${bird.image_url}" alt="">
                                         </div>
-                                    </c:if>
-                                </c:forEach>
                             </c:forEach>
                             <!--                            <button onClick="loadMoreBird()">Load More </button>-->
                         </c:if>

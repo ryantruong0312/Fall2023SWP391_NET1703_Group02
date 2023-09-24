@@ -19,8 +19,8 @@ import swp391.birdfarmshop.util.DBUtils;
  */
 public class ImageDAO {
 
-    private static final String GET_THUMBNAIL_BY_BIRD_ID = "SELECT [image_url] FROM [Image] WHERE [bird_id] = ? AND [is_thumbnail] = 1";
-    private static final String GET_IMAGES_BY_BIRD_ID = "SELECT [image_url] FROM [Image] WHERE [bird_id] = ?";
+    private static final String GET_THUMBNAIL_BY_BIRD_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [bird_id] = ? AND [is_thumbnail] = 1";
+    private static final String GET_IMAGES_BY_BIRD_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [bird_id] = ?";
 
     public String getThumbnailUrlByBirdId(String birdId) throws SQLException {
         String url = "";
@@ -52,7 +52,7 @@ public class ImageDAO {
         return url;
     }
 
-    ArrayList<String> getImagesByBirdId(String birdId) throws SQLException {
+    public ArrayList<String> getImagesByBirdId(String birdId) throws SQLException {
         ArrayList<String> urls = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
@@ -82,4 +82,9 @@ public class ImageDAO {
         }
         return urls;
     }
+//    public static void main(String[] args) throws SQLException {
+//        ImageDAO dao = new ImageDAO();
+//        ArrayList<String> url = dao.getImagesByBirdId("CP101");
+//        System.out.println(url);
+//    }
 }
