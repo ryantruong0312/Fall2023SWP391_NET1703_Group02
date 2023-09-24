@@ -427,7 +427,7 @@
                     <div class="col-lg-3">
                         <div class="first-item">
                             <div class="logo">
-                                <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
+                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
                             </div>
                             <ul>
                                 <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>

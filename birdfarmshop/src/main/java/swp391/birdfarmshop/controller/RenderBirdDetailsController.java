@@ -6,36 +6,35 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import swp391.birdfarmshop.dao.BirdDAO;
-import swp391.birdfarmshop.model.Bird;
+import swp391.birdfarmshop.dto.BirdDTO;
 
 /**
  *
  * @author phong pc
  */
-public class RenderBirdController extends HttpServlet {
+public class RenderBirdDetailsController extends HttpServlet {
    
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "shop/birds.jsp";
-
+    private static final String SUCCESS = "shop/bird-details.jsp";
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String sAmount = request.getParameter("amount");
-            int amount = Integer.parseInt(sAmount);
-            List<Bird> birdList = new ArrayList<Bird>();
+            String bird_id = request.getParameter("bird_id");
             BirdDAO birdDao = new BirdDAO();
-            birdList = birdDao.getNext9Birds(amount);
-            request.setAttribute("BIRDLIST", birdList);
+            BirdDTO birdDetails = birdDao.getBirdDetailsById(bird_id);
+            request.setAttribute("birdDetails", birdDetails);
             url = SUCCESS;
         } catch (SQLException e) {
             log("Error at RenderHomeController: " + e.toString());
@@ -55,7 +54,11 @@ public class RenderBirdController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(RenderBirdDetailsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     } 
 
     /** 
@@ -68,7 +71,11 @@ public class RenderBirdController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(RenderBirdDetailsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** 
