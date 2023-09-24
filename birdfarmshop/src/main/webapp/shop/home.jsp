@@ -549,7 +549,7 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
-
+        <%@include file="../layout/message.jsp" %>
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
 

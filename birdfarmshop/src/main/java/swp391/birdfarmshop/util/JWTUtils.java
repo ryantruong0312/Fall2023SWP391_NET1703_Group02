@@ -15,6 +15,7 @@ import static io.jsonwebtoken.Jwts.header;
 import jakarta.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
+import java.util.Random;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import swp391.birdfarmshop.util.Constants;
@@ -57,5 +58,16 @@ public class JWTUtils {
             e.printStackTrace();
         }
         return content;
+    }
+
+    public static String randomPasswordToken() {
+        String number = "0123456789";
+        char[] randomCode = new char[6];
+        Random r = new Random();
+        for (int i = 0; i < randomCode.length; i++) {
+            randomCode[i] = number.charAt(r.nextInt(number.length()));
+        }
+        String newPassword = new String(randomCode);
+        return newPassword;
     }
 }

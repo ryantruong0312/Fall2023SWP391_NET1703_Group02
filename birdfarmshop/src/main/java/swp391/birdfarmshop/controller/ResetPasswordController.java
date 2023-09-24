@@ -20,14 +20,14 @@ import swp391.birdfarmshop.util.JWTUtils;
 
 /**
  *
- * @author tlminh
+ * @author Admin
  */
-@WebServlet(name = "RegisterController", urlPatterns = {"/RegisterController"})
-public class RegisterController extends HttpServlet {
+@WebServlet(name = "ResetPasswordController", urlPatterns = {"/ResetPasswordController"})
+public class ResetPasswordController extends HttpServlet {
 
-    private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
     private static final String ERROR = "/WEB-INF/errorpages/error.jsp";
-    private static final String DEST_NAV_REGISTER = "/authentication/register.jsp";
+    public static final String DEST_NAV_RESET = "/authentication/reset.jsp";
+    private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,43 +42,39 @@ public class RegisterController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            String name = request.getParameter("name");
             String email = request.getParameter("email");
-            String mobile = request.getParameter("mobile");
-            String account = request.getParameter("account");
-            String password = request.getParameter("password");
-            User u = UserDAO.findUser(name, email);
+            User u = UserDAO.findUser("", email);
+            String token = JWTUtils.randomPasswordToken();
             HttpSession session = request.getSession();
-            String url = ERROR;
-            if (u == null) {
-                String endcodePassword = JWTUtils.encodeJWT(password);
-                String token = JWTUtils.encodeJWT(email);
-                int resultSendMail = EmailService.sendEmail(email, "Kích hoạt tài khoản", EmailUtils.sendActive(name, token));
-                if (resultSendMail == 1) {
-                    int result = UserDAO.createUser(account, email, endcodePassword, name, mobile, "form", "inactive");
-                    if (result == 0) {
-                        session.setAttribute("ERROR", "Tạo tài khoản không thành công");
-                        url = DEST_NAV_REGISTER;
-                    } else {
-                        session.setAttribute("SUCCESS", "Tạo tài khoản thành công. Kiểm tra email để kích hoạt tài khoản");
-                        url = DEST_NAV_LOGIN;
-                    }
+            String url = "MainController?action=NavToReset";
+            if (u != null) {
+                String password = u.getPassword();
+                if (password.isEmpty()) {
+                    session.setAttribute("ERROR", "Tài khoản không tồn tại");
                 } else {
-                    session.setAttribute("ERROR", "Tạo tài khoản không thành công");
-                    url = DEST_NAV_REGISTER;
+                    int resultSendMail = EmailService.sendEmail(u.getEmail(), "Cấp lại mật khẩu cho tài khoản", EmailUtils.sendPassword(u.getFullName(),token));
+                    String newPassword = JWTUtils.encodeJWT(token);
+                    if (resultSendMail == 1) {
+                        int result = UserDAO.updatePassword(u.getUsername(), newPassword);
+                        if (result == 0) {
+                        } else {
+                            session.setAttribute("SUCCESS", "Kiểm tra email để nhận mật khẩu mới");
+                            url ="MainController?action=NavToLogin";
+                        }
+                    }else{
+                        session.setAttribute("ERROR", "Gửi email thất bại");
+                    }
                 }
-
             } else {
-                session.setAttribute("ERROR", "Tạo tài khoản không thành công");
-                url = DEST_NAV_REGISTER;
+                session.setAttribute("ERROR", "Tài khoản không tồn tại");   
             }
-            request.getRequestDispatcher(url).forward(request, response);
+            response.sendRedirect(url);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
