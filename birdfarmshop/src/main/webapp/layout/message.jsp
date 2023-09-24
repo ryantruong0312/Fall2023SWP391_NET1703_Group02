@@ -18,7 +18,7 @@
                 title: 'Lỗi',
                 message: '<c:out value="${sessionScope.ERROR}" />',
                 type: 'error',
-                duration: 3500
+                duration: 3000
             });
         </script>
         <c:remove var="ERROR" scope="session" />
@@ -29,7 +29,7 @@
                 title: 'Thành công',
                 message: '<c:out value="${sessionScope.SUCCESS}" />',
                 type: 'success',
-                duration: 3500
+                duration: 3000
             });
         </script>
         <c:remove var="SUCCESS" scope="session" />

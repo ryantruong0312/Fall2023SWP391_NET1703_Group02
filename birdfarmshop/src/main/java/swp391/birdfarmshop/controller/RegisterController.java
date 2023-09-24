@@ -42,7 +42,7 @@ public class RegisterController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            String name = request.getParameter("name");
+            String name = request.getParameter("name").trim();
             String email = request.getParameter("email");
             String mobile = request.getParameter("mobile");
             String account = request.getParameter("account");

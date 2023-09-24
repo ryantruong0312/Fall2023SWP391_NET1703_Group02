@@ -46,14 +46,6 @@
                         </tr>
                     </tbody>
                 </table>-->
-        <button onclick="toast({title: 'Susscess',
-                    message: 'Bạn đã đăng kí thành công tài khoảnsaddsa dsa dasdsadsadsadsa ',
-                    type: 'success',
-                    duration: 3000})" >click</button>
-        <div id="toast">
-            
-        </div>
-        <script src="../assets/js/toastmessage.js"></script>
         <script src="../assets/js/birdshop.js"></script>
         <script src="../assets/js/jquery-3.7.1.min.js"></script>
         <script src="../assets/js/popper.min.js"></script>

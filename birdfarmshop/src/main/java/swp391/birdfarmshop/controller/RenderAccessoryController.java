@@ -5,7 +5,7 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.servlet.ServletException;
@@ -14,7 +14,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import swp391.birdfarmshop.dao.AccessoryDAO;
+import swp391.birdfarmshop.dao.BirdDAO;
+import swp391.birdfarmshop.dao.ImageDAO;
 import swp391.birdfarmshop.model.Accessory;
+import swp391.birdfarmshop.model.Bird;
+//import swp391.birdfarmshop.model.AccessoryBreed;
+import swp391.birdfarmshop.model.Image;
 
 /**
  *
@@ -31,10 +36,17 @@ public class RenderAccessoryController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            List<Accessory> accessoryList = new ArrayList<>();
+            String sAmount = request.getParameter("amount");
+            int amount = Integer.parseInt(sAmount);
+            List<Accessory> accessoryList = new ArrayList<Accessory>();
             AccessoryDAO dao = new AccessoryDAO();
-            accessoryList = dao.getAccessories();
+            accessoryList = dao.getNext9Accessory(amount);
+            int numberOfAccessory = 0;
+            for (; numberOfAccessory < dao.getAccessories().size();) {
+                numberOfAccessory++;
+            }
             request.setAttribute("accessoryList", accessoryList);
+            request.setAttribute("MAX", numberOfAccessory);
             url = SUCCESS;
 
         } catch (Exception e) {

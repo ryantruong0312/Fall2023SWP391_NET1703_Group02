@@ -87,7 +87,7 @@ $(".form-register").validate({
         },
         email: {
             required: 'Vui lòng nhập email',
-            email: 'Vui lòng nhập đúng định dạng email (example@gmail.com)'
+            email: 'Vui lòng nhập đúng định dạng email'
         },
         account: {
             required: 'Vui lòng điền tên đăng nhập',

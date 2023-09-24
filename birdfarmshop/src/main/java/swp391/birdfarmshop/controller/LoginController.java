@@ -35,8 +35,7 @@ public class LoginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try  {
             String username = request.getParameter("account");
             String password = request.getParameter("password");
             String save = request.getParameter("checkbox");
@@ -49,6 +48,7 @@ public class LoginController extends HttpServlet {
                     if (u.getStatus().equals("active")) {
                         if (session != null) {
                             session.setAttribute("LOGIN_USER", u);
+                            session.setAttribute("SUCCESS", "Đăng nhập thành công");
                             if (save != null) {
                                 String encodeEmail = JWTUtils.encodeJWT(u.getEmail());
                                 Cookie cookie = new Cookie("token", encodeEmail);

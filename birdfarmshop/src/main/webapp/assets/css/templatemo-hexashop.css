@@ -2527,7 +2527,7 @@ register*/
     right: 0;
     height: 7px;
     background-color: currentColor;
-    animation: decreaseWidth 4.1s linear;
+    animation: decreaseWidth 3.3s linear;
 }
 
 @keyframes decreaseWidth {
@@ -2565,7 +2565,7 @@ register*/
 }
 #toast{
     position: fixed;
-    top: 25px;
+    top:  65px;
     right: 16px;
     z-index: 999999;
 }
@@ -2641,4 +2641,21 @@ register*/
     .toast-custom + .toast-custom{
         margin-top: 5px;
     }
+}
+/*cart*/
+#show-cart{
+    position: relative;
+}
+.cart-amount{
+    position: absolute;
+    width: 25px;
+    border-radius: 10px;
+    background-color: red;
+    top: -1px;
+    right: -2px;
+    text-align: center; 
+    margin: auto;
+    line-height: 14px;
+    font-size: 0.7rem;
+    color: white;   
 }

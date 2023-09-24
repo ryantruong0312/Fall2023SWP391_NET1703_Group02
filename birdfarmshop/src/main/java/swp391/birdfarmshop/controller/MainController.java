@@ -77,11 +77,11 @@ public class MainController extends HttpServlet {
                 case ACT_NAV_ACCESSORY:
                     url = DEST_NAV_ACCESSORY;
                     break;
-                case ACT_NAV_ACCESSORY_DETAILS:
-                    url = DEST_NAV_ACCESSORY_DETAILS;
-                    break;
                 case ACT_NAV_BIRD:
                     url = DEST_NAV_BIRD;
+                    break;
+                case ACT_NAV_ACCESSORY_DETAILS:
+                    url = DEST_NAV_ACCESSORY_DETAILS;
                     break;
                 case ACT_NAV_RESET:
                     url = DEST_NAV_RESET;
