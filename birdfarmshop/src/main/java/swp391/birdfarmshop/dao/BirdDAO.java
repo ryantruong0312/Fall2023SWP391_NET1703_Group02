@@ -149,9 +149,9 @@ public class BirdDAO {
                     boolean sex = rs.getBoolean("gender");
                     String gender = "";
                     if (sex) {
-                        gender = "ƒê·ª±c";
+                        gender = "–?c";
                     } else {
-                        gender = "C√°i";
+                        gender = "C·i";
                     }
                     String breed_id = rs.getString("breed_id");
                     String breed_name = breedDao.getBreedNameById(breed_id);

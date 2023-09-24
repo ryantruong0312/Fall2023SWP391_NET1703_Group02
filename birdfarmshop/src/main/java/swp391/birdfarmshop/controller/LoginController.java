@@ -23,11 +23,7 @@ import swp391.birdfarmshop.util.JWTUtils;
  */
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
 public class LoginController extends HttpServlet {
-
-    private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
     private static final String DEST_NAV_HOME = "RenderHomeController";
-    private static final String ERROR = "/WEB-INF/errorpages/error.jsp";
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,14 +35,13 @@ public class LoginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try  {
+        response.setContentType("text/html;charset=UTF-8");
+        try ( PrintWriter out = response.getWriter()) {
             String username = request.getParameter("account");
             String password = request.getParameter("password");
             String save = request.getParameter("checkbox");
             String encodePassword = JWTUtils.encodeJWT(password);
             User u = UserDAO.findUser(username, username);
-            String message = null;
-            String url = ERROR;
             HttpSession session = request.getSession(true);
             if (u != null) {
                 String decodePassword = JWTUtils.decodeJWT(u.getPassword());
@@ -61,26 +56,19 @@ public class LoginController extends HttpServlet {
                                 response.addCookie(cookie);
                             }
                             response.sendRedirect(DEST_NAV_HOME);
-                            return ;
                         }
                     } else if (u.getStatus().equals("inactive")) {
-                        request.setAttribute("error", "Vui lòng kích hoạt tài khoản của bạn bằng cách nhấp vào liên kết trong email đã đăng ký.");
-                        url = DEST_NAV_LOGIN;
-                    } else {
-                        request.setAttribute("error", "Tài khoản của bạn đã bị khóa, vui lòng liên hệ với cửa hàng.");
-                        url = DEST_NAV_LOGIN;
+                        session.setAttribute("ERROR", "Vui lòng kích hoạt tài khoản của bạn bằng cách nhấp vào liên kết trong email đã đăng ký");
+                    } else { 
+                        session.setAttribute("ERROR", "Tài khoản của bạn đã bị khóa, vui lòng liên hệ với cửa hàng");
                     }
                 } else {
-                    message = "Email hoặc mật khẩu không chính xác.";
-                    request.setAttribute("error", message);
-                    url = DEST_NAV_LOGIN;
+                     session.setAttribute("ERROR", "Email hoặc mật khẩu không chính xác");
                 }
             } else {
-                message = "Email hoặc mật khẩu không chính xác.";
-                request.setAttribute("error", message);
-                url = DEST_NAV_LOGIN;
+                session.setAttribute("ERROR", "Email hoặc mật khẩu không chính xác");
             }
-            request.getRequestDispatcher(url).forward(request, response);
+            response.sendRedirect("MainController?action=NavToLogin");
         } catch (Exception e) {
             e.printStackTrace();
         }

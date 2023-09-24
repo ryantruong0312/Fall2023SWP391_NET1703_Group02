@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/javascript.js to edit this template
  */
 
-
 $('.show-password').click(function () {
     const type = $('[name="password"]').attr('type');
     if (type === 'password') {
@@ -30,7 +29,8 @@ $('.input').focus(function () {
 $(".form-login").validate({
     rules: {
         account: {
-            required: true
+            required: true,
+            regex: /^[^\s]+$/
         },
         password: {
             required: true
@@ -38,17 +38,20 @@ $(".form-login").validate({
     },
     messages: {
         account: {
-            required: 'Vui lòng nhập tài khoản của bạn'
+            required: 'Vui lòng nhập tài khoản của bạn',
+            regex: "Tài khoản không chứa khoảng trắng"
         },
         password: {
-            required: 'Vui lòng nhập mật khẩu của bạn'   
+            required: 'Vui lòng nhập mật khẩu của bạn'
         }
     }
 });
 $(".form-register").validate({
     rules: {
         name: {
-            required: true
+            required: true,
+            maxlength: 30,
+            regex: /^(?!\s)[\s\S]*$/
         },
         mobile: {
             required: true,
@@ -60,7 +63,8 @@ $(".form-register").validate({
         },
         account: {
             required: true,
-            minlength: 5
+            minlength: 5,
+            regex: /^[^\s]+$/
         },
         password: {
             required: true,
@@ -73,19 +77,22 @@ $(".form-register").validate({
     },
     messages: {
         name: {
-            required: 'Vui lòng nhập tên của bạn'
+            required: 'Vui lòng nhập tên của bạn',
+            maxlength: 'Không nhập quá 30 kí tự',
+            regex: "Không nhập kí tự trắng đầu tiên"
         },
         mobile: {
             required: 'Vui lòng nhập điện thoại của bạn',
-            regex: 'Vui lòng nhập đúng định dạng số điện thoại 10-11 số'
+            regex: 'Vui lòng nhập đúng định dạng số điện thoại bắt đầu số 0 và có 10 số'
         },
         email: {
             required: 'Vui lòng nhập email',
-            email: 'Vui lòng nhập đúng định dạng email'
+            email: 'Vui lòng nhập đúng định dạng email (example@gmail.com)'
         },
         account: {
             required: 'Vui lòng điền tên đăng nhập',
-            minlength: 'Tên tài khoản phải có ít nhất 5 ký tự'
+            minlength: 'Tên tài khoản phải có ít nhất 5 ký tự',
+            regex: "Tài khoản không chứa khoảng trắng"
         },
         password: {
             required: 'Vui lòng nhập mật khẩu của bạn',

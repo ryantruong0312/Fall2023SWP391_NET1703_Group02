@@ -25,7 +25,8 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_REGISTER = "/authentication/register.jsp";
     private static final String ACT_NAV_BIRD_COMPARE_PAGE = "NavToCompare";
     private static final String DEST_NAV_BIRD_COMPARE_PAGE = "RenderBirdCompareController";
-
+    private static final String ACT_NAV_RESET = "NavToReset";
+    public static final String DEST_NAV_RESET = "/authentication/reset.jsp";
 //  PAGE
 
     private static final String ACT_LOGIN = "login";
@@ -41,13 +42,15 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_ACCESSORY_DETAILS = "RenderAccessoryDetailsController";
     private static final String ACT_NAV_BIRD = "NavToBird";
     private static final String DEST_NAV_BIRD = "RenderBirdController";
-    private static final String ACT_NAV_BIRD_DETAILS = "NavToBirdDetails";
-    private static final String DEST_NAV_BIRD_DETAILS = "RenderBirdDetailsController";
+    private static final String ACT_REST_PASSWORD = "reset";
+    private static final String DEST_REST_PASSWORD = "ResetPasswordController";
+    private static final String ACT_ACTIVE = "active";
+    private static final String DEST_ACTIVE = "ActiveController";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
         try {
-            System.out.print("helloworld");
             String action = request.getParameter("action");
             switch (action) {
                 case ACT_NAV_HOME:
@@ -79,9 +82,15 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_NAV_BIRD:
                     url = DEST_NAV_BIRD;
-                    break;    
-                case ACT_NAV_BIRD_DETAILS:
-                    url = DEST_NAV_BIRD_DETAILS;
+                    break;
+                case ACT_NAV_RESET:
+                    url = DEST_NAV_RESET;
+                    break;
+                case ACT_REST_PASSWORD:
+                    url = DEST_REST_PASSWORD;
+                    break;
+                case ACT_ACTIVE:
+                    url = DEST_ACTIVE;
                     break;
                 default:
                     break;

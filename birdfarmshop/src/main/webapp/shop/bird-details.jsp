@@ -18,7 +18,7 @@
         <meta name="author" content="">
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>Bird Farm Shop - Chi tiết sản phẩm</title>
+        <title>Hexashop - Product Detail Page</title>
 
 
         <!-- Additional CSS Files -->

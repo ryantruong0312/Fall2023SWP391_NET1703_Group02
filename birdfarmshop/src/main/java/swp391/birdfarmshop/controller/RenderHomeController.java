@@ -11,9 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import swp391.birdfarmshop.dao.AccessoryCategoryDAO;
 import swp391.birdfarmshop.dao.BirdBreedDAO;
-import swp391.birdfarmshop.model.AccessoryCategory;
 import swp391.birdfarmshop.model.BirdBreed;
 
 /**
@@ -31,13 +29,9 @@ public class RenderHomeController extends HttpServlet {
         String url = ERROR;
         try {
             List<BirdBreed> breeds = new ArrayList<>();
-            List<AccessoryCategory> categories = new ArrayList<>();
-            BirdBreedDAO breedDao = new BirdBreedDAO();
-            AccessoryCategoryDAO categoryDao = new AccessoryCategoryDAO();
-            breeds = breedDao.getBirdBreeds();
-            categories = categoryDao.getAccessoryCategories();
-            request.setAttribute("ACCESSORY_CATEGORIES", categories);
-            request.setAttribute("BIRD_BREEDS", breeds);
+            BirdBreedDAO dao = new BirdBreedDAO();
+            breeds = dao.getBirdBreeds();
+            request.setAttribute("BREEDS", breeds);
             url = SUCCESS;
         } catch (Exception e) {
             log("Error at RenderHomeController: " + e.toString());

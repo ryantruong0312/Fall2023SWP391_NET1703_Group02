@@ -42,7 +42,7 @@ public class UserDAO {
                     Date registerDate = rs.getDate("register_date");
                     String loginBy = rs.getString("login_by");
                     String status = rs.getString("status");
-                    u = new User(user, password, fullName, phone, email, role, address, point, registerDate,loginBy, status);
+                    u = new User(user, password, fullName, phone, email, role, address, point, registerDate, loginBy, status);
                 }
             }
         } catch (Exception e) {
@@ -72,6 +72,7 @@ public class UserDAO {
                 pst.setString(2, emailFind);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null && rs.next()) {
+                    username = rs.getString("username");
                     String password = rs.getString("password");
                     String fullName = rs.getString("full_name");
                     String phone = rs.getString("phone");
@@ -82,7 +83,7 @@ public class UserDAO {
                     Date registerDate = rs.getDate("register_date");
                     String loginBy = rs.getString("login_by");
                     String status = rs.getString("status");
-                    u = new User(username, password, fullName, phone, email, role, address, point, registerDate, loginBy,status);
+                    u = new User(username, password, fullName, phone, email, role, address, point, registerDate, loginBy, status);
                 }
             }
         } catch (Exception e) {
@@ -99,7 +100,7 @@ public class UserDAO {
         return u;
     }
 
-    public static int createUser(String user, String email, String password, String name, String mobile, String loginBy,String status) {
+    public static int createUser(String user, String email, String password, String name, String mobile, String loginBy, String status) {
         int result = 0;
         Connection cnn = null;
         try {
@@ -130,5 +131,60 @@ public class UserDAO {
         }
         return result;
     }
-    
+
+    public static int updatePassword(String user,String password) {
+        int result = 0;
+        Connection cnn = null;
+        try {
+            cnn = DBUtils.getConnection();
+            if (cnn != null) {
+                String sql = "UPDATE [User]\n"
+                        + "SET [password] = ?\n"
+                        + "WHERE [username] = ?";
+                PreparedStatement pst = cnn.prepareStatement(sql);
+                pst.setString(1, password);
+                pst.setString(2, user);
+                result = pst.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cnn != null) {
+                try {
+                    cnn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
+    }
+
+    public static int updateActive(String username, String active) {
+        int result = 0;
+        Connection cnn = null;
+        try {
+            cnn = DBUtils.getConnection();
+            if (cnn != null) {
+                String sql = "UPDATE [User]\n"
+                        + "SET [status] = ?\n"
+                        + "WHERE [username] = ?";
+                PreparedStatement pst = cnn.prepareStatement(sql);
+                pst.setString(1, active);
+                pst.setString(2, username);
+                result = pst.executeUpdate();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cnn != null) {
+                try {
+                    cnn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
+    }
 }
