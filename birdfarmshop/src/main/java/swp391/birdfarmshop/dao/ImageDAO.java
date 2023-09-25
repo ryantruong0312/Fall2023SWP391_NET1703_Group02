@@ -19,8 +19,10 @@ import swp391.birdfarmshop.util.DBUtils;
  */
 public class ImageDAO {
 
-    private static final String GET_THUMBNAIL_BY_BIRD_ID = "SELECT [image_url] FROM [Image] WHERE [bird_id] = ? AND [is_thumbnail] = 1";
-    private static final String GET_IMAGES_BY_BIRD_ID = "SELECT [image_url] FROM [Image] WHERE [bird_id] = ?";
+    private static final String GET_THUMBNAIL_BY_BIRD_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [bird_id] = ? AND [is_thumbnail] = 1";
+    private static final String GET_IMAGES_BY_BIRD_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [bird_id] = ?";
+    private static final String GET_THUMBNAIL_BY_ACCESSORY_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [accessory_id] = ? AND [is_thumbnail] = 1";
+    private static final String GET_IMAGES_BY_ACCESSORY_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [bird_id] = ?";
 
     public String getThumbnailUrlByBirdId(String birdId) throws SQLException {
         String url = "";
@@ -52,7 +54,7 @@ public class ImageDAO {
         return url;
     }
 
-    ArrayList<String> getImagesByBirdId(String birdId) throws SQLException {
+    public ArrayList<String> getImagesByBirdId(String birdId) throws SQLException {
         ArrayList<String> urls = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
@@ -81,5 +83,71 @@ public class ImageDAO {
             }
         }
         return urls;
+    }
+//    public static void main(String[] args) throws SQLException {
+//        ImageDAO dao = new ImageDAO();
+//        ArrayList<String> url = dao.getImagesByBirdId("CP101");
+//        System.out.println(url);
+//    }
+
+    public ArrayList<String> getImagesByAccessoryId(String accessoryId) throws SQLException {
+        ArrayList<String> urls = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(GET_IMAGES_BY_ACCESSORY_ID);
+                stm.setString(1, accessoryId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String url = rs.getString("image_url");
+                    urls.add(url);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return urls;
+    }
+
+    public String getThumbnailUrlByAccessoryId(String accessoryId) throws SQLException {
+        String url = "";
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(GET_THUMBNAIL_BY_ACCESSORY_ID);
+                stm.setString(1, accessoryId);
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    url = rs.getString("image_url");
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return url;
     }
 }

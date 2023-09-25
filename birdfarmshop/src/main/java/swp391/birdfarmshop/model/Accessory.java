@@ -9,6 +9,7 @@ package swp391.birdfarmshop.model;
  * @author tlminh
  */
 public class Accessory {
+
     private String accessory_id;
     private String accessory_name;
     private int unit_price;
@@ -16,11 +17,12 @@ public class Accessory {
     private String description;
     private int discount;
     private String status;
+    private String image_url;
 
     public Accessory() {
     }
 
-    public Accessory(String accessory_id, String accessory_name, int unit_price, int stock_quantity, String description, int discount, String status) {
+    public Accessory(String accessory_id, String accessory_name, int unit_price, int stock_quantity, String description, int discount, String status, String image_url) {
         this.accessory_id = accessory_id;
         this.accessory_name = accessory_name;
         this.unit_price = unit_price;
@@ -28,6 +30,7 @@ public class Accessory {
         this.description = description;
         this.discount = discount;
         this.status = status;
+        this.image_url = image_url;
     }
 
     public String getAccessory_id() {
@@ -85,6 +88,15 @@ public class Accessory {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
     
     
+
 }

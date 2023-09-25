@@ -29,6 +29,8 @@ public class BirdDAO {
             + "ORDER BY [price] ASC OFFSET ? ROWS FETCH NEXT 9 ROWS ONLY";
     private static final String GET_BIRD_NAME_BY_ID = "SELECT [bird_name] FROM [Bird] WHERE [bird_id] = ?";
     private static final String GET_BIRD_BY_ID = "SELECT * FROM [Bird] WHERE [bird_id] = ?";
+    private static final String IS_BIRD_SOLD_OUT = "SELECT [status] FROM [Bird] WHERE [bird_id] = ? AND [status] = N'Đã bán'";
+
 
     public List<Bird> getBirds() throws SQLException {
         List<Bird> birdList = new ArrayList<>();
@@ -103,7 +105,7 @@ public class BirdDAO {
                     int price = rs.getInt("price");
                     String description = rs.getString("description");
                     String dad_bird_id = rs.getString("dad_bird_id");
-                    String mom_bird_id = rs.getString("mom_bird_id");;
+                    String mom_bird_id = rs.getString("mom_bird_id");
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
@@ -127,7 +129,7 @@ public class BirdDAO {
         return next9BirdList;
     }
 
-    public BirdDTO getBirdById(String birdId) throws SQLException {
+    public BirdDTO getBirdDetailsById(String birdId) throws SQLException {
         BirdDTO bird = new BirdDTO();
         Connection con = null;
         PreparedStatement stm = null;
@@ -137,10 +139,10 @@ public class BirdDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement(GET_BIRD_LIST);
+                stm = con.prepareStatement(GET_BIRD_BY_ID);
                 stm.setString(1, birdId);
                 rs = stm.executeQuery();
-                if (rs.next()) {
+                while (rs.next()) {
                     String bird_id = rs.getString("bird_id");
                     String bird_name = rs.getString("bird_name");
                     String color = rs.getString("color");
@@ -149,9 +151,9 @@ public class BirdDAO {
                     boolean sex = rs.getBoolean("gender");
                     String gender = "";
                     if (sex) {
-                        gender = "Đực";
+                        gender = "�?c";
                     } else {
-                        gender = "Cái";
+                        gender = "C�i";
                     }
                     String breed_id = rs.getString("breed_id");
                     String breed_name = breedDao.getBreedNameById(breed_id);
@@ -167,7 +169,7 @@ public class BirdDAO {
                     String status = rs.getString("status");
                     ArrayList<String> image_urls = imgDao.getImagesByBirdId(birdId);
                     bird = new BirdDTO(bird_id, bird_name, color, age, grown_age, gender, breed_id, breed_name,
-                            achievement, reproduction_history, price, description, dad_bird_id, dad_bird_name, mom_bird_id, mom_bird_name, discount, status,image_urls);
+                            achievement, reproduction_history, price, description, dad_bird_id, dad_bird_name, mom_bird_id, mom_bird_name, discount, status, image_urls);
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {
@@ -193,11 +195,49 @@ public class BirdDAO {
         try {
             conn = DBUtils.getConnection();
             if (conn != null) {
-                ptm = conn.prepareStatement(GET_BIRD_NAME_BY_ID);
+                ptm = conn.prepareStatement(GET_BIRD_BY_ID);
                 ptm.setString(1, bird_id);
                 rs = ptm.executeQuery();
                 if (rs.next()) {
                     result = rs.getString("bird_name");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ptm != null) {
+                ptm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return result;
+    }
+//    public static void main(String[] args) throws SQLException {
+//        BirdDAO dao = new BirdDAO();
+//        BirdDTO bird = dao.getBirdDetailsById("CL201");
+//        System.out.println(bird.getImage_urls());
+//        for (String url : bird.getImage_urls()) {
+//            System.out.println(url);
+//        }
+//    }
+    public boolean isBirdSoldOut(String bird_id) throws SQLException {
+        boolean result = false;
+        Connection conn = null;
+        PreparedStatement ptm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtils.getConnection();
+            if (conn != null) {
+                ptm = conn.prepareStatement(IS_BIRD_SOLD_OUT);
+                ptm.setString(1, bird_id);
+                rs = ptm.executeQuery();
+                if (rs != null && rs.next()) {
+                    result = true;
                 }
             }
         } catch (Exception e) {

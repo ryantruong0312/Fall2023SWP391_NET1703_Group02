@@ -11,8 +11,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import swp391.birdfarmshop.dao.UserDAO;
 import swp391.birdfarmshop.model.User;
+import swp391.birdfarmshop.services.EmailService;
+import swp391.birdfarmshop.util.EmailUtils;
 import swp391.birdfarmshop.util.JWTUtils;
 
 /**
@@ -39,33 +42,39 @@ public class RegisterController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            String name = request.getParameter("name");
+            String name = request.getParameter("name").trim();
             String email = request.getParameter("email");
             String mobile = request.getParameter("mobile");
             String account = request.getParameter("account");
             String password = request.getParameter("password");
             User u = UserDAO.findUser(name, email);
-            String message = null;
+            HttpSession session = request.getSession();
             String url = ERROR;
             if (u == null) {
                 String endcodePassword = JWTUtils.encodeJWT(password);
-                int result = UserDAO.createUser(account, email, endcodePassword, name, mobile,"form","inactive");
-                if (result == 0) {
-                    message = "Tạo tài khoản không thành công!";
-                    request.setAttribute("error", message);
-                    url = DEST_NAV_REGISTER;
+                String token = JWTUtils.encodeJWT(email);
+                int resultSendMail = EmailService.sendEmail(email, "Kích hoạt tài khoản", EmailUtils.sendActive(name, token));
+                if (resultSendMail == 1) {
+                    int result = UserDAO.createUser(account, email, endcodePassword, name, mobile, "form", "inactive");
+                    if (result == 0) {
+                        session.setAttribute("ERROR", "Tạo tài khoản không thành công");
+                        url = DEST_NAV_REGISTER;
+                    } else {
+                        session.setAttribute("SUCCESS", "Tạo tài khoản thành công. Kiểm tra email để kích hoạt tài khoản");
+                        url = DEST_NAV_LOGIN;
+                    }
                 } else {
-                    url = DEST_NAV_LOGIN;
+                    session.setAttribute("ERROR", "Tạo tài khoản không thành công");
+                    url = DEST_NAV_REGISTER;
                 }
 
             } else {
-                message = "Têntài khoản hoặc email đã tồn tại!    ";
-                request.setAttribute("error", message);
+                session.setAttribute("ERROR", "Tạo tài khoản không thành công");
                 url = DEST_NAV_REGISTER;
             }
             request.getRequestDispatcher(url).forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
+            log("Error at RegisterController: " + e.toString());
         }
     }
 

@@ -37,7 +37,7 @@ public class FillterLogin implements Filter {
             HttpSession session = res.getSession();
             String action = request.getParameter("action");
             User u = (User) session.getAttribute("LOGIN_USER");
-            if(u == null && action != "ACT_NAV_LOGIN")
+            if(u == null && (action != "ACT_NAV_LOGIN" || action != "ACT_NAV_REGISTER"))
             if (cookie != null) {
                 for (Cookie c : cookie) {
                     if (c.getName().equals("token")) {
