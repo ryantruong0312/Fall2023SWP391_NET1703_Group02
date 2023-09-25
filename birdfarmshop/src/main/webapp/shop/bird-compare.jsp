@@ -112,7 +112,7 @@
                 <!-- First Column -->
                 <div class="comparison-column">
                     <div class="column-content">
-                        <h2>Chọn loài vẹt</h2>
+                        <h2>Chọn một chú vẹt</h2>
 
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect1" onchange="updateBirdNames1()">
@@ -133,8 +133,8 @@
                                 <!-- Placeholder for bird image -->
                                 <img id="birdImage1" src="assets/images/bird-compare-1.jpg" alt="Bird Image">
                             </div>
-                            <div class="bird-info-row">
-                                <span id="birdName1" class="info-name"></span>
+                            <div class="bird-info-row info-name">
+                                <span id="birdName1"></span>
                             </div>
                             <div class="bird-info-row">
                                 <span class="info-title">Tuổi</span>
@@ -165,7 +165,7 @@
                 <!-- Second Column -->
                 <div class="comparison-column">
                     <div class="column-content">
-                        <h2>Chọn loài vẹt</h2>
+                        <h2>Chọn một chú vẹt</h2>
 
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect2" onchange="updateBirdNames2()">
@@ -186,8 +186,8 @@
                                 <!-- Placeholder for bird image -->
                                 <img id="birdImage2" src="assets/images/bird-compare-2.jpg" alt="Bird Image">
                             </div>
-                            <div class="bird-info-row">
-                                <span id="birdName2" class="info-name"></span>
+                            <div class="bird-info-row info-name">
+                                <span id="birdName2"></span>
                             </div>
                             <div class="bird-info-row">
                                 <span class="info-title">Tuổi</span>
@@ -304,9 +304,10 @@
                 birdPrice: "${bird.price}" // Assuming 'price' is the property in Bird class
             });
             </c:forEach>
+            var selectedBirdId1 = null;
+            var selectedBirdId2 = null;
 
             function updateBirdNames1() {
-                console.log("abc called");
                 var breedSelect = document.getElementById("breedSelect1");
                 var selectedBreedId = breedSelect.options[breedSelect.selectedIndex].value;
                 var birdSelect = document.getElementById("birdSelect1");
@@ -320,21 +321,22 @@
                 document.getElementById("birdReproductionHistory1").textContent = "";
                 document.getElementById("birdStatus1").textContent = "";
                 document.getElementById("birdPrice1").textContent = "";
-
                 // Populate the bird name combo box based on the selected breed
+                var option = document.createElement("option");
+                option.text = "Chọn tên chú vẹt";
+                birdSelect.appendChild(option);
                 for (var i = 0; i < birdData1.length; i++) {
                     var birdEntry = birdData1[i];
-                    if (birdEntry.breedId === selectedBreedId) {
+                    if (birdEntry.breedId === selectedBreedId && birdEntry.birdId !== selectedBirdId2) {
                         var option = document.createElement("option");
                         option.text = birdEntry.birdName;
                         option.value = birdEntry.birdId;
                         birdSelect.appendChild(option);
                     }
                 }
-            };
-            
+            }
+            ;
             function updateBirdNames2() {
-                console.log("Update Bird Names 1 called");
                 var breedSelect = document.getElementById("breedSelect2");
                 var selectedBreedId = breedSelect.options[breedSelect.selectedIndex].value;
                 var birdSelect = document.getElementById("birdSelect2");
@@ -348,23 +350,27 @@
                 document.getElementById("birdReproductionHistory2").textContent = "";
                 document.getElementById("birdStatus2").textContent = "";
                 document.getElementById("birdPrice2").textContent = "";
-
                 // Populate the bird name combo box based on the selected breed
+                var option = document.createElement("option");
+                option.text = "Chọn tên chú vẹt";
+                birdSelect.appendChild(option);
                 for (var i = 0; i < birdData2.length; i++) {
                     var birdEntry = birdData2[i];
-                    if (birdEntry.breedId === selectedBreedId) {
+                    if (birdEntry.breedId === selectedBreedId && birdEntry.birdId !== selectedBirdId1) {
                         var option = document.createElement("option");
                         option.text = birdEntry.birdName;
                         option.value = birdEntry.birdId;
                         birdSelect.appendChild(option);
                     }
                 }
-            };
+            }
 
-            // Add an event handler for the birdSelect1 element
+
+            // Add an event handler for the birdSelect1element
             var birdSelect1 = document.getElementById("birdSelect1");
             birdSelect1.addEventListener("change", function () {
                 var selectedBirdId = birdSelect1.options[birdSelect1.selectedIndex].value;
+                selectedBirdId1 = selectedBirdId;
                 // Find the corresponding bird data in birdData array
                 var selectedBird = birdData1.find(function (birdEntry) {
                     return birdEntry.birdId === selectedBirdId;
@@ -372,26 +378,25 @@
                 // Update the information in the bird-information div
                 document.getElementById("birdImage1").src = selectedBird.birdImage;
                 document.getElementById("birdName1").textContent = selectedBird.birdName;
-                document.getElementById("birdAge1").textContent = selectedBird.birdAge;
+                document.getElementById("birdAge1").textContent = selectedBird.birdAge + " tháng";
                 document.getElementById("birdAchievement1").textContent = selectedBird.birdAchievement;
                 document.getElementById("birdReproductionHistory1").textContent = selectedBird.birdReproductionHistory;
                 document.getElementById("birdStatus1").textContent = selectedBird.birdStatus;
                 document.getElementById("birdPrice1").textContent = selectedBird.birdPrice;
             });
-
             // Add an event handler for the birdSelect2 element
             var birdSelect2 = document.getElementById("birdSelect2");
             birdSelect2.addEventListener("change", function () {
                 var selectedBirdId = birdSelect2.options[birdSelect2.selectedIndex].value;
+                selectedBirdId2 = selectedBirdId;
                 // Find the corresponding bird data in birdData array
                 var selectedBird = birdData2.find(function (birdEntry) {
                     return birdEntry.birdId === selectedBirdId;
                 });
                 // Update the information in the bird-information div
-
                 document.getElementById("birdImage2").src = selectedBird.birdImage;
                 document.getElementById("birdName2").textContent = selectedBird.birdName;
-                document.getElementById("birdAge2").textContent = selectedBird.birdAge;
+                document.getElementById("birdAge2").textContent = selectedBird.birdAge + " tháng";
                 document.getElementById("birdAchievement2").textContent = selectedBird.birdAchievement;
                 document.getElementById("birdReproductionHistory2").textContent = selectedBird.birdReproductionHistory;
                 document.getElementById("birdStatus2").textContent = selectedBird.birdStatus;

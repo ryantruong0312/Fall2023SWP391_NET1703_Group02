@@ -137,7 +137,7 @@ public class BirdDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement(GET_BIRD_LIST);
+                stm = con.prepareStatement(GET_BIRD_BY_ID);
                 stm.setString(1, birdId);
                 rs = stm.executeQuery();
                 if (rs.next()) {
@@ -167,7 +167,7 @@ public class BirdDAO {
                     String status = rs.getString("status");
                     ArrayList<String> image_urls = imgDao.getImagesByBirdId(birdId);
                     bird = new BirdDTO(bird_id, bird_name, color, age, grown_age, gender, breed_id, breed_name,
-                            achievement, reproduction_history, price, description, dad_bird_id, dad_bird_name, mom_bird_id, mom_bird_name, discount, status,image_urls);
+                            achievement, reproduction_history, price, description, dad_bird_id, dad_bird_name, mom_bird_id, mom_bird_name, discount, status, image_urls);
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {
