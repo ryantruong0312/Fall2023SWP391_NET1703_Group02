@@ -1,6 +1,6 @@
 <%-- 
-    Document   : edit-profile
-    Created on : Sep 13, 2023, 11:27:11 PM
+    Document   : account-list
+    Created on : Sep 13, 2023, 11:30:02 PM
     Author     : tlminh
 --%>
 
@@ -15,7 +15,7 @@
         <meta name="author" content="">
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>V.E.T - Cập nhật thông tin cá nhân</title>
+        <title>V.E.T - Danh sách tài khoản</title>
 
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -100,7 +100,7 @@
                                     </li>
                                     <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
                                     <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toAccounts}" class="active">Tài khoản</a></li>
                                     <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
                                     </c:if>
                                     <c:if test="${sessionScope.LOGIN_USER != null}">

@@ -23,15 +23,12 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
     private static final String ACT_NAV_REGISTER = "NavToRegister";
     private static final String DEST_NAV_REGISTER = "/authentication/register.jsp";
-    private static final String ACT_NAV_BIRD_COMPARE_PAGE = "NavToCompare";
-    private static final String DEST_NAV_BIRD_COMPARE_PAGE = "RenderBirdCompareController";
+    private static final String ACT_NAV_BIRD_COMPARE = "NavToCompare";
+    private static final String DEST_NAV_BIRD_COMPARE = "RenderBirdCompareController";
     private static final String ACT_NAV_RESET = "NavToReset";
     public static final String DEST_NAV_RESET = "/authentication/reset.jsp";
-//  PAGE
-
     private static final String ACT_LOGIN = "login";
     private static final String DEST_LOGIN = "LoginController";
-
     private static final String ACT_REGISTER = "register";
     private static final String DEST_REGISTER = "RegisterController";
     private static final String ACT_LOGOUT = "Logout";
@@ -40,12 +37,28 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_ACCESSORY = "RenderAccessoryController";
     private static final String ACT_NAV_ACCESSORY_DETAILS = "NavToAccessoryDetails";
     private static final String DEST_NAV_ACCESSORY_DETAILS = "RenderAccessoryDetailsController";
+    private static final String ACT_NAV_BIRD_DETAILS = "NavToBirdDetails";
+    private static final String DEST_NAV_BIRD_DETAILS = "RenderBirdDetailsController";
     private static final String ACT_NAV_BIRD = "NavToBird";
     private static final String DEST_NAV_BIRD = "RenderBirdController";
     private static final String ACT_REST_PASSWORD = "reset";
     private static final String DEST_REST_PASSWORD = "ResetPasswordController";
     private static final String ACT_ACTIVE = "active";
     private static final String DEST_ACTIVE = "ActiveController";
+    private static final String ACT_NAV_CART = "NavToCart";
+    private static final String DEST_NAV_CART = "RenderCartController";
+    private static final String ACT_NAV_PROFILE = "NavToProfile";
+    private static final String DEST_NAV_PROFILE = "RenderProfileController";
+    private static final String ACT_NAV_SHOP_ORDERS = "NavToShopOrders";
+    private static final String DEST_NAV_SHOP_ORDERS = "RenderShopOrdersController";
+    private static final String ACT_NAV_ACCOUNTS = "NavToAccounts";
+    private static final String DEST_NAV_ACCOUNTS = "RenderAccountsController";
+    private static final String ACT_NAV_REPORTS = "NavToReports";
+    private static final String DEST_NAV_REPORTS = "RenderReportsController";
+    private static final String ACT_NAV_BIRD_PAIR = "NavToPairBirds";
+    private static final String DEST_NAV_BIRD_PAIR = "RenderBirdPairController";
+    private static final String ACT_NAV_BIRD_NESTS = "NavToBirdNests";
+    private static final String DEST_NAV_BIRD_NESTS = "RenderBirdNestsController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -68,8 +81,8 @@ public class MainController extends HttpServlet {
                 case ACT_REGISTER:
                     url = DEST_REGISTER;
                     break;
-                case ACT_NAV_BIRD_COMPARE_PAGE:
-                    url = DEST_NAV_BIRD_COMPARE_PAGE;
+                case ACT_NAV_BIRD_COMPARE:
+                    url = DEST_NAV_BIRD_COMPARE;
                     break;
                 case ACT_LOGOUT:
                     url = DEST_LOGOUT;
@@ -91,6 +104,30 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_ACTIVE:
                     url = DEST_ACTIVE;
+                    break;
+                case ACT_NAV_BIRD_DETAILS:
+                    url = DEST_NAV_BIRD_DETAILS;
+                    break;
+                case ACT_NAV_CART:
+                    url = DEST_NAV_CART;
+                    break;
+                case ACT_NAV_PROFILE:
+                    url = DEST_NAV_PROFILE;
+                    break;
+                case ACT_NAV_SHOP_ORDERS:
+                    url = DEST_NAV_SHOP_ORDERS;
+                    break;
+                case ACT_NAV_ACCOUNTS:
+                    url = DEST_NAV_ACCOUNTS;
+                    break;
+                case ACT_NAV_REPORTS:
+                    url = DEST_NAV_REPORTS;
+                    break;
+                case ACT_NAV_BIRD_PAIR:
+                    url = DEST_NAV_BIRD_PAIR;
+                    break;
+                case ACT_NAV_BIRD_NESTS:
+                    url = DEST_NAV_BIRD_NESTS;
                     break;
                 default:
                     break;

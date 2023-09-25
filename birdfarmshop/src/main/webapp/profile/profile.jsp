@@ -1,6 +1,6 @@
 <%-- 
-    Document   : edit-profile
-    Created on : Sep 13, 2023, 11:27:11 PM
+    Document   : view-profile
+    Created on : Sep 13, 2023, 11:26:47 PM
     Author     : tlminh
 --%>
 
@@ -15,7 +15,7 @@
         <meta name="author" content="">
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>V.E.T - Cập nhật thông tin cá nhân</title>
+        <title>V.E.T - Thông tin cá nhân</title>
 
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -104,7 +104,7 @@
                                     <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
                                     </c:if>
                                     <c:if test="${sessionScope.LOGIN_USER != null}">
-                                    <li class="submenu"><a class="user-name text-right" href="#">${LOGIN_USER.fullName}</a>
+                                    <li class="submenu"><a class="user-name text-right active" href="#">${LOGIN_USER.fullName}</a>
                                         <ul>
                                             <li><a href="${pageScope.toProfile}">Cá nhân</a></li>
                                             <li><a href="${pageScope.logout}">Đăng xuất</a></li>

@@ -5,47 +5,30 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
-//import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import swp391.birdfarmshop.dao.AccessoryDAO;
-import swp391.birdfarmshop.model.Accessory;
 
 /**
  *
- * @author Admin
+ * @author tlminh
  */
-@WebServlet(name = "RenderAccessoryController", urlPatterns = {"/RenderAccessoryController"})
-public class RenderAccessoryController extends HttpServlet {
+@WebServlet(name = "RenderAccountsController", urlPatterns = {"/RenderAccountsController"})
+public class RenderAccountsController extends HttpServlet {
 
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "shop/accessories.jsp";
+    private static final String SUCCESS = "management/accounts.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String sAmount = request.getParameter("amount");
-            int amount = Integer.parseInt(sAmount);
-            List<Accessory> accessoryList = new ArrayList<Accessory>();
-            AccessoryDAO dao = new AccessoryDAO();
-            accessoryList = dao.getNext9Accessory(amount);
-            int numberOfAccessory = 0;
-            for (; numberOfAccessory < dao.getAccessories().size();) {
-                numberOfAccessory++;
-            }
-            request.setAttribute("accessoryList", accessoryList);
-            request.setAttribute("MAX", numberOfAccessory);
             url = SUCCESS;
-
         } catch (Exception e) {
-            log("Error at RenderAccessoryController: " + e.toString());
+            log("Error at RenderAccountsController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

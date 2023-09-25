@@ -1,21 +1,21 @@
 <%-- 
-    Document   : edit-profile
-    Created on : Sep 13, 2023, 11:27:11 PM
+    Document   : birdnests
+    Created on : Sep 25, 2023, 10:52:04 AM
     Author     : tlminh
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
-
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>V.E.T - Cập nhật thông tin cá nhân</title>
+        <title>V.E.T - Tổ chim non  </title>
 
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -23,17 +23,17 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-
     </head>
 
+
     <body>
-        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
         <c:url var="toHome" value="MainController?action=NavToHome"/>
+        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
         <c:url var="toLogin" value="MainController?action=NavToLogin"/>
         <c:url var="logout" value="MainController?action=Logout"/>
         <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
         <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
-        <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
+        <c:url var="toBirdNests" value="MainController?action=NavToBird"/>
         <c:url var="toCart" value="MainController?action=NavToCart"/>
         <c:url var="toProfile" value="MainController?action=NavToProfile"/>
         <c:url var="toOrders" value="MainController?action=NavToOrders"/>
@@ -42,19 +42,9 @@
         <c:url var="toReports" value="MainController?action=NavToReports"/>
         <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
 
-        <!-- ***** Preloader Start ***** -->
-        <div id="preloader">
-            <div class="jumper">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>  
-        <!-- ***** Preloader End ***** -->
-
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
-            <div class="container home-custom">
+            <div class="container">
                 <div class="row">
                     <div class="col-12">
                         <nav class="main-nav">
@@ -65,8 +55,8 @@
                             <!-- ***** Logo End ***** -->
                             <!-- ***** Menu Start ***** -->
                             <ul class="nav">
-                                <li class="scroll-to-section"><a href="${pageScope.toHome}" >Trang chủ</a></li>
-                                    <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
+                                <li class="scroll-to-section"><a href="${pageScope.toHome}">Trang chủ</a></li>
+                                    <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'staff'}">
                                     <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
                                             <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
@@ -74,23 +64,22 @@
                                             <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
                                     </li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                        <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
-                                        <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                        </c:if>
-                                        <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
+                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}" >So sánh</a></li>
+                                        <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer'}">
+                                            <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
+                                            <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
+                                            </c:if>
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
-                                        <li id="show-cart" class="scroll-to-section">
-                                            <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                                        <li id="show-cart" class="scroll-to-section active">
+                                            <a href="#"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
                                             <div class="cart-amount">8</div>
                                         </li>
-
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
                                             </c:if>
                                         </c:if>
                                     </c:if>
-                                    <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
+                                    <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
                                     <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
                                             <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
@@ -104,7 +93,7 @@
                                     <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
                                     </c:if>
                                     <c:if test="${sessionScope.LOGIN_USER != null}">
-                                    <li class="submenu"><a class="user-name text-right" href="#">${LOGIN_USER.fullName}</a>
+                                    <li class="submenu"><a href="">${LOGIN_USER.fullName}</a>
                                         <ul>
                                             <li><a href="${pageScope.toProfile}">Cá nhân</a></li>
                                             <li><a href="${pageScope.logout}">Đăng xuất</a></li>
@@ -122,9 +111,7 @@
             </div>
         </header>
         <!-- ***** Header Area End ***** -->
-        
-        
-        
+
         <!-- ***** Footer Start ***** -->
         <footer>
             <div class="container">

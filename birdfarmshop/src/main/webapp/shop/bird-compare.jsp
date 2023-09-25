@@ -6,11 +6,12 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Bird Farm Shop - So sánh</title>
+        <title>V.E.T - So sánh</title>
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
@@ -24,7 +25,17 @@
         <c:url var="toHome" value="MainController?action=NavToHome"/>
         <c:url var="toLogin" value="MainController?action=NavToLogin"/>
         <c:url var="logout" value="MainController?action=Logout"/>
-        <c:url var="toAccessories" value="MainController?action=NavToAccessory"/>
+        <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
+        <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
+        <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
+        <c:url var="toCart" value="MainController?action=NavToCart"/>
+        <c:url var="toProfile" value="MainController?action=NavToProfile"/>
+        <c:url var="toOrders" value="MainController?action=NavToOrders"/>
+        <c:url var="toShopOrders" value="MainController?action=NavToShopOrders"/>
+        <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
+        <c:url var="toReports" value="MainController?action=NavToReports"/>
+        <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
+
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
             <div class="container">
@@ -42,40 +53,43 @@
                                     <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'staff'}">
                                     <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
-                                            <li><a href="shop/birds.jsp">Chim vẹt</a></li>
-                                            <li><a href="shop/bird-nest.jsp">Tổ chim non</a></li>
+                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
+                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
                                             <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
                                     </li>
                                     <li class="scroll-to-section"><a href="#" class="active">So sánh</a></li>
                                         <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer'}">
                                             <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
-                                            <li class="scroll-to-section"><a href="">Đơn hàng</a></li>
+                                            <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
                                             </c:if>
-                                        <li class="scroll-to-section"><a href="">Ghép cặp</a></li>
-                                        <li class="scroll-to-section"><a href="../cart-view.jsp">Giỏ hàng</a></li>
-                                            <c:if test="${sessionScope.LOGIN_USER == null}">
+                                        <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
+                                        <li id="show-cart" class="scroll-to-section">
+                                            <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                                            <div class="cart-amount">8</div>
+                                        </li>
+                                        <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
                                             </c:if>
                                         </c:if>
                                     </c:if>
                                     <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
-                                    <li class="submenu"><a href="">Products</a>
+                                    <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
-                                            <li><a href="#">Sản phẩm</a></li>
-                                            <li><a href="#">Tổ chim non</a></li>
+                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
+                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
                                             <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
                                     </li>
-                                    <li class="scroll-to-section"><a href="#">So sánh</a></li>
-                                    <li class="scroll-to-section"><a href="">Đơn hàng</a></li>
-                                    <li class="scroll-to-section"><a href="../shop/accounts.jsp">Tài khoản</a></li>
-                                    <li class="scroll-to-section"><a href="shop/reports.jsp">Thống kê</a></li>
+                                    <li class="scroll-to-section"><a href="#" class="active">So sánh</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
                                     </c:if>
                                     <c:if test="${sessionScope.LOGIN_USER != null}">
-                                    <li class="submenu"><a href="#">${LOGIN_USER.fullName}</a>
+                                    <li class="submenu"><a href="">${LOGIN_USER.fullName}</a>
                                         <ul>
-                                            <li><a href="#">Cá nhân</a></li>
+                                            <li><a href="${pageScope.toProfile}">Cá nhân</a></li>
                                             <li><a href="${pageScope.logout}">Đăng xuất</a></li>
                                         </ul>
                                     </li>
@@ -154,11 +168,11 @@
                             </div>
                             <div class="bird-info-row">
                                 <span class="info-title">Giá</span>
-                                <span id="birdPrice1" class="info-content"></span>
+                                <span id="birdPrice1" class="info-content" pattern="#,###"></span>
                             </div>
                         </div>
                         <div class="btn-detail">
-                            <button>Xem thêm</button>
+                            <button onclick="redirectToBirdDetails1()">Xem thêm</button>
                         </div>
                     </div>
                 </div>
@@ -211,12 +225,13 @@
                             </div>
                         </div>
                         <div class="btn-detail">
-                            <button>Xem thêm</button>
+                            <button onclick="redirectToBirdDetails1()">Xem thêm</button>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+
         <!-- ***** Footer Start ***** -->
         <footer>
             <div class="container">
@@ -224,11 +239,11 @@
                     <div class="col-lg-3">
                         <div class="first-item">
                             <div class="logo">
-                                <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
+                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
                             </div>
                             <ul>
                                 <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                <li><a href="#">birdfarmshop@petshop.com</a></li>
+                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
                                 <li><a href="#">0913-244-567</a></li>
                             </ul>
                         </div>
@@ -236,11 +251,11 @@
                     <div class="col-lg-3">
                         <h4>Sản phẩm và dịch vụ</h4>
                         <ul>
-                            <li><a href="#">Chim vẹt</a></li>
+                            <li><a href="#">Vẹt cảnh</a></li>
                             <li><a href="#">Tổ chim non</a></li>
                             <li><a href="#">Phụ kiện</a></li>
                             <li><a href="#">So sánh</a></li>
-                            <li><a href="#">Ghép cặp</a></li>
+                            <li><a href="#">Nhân giống</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
@@ -263,9 +278,8 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="under-footer">
-                            <p>Copyright © 2023 BirdFarmShop Co., Ltd. All Rights Reserved. 
+                            <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
 
-                                <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
                             <ul>
                                 <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                                 <li><a href="#"><i class="fa fa-instagram"></i></a></li>
@@ -277,6 +291,7 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
+
         <script>
             var birdData1 = []; // Initialize an empty JavaScript array
             var birdData2 = [];
@@ -382,7 +397,7 @@
                 document.getElementById("birdAchievement1").textContent = selectedBird.birdAchievement;
                 document.getElementById("birdReproductionHistory1").textContent = selectedBird.birdReproductionHistory;
                 document.getElementById("birdStatus1").textContent = selectedBird.birdStatus;
-                document.getElementById("birdPrice1").textContent = selectedBird.birdPrice;
+                document.getElementById("birdPrice1").textContent = selectedBird.birdPrice + " ₫";
             });
             // Add an event handler for the birdSelect2 element
             var birdSelect2 = document.getElementById("birdSelect2");
@@ -400,8 +415,30 @@
                 document.getElementById("birdAchievement2").textContent = selectedBird.birdAchievement;
                 document.getElementById("birdReproductionHistory2").textContent = selectedBird.birdReproductionHistory;
                 document.getElementById("birdStatus2").textContent = selectedBird.birdStatus;
-                document.getElementById("birdPrice2").textContent = selectedBird.birdPrice;
+                document.getElementById("birdPrice2").textContent = selectedBird.birdPrice + " ₫";
             });
+
+            function redirectToBirdDetails1() {
+                // Get the bird_id value from wherever it's stored in your page
+                var birdId = selectedBirdId1;
+                if (birdId != null) {
+                    // Construct the URL
+                    var url = 'MainController?action=NavToBirdDetails&bird_id=' + birdId;
+                    // Redirect to the URL
+                    window.location.href = url;
+                }
+            }
+
+            function redirectToBirdDetails2() {
+                // Get the bird_id value from wherever it's stored in your page
+                var birdId = selectedBirdId1;
+                if (birdId != null) {
+                    // Construct the URL
+                    var url = 'MainController?action=NavToBirdDetails&bird_id=' + birdId;
+                    // Redirect to the URL
+                    window.location.href = url;
+                }
+            }
         </script>
     </body>
 </html>

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : edit-profile
-    Created on : Sep 13, 2023, 11:27:11 PM
+    Document   : shop-orders
+    Created on : Sep 25, 2023, 11:10:46 AM
     Author     : tlminh
 --%>
 
@@ -15,7 +15,7 @@
         <meta name="author" content="">
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>V.E.T - Cập nhật thông tin cá nhân</title>
+        <title>V.E.T - Đơn hàng của shop</title>
 
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -99,7 +99,7 @@
                                         </ul>
                                     </li>
                                     <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toShopOrders}" class="active">Đơn hàng</a></li>
                                     <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
                                     <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
                                     </c:if>

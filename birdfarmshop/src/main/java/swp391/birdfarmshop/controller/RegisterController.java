@@ -74,7 +74,7 @@ public class RegisterController extends HttpServlet {
             }
             request.getRequestDispatcher(url).forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
+            log("Error at RegisterController: " + e.toString());
         }
     }
 
