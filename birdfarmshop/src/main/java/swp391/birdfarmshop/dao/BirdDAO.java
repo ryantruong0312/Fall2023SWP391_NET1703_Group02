@@ -103,7 +103,7 @@ public class BirdDAO {
                     int price = rs.getInt("price");
                     String description = rs.getString("description");
                     String dad_bird_id = rs.getString("dad_bird_id");
-                    String mom_bird_id = rs.getString("mom_bird_id");;
+                    String mom_bird_id = rs.getString("mom_bird_id");
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
@@ -127,7 +127,7 @@ public class BirdDAO {
         return next9BirdList;
     }
 
-    public BirdDTO getBirdById(String birdId) throws SQLException {
+    public BirdDTO getBirdDetailsById(String birdId) throws SQLException {
         BirdDTO bird = new BirdDTO();
         Connection con = null;
         PreparedStatement stm = null;
@@ -140,7 +140,7 @@ public class BirdDAO {
                 stm = con.prepareStatement(GET_BIRD_BY_ID);
                 stm.setString(1, birdId);
                 rs = stm.executeQuery();
-                if (rs.next()) {
+                while (rs.next()) {
                     String bird_id = rs.getString("bird_id");
                     String bird_name = rs.getString("bird_name");
                     String color = rs.getString("color");
@@ -149,9 +149,9 @@ public class BirdDAO {
                     boolean sex = rs.getBoolean("gender");
                     String gender = "";
                     if (sex) {
-                        gender = "ƒê·ª±c";
+                        gender = "–?c";
                     } else {
-                        gender = "C√°i";
+                        gender = "C·i";
                     }
                     String breed_id = rs.getString("breed_id");
                     String breed_name = breedDao.getBreedNameById(breed_id);
@@ -193,7 +193,7 @@ public class BirdDAO {
         try {
             conn = DBUtils.getConnection();
             if (conn != null) {
-                ptm = conn.prepareStatement(GET_BIRD_NAME_BY_ID);
+                ptm = conn.prepareStatement(GET_BIRD_BY_ID);
                 ptm.setString(1, bird_id);
                 rs = ptm.executeQuery();
                 if (rs.next()) {
@@ -215,4 +215,12 @@ public class BirdDAO {
         }
         return result;
     }
+//    public static void main(String[] args) throws SQLException {
+//        BirdDAO dao = new BirdDAO();
+//        BirdDTO bird = dao.getBirdDetailsById("CL201");
+//        System.out.println(bird.getImage_urls());
+//        for (String url : bird.getImage_urls()) {
+//            System.out.println(url);
+//        }
+//    }
 }

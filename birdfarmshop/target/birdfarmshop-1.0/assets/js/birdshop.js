@@ -38,10 +38,10 @@ $(".form-login").validate({
     },
     messages: {
         account: {
-            required: 'Vui lòng nhập tài khoản của bạn'
+            required: 'Please enter your account'
         },
         password: {
-            required: 'Vui lòng nhập mật khẩu của bạn'   
+            required: 'Please enter your password'   
         }
     }
 });
@@ -73,27 +73,27 @@ $(".form-register").validate({
     },
     messages: {
         name: {
-            required: 'Vui lòng nhập tên của bạn'
+            required: 'Please enter your name'
         },
         mobile: {
-            required: 'Vui lòng nhập điện thoại của bạn',
-            regex: 'Vui lòng nhập đúng định dạng số điện thoại 10-11 số'
+            required: 'Please enter your phone',
+            regex: 'Please enter the correct phone number format(10,11)'
         },
         email: {
-            required: 'Vui lòng nhập email',
-            email: 'Vui lòng nhập đúng định dạng email'
+            required: 'Please enter your email',
+            email: 'Please enter the correct email format'
         },
         account: {
-            required: 'Vui lòng điền tên đăng nhập',
-            minlength: 'Tên tài khoản phải có ít nhất 5 ký tự'
+            required: 'Please enter your user name',
+            minlength: 'Password must be at least 5 characters'
         },
         password: {
-            required: 'Vui lòng nhập mật khẩu của bạn',
-            regex: 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt'
+            required: 'Please enter your password',
+            regex: 'Password must be at least 8 characters, including uppercase letters, lowercase letters, numbers and special characters'
         },
         're-password': {
-            required: 'Vui lòng nhập mật khẩu của bạn',
-            equalTo: 'Xác nhận mật khẩu không đúng'
+            required: 'Please enter your password',
+            equalTo: 'Re-password incorrect'
         }
     }
 });
@@ -103,6 +103,6 @@ $.validator.addMethod(
             var re = new RegExp(regexp);
             return this.optional(element) || re.test(value);
         },
-        "Vui lòng kiểm tra đầu vào của bạn"
+        "Please check your input."
         );
 

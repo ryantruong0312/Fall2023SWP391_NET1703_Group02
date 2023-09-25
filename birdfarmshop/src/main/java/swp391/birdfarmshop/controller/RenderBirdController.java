@@ -33,14 +33,9 @@ public class RenderBirdController extends HttpServlet {
             String sAmount = request.getParameter("amount");
             int amount = Integer.parseInt(sAmount);
             List<Bird> birdList = new ArrayList<Bird>();
-            BirdDAO dao = new BirdDAO();
-            birdList = dao.getNext9Birds(amount);
-            int numberOfBirds = 0;
-            for (; numberOfBirds < dao.getBirds().size();) {
-                numberOfBirds++;
-            }
+            BirdDAO birdDao = new BirdDAO();
+            birdList = birdDao.getNext9Birds(amount);
             request.setAttribute("BIRDLIST", birdList);
-            request.setAttribute("MAX", numberOfBirds);
             url = SUCCESS;
         } catch (SQLException e) {
             log("Error at RenderHomeController: " + e.toString());

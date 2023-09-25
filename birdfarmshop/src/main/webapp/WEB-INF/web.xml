@@ -12,6 +12,10 @@
         <servlet-name>RenderBirdController</servlet-name>
         <servlet-class>swp391.birdfarmshop.controller.RenderBirdController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RenderBirdDetailsController</servlet-name>
+        <servlet-class>swp391.birdfarmshop.controller.RenderBirdDetailsController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>RenderBirdController</servlet-name>
         <url-pattern>/RenderBirdController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RenderBirdDetailsController</servlet-name>
+        <url-pattern>/RenderBirdDetailsController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

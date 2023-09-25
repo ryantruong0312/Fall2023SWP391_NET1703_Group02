@@ -86,7 +86,10 @@
                                         </c:if>
                                         <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
                                         <li class="scroll-to-section"><a href="">Ghép cặp</a></li>
-                                        <li class="scroll-to-section"><a href="shop/cart-view.jsp">Giỏ hàng</a></li>
+                                        <li id="show-cart" class="scroll-to-section">
+                                            <a href="shop/cart-view.jsp"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                                            <div class="cart-amount">8</div>
+                                        </li>
 
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
@@ -424,7 +427,7 @@
                     <div class="col-lg-3">
                         <div class="first-item">
                             <div class="logo">
-                                <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
+                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
                             </div>
                             <ul>
                                 <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
@@ -477,7 +480,7 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
-
+        <%@include file="../layout/message.jsp" %>
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
 
