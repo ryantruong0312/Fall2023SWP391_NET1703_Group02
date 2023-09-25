@@ -47,13 +47,22 @@ h2 {
     font-size: 24px;
     margin-bottom: 10px;
     color: #333;
+    text-align: center;
 }
 
 /* Style for rows */
 .bird-info-row {
+    padding: 0 50px;
     margin-top: 20px;
     font-size: 16px;
     color: #666;
+}
+
+.bird-info-row pre{
+    font: inherit;
+    color: #666;
+    margin-top: 15px;
+    padding-left: 30px;
 }
 
 .info-title{
