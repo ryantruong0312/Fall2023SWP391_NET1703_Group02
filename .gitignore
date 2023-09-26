@@ -12,5 +12,6 @@ nbdist/
 .nb-gradle/
 target/
 birdfarmshop/target/
-
+#remove folder target
+/birdfarmshop/target
 # End of https://www.toptal.com/developers/gitignore/api/netbeans

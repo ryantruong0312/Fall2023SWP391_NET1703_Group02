@@ -18,7 +18,7 @@ import swp391.birdfarmshop.util.DBUtils;
  */
 public class UserDAO {
 
-    public static User getUser(String username, String password) {
+    public User getUser(String username, String password) {
         User u = null;
         Connection cnn = null;
         try {
@@ -59,7 +59,7 @@ public class UserDAO {
         return u;
     }
 
-    public static User findUser(String username, String emailFind) {
+    public User findUser(String username, String emailFind) {
         User u = null;
         Connection cnn = null;
         try {
@@ -100,7 +100,7 @@ public class UserDAO {
         return u;
     }
 
-    public static int createUser(String user, String email, String password, String name, String mobile, String loginBy, String status) {
+    public int createUser(String user, String email, String password, String name, String mobile, String loginBy, String status) {
         int result = 0;
         Connection cnn = null;
         try {
@@ -132,7 +132,7 @@ public class UserDAO {
         return result;
     }
 
-    public static int updatePassword(String user,String password) {
+    public int updatePassword(String user,String password) {
         int result = 0;
         Connection cnn = null;
         try {
@@ -160,7 +160,7 @@ public class UserDAO {
         return result;
     }
 
-    public static int updateActive(String username, String active) {
+    public int updateActive(String username, String active) {
         int result = 0;
         Connection cnn = null;
         try {

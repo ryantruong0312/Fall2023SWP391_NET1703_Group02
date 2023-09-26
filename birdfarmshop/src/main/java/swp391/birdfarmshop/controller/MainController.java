@@ -59,6 +59,10 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_BIRD_PAIR = "RenderBirdPairController";
     private static final String ACT_NAV_BIRD_NESTS = "NavToBirdNests";
     private static final String DEST_NAV_BIRD_NESTS = "RenderBirdNestsController";
+    private static final String ACT_ADD_TO_CART = "AddtoCart";
+    private static final String DEST_ADD_TO_CART = "AddtoCartController";
+
+    private static final String TEST = "/shop/checkout.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -105,6 +109,9 @@ public class MainController extends HttpServlet {
                 case ACT_ACTIVE:
                     url = DEST_ACTIVE;
                     break;
+
+
+
                 case ACT_NAV_BIRD_DETAILS:
                     url = DEST_NAV_BIRD_DETAILS;
                     break;
@@ -128,6 +135,12 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_NAV_BIRD_NESTS:
                     url = DEST_NAV_BIRD_NESTS;
+                    break;
+                case ACT_ADD_TO_CART:
+                    url = DEST_ADD_TO_CART;
+                    break;
+                case "test":
+                    url = TEST;
                     break;
                 default:
                     break;

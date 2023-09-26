@@ -80,7 +80,12 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">8</div>
+                                            <c:if test="${sessionScope.CART_BIRD == null}">
+                                                <div class="cart-amount">0</div>
+                                            </c:if>
+                                            <c:if test="${sessionScope.CART_BIRD != null}">
+                                                <div class="cart-amount">${sessionScope.CART_BIRD.getSize()}</div>
+                                            </c:if>
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
@@ -160,7 +165,7 @@
                                             <div class="hover-content">
                                                 <ul>
                                                     <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                    <li><a href="bird-details.jsp"><i class="fa fa-shopping-cart"></i></a></li>
+                                                    <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
                                                 </ul>
                                             </div>
                                             <img class="bird-thumbnail" src="${bird.image_url}" alt="">
@@ -262,6 +267,7 @@
         <!-- ***** Footer Area Ends ***** -->
 
         <!-- jQuery -->
+        <%@include file="../layout/message.jsp" %>
         <script src="assets/js/jquery-2.1.0.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <!-- Bootstrap -->

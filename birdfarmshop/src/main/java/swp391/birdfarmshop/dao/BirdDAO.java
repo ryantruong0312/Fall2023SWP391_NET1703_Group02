@@ -29,6 +29,8 @@ public class BirdDAO {
             + "ORDER BY [price] ASC OFFSET ? ROWS FETCH NEXT 9 ROWS ONLY";
     private static final String GET_BIRD_NAME_BY_ID = "SELECT [bird_name] FROM [Bird] WHERE [bird_id] = ?";
     private static final String GET_BIRD_BY_ID = "SELECT * FROM [Bird] WHERE [bird_id] = ?";
+    private static final String IS_BIRD_SOLD_OUT = "SELECT [status] FROM [Bird] WHERE [bird_id] = ? AND [status] = N'ƒê√£ b√°n'";
+
 
     public List<Bird> getBirds() throws SQLException {
         List<Bird> birdList = new ArrayList<>();
@@ -149,9 +151,9 @@ public class BirdDAO {
                     boolean sex = rs.getBoolean("gender");
                     String gender = "";
                     if (sex) {
-                        gender = "–?c";
+                        gender = "ÔøΩ?c";
                     } else {
-                        gender = "C·i";
+                        gender = "CÔøΩi";
                     }
                     String breed_id = rs.getString("breed_id");
                     String breed_name = breedDao.getBreedNameById(breed_id);
@@ -223,4 +225,34 @@ public class BirdDAO {
 //            System.out.println(url);
 //        }
 //    }
+    public boolean isBirdSoldOut(String bird_id) throws SQLException {
+        boolean result = false;
+        Connection conn = null;
+        PreparedStatement ptm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBUtils.getConnection();
+            if (conn != null) {
+                ptm = conn.prepareStatement(IS_BIRD_SOLD_OUT);
+                ptm.setString(1, bird_id);
+                rs = ptm.executeQuery();
+                if (rs != null && rs.next()) {
+                    result = true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (ptm != null) {
+                ptm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return result;
+    }
 }

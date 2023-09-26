@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,30 +17,39 @@
         <meta name="author" content="">
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>Bird Farm Shop - Accessories</title>
+        <title>V.E.T - Phụ Kiện</title>
 
         <!-- Additional CSS Files -->
-        <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.css">
-        <link rel="stylesheet" href="../assets/css/templatemo-hexashop.css">
-        <link rel="stylesheet" href="../assets/css/owl-carousel.css">
-        <link rel="stylesheet" href="../assets/css/lightbox.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
+        <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
+        <link rel="stylesheet" href="assets/css/owl-carousel.css">
+        <link rel="stylesheet" href="assets/css/lightbox.css">
 
+        <style>
+            .accessory-thumbnail{
+                width: 350px;
+                height: 368px;
+            }
+        </style>
     </head>
 
     <body>
-
-        <!-- ***** Preloader Start ***** -->
-        <div id="preloader">
-            <div class="jumper">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>  
-        <!-- ***** Preloader End ***** -->
-
-
+<c:url var="toHome" value="MainController?action=NavToHome"/>
+        <c:url var="toLogin" value="MainController?action=NavToLogin"/>
+        <c:url var="logout" value="MainController?action=Logout"/>
+        <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
+        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
+        <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
+        <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
+        <c:url var="toCart" value="MainController?action=NavToCart"/>
+        <c:url var="toProfile" value="MainController?action=NavToProfile"/>
+        <c:url var="toOrders" value="MainController?action=NavToOrders"/>
+        <c:url var="toShopOrders" value="MainController?action=NavToShopOrders"/>
+        <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
+        <c:url var="toReports" value="MainController?action=NavToReports"/>
+        <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
+        
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
             <div class="container">
@@ -47,28 +57,58 @@
                     <div class="col-12">
                         <nav class="main-nav">
                             <!-- ***** Logo Start ***** -->
-                            <a href="../RenderHomeController" class="logo">
-                                <img src="../assets/images/logo.png">
+                            <a href="#" class="logo scroll-to-section">
+                                <img src="assets/images/logo.png">
                             </a>
                             <!-- ***** Logo End ***** -->
                             <!-- ***** Menu Start ***** -->
                             <ul class="nav">
-                                <li class="scroll-to-section"><a href="../RenderHomeController">Home</a></li>
-                                <li class="scroll-to-section"><a href="birds.jsp">Birds</a></li>
-                                <li class="scroll-to-section"><a href="accessories.jsp" class="active">Accessories</a></li>
-                                <li class="scroll-to-section"><a href="bird-compare.jsp">Bird Compare</a></li>
-                                <li class="scroll-to-section"><a href="bird-pair.jsp">Breed Select</a></li>
-                                <li class="scroll-to-section"><a href="shop/cart-view.jsp">Cart</a></li>
-                                <li class="submenu">
-                                    <a href="javascript:;">Customer 1</a>
-                                    <ul>
-                                        <li><a href="#">Profile</a></li>
-                                        <li><a href="#">Sign out</a></li>
-                                        <!--<li><a href="#">Features Page 3</a></li>-->
-                                    </ul>
-                                </li>
-                                <!--<li class="scroll-to-section"><a href="#explore">Explore</a></li>-->
-                            </ul>        
+                                <li class="scroll-to-section"><a href="${pageScope.toHome}">Trang chủ</a></li>
+                                    <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'staff'}">
+                                    <li class="submenu"><a href="" class="active">Sản phẩm</a>
+                                        <ul>
+                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
+                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                                            <li><a href="#" class="active">Phụ kiện</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
+                                        <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer'}">
+                                            <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
+                                            <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
+                                            </c:if>
+                                        <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
+                                        <li id="show-cart" class="scroll-to-section">
+                                            <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                                            <div class="cart-amount">8</div>
+                                        </li>
+                                            <c:if test="${sessionScope.LOGIN_USER == null}">
+                                            <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
+                                            </c:if>
+                                        </c:if>
+                                    </c:if>
+                                    <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
+                                    <li class="submenu"><a href="" class="active">Sản phẩm</a>
+                                        <ul>
+                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
+                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                                            <li><a href="#" class="active">Phụ kiện</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
+                                    </c:if>
+                                    <c:if test="${sessionScope.LOGIN_USER != null}">
+                                    <li class="submenu"><a href="">${LOGIN_USER.fullName}</a>
+                                        <ul>
+                                            <li><a href="${pageScope.toProfile}">Cá nhân</a></li>
+                                            <li><a href="${pageScope.logout}">Đăng xuất</a></li>
+                                        </ul>
+                                    </li>
+                                </c:if>
+                            </ul>           
                             <a class='menu-trigger'>
                                 <span>Menu</span>
                             </a>
@@ -86,7 +126,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="inner-content">
-                            <h2>Check Our Products</h2>
+                            <h2>Các sản phẩm phụ kiện</h2>
                             <span>Awesome &amp; Creative HTML CSS layout by TemplateMo</span>
                         </div>
                     </div>
@@ -110,245 +150,45 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4">
-                        <div class="item">
-                            <div class="thumb">
-                                <div class="hover-content">
-                                    <ul>
-                                        <li><a href="bird-details.jsp"><i class="fa fa-eye"></i></a></li>
-                                        <li><a href="bird-details.jsp"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="bird-details.jsp"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
+                    <c:if test="${requestScope.accessoryList != null}">
+                        <c:set var="accessoryList" value="${requestScope.accessoryList}"/>
+                        <c:if test="${not empty accessoryList}">
+                            <c:forEach items="${accessoryList}" var="accessory" varStatus="counter">
+                                <div class="bird col-lg-4">
+                                    <div class="item">
+                                        <div class="thumb">
+                                            <div class="hover-content">
+                                                <ul>
+                                                    <li><a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a></li>
+                                                    <li><a href="bird-details.jsp"><i class="fa fa-shopping-cart"></i></a></li>
+                                                </ul>
+                                            </div>
+                                            <img class="accessory-thumbnail" src="${accessory.image_url}" alt="">
+                                        </div>
+                                        <div class="down-content">
+                                            <h4>${accessory.accessory_name}</h4>
+                                            <span>${accessory.unit_price}</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <img src="../assets/images/men-01.jpg" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>Classic Spring</h4>
-                                <span>$120.00</span>
-                                <ul class="stars">
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="item">
-                            <div class="thumb">
-                                <div class="hover-content">
-                                    <ul>
-                                        <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
-                                </div>
-                                <img src="../assets/images/men-02.jpg" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>Air Force 1 X</h4>
-                                <span>$90.00</span>
-                                <ul class="stars">
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="item">
-                            <div class="thumb">
-                                <div class="hover-content">
-                                    <ul>
-                                        <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
-                                </div>
-                                <img src="../assets/images/men-03.jpg" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>Love Nana ‘20</h4>
-                                <span>$150.00</span>
-                                <ul class="stars">
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="item">
-                            <div class="thumb">
-                                <div class="hover-content">
-                                    <ul>
-                                        <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
-                                </div>
-                                <img src="../assets/images/women-01.jpg" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>New Green Jacket</h4>
-                                <span>$75.00</span>
-                                <ul class="stars">
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="item">
-                            <div class="thumb">
-                                <div class="hover-content">
-                                    <ul>
-                                        <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
-                                </div>
-                                <img src="../assets/images/women-02.jpg" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>Classic Dress</h4>
-                                <span>$45.00</span>
-                                <ul class="stars">
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="item">
-                            <div class="thumb">
-                                <div class="hover-content">
-                                    <ul>
-                                        <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
-                                </div>
-                                <img src="../assets/images/women-03.jpg" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>Spring Collection</h4>
-                                <span>$130.00</span>
-                                <ul class="stars">
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="item">
-                            <div class="thumb">
-                                <div class="hover-content">
-                                    <ul>
-                                        <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
-                                </div>
-                                <img src="../assets/images/kid-01.jpg" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>School Collection</h4>
-                                <span>$80.00</span>
-                                <ul class="stars">
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="item">
-                            <div class="thumb">
-                                <div class="hover-content">
-                                    <ul>
-                                        <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
-                                </div>
-                                <img src="../assets/images/kid-02.jpg" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>Summer Cap</h4>
-                                <span>$12.00</span>
-                                <ul class="stars">
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="item">
-                            <div class="thumb">
-                                <div class="hover-content">
-                                    <ul>
-                                        <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                        <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                    </ul>
-                                </div>
-                                <img src="../assets/images/kid-03.jpg" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>Classic Kid</h4>
-                                <span>$30.00</span>
-                                <ul class="stars">
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                            </c:forEach>
+                            <!--                            <button onClick="loadMoreBird()">Load More </button>-->
+                        </c:if>
+                    </c:if>      
                     <div class="col-lg-12">
                         <div class="pagination">
                             <ul>
-                                <li>
-                                    <a href="#">1</a>
-                                </li>
                                 <li class="active">
-                                    <a href="#">2</a>
+                                    <a href="MainController?action=NavToAccessory&amount=0">1</a>
                                 </li>
                                 <li>
-                                    <a href="#">3</a>
+                                    <a href="MainController?action=NavToAccessory&amount=9">2</a>
                                 </li>
                                 <li>
-                                    <a href="#">4</a>
+                                    <a href="MainController?action=NavToAccessory&amount=18">3</a>
+                                </li>
+                                <li>
+                                    <a href="#" id="page-4">4</a>
                                 </li>
                                 <li>
                                     <a href="#">></a>
@@ -368,51 +208,51 @@
                     <div class="col-lg-3">
                         <div class="first-item">
                             <div class="logo">
-                                <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
+                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
                             </div>
                             <ul>
-                                <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
-                                <li><a href="#">hexashop@company.com</a></li>
-                                <li><a href="#">010-020-0340</a></li>
+                                <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
+                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
+                                <li><a href="#">0913-244-567</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <h4>Shopping &amp; Categories</h4>
+                        <h4>Sản phẩm và dịch vụ</h4>
                         <ul>
-                            <li><a href="#">Men’s Shopping</a></li>
-                            <li><a href="#">Women’s Shopping</a></li>
-                            <li><a href="#">Kid's Shopping</a></li>
+                            <li><a href="#">Vẹt cảnh</a></li>
+                            <li><a href="#">Tổ chim non</a></li>
+                            <li><a href="#">Phụ kiện</a></li>
+                            <li><a href="#">So sánh</a></li>
+                            <li><a href="#">Nhân giống</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
-                        <h4>Useful Links</h4>
+                        <h4>Đường dẫn hữu ích</h4>
                         <ul>
-                            <li><a href="#">Homepage</a></li>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Help</a></li>
-                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="#">Về chúng tôi</a></li>
+                            <li><a href="#">Hỗ trợ</a></li>
+                            <li><a href="#">Liên hệ</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
-                        <h4>Help &amp; Information</h4>
+                        <h4>Thông tin hỗ trợ</h4>
                         <ul>
-                            <li><a href="#">Help</a></li>
-                            <li><a href="#">FAQ's</a></li>
-                            <li><a href="#">Shipping</a></li>
-                            <li><a href="#">Tracking ID</a></li>
+                            <li><a href="#">Hỗ trợ</a></li>
+                            <li><a href="#">Câu hỏi thường gặp</a></li>
+                            <li><a href="#">Giao hàng</a></li>
+                            <li><a href="#">Theo dõi đơn hàng</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-12">
                         <div class="under-footer">
-                            <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
+                            <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
 
-                                <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
                             <ul>
                                 <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
                                 <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="#"><i class="fa fa-behance"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -422,26 +262,26 @@
         <!-- ***** Footer Area Ends ***** -->
 
         <!-- jQuery -->
-        <script src="../assets/js/jquery-2.1.0.min.js"></script>
+        <script src="assets/js/jquery-2.1.0.min.js"></script>
 
         <!-- Bootstrap -->
-        <script src="../assets/js/popper.js"></script>
-        <script src="../assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/popper.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
 
         <!-- Plugins -->
-        <script src="../assets/js/owl-carousel.js"></script>
-        <script src="../assets/js/accordions.js"></script>
-        <script src="../assets/js/datepicker.js"></script>
-        <script src="../assets/js/scrollreveal.min.js"></script>
-        <script src="../assets/js/waypoints.min.js"></script>
-        <script src="../assets/js/jquery.counterup.min.js"></script>
-        <script src="../assets/js/imgfix.min.js"></script> 
-        <script src="../assets/js/slick.js"></script> 
-        <script src="../assets/js/lightbox.js"></script> 
-        <script src="../assets/js/isotope.js"></script> 
+        <script src="assets/js/owl-carousel.js"></script>
+        <script src="assets/js/accordions.js"></script>
+        <script src="assets/js/datepicker.js"></script>
+        <script src="assets/js/scrollreveal.min.js"></script>
+        <script src="assets/js/waypoints.min.js"></script>
+        <script src="assets/js/jquery.counterup.min.js"></script>
+        <script src="assets/js/imgfix.min.js"></script> 
+        <script src="assets/js/slick.js"></script> 
+        <script src="assets/js/lightbox.js"></script> 
+        <script src="assets/js/isotope.js"></script> 
 
         <!-- Global Init -->
-        <script src="../assets/js/custom.js"></script>
+        <script src="assets/js/custom.js"></script>
 
         <script>
 

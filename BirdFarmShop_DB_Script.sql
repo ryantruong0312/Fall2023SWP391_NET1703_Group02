@@ -91,7 +91,7 @@ GO
 DROP TABLE IF EXISTS [Order]
 CREATE TABLE [Order]
 (
-	[order_id] VARCHAR(10) NOT NULL,
+	[order_id] VARCHAR(15) NOT NULL,
 	[customer] VARCHAR(25),
 	[order_date] DATETIME,
 	[order_status] NVARCHAR(20),
@@ -108,7 +108,7 @@ DROP TABLE IF EXISTS [BirdPair]
 CREATE TABLE [BirdPair]
 (
 	[pair_id] INT IDENTITY,
-	[order_id] VARCHAR(10),
+	[order_id] VARCHAR(15),
 	[service_price] INT,
 	[male_bird_id] VARCHAR(10),
 	[female_bird_id] VARCHAR(10),
@@ -123,7 +123,7 @@ DROP TABLE IF EXISTS [OrderItem]
 CREATE TABLE [OrderItem]
 (	
 	[order_item_id] INT IDENTITY,
-	[order_id] VARCHAR(10),
+	[order_id] VARCHAR(15),
 	[bird_id] VARCHAR(10),
 	[accessory_id] VARCHAR(10),
 	[unit_price] INT,
@@ -142,7 +142,7 @@ CREATE TABLE [Feedback]
 	[customer] VARCHAR(25),
 	[order_item_id] INT,
 	[rating] SMALLINT,
-	[comment] NVARCHAR(100),
+	[comment] NVARCHAR(MAX),
 	[feedback_date] DATETIME,
 	CONSTRAINT PK_Feedback PRIMARY KEY ([feedback_id]),
 	CONSTRAINT FK_Feedback_User FOREIGN KEY ([customer]) REFERENCES [User]([username]),
@@ -154,7 +154,7 @@ DROP TABLE IF EXISTS [OrderTracking]
 CREATE TABLE [OrderTracking]
 (
 	[tracking_id] INT IDENTITY,
-	[order_id] VARCHAR(10),
+	[order_id] VARCHAR(15),
 	[status] NVARCHAR(20),
 	[content] NVARCHAR(100),
 	CONSTRAINT PK_OrderTracking PRIMARY KEY ([tracking_id]),
@@ -642,3 +642,70 @@ VALUES
 	('https://www.sfzoo.org/wp-content/uploads/2021/03/img_macaw_mw2_large.jpg', 
 	0, 'GW125', NULL, NULL)
 GO
+
+INSERT INTO [Order]([order_id],[customer],[order_date],[order_status],[ship_address],[payment_status],[total_price],[applied_point])
+VALUES('230925O0001','customer',2023-09-25,N'Chờ xử lý',null,N'Đã thanh toán',3000000,3),
+	  ('230915O0002','hai',2023-09-15,N'Đang xử lý',null,N'Đã thanh toán',300000,1),
+	  ('230916O0003','hoang',2023-09-16,N'Đang vận chuyển',null,N'Đã thanh toán',300000,1),
+	  ('230917O0004','toan',2023-09-17,N'Đã giao hàng',null,N'Đã thanh toán',300000,1),
+	  ('230918O0005','tu',2023-09-18,N'Đã hủy',null,N'Đã thanh toán',300000,1),
+	  ('230919O0006','customer',2023-09-19,N'Chưa đánh giá',null,N'Đã thanh toán',300000,1),
+	  ('230912O0007','customer',2023-09-20,N'Đã đánh giá',null,N'Đã thanh toán',300000,1);
+GO
+
+INSERT INTO [OrderItem]([order_id],[bird_id],[accessory_id],[unit_price],[order_quantity])
+VALUES ('230925O0001','CW192',null,2500000,1),
+		('230925O0001',null,'LM001',450000,1),
+		('230915O0002',null,'LN001',13800000,2),
+		('230916O0003','WA301',null,4500000,1),
+		('230916O0003',null,'LM001',450000,1),
+		('230917O0004',null,'GT001',120000,2),
+		('230917O0004',null,'BL001',500000,1),
+		('230917O0004',null,'CT001',90000,1),
+		('230918O0005','CP201',null,3000000,1),
+		('230918O0005',null,'LM001',450000,1),
+		('230919O0006','YC090',null,25000000,1),
+		('230919O0006',null,'LM001',450000,1),
+		('230919O0006',null,'NK200',120000,1),
+		('230912O0007','XT001',null,6500000,1),
+	    ('230912O0007',null,'LM001',450000,1),
+		('230912O0007',null,'GA001',600000,1),
+		('230912O0007',null,'KC213',100000,10)
+GO
+
+INSERT INTO [Feedback]([customer],[order_item_id],[rating],[comment],[feedback_date]) 
+VALUES('customer',1,5,N'Chất lượng ok. Đc tặng cả cái đổ thức ăn. Giao nhanh. Cảm ơn ship và shop','2023-05-23'),
+	  ('customer',2,5,N'Sản phẩm OK.giao hàng hơi chậm.rất vừa với lồng và tiện lợi.mọi người nên mua cho mình 1 cái vừa đỡ mất thời gian vừa nhàn','2023-05-23'),
+	  ('hai',3,5,N'Sản phẩm OK.giao hàng hơi chậm.rất vừa với lồng và tiện lợi','2023-05-24'),
+	  ('hoang',4,5,N'Sản phẩm OK.Chim rất đẹp. Giao hàng nhanh','2023-05-24'),
+	  ('hoang',5,5,N'Sản phẩm OK. Lồng rất vừa, cứng cáp, chất lượng tuyệt vời','2023-05-24'),
+	  ('toan',6,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
+	  ('toan',7,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
+	  ('toan',8,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
+	  ('tu',9,4,N'Giao đúng mẫu đẹp ,ok','2023-05-28'),
+	  ('tu',10,4,N'Nhận được hàng rồi.đẹp quá.rất cứng cáp.sẽ mua thêm','2023-05-28'),
+	  ('customer',11,5,N'Shop giao hàng rất nhanh mặc dù là ngày gần tết. Chim rất ok','2023-06-12'),
+	  ('customer',12,5,N'sản phẩm ok ship nhanh hơn hẹn','2023-06-12'),
+	  ('customer',13,5,N'sản phẩm ok ship nhanh hơn hẹn','2023-06-12'),
+	  ('customer',14,5,N'Shop giao hàng rất nhanh mặc dù là ngày gần tết. Chim rất ok','2023-07-23'),
+	  ('customer',15,5,N'sản phẩm ok, khung rất cứng cấp, chắc chắn, mẫu hình bắt mắt','2023-07-23'),
+	  ('customer',16,5,N'rất ưng ý','2023-07-23'),
+	  ('customer',17,5,N'Giao hàng nhanh. Đóng gói chắc chắn.','2023-07-23');
+GO
+
+CREATE VIEW [View_Feedback] AS
+SELECT u.full_name,u.email,f.rating,f.comment,f.feedback_date,o.bird_id,b.bird_name,a.accessory_id,a.accessory_name,i.image_url 
+FROM [USER] u
+RIGHT JOIN [Feedback] f
+ON u.username = f.customer
+RIGHT JOIN [OrderItem] o
+ON f.order_item_id = o.order_item_id
+LEFT JOIN [Bird] b
+ON o.bird_id = b.bird_id
+LEFT JOIN [Accessory] a
+ON o.accessory_id = a.accessory_id
+LEFT JOIN [Image] i 
+ON b.bird_id = i.bird_id OR a.accessory_id = i.accessory_id
+WHERE i.is_thumbnail = 1
+GO
+

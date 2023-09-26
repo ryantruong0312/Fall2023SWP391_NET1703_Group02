@@ -47,7 +47,8 @@ public class RegisterController extends HttpServlet {
             String mobile = request.getParameter("mobile");
             String account = request.getParameter("account");
             String password = request.getParameter("password");
-            User u = UserDAO.findUser(name, email);
+            UserDAO user = new UserDAO();
+            User u = user.findUser(name, email);
             HttpSession session = request.getSession();
             String url = ERROR;
             if (u == null) {
@@ -55,7 +56,7 @@ public class RegisterController extends HttpServlet {
                 String token = JWTUtils.encodeJWT(email);
                 int resultSendMail = EmailService.sendEmail(email, "Kích hoạt tài khoản", EmailUtils.sendActive(name, token));
                 if (resultSendMail == 1) {
-                    int result = UserDAO.createUser(account, email, endcodePassword, name, mobile, "form", "inactive");
+                    int result = user.createUser(account, email, endcodePassword, name, mobile, "form", "inactive");
                     if (result == 0) {
                         session.setAttribute("ERROR", "Tạo tài khoản không thành công");
                         url = DEST_NAV_REGISTER;

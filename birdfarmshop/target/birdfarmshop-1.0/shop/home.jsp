@@ -19,7 +19,7 @@
         <meta name="author" content="">
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>Bird Farm Shop - Home</title>
+        <title>V.E.T - Thế giới Vẹt Cảnh</title>
 
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -28,11 +28,15 @@
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
         <style>
-            .breed-img{
-                width: 350px;
+            .breed-img,
+            .category-img
+            {
+                width: 100%;
                 height: 370px;
             }
-            .breed-name{
+            .breed-name,
+            .category-name
+            {
                 text-align: center;
             }
         </style>
@@ -43,6 +47,17 @@
         <c:url var="toCompare" value="MainController?action=NavToCompare"/>
         <c:url var="toLogin" value="MainController?action=NavToLogin"/>
         <c:url var="logout" value="MainController?action=Logout"/>
+        <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
+        <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
+        <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
+        <c:url var="toCart" value="MainController?action=NavToCart"/>
+        <c:url var="toProfile" value="MainController?action=NavToProfile"/>
+        <c:url var="toOrders" value="MainController?action=NavToOrders"/>
+        <c:url var="toShopOrders" value="MainController?action=NavToShopOrders"/>
+        <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
+        <c:url var="toReports" value="MainController?action=NavToReports"/>
+        <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
+
         <!-- ***** Preloader Start ***** -->
         <div id="preloader">
             <div class="jumper">
@@ -55,7 +70,7 @@
 
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
-            <div class="container">
+            <div class="container home-custom">
                 <div class="row">
                     <div class="col-12">
                         <nav class="main-nav">
@@ -70,18 +85,21 @@
                                     <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
                                     <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
-                                            <li><a href="MainController?action=NavToBird&amount=0">Chim vẹt</a></li>
-                                            <li><a href="shop/bird-nest.jsp">Tổ chim non</a></li>
-                                            <li><a href="MainController?action=NavToAccessory">Phụ kiện</a></li>
+                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
+                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
                                     </li>
                                     <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
                                         <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
-                                        <li class="scroll-to-section"><a href="">Đơn hàng</a></li>
+                                        <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
                                         </c:if>
                                         <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
-                                        <li class="scroll-to-section"><a href="">Ghép cặp</a></li>
-                                        <li class="scroll-to-section"><a href="shop/cart-view.jsp">Giỏ hàng</a></li>
+                                        <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
+                                        <li id="show-cart" class="scroll-to-section">
+                                            <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                                            <div class="cart-amount">8</div>
+                                        </li>
 
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
@@ -89,23 +107,23 @@
                                         </c:if>
                                     </c:if>
                                     <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
-                                    <li class="submenu"><a href="">Products</a>
+                                    <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
-                                            <li><a href="#">Sản phẩm</a></li>
-                                            <li><a href="#">Tổ chim non</a></li>
-                                            <li><a href="MainController?action=NavToAccessory">Phụ kiện</a></li>
+                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
+                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
                                     </li>
                                     <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                    <li class="scroll-to-section"><a href="">Đơn hàng</a></li>
-                                    <li class="scroll-to-section"><a href="shop/accounts.jsp">Tài khoản</a></li>
-                                    <li class="scroll-to-section"><a href="shop/reports.jsp">Thống kê</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
                                     </c:if>
                                     <c:if test="${sessionScope.LOGIN_USER != null}">
-                                    <li class="submenu"><a href="#">${LOGIN_USER.fullName}</a>
+                                    <li class="submenu"><a class="user-name text-right" href="#">${LOGIN_USER.fullName}</a>
                                         <ul>
-                                            <li><a href="#">Cá nhân</a></li>
-                                            <li><a href="${logout}">Đăng xuất</a></li>
+                                            <li><a href="${pageScope.toProfile}">Cá nhân</a></li>
+                                            <li><a href="${pageScope.logout}">Đăng xuất</a></li>
                                         </ul>
                                     </li>
                                 </c:if>
@@ -247,7 +265,7 @@
                     <div class="col-lg-12">
                         <div class="men-item-carousel">
                             <div class="owl-men-item owl-carousel">
-                                <c:forEach var="breed" items="${requestScope.BREEDS}">
+                                <c:forEach var="breed" items="${requestScope.BIRD_BREEDS}">
                                     <div class="item">
                                         <div class="thumb">
                                             <div class="hover-content">
@@ -287,98 +305,21 @@
                     <div class="col-lg-12">
                         <div class="women-item-carousel">
                             <div class="owl-women-item owl-carousel">
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
+                                <c:forEach var="category" items="${requestScope.ACCESSORY_CATEGORIES}">
+                                    <div class="item">
+                                        <div class="thumb">
+                                            <div class="hover-content">
+                                                <ul>
+                                                    <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
+                                                </ul>
+                                            </div>
+                                            <img class="category-img" src="${category.category_thumbnail}" alt="">
                                         </div>
-                                        <img src="assets/images/women-01.jpg" alt="">
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>New Green Jacket</h4>
-                                        <span>$75.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
+                                        <div class="down-content">
+                                            <h4 class="category-name">${category.category_name}</h4>
                                         </div>
-                                        <img src="assets/images/women-02.jpg" alt="">
                                     </div>
-                                    <div class="down-content">
-                                        <h4>Classic Dress</h4>
-                                        <span>$45.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <img src="assets/images/women-03.jpg" alt="">
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>Spring Collection</h4>
-                                        <span>$130.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <img src="assets/images/women-01.jpg" alt="">
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>Classic Spring</h4>
-                                        <span>$120.00</span>
-                                        <ul class="stars">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                </c:forEach>
                             </div>
                         </div>
                     </div>
@@ -401,7 +342,7 @@
                             <p>Bên cạnh việc bán chim, chúng tôi còn cung cấp các sản phẩm chất lượng để giúp bạn chăm sóc chim cưng của mình, từ lồng cho đến thức ăn và đồ chơi.</p>
                             <p>Chúng tôi luôn sẵn sàng tư vấn và hỗ trợ bạn trong việc nuôi dưỡng và chăm sóc chim cảnh của mình. Bạn cũng có thể yên tâm về việc giao hàng, với dịch vụ vận chuyển an toàn và đảm bảo đến tận tay bạn.</p>
                             <div class="main-border-button">
-                                <a href="products.html">Tìm hiểu thêm</a>
+                                <a href="">Tìm hiểu thêm</a>
                             </div>
                         </div>
                     </div>
@@ -496,11 +437,11 @@
                     <div class="col-lg-3">
                         <div class="first-item">
                             <div class="logo">
-                                <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
+                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
                             </div>
                             <ul>
                                 <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                <li><a href="#">birdfarmshop@petshop.com</a></li>
+                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
                                 <li><a href="#">0913-244-567</a></li>
                             </ul>
                         </div>
@@ -508,11 +449,11 @@
                     <div class="col-lg-3">
                         <h4>Sản phẩm và dịch vụ</h4>
                         <ul>
-                            <li><a href="#">Chim vẹt</a></li>
+                            <li><a href="#">Vẹt cảnh</a></li>
                             <li><a href="#">Tổ chim non</a></li>
                             <li><a href="#">Phụ kiện</a></li>
                             <li><a href="#">So sánh</a></li>
-                            <li><a href="#">Ghép cặp</a></li>
+                            <li><a href="#">Nhân giống</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
@@ -535,9 +476,8 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="under-footer">
-                            <p>Copyright © 2023 BirdFarmShop Co., Ltd. All Rights Reserved. 
+                            <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
 
-                                <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
                             <ul>
                                 <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                                 <li><a href="#"><i class="fa fa-instagram"></i></a></li>
@@ -549,7 +489,7 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
-
+        <%@include file="../layout/message.jsp" %>
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
 

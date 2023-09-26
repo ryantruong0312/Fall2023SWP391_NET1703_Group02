@@ -17,7 +17,11 @@
         <meta name="author" content="">
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>Bird Farm Shop - Birds</title>
+<<<<<<< HEAD
+        <title>Bird Farm Shop - Chim Vẹt</title>
+=======
+        <title>V.E.T - Vẹt Cảnh</title>
+>>>>>>> 2a16b886dacd98271357b086d52c25d5e523f5e9
 
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -26,10 +30,19 @@
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
 
+        <style>
+            .bird-thumbnail{
+                width: 350px;
+                height: 368px;
+            }
+        </style>
     </head>
 
     <body>
-
+<<<<<<< HEAD
+        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
+        <c:url var="toLogin" value="MainController?action=NavToLogin"/>
+        <c:url var="logout" value="MainController?action=Logout"/>
         <!-- ***** Preloader Start ***** -->
         <div id="preloader">
             <div class="jumper">
@@ -40,6 +53,22 @@
         </div>  
         <!-- ***** Preloader End ***** -->
 
+=======
+        <c:url var="toHome" value="MainController?action=NavToHome"/>
+        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
+        <c:url var="toLogin" value="MainController?action=NavToLogin"/>
+        <c:url var="logout" value="MainController?action=Logout"/>
+        <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
+        <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
+        <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
+        <c:url var="toCart" value="MainController?action=NavToCart"/>
+        <c:url var="toProfile" value="MainController?action=NavToProfile"/>
+        <c:url var="toOrders" value="MainController?action=NavToOrders"/>
+        <c:url var="toShopOrders" value="MainController?action=NavToShopOrders"/>
+        <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
+        <c:url var="toReports" value="MainController?action=NavToReports"/>
+        <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
+>>>>>>> 2a16b886dacd98271357b086d52c25d5e523f5e9
 
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
@@ -48,39 +77,119 @@
                     <div class="col-12">
                         <nav class="main-nav">
                             <!-- ***** Logo Start ***** -->
-                            <a href="../RenderHomeController" class="logo">
+                            <a href="#" class="logo scroll-to-section">
                                 <img src="assets/images/logo.png">
                             </a>
                             <!-- ***** Logo End ***** -->
                             <!-- ***** Menu Start ***** -->
                             <ul class="nav">
-                                <li class="scroll-to-section"><a href="MainController?action=NavToHome">Home</a></li>
-                                <li class="scroll-to-section"><a href="MainController?action=NavToBird&amount=0" class="active">Birds</a></li>
-                                <li class="scroll-to-section"><a href="MainController?action=NavToAccessory">Accessories</a></li>
-                                <li class="scroll-to-section"><a href="MainController?action=NavToCompare">Bird Compare</a></li>
-                                <li class="scroll-to-section"><a href="bird-pair.jsp">Breed Select</a></li>
-                                <li class="scroll-to-section"><a href="shop/cart-view.jsp">Cart</a></li>
-                                <li class="submenu">
-                                    <a href="javascript:;">Sort by</a>
-                                    <ul>
-                                        <li><a href="#">Low To High</a></li>
-                                        <li><a href="#">High To Low</a></li>
-                                        <!--<li><a href="#">Features Page 3</a></li>-->
-                                    </ul>
-                                </li>
-                                <li class="submenu">
-                                    <a href="javascript:;">Customer 1</a>
-                                    <ul>
-                                        <li><a href="profile/profile-view">Profile</a></li>
-                                        <li><a href="#">Sign out</a></li>
-                                        <!--<li><a href="#">Features Page 3</a></li>-->
-                                    </ul>
-                                </li>
-                                <!--<li class="scroll-to-section"><a href="#explore">Explore</a></li>-->
-                            </ul>        
+<<<<<<< HEAD
+                                <li class="scroll-to-section"><a href="MainController?action=NavToHome">Trang chủ</a></li>
+                                    <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'staff'}">
+
+                                    <li class="submenu"><a href="" class="active">Sản phẩm</a>
+                                        <ul>
+                                            <li><a href="MainController?action=NavToBird&amount=0">Chim vẹt</a></li>
+                                            <li><a href="shop/bird-nest.jsp">Tổ chim non</a></li>
+                                            <li><a href="MainController?action=NavToAccessory">Phụ kiện</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li class="scroll-to-section"><a href="MainController?action=NavToCompare">So sánh</a></li>
+                                        <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer'}">
+                                            <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
+                                            <li class="scroll-to-section"><a href="">Đơn hàng</a></li>
+                                            </c:if>
+                                        <li class="scroll-to-section"><a href="">Ghép cặp</a></li>
+                                        <li class="scroll-to-section"><a href="../cart-view.jsp">Giỏ hàng</a></li>
+=======
+                                <li class="scroll-to-section"><a href="${pageScope.toHome}">Trang chủ</a></li>
+                                    <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'staff'}">
+                                    <li class="submenu"><a href="" class="active">Sản phẩm</a>
+                                        <ul>
+                                            <li><a href="#" class="active">Vẹt cảnh</a></li>
+                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}" >So sánh</a></li>
+                                        <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer'}">
+                                            <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
+                                            <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
+                                            </c:if>
+                                        <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
+                                        <li id="show-cart" class="scroll-to-section">
+                                            <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                                            <c:if test="${sessionScope.CART_BIRD == null}">
+                                                <div class="cart-amount">0</div>
+                                            </c:if>
+                                            <c:if test="${sessionScope.CART_BIRD != null}">
+                                                <div class="cart-amount">${sessionScope.CART_BIRD.getSize()}</div>
+                                            </c:if>
+                                        </li>
+>>>>>>> 2a16b886dacd98271357b086d52c25d5e523f5e9
+                                        <c:if test="${sessionScope.LOGIN_USER == null}">
+                                            <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
+                                            </c:if>
+                                        </c:if>
+                                    </c:if>
+                                    <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
+<<<<<<< HEAD
+                                    <li class="submenu"><a href="">Products</a>
+                                        <ul>
+                                            <li><a href="#">Sản phẩm</a></li>
+                                            <li><a href="#">Tổ chim non</a></li>
+                                            <li><a href="#">Phụ kiện</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
+                                    <li class="scroll-to-section"><a href="">Đơn hàng</a></li>
+                                    <li class="scroll-to-section"><a href="../shop/accounts.jsp">Tài khoản</a></li>
+                                    <li class="scroll-to-section"><a href="shop/reports.jsp">Thống kê</a></li>
+                                    </c:if>
+
+                                <c:if test="${sessionScope.LOGIN_USER != null}">
+                                    <li class="submenu"><a href="#">${LOGIN_USER.fullName}</a>
+                                        <ul>
+                                            <li><a href="#">Cá nhân</a></li>
+                                            <li><a href="${logout}">Đăng xuất</a></li>
+                                        </ul>
+                                    </li>
+                                </c:if>
+                            </ul>
+=======
+                                    <li class="submenu"><a href="" class="active">Sản phẩm</a>
+                                        <ul>
+                                            <li><a href="#" class="active">Vẹt cảnh</a></li>
+                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
+                                    </c:if>
+                                    <c:if test="${sessionScope.LOGIN_USER != null}">
+                                    <li class="submenu"><a href="">${LOGIN_USER.fullName}</a>
+                                        <ul>
+                                            <li><a href="${pageScope.toProfile}">Cá nhân</a></li>
+                                            <li><a href="${pageScope.logout}">Đăng xuất</a></li>
+                                        </ul>
+                                    </li>
+                                </c:if>
+                            </ul>           
+>>>>>>> 2a16b886dacd98271357b086d52c25d5e523f5e9
                             <a class='menu-trigger'>
                                 <span>Menu</span>
                             </a>
+
+<!--                            <form action="MainController" method="post">
+                                <input style="width: 200px;" type="text" name="txtBirdName" value="" placeholder="Tìm kiếm"/>
+                                <button type="submit" name="action" value="SearchBird">
+                                    <img style="width: 15px; height: 15px;" src="assets\images\search.png">
+                                </button></br>
+                            </form>-->
                             <!-- ***** Menu End ***** -->
                         </nav>
                     </div>
@@ -95,7 +204,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="inner-content">
-                            <h2>Các sản phẩm phụ kiện</h2>
+                            <h2>Các sản phẩm chính</h2>
                             <span>Awesome &amp; Creative HTML CSS layout by TemplateMo</span>
                         </div>
                     </div>
@@ -119,30 +228,43 @@
             </div>
             <div class="container">
                 <div id="content" class="row">
-                    <c:if test="${requestScope.BIRDLIST != null}">
-                        <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
-                            <c:if test="${not empty BIRDLIST}">
-                            <c:forEach items="${BIRDLIST}" var="bird" varStatus="counter">
+                    <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
+                    <c:if test="${BIRDLIST != null}">
+                        <c:if test="${not empty BIRDLIST}">
+                            <c:forEach items="${BIRDLIST}" var="bird">
+<<<<<<< HEAD
+                                        <div class="bird col-lg-4">
+                                            <div class="item">
+                                                <div class="thumb">
+                                                    <div class="hover-content">
+                                                        <ul>
+                                                            <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                            <li><a href="bird-details.jsp"><i class="fa fa-shopping-cart"></i></a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <img class="bird-thumbnail" src="${bird.image_url}" alt="">
+                                                </div>
+                                                <div class="down-content">
+                                                    <h4>${bird.bird_name}</h4>
+                                                    <span>${bird.price}</span>
+                                                </div>
+                                            </div>
+=======
                                 <div class="bird col-lg-4">
                                     <div class="item">
                                         <div class="thumb">
                                             <div class="hover-content">
                                                 <ul>
-                                                    <li><a href="MainController?action=NavToBirdDetails"><i class="fa fa-eye"></i></a></li>
-                                                    <li><a href="bird-details.jsp"><i class="fa fa-shopping-cart"></i></a></li>
+                                                    <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                    <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
                                                 </ul>
                                             </div>
-                                            <img src="assets/images/men-01.jpg" alt="">
+                                            <img class="bird-thumbnail" src="${bird.image_url}" alt="">
+>>>>>>> 2a16b886dacd98271357b086d52c25d5e523f5e9
                                         </div>
-                                        <div class="down-content">
-                                            <h4>${bird.bird_name}</h4>
-                                            <span>${bird.price}</span>
-                                        </div>
-                                    </div>
-                                </div>
                             </c:forEach>
-<!--                            <button onClick="loadMoreBird()">Load More </button>-->
-                            </c:if>
+                            <!--                            <button onClick="loadMoreBird()">Load More </button>-->
+                        </c:if>
                     </c:if>      
                     <div class="col-lg-12">
                         <div class="pagination">
@@ -177,51 +299,51 @@
                     <div class="col-lg-3">
                         <div class="first-item">
                             <div class="logo">
-                                <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
+                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
                             </div>
                             <ul>
-                                <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
-                                <li><a href="#">hexashop@company.com</a></li>
-                                <li><a href="#">010-020-0340</a></li>
+                                <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
+                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
+                                <li><a href="#">0913-244-567</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <h4>Shopping &amp; Categories</h4>
+                        <h4>Sản phẩm và dịch vụ</h4>
                         <ul>
-                            <li><a href="#">Men’s Shopping</a></li>
-                            <li><a href="#">Women’s Shopping</a></li>
-                            <li><a href="#">Kid's Shopping</a></li>
+                            <li><a href="#">Vẹt cảnh</a></li>
+                            <li><a href="#">Tổ chim non</a></li>
+                            <li><a href="#">Phụ kiện</a></li>
+                            <li><a href="#">So sánh</a></li>
+                            <li><a href="#">Nhân giống</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
-                        <h4>Useful Links</h4>
+                        <h4>Đường dẫn hữu ích</h4>
                         <ul>
-                            <li><a href="#">Homepage</a></li>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Help</a></li>
-                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="#">Về chúng tôi</a></li>
+                            <li><a href="#">Hỗ trợ</a></li>
+                            <li><a href="#">Liên hệ</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
-                        <h4>Help &amp; Information</h4>
+                        <h4>Thông tin hỗ trợ</h4>
                         <ul>
-                            <li><a href="#">Help</a></li>
-                            <li><a href="#">FAQ's</a></li>
-                            <li><a href="#">Shipping</a></li>
-                            <li><a href="#">Tracking ID</a></li>
+                            <li><a href="#">Hỗ trợ</a></li>
+                            <li><a href="#">Câu hỏi thường gặp</a></li>
+                            <li><a href="#">Giao hàng</a></li>
+                            <li><a href="#">Theo dõi đơn hàng</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-12">
                         <div class="under-footer">
-                            <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
+                            <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
 
-                                <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
                             <ul>
                                 <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
                                 <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="#"><i class="fa fa-behance"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -231,6 +353,7 @@
         <!-- ***** Footer Area Ends ***** -->
 
         <!-- jQuery -->
+        <%@include file="../layout/message.jsp" %>
         <script src="assets/js/jquery-2.1.0.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <!-- Bootstrap -->
@@ -267,7 +390,7 @@
                 });
             });
             // Đoạn mã JavaScript sử dụng jQuery
-            $(document).ready(function() {
+            $(document).ready(function () {
                 var currentPage = 1; // Trang hiện tại
 
                 // Hàm để tải sản phẩm từ máy chủ
@@ -275,39 +398,39 @@
                     $.ajax({
                         url: 'MainController?action=NavToBird&amount=' + (page - 1) * 9,
                         method: 'GET',
-                        success: function(data) {
+                        success: function (data) {
                             // Xử lý dữ liệu sản phẩm và cập nhật trang web
                             $('#content').html(data);
                             currentPage = page; // Cập nhật trang hiện tại
                         },
-                        error: function(error) {
+                        error: function (error) {
                             console.log(error);
                         }
                     });
                 }
 
                 // Xử lý sự kiện khi người dùng nhấn vào liên kết trang
-                $('#page-1').click(function(e) {
+                $('#page-1').click(function (e) {
                     e.preventDefault(); // Ngăn chặn hành vi mặc định của liên kết
                     loadProducts(1);
                 });
 
-                $('#page-2').click(function(e) {
+                $('#page-2').click(function (e) {
                     e.preventDefault();
                     loadProducts(2);
                 });
 
-                $('#page-3').click(function(e) {
+                $('#page-3').click(function (e) {
                     e.preventDefault();
                     loadProducts(3);
                 });
 
-                $('#page-4').click(function(e) {
+                $('#page-4').click(function (e) {
                     e.preventDefault();
                     loadProducts(4);
                 });
 
-                $('#next-page').click(function(e) {
+                $('#next-page').click(function (e) {
                     e.preventDefault();
                     // Tải trang kế tiếp (currentPage + 1)
                     loadProducts(currentPage + 1);
