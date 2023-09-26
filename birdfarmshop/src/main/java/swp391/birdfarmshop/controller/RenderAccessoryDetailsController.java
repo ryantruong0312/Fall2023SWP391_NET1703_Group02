@@ -28,11 +28,13 @@ public class RenderAccessoryDetailsController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String accessory_id = request.getParameter("accessory_id");
-            AccessoryDAO dao = new AccessoryDAO();
-            AccessoryDTO a = dao.getAccessoriesByID(accessory_id);
-            if (a != null) {
-                request.setAttribute("a", a);
+            String accessory_id = request.getParameter("id");
+            AccessoryDAO a = new AccessoryDAO();
+            AccessoryDTO ac = a.getAccessoriesByID(accessory_id);
+            
+            if (ac != null) {
+                request.setAttribute("a", ac);
+                
                 url = SUCCESS;
             }else{
                 url = ERROR;

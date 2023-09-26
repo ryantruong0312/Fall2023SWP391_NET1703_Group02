@@ -14,7 +14,17 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import swp391.birdfarmshop.dao.AccessoryDAO;
+//<<<<<<< .mine
+//import swp391.birdfarmshop.dao.BirdDAO;
+//import swp391.birdfarmshop.dao.ImageDAO;
+//=======
+
+
+//>>>>>>> .theirs
 import swp391.birdfarmshop.model.Accessory;
+//import swp391.birdfarmshop.model.Bird;
+//import swp391.birdfarmshop.model.AccessoryBreed;
+//import swp391.birdfarmshop.model.Image;
 
 /**
  *
@@ -36,12 +46,7 @@ public class RenderAccessoryController extends HttpServlet {
             List<Accessory> accessoryList = new ArrayList<Accessory>();
             AccessoryDAO dao = new AccessoryDAO();
             accessoryList = dao.getNext9Accessory(amount);
-            int numberOfAccessory = 0;
-            for (; numberOfAccessory < dao.getAccessories().size();) {
-                numberOfAccessory++;
-            }
             request.setAttribute("accessoryList", accessoryList);
-            request.setAttribute("MAX", numberOfAccessory);
             url = SUCCESS;
 
         } catch (Exception e) {
