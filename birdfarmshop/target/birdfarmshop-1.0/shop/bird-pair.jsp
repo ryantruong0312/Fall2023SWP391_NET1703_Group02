@@ -1,6 +1,6 @@
 <%-- 
-    Document   : reports
-    Created on : Sep 18, 2023, 9:43:28 PM
+    Document   : pair-birds
+    Created on : Sep 13, 2023, 11:23:22 PM
     Author     : tlminh
 --%>
 
@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>V.E.T - Nhân giống</title>
     </head>
     <body>
         <h1>Hello World!</h1>

@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Login</title>
+        <title>V.E.T - Đăng nhập</title>
         <link rel="stylesheet" href="assets/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="assets/css/font-awesome.css"/>
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css"/>
@@ -27,7 +27,7 @@
         <!-- ***** Preloader End ***** -->
         <section class="vh-100 bg-login">
             <div class="container py-5 h-100">
-                <div class="row d-flex h-100 align-items-center justify-content-end form-custom">
+                <div class="row d-flex h-100 align-items-center justify-content-end form-custom"> 
                     <div class="col-md-6 col-lg-5 col-xl-5">
                         <form action="MainController?action=login" class="form-login" method="POST">
                             <!-- Email input -->
@@ -51,19 +51,18 @@
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </div>
                             </div>
-                            <p class="error-notification" style="color: red"><c:out value="${requestScope.error}" /></p>
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <!-- Checkbox -->
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="checkbox" value="" id="form1Example3"/>
                                     <label style="color: #007bff" class="form-check-label" for="form1Example3"> Ghi nhớ đăng nhập </label>
                                 </div>
-                                <a href="#!">Quên mật khẩu?</a>
+                                <a href="MainController?action=NavToReset">Quên mật khẩu?</a>
                             </div>
 
                             <!-- Submit button -->
                             <button type="submit" class="btn btn-primary btn-lg btn-block">Đăng nhập</button>
-                            <div style="color: white" class="mt-2">Bạn mới biết đến BirdFarmShop ?   <a href="MainController?action=NavToRegister">Đăng kí</a></div>
+                            <div style="color: white" class="mt-2">Bạn mới biết đến BFS ?   <a href="MainController?action=NavToRegister">Đăng kí</a></div>
                             <div class="divider d-flex align-items-center my-4">
                                 <p class="text-center fw-bold mx-3 mb-0 text-muted">Hoặc</p>
                             </div>
@@ -95,6 +94,7 @@
                 </div>
             </div>
         </section>
+        <%@include file="../layout/message.jsp" %>
         <script src="assets/js/jquery-3.7.1.min.js"></script>
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/jquery.validate.min.js" ></script>

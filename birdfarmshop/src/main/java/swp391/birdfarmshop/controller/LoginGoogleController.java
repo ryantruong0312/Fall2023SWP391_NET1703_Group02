@@ -23,11 +23,7 @@ import swp391.birdfarmshop.util.GoogleUtils;
  */
 @WebServlet(name = "LoginGoogleController", urlPatterns = {"/LoginGoogleController"})
 public class LoginGoogleController extends HttpServlet {
-
-    private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
     private static final String DEST_NAV_HOME = "RenderHomeController";
-    private static final String ERROR = "/WEB-INF/errorpages/error.jsp";
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,33 +38,31 @@ public class LoginGoogleController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             String code = request.getParameter("code");
-            String message = null;
-            String url = ERROR;
+             HttpSession session = request.getSession(true);
+   
             if (code == null || code.isEmpty()) {
-                message = "Không thể kết nối với Google, bạn nên thử cách khác";
+                 session.setAttribute("ERROR", "Không thể kết nối với Google, bạn nên thử cách khác");
             } else {
                 String accessToken = GoogleUtils.getToken(code);
                 GooglePojo account = GoogleUtils.getUserInfo(accessToken);
                 User u = UserDAO.findUser(account.getId(), account.getEmail());
                 if (u != null) {
-                    HttpSession session = request.getSession(true);
                     session.setAttribute("LOGIN_USER", u);
+                    session.setAttribute("SUCCESS", "Đăng nhập thành công");
                     response.sendRedirect(DEST_NAV_HOME); 
                 } else {
                     int createUser = UserDAO.createUser(account.getId(), account.getEmail(), "", account.getName(), "","google","active");
                     if (createUser == 0) {
-                        message = "Tạo tài khoản bằng Google thất bại!";
-                        url = DEST_NAV_LOGIN;
+                        session.setAttribute("ERROR", "Tạo tài khoản bằng Google thất bại!");
+                        response.sendRedirect("MainController?action=NavToLogin");
                     }else{
-                        HttpSession session = request.getSession(true);
                         User newUser = UserDAO.findUser(account.getId(), account.getEmail());
                         session.setAttribute("LOGIN_USER", newUser);
+                        session.setAttribute("SUCCESS", "Đăng nhập thành công");
                         response.sendRedirect(DEST_NAV_HOME);
-
                     }
                 }
             }
-            request.getRequestDispatcher(url).forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -2392,8 +2392,8 @@ responsive
 }
 @media (max-width: 767px){
     .user-name{
-       width: 100%;
-       text-align: center!important;
+        width: 100%;
+        text-align: center!important;
     }
 }
 /*login form*/
@@ -2413,7 +2413,7 @@ responsive
     background-color: transparent;
 }
 .form-outline .input:valid {
-    color: #a6b1aa;
+    color: rgba(255, 255, 255,0.8);
 }
 .form-outline .input:focus
 {
@@ -2506,4 +2506,156 @@ register*/
     .form-custom{
         justify-content: center!important;
     }
+}
+/*board-massage*/
+.toast-custom {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    max-width: 40px;
+    min-width: 350px;
+    border-radius: 2px;
+    padding: 20px 0;
+    border-left: 4px solid;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.08);
+    transition: all linear .3s;
+}
+.toast-timebar {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 7px;
+    background-color: currentColor;
+    animation: decreaseWidth 3.3s linear;
+}
+
+@keyframes decreaseWidth {
+    0% {
+        width: 100%;
+    }
+    100% {
+        width: 0;
+    }
+}
+@keyframes slideLeft{
+    from{
+        opacity: 0;
+        transform: translateX(calc(100% + 32px));
+    }
+    to{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+@keyframes slideRight{
+    from{
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to{
+        opacity: 0;
+        transform: translateX(calc(100% + 35px));
+    }
+}
+@keyframes fadeOut{
+    to{
+        opacity: 0;
+    }
+}
+#toast{
+    position: fixed;
+    top:  65px;
+    right: 16px;
+    z-index: 999999;
+}
+.toast--success{
+    color: #3fd35d;
+}
+.toast--info{
+    color: #2b7ce7;
+}
+.toast--error{
+    color: #e50f2c;
+}
+.toast--warning{
+    color: #f4f801;
+}
+.toast-custom + .toast-custom{
+    margin-top: 20px;
+}
+.toast-icon{
+    font-size: 24px;
+}
+.toast-icon,
+.toast-close
+{
+    font-size: 24px;
+    padding: 0 16px;
+}
+.toast-titile{
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+}
+.toast-msg{
+    font-size: 14px;
+    color: #333;
+    margin-top: 6px;
+    line-height: 1.5;
+}
+
+.toast-close{
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+@media screen and (max-width: 1100px) {
+    .toast-custom {
+        padding: 6px 0;
+        min-width: 150px;
+        max-width: 200px;
+    }
+    .toast-icon,
+    .toast-close
+    {
+        padding: 0 8px;
+    }
+    .toast-icon{
+        font-size: 6px;
+    }
+    .toast-titile{
+        font-size: 9px;
+    }
+    .toast-msg{
+        font-size: 13px;
+        margin-top: 2px;
+        line-height: 1.5;
+    }
+    .toast-close{
+        font-size: 8px;
+    }
+    .toast-timebar{
+        height: 3px;
+    }
+    .toast-custom + .toast-custom{
+        margin-top: 5px;
+    }
+}
+/*cart*/
+#show-cart{
+    position: relative;
+}
+.cart-amount{
+    position: absolute;
+    width: 25px;
+    border-radius: 10px;
+    background-color: red;
+    top: -1px;
+    right: -2px;
+    text-align: center; 
+    margin: auto;
+    line-height: 14px;
+    font-size: 0.7rem;
+    color: white;   
 }

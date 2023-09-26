@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Register</title>
+        <title>V.E.T - Đăng ký</title>
         <link rel="stylesheet" href="assets/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="assets/css/font-awesome.css"/>
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css"/>
@@ -84,6 +84,7 @@
                 </div>
             </div>
         </section>
+        <%@include file="../layout/message.jsp" %>
         <script src="assets/js/jquery-3.7.1.min.js"></script>
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/jquery.validate.min.js" ></script>
