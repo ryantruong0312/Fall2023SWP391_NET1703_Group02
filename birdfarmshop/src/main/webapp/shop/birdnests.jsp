@@ -1,23 +1,21 @@
 <%-- 
-    Document   : accessories
-    Created on : Sep 13, 2023, 11:20:56 PM
+    Document   : birdnests
+    Created on : Sep 25, 2023, 10:52:04 AM
     Author     : tlminh
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
     <head>
-
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>V.E.T - Phụ Kiện</title>
+        <title>V.E.T - Tổ chim non  </title>
 
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -25,23 +23,17 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-
-        <style>
-            .thumb{
-                width: 370px;
-                height: 390px;
-            }
-        </style>
     </head>
+
 
     <body>
         <c:url var="toHome" value="MainController?action=NavToHome"/>
+        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
         <c:url var="toLogin" value="MainController?action=NavToLogin"/>
         <c:url var="logout" value="MainController?action=Logout"/>
         <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
-        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
         <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
-        <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
+        <c:url var="toBirdNests" value="MainController?action=NavToBird"/>
         <c:url var="toCart" value="MainController?action=NavToCart"/>
         <c:url var="toProfile" value="MainController?action=NavToProfile"/>
         <c:url var="toOrders" value="MainController?action=NavToOrders"/>
@@ -65,21 +57,21 @@
                             <ul class="nav">
                                 <li class="scroll-to-section"><a href="${pageScope.toHome}">Trang chủ</a></li>
                                     <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'staff'}">
-                                    <li class="submenu"><a href="" class="active">Sản phẩm</a>
+                                    <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
                                             <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
                                             <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                                            <li><a href="#" class="active">Phụ kiện</a></li>
+                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
                                     </li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}" >So sánh</a></li>
                                         <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer'}">
                                             <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
                                             <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
                                             </c:if>
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
-                                        <li id="show-cart" class="scroll-to-section">
-                                            <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                                        <li id="show-cart" class="scroll-to-section active">
+                                            <a href="#"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
                                             <div class="cart-amount">8</div>
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
@@ -88,11 +80,11 @@
                                         </c:if>
                                     </c:if>
                                     <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
-                                    <li class="submenu"><a href="" class="active">Sản phẩm</a>
+                                    <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
                                             <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
                                             <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                                            <li><a href="#" class="active">Phụ kiện</a></li>
+                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
                                     </li>
                                     <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
@@ -119,93 +111,6 @@
             </div>
         </header>
         <!-- ***** Header Area End ***** -->
-
-        <!-- ***** Main Banner Area Start ***** -->
-        <div class="page-heading" id="top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="inner-content">
-                            <h2>Các sản phẩm phụ kiện</h2>
-                            <span>Awesome &amp; Creative HTML CSS layout by TemplateMo</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- ***** Main Banner Area End ***** -->
-
-
-        <!-- ***** Products Area Starts ***** -->
-
-        <section class="section" id="products">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-heading">
-                            <h2>Sản phẩm của chúng tôi</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div>
-                    <form action="RenderSearchAccessoriesController" method="GET">
-                        <input type="text" name="name" id="search" placeholder="Tìm kiếm" style="margin-bottom: 15px" value="${name}">
-                        <input type="hidden" name="searchTerm" value="${accessoryList}">
-                        <button type="submit">Tìm kiếm</button>
-                    </form>
-                </div>
-                <div class="row">
-                    <c:if test="${requestScope.accessoryList != null}">
-                        <c:set var="accessoryList" value="${requestScope.accessoryList}"/>
-                        <c:if test="${not empty accessoryList}">
-                            <c:forEach items="${accessoryList}" var="accessory" varStatus="counter">
-                                <div class="bird col-lg-4">
-                                    <div class="item">
-                                        <div class="thumb">
-                                            <div class="hover-content">
-                                                <ul>
-                                                    <li><a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a></li>
-                                                    <li><a href="ren"><i class="fa fa-shopping-cart"></i></a></li>
-                                                </ul>
-                                            </div>
-                                            <img class="thumb" src="${accessory.image_url}" alt="">
-                                        </div>
-                                        <div class="down-content">
-                                            <div>${accessory.accessory_name}</div>
-                                            <span>${accessory.unit_price} ₫</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </c:if>
-                    </c:if>      
-                    <div class="col-lg-12">
-                        <div class="pagination">
-                            <ul>
-                                <li class="active">
-                                    <a href="MainController?action=NavToAccessory&amount=0">1</a>
-                                </li>
-                                <li>
-                                    <a href="MainController?action=NavToAccessory&amount=9">2</a>
-                                </li>
-                                <!--                                <li>
-                                                                    <a href="MainController?action=NavToAccessory&amount=18">3</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#" id="page-4">4</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#">></a>
-                                                                </li>-->
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- ***** Products Area Ends ***** -->
 
         <!-- ***** Footer Start ***** -->
         <footer>
@@ -266,47 +171,5 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
-
-        <!-- jQuery -->
-        <script src="assets/js/jquery-2.1.0.min.js"></script>
-
-        <!-- Bootstrap -->
-        <script src="assets/js/popper.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>
-
-        <!-- Plugins -->
-        <script src="assets/js/owl-carousel.js"></script>
-        <script src="assets/js/accordions.js"></script>
-        <script src="assets/js/datepicker.js"></script>
-        <script src="assets/js/scrollreveal.min.js"></script>
-        <script src="assets/js/waypoints.min.js"></script>
-        <script src="assets/js/jquery.counterup.min.js"></script>
-        <script src="assets/js/imgfix.min.js"></script> 
-        <script src="assets/js/slick.js"></script> 
-        <script src="assets/js/lightbox.js"></script> 
-        <script src="assets/js/isotope.js"></script> 
-
-        <!-- Global Init -->
-        <script src="assets/js/custom.js"></script>
-
-        <script>
-
-            $(function () {
-                var selectedClass = "";
-                $("p").click(function () {
-                    selectedClass = $(this).attr("data-rel");
-                    $("#portfolio").fadeTo(50, 0.1);
-                    $("#portfolio div").not("." + selectedClass).fadeOut();
-                    setTimeout(function () {
-                        $("." + selectedClass).fadeIn();
-                        $("#portfolio").fadeTo(50, 1);
-                    }, 500);
-
-                });
-            });
-
-        </script>
-
     </body>
-
 </html>

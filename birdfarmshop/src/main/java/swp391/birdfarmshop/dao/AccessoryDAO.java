@@ -195,9 +195,4 @@ public class AccessoryDAO {
         return next9AccessoryList;
     }
 
-    public static void main(String[] args) throws SQLException {
-        AccessoryDAO dao = new AccessoryDAO();
-        ArrayList<Accessory> list = (ArrayList<Accessory>) dao.getSearchAccessory("Balo");
-        System.out.println(list);
-    }
 }
