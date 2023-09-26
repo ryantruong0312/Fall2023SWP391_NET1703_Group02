@@ -43,7 +43,8 @@ public class ResetPasswordController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             String email = request.getParameter("email");
-            User u = UserDAO.findUser("", email);
+            UserDAO user = new UserDAO();
+            User u = user.findUser("", email);
             String token = JWTUtils.randomPasswordToken();
             HttpSession session = request.getSession();
             String url = "MainController?action=NavToReset";
@@ -55,7 +56,7 @@ public class ResetPasswordController extends HttpServlet {
                     int resultSendMail = EmailService.sendEmail(u.getEmail(), "Cấp lại mật khẩu cho tài khoản", EmailUtils.sendPassword(u.getFullName(),token));
                     String newPassword = JWTUtils.encodeJWT(token);
                     if (resultSendMail == 1) {
-                        int result = UserDAO.updatePassword(u.getUsername(), newPassword);
+                        int result = user.updatePassword(u.getUsername(), newPassword);
                         if (result == 0) {
                         } else {
                             session.setAttribute("SUCCESS", "Kiểm tra email để nhận mật khẩu mới");

@@ -46,6 +46,16 @@
                         </tr>
                     </tbody>
                 </table>-->
+        
+        <div class="test-star">
+            <div class="rating1 big-star">
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+        </div>
+        </div>
         <script src="../assets/js/birdshop.js"></script>
         <script src="../assets/js/jquery-3.7.1.min.js"></script>
         <script src="../assets/js/popper.min.js"></script>

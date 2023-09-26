@@ -42,6 +42,8 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_ACCESSORY_DETAILS = "RenderAccessoryDetailsController";
     private static final String ACT_NAV_BIRD = "NavToBird";
     private static final String DEST_NAV_BIRD = "RenderBirdController";
+    private static final String ACT_NAV_BIRD_DETAILS = "NavToBirdDetails";
+    private static final String DEST_NAV_BIRD_DETAILS = "RenderBirdDetailsController";
     private static final String ACT_REST_PASSWORD = "reset";
     private static final String DEST_REST_PASSWORD = "ResetPasswordController";
     private static final String ACT_ACTIVE = "active";
@@ -91,6 +93,9 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_ACTIVE:
                     url = DEST_ACTIVE;
+                    break;
+                case ACT_NAV_BIRD_DETAILS:
+                    url = DEST_NAV_BIRD_DETAILS;
                     break;
                 default:
                     break;

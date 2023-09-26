@@ -1,4 +1,4 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -149,9 +149,9 @@ public class BirdDAO {
                     boolean sex = rs.getBoolean("gender");
                     String gender = "";
                     if (sex) {
-                        gender = "Ð?c";
+                        gender = "Ä‘á»±c";
                     } else {
-                        gender = "Cái";
+                        gender = "cÃ¡i";
                     }
                     String breed_id = rs.getString("breed_id");
                     String breed_name = breedDao.getBreedNameById(breed_id);

@@ -21,6 +21,8 @@ public class ImageDAO {
 
     private static final String GET_THUMBNAIL_BY_BIRD_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [bird_id] = ? AND [is_thumbnail] = 1";
     private static final String GET_IMAGES_BY_BIRD_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [bird_id] = ?";
+    private static final String GET_THUMBNAIL_BY_ACCESSORY_ID = "SELECT [image_url] FROM [Image] WHERE [accessory_id] = ? AND [is_thumbnail] = 1";
+    private static final String GET_IMAGES_BY_ACCESSORY_ID = "SELECT [image_url] FROM [Image] WHERE [IMAGES] = ?";
 
     public String getThumbnailUrlByBirdId(String birdId) throws SQLException {
         String url = "";
@@ -87,6 +89,7 @@ public class ImageDAO {
 //        ArrayList<String> url = dao.getImagesByBirdId("CP101");
 //        System.out.println(url);
 //    }
+
     public ArrayList<String> getImagesByAccessoryId(String accessoryId) throws SQLException {
         ArrayList<String> urls = new ArrayList<>();
         Connection con = null;
@@ -117,7 +120,7 @@ public class ImageDAO {
         }
         return urls;
     }
-    
+
     public String getThumbnailUrlByAccessoryId(String accessoryId) throws SQLException {
         String url = "";
         Connection con = null;

@@ -109,7 +109,7 @@
                                             </c:if>
                                         <li class="scroll-to-section"><a href="">Ghép cặp</a></li>
                                         <li class="scroll-to-section"><a href="../cart-view.jsp">Giỏ hàng</a></li>
-                                        <c:if test="${sessionScope.LOGIN_USER == null}">
+                                            <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
                                             </c:if>
                                         </c:if>
@@ -141,12 +141,12 @@
                                 <span>Menu</span>
                             </a>
 
-<!--                            <form action="MainController" method="post">
-                                <input style="width: 200px;" type="text" name="txtBirdName" value="" placeholder="Tìm kiếm"/>
-                                <button type="submit" name="action" value="SearchBird">
-                                    <img style="width: 15px; height: 15px;" src="assets\images\search.png">
-                                </button></br>
-                            </form>-->
+                            <!--                            <form action="MainController" method="post">
+                                                            <input style="width: 200px;" type="text" name="txtBirdName" value="" placeholder="Tìm kiếm"/>
+                                                            <button type="submit" name="action" value="SearchBird">
+                                                                <img style="width: 15px; height: 15px;" src="assets\images\search.png">
+                                                            </button></br>
+                                                        </form>-->
                             <!-- ***** Menu End ***** -->
                         </nav>
                     </div>
@@ -179,15 +179,15 @@
                     <div class="col-lg-8">
                         <c:if test="${birdDetails != null}">
                             <c:set var="image_urls" value="${birdDetails.image_urls}"/>
-                                <div class="image-container">
-                                    <div class="left-image">
-                                        <img src="${image_urls[0]}" alt="" onclick="swapImages(this)">
-                                    </div>
-                                    <div class="right-images">
-                                        <img src="${image_urls[1]}" alt="" onclick="swapImages(this)">
-                                        <img src="${image_urls[2]}" alt="" onclick="swapImages(this)">
-                                    </div>
+                            <div class="image-container">
+                                <div class="left-image">
+                                    <img src="${image_urls[0]}" alt="" onclick="swapImages(this)">
                                 </div>
+                                <div class="right-images">
+                                    <img src="${image_urls[1]}" alt="" onclick="swapImages(this)">
+                                    <img src="${image_urls[2]}" alt="" onclick="swapImages(this)">
+                                </div>
+                            </div>
                         </c:if>
                     </div>
                     <div class="col-lg-4">
@@ -197,8 +197,8 @@
                             <span>${birdDetails.description}</span>
                             <div class="quote">
                                 <c:if test="${not empty birdDetails.dad_bird_name && not empty birdDetails.mom_bird_name}">
-                                <i class="fa fa-quote-left"></i><p>${birdDetails.dad_bird_name} lai với ${birdDetails.mom_bird_name}</p>
-                                </c:if>
+                                    <i class="fa fa-quote-left"></i><p>${birdDetails.dad_bird_name} lai với ${birdDetails.mom_bird_name}</p>
+                                    </c:if>
                             </div>
                             <div class="quantity-content">
                                 <div class="left-content">
@@ -220,7 +220,9 @@
             </div>
         </section>
         <!-- ***** Product Area Ends ***** -->
-
+        <!-- ***** Feedback Area Start ***** -->
+        <%@include file="../layout/feedback.jsp" %>
+        <!-- ***** Feedback Area End ***** -->
         <!-- ***** Footer Start ***** -->
         <footer>
             <div class="container">
@@ -304,19 +306,19 @@
 
         <script>
 
-            $(function () {
-                var selectedClass = "";
-                $("p").click(function () {
-                    selectedClass = $(this).attr("data-rel");
-                    $("#portfolio").fadeTo(50, 0.1);
-                    $("#portfolio div").not("." + selectedClass).fadeOut();
-                    setTimeout(function () {
-                        $("." + selectedClass).fadeIn();
-                        $("#portfolio").fadeTo(50, 1);
-                    }, 500);
+                                        $(function () {
+                                            var selectedClass = "";
+                                            $("p").click(function () {
+                                                selectedClass = $(this).attr("data-rel");
+                                                $("#portfolio").fadeTo(50, 0.1);
+                                                $("#portfolio div").not("." + selectedClass).fadeOut();
+                                                setTimeout(function () {
+                                                    $("." + selectedClass).fadeIn();
+                                                    $("#portfolio").fadeTo(50, 1);
+                                                }, 500);
 
-                });
-            });
+                                            });
+                                        });
 
         </script>
 
