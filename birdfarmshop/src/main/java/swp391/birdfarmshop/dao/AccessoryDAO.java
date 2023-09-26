@@ -20,7 +20,7 @@ import swp391.birdfarmshop.util.DBUtils;
  * @author tlminh
  */
 public class AccessoryDAO {
-    
+
     private static final String GET_NEXT_9_ACCESSORY_LIST = "SELECT * FROM [BirdFarmShop].[dbo].[Accessory] "
             + "ORDER BY [unit_price] ASC OFFSET ? ROWS FETCH NEXT 9 ROWS ONLY";
 

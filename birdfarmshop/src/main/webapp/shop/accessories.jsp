@@ -26,6 +26,13 @@
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
 
+        <style>
+            .thumb{
+                width: 370px;
+                height: 390px;
+            }
+        </style>
+
     </head>
 
     <body>
@@ -149,14 +156,13 @@
                                             <div class="hover-content">
                                                 <ul>
                                                     <li><a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a></li>
-                                                    <li><a href="bird-details.jsp"><i class="fa fa-shopping-cart"></i></a></li>
+                                                    <li><a href="ren"><i class="fa fa-shopping-cart"></i></a></li>
                                                 </ul>
                                             </div>
-                                            <img class="bird-thumbnail" src="${accessory.image_url}" alt="">
+                                            <img class="thumb" src="${accessory.image_url}" alt="">
                                         </div>
                                         <div class="down-content">
-                                            <h4>${accessory.accessory_name}</h4>
-                                            <span>${accessory.unit_price}</span>
+                                            <span><i class="fa fa-money"></i> ${accessory.unit_price}</span>
                                         </div>
                                     </div>
                                 </div>

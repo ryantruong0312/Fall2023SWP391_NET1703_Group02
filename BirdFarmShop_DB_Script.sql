@@ -454,6 +454,8 @@ VALUES
 	1, NULL, NULL, 'MV157'),
 	('https://vietpetgarden.net/wp-content/uploads/2019/03/calci-lux-canxi-cho-chim-vet.jpg',
 	0, NULL, NULL, 'MV157'),
+	('https://uspigeons.mercasystems.com/media/catalog/product/cache/46/image/363x/296f4ceddc5caf0a87edd1d1d4b58606/v/e/versele_calcilux_500gr.1629168038.jpg',
+	0, NULL, NULL, 'MV157'),
 	
 	('https://lzd-img-global.slatic.net/g/p/b5be219fbe0d7477907f7089ea4787c2.jpg_720x720q80.jpg',
 	1, NULL, NULL, 'NK200'),
@@ -583,7 +585,7 @@ VALUES
 
 	('https://vetcanh.com/wp-content/uploads/2021/10/243285012_383512106831596_2029683691081608233_n.jpg', 
 	1, 'CW192', NULL, NULL),
-('https://petmeshop.com/wp-content/uploads/2023/05/cockatiel-special-1.jpg', 
+    ('https://petmeshop.com/wp-content/uploads/2023/05/cockatiel-special-1.jpg', 
 	0, 'CW192', NULL, NULL),
 	('https://vetcanh.com/wp-content/uploads/2021/10/245623652_175263331428641_1886273412272427080_n.jpg', 
 	0, 'CW192', NULL, NULL),

@@ -22,7 +22,7 @@ public class ImageDAO {
     private static final String GET_THUMBNAIL_BY_BIRD_ID = "SELECT [image_url] FROM [Image] WHERE [bird_id] = ? AND [is_thumbnail] = 1";
     private static final String GET_IMAGES_BY_BIRD_ID = "SELECT [image_url] FROM [Image] WHERE [bird_id] = ?";
     private static final String GET_THUMBNAIL_BY_ACCESSORY_ID = "SELECT [image_url] FROM [Image] WHERE [accessory_id] = ? AND [is_thumbnail] = 1";
-    private static final String GET_IMAGES_BY_ACCESSORY_ID = "SELECT [image_url] FROM [Image] WHERE [IMAGES] = ?";
+    private static final String GET_IMAGES_BY_ACCESSORY_ID = "SELECT [image_url] FROM [Image] WHERE [accessory_id] = ?";
 
     public String getThumbnailUrlByBirdId(String birdId) throws SQLException {
         String url = "";
@@ -145,4 +145,5 @@ public class ImageDAO {
         }
         return url;
     }
+    
 }

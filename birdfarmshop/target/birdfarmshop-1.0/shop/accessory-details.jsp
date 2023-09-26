@@ -153,15 +153,25 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="left-images">
-                        <img src="../assets/images/single-product-01.jpg" alt="">
-                        <img src="../assets/images/single-product-02.jpg" alt="">
-                    </div>
+                    <c:if test="${a != null}">
+                        <c:set var="image_url" value="${a.image_url}" />
+                        <div class="image-container">
+                            <div class="big-img">
+                                <img src="${image_url[0]}" alt="Image 1" class="large-image" onclick="showImg(this)">
+                            </div>
+
+                            <div class="right-images">
+                                <img src="${image_url[0]}" alt="Image 2" onclick="showImg(this)">
+                                <img src="${image_url[1]}" alt="Image 2" onclick="showImg(this)">
+                                <img src="${image_url[2]}" alt="Image 3" onclick="showImg(this)">
+                            </div>
+                        </div>
+                    </c:if>
                 </div>
                 <div class="col-lg-4">
                     <div class="right-content">
                         <h4 id="nameAccessory">${a.accessory_name}</h4>
-                        <span id="unit_price" class="price">${a.unit_price}</span>
+                        <span id="unit_price" class="price"> <i class="fa fa-money"></i> ${a.unit_price}</span>
                         <!--                        <ul class="stars">
                                                     <li><i class="fa fa-star"></i></li>
                                                     <li><i class="fa fa-star"></i></li>
@@ -193,7 +203,7 @@
                         </div>
 
                         <div class="total">
-                            <h4>Tổng cộng: <div style="display: inline;" id="total" <i class="fa fa-money" style="color:black   "></i> 0</div></h4>
+                            <h4>Tổng cộng: <div style="display: inline;" id="total" <i class="fa fa-money"></i> 0</div></h4>
                             <br><div class="main-border-button" style="margin-top: 15px"><a type="button" id="AddToCart">Thêm vào giỏ hàng</a></div></br>
                         </div>
                     </div>
@@ -358,10 +368,16 @@
                                                 sessionStorage.setItem("name", JSON.stringify(name));
                                                 sessionStorage.setItem("quantity", JSON.stringify(quantity));
                                                 sessionStorage.setItem("total", JSON.stringify(total));
-                                              
+
                                             }
-                                            
-                                            
+
+                                            let bigImg = document.querySelector('.big-img img');
+
+                                            function showImg(pic) {
+                                                bigImg.src = pic.src; // Use pic.src to get the URL of the clicked image
+                                            }
+
+
 
 
     </script>
@@ -372,6 +388,26 @@
 
 
 </script>
+<style>
+    .image-container {
+        text-align: center;
+    }
+
+    .image-container img {
+        width: 200px; /* Set the desired width for all images */
+        height: auto; /* Maintain aspect ratio */
+        margin: 5px; /* Add some margin between images */
+    }
+
+    .large-image {
+        width: 300px; /* Set the width of the large image as needed */
+    }
+    
+    .big-img{
+        max-width: 1200px;
+        margin: auto;
+    }
+</style>
 
 </html>
 
