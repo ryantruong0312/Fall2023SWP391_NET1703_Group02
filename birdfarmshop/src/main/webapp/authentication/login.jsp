@@ -62,7 +62,7 @@
 
                             <!-- Submit button -->
                             <button type="submit" class="btn btn-primary btn-lg btn-block">Đăng nhập</button>
-                            <div style="color: white" class="mt-2">Bạn mới biết đến BFS ?   <a href="MainController?action=NavToRegister">Đăng kí</a></div>
+                            <div style="color: white" class="mt-2">Bạn mới biết đến V.E.T ?   <a href="MainController?action=NavToRegister">Đăng kí</a></div>
                             <div class="divider d-flex align-items-center my-4">
                                 <p class="text-center fw-bold mx-3 mb-0 text-muted">Hoặc</p>
                             </div>
