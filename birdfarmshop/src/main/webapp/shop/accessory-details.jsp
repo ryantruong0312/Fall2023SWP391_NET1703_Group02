@@ -208,7 +208,8 @@
             </div>
         </div>
     </div>
-</section>                       
+</section>     
+<%@include file="../layout/feedback.jsp" %>
 <!-- ***** Footer Start ***** -->
 <footer>
     <div class="container">

@@ -41,7 +41,7 @@ public class LoginGoogleController extends HttpServlet {
              HttpSession session = request.getSession(true);
             UserDAO user = new UserDAO();
             if (code == null || code.isEmpty()) {
-                 session.setAttribute("ERROR", "Không thể kết nối với Google, bạn nên thử cách khác");
+                 session.setAttribute("ERROR", "Email đã được liên kết với một tài khoản trên hệ thống");
             } else {
                 String accessToken = GoogleUtils.getToken(code);
                 GooglePojo account = GoogleUtils.getUserInfo(accessToken);

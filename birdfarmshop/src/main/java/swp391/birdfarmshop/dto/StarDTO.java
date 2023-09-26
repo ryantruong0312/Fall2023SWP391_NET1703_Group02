@@ -70,7 +70,11 @@ public class StarDTO {
     public int totalStar(){
        return oneStar + twoStar + threeStar+ fourStar + fiveStar;
     }
-       
+    
+    public int totalAllPerStar() {
+        return oneStar * 1 + twoStar * 2 + 3 * threeStar + 4 * fourStar + 5 * fiveStar;
+    }
+    
     public double percentOneStar() {
         double number = (double) Math.round((double) oneStar / totalStar() * 100 * 100) / 100;
         return number;
@@ -98,7 +102,11 @@ public class StarDTO {
 
     public double totalRating() {
         if(totalStar() == 0) return 0;
-        double number = Math.round(((1 * oneStar) + (2 * twoStar) + (3 * threeStar) + (4 * fourStar) + (5 * fiveStar)) / totalStar() * 10) / 10;
+        double number = ((double) totalAllPerStar() / totalStar());
         return number;
     }    
+    
+    public int roundRating(){
+        return (int) Math.round(totalRating());
+    }
 }
