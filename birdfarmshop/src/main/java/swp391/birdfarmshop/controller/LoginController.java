@@ -40,7 +40,8 @@ public class LoginController extends HttpServlet {
             String password = request.getParameter("password");
             String save = request.getParameter("checkbox");
             String encodePassword = JWTUtils.encodeJWT(password);
-            User u = UserDAO.findUser(username, username);
+            UserDAO user = new UserDAO();
+            User u = user.findUser(username, username);
             HttpSession session = request.getSession(true);
             if (u != null) {
                 String decodePassword = JWTUtils.decodeJWT(u.getPassword());

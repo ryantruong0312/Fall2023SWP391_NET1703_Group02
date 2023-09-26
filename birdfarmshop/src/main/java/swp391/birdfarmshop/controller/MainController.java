@@ -111,6 +111,9 @@ public class MainController extends HttpServlet {
                 case ACT_ACTIVE:
                     url = DEST_ACTIVE;
                     break;
+
+
+
                 case ACT_NAV_BIRD_DETAILS:
                     url = DEST_NAV_BIRD_DETAILS;
                     break;

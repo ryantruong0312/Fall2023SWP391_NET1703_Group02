@@ -1,5 +1,6 @@
 D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderBirdCompareController.java
 D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderAccessoryController.java
+D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\StarDTO.java
 D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\BirdPair.java
 D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\services\EmailService.java
 D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\LogoutController.java
@@ -62,5 +63,6 @@ D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\CartBirdDTO.java
 D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\User.java
 D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderBirdController.java
 D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\LoginController.java
+D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderSearchAccessoriesController.java
 D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\ResetPasswordController.java
 D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\AccessoryBreed.java

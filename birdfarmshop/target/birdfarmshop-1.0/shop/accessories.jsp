@@ -151,7 +151,8 @@
             <div class="container">
                 <div>
                     <form action="RenderSearchAccessoriesController" method="GET">
-                        <input type="text" name="name" id="search" placeholder="Tìm kiếm" style="margin-bottom: 15px" value="">
+                        <input type="text" name="name" id="search" placeholder="Tìm kiếm" style="margin-bottom: 15px" value="${name}">
+                        <input type="hidden" name="searchTerm" value="${accessoryList}">
                         <button type="submit">Tìm kiếm</button>
                     </form>
                 </div>
@@ -178,7 +179,6 @@
                                     </div>
                                 </div>
                             </c:forEach>
-                            <!--                            <button onClick="loadMoreBird()">Load More </button>-->
                         </c:if>
                     </c:if>      
                     <div class="col-lg-12">

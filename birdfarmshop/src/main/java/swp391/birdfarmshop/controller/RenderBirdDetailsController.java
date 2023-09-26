@@ -10,11 +10,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import swp391.birdfarmshop.dao.BirdDAO;
+import swp391.birdfarmshop.dao.FeedbackDAO;
 import swp391.birdfarmshop.dto.BirdDTO;
+import swp391.birdfarmshop.dto.FeedbackDTO;
+import swp391.birdfarmshop.dto.StarDTO;
 
 /**
  *
@@ -32,7 +37,12 @@ public class RenderBirdDetailsController extends HttpServlet {
         try {
             String bird_id = request.getParameter("bird_id");
             BirdDAO birdDao = new BirdDAO();
-            BirdDTO birdDetails = birdDao.getBirdDetailsById(bird_id);
+            FeedbackDAO f = new FeedbackDAO();
+            ArrayList<FeedbackDTO> feedbackList = f.getFeedbackByIdProduct(bird_id);
+            request.setAttribute("feedbackList", feedbackList);
+            StarDTO starCustomer = f.getRatingByIdProduct(bird_id);
+            request.setAttribute("starCustomer", starCustomer);
+            BirdDTO birdDetails = birdDao.getBirdDetailsById(bird_id);    
             request.setAttribute("birdDetails", birdDetails);
             url = SUCCESS;
         } catch (SQLException e) {

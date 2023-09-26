@@ -224,7 +224,9 @@
             </div>
         </section>
         <!-- ***** Product Area Ends ***** -->
-
+        <!-- Feedback start-->
+        <%@include file="../layout/feedback.jsp" %>
+        <!-- Feedback end-->
         <!-- ***** Footer Start ***** -->
         <footer>
             <div class="container">

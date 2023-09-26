@@ -153,7 +153,7 @@
                             <c:set var="image_url" value="${a.image_url}" />
                             <div class="image-container">
                                 <div class="left-image">
-                                    <img src="${image_url[0]}" alt="Image 1" onclick="swapImages(this)">
+                                    <img id="image_main" src="${image_url[0]}" alt="Image 1" onclick="swapImages(this)">
                                 </div>
 
                                 <div class="right-image">
@@ -189,7 +189,7 @@
                                     <div class="quantity buttons_added">
                                         <div class="quantity buttons_added">
                                             <input type="button" value="-" class="minus" onclick="decrementQuantity('quantityInput', ${a.unit_price})">
-                                            <input type="number" step="1" min="1" max="${a.stock_quantity}" name="quantity" id="quantityInput" value="0" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
+                                            <input type="number" step="1" min="1" max="${a.stock_quantity}" name="quantity" id="quantityInput" value="1" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
                                             <input type="button" value="+" class="plus" onclick="incrementQuantity('quantityInput', ${a.stock_quantity}, ${a.unit_price})">
                                         </div>
                                     </div>
@@ -198,8 +198,8 @@
                             </div>
                         </div>
                         <div class="total">
-                            <h4 style="float: left;">Tổng cộng: <span id="total">0 ₫</span></h4>
-                            <div class="main-border-button" style="margin-left: 100px; float: left;"><a href="#" id="AddToCart">Thêm vào giỏ hàng</a></div>
+                            <h4 style="float: left;">Tổng cộng: <span id="total">${a.unit_price} ₫</span></h4>
+                            <div type="button" class="main-border-button" style="margin-left: 100px; float: left;"><a href="#" id="AddToCart">Thêm vào giỏ hàng</a></div>
                             <div style="clear: both;"></div>
                         </div>
 

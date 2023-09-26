@@ -39,24 +39,24 @@ public class LoginGoogleController extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             String code = request.getParameter("code");
              HttpSession session = request.getSession(true);
-   
+            UserDAO user = new UserDAO();
             if (code == null || code.isEmpty()) {
                  session.setAttribute("ERROR", "Không thể kết nối với Google, bạn nên thử cách khác");
             } else {
                 String accessToken = GoogleUtils.getToken(code);
                 GooglePojo account = GoogleUtils.getUserInfo(accessToken);
-                User u = UserDAO.findUser(account.getId(), account.getEmail());
+                User u = user.findUser(account.getId(), account.getEmail());
                 if (u != null) {
                     session.setAttribute("LOGIN_USER", u);
                     session.setAttribute("SUCCESS", "Đăng nhập thành công");
                     response.sendRedirect(DEST_NAV_HOME); 
                 } else {
-                    int createUser = UserDAO.createUser(account.getId(), account.getEmail(), "", account.getName(), "","google","active");
+                    int createUser = user.createUser(account.getId(), account.getEmail(), "", account.getName(), "","google","active");
                     if (createUser == 0) {
                         session.setAttribute("ERROR", "Tạo tài khoản bằng Google thất bại!");
                         response.sendRedirect("MainController?action=NavToLogin");
                     }else{
-                        User newUser = UserDAO.findUser(account.getId(), account.getEmail());
+                        User newUser = user.findUser(account.getId(), account.getEmail());
                         session.setAttribute("LOGIN_USER", newUser);
                         session.setAttribute("SUCCESS", "Đăng nhập thành công");
                         response.sendRedirect(DEST_NAV_HOME);

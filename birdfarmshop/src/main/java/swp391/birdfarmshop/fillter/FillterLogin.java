@@ -37,12 +37,13 @@ public class FillterLogin implements Filter {
             HttpSession session = res.getSession();
             String action = request.getParameter("action");
             User u = (User) session.getAttribute("LOGIN_USER");
+            UserDAO user = new UserDAO();
             if(u == null && (action != "ACT_NAV_LOGIN" || action != "ACT_NAV_REGISTER"))
             if (cookie != null) {
                 for (Cookie c : cookie) {
                     if (c.getName().equals("token")) {
                         String decodeEmail = JWTUtils.decodeJWT(c.getValue());
-                        u = UserDAO.findUser("", decodeEmail);
+                        u = user.findUser("", decodeEmail);
                         u.setEmail(c.getValue());
                         session.setAttribute("LOGIN_USER", u);
                         break;

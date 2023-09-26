@@ -36,10 +36,11 @@ public class ActiveController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String token = request.getParameter("token");
             String email = JWTUtils.decodeJWT(token);
-            User u = UserDAO.findUser("", email);
+            UserDAO user = new UserDAO();
+            User u = user.findUser("", email);
             HttpSession session = request.getSession();
             if( u!= null){
-                int result = UserDAO.updateActive(u.getUsername(),"active");
+                int result = user.updateActive(u.getUsername(),"active");
                 if( result == 0){
                     session.setAttribute("ERROR", "Kích hoạt tài khoản thất bại");
                 }else{
