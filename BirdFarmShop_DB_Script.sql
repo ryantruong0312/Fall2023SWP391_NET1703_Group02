@@ -674,23 +674,23 @@ VALUES ('230925O0001','CW192',null,2500000,1),
 GO
 
 INSERT INTO [Feedback]([customer],[order_item_id],[rating],[comment],[feedback_date]) 
-VALUES('customer',1,5,N'Chất lượng ok. Đc tặng cả cái đổ thức ăn. Giao nhanh. Cảm ơn ship và shop',2023-05-23),
-	  ('customer',2,5,N'Sản phẩm OK.giao hàng hơi chậm.rất vừa với lồng và tiện lợi.mọi người nên mua cho mình 1 cái vừa đỡ mất thời gian vừa nhàn',2023-05-23),
-	  ('hai',3,5,N'Sản phẩm OK.giao hàng hơi chậm.rất vừa với lồng và tiện lợi',2023-05-24),
-	  ('hoang',4,5,N'Sản phẩm OK.Chim rất đẹp. Giao hàng nhanh',2023-05-24),
-	  ('hoang',5,5,N'Sản phẩm OK. Lồng rất vừa, cứng cáp, chất lượng tuyệt vời',2023-05-24),
-	  ('toan',6,4,N'Mua lần 2 ở shop. Rata hài lòng',2023-05-06),
-	  ('toan',7,4,N'Mua lần 2 ở shop. Rata hài lòng',2023-05-06),
-	  ('toan',8,4,N'Mua lần 2 ở shop. Rata hài lòng',2023-05-06),
-	  ('tu',9,4,N'Giao đúng mẫu đẹp ,ok',2023-05-28),
-	  ('tu',10,4,N'Nhận được hàng rồi.đẹp quá.rất cứng cáp.sẽ mua thêm',2023-05-28),
-	  ('customer',11,5,N'Shop giao hàng rất nhanh mặc dù là ngày gần tết. Chim rất ok',2023-06-12),
-	  ('customer',12,5,N'sản phẩm ok ship nhanh hơn hẹn',2023-06-12),
-	  ('customer',13,5,N'sản phẩm ok ship nhanh hơn hẹn',2023-06-12),
-	  ('customer',14,5,N'Shop giao hàng rất nhanh mặc dù là ngày gần tết. Chim rất ok',2023-07-23),
-	  ('customer',15,5,N'sản phẩm ok, khung rất cứng cấp, chắc chắn, mẫu hình bắt mắt',2023-07-23),
-	  ('customer',16,5,N'rất ưng ý',2023-07-23),
-	  ('customer',17,5,N'Giao hàng nhanh. Đóng gói chắc chắn.',2023-07-23);
+VALUES('customer',1,5,N'Chất lượng ok. Đc tặng cả cái đổ thức ăn. Giao nhanh. Cảm ơn ship và shop','2023-05-23'),
+	  ('customer',2,5,N'Sản phẩm OK.giao hàng hơi chậm.rất vừa với lồng và tiện lợi.mọi người nên mua cho mình 1 cái vừa đỡ mất thời gian vừa nhàn','2023-05-23'),
+	  ('hai',3,5,N'Sản phẩm OK.giao hàng hơi chậm.rất vừa với lồng và tiện lợi','2023-05-24'),
+	  ('hoang',4,5,N'Sản phẩm OK.Chim rất đẹp. Giao hàng nhanh','2023-05-24'),
+	  ('hoang',5,5,N'Sản phẩm OK. Lồng rất vừa, cứng cáp, chất lượng tuyệt vời','2023-05-24'),
+	  ('toan',6,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
+	  ('toan',7,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
+	  ('toan',8,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
+	  ('tu',9,4,N'Giao đúng mẫu đẹp ,ok','2023-05-28'),
+	  ('tu',10,4,N'Nhận được hàng rồi.đẹp quá.rất cứng cáp.sẽ mua thêm','2023-05-28'),
+	  ('customer',11,5,N'Shop giao hàng rất nhanh mặc dù là ngày gần tết. Chim rất ok','2023-06-12'),
+	  ('customer',12,5,N'sản phẩm ok ship nhanh hơn hẹn','2023-06-12'),
+	  ('customer',13,5,N'sản phẩm ok ship nhanh hơn hẹn','2023-06-12'),
+	  ('customer',14,5,N'Shop giao hàng rất nhanh mặc dù là ngày gần tết. Chim rất ok','2023-07-23'),
+	  ('customer',15,5,N'sản phẩm ok, khung rất cứng cấp, chắc chắn, mẫu hình bắt mắt','2023-07-23'),
+	  ('customer',16,5,N'rất ưng ý','2023-07-23'),
+	  ('customer',17,5,N'Giao hàng nhanh. Đóng gói chắc chắn.','2023-07-23');
 GO
 
 CREATE VIEW [View_Feedback] AS

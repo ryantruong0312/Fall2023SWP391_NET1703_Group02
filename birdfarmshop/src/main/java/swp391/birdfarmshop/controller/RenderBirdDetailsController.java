@@ -10,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -41,7 +42,7 @@ public class RenderBirdDetailsController extends HttpServlet {
             request.setAttribute("feedbackList", feedbackList);
             StarDTO starCustomer = f.getRatingByIdProduct(bird_id);
             request.setAttribute("starCustomer", starCustomer);
-            BirdDTO birdDetails = birdDao.getBirdDetailsById(bird_id);
+            BirdDTO birdDetails = birdDao.getBirdDetailsById(bird_id);    
             request.setAttribute("birdDetails", birdDetails);
             url = SUCCESS;
         } catch (SQLException e) {

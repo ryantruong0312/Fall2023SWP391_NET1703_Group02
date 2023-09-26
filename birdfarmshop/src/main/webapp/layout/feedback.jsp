@@ -7,8 +7,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <div class="container mt-5">
-    <div class="mt-3 feedback">
-        <c:if test="${not empty requestScope.feedbackList}">
+    <c:if test="${not empty requestScope.feedbackList}">
+        <div class="mt-3 feedback">   
             <div class="row">
                 <c:set var="ratingCustomer" value="${requestScope.starCustomer}" />
                 <h6 class="feedback-title" >Khách hàng đánh giá</h6>
@@ -127,7 +127,7 @@
                     </c:forEach>
                 </div>
             </div>
-        </c:if>
-    </div>   
+        </div>   
+    </c:if>
 </div>
 
