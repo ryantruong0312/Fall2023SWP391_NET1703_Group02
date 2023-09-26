@@ -11,6 +11,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import swp391.birdfarmshop.dao.BirdBreedDAO;
+import swp391.birdfarmshop.dao.BirdDAO;
+import swp391.birdfarmshop.model.Bird;
+import swp391.birdfarmshop.model.BirdBreed;
 
 /**
  *
@@ -27,7 +33,16 @@ public class RenderBirdPairController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
+            List<Bird> birdList = new ArrayList<>();
+            List<BirdBreed> breedList = new ArrayList<>();
+            BirdDAO dao = new BirdDAO();
+            BirdBreedDAO breedDao = new BirdBreedDAO();
+            breedList = breedDao.getBirdBreeds();
+            birdList = dao.getBirds();
+            request.setAttribute("BIRD_BREEDS", breedList);
+            request.setAttribute("BIRDS", birdList);
             url = SUCCESS;
+
         } catch (Exception e) {
             log("Error at RenderBirdPairController: " + e.toString());
         } finally {

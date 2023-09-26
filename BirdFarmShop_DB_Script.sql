@@ -235,72 +235,72 @@ VALUES
 	Giống như hầu hết các loài vẹt, ringneck thông minh và làm vật nuôi tốt. Chúng học hỏi khá nhanh và thích thể hiện. Ngoài ra chúng còn có thể nói và phát âm khá rõ, một số con nói khá tốt như các loài vẹt Xám Châu Phi hay Amazon tuy khả năng ghi nhớ về số lượng từ vựng không tốt bằng.',
 	NULL, NULL, 0, N'Đang ghép cặp'),
 
-	('XA001', N'Vẹt Xích Ấn XA001', N'Xanh lá', 5, 18, 1, 'asian', N'Chưa có', 
+	('XA001', N'Vẹt Xích Ấn XA001', N'Xanh lá', 12, 18, 1, 'asian', N'Chưa có', 
 	0, 15000000, 
 	N'Vẹt xích Ấn – xích Nepal có nguồn gốc từ vùng đông nam châu Á, bao gồm Nepal, Ấn Độ, Pakistan, và Sri Lanka. Chúng thường sống trong các khu rừng, cánh đồng và vùng đồng cỏ.
 	Vẹt xích Ấn có một cái mỏ lớn, màu đen và một đốm màu đỏ trên vai. Một đặc điểm nổi bật của chúng là vòng cổ màu đỏ tươi rực, tạo ra sự tương phản đẹp với bộ lông xanh sẫm. Chúng là những vẹt thông minh và thích thể hiện khả năng nói chuyện. Tuy nhiên, khả năng nói chuyện của từng cá thể có thể khác nhau.',
 	NULL, NULL, 0, N'Đang ghép cặp'),
 
-	('CP101', N'Vẹt xám CP101', N'Xám', 2, 5, 0, 'african', N'Chưa có', 0, 
+	('CP101', N'Vẹt xám CP101', N'Xám', 12, 48, 0, 'african', N'Chưa có', 0, 
 	2500000, 
 	NULL, 
 	NULL, NULL, 15, N'Còn hàng'),
 
-    ('CP201', N'Vẹt Cape Parrot CP201', N'Xám, xanh', 3, 4, 1, 'african', N'Chưa có', 0, 
+    ('CP201', N'Vẹt Cape Parrot CP201', N'Xám, xanh', 12, 4, 1, 'african', N'Chưa có', 0, 
 	3000000, NULL, 
 	NULL, NULL, 0, N'Đang ghép cặp'),
 
-    ('CP301', N'Vẹt Senegal CP301', N'Xanh lá, vàng', 3, 1, 0, 'african', N'Chưa có', 2, 
+    ('CP301', N'Vẹt Senegal CP301', N'Xanh lá, vàng', 12, 6, 0, 'african', N'Chưa có', 2, 
 	8000000, 
 	NULL, 
 	NULL, NULL, 0, N'Còn hàng'),
 
-    ('CP401', N'Vẹt cổ trắng CP401', N'Xanh lá, đỏ', 2, 1, 0, 'african', N'Chưa có', 1, 
+    ('CP401', N'Vẹt cổ trắng CP401', N'Xanh lá, đỏ', 16, 12, 0, 'african', N'Chưa có', 1, 
 	19000000, 
 	NULL, 
 	NULL, NULL, 0, N'Đang sinh sản'),
 
-    ('CP501', N'Vẹt Lovebird CP501', N'Xanh, vàng, cam', 2, 1, 1, 'african', N'Chưa có', 1, 2000000, 
+    ('CP501', N'Vẹt Lovebird CP501', N'Xanh, vàng, cam', 20, 11, 1, 'african', N'Chưa có', 1, 2000000, 
     NULL, 
     NULL, NULL, 0, N'Đang sinh sản'),
 
-	('WA301', N'Vẹt Orange Winged Amazon WA301', N'xanh lá, vàng', 2, 4, 0, 'amazon', N'Top 1 hot líu lo', 0, 3000000, 
+	('WA301', N'Vẹt Orange Winged Amazon WA301', N'xanh lá, vàng', 18, 24, 0, 'amazon', N'Top 1 hot líu lo', 0, 3000000, 
 	NULL, 
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('BA602', N'Vẹt Blue-fronted Amazon BA602', N'xanh lá, xanh dương', 3, 4, 0, 'amazon', N'Top 1 hot líu lo', 0, 3000000, 
+	('BA602', N'Vẹt Blue-fronted Amazon BA602', N'xanh lá, xanh dương', 12, 30, 0, 'amazon', N'Top 1 hot líu lo', 0, 3000000, 
 	NULL, 
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('FA303', N'Vẹt Red Faced Amazon FA303', N'xanh lá, đỏ', 2, 4, 0, 'amazon', N'Top 1 hot líu lo', 0, 3000000,
+	('FA303', N'Vẹt Red Faced Amazon FA303', N'xanh lá, đỏ', 12, 10, 0, 'amazon', N'Top 1 hot líu lo', 0, 3000000,
 	NULL, 
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('HA104', N'Vẹt Double Yellow Headed Amazon HA104', N'xanh lá, vàng, đỏ', 4, 4, 0, 'amazon', N'Top 1 hot líu lo', 0, 4500000,
+	('HA104', N'Vẹt Double Yellow Headed Amazon HA104', N'xanh lá, vàng, đỏ', 14, 8, 0, 'amazon', N'Top 1 hot líu lo', 0, 4500000,
 	NULL, 
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('NA505', N'Vẹt Yellow Naped Amazon NA505',N'xanh lá, vàng', 5, 4, 0, 'amazon', N'Top 1 hot líu lo', 0, 9000000,
+	('NA505', N'Vẹt Yellow Naped Amazon NA505',N'xanh lá, vàng', 10, 30, 0, 'amazon', N'Top 1 hot líu lo', 0, 9000000,
 	NULL, 
 	NULL, NULL, 0, N'Đã bán'),
 
-	('CL201', N'Vẹt Cockatiel Lutino CL201', N'xám, vàng, cam', 5, 2, 1, 'australian', N'Chưa có', 0, 2500000,
+	('CL201', N'Vẹt Cockatiel Lutino CL201', N'xám, vàng, cam', 10, 24, 1, 'australian', N'Chưa có', 0, 2500000,
 	N'Vẹt Cockatiel Lutino nổi bật với lớp lông màu vàng cam ánh hồng, đầu có mảng màu tương tự, mắt đỏ rực, và đuôi dài màu cam. Loài vẹt này thường rất tình cảm, thân thiện, và dễ huấn luyện, làm cho nó trở thành một thú cưng lý tưởng cho người mới nuôi vẹt.',
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('CW192', N'Vẹt Cockatiel White Face CW192', N'xám, trắng', 4, 2, 0, 'australian', N'Chưa có', 1, 3500000,
+	('CW192', N'Vẹt Cockatiel White Face CW192', N'xám, trắng', 10, 16, 0, 'australian', N'Chưa có', 1, 3500000,
 	N'Lông trắng mịn, mắt đỏ, không vùng màu cam trên mặt. Tính cách thân thiện, tinh quái. Dễ huấn luyện, thích tương tác.',
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('RL391', N'Vẹt Rainbow Lory RL391', N'đen, đỏ, tím, xanh lá, vàng', 5, 4, 0, 'australian', N'Chưa có', 0, 9500000,
+	('RL391', N'Vẹt Rainbow Lory RL391', N'đen, đỏ, tím, xanh lá, vàng', 10, 5, 0, 'australian', N'Chưa có', 0, 9500000,
 	N'Lông nhiều màu sắc rực rỡ, mỏ cam, tính cách vui vẻ, tươi mới, yêu đời. Yêu thích tương tác và cần chế độ ăn uống đa dạng, hoạt động vui chơi để duy trì sức khỏe tốt và làm phong phú cuộc sống của người nuôi.',
 	NULL, NULL, 0, N'Đang ghép cặp'),
 	
-	('RL409', N'Vẹt Red Lory RL409', N'đỏ', 5, 2, 1, 'australian', NULL, 1, 15000000, 
+	('RL409', N'Vẹt Red Lory RL409', N'đỏ', 12, 18, 1, 'australian', NULL, 1, 15000000, 
 	N'Lông đỏ tươi sáng, mỏ và mắt đen nổi bật, tính cách hòa đồng, thích hát hò và tương tác, yêu thích ăn uống đa dạng, làm phong phú cuộc sống gia đình bằng niềm vui vẹt.', 
 	NULL, NULL, 0, N'Đang ghép cặp'),
 
-	('VE358', N'Vẹt Eclectus VE358', N'Xanh lá', 4, 2, 1, 'australian', NULL, 1, 25000000, 
+	('VE358', N'Vẹt Eclectus VE358', N'Xanh lá', 10, 24, 1, 'australian', NULL, 1, 25000000, 
 	N'Vẹt Eclectus là một loài vẹt đa dạng màu sắc, với đực thường có lông màu xanh smaragd và cái có lông màu đỏ tươi. Chúng có mỏ mạnh mẽ và đôi mắt nâu sáng. Eclectus thích tương tác, thông minh và thích học tiếng nói. Tính cách độc lập và thích khám phá, yêu thích chế độ ăn uống chứa nhiều rau quả tươi ngon.', 
 	NULL, NULL, 0, N'Còn hàng'),
 

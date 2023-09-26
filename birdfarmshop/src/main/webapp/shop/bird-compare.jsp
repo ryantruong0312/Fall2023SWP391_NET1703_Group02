@@ -167,12 +167,12 @@
                                 <span id="birdStatus1" class="info-content"></span>
                             </div>
                             <div class="bird-info-row">
-                                <span class="info-title">Giá</span>
+                                <span class="info-title">Giá bán</span>
                                 <span id="birdPrice1" class="info-content" pattern="#,###"></span>
                             </div>
                         </div>
                         <div class="btn-detail">
-                            <button onclick="redirectToBirdDetails1()">Xem thêm</button>
+                            <button onclick="redirectToBirdDetails1()">Xem chi tiết</button>
                         </div>
                     </div>
                 </div>
@@ -220,12 +220,12 @@
                                 <span id="birdStatus2" class="info-content"></span>
                             </div>
                             <div class="bird-info-row">
-                                <span class="info-title">Giá</span>
+                                <span class="info-title">Giá bán</span>
                                 <span id="birdPrice2" class="info-content"></span>
                             </div>
                         </div>
                         <div class="btn-detail">
-                            <button onclick="redirectToBirdDetails1()">Xem thêm</button>
+                            <button onclick="redirectToBirdDetails1()">Xem chi tiết</button>
                         </div>
                     </div>
                 </div>
