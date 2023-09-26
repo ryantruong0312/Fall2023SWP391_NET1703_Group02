@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Đặt lại mật khâu</title>
+        <title>V.E.T - Quên mật khẩu</title>
         <link rel="stylesheet" href="assets/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="assets/css/font-awesome.css"/>
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css"/>
