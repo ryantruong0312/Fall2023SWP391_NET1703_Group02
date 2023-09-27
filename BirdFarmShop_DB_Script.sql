@@ -202,7 +202,7 @@ VALUES
 	('asian', N'Vẹt Châu Á', 'https://bizweb.dktcdn.net/100/326/708/files/top-8-loai-vet-mau-xanh-lam-5.jpg?v=1613884133577'),
 	('african', N'Vẹt Châu Phi', 'https://petmeshop.com/wp-content/uploads/2020/09/Vet-African-Grey-2.jpg'),
 	('amazon', N'Vẹt Nam Mỹ/Amazon', 'https://bizweb.dktcdn.net/100/326/708/files/blue-fronted-amazon-1-6bde88b3-11f7-49c7-8afb-4535ab69af5e.jpg?v=1614651669559'),
-	('macaw', N'Vẹt Nam Mỹ/Macaw', 'https://runghoangda.com/wp-content/uploads/2022/06/vet-cockatoo-gia-bao-nhieu-6.jpg')
+	('macaw', N'Vẹt Nam Mỹ/Macaw', 'https://dustyshutt.files.wordpress.com/2011/06/hyacinth-macaw-0483a.jpg')
 GO
 
 INSERT INTO [AccessoryCategory] ([category_id],[category_name],[category_thumbnail])

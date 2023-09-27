@@ -144,17 +144,17 @@
                     <div class="col-lg-3">
                         <h4>Sản phẩm và dịch vụ</h4>
                         <ul>
-                            <li><a href="#">Vẹt cảnh</a></li>
-                            <li><a href="#">Tổ chim non</a></li>
-                            <li><a href="#">Phụ kiện</a></li>
-                            <li><a href="#">So sánh</a></li>
-                            <li><a href="#">Nhân giống</a></li>
+                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
+                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
+                            <li><a href="${pageScope.toCompare}">So sánh</a></li>
+                            <li><a href="${pageScope.toPair}">Nhân giống</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
                         <h4>Đường dẫn hữu ích</h4>
                         <ul>
-                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="${pageScope.toHome}">Trang chủ</a></li>
                             <li><a href="#">Về chúng tôi</a></li>
                             <li><a href="#">Hỗ trợ</a></li>
                             <li><a href="#">Liên hệ</a></li>
@@ -184,6 +184,28 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
+        
+        <!-- jQuery -->
+        <script src="assets/js/jquery-2.1.0.min.js"></script>
+
+        <!-- Bootstrap -->
+        <script src="assets/js/popper.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+
+        <!-- Plugins -->
+        <script src="assets/js/owl-carousel.js"></script>
+        <script src="assets/js/accordions.js"></script>
+        <script src="assets/js/datepicker.js"></script>
+        <script src="assets/js/scrollreveal.min.js"></script>
+        <script src="assets/js/waypoints.min.js"></script>
+        <script src="assets/js/jquery.counterup.min.js"></script>
+        <script src="assets/js/imgfix.min.js"></script> 
+        <script src="assets/js/slick.js"></script> 
+        <script src="assets/js/lightbox.js"></script> 
+        <script src="assets/js/isotope.js"></script> 
+
+        <!-- Global Init -->
+        <script src="assets/js/custom.js"></script>
     </body>
 </html>
 

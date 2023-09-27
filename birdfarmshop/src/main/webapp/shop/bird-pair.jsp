@@ -20,6 +20,20 @@
     </head>
 
     <body>
+        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
+        <c:url var="toLogin" value="MainController?action=NavToLogin"/>
+        <c:url var="logout" value="MainController?action=Logout"/>
+        <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
+        <c:url var="toBirds" value="MainController?action=NavToBird&page=1"/>
+        <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
+        <c:url var="toCart" value="MainController?action=NavToCart"/>
+        <c:url var="toProfile" value="MainController?action=NavToProfile"/>
+        <c:url var="toOrders" value="MainController?action=NavToOrders"/>
+        <c:url var="toShopOrders" value="MainController?action=NavToShopOrders"/>
+        <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
+        <c:url var="toReports" value="MainController?action=NavToReports"/>
+        <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
+        
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
             <div class="container">
@@ -42,12 +56,12 @@
                                             <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
                                     </li>
-                                    <li class="scroll-to-section"><a href="#" class="active">So sánh</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
                                         <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer'}">
                                             <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
                                             <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
                                             </c:if>
-                                        <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
+                                            <li class="scroll-to-section"><a href="#" class="active">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
                                             <div class="cart-amount">8</div>
@@ -65,7 +79,7 @@
                                             <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
                                     </li>
-                                    <li class="scroll-to-section"><a href="#" class="active">So sánh</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
                                     <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
                                     <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
                                     <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
@@ -96,8 +110,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="inner-content">
-                            <h2>So sánh thông tin</h2>
-                            <span>Xem và đánh giá sự tương quan giữa hai cá thể vẹt của shop</span>
+                            <h2>Nhân giống sinh sản</h2>
+                            <span>Ghép cặp và tạo ra những cá thể vẹt cảnh đôc đáo, mang lại giá trị cao</span>
                         </div>
                     </div>
                 </div>
@@ -223,11 +237,11 @@
                     <div class="col-lg-3">
                         <div class="first-item">
                             <div class="logo">
-                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
+                                <img src="assets/images/logo.png">
                             </div>
                             <ul>
                                 <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
+                                <li><a href="#">thegioivetcanh@gmail.com</a></li>
                                 <li><a href="#">0913-244-567</a></li>
                             </ul>
                         </div>
@@ -235,17 +249,17 @@
                     <div class="col-lg-3">
                         <h4>Sản phẩm và dịch vụ</h4>
                         <ul>
-                            <li><a href="#">Vẹt cảnh</a></li>
-                            <li><a href="#">Tổ chim non</a></li>
-                            <li><a href="#">Phụ kiện</a></li>
-                            <li><a href="#">So sánh</a></li>
-                            <li><a href="#">Nhân giống</a></li>
+                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
+                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
+                            <li><a href="${pageScope.toCompare}">So sánh</a></li>
+                            <li><a href="${pageScope.toPair}">Nhân giống</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
                         <h4>Đường dẫn hữu ích</h4>
                         <ul>
-                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="${pageScope.toHome}">Trang chủ</a></li>
                             <li><a href="#">Về chúng tôi</a></li>
                             <li><a href="#">Hỗ trợ</a></li>
                             <li><a href="#">Liên hệ</a></li>
