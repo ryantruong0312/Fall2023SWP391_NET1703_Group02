@@ -225,7 +225,7 @@
                             </div>
                         </div>
                         <div class="btn-detail">
-                            <button onclick="redirectToBirdDetails1()">Xem chi tiết</button>
+                            <button onclick="redirectToBirdDetails2()">Xem chi tiết</button>
                         </div>
                     </div>
                 </div>
@@ -419,22 +419,18 @@
             });
 
             function redirectToBirdDetails1() {
-                // Get the bird_id value from wherever it's stored in your page
-                var birdId = selectedBirdId1;
-                if (birdId != null) {
+                if (selectedBirdId1 !== null) {
                     // Construct the URL
-                    var url = 'MainController?action=NavToBirdDetails&bird_id=' + birdId;
+                    var url = 'MainController?action=NavToBirdDetails&bird_id=' + selectedBirdId1;
                     // Redirect to the URL
                     window.location.href = url;
                 }
             }
 
             function redirectToBirdDetails2() {
-                // Get the bird_id value from wherever it's stored in your page
-                var birdId = selectedBirdId1;
-                if (birdId != null) {
+                if (selectedBirdId2 !== null) {
                     // Construct the URL
-                    var url = 'MainController?action=NavToBirdDetails&bird_id=' + birdId;
+                    var url = 'MainController?action=NavToBirdDetails&bird_id=' + selectedBirdId2;
                     // Redirect to the URL
                     window.location.href = url;
                 }

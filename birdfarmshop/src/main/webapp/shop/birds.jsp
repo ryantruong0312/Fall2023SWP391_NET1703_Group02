@@ -191,7 +191,7 @@
                                         <li><a href="MainController?action=NavToBird&page=${i}">${i}</a></li>
                                         </c:forEach>
                                     <li>
-                                        <a href="MainController?action=NavToBird&page=${noOfPages}">>></a>
+                                        <a href="MainController?action=NavToBird&page=${noOfPages}"></a>
                                     </li>
                                 </ul>
                             </c:if>

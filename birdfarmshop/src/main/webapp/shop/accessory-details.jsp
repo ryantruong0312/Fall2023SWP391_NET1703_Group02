@@ -134,8 +134,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="inner-content">
-                            <h2>Single Product Page</h2>
-                            <span>Awesome &amp; Creative HTML CSS layout by TemplateMo</span>
+                            <h2>Chi tiết phụ kiện</h2>
+                            <span>Tìm hiểu về sản phẩm và sắm ngay cho chú vẹt cưng của bạn!</span>
                         </div>
                     </div>
                 </div>

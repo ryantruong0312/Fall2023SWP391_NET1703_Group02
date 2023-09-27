@@ -214,15 +214,14 @@ VALUES
 INSERT INTO [Bird] ([bird_id], [bird_name], [color], [age], [grown_age], [gender], [breed_id], [achievement], [reproduction_history], [price], [description], [dad_bird_id], [mom_bird_id], [discount], [status]) 
 VALUES 
 	('XT001', N'Vẹt Xích Thái XT001', N'Xanh lá,vàng', 10, 36, 1, 'asian', 
-	N'- Giải 3 cuộc thi Vẹt Châu Á Schauwerbung 2023
-	  - Giải 4 cuộc thi Hội Đam Mê Lông Vũ TP.HCM 2020-2021
-	  - Giải khuyến khích cuộc thi Phong trào vẹt kiểng Sài Gòn 2020', 
+	N'Giải 3 cuộc thi Vẹt Châu Á Schauwerbung 2023', 
 	0, 6500000, 
 	N'Xét ở góc độ sinh học, Xích Thái (Vẹt Má Vàng) thuộc nhóm vẹt rừng đuôi dài có viền cổ – Ringneck/Long-tail Parakeets, với 2 đặc trưng của loài: chim trống trưởng thành có đường viền sẫm màu phía sau gáy (ring) và các cá thể chim đều có đuôi rất dài, chiếm khoảng 1/2 tổng chiều dài toàn thân. Xét ở góc độ vật nuôi – Alexandrine Parakeet được coi là loài vẹt khá thân thiện, dễ thuần, sức đề kháng khá tốt, với tuổi thọ có thể đạt đến 30-40 năm.
 	Được đánh giá là loài vẹt có khả năng nhại tốt, thực tế chất lượng nhại giọng nói của Vẹt má vàng thua xa chim Nhồng hoặc vẹt xám Châu Phi. Chim bắt chước giọng người không giỏi lắm, đặc biệt khó bắt chước các từ nhiều nguyên âm o, a. Ghi nhận trên thế giới, chỉ một số ít cá thể có thể nhớ và học được đến khoảng 20 từ.',
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('IR001', N'Vẹt Indian Ringneck IR001', N'Xanh dương', 16, 18, 1, 'asian', N'Chưa có', 
+	('IR001', N'Vẹt Indian Ringneck IR001', N'Xanh dương', 16, 18, 1, 'asian', 
+	N'Giải 4 cuộc thi Hội Đam Mê Lông Vũ TP.HCM 2020-2021', 
 	1, 9000000, 
 	N'Indian Ringneck hay còn gọi là Rose-ringed Parakeets thực sự là những sinh vật kỳ diệu. Thực vậy, chỉ cần nhìn vào những con chim bạn có thể dễ dàng nhận ra chúng qua màu sắc, cái mỏ nổi và long đuôi dài. Cả chim trống và mái đều có đuôi lớn và dài bao gồm 12 lông, 2 lông đuôi lớn chím phần lớn kích thước của con vẹt. Về màu sắc chúng có những màu phổ biến như xanh lá, trắng, vàng, xanh dương. Một số dòng đặc biệt có các màu sắc khá đẹp như xám khói, tím, xanh pastel… Con trống và mái có vẻ ngoài rất giống nhau tuy nhiên những con vẹt trống khi trưởng thành có thể phân biệt bằng vòng đen, trắng hoặc hồng quanh cổ.
 	Ringnecks có nguồn gốc từ Châu Á và Châu Phi và có thể được tìm thấy trong các khu rừng hoặc môi trường khô cằn và cũng xa lạ khi có thể thấy chúng tại các khu đô thị như ở California, Florida và cả vương quốc Anh.
@@ -266,7 +265,8 @@ VALUES
     NULL, 
     NULL, NULL, 0, N'Đang sinh sản'),
 
-	('WA301', N'Vẹt Orange Winged Amazon WA301', N'xanh lá, vàng', 18, 24, 0, 'amazon', N'Top 1 hot líu lo', 0, 3000000, 
+	('WA301', N'Vẹt Orange Winged Amazon WA301', N'xanh lá, vàng', 18, 24, 0, 'amazon', 
+	N'Giải khuyến khích cuộc thi Phong trào vẹt kiểng Sài Gòn 2020', 0, 3000000, 
 	NULL, 
 	NULL, NULL, 0, N'Còn hàng'),
 
