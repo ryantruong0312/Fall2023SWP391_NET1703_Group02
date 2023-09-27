@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.model.Bird;
 
@@ -26,16 +28,30 @@ public class RenderBirdController extends HttpServlet {
     private static final String SUCCESS = "shop/birds.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ClassNotFoundException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String sAmount = request.getParameter("amount");
-            int amount = Integer.parseInt(sAmount);
-            List<Bird> birdList = new ArrayList<Bird>();
+//            String sAmount = request.getParameter("amount");
+//            int amount = Integer.parseInt(sAmount);
+//            List<Bird> birdList = new ArrayList<Bird>();
+//            BirdDAO birdDao = new BirdDAO();
+//            birdList = birdDao.getNext9Birds(amount);
+            int page = 1;
+            int recordsPerPage = 9;
+
+            if(request.getParameter("page") != null)
+                page = Integer.parseInt(request.getParameter("page"));
             BirdDAO birdDao = new BirdDAO();
-            birdList = birdDao.getNext9Birds(amount);
-            request.setAttribute("BIRDLIST", birdList);
+            // Gọi phương thức truy vấn cơ sở dữ liệu để lấy dữ liệu dựa trên trang và số bản ghi trên trang
+            List<Bird> birds = birdDao.getDataFromDatabase(page, recordsPerPage);
+
+            int noOfRecords = birdDao.totalBirds(); // Lấy tổng số bản ghi
+
+            int noOfPages = (int) Math.round(noOfRecords * 1.0 / recordsPerPage);
+            request.setAttribute("BIRDLIST", birds);
+            request.setAttribute("noOfPages", noOfPages);
+            request.setAttribute("currentPage", page);
             url = SUCCESS;
         } catch (SQLException e) {
             log("Error at RenderHomeController: " + e.toString());
@@ -55,7 +71,11 @@ public class RenderBirdController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(RenderBirdController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     } 
 
     /** 
@@ -68,7 +88,11 @@ public class RenderBirdController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(RenderBirdController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** 

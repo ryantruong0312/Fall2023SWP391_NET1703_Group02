@@ -48,10 +48,10 @@ public class ResetPasswordController extends HttpServlet {
             String token = JWTUtils.randomPasswordToken();
             HttpSession session = request.getSession();
             String url = "MainController?action=NavToReset";
-            if (u != null) {
+            if (u != null && "customer".equals(u.getRole())) {
                 String password = u.getPassword();
                 if (password.isEmpty()) {
-                    session.setAttribute("ERROR", "Tài khoản không tồn tại");
+                    session.setAttribute("ERROR", "Email này đã đăng kí bằng tài khoản google");
                 } else {
                     int resultSendMail = EmailService.sendEmail(u.getEmail(), "Cấp lại mật khẩu cho tài khoản", EmailUtils.sendPassword(u.getFullName(),token));
                     String newPassword = JWTUtils.encodeJWT(token);
@@ -67,7 +67,7 @@ public class ResetPasswordController extends HttpServlet {
                     }
                 }
             } else {
-                session.setAttribute("ERROR", "Tài khoản không tồn tại");   
+                session.setAttribute("ERROR", "Email này không trùng khớp với email đăng kí");   
             }
             response.sendRedirect(url);
         } catch (Exception e) {

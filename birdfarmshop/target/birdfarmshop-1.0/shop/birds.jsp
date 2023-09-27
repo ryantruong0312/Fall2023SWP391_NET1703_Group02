@@ -17,11 +17,7 @@
         <meta name="author" content="">
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-<<<<<<< HEAD
-        <title>Bird Farm Shop - Chim Vẹt</title>
-=======
         <title>V.E.T - Vẹt Cảnh</title>
->>>>>>> 2a16b886dacd98271357b086d52c25d5e523f5e9
 
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -39,21 +35,6 @@
     </head>
 
     <body>
-<<<<<<< HEAD
-        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
-        <c:url var="toLogin" value="MainController?action=NavToLogin"/>
-        <c:url var="logout" value="MainController?action=Logout"/>
-        <!-- ***** Preloader Start ***** -->
-        <div id="preloader">
-            <div class="jumper">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>  
-        <!-- ***** Preloader End ***** -->
-
-=======
         <c:url var="toHome" value="MainController?action=NavToHome"/>
         <c:url var="toCompare" value="MainController?action=NavToCompare"/>
         <c:url var="toLogin" value="MainController?action=NavToLogin"/>
@@ -68,7 +49,6 @@
         <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
         <c:url var="toReports" value="MainController?action=NavToReports"/>
         <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
->>>>>>> 2a16b886dacd98271357b086d52c25d5e523f5e9
 
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
@@ -83,26 +63,6 @@
                             <!-- ***** Logo End ***** -->
                             <!-- ***** Menu Start ***** -->
                             <ul class="nav">
-<<<<<<< HEAD
-                                <li class="scroll-to-section"><a href="MainController?action=NavToHome">Trang chủ</a></li>
-                                    <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'staff'}">
-
-                                    <li class="submenu"><a href="" class="active">Sản phẩm</a>
-                                        <ul>
-                                            <li><a href="MainController?action=NavToBird&amount=0">Chim vẹt</a></li>
-                                            <li><a href="shop/bird-nest.jsp">Tổ chim non</a></li>
-                                            <li><a href="MainController?action=NavToAccessory">Phụ kiện</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li class="scroll-to-section"><a href="MainController?action=NavToCompare">So sánh</a></li>
-                                        <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer'}">
-                                            <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
-                                            <li class="scroll-to-section"><a href="">Đơn hàng</a></li>
-                                            </c:if>
-                                        <li class="scroll-to-section"><a href="">Ghép cặp</a></li>
-                                        <li class="scroll-to-section"><a href="../cart-view.jsp">Giỏ hàng</a></li>
-=======
                                 <li class="scroll-to-section"><a href="${pageScope.toHome}">Trang chủ</a></li>
                                     <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'staff'}">
                                     <li class="submenu"><a href="" class="active">Sản phẩm</a>
@@ -127,37 +87,12 @@
                                                 <div class="cart-amount">${sessionScope.CART_BIRD.getSize()}</div>
                                             </c:if>
                                         </li>
->>>>>>> 2a16b886dacd98271357b086d52c25d5e523f5e9
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
                                             </c:if>
                                         </c:if>
                                     </c:if>
                                     <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
-<<<<<<< HEAD
-                                    <li class="submenu"><a href="">Products</a>
-                                        <ul>
-                                            <li><a href="#">Sản phẩm</a></li>
-                                            <li><a href="#">Tổ chim non</a></li>
-                                            <li><a href="#">Phụ kiện</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                    <li class="scroll-to-section"><a href="">Đơn hàng</a></li>
-                                    <li class="scroll-to-section"><a href="../shop/accounts.jsp">Tài khoản</a></li>
-                                    <li class="scroll-to-section"><a href="shop/reports.jsp">Thống kê</a></li>
-                                    </c:if>
-
-                                <c:if test="${sessionScope.LOGIN_USER != null}">
-                                    <li class="submenu"><a href="#">${LOGIN_USER.fullName}</a>
-                                        <ul>
-                                            <li><a href="#">Cá nhân</a></li>
-                                            <li><a href="${logout}">Đăng xuất</a></li>
-                                        </ul>
-                                    </li>
-                                </c:if>
-                            </ul>
-=======
                                     <li class="submenu"><a href="" class="active">Sản phẩm</a>
                                         <ul>
                                             <li><a href="#" class="active">Vẹt cảnh</a></li>
@@ -179,17 +114,9 @@
                                     </li>
                                 </c:if>
                             </ul>           
->>>>>>> 2a16b886dacd98271357b086d52c25d5e523f5e9
                             <a class='menu-trigger'>
                                 <span>Menu</span>
                             </a>
-
-<!--                            <form action="MainController" method="post">
-                                <input style="width: 200px;" type="text" name="txtBirdName" value="" placeholder="Tìm kiếm"/>
-                                <button type="submit" name="action" value="SearchBird">
-                                    <img style="width: 15px; height: 15px;" src="assets\images\search.png">
-                                </button></br>
-                            </form>-->
                             <!-- ***** Menu End ***** -->
                         </nav>
                     </div>
@@ -232,24 +159,6 @@
                     <c:if test="${BIRDLIST != null}">
                         <c:if test="${not empty BIRDLIST}">
                             <c:forEach items="${BIRDLIST}" var="bird">
-<<<<<<< HEAD
-                                        <div class="bird col-lg-4">
-                                            <div class="item">
-                                                <div class="thumb">
-                                                    <div class="hover-content">
-                                                        <ul>
-                                                            <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                            <li><a href="bird-details.jsp"><i class="fa fa-shopping-cart"></i></a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <img class="bird-thumbnail" src="${bird.image_url}" alt="">
-                                                </div>
-                                                <div class="down-content">
-                                                    <h4>${bird.bird_name}</h4>
-                                                    <span>${bird.price}</span>
-                                                </div>
-                                            </div>
-=======
                                 <div class="bird col-lg-4">
                                     <div class="item">
                                         <div class="thumb">
@@ -260,8 +169,13 @@
                                                 </ul>
                                             </div>
                                             <img class="bird-thumbnail" src="${bird.image_url}" alt="">
->>>>>>> 2a16b886dacd98271357b086d52c25d5e523f5e9
                                         </div>
+                                        <div class="down-content">
+                                            <h4>${bird.bird_name}</h4>
+                                            <span>${bird.price}</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </c:forEach>
                             <!--                            <button onClick="loadMoreBird()">Load More </button>-->
                         </c:if>

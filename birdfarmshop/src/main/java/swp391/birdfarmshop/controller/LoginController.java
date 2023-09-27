@@ -23,7 +23,9 @@ import swp391.birdfarmshop.util.JWTUtils;
  */
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
 public class LoginController extends HttpServlet {
+
     private static final String DEST_NAV_HOME = "RenderHomeController";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,7 +37,7 @@ public class LoginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try  {
+        try {
             String username = request.getParameter("account");
             String password = request.getParameter("password");
             String save = request.getParameter("checkbox");
@@ -60,16 +62,18 @@ public class LoginController extends HttpServlet {
                         }
                     } else if (u.getStatus().equals("inactive")) {
                         session.setAttribute("ERROR", "Vui lòng kích hoạt tài khoản của bạn bằng cách nhấp vào liên kết trong email đã đăng ký");
-                    } else { 
+                    } else {
                         session.setAttribute("ERROR", "Tài khoản của bạn đã bị khóa, vui lòng liên hệ với cửa hàng");
+                        response.sendRedirect("MainController?action=NavToLogin");
                     }
                 } else {
-                     session.setAttribute("ERROR", "Email hoặc mật khẩu không chính xác");
+                    session.setAttribute("ERROR", "Email hoặc mật khẩu không chính xác");
+                    response.sendRedirect("MainController?action=NavToLogin");
                 }
             } else {
                 session.setAttribute("ERROR", "Email hoặc mật khẩu không chính xác");
+                response.sendRedirect("MainController?action=NavToLogin");
             }
-            response.sendRedirect("MainController?action=NavToLogin");
         } catch (Exception e) {
             e.printStackTrace();
         }

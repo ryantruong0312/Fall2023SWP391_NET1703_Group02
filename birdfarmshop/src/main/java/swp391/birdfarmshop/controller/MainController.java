@@ -26,7 +26,7 @@ public class MainController extends HttpServlet {
     private static final String ACT_NAV_BIRD_COMPARE = "NavToCompare";
     private static final String DEST_NAV_BIRD_COMPARE = "RenderBirdCompareController";
     private static final String ACT_NAV_RESET = "NavToReset";
-    public static final String DEST_NAV_RESET = "/authentication/reset.jsp";
+    private static final String DEST_NAV_RESET = "/authentication/reset.jsp";
     private static final String ACT_LOGIN = "login";
     private static final String DEST_LOGIN = "LoginController";
     private static final String ACT_REGISTER = "register";
@@ -61,6 +61,8 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_BIRD_NESTS = "RenderBirdNestsController";
     private static final String ACT_ADD_TO_CART = "AddtoCart";
     private static final String DEST_ADD_TO_CART = "AddtoCartController";
+    private static final String ACC_SEARCH_ACCESSORY = "RenderSearchAccessories";
+    private static final String DEST_SEARCH_ACCESSORY = "RenderSearchAccessoriesController";
 
     private static final String TEST = "/shop/checkout.jsp";
 
@@ -142,6 +144,8 @@ public class MainController extends HttpServlet {
                 case "test":
                     url = TEST;
                     break;
+                case ACC_SEARCH_ACCESSORY:
+                    url = DEST_SEARCH_ACCESSORY;
                 default:
                     break;
             }

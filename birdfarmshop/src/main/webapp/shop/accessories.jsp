@@ -27,15 +27,15 @@
         <link rel="stylesheet" href="assets/css/lightbox.css">
 
         <style>
-            .accessory-thumbnail{
-                width: 350px;
-                height: 368px;
+            .thumb{
+                width: 370px;
+                height: 390px;
             }
         </style>
     </head>
 
     <body>
-<c:url var="toHome" value="MainController?action=NavToHome"/>
+        <c:url var="toHome" value="MainController?action=NavToHome"/>
         <c:url var="toLogin" value="MainController?action=NavToLogin"/>
         <c:url var="logout" value="MainController?action=Logout"/>
         <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
@@ -49,7 +49,7 @@
         <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
         <c:url var="toReports" value="MainController?action=NavToReports"/>
         <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
-        
+
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
             <div class="container">
@@ -82,7 +82,7 @@
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
                                             <div class="cart-amount">8</div>
                                         </li>
-                                            <c:if test="${sessionScope.LOGIN_USER == null}">
+                                        <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
                                             </c:if>
                                         </c:if>
@@ -137,18 +137,25 @@
 
 
         <!-- ***** Products Area Starts ***** -->
+
         <section class="section" id="products">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-heading">
-                            <h2>Our Latest Products</h2>
-                            <span>Check out all of our products.</span>
+                            <h2>Sản phẩm của chúng tôi</h2>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="container">
+                <div>
+                    <form action="RenderSearchAccessoriesController" method="GET">
+                        <input type="text" name="name" id="search" placeholder="Tìm kiếm" style="margin-bottom: 15px" value="${name}">
+                        <input type="hidden" name="searchTerm" value="${accessoryList}">
+                        <button type="submit">Tìm kiếm</button>
+                    </form>
+                </div>
                 <div class="row">
                     <c:if test="${requestScope.accessoryList != null}">
                         <c:set var="accessoryList" value="${requestScope.accessoryList}"/>
@@ -160,19 +167,18 @@
                                             <div class="hover-content">
                                                 <ul>
                                                     <li><a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a></li>
-                                                    <li><a href="bird-details.jsp"><i class="fa fa-shopping-cart"></i></a></li>
+                                                    <li><a href="ren"><i class="fa fa-shopping-cart"></i></a></li>
                                                 </ul>
                                             </div>
-                                            <img class="accessory-thumbnail" src="${accessory.image_url}" alt="">
+                                            <img class="thumb" src="${accessory.image_url}" alt="">
                                         </div>
                                         <div class="down-content">
-                                            <h4>${accessory.accessory_name}</h4>
-                                            <span>${accessory.unit_price}</span>
+                                            <div>${accessory.accessory_name}</div>
+                                            <span>${accessory.unit_price} ₫</span>
                                         </div>
                                     </div>
                                 </div>
                             </c:forEach>
-                            <!--                            <button onClick="loadMoreBird()">Load More </button>-->
                         </c:if>
                     </c:if>      
                     <div class="col-lg-12">
@@ -184,15 +190,15 @@
                                 <li>
                                     <a href="MainController?action=NavToAccessory&amount=9">2</a>
                                 </li>
-                                <li>
-                                    <a href="MainController?action=NavToAccessory&amount=18">3</a>
-                                </li>
-                                <li>
-                                    <a href="#" id="page-4">4</a>
-                                </li>
-                                <li>
-                                    <a href="#">></a>
-                                </li>
+                                <!--                                <li>
+                                                                    <a href="MainController?action=NavToAccessory&amount=18">3</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="#" id="page-4">4</a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="#">></a>
+                                                                </li>-->
                             </ul>
                         </div>
                     </div>

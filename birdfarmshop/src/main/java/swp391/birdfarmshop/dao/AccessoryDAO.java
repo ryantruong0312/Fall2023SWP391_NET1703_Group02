@@ -20,9 +20,13 @@ import swp391.birdfarmshop.util.DBUtils;
  * @author tlminh
  */
 public class AccessoryDAO {
-    
+
     private static final String GET_NEXT_9_ACCESSORY_LIST = "SELECT * FROM [BirdFarmShop].[dbo].[Accessory] "
             + "ORDER BY [unit_price] ASC OFFSET ? ROWS FETCH NEXT 9 ROWS ONLY";
+
+    private static final String GET_SEARCH_ACCESSORIES = " SELECT *\n"
+            + " FROM [BirdFarmShop].[dbo].[Accessory]\n"
+            + " WHERE [accessory_name] LIKE ?'";
 
     public ArrayList<Accessory> getAccessories() throws SQLException {
         ArrayList<Accessory> list = new ArrayList<>();
@@ -147,4 +151,48 @@ public class AccessoryDAO {
         }
         return next9AccessoryList;
     }
+
+    public List<Accessory> getSearchAccessory(String name) throws SQLException {
+        List<Accessory> next9AccessoryList = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ImageDAO imgDao = new ImageDAO();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("SELECT *\n"
+                        + "FROM [BirdFarmShop].[dbo].[Accessory]\n"
+                        + "WHERE [accessory_name] LIKE ?");
+                stm.setString(1, "%" + name + "%");
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String accessory_id = rs.getString("accessory_id");
+                    String accessory_name = rs.getString("accessory_name");
+                    int unit_price = rs.getInt("unit_price");
+                    int stock_quantity = rs.getInt("stock_quantity");
+                    String description = rs.getString("description");
+                    int discount = rs.getInt("discount");
+                    String status = rs.getString("status");
+                    String image_url = imgDao.getThumbnailUrlByAccessoryId(accessory_id);
+                    next9AccessoryList.add(new Accessory(accessory_id, accessory_name, unit_price, stock_quantity, description, discount, status, image_url));
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            // Handle exceptions here, e.g., log or throw
+        } finally {
+            // Close resources in the finally block
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return next9AccessoryList;
+    }
+
 }

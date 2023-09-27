@@ -34,7 +34,7 @@ public class LogoutController extends HttpServlet {
             Cookie c = new Cookie("token","");
             c.setMaxAge(0);
             response.addCookie(c);
-            session.setAttribute("SUCCESS", "Đăng xuất thành công");
+            //session.setAttribute("SUCCESS", "Đăng xuất thành công");
             url = SUCCESS;
         } catch (Exception ex) {
             log("Error at LogoutController: " + ex.toString());

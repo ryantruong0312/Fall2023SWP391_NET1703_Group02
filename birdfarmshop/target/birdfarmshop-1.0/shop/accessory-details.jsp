@@ -148,17 +148,25 @@
         <section class="section" id="product">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-8">
-                        <div class="left-images">
-                            <c:forEach var="accessory" items="${requestScope.accessoryImageList}">
-                                <<img src="${accessory}" alt="alt"/>
-                            </c:forEach>
-                        </div>
+                    <div class="col-lg-8">                    
+                        <c:if test="${a != null}">
+                            <c:set var="image_url" value="${a.image_url}" />
+                            <div class="image-container">
+                                <div class="left-image">
+                                    <img id="image_main" src="${image_url[0]}" alt="Image 1" onclick="swapImages(this)">
+                                </div>
+
+                                <div class="right-image">
+                                    <img src="${image_url[1]}" alt="Image 2" onclick="swapImages(this)">
+                                    <img src="${image_url[2]}" alt="Image 3" onclick="swapImages(this)">
+                                </div>
+                            </div>
+                        </c:if>
                     </div>
                     <div class="col-lg-4">
                         <div class="right-content">
                             <h4 id="nameAccessory">${a.accessory_name}</h4>
-                            <span id="unit_price" class="price">${a.unit_price}</span>
+                            <span id="unit_price" class="price">${a.unit_price} ₫</span>
                             <!--                        <ul class="stars">
                                                         <li><i class="fa fa-star"></i></li>
                                                         <li><i class="fa fa-star"></i></li>
@@ -181,109 +189,109 @@
                                     <div class="quantity buttons_added">
                                         <div class="quantity buttons_added">
                                             <input type="button" value="-" class="minus" onclick="decrementQuantity('quantityInput', ${a.unit_price})">
-                                            <input type="number" step="1" min="1" max="${a.stock_quantity}" name="quantity" id="quantityInput" value="0" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
+                                            <input type="number" step="1" min="1" max="${a.stock_quantity}" name="quantity" id="quantityInput" value="1" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
                                             <input type="button" value="+" class="plus" onclick="incrementQuantity('quantityInput', ${a.stock_quantity}, ${a.unit_price})">
                                         </div>
                                     </div>
                                     <div id="warning"></div>
-                                </div>
-                            </div>
-
-                            <div class="total">
-                                <h4>Tổng cộng: <div style="display: inline;" id="total" <i class="fa fa-money" style="color:black   "></i> 0</div></h4>
-                                <br><div class="main-border-button" style="margin-top: 15px"><a type="button" id="AddToCart">Thêm vào giỏ hàng</a></div></br>
+                                </div>                            
                             </div>
                         </div>
+                        <div class="total">
+                            <h4 style="float: left;">Tổng cộng: <span id="total">${a.unit_price} ₫</span></h4>
+                            <div type="button" class="main-border-button" style="margin-left: 100px; float: left;"><a href="#" id="AddToCart">Thêm vào giỏ hàng</a></div>
+                            <div style="clear: both;"></div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- ***** Product Area Ends ***** -->
-
-        <!-- ***** Footer Start ***** -->
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="first-item">
-                            <div class="logo">
-                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
-                            </div>
-                            <ul>
-                                <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
-                                <li><a href="#">0913-244-567</a></li>
-                            </ul>
-                        </div>
+        </div>
+    </div>
+</section>                       
+<!-- ***** Footer Start ***** -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="first-item">
+                    <div class="logo">
+                        <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
                     </div>
-                    <div class="col-lg-3">
-                        <h4>Sản phẩm và dịch vụ</h4>
-                        <ul>
-                            <li><a href="#">Vẹt cảnh</a></li>
-                            <li><a href="#">Tổ chim non</a></li>
-                            <li><a href="#">Phụ kiện</a></li>
-                            <li><a href="#">So sánh</a></li>
-                            <li><a href="#">Nhân giống</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Đường dẫn hữu ích</h4>
-                        <ul>
-                            <li><a href="#">Trang chủ</a></li>
-                            <li><a href="#">Về chúng tôi</a></li>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Liên hệ</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Thông tin hỗ trợ</h4>
-                        <ul>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Câu hỏi thường gặp</a></li>
-                            <li><a href="#">Giao hàng</a></li>
-                            <li><a href="#">Theo dõi đơn hàng</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="under-footer">
-                            <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
-
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    <ul>
+                        <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
+                        <li><a href="#">thegioivetcanh@petshop.com</a></li>
+                        <li><a href="#">0913-244-567</a></li>
+                    </ul>
                 </div>
             </div>
-        </footer>
-        <!-- ***** Footer Area Ends ***** -->
+            <div class="col-lg-3">
+                <h4>Sản phẩm và dịch vụ</h4>
+                <ul>
+                    <li><a href="#">Vẹt cảnh</a></li>
+                    <li><a href="#">Tổ chim non</a></li>
+                    <li><a href="#">Phụ kiện</a></li>
+                    <li><a href="#">So sánh</a></li>
+                    <li><a href="#">Nhân giống</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3">
+                <h4>Đường dẫn hữu ích</h4>
+                <ul>
+                    <li><a href="#">Trang chủ</a></li>
+                    <li><a href="#">Về chúng tôi</a></li>
+                    <li><a href="#">Hỗ trợ</a></li>
+                    <li><a href="#">Liên hệ</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3">
+                <h4>Thông tin hỗ trợ</h4>
+                <ul>
+                    <li><a href="#">Hỗ trợ</a></li>
+                    <li><a href="#">Câu hỏi thường gặp</a></li>
+                    <li><a href="#">Giao hàng</a></li>
+                    <li><a href="#">Theo dõi đơn hàng</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-12">
+                <div class="under-footer">
+                    <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
 
-        <!-- jQuery -->
-        <script src="assets/js/jquery-2.1.0.min.js"></script>
+                    <ul>
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- ***** Footer Area Ends ***** -->
 
-        <!-- Bootstrap -->
-        <script src="assets/js/popper.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>
+<!-- jQuery -->
+<script src="assets/js/jquery-2.1.0.min.js"></script>
 
-        <!-- Plugins -->
-        <script src="assets/js/owl-carousel.js"></script>
-        <script src="assets/js/accordions.js"></script>
-        <script src="assets/js/datepicker.js"></script>
-        <script src="assets/js/scrollreveal.min.js"></script>
-        <script src="assets/js/waypoints.min.js"></script>
-        <script src="assets/js/jquery.counterup.min.js"></script>
-        <script src="assets/js/imgfix.min.js"></script> 
-        <script src="assets/js/slick.js"></script> 
-        <script src="assets/js/lightbox.js"></script> 
-        <script src="assets/js/isotope.js"></script> 
+<!-- Bootstrap -->
+<script src="assets/js/popper.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
 
-        <!-- Global Init -->
-        <script src="assets/js/custom.js"></script>
+<!-- Plugins -->
+<script src="assets/js/owl-carousel.js"></script>
+<script src="assets/js/accordions.js"></script>
+<script src="assets/js/datepicker.js"></script>
+<script src="assets/js/scrollreveal.min.js"></script>
+<script src="assets/js/waypoints.min.js"></script>
+<script src="assets/js/jquery.counterup.min.js"></script>
+<script src="assets/js/imgfix.min.js"></script> 
+<script src="assets/js/slick.js"></script> 
+<script src="assets/js/lightbox.js"></script> 
+<script src="assets/js/isotope.js"></script> 
 
-        <script>
+<!-- Global Init -->
+<script src="assets/js/custom.js"></script>
 
+<script>
                                                 $(function () {
                                                     var selectedClass = "";
                                                     $("p").click(function () {
@@ -298,7 +306,8 @@
                                                     });
                                                 });
 
-                                                function incrementQuantity(inputId, maxQuantity, unitPrice) {
+                                                function incrementQuantity(inputId, maxQuantity, unitPrice)
+                                                {
                                                     var quantityInput = document.getElementById(inputId);
                                                     var currentValue = parseInt(quantityInput.value);
 
@@ -306,7 +315,7 @@
                                                     var warning = document.getElementById("warning");
                                                     if (!isNaN(currentValue) && currentValue < maxQuantity) {
                                                         quantityInput.value = currentValue + 1;
-                                                        total1.innerHTML = " " + unitPrice * quantityInput.value;
+                                                        total1.innerHTML = unitPrice * quantityInput.value + " ₫";
 
                                                         warning.innerHTML = "";
                                                     } else {
@@ -315,6 +324,7 @@
                                                     }
                                                 }
 
+
                                                 function decrementQuantity(inputId, unitPrice) {
                                                     var quantityInput = document.getElementById(inputId);
                                                     var currentValue = parseInt(quantityInput.value);
@@ -322,14 +332,16 @@
                                                     var warning = document.getElementById("warning");
                                                     if (!isNaN(currentValue) && currentValue > 0) {
                                                         quantityInput.value = currentValue - 1;
-                                                        total.innerHTML = " " + unitPrice * quantityInput.value;
+                                                        total.innerHTML = unitPrice * quantityInput.value + " ₫";
                                                         warning.innerHTML = "";
                                                     }
                                                 }
+
                                                 function formatNumber(n) {
                                                     // format number 1000000 to 1.234.567
                                                     return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
                                                 }
+
                                                 function ConvertToNumber(priceStr) {
                                                     var priceParts = priceStr.split(".");
                                                     var price = "";
@@ -339,6 +351,7 @@
                                                     return Number.parseInt(price);
                                                 }
 
+
                                                 function updateTotal() {
                                                     var unitPrice = document.getElementById("unit_price");
                                                     var quantityInput = document.getElementById("quantityInput"); // Lấy phần tử input số lượng
@@ -346,6 +359,7 @@
                                                     console.log(unitPrice);
                                                     console.log(quantityInput);
                                                 }
+
 
                                                 function addToCart() {
                                                     var name = document.getElementById("nameAccessory");
@@ -357,17 +371,47 @@
 
                                                 }
 
+                                                function swapImages(clickedImage) {
+                                                    const leftImage = document.querySelector('.left-image img');
+                                                    const rightImage1 = document.querySelectorAll('.right-images img')[0];
+                                                    const rightImage2 = document.querySelectorAll('.right-images img')[1];
+
+                                                    const tempSrc = leftImage.src;
+                                                    leftImage.src = clickedImage.src;
+                                                    clickedImage.src = tempSrc;
+                                                }
+
+</script>
 
 
 
-        </script>
+<style>
+    .image-container {
+        display: flex;
+        align-items: center;
+    }
 
-    </body>
+    .right-image {
+        display: flex;
+        flex-direction: column;
+    }
 
-    <script>
+    .left-image img{
+        width: 400px;
+        height: 400px;
+        margin-right: 10px;
+    }
+
+    .right-image img{
+        width: 200px;
+        height: 200px;
+        margin-right: 2px;
+    }
+</style>
 
 
-    </script>
+</body>
+
 
 </html>
 

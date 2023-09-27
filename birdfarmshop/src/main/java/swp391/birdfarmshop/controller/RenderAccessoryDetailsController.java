@@ -10,8 +10,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import swp391.birdfarmshop.dao.AccessoryDAO;
+import swp391.birdfarmshop.dao.FeedbackDAO;
 import swp391.birdfarmshop.dto.AccessoryDTO;
+import swp391.birdfarmshop.dto.FeedbackDTO;
+import swp391.birdfarmshop.dto.StarDTO;
 
 /**
  *
@@ -28,11 +32,17 @@ public class RenderAccessoryDetailsController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String accessory_id = request.getParameter("accessory_id");
-            AccessoryDAO dao = new AccessoryDAO();
-            AccessoryDTO a = dao.getAccessoriesByID(accessory_id);
-            if (a != null) {
-                request.setAttribute("a", a);
+            String accessory_id = request.getParameter("id");
+            AccessoryDAO a = new AccessoryDAO();
+            AccessoryDTO ac = a.getAccessoriesByID(accessory_id);
+            FeedbackDAO f = new FeedbackDAO();
+            ArrayList<FeedbackDTO> feedbackList = f.getFeedbackByIdProduct(accessory_id);
+            request.setAttribute("feedbackList", feedbackList);
+            StarDTO starCustomer = f.getRatingByIdProduct(accessory_id);
+            request.setAttribute("starCustomer", starCustomer);
+            if (ac != null) {
+                request.setAttribute("a", ac);
+                
                 url = SUCCESS;
             }else{
                 url = ERROR;

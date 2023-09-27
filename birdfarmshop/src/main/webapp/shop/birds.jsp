@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,7 +41,7 @@
         <c:url var="toLogin" value="MainController?action=NavToLogin"/>
         <c:url var="logout" value="MainController?action=Logout"/>
         <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
-        <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
+        <c:url var="toBirds" value="MainController?action=NavToBird&page=1"/>
         <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
         <c:url var="toCart" value="MainController?action=NavToCart"/>
         <c:url var="toProfile" value="MainController?action=NavToProfile"/>
@@ -172,7 +173,7 @@
                                         </div>
                                         <div class="down-content">
                                             <h4>${bird.bird_name}</h4>
-                                            <span>${bird.price}</span>
+                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> đ</span>
                                         </div>
                                     </div>
                                 </div>
@@ -182,23 +183,19 @@
                     </c:if>      
                     <div class="col-lg-12">
                         <div class="pagination">
-                            <ul>
-                                <li class="active">
-                                    <a href="MainController?action=NavToBird&amount=0">1</a>
-                                </li>
-                                <li>
-                                    <a href="MainController?action=NavToBird&amount=9">2</a>
-                                </li>
-                                <li>
-                                    <a href="MainController?action=NavToBird&amount=18">3</a>
-                                </li>
-                                <li>
-                                    <a href="#" id="page-4">4</a>
-                                </li>
-                                <li>
-                                    <a href="#">></a>
-                                </li>
-                            </ul>
+                            <c:if test="${noOfPages > 1}">
+                                <ul>
+                                    <li>
+                                        <a href="MainController?action=NavToBird&page=1"><<</a>
+                                    </li>
+                                    <c:forEach begin="1" end="${noOfPages}" var="i">
+                                        <li><a href="MainController?action=NavToBird&page=${i}">${i}</a></li>
+                                    </c:forEach>
+                                    <li>
+                                        <a href="MainController?action=NavToBird&page=${noOfPages}">>></a>
+                                    </li>
+                                </ul>
+                            </c:if>
                         </div>
                     </div>
                 </div>
