@@ -113,7 +113,7 @@
                         <h2>Chọn một chú vẹt trống</h2>
 
                         <!-- EL to populate the category combo box -->
-                        <select class="combo-box" id="breedSelect1" onchange="updateBirdNames1()">
+                        <select class="combo-box" id="breedSelect1">
                             <option>Chọn giống vẹt</option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
                                 <option value="${breed.breed_id}">${breed.breed_name}</option>
@@ -166,7 +166,7 @@
                         <h2>Chọn một chú vẹt mái</h2>
 
                         <!-- EL to populate the category combo box -->
-                        <select class="combo-box" id="breedSelect2" onchange="updateBirdNames2()">
+                        <select class="combo-box" id="breedSelect2">
                             <option>Chọn giống vẹt </option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
                                 <option value="${breed.breed_id}">${breed.breed_name}</option>
@@ -275,5 +275,24 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
+        <script src="assets/js/jquery-3.7.1.min.js"></script>
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/jquery.validate.min.js" ></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="assets/js/birdshop.js"></script>
+        <!-- Plugins -->
+        <script src="assets/js/owl-carousel.js"></script>
+        <script src="assets/js/accordions.js"></script>
+        <script src="assets/js/datepicker.js"></script>
+        <script src="assets/js/scrollreveal.min.js"></script>
+        <script src="assets/js/waypoints.min.js"></script>
+        <script src="assets/js/jquery.counterup.min.js"></script>
+        <script src="assets/js/imgfix.min.js"></script> 
+        <script src="assets/js/slick.js"></script> 
+        <script src="assets/js/lightbox.js"></script> 
+        <script src="assets/js/isotope.js"></script> 
+
+        <!-- Global Init -->
+    <!--        <script src="assets/js/custom.js"></script>-->
     </body>
 </html>

@@ -45,6 +45,7 @@ public class LoginController extends HttpServlet {
             UserDAO user = new UserDAO();
             User u = user.findUser(username, username);
             HttpSession session = request.getSession(true);
+            String url = "MainController?action=NavToLogin";
             if (u != null) {
                 String decodePassword = JWTUtils.decodeJWT(u.getPassword());
                 if (password.equals(decodePassword)) {
@@ -58,22 +59,20 @@ public class LoginController extends HttpServlet {
                                 cookie.setMaxAge(24 * 60 * 60);
                                 response.addCookie(cookie);
                             }
-                            response.sendRedirect(DEST_NAV_HOME);
+                           url = DEST_NAV_HOME;
                         }
                     } else if (u.getStatus().equals("inactive")) {
                         session.setAttribute("ERROR", "Vui lòng kích hoạt tài khoản của bạn bằng cách nhấp vào liên kết trong email đã đăng ký");
                     } else {
                         session.setAttribute("ERROR", "Tài khoản của bạn đã bị khóa, vui lòng liên hệ với cửa hàng");
-                        response.sendRedirect("MainController?action=NavToLogin");
                     }
                 } else {
-                    session.setAttribute("ERROR", "Email hoặc mật khẩu không chính xác");
-                    response.sendRedirect("MainController?action=NavToLogin");
+                    session.setAttribute("ERROR", "Email hoặc mật khẩu không chính xác");   
                 }
             } else {
-                session.setAttribute("ERROR", "Email hoặc mật khẩu không chính xác");
-                response.sendRedirect("MainController?action=NavToLogin");
+                session.setAttribute("ERROR", "Email hoặc mật khẩu không chính xác"); 
             }
+            response.sendRedirect(url);
         } catch (Exception e) {
             e.printStackTrace();
         }

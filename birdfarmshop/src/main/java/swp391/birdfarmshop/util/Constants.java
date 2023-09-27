@@ -7,8 +7,8 @@ package swp391.birdfarmshop.util;
 
 public class Constants {
 
-    public static final String GOOGLE_CLIENT_ID = "911997830678-hnnf8alt3ehncr0mdo75f4kc2ckkdm6q.apps.googleusercontent.com";
-    public static final String GOOGLE_CLIENT_SECRET = "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";
+    public static final String GOOGLE_CLIENT_ID = "563213089252-rga4rc627cobtc25fjmjuom2168u1hrp.apps.googleusercontent.com";
+    public static final String GOOGLE_CLIENT_SECRET = "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";
     public static final String GOOGLE_REDIRECT_URI = "http://localhost:8080/birdfarmshop/LoginGoogleController";
     public static final String GOOGLE_LINK_GET_TOKEN = "https://accounts.google.com/o/oauth2/token";
     public static final String GOOGLE_LINK_GET_USER_INFO = "https://www.googleapis.com/oauth2/v1/userinfo?access_token=";
@@ -21,7 +21,7 @@ public class Constants {
 
     public static final String JWT_KEY = "birdfarmshop-swp-fptuniversity-token-base-authentication";
     
-    public static final String ACCOUNT_SHOP ="birdfarmshopse1710@gmail.com";
-    public static final String SECRET_KEY ="tqszzsggrytvmpxb";
+    public static final String ACCOUNT_SHOP ="thegioivetcanh@gmail.com";
+    public static final String SECRET_KEY ="zpxzaesjzzglhnyx";
     public static final String HOST= "http://localhost:8080/birdfarmshop/";
 }
