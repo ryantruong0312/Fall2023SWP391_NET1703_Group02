@@ -218,51 +218,51 @@
                     <div class="col-lg-3">
                         <div class="first-item">
                             <div class="logo">
-                                <img src="assets/images/white-logo.png" alt="hexashop ecommerce templatemo">
+                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
                             </div>
                             <ul>
-                                <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
-                                <li><a href="#">hexashop@company.com</a></li>
-                                <li><a href="#">010-020-0340</a></li>
+                                <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
+                                <li><a href="#">thegioivetcanh@gmail.com</a></li>
+                                <li><a href="#">0913-244-567</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <h4>Shopping &amp; Categories</h4>
+                        <h4>Sản phẩm và dịch vụ</h4>
                         <ul>
-                            <li><a href="#">Men’s Shopping</a></li>
-                            <li><a href="#">Women’s Shopping</a></li>
-                            <li><a href="#">Kid's Shopping</a></li>
+                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
+                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
+                            <li><a href="${pageScope.toCompare}">So sánh</a></li>
+                            <li><a href="${pageScope.toPair}">Nhân giống</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
-                        <h4>Useful Links</h4>
+                        <h4>Đường dẫn hữu ích</h4>
                         <ul>
-                            <li><a href="#">Homepage</a></li>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Help</a></li>
-                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="${pageScope.toHome}">Trang chủ</a></li>
+                            <li><a href="#">Về chúng tôi</a></li>
+                            <li><a href="#">Hỗ trợ</a></li>
+                            <li><a href="#">Liên hệ</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
-                        <h4>Help &amp; Information</h4>
+                        <h4>Thông tin hỗ trợ</h4>
                         <ul>
-                            <li><a href="#">Help</a></li>
-                            <li><a href="#">FAQ's</a></li>
-                            <li><a href="#">Shipping</a></li>
-                            <li><a href="#">Tracking ID</a></li>
+                            <li><a href="#">Hỗ trợ</a></li>
+                            <li><a href="#">Câu hỏi thường gặp</a></li>
+                            <li><a href="#">Giao hàng</a></li>
+                            <li><a href="#">Theo dõi đơn hàng</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-12">
                         <div class="under-footer">
-                            <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
+                            <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
 
-                                <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
                             <ul>
                                 <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
                                 <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="#"><i class="fa fa-behance"></i></a></li>
                             </ul>
                         </div>
                     </div>
