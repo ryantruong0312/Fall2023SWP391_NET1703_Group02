@@ -122,3 +122,17 @@ h2 {
 .btn-detail button:hover{
     background-color: #bcbcbc;
 }
+
+.gender-row{
+    display: flex;
+    justify-content: center;
+}
+
+.gender-row input{
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.gender-row label{
+    margin-left: 10px;
+}

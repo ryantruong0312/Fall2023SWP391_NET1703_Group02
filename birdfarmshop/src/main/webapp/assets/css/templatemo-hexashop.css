@@ -1574,7 +1574,6 @@ Products Page
 */
 
 .page-heading {
-    margin-top: 160px;
     margin-bottom: 30px;
     background-image: url(../images/products-page-heading.jpg);
     background-position: center center;
@@ -1583,7 +1582,8 @@ Products Page
 }
 
 .page-heading .inner-content {
-    padding: 150px 0px;
+    padding-top: 180px;
+    padding-bottom: 80px;
     text-align: center;
 }
 
