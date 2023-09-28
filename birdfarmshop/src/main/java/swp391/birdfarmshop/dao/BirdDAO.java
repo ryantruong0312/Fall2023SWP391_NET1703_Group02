@@ -31,7 +31,15 @@ public class BirdDAO {
     private static final String GET_BIRD_NAME_BY_ID = "SELECT [bird_name] FROM [Bird] WHERE [bird_id] = ?";
     private static final String GET_BIRD_BY_ID = "SELECT * FROM [Bird] WHERE [bird_id] = ?";
     private static final String IS_BIRD_SOLD_OUT = "SELECT [status] FROM [Bird] WHERE [bird_id] = ? AND [status] = N'Đã bán'";
-
+    private static final String GET_BIRD_BY_BREED_ID = "SELECT [bird_id],[bird_name],[color]\n"
+                                            + "      ,[age],[grown_age] ,[gender]\n"
+                                            + "      ,[breed_id] ,[achievement]\n"
+                                            + "      ,[reproduction_history]\n"
+                                            + "      ,[price],[description]\n"
+                                            + "      ,[dad_bird_id],[mom_bird_id]\n"
+                                            + "      ,[discount],[status]\n"
+                                            + "  FROM [BirdFarmShop].[dbo].[Bird]\n"
+                                            + "  WHERE breed_id = ?";
 
     public List<Bird> getBirds() throws SQLException {
         List<Bird> birdList = new ArrayList<>();
@@ -109,7 +117,7 @@ public class BirdDAO {
         }
         return total;
     }
-    
+
     public List<Bird> getDataFromDatabase(int page, int recordsPerPage) throws SQLException, ClassNotFoundException {
         List<Bird> birdList = new ArrayList<>();
         Connection con = null;
@@ -158,7 +166,7 @@ public class BirdDAO {
             }
         }
         return birdList;
-    }     
+    }
 
     public BirdDTO getBirdDetailsById(String birdId) throws SQLException {
         BirdDTO bird = new BirdDTO();
@@ -255,6 +263,7 @@ public class BirdDAO {
 //            System.out.println(bird);
 //        }
 //    }
+
     public boolean isBirdSoldOut(String bird_id) throws SQLException {
         boolean result = false;
         Connection conn = null;
@@ -284,5 +293,101 @@ public class BirdDAO {
             }
         }
         return result;
+    }
+
+    public List<Bird> getBirdsByBreedId(String idBreed) throws SQLException, ClassNotFoundException {
+        List<Bird> birdList = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        ImageDAO imgDao = new ImageDAO();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                pst = con.prepareStatement(GET_BIRD_BY_BREED_ID);
+                pst.setString(1, idBreed);
+                rs = pst.executeQuery();
+                while (rs.next()) {
+                    String bird_id = rs.getString("bird_id");
+                    String bird_name = rs.getString("bird_name");
+                    String color = rs.getString("color");
+                    int age = rs.getInt("age");
+                    int grown_age = rs.getInt("grown_age");
+                    boolean gender = rs.getBoolean("gender");
+                    String breed_id = rs.getString("breed_id");
+                    String achievement = rs.getString("achievement");
+                    int reproduction_history = rs.getInt("reproduction_history");
+                    int price = rs.getInt("price");
+                    String description = rs.getString("description");
+                    String dad_bird_id = rs.getString("dad_bird_id");
+                    String mom_bird_id = rs.getString("mom_bird_id");
+                    int discount = rs.getInt("discount");
+                    String status = rs.getString("status");
+                    String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
+                    Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id,
+                            achievement, reproduction_history, price, description, dad_bird_id, mom_bird_id, discount, status, image_url);
+                    birdList.add(bird);
+                }
+            }
+        } finally {
+            if (pst != null) {
+                pst.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return birdList;
+    }
+    public Bird getBirdById(String birdId) throws SQLException {
+        Bird b = null;
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ImageDAO imgDao = new ImageDAO();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(GET_BIRD_BY_ID);
+                stm.setString(1, birdId);
+                rs = stm.executeQuery();
+                if (rs != null && rs.next()) {
+                    String bird_id = rs.getString("bird_id");
+                    String bird_name = rs.getString("bird_name");
+                    String color = rs.getString("color");
+                    int age = rs.getInt("age");
+                    int grown_age = rs.getInt("grown_age");
+                    boolean gender = rs.getBoolean("gender");
+                    String breed_id = rs.getString("breed_id");
+                    String achievement = rs.getString("achievement");
+                    int reproduction_history = rs.getInt("reproduction_history");
+                    int price = rs.getInt("price");
+                    String description = rs.getString("description");
+                    String dad_bird_id = rs.getString("dad_bird_id");
+                    String mom_bird_id = rs.getString("mom_bird_id");
+                    int discount = rs.getInt("discount");
+                    String status = rs.getString("status");
+                    String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
+                    b = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id,
+                            achievement, reproduction_history, price, description, dad_bird_id, mom_bird_id, discount, status, image_url);
+ 
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return b;
     }
 }

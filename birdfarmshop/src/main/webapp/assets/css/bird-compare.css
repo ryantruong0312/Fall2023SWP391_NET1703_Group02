@@ -9,7 +9,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
 /* Center the main container */
 main {
-    width: 80%;
+    width: 95%;
     margin: 0 auto; /* Center horizontally */
 }
 
@@ -17,7 +17,8 @@ main {
 .comparison-container {
     display: flex;
     justify-content: space-between; /* Separate columns */
-    gap: 100px; /* Add space between columns */
+    align-items: center;
+    gap: 25px; /* Add space between columns */
 }
 
 /* Style for comparison columns */
@@ -121,4 +122,13 @@ h2 {
 }
 .btn-detail button:hover{
     background-color: #bcbcbc;
+}
+.button-pair{
+    height: 60px;
+    width: 10%;
+    border-radius: 20px;
+    border: none;
+    color: white;
+    background: rgb(254,96,84);
+    background: linear-gradient(90deg, rgba(254,96,84,1) 0%, rgba(239,50,162,1) 100%);
 }

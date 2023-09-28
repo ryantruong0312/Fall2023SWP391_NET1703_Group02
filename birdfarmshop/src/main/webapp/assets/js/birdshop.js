@@ -2,14 +2,130 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/javascript.js to edit this template
  */
-
-$('main #breedSelect1').change(function (event){
+var breedIntital = null;
+$('main #breedSelect1').change(function (event) {
     var breedSelect1 = $(this).val();
-   
-    
+    $('main #breedSelect2').val(breedSelect1);
+    if(!breedSelect1){
+        $('#birdInformation1').html(" <div class=\"bird-info-row\">\n"
+            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            + "    </div>");
+        $('#birdInformation2').html(" <div class=\"bird-info-row\">\n"
+            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            + "    </div>");
+        $('#birdSelect1').html("");
+        $('#birdSelect2').html("");
+        return;
+    }
+    $.ajax({
+        url: 'MainController?action=NavToPairBirds',
+        type: 'POST',
+        data: {breedIdMale: breedSelect1},
+        success: function (data){
+            $('#birdSelect1').html(data);
+        }
+    });
+    $.ajax({
+        url: 'MainController?action=NavToPairBirds',
+        type: 'POST',
+        data: {breadIdFemale: breedSelect1},
+        success: function (data){
+            $('#birdSelect2').html(data);
+        }
+    });
+    if(breedIntital !== null && breedSelect1 !== breedIntital){
+        $('#birdInformation1').html(" <div class=\"bird-info-row\">\n"
+            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            + "    </div>");
+        $('#birdInformation2').html(" <div class=\"bird-info-row\">\n"
+            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            + "    </div>");
+        $('#birdSelect1').html("");
+        $('#birdSelect2').html("");
+    }
+    breedIntital = breedSelect1;
 });
 
+$('main #breedSelect2').change(function (event) {
+    var breedSelect2 = $(this).val();
+    $('main #breedSelect1').val(breedSelect2);
+    if(!breedSelect2){
+        $('#birdInformation1').html(" <div class=\"bird-info-row\">\n"
+            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            + "    </div>");
+        $('#birdInformation2').html(" <div class=\"bird-info-row\">\n"
+            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            + "    </div>");
+        $('#birdSelect1').html("");
+        $('#birdSelect2').html("");
+    return;
+    }
+        $.ajax({
+        url: 'MainController?action=NavToPairBirds',
+        type: 'POST',
+        data: {breedIdMale: breedSelect2},
+        success: function (data){
+            $('#birdSelect1').html(data);
+        }
+    });
+    $.ajax({
+        url: 'MainController?action=NavToPairBirds',
+        type: 'POST',
+        data: {breadIdFemale: breedSelect2},
+        success: function (data){
+            $('#birdSelect2').html(data);
+        }
+    });
+     if(breedIntital !== null && breedSelect2 !== breedIntital){
+        $('#birdInformation1').html(" <div class=\"bird-info-row\">\n"
+            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            + "    </div>");
+        $('#birdInformation2').html(" <div class=\"bird-info-row\">\n"
+            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            + "    </div>");
+        $('#birdSelect1').html("");
+        $('#birdSelect2').html("");
+    }
+    breedIntital = breedSelect2;
+});
 
+$('#birdSelect1').change(function (event){
+    var birdId = $(this).val();
+    if(!birdId){
+           $('#birdInformation1').html(" <div class=\"bird-info-row\">\n"
+            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            + "    </div>");
+    return;
+    }
+    console.log("select1"+birdId);
+        $.ajax({
+        url: 'MainController?action=NavToPairBirds',
+        type: 'POST',
+        data: {birdId: birdId},
+        success: function (data){
+            $('#birdInformation1').html(data);
+        }
+    });
+    
+});
+$('#birdSelect2').change(function (event){
+    var birdId = $(this).val();
+    if(!birdId){
+           $('#birdInformation2').html(" <div class=\"bird-info-row\">\n"
+            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            + "    </div>");
+    return;
+    }
+        $.ajax({
+        url: 'MainController?action=NavToPairBirds',
+        type: 'POST',
+        data: {birdId: birdId},
+        success: function (data){
+            $('#birdInformation2').html(data);
+        }
+    });
+    
+});
 $('.show-password').click(function () {
     const type = $('[name="password"]').attr('type');
     if (type === 'password') {

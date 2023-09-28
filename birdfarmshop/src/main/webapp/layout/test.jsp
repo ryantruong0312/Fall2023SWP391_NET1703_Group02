@@ -49,12 +49,15 @@
         
         <div class="test-star">
             <div class="rating1 big-star">
-            <span class="fa fa-star"></span>
-            <span class="fa fa-star"></span>
-            <span class="fa fa-star"></span>
-            <span class="fa fa-star"></span>
-            <span class="fa fa-star"></span>
-        </div>
+                <div class="star-fill" style="width: 96%;">
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span>
+                </div>
+                <div class="star-outline"></div>
+            </div>
         </div>
         <script src="../assets/js/birdshop.js"></script>
         <script src="../assets/js/jquery-3.7.1.min.js"></script>

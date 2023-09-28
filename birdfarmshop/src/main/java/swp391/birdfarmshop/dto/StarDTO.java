@@ -105,8 +105,8 @@ public class StarDTO {
         double number = ((double) totalAllPerStar() / totalStar());
         return number;
     }    
-    
-    public int roundRating(){
-        return (int) Math.round(totalRating());
-    }
+     public double percentTotalRating() {
+        double number = (double) Math.round((double) totalRating() / 5 * 100 * 100) / 100;
+        return number;
+    }  
 }

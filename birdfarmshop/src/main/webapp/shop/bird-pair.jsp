@@ -128,7 +128,7 @@
 
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect1">
-                            <option>Chọn giống vẹt</option>
+                            <option value = "">Chọn giống vẹt</option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
                                 <option value="${breed.breed_id}">${breed.breed_name}</option>
                             </c:forEach>
@@ -136,44 +136,20 @@
 
                         <!-- EL to populate the bird name combo box -->
                         <select class="combo-box" id="birdSelect1">
-                            <!-- This is initially empty and will be populated dynamically based on the selected breed -->
                         </select>
 
                         <!-- Additional rows to display bird information -->
-                        <div id="birdInformation1">
+                        <div id="birdInformation1">         
                             <div class="bird-info-row">
                                 <!-- Placeholder for bird image -->
                                 <img id="birdImage1" src="assets/images/bird-compare-1.jpg" alt="Bird Image">
                             </div>
-                            <div class="bird-info-row info-name">
-                                <span id="birdName1"></span>
-                            </div>
-                            <div class="bird-info-row">
-                                <span class="info-title">Tuổi</span>
-                                <span id="birdAge1" class="info-content"></span>
-                            </div>
-                            <div class="bird-info-row">
-                                <span class="info-title">Thành tích</span>
-                                <pre id="birdAchievement1" class="info-content"></pre>
-                            </div>
-                            <div class="bird-info-row">
-                                <span class="info-title">Số lứa sinh sản</span>
-                                <span id="birdReproductionHistory1" class="info-content"></span>
-                            </div>
-                            <div class="bird-info-row">
-                                <span class="info-title">Tình trạng</span>
-                                <span id="birdStatus1" class="info-content"></span>
-                            </div>
-                            <div class="bird-info-row">
-                                <span class="info-title">Giá</span>
-                                <span id="birdPrice1" class="info-content" pattern="#,###"></span>
-                            </div>
-                        </div>
-                        <div class="btn-detail">
-                            <button onclick="redirectToBirdDetails1()">Xem thêm</button>
                         </div>
                     </div>
                 </div>
+                 <!-- butotn pair start -->   
+                 <button class="button-pair">Tiến hành ghép</button>       
+                 <!-- butotn pair end -->
                 <!-- Second Column -->
                 <div class="comparison-column">
                     <div class="column-content">
@@ -181,55 +157,28 @@
 
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect2">
-                            <option>Chọn giống vẹt </option>
+                            <option value = "">Chọn giống vẹt</option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
                                 <option value="${breed.breed_id}">${breed.breed_name}</option>
                             </c:forEach>
                         </select>
 
                         <!-- EL to populate the bird name combo box -->
-                        <select class="combo-box" id="birdSelect2">
-                            <!-- This is initially empty and will be populated dynamically based on the selected breed -->
+                        <select class="combo-box" id="birdSelect2"  >
                         </select>
-
+                        
                         <!-- Additional rows to display bird information -->
-                        <div id="birdInformation2">
+                        <div id="birdInformation2"> 
                             <div class="bird-info-row">
                                 <!-- Placeholder for bird image -->
-                                <img id="birdImage2" src="assets/images/bird-compare-2.jpg" alt="Bird Image">
+                                <img id="birdImage1" src="assets/images/bird-compare-1.jpg" alt="Bird Image">
                             </div>
-                            <div class="bird-info-row info-name">
-                                <span id="birdName2"></span>
-                            </div>
-                            <div class="bird-info-row">
-                                <span class="info-title">Tuổi</span>
-                                <span id="birdAge2" class="info-content"></span>
-                            </div>
-                            <div class="bird-info-row">
-                                <span class="info-title">Thành tích</span>
-                                <pre id="birdAchievement2" class="info-content"></pre>
-                            </div>  
-                            <div class="bird-info-row">
-                                <span class="info-title">Số lứa sinh sản</span>
-                                <span id="birdReproductionHistory2" class="info-content"></span>
-                            </div>
-                            <div class="bird-info-row">
-                                <span class="info-title">Tình trạng</span>
-                                <span id="birdStatus2" class="info-content"></span>
-                            </div>
-                            <div class="bird-info-row">
-                                <span class="info-title">Giá</span>
-                                <span id="birdPrice2" class="info-content"></span>
-                            </div>
-                        </div>
-                        <div class="btn-detail">
-                            <button onclick="redirectToBirdDetails1()">Xem thêm</button>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
-
+        <div class="testajax"></div>
         <!-- ***** Footer Start ***** -->
         <footer>
             <div class="container">
@@ -292,21 +241,7 @@
         <script src="assets/js/jquery-3.7.1.min.js"></script>
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/jquery.validate.min.js" ></script>
-        <script src="assets/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="assets/js/birdshop.js"></script>
-        <!-- Plugins -->
-        <script src="assets/js/owl-carousel.js"></script>
-        <script src="assets/js/accordions.js"></script>
-        <script src="assets/js/datepicker.js"></script>
-        <script src="assets/js/scrollreveal.min.js"></script>
-        <script src="assets/js/waypoints.min.js"></script>
-        <script src="assets/js/jquery.counterup.min.js"></script>
-        <script src="assets/js/imgfix.min.js"></script> 
-        <script src="assets/js/slick.js"></script> 
-        <script src="assets/js/lightbox.js"></script> 
-        <script src="assets/js/isotope.js"></script> 
 
-        <!-- Global Init -->
-    <!--        <script src="assets/js/custom.js"></script>-->
     </body>
 </html>
