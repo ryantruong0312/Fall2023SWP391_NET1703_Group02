@@ -32,6 +32,10 @@
                 width: 350px;
                 height: 368px;
             }
+            .activeNav{
+                background-color: black;
+                color: white !important;
+            }
         </style>
     </head>
 
@@ -66,9 +70,9 @@
                             <ul class="nav">
                                 <li class="scroll-to-section"><a href="${pageScope.toHome}">Trang chủ</a></li>
                                     <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'staff'}">
-                                    <li class="submenu"><a href="" class="active">Sản phẩm</a>
+                                    <li class="submenu"><a href="#" class="active">Sản phẩm</a>
                                         <ul>
-                                            <li><a href="#" class="active">Vẹt cảnh</a></li>
+                                            <li><a href="${pageScope.toBirds}" class="active">Vẹt cảnh</a></li>
                                             <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
                                             <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
@@ -151,50 +155,95 @@
                             <h2>Sản phẩm của chúng tôi</h2>
                         </div>
                     </div>
-                </div>
+                    <div class="col-lg-12">
+                    <form action="MainController" method="GET">
+                        <input type="hidden" name="action" value="SearchBird">
+                        <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" style="margin: 0 0 15px 15px;" value="${txtBirdName}">
+                        <button type="submit"><img style="width: 15px; height: 15px;" src="assets/images/search.png"/></button>
+                    </form>
+                    </div>
             </div>
+            <c:set var="SEARCHLIST" value="${requestScope.SEARCHLIST}"/>
+            <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
             <div class="container">
                 <div id="content" class="row">
-                    <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
-                    <c:if test="${BIRDLIST != null}">
-                        <c:if test="${not empty BIRDLIST}">
-                            <c:forEach items="${BIRDLIST}" var="bird">
-                                <div class="bird col-lg-4">
-                                    <div class="item">
-                                        <div class="thumb">
-                                            <div class="hover-content">
-                                                <ul>
-                                                    <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                    <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                </ul>
+                    <c:choose>
+                        <c:when test="${SEARCHLIST != null}">
+                            <c:if test="${not empty SEARCHLIST}">
+                                <c:forEach items="${SEARCHLIST}" var="bird">
+                                    <div class="bird col-lg-4">
+                                        <div class="item">
+                                            <div class="thumb">
+                                                <div class="hover-content">
+                                                    <ul>
+                                                        <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                        <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                                <img class="bird-thumbnail" src="${bird.image_url}" alt="">
                                             </div>
-                                            <img class="bird-thumbnail" src="${bird.image_url}" alt="">
-                                        </div>
-                                        <div class="down-content">
-                                            <h4>${bird.bird_name}</h4>
-                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                            <div class="down-content">
+                                                <h4>${bird.bird_name}</h4>
+                                                <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </c:forEach>
-                            <!--                            <button onClick="loadMoreBird()">Load More </button>-->
-                        </c:if>
-                    </c:if>      
+                                </c:forEach>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <c:if test="${BIRDLIST != null}">
+                                <c:if test="${not empty BIRDLIST}">
+                                    <c:forEach items="${BIRDLIST}" var="bird">
+                                        <div class="bird col-lg-4">
+                                            <div class="item">
+                                                <div class="thumb">
+                                                    <div class="hover-content">
+                                                        <ul>
+                                                            <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                            <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <img class="bird-thumbnail" src="${bird.image_url}" alt="">
+                                                </div>
+                                                <div class="down-content">
+                                                    <h4>${bird.bird_name}</h4>
+                                                    <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </c:if>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
+                          
                     <div class="col-lg-12">
                         <div class="pagination">
-                            <c:if test="${noOfPages > 1}">
-                                <ul>
-                                    <li>
-                                        <a href="MainController?action=NavToBird&page=1"><<</a>
-                                    </li>
-                                    <c:forEach begin="1" end="${noOfPages}" var="i">
-                                        <li><a href="MainController?action=NavToBird&page=${i}">${i}</a></li>
-                                        </c:forEach>
-                                    <li>
-                                        <a href="MainController?action=NavToBird&page=${noOfPages}"></a>
-                                    </li>
-                                </ul>
-                            </c:if>
+                            <c:choose>
+                                <c:when test="${SEARCHLIST != null}">
+                                    <c:if test="${noOfPages >= 1}">
+                                        <ul>
+                                            <li id="page-${1}"><a href="MainController?action=SearchBird&page=1&txtBirdName=${txtBirdName}"><<</a></li>
+                                            <c:forEach begin="1" end="${noOfPages}" var="i">
+                                            <li id="page-${i}"><a class="${i == requestScope.currentPage ? "activeNav":""}" href="MainController?action=SearchBird&page=${i}&txtBirdName=${txtBirdName}">${i}</a></li>
+                                            </c:forEach>
+                                            <li id="page-${noOfPages}"><a href="MainController?action=SearchBird&page=${noOfPages}&txtBirdName=${txtBirdName}">>></a></li>
+                                        </ul>
+                                    </c:if>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:if test="${noOfPages > 1}">
+                                        <ul>
+                                            <li id="page-${1}"><a href="MainController?action=NavToBird&page=1"><<</a></li>
+                                            <c:forEach begin="1" end="${noOfPages}" var="i">
+                                                <li id="page-${i}"><a href="MainController?action=NavToBird&page=${i}">${i}</a></li>
+                                            </c:forEach>
+                                            <li id="page-${noOfPages}"><a href="MainController?action=NavToBird&page=${noOfPages}">>></a></li>
+                                        </ul>
+                                    </c:if>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
                 </div>
@@ -266,6 +315,7 @@
         <%@include file="../layout/message.jsp" %>
         <script src="assets/js/jquery-2.1.0.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        
         <!-- Bootstrap -->
         <script src="assets/js/popper.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
@@ -299,60 +349,16 @@
 
                 });
             });
-            // Đoạn mã JavaScript sử dụng jQuery
-            $(document).ready(function () {
-                var currentPage = 1; // Trang hiện tại
-
-                // Hàm để tải sản phẩm từ máy chủ
-                function loadProducts(page) {
-                    $.ajax({
-                        url: 'MainController?action=NavToBird&amount=' + (page - 1) * 9,
-                        method: 'GET',
-                        success: function (data) {
-                            // Xử lý dữ liệu sản phẩm và cập nhật trang web
-                            $('#content').html(data);
-                            currentPage = page; // Cập nhật trang hiện tại
-                        },
-                        error: function (error) {
-                            console.log(error);
-                        }
-                    });
-                }
-
-                // Xử lý sự kiện khi người dùng nhấn vào liên kết trang
-                $('#page-1').click(function (e) {
-                    e.preventDefault(); // Ngăn chặn hành vi mặc định của liên kết
-                    loadProducts(1);
-                });
-
-                $('#page-2').click(function (e) {
-                    e.preventDefault();
-                    loadProducts(2);
-                });
-
-                $('#page-3').click(function (e) {
-                    e.preventDefault();
-                    loadProducts(3);
-                });
-
-                $('#page-4').click(function (e) {
-                    e.preventDefault();
-                    loadProducts(4);
-                });
-
-                $('#next-page').click(function (e) {
-                    e.preventDefault();
-                    // Tải trang kế tiếp (currentPage + 1)
-                    loadProducts(currentPage + 1);
-                });
-                function updateActivePage() {
-                    $('.pagination ul li').removeClass('active'); // Xóa tất cả lớp "active" trước tiên
-                    $('#page-' + currentPage).parent().addClass('active'); // Thêm lớp "active" cho trang hiện tại
-                }
-
-                // Gọi hàm để cập nhật lớp "active" ban đầu
-                updateActivePage();
-            });
+            
+//            var listItems = document.querySelectorAll("#page-${i}");
+//            listItems.forEach(function (item) {
+//                item.addEventListener("click", function () {\
+//                    listItems.forEach(function (li) {
+//                        li.classList.remove("active");
+//                    });
+//                    item.classList.add("active");
+//                });
+//            });
 
         </script>
 

@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dto.BirdDTO;
+import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.util.DBUtils;
 
@@ -31,8 +32,14 @@ public class BirdDAO {
     private static final String GET_BIRD_NAME_BY_ID = "SELECT [bird_name] FROM [Bird] WHERE [bird_id] = ?";
     private static final String GET_BIRD_BY_ID = "SELECT * FROM [Bird] WHERE [bird_id] = ?";
     private static final String IS_BIRD_SOLD_OUT = "SELECT [status] FROM [Bird] WHERE [bird_id] = ? AND [status] = N'Đã bán'";
-
-
+    private static final String SEARCH_BIRDS_BY_NAME = "SELECT [bird_id],[bird_name],[color],[age],[grown_age],[gender],[breed_id]"
+            + ",[achievement],[reproduction_history],[price],[description],[dad_bird_id]"
+            + ",[mom_bird_id],[discount],[status] FROM [BirdFarmShop].[dbo].[Bird]"
+            + "WHERE [bird_name] LIKE ? "
+            + "ORDER BY (SELECT NULL) OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+    private static final String NUMBER_OF_BIRD_LIST_SEARCH = "SELECT COUNT(*) AS [TotalCount]"
+            + "FROM [BirdFarmShop].[dbo].[Bird]"
+            + "WHERE [bird_name] LIKE ? ";
     public List<Bird> getBirds() throws SQLException {
         List<Bird> birdList = new ArrayList<>();
         Connection con = null;
@@ -182,9 +189,9 @@ public class BirdDAO {
                     boolean sex = rs.getBoolean("gender");
                     String gender = "";
                     if (sex) {
-                        gender = "�?c";
+                        gender = "Đực";
                     } else {
-                        gender = "C�i";
+                        gender = "Cái";
                     }
                     String breed_id = rs.getString("breed_id");
                     String breed_name = breedDao.getBreedNameById(breed_id);
@@ -285,4 +292,144 @@ public class BirdDAO {
         }
         return result;
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    public int numberOfBirdListSearch(String name) throws SQLException {
+        int searchTotal = 0;
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(NUMBER_OF_BIRD_LIST_SEARCH);
+                stm.setString(1, "%" + name + "%");
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    searchTotal = rs.getInt("TotalCount");
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return searchTotal;
+    }
+    
+    public List<Bird> searchBird(String name, int page, int recordsPerPage) throws SQLException {
+        List<Bird> searchList = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ImageDAO imgDao = new ImageDAO();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(SEARCH_BIRDS_BY_NAME);
+                stm.setString(1, "%" + name + "%");
+                int start = (page - 1) * recordsPerPage;
+                stm.setInt(2, start);
+                stm.setInt(3, recordsPerPage);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String bird_id = rs.getString("bird_id");
+                    String bird_name = rs.getString("bird_name");
+                    String color = rs.getString("color");
+                    int age = rs.getInt("age");
+                    int grown_age = rs.getInt("grown_age");
+                    boolean gender = rs.getBoolean("gender");
+                    String breed_id = rs.getString("breed_id");
+                    String achievement = rs.getString("achievement");
+                    int reproduction_history = rs.getInt("reproduction_history");
+                    int price = rs.getInt("price");
+                    String description = rs.getString("description");
+                    String dad_bird_id = rs.getString("dad_bird_id");
+                    String mom_bird_id = rs.getString("mom_bird_id");
+                    int discount = rs.getInt("discount");
+                    String status = rs.getString("status");
+                    String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
+                    Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id,
+                            achievement, reproduction_history, price, description, dad_bird_id, mom_bird_id, discount, status, image_url);
+                    searchList.add(bird);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return searchList;
+    }
+//    public static void main(String[] args) throws SQLException {
+//        BirdDAO dao = new BirdDAO();
+//        int birds = dao.numberOfBirdListSearch("Vẹt");
+//        System.out.println(birds);
+//    }
 }
