@@ -17,6 +17,7 @@
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
         <link rel="stylesheet" href="assets/css/bird-compare.css">
+        <link rel="icon" type="image/png" href="assets/images/logo-title-bar.png"/>
     </head>
 
     <body>

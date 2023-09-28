@@ -220,7 +220,6 @@
                           
                     <div class="col-lg-12">
                         <div class="pagination">
-<<<<<<< HEAD
                             <c:choose>
                                 <c:when test="${SEARCHLIST != null}">
                                     <c:if test="${noOfPages >= 1}">
@@ -245,21 +244,6 @@
                                     </c:if>
                                 </c:otherwise>
                             </c:choose>
-=======
-                            <c:if test="${noOfPages > 1}">
-                                <ul>
-                                    <li>
-                                        <a href="MainController?action=NavToBird&page=1"><<</a>
-                                    </li>
-                                    <c:forEach begin="1" end="${noOfPages}" var="i">
-                                        <li><a href="MainController?action=NavToBird&page=${i}">${i}</a></li>
-                                        </c:forEach>
-                                    <li>
-                                        <a href="MainController?action=NavToBird&page=${noOfPages}">>></a>
-                                    </li>
-                                </ul>
-                            </c:if>
->>>>>>> 71b81f3ee9ccdffe6218ba077b916e4220781455
                         </div>
                     </div>
                 </div>

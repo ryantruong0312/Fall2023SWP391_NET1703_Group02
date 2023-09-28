@@ -12,6 +12,7 @@
     <head>
         <meta charset="UTF-8">
         <title>V.E.T - So sánh</title>
+        <link rel="icon" type="image/png" href="assets/images/logo-title-bar.png"/>
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
