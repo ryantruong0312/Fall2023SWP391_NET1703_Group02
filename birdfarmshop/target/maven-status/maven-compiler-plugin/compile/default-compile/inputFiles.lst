@@ -1,68 +1,69 @@
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderBirdCompareController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderAccessoryController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\StarDTO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\BirdPair.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\services\EmailService.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\LogoutController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\GooglePojo.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\LoginFacebookController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderAccessoryDetailsController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\AccessoryDTO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\MainController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderBirdNestsController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderProfileController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\util\DBUtils.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderBirdDetailsController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\OrderItemDTO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\OrderTrackingDTO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderBirdPairController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderHomeController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RegisterController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\UserDTO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\BirdCompareDTO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\BirdPairDAO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\Order.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\Bird.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\UserDAO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderAccountsController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\OrderDAO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\LoginGoogleController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\BirdBreedDAO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\OrderItem.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\ActiveController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderShopOrdersController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\BirdBreed.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\util\FacebookUtils.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\Image.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\AccessoryDAO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\ImageDAO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\OrderTrackingDAO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderCartController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\OrderTracking.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\Feedback.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\FeedbackDTO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\OrderItemDAO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\AddtoCartController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderReportsController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\util\JWTUtils.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\BirdDAO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\AccessoryCategory.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\FacebookPojo.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\AccessoryBreedDAO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\BirdPairDTO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\BirdDTO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\util\EmailUtils.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\util\GoogleUtils.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\Accessory.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\AccessoryCategoryDAO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\util\Constants.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\FeedbackDAO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\fillter\FillterLogin.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\OrderDTO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\CartBirdDTO.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\User.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderBirdController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\LoginController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderSearchAccessoriesController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\ResetPasswordController.java
-D:\CN5\SWP\birdfarmshop\src\main\java\swp391\birdfarmshop\model\AccessoryBreed.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\ActiveController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderShopOrdersController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderBirdController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\FeedbackDTO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\OrderDTO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\UserDTO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\model\BirdBreed.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\ResetPasswordController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\CartBirdDTO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\model\BirdPair.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderSearchAccessoriesController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\OrderTrackingDAO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\util\DBUtils.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\BirdCompareDTO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\OrderItemDAO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\model\Image.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\util\JWTUtils.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\model\AccessoryBreed.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\AccessoryBreedDAO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderAccountsController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderBirdDetailsController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderBirdNestsController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\OrderItemDTO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\model\Bird.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\FeedbackDAO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\util\Constants.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\model\AccessoryCategory.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\fillter\FillterLogin.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\util\EmailUtils.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderReportsController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\model\Accessory.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderProfileController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\OrderDAO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\util\FacebookUtils.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\util\GoogleUtils.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\AccessoryDAO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderBirdPairController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderCartController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\AccessoryCategoryDAO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\AccessoryDTO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\OrderTrackingDTO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\model\Order.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\model\GooglePojo.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\ImageDAO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\AddtoCartController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\model\User.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\model\Feedback.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\BirdDAO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RegisterController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\SearchBirdController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\MainController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\UserDAO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderBirdCompareController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\services\EmailService.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\LogoutController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\LoginController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\LoginGoogleController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\BirdPairDTO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderAccessoryDetailsController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderHomeController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\model\OrderTracking.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\LoginFacebookController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\controller\RenderAccessoryController.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\StarDTO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dto\BirdDTO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\BirdPairDAO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\model\FacebookPojo.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\dao\BirdBreedDAO.java
+C:\Users\phong pc\Desktop\Newest\Fall2023SWP391_NET1703_Group02\birdfarmshop\src\main\java\swp391\birdfarmshop\model\OrderItem.java

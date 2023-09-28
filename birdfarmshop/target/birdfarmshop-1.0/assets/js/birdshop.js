@@ -3,6 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/javascript.js to edit this template
  */
 
+$('main #breedSelect1').change(function (event){
+    var breedSelect1 = $(this).val();
+   
+    
+});
+
+
 $('.show-password').click(function () {
     const type = $('[name="password"]').attr('type');
     if (type === 'password') {
