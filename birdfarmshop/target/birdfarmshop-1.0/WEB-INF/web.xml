@@ -20,6 +20,10 @@
         <servlet-name>AddtoCartController</servlet-name>
         <servlet-class>swp391.birdfarmshop.controller.AddtoCartController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SearchBirdController</servlet-name>
+        <servlet-class>swp391.birdfarmshop.controller.SearchBirdController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>AddtoCartController</servlet-name>
         <url-pattern>/AddtoCartController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SearchBirdController</servlet-name>
+        <url-pattern>/SearchBirdController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

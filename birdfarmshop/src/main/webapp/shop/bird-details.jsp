@@ -216,7 +216,7 @@
                             </div>
                             <div class="total">
                                 <h4>Tổng đơn hàng: </h4>
-                                <div class="main-border-button"><a href="#">Thêm vào giỏ hàng</a></div>
+                                <div class="main-border-button"><a href="MainController?action=AddtoCart&bird_id=${birdDetails.bird_id}">Thêm vào giỏ hàng</a></div>
                             </div>
                         </div>
                     </div>

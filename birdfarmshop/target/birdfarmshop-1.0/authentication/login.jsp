@@ -62,7 +62,7 @@
 
                             <!-- Submit button -->
                             <button type="submit" class="btn btn-primary btn-lg btn-block">Đăng nhập</button>
-                            <div style="color: white" class="mt-2">Bạn mới biết đến BFS ?   <a href="MainController?action=NavToRegister">Đăng kí</a></div>
+                            <div style="color: white" class="mt-2">Bạn mới biết đến V.E.T ?   <a href="MainController?action=NavToRegister">Đăng kí</a></div>
                             <div class="divider d-flex align-items-center my-4">
                                 <p class="text-center fw-bold mx-3 mb-0 text-muted">Hoặc</p>
                             </div>
@@ -79,7 +79,7 @@
                                 <div class="col-md-12 col-lg-5 col-xl-5 p-0 offset-lg-2 offset-xl-2">
                                     <a class="btn btn-md btn-block border btn-custom"href="https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email
                                        &redirect_uri=http://localhost:8080/birdfarmshop/LoginGoogleController&response_type=code
-                                       &client_id=911997830678-hnnf8alt3ehncr0mdo75f4kc2ckkdm6q.apps.googleusercontent.com&approval_prompt=force"
+                                       &client_id=563213089252-rga4rc627cobtc25fjmjuom2168u1hrp.apps.googleusercontent.com&approval_prompt=force"
                                        role="button">
                                         <div class="d-flex align-items-center justify-content-center">
                                             <img src="assets/images/google.png" alt="facebook icon"/> 

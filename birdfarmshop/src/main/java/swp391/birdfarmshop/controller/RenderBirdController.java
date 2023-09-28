@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,26 +31,16 @@ public class RenderBirdController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-//            String sAmount = request.getParameter("amount");
-//            int amount = Integer.parseInt(sAmount);
-//            List<Bird> birdList = new ArrayList<Bird>();
-//            BirdDAO birdDao = new BirdDAO();
-//            birdList = birdDao.getNext9Birds(amount);
             int page = 1;
             int recordsPerPage = 9;
-
             if(request.getParameter("page") != null)
                 page = Integer.parseInt(request.getParameter("page"));
             BirdDAO birdDao = new BirdDAO();
-            // Gọi phương thức truy vấn cơ sở dữ liệu để lấy dữ liệu dựa trên trang và số bản ghi trên trang
             List<Bird> birds = birdDao.getDataFromDatabase(page, recordsPerPage);
-
-            int noOfRecords = birdDao.totalBirds(); // Lấy tổng số bản ghi
-
+            int noOfRecords = birdDao.totalBirds();
             int noOfPages = (int) Math.round(noOfRecords * 1.0 / recordsPerPage);
             request.setAttribute("BIRDLIST", birds);
             request.setAttribute("noOfPages", noOfPages);
-            request.setAttribute("currentPage", page);
             url = SUCCESS;
         } catch (SQLException e) {
             log("Error at RenderHomeController: " + e.toString());
