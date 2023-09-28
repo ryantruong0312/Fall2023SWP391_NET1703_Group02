@@ -132,3 +132,18 @@ h2 {
     background: rgb(254,96,84);
     background: linear-gradient(90deg, rgba(254,96,84,1) 0%, rgba(239,50,162,1) 100%);
 }
+
+
+.gender-row{
+    display: flex;
+    justify-content: center;
+}
+
+.gender-row input{
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.gender-row label{
+    margin-left: 10px;
+}
