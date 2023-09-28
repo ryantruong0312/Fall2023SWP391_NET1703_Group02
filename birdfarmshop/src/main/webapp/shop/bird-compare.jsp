@@ -18,9 +18,6 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-
-
-        <link rel="stylesheet" href="assets/compare-bird/css/reset.css"> <!-- CSS reset -->
         <link rel="stylesheet" href="assets/compare-bird/css/style.css"> <!-- Resource style -->
         <script src="assets/compare-bird/js/modernizr.js"></script> <!-- Modernizr -->
     </head>
@@ -128,8 +125,8 @@
             <section class="cd-products-comparison-table">
                 <header>
                     <div class="actions">
-                        <a href="#0" class="reset">Reset</a>
-                        <a href="#0" class="filter">Filter</a>
+                        <a href="#0" class="reset">Mặc định</a>
+                        <a href="#0" class="filter">Gộp so sánh</a>
                     </div>
                 </header>
 
@@ -147,79 +144,37 @@
                         </ul>
                     </div> <!-- .features -->
 
+
                     <div class="cd-products-wrapper">
                         <ul class="cd-products-columns">
-                            <li class="product">
-                                <div class="top-info">
-                                    <div class="check"></div>
-                                </div>
-                                <ul class="cd-features-list">
-                                    <li>
-                                        <select class="combo-box" id="breedSelect1" onchange="updateBirdNames1()">
-                                            <option>Chọn giống vẹt</option>
-                                            <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                                                <option value="${breed.breed_id}">${breed.breed_name}</option>
-                                            </c:forEach>
-                                        </select>
-                                        <select class="combo-box" id="birdSelect1">
-                                            <!-- This is initially empty and will be populated dynamically based on the selected breed -->
-                                        </select>
-                                        <img id="birdImage1" src="assets/images/bird-compare-1.jpg" alt="product image">
-                                        <h3 id="birdName1" class="info-name"> </h3>
-                                    </li>
-                                    <li id="birdPrice1"> </li>
-                                    <li id="birdAge1"> </li>
-                                    <li id="birdReproductionHistory1"> </li>
-                                    <li id="birdAchievement1"> </li>
-                                    <li id="birdStatus1"> </li>
-                                    <li><button class="detail-info" onclick="redirectToBirdDetails1()">Xem chi tiết</button></a></li>
-                                </ul>
-                            </li>
-
-                            <li class="product">
-                                <div class="top-info">
-                                    <div class="check"></div>
-                                </div>
-                                <ul class="cd-features-list">
-                                    <li>
-                                        <select class="combo-box" id="breedSelect2" onchange="updateBirdNames2()">
-                                            <option>Chọn giống vẹt</option>
-                                            <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                                                <option value="${breed.breed_id}">${breed.breed_name}</option>
-                                            </c:forEach>
-                                        </select>
-                                        <select class="combo-box" id="birdSelect2">
-                                            <!-- This is initially empty and will be populated dynamically based on the selected breed -->
-                                        </select>
-                                        <img id="birdImage2" src="assets/images/bird-compare-1.jpg" alt="product image">
-                                        <h3 id="birdName2" class="info-name"> </h3>
-                                    </li>
-                                    <li id="birdPrice2"> </li>
-                                    <li id="birdAge2"> </li>
-                                    <li id="birdReproductionHistory2"> </li>
-                                    <li id="birdAchievement2"> </li>
-                                    <li id="birdStatus2"> </li>
-                                    <li><button class="detail-info" onclick="redirectToBirdDetails2()">Xem chi tiết</button></a></li>
-                                </ul>
-                            </li>
-
-                            <li class="product">
-                                <div class="top-info">
-                                    <div></div>
-                                </div>
-                                <ul class="cd-features-list">
-                                    <li style="padding-top: 130px;">
-                                        <img style="padding: 70px;" id="birdImageNew" src="assets/images/add-icon.png" alt="product image">
-                                    </li>
-                                    <li></li>
-                                    <li></li>
-                                    <li></li>
-                                    <li></li>
-                                    <li></li>
-                                    <li></li>
-                                </ul>
-                            </li>
-
+                            <c:forEach var="i" begin="1" end="6">
+                                <li class="product">
+                                    <div class="top-info">
+                                        <div class="check"></div>
+                                    </div>
+                                    <ul class="cd-features-list">
+                                        <li>
+                                            <select class="combo-box" id="breedSelect${i}" onchange="updateBirdNames${i}()">
+                                                <option>Chọn giống vẹt</option>
+                                                <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
+                                                    <option value="${breed.breed_id}">${breed.breed_name}</option>
+                                                </c:forEach>
+                                            </select>
+                                            <select class="combo-box" id="birdSelect${i}">
+                                                <!-- This is initially empty and will be populated dynamically based on the selected breed -->
+                                            </select>
+                                            <img id="birdImage${i}" src="assets/images/bird-compare-1.jpg" alt="product image">
+                                            <h3 id="birdName${i}" class="info-name"> </h3>
+                                        </li>
+                                        <li id="birdPrice${i}"> </li>
+                                        <li id="birdAge${i}"> </li>
+                                        <li id="birdReproductionHistory${i}"> </li>
+                                        <li id="birdAchievement${i}"> </li>
+                                        <li id="birdStatus${i}"> </li>
+                                        <li><button class="detail-info" onclick="redirectToBirdDetails${i}()">Xem chi tiết</button></a></li>
+                                    </ul>
+                                </li>
+                            </c:forEach>
                         </ul>
                     </div>
 
@@ -292,19 +247,31 @@
         <!-- ***** Footer Area Ends ***** -->
 
         <script>
-            var birdData1 = []; // Initialize an empty JavaScript array
+            var birdData1 = [];
             var birdData2 = [];
+            var birdData3 = [];
+            var birdData4 = [];
+            var birdData5 = [];
+            var birdData6 = [];
+
+            var selectedBirdId1 = null;
+            var selectedBirdId2 = null;
+            var selectedBirdId3 = null;
+            var selectedBirdId4 = null;
+            var selectedBirdId5 = null;
+            var selectedBirdId6 = null;
+
             <c:forEach items="${requestScope.BIRDS}" var="bird">
             birdData1.push({
                 birdId: "${bird.bird_id}",
                 birdImage: "${bird.image_url}",
-                breedId: "${bird.breed_id}", // Assuming 'breedId' is the property in Bird class
-                birdName: "${bird.bird_name}", // Assuming 'name' is the property in Bird class
-                birdAge: "${bird.age}", // Assuming 'age' is the property in Bird class
-                birdAchievement: "${bird.achievement}", // Assuming 'achievement' is the property in Bird class
-                birdReproductionHistory: "${bird.reproduction_history}", // Assuming 'reproductionHistory' is the property in Bird class
-                birdStatus: "${bird.status}", // Assuming 'status' is the property in Bird class
-                birdPrice: "${bird.price}" // Assuming 'price' is the property in Bird class
+                breedId: "${bird.breed_id}",
+                birdName: "${bird.bird_name}",
+                birdAge: "${bird.age}",
+                birdAchievement: "${bird.achievement}",
+                birdReproductionHistory: "${bird.reproduction_history}",
+                birdStatus: "${bird.status}",
+                birdPrice: "${bird.price}"
             });
             birdData2.push({
                 birdId: "${bird.bird_id}",
@@ -317,9 +284,51 @@
                 birdStatus: "${bird.status}", // Assuming 'status' is the property in Bird class
                 birdPrice: "${bird.price}" // Assuming 'price' is the property in Bird class
             });
+            birdData3.push({
+                birdId: "${bird.bird_id}",
+                birdImage: "${bird.image_url}",
+                breedId: "${bird.breed_id}", // Assuming 'breedId' is the property in Bird class
+                birdName: "${bird.bird_name}", // Assuming 'name' is the property in Bird class
+                birdAge: "${bird.age}", // Assuming 'age' is the property in Bird class
+                birdAchievement: "${bird.achievement}", // Assuming 'achievement' is the property in Bird class
+                birdReproductionHistory: "${bird.reproduction_history}", // Assuming 'reproductionHistory' is the property in Bird class
+                birdStatus: "${bird.status}", // Assuming 'status' is the property in Bird class
+                birdPrice: "${bird.price}" // Assuming 'price' is the property in Bird class
+            });
+            birdData4.push({
+                birdId: "${bird.bird_id}",
+                birdImage: "${bird.image_url}",
+                breedId: "${bird.breed_id}", // Assuming 'breedId' is the property in Bird class
+                birdName: "${bird.bird_name}", // Assuming 'name' is the property in Bird class
+                birdAge: "${bird.age}", // Assuming 'age' is the property in Bird class
+                birdAchievement: "${bird.achievement}", // Assuming 'achievement' is the property in Bird class
+                birdReproductionHistory: "${bird.reproduction_history}", // Assuming 'reproductionHistory' is the property in Bird class
+                birdStatus: "${bird.status}", // Assuming 'status' is the property in Bird class
+                birdPrice: "${bird.price}" // Assuming 'price' is the property in Bird class
+            });
+            birdData5.push({
+                birdId: "${bird.bird_id}",
+                birdImage: "${bird.image_url}",
+                breedId: "${bird.breed_id}", // Assuming 'breedId' is the property in Bird class
+                birdName: "${bird.bird_name}", // Assuming 'name' is the property in Bird class
+                birdAge: "${bird.age}", // Assuming 'age' is the property in Bird class
+                birdAchievement: "${bird.achievement}", // Assuming 'achievement' is the property in Bird class
+                birdReproductionHistory: "${bird.reproduction_history}", // Assuming 'reproductionHistory' is the property in Bird class
+                birdStatus: "${bird.status}", // Assuming 'status' is the property in Bird class
+                birdPrice: "${bird.price}" // Assuming 'price' is the property in Bird class
+            });
+            birdData6.push({
+                birdId: "${bird.bird_id}",
+                birdImage: "${bird.image_url}",
+                breedId: "${bird.breed_id}", // Assuming 'breedId' is the property in Bird class
+                birdName: "${bird.bird_name}", // Assuming 'name' is the property in Bird class
+                birdAge: "${bird.age}", // Assuming 'age' is the property in Bird class
+                birdAchievement: "${bird.achievement}", // Assuming 'achievement' is the property in Bird class
+                birdReproductionHistory: "${bird.reproduction_history}", // Assuming 'reproductionHistory' is the property in Bird class
+                birdStatus: "${bird.status}", // Assuming 'status' is the property in Bird class
+                birdPrice: "${bird.price}" // Assuming 'price' is the property in Bird class
+            });
             </c:forEach>
-            var selectedBirdId1 = null;
-            var selectedBirdId2 = null;
 
             function updateBirdNames1() {
                 var breedSelect = document.getElementById("breedSelect1");
@@ -341,7 +350,8 @@
                 birdSelect.appendChild(option);
                 for (var i = 0; i < birdData1.length; i++) {
                     var birdEntry = birdData1[i];
-                    if (birdEntry.breedId === selectedBreedId && birdEntry.birdId !== selectedBirdId2) {
+                    if (birdEntry.breedId === selectedBreedId && birdEntry.birdId !== selectedBirdId2 && birdEntry.birdId !== selectedBirdId3
+                            && birdEntry.birdId !== selectedBirdId4 && birdEntry.birdId !== selectedBirdId5 && birdEntry.birdId !== selectedBirdId6) {
                         var option = document.createElement("option");
                         option.text = birdEntry.birdName;
                         option.value = birdEntry.birdId;
@@ -370,7 +380,8 @@
                 birdSelect.appendChild(option);
                 for (var i = 0; i < birdData2.length; i++) {
                     var birdEntry = birdData2[i];
-                    if (birdEntry.breedId === selectedBreedId && birdEntry.birdId !== selectedBirdId1) {
+                    if (birdEntry.breedId === selectedBreedId && birdEntry.birdId !== selectedBirdId1 && birdEntry.birdId !== selectedBirdId3
+                            && birdEntry.birdId !== selectedBirdId4 && birdEntry.birdId !== selectedBirdId5 && birdEntry.birdId !== selectedBirdId6) {
                         var option = document.createElement("option");
                         option.text = birdEntry.birdName;
                         option.value = birdEntry.birdId;
@@ -379,7 +390,124 @@
                 }
             }
 
-            // Add an event handler for the birdSelect1element
+            function updateBirdNames3() {
+                var breedSelect = document.getElementById("breedSelect3");
+                var selectedBreedId = breedSelect.options[breedSelect.selectedIndex].value;
+                var birdSelect = document.getElementById("birdSelect3");
+                birdSelect.innerHTML = ""; // Clear existing options
+
+                // Reset all information fields
+                document.getElementById("birdName3").textContent = "";
+                document.getElementById("birdImage3").src = "assets/images/bird-compare-1.jpg";
+                document.getElementById("birdAge3").textContent = "";
+                document.getElementById("birdAchievement3").textContent = "";
+                document.getElementById("birdReproductionHistory3").textContent = "";
+                document.getElementById("birdStatus3").textContent = "";
+                document.getElementById("birdPrice3").textContent = "";
+                // Populate the bird name combo box based on the selected breed
+                var option = document.createElement("option");
+                option.text = "Chọn tên chú vẹt";
+                birdSelect.appendChild(option);
+                for (var i = 0; i < birdData3.length; i++) {
+                    var birdEntry = birdData3[i];
+                    if (birdEntry.breedId === selectedBreedId && birdEntry.birdId !== selectedBirdId1 && birdEntry.birdId !== selectedBirdId2
+                            && birdEntry.birdId !== selectedBirdId4 && birdEntry.birdId !== selectedBirdId5 && birdEntry.birdId !== selectedBirdId6) {
+                        var option = document.createElement("option");
+                        option.text = birdEntry.birdName;
+                        option.value = birdEntry.birdId;
+                        birdSelect.appendChild(option);
+                    }
+                }
+            }
+            function updateBirdNames4() {
+                var breedSelect = document.getElementById("breedSelect4");
+                var selectedBreedId = breedSelect.options[breedSelect.selectedIndex].value;
+                var birdSelect = document.getElementById("birdSelect4");
+                birdSelect.innerHTML = ""; // Clear existing options
+
+                // Reset all information fields
+                document.getElementById("birdName4").textContent = "";
+                document.getElementById("birdImage4").src = "assets/images/bird-compare-1.jpg";
+                document.getElementById("birdAge4").textContent = "";
+                document.getElementById("birdAchievement4").textContent = "";
+                document.getElementById("birdReproductionHistory4").textContent = "";
+                document.getElementById("birdStatus4").textContent = "";
+                document.getElementById("birdPrice4").textContent = "";
+                // Populate the bird name combo box based on the selected breed
+                var option = document.createElement("option");
+                option.text = "Chọn tên chú vẹt";
+                birdSelect.appendChild(option);
+                for (var i = 0; i < birdData4.length; i++) {
+                    var birdEntry = birdData4[i];
+                    if (birdEntry.breedId === selectedBreedId && birdEntry.birdId !== selectedBirdId1 && birdEntry.birdId !== selectedBirdId2
+                            && birdEntry.birdId !== selectedBirdId3 && birdEntry.birdId !== selectedBirdId5 && birdEntry.birdId !== selectedBirdId6) {
+                        var option = document.createElement("option");
+                        option.text = birdEntry.birdName;
+                        option.value = birdEntry.birdId;
+                        birdSelect.appendChild(option);
+                    }
+                }
+            }
+            function updateBirdNames5() {
+                var breedSelect = document.getElementById("breedSelect5");
+                var selectedBreedId = breedSelect.options[breedSelect.selectedIndex].value;
+                var birdSelect = document.getElementById("birdSelect5");
+                birdSelect.innerHTML = ""; // Clear existing options
+
+                // Reset all information fields
+                document.getElementById("birdName5").textContent = "";
+                document.getElementById("birdImage5").src = "assets/images/bird-compare-1.jpg";
+                document.getElementById("birdAge5").textContent = "";
+                document.getElementById("birdAchievement5").textContent = "";
+                document.getElementById("birdReproductionHistory5").textContent = "";
+                document.getElementById("birdStatus5").textContent = "";
+                document.getElementById("birdPrice5").textContent = "";
+                // Populate the bird name combo box based on the selected breed
+                var option = document.createElement("option");
+                option.text = "Chọn tên chú vẹt";
+                birdSelect.appendChild(option);
+                for (var i = 0; i < birdData5.length; i++) {
+                    var birdEntry = birdData5[i];
+                    if (birdEntry.breedId === selectedBreedId && birdEntry.birdId !== selectedBirdId1 && birdEntry.birdId !== selectedBirdId2
+                            && birdEntry.birdId !== selectedBirdId3 && birdEntry.birdId !== selectedBirdId4 && birdEntry.birdId !== selectedBirdId6) {
+                        var option = document.createElement("option");
+                        option.text = birdEntry.birdName;
+                        option.value = birdEntry.birdId;
+                        birdSelect.appendChild(option);
+                    }
+                }
+            }
+            function updateBirdNames6() {
+                var breedSelect = document.getElementById("breedSelect6");
+                var selectedBreedId = breedSelect.options[breedSelect.selectedIndex].value;
+                var birdSelect = document.getElementById("birdSelect6");
+                birdSelect.innerHTML = ""; // Clear existing options
+
+                // Reset all information fields
+                document.getElementById("birdName6").textContent = "";
+                document.getElementById("birdImage6").src = "assets/images/bird-compare-1.jpg";
+                document.getElementById("birdAge6").textContent = "";
+                document.getElementById("birdAchievement6").textContent = "";
+                document.getElementById("birdReproductionHistory6").textContent = "";
+                document.getElementById("birdStatus6").textContent = "";
+                document.getElementById("birdPrice6").textContent = "";
+                // Populate the bird name combo box based on the selected breed
+                var option = document.createElement("option");
+                option.text = "Chọn tên chú vẹt";
+                birdSelect.appendChild(option);
+                for (var i = 0; i < birdData6.length; i++) {
+                    var birdEntry = birdData6[i];
+                    if (birdEntry.breedId === selectedBreedId && birdEntry.birdId !== selectedBirdId1 && birdEntry.birdId !== selectedBirdId2
+                            && birdEntry.birdId !== selectedBirdId3 && birdEntry.birdId !== selectedBirdId4 && birdEntry.birdId !== selectedBirdId5) {
+                        var option = document.createElement("option");
+                        option.text = birdEntry.birdName;
+                        option.value = birdEntry.birdId;
+                        birdSelect.appendChild(option);
+                    }
+                }
+            }
+
+            // Add an event handler for the birdSelect1 element
             var birdSelect1 = document.getElementById("birdSelect1");
             birdSelect1.addEventListener("change", function () {
                 var selectedBirdId = birdSelect1.options[birdSelect1.selectedIndex].value;
@@ -417,6 +545,82 @@
                 document.getElementById("birdPrice2").textContent = selectedBird.birdPrice + " ₫";
             });
 
+            // Add an event handler for the birdSelect3 element
+            var birdSelect3 = document.getElementById("birdSelect3");
+            birdSelect3.addEventListener("change", function () {
+                var selectedBirdId = birdSelect3.options[birdSelect3.selectedIndex].value;
+                selectedBirdId3 = selectedBirdId;
+                // Find the corresponding bird data in birdData array
+                var selectedBird = birdData3.find(function (birdEntry) {
+                    return birdEntry.birdId === selectedBirdId;
+                });
+                // Update the information in the bird-information div
+                document.getElementById("birdImage3").src = selectedBird.birdImage;
+                document.getElementById("birdName3").textContent = selectedBird.birdName;
+                document.getElementById("birdAge3").textContent = selectedBird.birdAge + " tháng";
+                document.getElementById("birdAchievement3").textContent = selectedBird.birdAchievement;
+                document.getElementById("birdReproductionHistory3").textContent = selectedBird.birdReproductionHistory;
+                document.getElementById("birdStatus3").textContent = selectedBird.birdStatus;
+                document.getElementById("birdPrice3").textContent = selectedBird.birdPrice + " ₫";
+            });
+            
+            // Add an event handler for the birdSelect4 element
+            var birdSelect4 = document.getElementById("birdSelect4");
+            birdSelect4.addEventListener("change", function () {
+                var selectedBirdId = birdSelect4.options[birdSelect4.selectedIndex].value;
+                selectedBirdId4 = selectedBirdId;
+                // Find the corresponding bird data in birdData array
+                var selectedBird = birdData4.find(function (birdEntry) {
+                    return birdEntry.birdId === selectedBirdId;
+                });
+                // Update the information in the bird-information div
+                document.getElementById("birdImage4").src = selectedBird.birdImage;
+                document.getElementById("birdName4").textContent = selectedBird.birdName;
+                document.getElementById("birdAge4").textContent = selectedBird.birdAge + " tháng";
+                document.getElementById("birdAchievement4").textContent = selectedBird.birdAchievement;
+                document.getElementById("birdReproductionHistory4").textContent = selectedBird.birdReproductionHistory;
+                document.getElementById("birdStatus4").textContent = selectedBird.birdStatus;
+                document.getElementById("birdPrice4").textContent = selectedBird.birdPrice + " ₫";
+            });
+            
+            // Add an event handler for the birdSelect5 element
+            var birdSelect5 = document.getElementById("birdSelect5");
+            birdSelect5.addEventListener("change", function () {
+                var selectedBirdId = birdSelect5.options[birdSelect5.selectedIndex].value;
+                selectedBirdId5 = selectedBirdId;
+                // Find the corresponding bird data in birdData array
+                var selectedBird = birdData5.find(function (birdEntry) {
+                    return birdEntry.birdId === selectedBirdId;
+                });
+                // Update the information in the bird-information div
+                document.getElementById("birdImage5").src = selectedBird.birdImage;
+                document.getElementById("birdName5").textContent = selectedBird.birdName;
+                document.getElementById("birdAge5").textContent = selectedBird.birdAge + " tháng";
+                document.getElementById("birdAchievement5").textContent = selectedBird.birdAchievement;
+                document.getElementById("birdReproductionHistory5").textContent = selectedBird.birdReproductionHistory;
+                document.getElementById("birdStatus5").textContent = selectedBird.birdStatus;
+                document.getElementById("birdPrice5").textContent = selectedBird.birdPrice + " ₫";
+            });
+            
+            // Add an event handler for the birdSelect6 element
+            var birdSelect6 = document.getElementById("birdSelect6");
+            birdSelect6.addEventListener("change", function () {
+                var selectedBirdId = birdSelect6.options[birdSelect6.selectedIndex].value;
+                selectedBirdId6 = selectedBirdId;
+                // Find the corresponding bird data in birdData array
+                var selectedBird = birdData6.find(function (birdEntry) {
+                    return birdEntry.birdId === selectedBirdId;
+                });
+                // Update the information in the bird-information div
+                document.getElementById("birdImage6").src = selectedBird.birdImage;
+                document.getElementById("birdName6").textContent = selectedBird.birdName;
+                document.getElementById("birdAge6").textContent = selectedBird.birdAge + " tháng";
+                document.getElementById("birdAchievement6").textContent = selectedBird.birdAchievement;
+                document.getElementById("birdReproductionHistory6").textContent = selectedBird.birdReproductionHistory;
+                document.getElementById("birdStatus6").textContent = selectedBird.birdStatus;
+                document.getElementById("birdPrice6").textContent = selectedBird.birdPrice + " ₫";
+            });
+
             function redirectToBirdDetails1() {
                 if (selectedBirdId1 !== null) {
                     // Construct the URL
@@ -430,6 +634,39 @@
                 if (selectedBirdId2 !== null) {
                     // Construct the URL
                     var url = 'MainController?action=NavToBirdDetails&bird_id=' + selectedBirdId2;
+                    // Redirect to the URL
+                    window.location.href = url;
+                }
+            }
+
+            function redirectToBirdDetails3() {
+                if (selectedBirdId3 !== null) {
+                    // Construct the URL
+                    var url = 'MainController?action=NavToBirdDetails&bird_id=' + selectedBirdId3;
+                    // Redirect to the URL
+                    window.location.href = url;
+                }
+            }
+            function redirectToBirdDetails4() {
+                if (selectedBirdId4 !== null) {
+                    // Construct the URL
+                    var url = 'MainController?action=NavToBirdDetails&bird_id=' + selectedBirdId4;
+                    // Redirect to the URL
+                    window.location.href = url;
+                }
+            }
+            function redirectToBirdDetails5() {
+                if (selectedBirdId5 !== null) {
+                    // Construct the URL
+                    var url = 'MainController?action=NavToBirdDetails&bird_id=' + selectedBirdId5;
+                    // Redirect to the URL
+                    window.location.href = url;
+                }
+            }
+            function redirectToBirdDetails6() {
+                if (selectedBirdId6 !== null) {
+                    // Construct the URL
+                    var url = 'MainController?action=NavToBirdDetails&bird_id=' + selectedBirdId6;
                     // Redirect to the URL
                     window.location.href = url;
                 }
