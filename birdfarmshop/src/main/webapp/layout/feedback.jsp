@@ -17,14 +17,18 @@
                     <div class="d-flex align-items-center">
                         <h5 class="mr-4 rating-total"><c:out value="${ratingCustomer.totalRating()}"/></h5>
                         <div class="rating big-star">
-                            <c:forEach begin="0" end="5" step="1" varStatus="loopIndex">
-                                <c:if test="${loopIndex.index < ratingCustomer.roundRating()}">
-                                    <span class="fa fa-star star-checked"></span>
-                                </c:if>
-                                <c:if test="${loopIndex.index > ratingCustomer.roundRating()}">
-                                    <span class="fa fa-star"></span>
-                                </c:if>
-                            </c:forEach>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span>
+                            <span class="fa fa-star"></span> 
+                            <div class="star-fill" style="width: <c:out value="${ratingCustomer.percentTotalRating()}"/>%;">
+                                <span class="fa fa-star"></span>    
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                                <span class="fa fa-star"></span>
+                            </div>
                         </div>
                     </div>
                     <p class="mt-2 text-muted">(<c:out value="${ratingCustomer.totalStar()}"/> đánh giá)</p>

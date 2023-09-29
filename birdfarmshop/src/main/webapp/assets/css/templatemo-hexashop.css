@@ -2686,6 +2686,7 @@ register*/
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+    position: relative;
 }
 .total-left{
     border-right: 1px solid #f2f2f2;
@@ -2700,6 +2701,9 @@ register*/
 }
 .user-comment:last-child{
   border-bottom: none;
+}
+.big-star{
+    width:135px;
 }
 .big-star span{
     font-size: 25px;
@@ -2723,11 +2727,17 @@ register*/
     border-radius: 10px;
     animation: ease-out 1s;
 }
-.test-star{
-    margin-top: 10px;
-    margin-left: 20px;
-    position: relative;
-    height: 25px;
-    width:140px;
-    background-color: #ffc400;  
+.star-fill {
+  color: #ffc400;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.star-outline {
+  color: lightgray; 
 }

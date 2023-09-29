@@ -165,8 +165,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="inner-content">
-                            <h2>Thông tin chi tiết</h2>
-                            <span>Tất tần tật thông tin và mô tả về chú vẹt sẽ được tìm thấy tại đây!</span>
+                            <h2>Single Product Page</h2>
+                            <span>Awesome &amp; Creative HTML CSS layout by TemplateMo</span>
                         </div>
                     </div>
                 </div>
@@ -216,7 +216,7 @@
                             </div>
                             <div class="total">
                                 <h4>Tổng đơn hàng: </h4>
-                                <div class="main-border-button"><a href="MainController?action=AddtoCart&bird_id=${birdDetails.bird_id}">Thêm vào giỏ hàng</a></div>
+                                <div class="main-border-button"><a href="#">Thêm vào giỏ hàng</a></div>
                             </div>
                         </div>
                     </div>
@@ -238,7 +238,7 @@
                             </div>
                             <ul>
                                 <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                <li><a href="#">thegioivetcanh@gmail.com</a></li>
+                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
                                 <li><a href="#">0913-244-567</a></li>
                             </ul>
                         </div>
@@ -246,17 +246,17 @@
                     <div class="col-lg-3">
                         <h4>Sản phẩm và dịch vụ</h4>
                         <ul>
-                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                            <li><a href="${pageScope.toCompare}">So sánh</a></li>
-                            <li><a href="${pageScope.toPair}">Nhân giống</a></li>
+                            <li><a href="#">Vẹt cảnh</a></li>
+                            <li><a href="#">Tổ chim non</a></li>
+                            <li><a href="#">Phụ kiện</a></li>
+                            <li><a href="#">So sánh</a></li>
+                            <li><a href="#">Nhân giống</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
                         <h4>Đường dẫn hữu ích</h4>
                         <ul>
-                            <li><a href="${pageScope.toHome}">Trang chủ</a></li>
+                            <li><a href="#">Trang chủ</a></li>
                             <li><a href="#">Về chúng tôi</a></li>
                             <li><a href="#">Hỗ trợ</a></li>
                             <li><a href="#">Liên hệ</a></li>

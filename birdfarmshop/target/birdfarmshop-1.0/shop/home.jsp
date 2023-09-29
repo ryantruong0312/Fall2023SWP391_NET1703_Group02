@@ -17,7 +17,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <link rel="icon" type="image/png" href="assets/images/logo-title-bar.png"/>
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
         <title>V.E.T - Thế giới Vẹt Cảnh</title>
@@ -49,7 +48,7 @@
         <c:url var="toLogin" value="MainController?action=NavToLogin"/>
         <c:url var="logout" value="MainController?action=Logout"/>
         <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
-        <c:url var="toBirds" value="MainController?action=NavToBird&page=1"/>
+        <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
         <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
         <c:url var="toCart" value="MainController?action=NavToCart"/>
         <c:url var="toProfile" value="MainController?action=NavToProfile"/>
@@ -148,7 +147,7 @@
                         <div class="left-content">
                             <div class="thumb">
                                 <div class="inner-content">
-                                    <h4>V.E.T - Thế giới vẹt cảnh</h4>
+                                    <h4>Bird Farm Shop</h4>
                                     <span>Đặt niềm yêu thú cưng của bạn vào tay chuyên gia về chim vẹt.</span>
                                     <div class="main-border-button">
                                         <a href="#">Tìm hiểu ngay!</a>
@@ -165,15 +164,15 @@
                                     <div class="right-first-image">
                                         <div class="thumb">
                                             <div class="inner-content">
-                                                <h4>Vẹt cảnh</h4>
+                                                <h4>Chim vẹt</h4>
                                                 <span>Bạn Đồng Hành Tuyệt Vời Cho Người Mê Thú Cưng</span>
                                             </div>
                                             <div class="hover-content">
                                                 <div class="inner">
-                                                    <h4>Vẹt cảnh</h4>
+                                                    <h4>Chim vẹt</h4>
                                                     <p>Khám phá thế giới đầy màu sắc với các loài chim vẹt từ khắp nơi trên thế giới!</p>
                                                     <div class="main-border-button">
-                                                        <a href="${pageScope.toBirds}">Xem thêm</a>
+                                                        <a href="#">Xem thêm</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -193,7 +192,7 @@
                                                     <h4>Phụ kiện</h4>
                                                     <p>Tự hào giới thiệu bộ sưu tập phụ kiện cho chim vẹt!</p>
                                                     <div class="main-border-button">
-                                                        <a href="${pageScope.toAccessories}">Xem thêm</a>
+                                                        <a href="#">Xem thêm</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -213,7 +212,7 @@
                                                     <h4>Tổ chim non</h4>
                                                     <p>Hãy khám phá các tổ chim non đáng yêu của chúng tôi!</p>
                                                     <div class="main-border-button">
-                                                        <a href="${pageScope.toBirdNests}">Xem thêm</a>
+                                                        <a href="#">Xem thêm</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -225,15 +224,15 @@
                                     <div class="right-first-image">
                                         <div class="thumb">
                                             <div class="inner-content">
-                                                <h4>Nhân giống</h4>
-                                                <span>Ghép cặp sinh sản chim vẹt theo yêu cầu</span>
+                                                <h4>Ghép cặp</h4>
+                                                <span>Nhân giống chim vẹt theo yêu cầu</span>
                                             </div>
                                             <div class="hover-content">
                                                 <div class="inner">
-                                                    <h4>Nhân giống</h4>
+                                                    <h4>Ghép cặp</h4>
                                                     <p>Cùng nhau tạo ra cá thể vẹt mới đầy sự đáng yêu, độc đáo.</p>
                                                     <div class="main-border-button">
-                                                        <a href="${pageScope.toPair}">Xem thêm</a>
+                                                        <a href="#">Xem thêm</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -335,7 +334,7 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="left-content">
-                            <h2>Các sản phẩm và dịch vụ tại V.E.T</h2>
+                            <h2>Các sản phẩm và dịch vụ tại Bird Farm Shop</h2>
                             <span>Chào mừng đến với Shop Bán Chim Cảnh - nơi bạn có thể khám phá một thế giới tuyệt vời của động vật cưng với sự đa dạng loài chim độc đáo và dịch vụ chất lượng hàng đầu. Với hơn một thập kỷ kinh nghiệm trong việc nuôi và chăm sóc chim, chúng tôi tự hào là địa chỉ đáng tin cậy cho những người yêu thú cưng lông mịn.</span>
                             <div class="quote">
                                 <i class="fa fa-quote-left"></i><p>Chúng tôi cam kết cung cấp các con vật cưng khỏe mạnh và được nuôi dưỡng cẩn thận, để bạn có thể đón những người bạn mới vào gia đình mình.</p>
@@ -387,7 +386,7 @@
                     <div class="col-lg-8">
                         <div class="section-heading">
                             <h2>Đăng ký thông tin để có cơ hội nhận ưu đãi lên đến 30%</h2>
-                            <span>Ưu đãi và tích lũy điểm thưởng giúp bạn mua sắm thả ga tại V.E.T.</span>
+                            <span>Ưu đãi và tích lũy điểm thưởng giúp bạn mua sắm thả ga tại Bird Farm Shop.</span>
                         </div>
                         <form id="subscribe" action="" method="get">
                             <div class="row">
@@ -421,7 +420,7 @@
                             <div class="col-6">
                                 <ul>
                                     <li>Giờ làm việc:<br><span>07:30 - 19:30 <br>Từ T2 đến T6</span></li>
-                                    <li>Email:<br><span>thegioivetcanh@gmail.com</span></li>
+                                    <li>Email:<br><span>birdfarmshop@petshop.com</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -442,7 +441,7 @@
                             </div>
                             <ul>
                                 <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                <li><a href="#">thegioivetcanh@gmail.com</a></li>
+                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
                                 <li><a href="#">0913-244-567</a></li>
                             </ul>
                         </div>
@@ -450,17 +449,17 @@
                     <div class="col-lg-3">
                         <h4>Sản phẩm và dịch vụ</h4>
                         <ul>
-                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                            <li><a href="${pageScope.toCompare}">So sánh</a></li>
-                            <li><a href="${pageScope.toPair}">Nhân giống</a></li>
+                            <li><a href="#">Vẹt cảnh</a></li>
+                            <li><a href="#">Tổ chim non</a></li>
+                            <li><a href="#">Phụ kiện</a></li>
+                            <li><a href="#">So sánh</a></li>
+                            <li><a href="#">Nhân giống</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
                         <h4>Đường dẫn hữu ích</h4>
                         <ul>
-                            <li><a href="${pageScope.toHome}">Trang chủ</a></li>
+                            <li><a href="#">Trang chủ</a></li>
                             <li><a href="#">Về chúng tôi</a></li>
                             <li><a href="#">Hỗ trợ</a></li>
                             <li><a href="#">Liên hệ</a></li>

@@ -42,13 +42,14 @@ public class LoginFacebookController extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             String code = request.getParameter("code");
             String message = null;
-            String url = ERROR;
-//           out.print("<h1>"+code+"</h1>");
-            if (code == null || code.isEmpty()) {
-                message = "Không kết nối được với Facebook, bạn nên thử cách khác";
-            } else {
-                String accessToken = FacebookUtils.getToken(code);
-                out.print("<h1>"+accessToken+"</h1>");
+            String url = "MainController?action=NavToLogin";
+            HttpSession session = request.getSession();
+            session.setAttribute("ERROR", "Tính năng đang đang lỗi.");
+//            if (code == null || code.isEmpty()) {
+//                message = "Không kết nối được với Facebook, bạn nên thử cách khác";
+//            } else {
+//                String accessToken = FacebookUtils.getToken(code);
+//                out.print("<h1>"+accessToken+"</h1>");
 //                User u = UserDAO.findUser(account.getId(), account.getEmail());
 //                if (u != null) {
 //                    HttpSession session = request.getSession(true);
@@ -66,7 +67,8 @@ public class LoginFacebookController extends HttpServlet {
 //                        response.sendRedirect(DEST_NAV_HOME);
 //                    }
 //                }
-            }
+//            }
+        response.sendRedirect(url);
         } catch (Exception e) {
             e.printStackTrace();
         }
