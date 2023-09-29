@@ -36,6 +36,20 @@
                 background-color: black;
                 color: white !important;
             }
+            .search-bar {
+                margin: 0 0 10px 15px;
+                border: 5px;
+                border-radius: 8px;
+                border: 1px solid rgb(221, 221, 227);
+            }
+            .search-bar input {
+                border: 0;
+                background: none;
+                outline: none;
+            }
+            .search-bar img {
+                margin-left: 5px;
+            }
         </style>
     </head>
 
@@ -155,13 +169,16 @@
                             <h2>Sản phẩm của chúng tôi</h2>
                         </div>
                     </div>
-                    <div class="col-lg-12">
+                    
+                <div class="search-bar">
                     <form action="MainController" method="GET">
                         <input type="hidden" name="action" value="SearchBird">
-                        <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" style="margin: 0 0 15px 15px;" value="${txtBirdName}">
-                        <button type="submit"><img style="width: 15px; height: 15px;" src="assets/images/search.png"/></button>
+                        <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                        <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${txtBirdName}">
+                        <input type="submit" value="Tìm kiếm">
                     </form>
                     </div>
+                </div>
             </div>
             <c:set var="SEARCHLIST" value="${requestScope.SEARCHLIST}"/>
             <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
@@ -237,7 +254,7 @@
                                         <ul>
                                             <li id="page-${1}"><a href="MainController?action=NavToBird&page=1"><<</a></li>
                                             <c:forEach begin="1" end="${noOfPages}" var="i">
-                                                <li id="page-${i}"><a href="MainController?action=NavToBird&page=${i}">${i}</a></li>
+                                                <li id="page-${i}"><a class="${i == requestScope.currentPage ? "activeNav":""}" href="MainController?action=NavToBird&page=${i}">${i}</a></li>
                                             </c:forEach>
                                             <li id="page-${noOfPages}"><a href="MainController?action=NavToBird&page=${noOfPages}">>></a></li>
                                         </ul>

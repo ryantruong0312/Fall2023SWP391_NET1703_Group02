@@ -27,6 +27,7 @@ public class RenderProfileController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
+            
             url = SUCCESS;
         } catch (Exception e) {
             log("Error at RenderProfileController: " + e.toString());
