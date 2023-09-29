@@ -49,7 +49,7 @@
                             <ul class="nav">
                                 <li class="scroll-to-section"><a href="${pageScope.toHome}">Trang chủ</a></li>
                                     <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'staff'}">
-                                    <li class="submenu"><a href="">Sản phẩm</a>
+                                    <li class="submenu"><a style="user-select: none;" onclick="preventdefault()">Sản phẩm</a>
                                         <ul>
                                             <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
                                             <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
@@ -118,9 +118,52 @@
             </div>
         </div>
         <!-- ***** Main Banner Area End ***** -->
-
-        <main>
-            <div class="comparison-container">
+        <main class="type-pair py-5">
+            <div class="container">
+                <div class="row d-flex justify-content-around align-content-center h-100">
+                    <div class="box-chose type-customer">
+                        <div class="d-flex">
+                            <div class="box box-top--left"></div>
+                            <div class="box-middle"></div>
+                            <div class="box box-top--right"></div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="box"></div>
+                            <div class="box-middle box-content">Chim của khách hàng</div>
+                            <div class="box"></div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="box box-bottom--left"></div>
+                            <div class="box-middle"></div>
+                            <div class="box box-bottom--right"></div>
+                        </div>
+                    </div>
+                    <div class="line-pagination"></div>
+                    <div class="box-chose type-shop">
+                            <div class="d-flex">
+                            <div class="box box-top--left"></div>
+                            <div class="box-middle"></div>
+                            <div class="box box-top--right"></div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="box"></div>
+                            <div class="box-middle box-content">Chim trong cửa hàng</div>
+                            <div class="box"></div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="box box-bottom--left"></div>
+                            <div class="box-middle"></div>
+                            <div class="box box-bottom--right"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <main class="my-5 bird-shop">
+            <div class="back-choose py-4">
+                <h5>Chọn phương pháp ghép cặp</h5>
+            </div>
+            <div class="comparison-container mx-3">
                 <!-- First Column -->
                 <div class="comparison-column">
                     <div class="column-content">
@@ -147,8 +190,7 @@
                         </div>
                     </div>
                 </div>
-                 <!-- butotn pair start -->   
-                 <button class="button-pair">Tiến hành ghép</button>       
+                 <!-- butotn pair start -->      
                  <!-- butotn pair end -->
                 <!-- Second Column -->
                 <div class="comparison-column">
@@ -175,7 +217,84 @@
                             </div>
                         </div>
                     </div>
+                </div>  
+            </div>
+            <div class="box-button-pair">
+                <button class="button-pair">Tiến hành ghép</button>  
+            </div>
+        </main>
+        <main class="my-5 bird-customer">
+            <div class="back-choose py-4">
+                <h5>Chọn phương pháp ghép cặp</h5>
+            </div>
+            <div class="comparison-container mx-3">
+                <!-- First Column -->
+                <div class="comparison-column">
+                    <div class="column-content">
+                        <h2>Chọn một chú vẹt của khách</h2>
+
+                        <!-- EL to populate the category combo box -->
+                        <select class="combo-box" id="breedSelect3">
+                            <option value = "">Chọn giống vẹt</option>
+                            <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
+                                <option value="${breed.breed_id}">${breed.breed_name}</option>
+                            </c:forEach>
+                        </select>
+                        
+                          <!-- EL to populate the bird name combo box -->
+                        <select class="combo-box" id="birdSelect3"  >
+                        </select>
+                        <div class="mt-4">
+                            <label>Giới tính: </label>
+                            <input id="gender-1" class="ml-4" type="radio" name="gender" value="1"/> Trống
+                            <p style="display: inline-block; width: 30px"></p>
+                            <input id="gender-2" class=""type="radio" name="gender" value="0"/> Mái
+                        </div>
+
+                        <!-- Additional rows to display bird information -->
+                        <div id="birdInformation3">         
+                            <div class="bird-info-row">
+                                <!-- Placeholder for bird image -->
+                                <img id="birdImage1" src="assets/images/bird-compare-1.jpg" alt="Bird Image">
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                 <!-- butotn pair start -->      
+                 <!-- butotn pair end -->
+                <!-- Second Column -->
+                <div class="comparison-column">
+                    <div class="column-content">
+                        <h2>Chọn một chú vẹt của cửa hàng</h2>
+
+                        <!-- EL to populate the category combo box -->
+                        <select class="combo-box" id="breedSelect4" disabled>
+                            <option value = "">Chọn giống vẹt</option>
+                            <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
+                                <option value="${breed.breed_id}">${breed.breed_name}</option>
+                            </c:forEach>
+                        </select>
+                        
+                        <!-- EL to populate the bird name combo box -->
+                        <select class="combo-box" id="birdSelect4">
+                        </select>
+                        
+                        <div style="height: 32px;" class="mt-4">
+                       
+                        </div>    
+                        
+                        <!-- Additional rows to display bird information -->
+                        <div id="birdInformation4"> 
+                            <div class="bird-info-row">
+                                <!-- Placeholder for bird image -->
+                                <img id="birdImage1" src="assets/images/bird-compare-1.jpg" alt="Bird Image">
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <div class="box-button-pair">
+                <button class="button-pair">Tiến hành ghép</button>  
             </div>
         </main>
         <div class="testajax"></div>
