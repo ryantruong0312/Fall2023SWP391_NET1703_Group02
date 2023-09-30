@@ -5,6 +5,9 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -123,9 +126,109 @@
             </div>
         </header>
         <!-- ***** Header Area End ***** -->
-        
-        
-        
+
+        <!-- ***** Main Banner Area Start ***** -->
+        <div class="page-heading" id="top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="inner-content">
+                            <c:if test="${sessionScope.LOGIN_USER.role == 'manager'}">
+                                <h2>Danh sách tài khoản nhân viên</h2>
+                                <span>Thông tin tài khoản của tất cả nhân viên trên hệ thống V.E.T</span>
+                            </c:if>
+                            <c:if test="${sessionScope.LOGIN_USER.role == 'admin'}">
+                                <h2>Danh sách tài khoản</h2>
+                                <span>Thông tin tài khoản của tất cả người dùng trên hệ thống V.E.T</span>
+                            </c:if>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ***** Main Banner Area End ***** -->
+
+        <main style="width: 80%; margin: 0 auto;">
+            <div class="mt-3">
+                <div class="row">
+                    <div class="col-md-4">
+                    </div>
+                    <div class="col-md-6 my-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><img src="assets/images/search-icon.png"></span>
+                            </div>
+                            <input type="text" class="form-control" placeholder="Tìm kiếm...">
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <!-- Button "Cấp mới tài khoản" -->
+                        <button class="btn btn-success mb-3 p-3">Cấp mới tài khoản</button>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên tài khoản</th>
+                        <th>Tên người dùng</th>
+                        <th>Mật khẩu</th>
+                        <th>Nhóm người dùng</th>
+                        <th>Trạng thái</th>
+                        <th style="text-align: center;">Khóa tài khoản</th>
+                        <th style="text-align: center;">Cấp lại mật khẩu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:if test="${sessionScope.LOGIN_USER.role == 'admin'}">
+                        <c:forEach var="user" items="${requestScope.ACCOUNT_LIST}" varStatus="loop">
+                            <tr>
+                                <td>${loop.index + 1}</td>
+                                <td>${user.username}</td>
+                                <td>${user.fullName}</td>
+                                <td>******</td>
+                                <td>${user.role}</td>
+                                <td>${user.status}</td>
+                                <c:if test="${user.status == 'active'}">
+                                    <td style="text-align: center;"><button class="btn btn-danger">Khóa</button></td>
+                                </c:if>
+                                <c:if test="${user.status == 'inactive'}">
+                                    <td style="text-align: center;"><button class="btn btn-danger">Mở Khóa</button></td>
+                                </c:if>
+                                <td style="text-align: center;"><button class="btn btn-primary">Cấp lại MK</button></td>
+                            </tr>
+                        </c:forEach>
+                    </c:if>
+                    <c:if test="${sessionScope.LOGIN_USER.role == 'manager'}">
+                        <c:forEach var="user" items="${requestScope.ACCOUNT_LIST}" varStatus="loop">
+                            <c:if test="${user.role == 'staff'}">
+                                <tr>
+                                    <td>${loop.index + 1}</td>
+                                    <td>${user.username}</td>
+                                    <td>${user.fullName}</td>
+                                    <td>******</td>
+                                    <td>${user.role}</td>
+                                    <td>${user.status}</td>
+                                    <c:if test="${user.status == 'active'}">
+                                        <td style="text-align: center;"><button class="btn btn-danger">Khóa</button></td>
+                                    </c:if>
+                                    <c:if test="${user.status == 'inactive'}">
+                                        <td style="text-align: center;"><button class="btn btn-danger">Mở Khóa</button></td>
+                                    </c:if>
+                                    <td style="text-align: center;"><button class="btn btn-primary">Cấp lại MK</button></td>
+                                </tr>
+                            </c:if>
+                        </c:forEach>
+                    </c:if>
+
+                </tbody>
+            </table>
+        </main>
+
+
         <!-- ***** Footer Start ***** -->
         <footer>
             <div class="container">
@@ -185,7 +288,7 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
-        
+
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
 
