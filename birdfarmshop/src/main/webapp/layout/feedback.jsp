@@ -129,6 +129,15 @@
                             <p class="mt-2"><c:out value="${feedback.comment}"/></p>
                         </div>
                     </c:forEach>
+                    <div class="d-flex float-right align-items-center page-pagination">
+                        <div class="page-prev page-disable"><i class="fa fa-angle-left" aria-hidden="true"></i></i></div>
+                        <div class="page-navTo ml-3 page-active">1</div>
+                        <div class="page-navTo">2</div>
+                        <div class="page-navTo">3</div>
+                        <div class="page-navTo">4</div>
+                        <div class="page-navTo">5</div>
+                        <div class="page-next ml-3"><i class="fa fa-angle-right" aria-hidden="true"></i></i></div>
+                    </div>
                 </div>
             </div>
         </div>   

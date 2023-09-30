@@ -2725,7 +2725,6 @@ register*/
     height: 10px;
     background-color: #0a68ff;
     border-radius: 10px;
-    animation: ease-out 1s;
 }
 .star-fill {
   color: #ffc400;
@@ -2737,7 +2736,36 @@ register*/
   overflow: hidden;
   white-space: nowrap;
 }
-
-.star-outline {
-  color: lightgray; 
+.page-pagination{
+    margin-top: 20px;
+    margin-right: 20px;
+}
+.page-pagination .page-prev,
+.page-pagination .page-next{
+    font-size: 1.4rem;
+    height: 35px;
+    width: 30px;
+    cursor: pointer;
+}
+.page-pagination .page-navTo{
+    padding: 5px 10px;
+    margin: 0 5px;
+    font-size: 1.2rem;
+    width: 35px;
+    cursor: pointer;
+    line-height: 25px;
+    text-align: center;
+}
+.page-active{
+    background-color: #ffa500;
+    color: white;
+    border-radius: 10px;
+}
+.page-disable{
+    color:  #6c757d;
+    cursor: default!important;
+    user-select: none!important;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
