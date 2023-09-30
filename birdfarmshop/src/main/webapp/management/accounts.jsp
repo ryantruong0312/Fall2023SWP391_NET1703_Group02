@@ -133,8 +133,15 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="inner-content">
-                            <h2>Danh sách tài khoản</h2>
-                            <span>Thông tin tài khoản của tất cả người dùng trên hệ thống V.E.T</span>
+                            <c:if test="${sessionScope.LOGIN_USER.role == 'manager'}">
+                                <h2>Danh sách tài khoản nhân viên</h2>
+                                <span>Thông tin tài khoản của tất cả nhân viên trên hệ thống V.E.T</span>
+                            </c:if>
+                            <c:if test="${sessionScope.LOGIN_USER.role == 'admin'}">
+                                <h2>Danh sách tài khoản</h2>
+                                <span>Thông tin tài khoản của tất cả người dùng trên hệ thống V.E.T</span>
+                            </c:if>
+
                         </div>
                     </div>
                 </div>
@@ -176,23 +183,47 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="user" items="${requestScope.ACCOUNT_LIST}" varStatus="loop">
-                        <tr>
-                            <td>${loop.index + 1}</td>
-                            <td>${user.username}</td>
-                            <td>${user.fullName}</td>
-                            <td>******</td>
-                            <td>${user.role}</td>
-                            <td>${user.status}</td>
-                            <c:if test="${user.status == 'active'}">
-                                <td style="text-align: center;"><button class="btn btn-danger">Khóa</button></td>
+                    <c:if test="${sessionScope.LOGIN_USER.role == 'admin'}">
+                        <c:forEach var="user" items="${requestScope.ACCOUNT_LIST}" varStatus="loop">
+                            <tr>
+                                <td>${loop.index + 1}</td>
+                                <td>${user.username}</td>
+                                <td>${user.fullName}</td>
+                                <td>******</td>
+                                <td>${user.role}</td>
+                                <td>${user.status}</td>
+                                <c:if test="${user.status == 'active'}">
+                                    <td style="text-align: center;"><button class="btn btn-danger">Khóa</button></td>
+                                </c:if>
+                                <c:if test="${user.status == 'inactive'}">
+                                    <td style="text-align: center;"><button class="btn btn-danger">Mở Khóa</button></td>
+                                </c:if>
+                                <td style="text-align: center;"><button class="btn btn-primary">Cấp lại MK</button></td>
+                            </tr>
+                        </c:forEach>
+                    </c:if>
+                    <c:if test="${sessionScope.LOGIN_USER.role == 'manager'}">
+                        <c:forEach var="user" items="${requestScope.ACCOUNT_LIST}" varStatus="loop">
+                            <c:if test="${user.role == 'staff'}">
+                                <tr>
+                                    <td>${loop.index + 1}</td>
+                                    <td>${user.username}</td>
+                                    <td>${user.fullName}</td>
+                                    <td>******</td>
+                                    <td>${user.role}</td>
+                                    <td>${user.status}</td>
+                                    <c:if test="${user.status == 'active'}">
+                                        <td style="text-align: center;"><button class="btn btn-danger">Khóa</button></td>
+                                    </c:if>
+                                    <c:if test="${user.status == 'inactive'}">
+                                        <td style="text-align: center;"><button class="btn btn-danger">Mở Khóa</button></td>
+                                    </c:if>
+                                    <td style="text-align: center;"><button class="btn btn-primary">Cấp lại MK</button></td>
+                                </tr>
                             </c:if>
-                            <c:if test="${user.status == 'inactive'}">
-                                <td style="text-align: center;"><button class="btn btn-danger">Mở Khóa</button></td>
-                            </c:if>
-                            <td style="text-align: center;"><button class="btn btn-primary">Cấp lại MK</button></td>
-                        </tr>
-                    </c:forEach>
+                        </c:forEach>
+                    </c:if>
+
                 </tbody>
             </table>
         </main>
