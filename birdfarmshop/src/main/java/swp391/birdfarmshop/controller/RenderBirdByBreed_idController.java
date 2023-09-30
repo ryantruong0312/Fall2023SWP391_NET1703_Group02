@@ -6,35 +6,55 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import swp391.birdfarmshop.dao.BirdDAO;
+import swp391.birdfarmshop.model.Bird;
 
 /**
  *
- * @author tlminh
+ * @author phong pc
  */
-@WebServlet(name="RenderProfileController", urlPatterns={"/RenderProfileController"})
-public class RenderProfileController extends HttpServlet {
+public class RenderBirdByBreed_idController extends HttpServlet {
    
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "profile/profile.jsp";
-
+    private static final String SUCCESS = "shop/birds.jsp";
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException, ClassNotFoundException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            
+            int page = 1;
+            int recordsPerPage = 9;
+            String breed_id = request.getParameter("breed_id");
+            if(request.getParameter("page") != null)
+                page = Integer.parseInt(request.getParameter("page"));
+            BirdDAO birdDao = new BirdDAO();
+            List<Bird> birdListByBreed_id = birdDao.getBirdsByBreedId(breed_id, page, recordsPerPage);
+            for (Bird bird : birdListByBreed_id) {
+                System.out.println(bird.getBird_name());
+            }
+            int noOfRecords = birdDao.numberOfBirdsByBreedId(breed_id);
+            int noOfPages = (int) Math.round(noOfRecords * 1.0 / recordsPerPage);
+            request.setAttribute("BIRDLISTBYBREED_ID", birdListByBreed_id);
+            request.setAttribute("noOfPages", noOfPages);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("breed_id", breed_id);
             url = SUCCESS;
-        } catch (Exception e) {
-            log("Error at RenderProfileController: " + e.toString());
+        } catch (SQLException e) {
+            log("Error at RenderHomeController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
@@ -47,7 +67,11 @@ public class RenderProfileController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(RenderBirdByBreed_idController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     } 
 
     /** 
@@ -60,7 +84,11 @@ public class RenderProfileController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(RenderBirdByBreed_idController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** 

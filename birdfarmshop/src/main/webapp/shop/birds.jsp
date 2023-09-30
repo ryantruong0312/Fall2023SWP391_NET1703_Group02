@@ -30,11 +30,48 @@
         <style>
             .bird-thumbnail{
                 width: 350px;
-                height: 368px;
+                height: 400px;
             }
             .activeNav{
                 background-color: black;
                 color: white !important;
+            }
+            .search-bar {
+                margin: 0 0 10px 120px;
+                border: 5px;
+                border-radius: 8px;
+                border: 1px solid rgb(221, 221, 227);
+            }
+            .search-bar input {
+                border: 0;
+                background: none;
+                outline: none;
+            }
+            .search-bar input[type=submit] {
+                float: right;
+            }
+            .search-bar img {
+                margin-left: 5px;
+            }
+            
+            .type {
+                cursor: pointer;
+                background-color: #cccccc;
+                padding: 0 0 0 5px; /*top right bot left*/
+                margin: 5px 0 5px 5px;
+            }
+            .type + ol {
+                display: none;
+            }
+            #typeList-1, #typeList-2, #typeList-3, #typeList-4 {
+                margin-left: 10px;
+            }
+            
+            .position-sticky li {
+                margin-bottom: 5px;
+            }
+            a {
+                color: black;
             }
         </style>
     </head>
@@ -155,97 +192,175 @@
                             <h2>Sản phẩm của chúng tôi</h2>
                         </div>
                     </div>
-                    <div class="col-lg-12">
+                    
+                <div class="search-bar">
                     <form action="MainController" method="GET">
                         <input type="hidden" name="action" value="SearchBird">
-                        <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" style="margin: 0 0 15px 15px;" value="${txtBirdName}">
-                        <button type="submit"><img style="width: 15px; height: 15px;" src="assets/images/search.png"/></button>
+                        <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                        <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${txtBirdName}">
+                        <input type="submit" value="Tìm kiếm">
                     </form>
                     </div>
+                </div>
             </div>
-            <c:set var="SEARCHLIST" value="${requestScope.SEARCHLIST}"/>
-            <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
-            <div class="container">
-                <div id="content" class="row">
-                    <c:choose>
-                        <c:when test="${SEARCHLIST != null}">
-                            <c:if test="${not empty SEARCHLIST}">
-                                <c:forEach items="${SEARCHLIST}" var="bird">
-                                    <div class="bird col-lg-4">
-                                        <div class="item">
-                                            <div class="thumb">
-                                                <div class="hover-content">
-                                                    <ul>
-                                                        <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                        <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                                <img class="bird-thumbnail" src="${bird.image_url}" alt="">
-                                            </div>
-                                            <div class="down-content">
-                                                <h4>${bird.bird_name}</h4>
-                                                <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
-                                            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Sidebar -->
+                    <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                        <div class="position-sticky">
+                            <h3>Phân loại theo</h3>
+                            <div class="type" onclick="toggleList('typeList-1')">Loài</div>
+                            <ol style="display: block;" id="typeList-1">
+                                <li><input type="checkbox" id="type-1"><label for="type-1">Châu Phi</label></li>
+                                <li><input type="checkbox" id="type-2"><label for="type-2">Châu Á</label></li>
+                                <li><input type="checkbox" id="type-3"><label for="type-3">Châu Úc</label></li>
+                                <li><input type="checkbox" id="type-4"><label for="type-4">Nam Mỹ (Amazon)</label></li>
+                                <li><input type="checkbox" id="type-5"><label for="type-5">Nam Mỹ (Macaw)</label></li>
+                            </ol>
+                            <div class="type" onclick="toggleList('typeList-2')">Giá cả</div>
+                            <ol style="display: block;" id="typeList-2">
+                                <li><input type="checkbox" id="type-6" name="txtPrice" value="cheap"><label for="type-6">dưới 5,000,000đ</label></li>
+                                <li><input type="checkbox" id="type-7" name="txtPrice" value="median"><label for="type-7">5,000,000 - 20,000,000</label></li>
+                                <li><input type="checkbox" id="type-8" name="txtPrice" value="high"><label for="type-8">trên 20,000,000</label></li>
+                            </ol>
+                            <div class="type" onclick="toggleList('typeList-3')">Giống</div>
+                            <ol style="display: block;" id="typeList-3">
+                                <li><input type="checkbox" id="type-9" name="txtGender" value="male"><label for="type-9">Đực</label></li>
+                                <li><input type="checkbox" id="type-10" name="txtGender" value="female"><label for="type-10">Cái</label></li>
+                            </ol>
+                            <div class="type" onclick="toggleList('typeList-4')">Tuổi</div>
+                            <ol style="display: block;" id="typeList-4">
+                                <li><input type="checkbox" id="type-11" name="txtAge" value="lessThan2"><label for="type-11">dưới 1 tuổi</label></li>
+                                <li><input type="checkbox" id="type-12" name="txtAge" value="from2To7"><label for="type-12">từ 1 - 7 tuổi</label></li>
+                                <li><input type="checkbox" id="type-13" name="txtAge" value="moreThan7"><label for="type-13">trên 7 tuổi</label></li>
+                            </ol>
+                        </div>
+                    </nav>
+                    <!-- Nội dung chính -->
+                    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                        <div id="content" class="row">
+                            <c:set var="SEARCHLIST" value="${requestScope.SEARCHLIST}"/>
+                            <c:set var="BIRDLISTBYBREED_ID" value="${requestScope.BIRDLISTBYBREED_ID}"/> 
+                            <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
+                                <div id="content" class="row">
+                                    <c:choose>
+                                        <c:when test="${SEARCHLIST != null}">
+                                            <c:if test="${requestScope.SearchingNotMatch != null}">
+                                                <h4 style="margin-left: 15px; color: #ff3333;">${requestScope.SearchingNotMatch}</h4>
+                                            </c:if>
+                                            <c:if test="${not empty SEARCHLIST}">
+                                                    <c:forEach items="${SEARCHLIST}" var="bird">
+                                                        <div class="bird col-lg-4">
+                                                            <div class="item">
+                                                                <div class="thumb">
+                                                                    <div class="hover-content">
+                                                                        <ul>
+                                                                            <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                                            <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <img class="bird-thumbnail" src="${bird.image_url}" alt="">
+                                                                </div>
+                                                                <div class="down-content">
+                                                                    <h4>${bird.bird_name}</h4>
+                                                                    <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </c:forEach>
+                                            </c:if>
+                                        </c:when>
+                                        <c:when test="${BIRDLISTBYBREED_ID != null}">
+                                            <c:if test="${not empty BIRDLISTBYBREED_ID}">
+                                                    <c:forEach items="${BIRDLISTBYBREED_ID}" var="bird">
+                                                        <div class="bird col-lg-4">
+                                                            <div class="item">
+                                                                <div class="thumb">
+                                                                    <div class="hover-content">
+                                                                        <ul>
+                                                                            <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                                            <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <img class="bird-thumbnail" src="${bird.image_url}" alt="">
+                                                                </div>
+                                                                <div class="down-content">
+                                                                    <h4>${bird.bird_name}</h4>
+                                                                    <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </c:forEach>
+                                            </c:if>
+                                        </c:when>        
+                                        <c:otherwise>
+                                            <c:if test="${BIRDLIST != null}">
+                                                <c:if test="${not empty BIRDLIST}">
+                                                    <c:forEach items="${BIRDLIST}" var="bird">
+                                                        <div class="bird col-lg-4">
+                                                            <div class="item">
+                                                                <div class="thumb">
+                                                                    <div class="hover-content">
+                                                                        <ul>
+                                                                            <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                                            <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <img class="bird-thumbnail" src="${bird.image_url}" alt="">
+                                                                </div>
+                                                                <div class="down-content">
+                                                                    <h4>${bird.bird_name}</h4>
+                                                                    <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </c:forEach>
+                                                </c:if>
+                                            </c:if>
+                                        </c:otherwise>
+                                    </c:choose>
+                                                
+                                    <div class="col-lg-12">
+                                        <div class="pagination">
+                                            <c:choose>
+                                                <c:when test="${SEARCHLIST != null && not empty SEARCHLIST}">
+                                                    <c:if test="${noOfPages >= 1}">
+                                                        <ul>
+                                                            <li id="page-${1}"><a href="MainController?action=SearchBird&page=1&txtBirdName=${txtBirdName}"><<</a></li>
+                                                            <c:forEach begin="1" end="${noOfPages}" var="i">
+                                                            <li id="page-${i}"><a class="${i == requestScope.currentPage ? "activeNav":""}" href="MainController?action=SearchBird&page=${i}&txtBirdName=${txtBirdName}">${i}</a></li>
+                                                            </c:forEach>
+                                                            <li id="page-${noOfPages}"><a href="MainController?action=SearchBird&page=${noOfPages}&txtBirdName=${txtBirdName}">>></a></li>
+                                                        </ul>
+                                                    </c:if>
+                                                </c:when>
+                                                <c:when test="${BIRDLISTBYBREED_ID != null && not empty BIRDLISTBYBREED_ID}">
+                                                    <c:if test="${noOfPages >= 1}">
+                                                        <ul>
+                                                            <li id="page-${1}"><a href="MainController?action=SearchBird&page=1&breed_id=${breed_id}"><<</a></li>
+                                                            <c:forEach begin="1" end="${noOfPages}" var="i">
+                                                            <li id="page-${i}"><a class="${i == requestScope.currentPage ? "activeNav":""}" href="MainController?action=RenderBirdByBreed_id&page=${i}&breed_id=${breed_id}">${i}</a></li>
+                                                            </c:forEach>
+                                                            <li id="page-${noOfPages}"><a href="MainController?action=SearchBird&page=${noOfPages}&breed_id=${breed_id}">>></a></li>
+                                                        </ul>
+                                                    </c:if>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <c:if test="${noOfPages > 1}">
+                                                        <ul>
+                                                            <li id="page-${1}"><a href="MainController?action=NavToBird&page=1"><<</a></li>
+                                                            <c:forEach begin="1" end="${noOfPages}" var="i">
+                                                                <li id="page-${i}"><a class="${i == requestScope.currentPage ? "activeNav":""}" href="MainController?action=NavToBird&page=${i}">${i}</a></li>
+                                                            </c:forEach>
+                                                            <li id="page-${noOfPages}"><a href="MainController?action=NavToBird&page=${noOfPages}">>></a></li>
+                                                        </ul>
+                                                    </c:if>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </div>
                                     </div>
-                                </c:forEach>
-                            </c:if>
-                        </c:when>
-                        <c:otherwise>
-                            <c:if test="${BIRDLIST != null}">
-                                <c:if test="${not empty BIRDLIST}">
-                                    <c:forEach items="${BIRDLIST}" var="bird">
-                                        <div class="bird col-lg-4">
-                                            <div class="item">
-                                                <div class="thumb">
-                                                    <div class="hover-content">
-                                                        <ul>
-                                                            <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                            <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <img class="bird-thumbnail" src="${bird.image_url}" alt="">
-                                                </div>
-                                                <div class="down-content">
-                                                    <h4>${bird.bird_name}</h4>
-                                                    <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </c:forEach>
-                                </c:if>
-                            </c:if>
-                        </c:otherwise>
-                    </c:choose>
-                          
-                    <div class="col-lg-12">
-                        <div class="pagination">
-                            <c:choose>
-                                <c:when test="${SEARCHLIST != null}">
-                                    <c:if test="${noOfPages >= 1}">
-                                        <ul>
-                                            <li id="page-${1}"><a href="MainController?action=SearchBird&page=1&txtBirdName=${txtBirdName}"><<</a></li>
-                                            <c:forEach begin="1" end="${noOfPages}" var="i">
-                                            <li id="page-${i}"><a class="${i == requestScope.currentPage ? "activeNav":""}" href="MainController?action=SearchBird&page=${i}&txtBirdName=${txtBirdName}">${i}</a></li>
-                                            </c:forEach>
-                                            <li id="page-${noOfPages}"><a href="MainController?action=SearchBird&page=${noOfPages}&txtBirdName=${txtBirdName}">>></a></li>
-                                        </ul>
-                                    </c:if>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:if test="${noOfPages > 1}">
-                                        <ul>
-                                            <li id="page-${1}"><a href="MainController?action=NavToBird&page=1"><<</a></li>
-                                            <c:forEach begin="1" end="${noOfPages}" var="i">
-                                                <li id="page-${i}"><a href="MainController?action=NavToBird&page=${i}">${i}</a></li>
-                                            </c:forEach>
-                                            <li id="page-${noOfPages}"><a href="MainController?action=NavToBird&page=${noOfPages}">>></a></li>
-                                        </ul>
-                                    </c:if>
-                                </c:otherwise>
-                            </c:choose>
                         </div>
-                    </div>
+                    </main>            
                 </div>
             </div>
         </section>
@@ -350,6 +465,15 @@
                 });
             });
             
+            function toggleList(listId) {
+                var list = document.getElementById(listId);
+                if (list.style.display === "none" || list.style.display === "") {
+                    list.style.display = "block";
+                } else {
+                    list.style.display = "none";
+                }
+            }
+
 //            var listItems = document.querySelectorAll("#page-${i}");
 //            listItems.forEach(function (item) {
 //                item.addEventListener("click", function () {\

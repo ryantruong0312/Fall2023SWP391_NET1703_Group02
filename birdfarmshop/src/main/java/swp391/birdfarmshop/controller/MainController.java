@@ -65,6 +65,8 @@ public class MainController extends HttpServlet {
     private static final String DEST_SEARCH_ACCESSORY = "RenderSearchAccessoriesController";
     private static final String ACT_SEARCH_BIRD = "SearchBird";
     private static final String DEST_SEARCH_BIRD = "SearchBirdController";
+    private static final String ACT_RENDER_BIRD_BREED_ID = "RenderBirdByBreed_id";
+    private static final String DEST_RENDER_BIRD_BREED_ID = "RenderBirdByBreed_idController";
     private static final String TEST = "/shop/checkout.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -147,6 +149,9 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_SEARCH_BIRD:
                     url = DEST_SEARCH_BIRD;
+                    break;
+                case ACT_RENDER_BIRD_BREED_ID:
+                    url = DEST_RENDER_BIRD_BREED_ID;
                     break;
                 default:
                     break;

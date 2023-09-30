@@ -41,6 +41,7 @@ public class RenderBirdController extends HttpServlet {
             int noOfPages = (int) Math.round(noOfRecords * 1.0 / recordsPerPage);
             request.setAttribute("BIRDLIST", birds);
             request.setAttribute("noOfPages", noOfPages);
+            request.setAttribute("currentPage", page);
             url = SUCCESS;
         } catch (SQLException e) {
             log("Error at RenderHomeController: " + e.toString());

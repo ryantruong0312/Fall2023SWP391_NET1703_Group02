@@ -7,30 +7,52 @@ package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.List;
+import swp391.birdfarmshop.dao.BirdDAO;
+import swp391.birdfarmshop.model.Bird;
 
 /**
  *
- * @author tlminh
+ * @author phong pc
  */
-@WebServlet(name="RenderProfileController", urlPatterns={"/RenderProfileController"})
-public class RenderProfileController extends HttpServlet {
+public class SearchBirdController extends HttpServlet {
    
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "profile/profile.jsp";
+    private static final String SUCCESS = "shop/birds.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            
+            int page = 1;
+            int recordsPerPage = 9;
+            String txtBirdName = request.getParameter("txtBirdName");
+            if(request.getParameter("page") != null)
+                page = Integer.parseInt(request.getParameter("page"));
+            BirdDAO birdDao = new BirdDAO();
+            List<Bird> searchList = birdDao.searchBird(txtBirdName, page, recordsPerPage);
+            if(! searchList.isEmpty()){
+                int noOfRecords = birdDao.numberOfBirdListSearch(txtBirdName);
+                int noOfPages = (int) Math.round(noOfRecords * 1.0 / recordsPerPage);
+                request.setAttribute("noOfPages", noOfPages);   
+                request.setAttribute("txtBirdName", txtBirdName);
+                request.setAttribute("currentPage", page);
+                Cookie cookie = new Cookie("searchedValue", txtBirdName);
+                cookie.setMaxAge(24*60*60);
+                response.addCookie(cookie);
+            } else {
+                request.setAttribute("SearchingNotMatch", "Không tìm thấy kết quả");
+            }
+            request.setAttribute("SEARCHLIST", searchList);
             url = SUCCESS;
-        } catch (Exception e) {
-            log("Error at RenderProfileController: " + e.toString());
+        } catch (NumberFormatException | SQLException e) {
+            log("Error at SearchBirdController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

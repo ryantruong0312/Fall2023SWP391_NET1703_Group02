@@ -80,6 +80,15 @@
                 color: #2e323c;
             }
 
+            .form-group .form-control {
+                white-space: pre-wrap;
+                font-size: 12px;
+            }
+            .form-group a {
+                text-decoration: none;
+                color: black;
+            }
+            
             .card {
                 background: #ffffff;
                 -webkit-border-radius: 5px;
@@ -88,8 +97,25 @@
                 border: 0;
                 margin-bottom: 1rem;
             }
-
-
+            
+            .about li {
+                margin-bottom: 10px;
+            }
+            
+            .about li:hover {
+                background: #cccccc;
+            }
+            
+            .about a .icon{
+                width: 24px;
+                height: 24px;
+                margin: 0px 10px 0px 0px;
+                font-size: 24px;
+            }
+            
+            .about a {
+                color: black;
+            }
         </style>
 
     </head>
@@ -202,12 +228,29 @@
                                     <div class="user-avatar">
                                         <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin">
                                     </div>
-                                    <h5 class="user-name">Yuki Hayashi</h5>
-                                    <h6 class="user-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="58212d3331181539202f3d3434763b3735">[email&#160;protected]</a></h6>
+                                    <h5>${sessionScope.LOGIN_USER.fullName}</h5>
                                 </div>
                                 <div class="about">
-                                    <h5>About</h5>
-                                    <p>I'm Yuki. Full Stack Designer I enjoy creating user-centric, delightful and human experiences.</p>
+                                    <ul>
+                                        <li>
+                                            <a href="MainController?action=NavToProfile">
+                                                <img class="icon" src="assets/images/user.png" alt="alt"/>
+                                                <span>Thông tin cá nhân</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="MainController?action=NavToProfile">
+                                                <img class="icon" src="assets/images/test.png" alt="alt"/>
+                                                <span>Quản lý đơn hàng</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="MainController?action=NavToProfile">
+                                                <img class="icon" src="assets/images/ticket.png" alt="alt"/>
+                                                <span>Quản lý khuyến mãi</span>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -218,30 +261,30 @@
                         <div class="card-body">
                             <div class="row gutters">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <h6 class="mb-2 text-primary">Personal Details</h6>
+                                    <h6 class="mb-2 text-primary">Thông tin cá nhân</h6>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
-                                        <label for="fullName">Full Name</label>
-                                        <input type="text" class="form-control" id="fullName" placeholder="Enter full name">
+                                        <label for="fullName">Họ & Tên</label>
+                                        <input type="text" class="form-control" id="fullName" placeholder="${sessionScope.LOGIN_USER.fullName}">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label for="eMail">Email</label>
-                                        <input type="email" class="form-control" id="eMail" placeholder="Enter email ID">
+                                        <input type="text" class="form-control" id="eMail" placeholder="${sessionScope.LOGIN_USER.email}">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
-                                        <label for="phone">Phone</label>
-                                        <input type="text" class="form-control" id="phone" placeholder="Enter phone number">
+                                        <label for="phone">Số điện thoại</label>
+                                        <input type="text" class="form-control" id="phone" placeholder="${sessionScope.LOGIN_USER.phone}">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
-                                        <label for="website">Website URL</label>
-                                        <input type="url" class="form-control" id="website" placeholder="Website url">
+                                        <label for="address">Địa chỉ</label>
+                                        <input type="text" class="form-control" id="address" placeholder="${sessionScope.LOGIN_USER.address}">
                                     </div>
                                 </div>
                             </div>
