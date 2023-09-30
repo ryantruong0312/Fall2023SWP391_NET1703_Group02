@@ -28,6 +28,10 @@
         <servlet-name>RenderBirdByBreed_idController</servlet-name>
         <servlet-class>swp391.birdfarmshop.controller.RenderBirdByBreed_idController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateInformationController</servlet-name>
+        <servlet-class>swp391.birdfarmshop.controller.UpdateInformationController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>RenderBirdByBreed_idController</servlet-name>
         <url-pattern>/RenderBirdByBreed_idController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateInformationController</servlet-name>
+        <url-pattern>/UpdateInformationController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

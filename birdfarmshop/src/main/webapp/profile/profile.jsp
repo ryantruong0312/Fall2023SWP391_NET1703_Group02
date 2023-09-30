@@ -259,6 +259,7 @@
                 <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                     <div class="card h-100">
                         <div class="card-body">
+                            <form action="MainController">
                             <div class="row gutters">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                     <h6 class="mb-2 text-primary">Thông tin cá nhân</h6>
@@ -266,65 +267,67 @@
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label for="fullName">Họ & Tên</label>
-                                        <input type="text" class="form-control" id="fullName" placeholder="${sessionScope.LOGIN_USER.fullName}">
+                                        <input type="text" class="form-control" id="fullName" name="fullname" value="" placeholder="${sessionScope.LOGIN_USER.fullName}">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label for="eMail">Email</label>
-                                        <input type="text" class="form-control" id="eMail" placeholder="${sessionScope.LOGIN_USER.email}">
+                                        <input type="text" class="form-control" id="eMail" name="email" value="" placeholder="${sessionScope.LOGIN_USER.email}">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label for="phone">Số điện thoại</label>
-                                        <input type="text" class="form-control" id="phone" placeholder="${sessionScope.LOGIN_USER.phone}">
+                                        <input type="text" class="form-control" id="phone" name="phone" value="" placeholder="${sessionScope.LOGIN_USER.phone}">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label for="address">Địa chỉ</label>
-                                        <input type="text" class="form-control" id="address" placeholder="${sessionScope.LOGIN_USER.address}">
+                                        <input type="hidden" name="address" value="${sessionScope.LOGIN_USER.address}">
+                                        <label class="form-control" id="address">${sessionScope.LOGIN_USER.address}</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="row gutters">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <h6 class="mt-3 mb-2 text-primary">Address</h6>
+                                    <h6 class="mt-3 mb-2 text-primary">Địa chỉ</h6>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
-                                        <label for="Street">Street</label>
-                                        <input type="name" class="form-control" id="Street" placeholder="Enter Street">
+                                        <label for="Street">Đường</label>
+                                        <input type="name" class="form-control" id="Street" name="street" value="" placeholder="Tên đường">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
-                                        <label for="ciTy">City</label>
-                                        <input type="name" class="form-control" id="ciTy" placeholder="Enter City">
+                                        <label for="Ward">Phường</label>
+                                        <input type="name" class="form-control" id="Ward" name="ward" value="" placeholder="Tên phường">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
-                                        <label for="sTate">State</label>
-                                        <input type="text" class="form-control" id="sTate" placeholder="Enter State">
+                                        <label for="District">Thành Phố/Quận/Huyện</label>
+                                        <input type="text" class="form-control" id="District" name="district" value="" placeholder="Tên thành phố/quận/huyện">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
-                                        <label for="zIp">Zip Code</label>
-                                        <input type="text" class="form-control" id="zIp" placeholder="Zip Code">
+                                        <label for="City">Tỉnh/Thành Phố</label>
+                                        <input type="text" class="form-control" id="City" name="city" value="" placeholder="Tên Tỉnh/Thành Phố">
                                     </div>
                                 </div>
                             </div>
                             <div class="row gutters">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                     <div class="text-right">
-                                        <button type="button" id="submit" name="submit" class="btn btn-secondary">Cancel</button>
-                                        <button type="button" id="submit" name="submit" class="btn btn-primary">Update</button>
+                                        <button type="reset" id="submit" name="submit" class="btn btn-secondary">Hủy bỏ</button>
+                                        <button type="submit" id="submit" class="btn btn-primary" name="action" value="UpdateInformation">Cập nhật</button>
                                     </div>
                                 </div>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>
