@@ -8,7 +8,10 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import swp391.birdfarmshop.dto.AccountDTO;
 import swp391.birdfarmshop.model.User;
 import swp391.birdfarmshop.util.DBUtils;
 
@@ -17,6 +20,8 @@ import swp391.birdfarmshop.util.DBUtils;
  * @author tlminh
  */
 public class UserDAO {
+    
+    private static final String GET_ACCOUNT_LIST = "SELECT [username], [full_name], [role], [status] FROM [User]";
 
     public User getUser(String username, String password) {
         User u = null;
@@ -186,5 +191,38 @@ public class UserDAO {
             }
         }
         return result;
+    }
+    
+    public ArrayList<AccountDTO> getAccountList() throws SQLException {
+        ArrayList<AccountDTO> accountList = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(GET_ACCOUNT_LIST);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String username = rs.getString("username");
+                    String fullName = rs.getString("full_name");
+                    String role = rs.getString("role");
+                    String status = rs.getString("status");
+                    accountList.add(new AccountDTO(username, fullName, role, status));
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return accountList;
     }
 }

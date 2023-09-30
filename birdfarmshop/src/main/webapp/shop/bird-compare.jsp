@@ -122,6 +122,7 @@
             </div>
         </div>
         <!-- ***** Main Banner Area End ***** -->
+        
         <main>
             <section class="cd-products-comparison-table">
                 <header>
