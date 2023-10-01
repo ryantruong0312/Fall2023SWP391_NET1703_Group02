@@ -197,12 +197,23 @@
                     <div class="col-lg-4">
                         <div class="right-content">
                             <h4>${birdDetails.bird_name}</h4>
-                            <span class="price"><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</span>
+                            <c:choose>
+                                <c:when test="${birdDetails.discount > 0}">
+                                    <span>
+                                        <span style="display: inline-block;"><del><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</del></span>
+                                        <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${birdDetails.discount}%</span>
+                                        <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${birdDetails.price - birdDetails.price * birdDetails.discount / 100}" pattern="#,###"/> ₫<span>
+                                    </span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</span>
+                                </c:otherwise>
+                            </c:choose>
                             <span>${birdDetails.description}</span>
                             <div class="quote">
                                 <c:if test="${not empty birdDetails.dad_bird_name && not empty birdDetails.mom_bird_name}">
                                     <i class="fa fa-quote-left"></i><p>${birdDetails.dad_bird_name} lai với ${birdDetails.mom_bird_name}</p>
-                                    </c:if>
+                                </c:if>
                             </div>
                             <div class="quantity-content">
                                 <div class="left-content">

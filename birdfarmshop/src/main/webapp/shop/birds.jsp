@@ -29,7 +29,11 @@
 
         <style>
             .bird-thumbnail{
-                width: 350px;
+                width: 358.44px;
+                height: 400px;
+            }
+            .thumb img {
+                width: 358.44px !important;
                 height: 400px;
             }
             .activeNav{
@@ -263,7 +267,18 @@
                                                                 </div>
                                                                 <div class="down-content">
                                                                     <h4>${bird.bird_name}</h4>
-                                                                    <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                    <c:choose>
+                                                                        <c:when test="${bird.discount > 0}">
+                                                                            <span>
+                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
+                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
+                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
+                                                                            </span>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -286,7 +301,18 @@
                                                                 </div>
                                                                 <div class="down-content">
                                                                     <h4>${bird.bird_name}</h4>
-                                                                    <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                    <c:choose>
+                                                                        <c:when test="${bird.discount > 0}">
+                                                                            <span>
+                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
+                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
+                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
+                                                                            </span>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                        </c:otherwise>
+                                                                    </c:choose> 
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -310,7 +336,18 @@
                                                                 </div>
                                                                 <div class="down-content">
                                                                     <h4>${bird.bird_name}</h4>
-                                                                    <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                    <c:choose>
+                                                                        <c:when test="${bird.discount > 0}">
+                                                                            <span>
+                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
+                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
+                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
+                                                                            </span>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                        </c:otherwise>
+                                                                    </c:choose> 
                                                                 </div>
                                                             </div>
                                                         </div>
