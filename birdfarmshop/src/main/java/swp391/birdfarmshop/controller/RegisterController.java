@@ -25,10 +25,8 @@ import swp391.birdfarmshop.util.JWTUtils;
 @WebServlet(name = "RegisterController", urlPatterns = {"/RegisterController"})
 public class RegisterController extends HttpServlet {
 
-    private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
-    private static final String ERROR = "/WEB-INF/errorpages/error.jsp";
     private static final String DEST_NAV_REGISTER = "/authentication/register.jsp";
-
+    private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -48,31 +46,37 @@ public class RegisterController extends HttpServlet {
             String account = request.getParameter("account");
             String password = request.getParameter("password");
             UserDAO user = new UserDAO();
-            User u = user.findUser(name, email);
+            User u = user.findUser("", email);
             HttpSession session = request.getSession();
-            String url = ERROR;
-            if (u == null) {
-                String endcodePassword = JWTUtils.encodeJWT(password);
-                String token = JWTUtils.encodeJWT(email);
-                int resultSendMail = EmailService.sendEmail(email, "Kích hoạt tài khoản", EmailUtils.sendActive(name, token));
-                if (resultSendMail == 1) {
-                    int result = user.createUser(account, email, endcodePassword, name, mobile, "form", "inactive");
-                    if (result == 0) {
-                        session.setAttribute("ERROR", "Tạo tài khoản không thành công");
-                        url = DEST_NAV_REGISTER;
+            String url = DEST_NAV_REGISTER;
+            if (u != null) {
+                session.setAttribute("ERROR", "Email đã được sử dụng");
+            } else {
+                User username = user.findUser(account, "");
+                if (username == null) {
+                    String endcodePassword = JWTUtils.encodeJWT(password);
+                    String token = JWTUtils.encodeJWT(email);
+                    int resultSendMail = EmailService.sendEmail(email, "Kích hoạt tài khoản", EmailUtils.sendActive(name, token));
+                    if (resultSendMail == 1) {
+                        int result = user.createUser(account, email, endcodePassword, name, mobile, "form", "inactive");
+                        if (result == 0) {
+                            session.setAttribute("ERROR", "Tạo tài khoản không thành công");
+                        } else {
+                            session.setAttribute("SUCCESS", "Tạo tài khoản thành công. Kiểm tra email để kích hoạt tài khoản");
+                            url = DEST_NAV_LOGIN;
+                        }
                     } else {
-                        session.setAttribute("SUCCESS", "Tạo tài khoản thành công. Kiểm tra email để kích hoạt tài khoản");
-                        url = DEST_NAV_LOGIN;
+                        session.setAttribute("ERROR", "Tạo tài khoản không thành công");
                     }
                 } else {
-                    session.setAttribute("ERROR", "Tạo tài khoản không thành công");
-                    url = DEST_NAV_REGISTER;
+                    session.setAttribute("ERROR", "Tên đăng nhập đã được sử dụng");
                 }
-
-            } else {
-                session.setAttribute("ERROR", "Tạo tài khoản không thành công");
-                url = DEST_NAV_REGISTER;
             }
+            request.setAttribute("NAME", name);
+            request.setAttribute("EMAIL", email);
+            request.setAttribute("MOBILE", mobile);
+            request.setAttribute("ACCOUNT", account);
+            request.setAttribute("PASSWORD", password);
             request.getRequestDispatcher(url).forward(request, response);
         } catch (Exception e) {
             log("Error at RegisterController: " + e.toString());

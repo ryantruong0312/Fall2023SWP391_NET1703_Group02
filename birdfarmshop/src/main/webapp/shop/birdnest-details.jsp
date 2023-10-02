@@ -19,6 +19,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
+        <link rel="icon" type="image/png" href="assets/images/logo-title-bar.png"/>
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
         <title>V.E.T - Chi tiết tổ chim non</title>
@@ -113,7 +114,7 @@
                                     <c:if test="${sessionScope.LOGIN_USER != null}">
                                     <li class="submenu"><a class="user-name text-right" href="#">${LOGIN_USER.fullName}</a>
                                         <ul>
-                                            <li><a href="${pageScope.toProfile}">Cá nhân</a></li>
+                                            <li><a href="${pageScope.toProfile}&username=${sessionScope.LOGIN_USER.username}">Cá nhân</a></li>
                                             <li><a href="${pageScope.logout}">Đăng xuất</a></li>
                                         </ul>
                                     </li>

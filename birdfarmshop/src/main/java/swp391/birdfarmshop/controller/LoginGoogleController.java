@@ -51,7 +51,7 @@ public class LoginGoogleController extends HttpServlet {
                     session.setAttribute("SUCCESS", "Đăng nhập thành công");
                     response.sendRedirect(DEST_NAV_HOME); 
                 } else {
-                    int createUser = user.createUser(account.getId(), account.getEmail(), "", account.getName(), "","google","active");
+                    int createUser = user.createUser(account.getId(), account.getEmail(), "", account.getName(), "", "customer", "google","active");
                     if (createUser == 0) {
                         session.setAttribute("ERROR", "Tạo tài khoản bằng Google thất bại!");
                         response.sendRedirect("MainController?action=NavToLogin");

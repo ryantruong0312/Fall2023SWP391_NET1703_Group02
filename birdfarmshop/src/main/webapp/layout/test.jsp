@@ -46,15 +46,14 @@
                         </tr>
                     </tbody>
                 </table>-->
-        
-        <div class="test-star">
-            <div class="rating1 big-star">
-            <span class="fa fa-star"></span>
-            <span class="fa fa-star"></span>
-            <span class="fa fa-star"></span>
-            <span class="fa fa-star"></span>
-            <span class="fa fa-star"></span>
-        </div>
+        <div>
+                <form action="../UploadController" method="POST" enctype="multipart/form-data">
+                  <input type="text" name="description"  />
+                <label>Uploadfile</label>
+                <input type="file" name="filepicture"  />
+                <button type="submit">Submit</button>
+            </form>           
+         <img src="https://birdfarmshop.s3.amazonaws.com/baner-right-image-01.jpg" alt="Your Image">
         </div>
         <script src="../assets/js/birdshop.js"></script>
         <script src="../assets/js/jquery-3.7.1.min.js"></script>

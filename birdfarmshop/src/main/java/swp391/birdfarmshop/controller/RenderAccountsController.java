@@ -10,6 +10,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import swp391.birdfarmshop.dao.UserDAO;
+import swp391.birdfarmshop.dto.AccountDTO;
 
 /**
  *
@@ -23,10 +26,13 @@ public class RenderAccountsController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
             url = SUCCESS;
+            ArrayList<AccountDTO> accountList = new ArrayList<>();
+            UserDAO userDao = new UserDAO();
+            accountList = userDao.getAccountList();
+            request.setAttribute("ACCOUNT_LIST", accountList);
         } catch (Exception e) {
             log("Error at RenderAccountsController: " + e.toString());
         } finally {

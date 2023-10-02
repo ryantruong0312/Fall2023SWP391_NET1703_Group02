@@ -11,6 +11,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import swp391.birdfarmshop.dao.UserDAO;
+import swp391.birdfarmshop.model.User;
 
 /**
  *
@@ -27,6 +29,11 @@ public class RenderProfileController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
+            User user = new User();
+            String username = request.getParameter("username");
+            UserDAO userDao = new UserDAO();
+            user = userDao.getUserByUsername(username);
+            request.setAttribute("USER", user);
             url = SUCCESS;
         } catch (Exception e) {
             log("Error at RenderProfileController: " + e.toString());

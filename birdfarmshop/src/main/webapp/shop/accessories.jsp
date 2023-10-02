@@ -16,6 +16,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
+        <link rel="icon" type="image/png" href="assets/images/logo-title-bar.png"/>
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
         <title>V.E.T - Phụ Kiện</title>
@@ -27,10 +28,54 @@
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
 
-        <style>
+            <style>
             .thumb{
                 width: 370px;
-                height: 390px;
+                height: 350px;
+            }
+            .activeNav{
+                background-color: black;
+                color: white !important;
+            }
+            .search-bar {
+                margin: 0 0 10px 120px;
+                border: 5px;
+                border-radius: 8px;
+                border: 1px solid rgb(221, 221, 227);
+            }
+            .search-bar input {
+                border: 0;
+                background: none;
+                outline: none;
+            }
+            .search-bar input[type=submit] {
+                float: right;
+            }
+            .search-bar img {
+                margin-left: 5px;
+            }
+
+            .type {
+                cursor: pointer;
+                background-color: #cccccc;
+                padding: 0 0 0 5px; /*top right bot left*/
+                margin: 5px 0 5px 5px;
+            }
+            .type + ol {
+                display: none;
+            }
+            #typeList-1, #typeList-2, #typeList-3, #typeList-4 {
+                margin-left: 10px;
+            }
+
+            .position-sticky li {
+                margin-bottom: 5px;
+            }
+            .bird-pg li{
+                cursor: pointer;
+            }
+            a {
+                color: black;
             }
         </style>
     </head>
@@ -104,7 +149,7 @@
                                     <c:if test="${sessionScope.LOGIN_USER != null}">
                                     <li class="submenu"><a href="">${LOGIN_USER.fullName}</a>
                                         <ul>
-                                            <li><a href="${pageScope.toProfile}">Cá nhân</a></li>
+                                            <li><a href="${pageScope.toProfile}&username=${sessionScope.LOGIN_USER.username}">Cá nhân</a></li>
                                             <li><a href="${pageScope.logout}">Đăng xuất</a></li>
                                         </ul>
                                     </li>
@@ -147,64 +192,113 @@
                             <h2>Sản phẩm của chúng tôi</h2>
                         </div>
                     </div>
+                    <form id="selectAccessory" action="MainController" method="POST">
+                        <input type="hidden" name="action" value="NavToAccessory"> 
+                        <div class="search-bar">
+                            <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                            <input type="text" name="txtAccessory" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                            <input type="submit" value="Tìm kiếm">
+                        </div>
                 </div>
             </div>
             <div class="container">
-                <div>
-                    <form action="RenderSearchAccessoriesController" method="GET">
-                        <input type="text" name="name" id="search" placeholder="Tìm kiếm" style="margin-bottom: 15px" value="${name}">
-                        <input type="hidden" name="searchTerm" value="${accessoryList}">
-                        <button type="submit">Tìm kiếm</button>
-                    </form>
-                </div>
                 <div class="row">
-                    <c:if test="${requestScope.accessoryList != null}">
-                        <c:set var="accessoryList" value="${requestScope.accessoryList}"/>
-                        <c:if test="${not empty accessoryList}">
-                            <c:forEach items="${accessoryList}" var="accessory" varStatus="counter">
-                                <div class="bird col-lg-4">
-                                    <div class="item">
-                                        <div class="thumb">
-                                            <div class="hover-content">
-                                                <ul>
-                                                    <li><a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a></li>
-                                                    <li><a href="ren"><i class="fa fa-shopping-cart"></i></a></li>
-                                                </ul>
-                                            </div>
-                                            <img class="thumb" src="${accessory.image_url}" alt="">
-                                        </div>
-                                        <div class="down-content">
-                                            <h4>${accessory.accessory_name}</h4>
-                                            <span><fmt:formatNumber value="${accessory.unit_price}" pattern="#,###"/> ₫</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </c:if>
-                    </c:if>      
-                    <div class="col-lg-12">
-                        <div class="pagination">
-                            <ul>
-                                <li class="active">
-                                    <a href="MainController?action=NavToAccessory&amount=0">1</a>
-                                </li>
-                                <li>
-                                    <a href="MainController?action=NavToAccessory&amount=9">2</a>
-                                </li>
-                                <!--                                <li>
-                                                                    <a href="MainController?action=NavToAccessory&amount=18">3</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#" id="page-4">4</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#">></a>
-                                                                </li>-->
-                            </ul>
+                    <!-- Sidebar -->
+                    <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                        <div class="position-sticky">
+                            <h3>Phân loại theo</h3>
+                            <div class="type" onclick="toggleList('typeList-1')">Loài</div>
+                            <ol style="display: block;" id="typeList-1">
+                                <li><input type="radio" id="type-0" ${requestScope.CATEGORY_ID == null ? "checked": ""} name="txtType" value="All"><label for="type-0">Tất cả</label></li>
+                                <li><input type="radio" id="type-1" ${requestScope.CATEGORY_ID == "cage" ? "checked": ""} name="txtType" value="cage"><label for="type-1">Lồng & cây đứng</label></li>
+                                <li><input type="radio" id="type-2" ${requestScope.CATEGORY_ID == "care" ? "checked": ""} name="txtType" value="care"><label for="type-2">Phụ kiện chăm sóc</label></li>
+                                <li><input type="radio" id="type-3" ${requestScope.CATEGORY_ID == "toy" ? "checked": ""} name="txtType" value="toy"><label for="type-3">Phụ kiện trang trí - Đồ chơi</label></li>
+                            </ol>
+                            <div class="type" onclick="toggleList('typeList-2')">Giá cả</div>
+                            <ol style="display: block;" id="typeList-2">
+                                  <li><input type="radio" id="type-65" ${requestScope.PRICE == null ? "checked": ""} name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
+                                <li><input type="radio" id="type-6" ${requestScope.PRICE == "unit_price < 300000" ? "checked": ""}  name="txtPrice" value="unit_price < 300000"><label for="type-6">dưới 300,000đ</label></li>
+                                <li><input type="radio" id="type-7" ${requestScope.PRICE == "unit_price >= 600000 AND unit_price <= 900000" ? "checked": ""} name="txtPrice" value="unit_price >= 600000 AND unit_price <= 900000"><label for="type-7">300,000 - 600,000</label></li>
+                                <li><input type="radio" id="type-8" ${requestScope.PRICE == "unit_price > 900000" ? "checked": ""} name="txtPrice" value="unit_price > 900000"><label for="type-8">trên 900,000</label></li>
+                            </ol>
                         </div>
-                    </div>
+                    </nav>
+                    <!-- Nội dung chính -->
+                    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                        <div id="content" class="row">
+                            <c:if test="${requestScope.error != null}">
+                                <div>${error}</div>
+                            </c:if>
+                            <c:if test="${requestScope.error1 != null}">
+                                <div>${error1}</div>
+                            </c:if>
+                            <c:if test="${requestScope.accessoryList != null}">
+                                <c:set var="accessoryList" value="${requestScope.accessoryList}"/>
+                                <c:if test="${not empty accessoryList}">
+                                    <c:forEach items="${accessoryList}" var="accessory" varStatus="counter">
+                                        <div class="bird col-lg-4">
+                                            <div class="item">
+                                                <div class="thumb">
+                                                    <div class="hover-content">
+                                                        <ul>
+                                                            <li><a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a></li>
+                                                            <li><a href="AddtoCartController?idAccessory=${accessory.accessory_id}&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <img class="thumb" src="${accessory.image_url}" alt="">
+                                                </div>
+                                                <div class="down-content">
+                                                    <h4>${accessory.accessory_name}</h4>
+                                                    <span><fmt:formatNumber value="${accessory.unit_price}" pattern="#,###"/> ₫</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </c:if>
+                            </c:if>
+                            <div class="col-lg-12">
+                                <div class="pagination bird-pg">
+                                    <c:if test="${noOfPages > 1 && noOfPages <= 5}">
+                                        <input type="hidden" name="page" value="${requestScope.currentPage}"/>
+                                        <ul>
+                                            <c:if test="${requestScope.currentPage > 1}">
+                                                <li id="page">
+                                                    <a class="prev-page"><<</a>
+                                                </li>
+                                            </c:if>
+                                            <c:forEach begin="1" end="${noOfPages}" var="i">
+                                                <li id="page-number">
+                                                    <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
+                                                </li>
+                                            </c:forEach>
+                                            <c:if test="${requestScope.currentPage < noOfPages}">
+                                                <li id="page">
+                                                    <a class="next-page" >>></a>
+                                                </li>
+                                            </c:if>
+                                        </ul>
+                                    </c:if>    
+                                    <c:if test="${noOfPages > 5}">
+                                        <input name="page" value="${requestScope.currentPage}"/>
+                                        <c:set var="numberOfPage" value="${requestScope.currentPage}"/>
+                                        <ul>
+                                            <li id="page">
+                                                <a class="prev-page" ><<</a>
+                                            </li>
+                                            <c:forEach begin="${numberOfPage - 2}" end="${numberOfPage + 2}" var="i">
+                                                <li id="page-number">
+                                                    <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
+                                                </li>
+                                            </c:forEach>
+                                            <li id="page">
+                                                <a class="next-page">>></a>
+                                            </li>
+                                        </ul>
+                                    </c:if>
+                                </div>
+                            </div>
+                        </div>
                 </div>
-            </div>
         </section>
         <!-- ***** Products Area Ends ***** -->
 
@@ -280,7 +374,7 @@
         <script src="assets/js/accordions.js"></script>
         <script src="assets/js/datepicker.js"></script>
         <script src="assets/js/scrollreveal.min.js"></script>
-        <script src="assets/js/waypoints.min.js"></script>
+<!--        <script src="assets/js/waypoints.min.js"></script>-->
         <script src="assets/js/jquery.counterup.min.js"></script>
         <script src="assets/js/imgfix.min.js"></script> 
         <script src="assets/js/slick.js"></script> 
@@ -292,19 +386,42 @@
 
         <script>
 
-            $(function () {
-                var selectedClass = "";
-                $("p").click(function () {
-                    selectedClass = $(this).attr("data-rel");
-                    $("#portfolio").fadeTo(50, 0.1);
-                    $("#portfolio div").not("." + selectedClass).fadeOut();
-                    setTimeout(function () {
-                        $("." + selectedClass).fadeIn();
-                        $("#portfolio").fadeTo(50, 1);
-                    }, 500);
+                                                                $(function () {
+                                                                    var selectedClass = "";
+                                                                    $("p").click(function () {
+                                                                        selectedClass = $(this).attr("data-rel");
+                                                                        $("#portfolio").fadeTo(50, 0.1);
+                                                                        $("#portfolio div").not("." + selectedClass).fadeOut();
+                                                                        setTimeout(function () {
+                                                                            $("." + selectedClass).fadeIn();
+                                                                            $("#portfolio").fadeTo(50, 1);
+                                                                        }, 500);
 
-                });
-            });
+                                                                    });
+                                                                    $("input[name=txtType]").change(function () {
+                                                                        $("#selectAccessory").submit();
+                                                                    });
+                                                                    $("input[name=txtPrice]").change(function () {
+                                                                        $("#selectAccessory").submit();
+                                                                    });
+                                                                    $(".prev-page").click(function () {
+                                                                        let  page = $('input[name=page]').val();
+                                                                        let prevPage = Number(page) - 1;
+                                                                        $('input[name=page]').val(prevPage);
+                                                                        $("#selectAccessory").submit();
+                                                                    });
+                                                                    $(".next-page").click(function () {
+                                                                        let  page = $('input[name=page]').val();
+                                                                        let nextpage = Number(page) + 1;
+                                                                        $('input[name=page]').val(nextpage);
+                                                                        $("#selectAccessory").submit();
+                                                                    });
+                                                                });
+                                                                function takePage(event) {
+                                                                    let value = event.getAttribute('data-value');
+                                                                    $('input[name=page]').val(value);
+                                                                    $("#selectAccessory").submit();
+                                                                }
 
         </script>
 

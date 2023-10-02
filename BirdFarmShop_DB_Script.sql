@@ -221,7 +221,7 @@ VALUES
 	NULL, NULL, 0, N'Còn hàng'),
 
 	('IR001', N'Vẹt Indian Ringneck IR001', N'Xanh dương', 16, 18, 1, 'asian', 
-	N'Giải 4 cuộc thi Hội Đam Mê Lông Vũ TP.HCM 2020-2021', 
+	N'Top 4 cuộc thi Hội Đam Mê Lông Vũ TP.HCM 2020-2021', 
 	1, 9000000, 
 	N'Indian Ringneck hay còn gọi là Rose-ringed Parakeets thực sự là những sinh vật kỳ diệu. Thực vậy, chỉ cần nhìn vào những con chim bạn có thể dễ dàng nhận ra chúng qua màu sắc, cái mỏ nổi và long đuôi dài. Cả chim trống và mái đều có đuôi lớn và dài bao gồm 12 lông, 2 lông đuôi lớn chím phần lớn kích thước của con vẹt. Về màu sắc chúng có những màu phổ biến như xanh lá, trắng, vàng, xanh dương. Một số dòng đặc biệt có các màu sắc khá đẹp như xám khói, tím, xanh pastel… Con trống và mái có vẻ ngoài rất giống nhau tuy nhiên những con vẹt trống khi trưởng thành có thể phân biệt bằng vòng đen, trắng hoặc hồng quanh cổ.
 	Ringnecks có nguồn gốc từ Châu Á và Châu Phi và có thể được tìm thấy trong các khu rừng hoặc môi trường khô cằn và cũng xa lạ khi có thể thấy chúng tại các khu đô thị như ở California, Florida và cả vương quốc Anh.
@@ -229,14 +229,15 @@ VALUES
 	NULL, NULL, 5, N'Còn hàng'),
 
 	('IR002', N'Vẹt Indian Ringneck IR002', N'Trắng', 10, 18, 0, 'asian', 
-	N'- Giải 2 Cuộc Thi Vẹt Châu Á Australasia 2022', 
+	N'Giải 2 Cuộc Thi Vẹt Châu Á-Australasia 2022', 
 	0, 9000000, 
 	N'Indian Ringneck hay còn gọi là Rose-ringed Parakeets thực sự là những sinh vật kỳ diệu. Thực vậy, chỉ cần nhìn vào những con chim bạn có thể dễ dàng nhận ra chúng qua màu sắc, cái mỏ nổi và long đuôi dài. Cả chim trống và mái đều có đuôi lớn và dài bao gồm 12 lông, 2 lông đuôi lớn chím phần lớn kích thước của con vẹt. Về màu sắc chúng có những màu phổ biến như xanh lá, trắng, vàng, xanh dương. Một số dòng đặc biệt có các màu sắc khá đẹp như xám khói, tím, xanh pastel… Con trống và mái có vẻ ngoài rất giống nhau tuy nhiên những con vẹt trống khi trưởng thành có thể phân biệt bằng vòng đen, trắng hoặc hồng quanh cổ.
 	Ringnecks có nguồn gốc từ Châu Á và Châu Phi và có thể được tìm thấy trong các khu rừng hoặc môi trường khô cằn và cũng xa lạ khi có thể thấy chúng tại các khu đô thị như ở California, Florida và cả vương quốc Anh.
 	Giống như hầu hết các loài vẹt, ringneck thông minh và làm vật nuôi tốt. Chúng học hỏi khá nhanh và thích thể hiện. Ngoài ra chúng còn có thể nói và phát âm khá rõ, một số con nói khá tốt như các loài vẹt Xám Châu Phi hay Amazon tuy khả năng ghi nhớ về số lượng từ vựng không tốt bằng.',
 	NULL, NULL, 0, N'Đang ghép cặp'),
 
-	('XA001', N'Vẹt Xích Ấn XA001', N'Xanh lá', 12, 18, 1, 'asian', N'Chưa có', 
+	('XA001', N'Vẹt Xích Ấn XA001', N'Xanh lá', 12, 18, 1, 'asian', 
+	N'Top 5 The National Cage Bird Show (NCBS) 2022', 
 	0, 15000000, 
 	N'Vẹt xích Ấn – xích Nepal có nguồn gốc từ vùng đông nam châu Á, bao gồm Nepal, Ấn Độ, Pakistan, và Sri Lanka. Chúng thường sống trong các khu rừng, cánh đồng và vùng đồng cỏ.
 	Vẹt xích Ấn có một cái mỏ lớn, màu đen và một đốm màu đỏ trên vai. Một đặc điểm nổi bật của chúng là vòng cổ màu đỏ tươi rực, tạo ra sự tương phản đẹp với bộ lông xanh sẫm. Chúng là những vẹt thông minh và thích thể hiện khả năng nói chuyện. Tuy nhiên, khả năng nói chuyện của từng cá thể có thể khác nhau.',
@@ -270,19 +271,22 @@ VALUES
 	NULL, 
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('BA602', N'Vẹt Blue-fronted Amazon BA602', N'xanh lá, xanh dương', 12, 30, 0, 'amazon', N'Top 1 hot líu lo', 0, 3000000, 
+	('BA602', N'Vẹt Blue-fronted Amazon BA602', N'xanh lá, xanh dương', 12, 30, 0, 'amazon', 
+	N'Top 2 The Parrot Society UK Show 2021', 0, 3000000, 
 	NULL, 
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('FA303', N'Vẹt Red Faced Amazon FA303', N'xanh lá, đỏ', 12, 10, 0, 'amazon', N'Top 1 hot líu lo', 0, 3000000,
+	('FA303', N'Vẹt Red Faced Amazon FA303', N'xanh lá, đỏ', 12, 10, 0, 'amazon', 
+	N'Tham gia World Parrot Trust Parrot Festival 2022', 0, 3000000,
 	NULL, 
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('HA104', N'Vẹt Double Yellow Headed Amazon HA104', N'xanh lá, vàng, đỏ', 14, 8, 0, 'amazon', N'Top 1 hot líu lo', 0, 4500000,
+	('HA104', N'Vẹt Double Yellow Headed Amazon HA104', N'xanh lá, vàng, đỏ', 14, 8, 0, 'amazon', 
+	N'Giải 3 Nghị Lượng Chim Vẹt Việt Nam 2022-2023', 0, 4500000,
 	NULL, 
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('NA505', N'Vẹt Yellow Naped Amazon NA505',N'xanh lá, vàng', 10, 30, 0, 'amazon', N'Top 1 hot líu lo', 0, 9000000,
+	('NA505', N'Vẹt Yellow Naped Amazon NA505',N'xanh lá, vàng', 10, 30, 0, 'amazon', N'Top 4 Giải thi đấu Chim Vẹt Cảnh Việt Nam 2020', 0, 9000000,
 	NULL, 
 	NULL, NULL, 0, N'Đã bán'),
 
@@ -322,15 +326,15 @@ VALUES
 	NULL, NULL, 0, N'Còn hàng')	
 GO
 
-INSERT INTO [Accessory] ([accessory_id], [accessory_name], [unit_price], [stock_quantity], [description], [discount], [status]) 
+INSERT INTO [Accessory] ([accessory_id], [accessory_name], [category_id], [unit_price], [stock_quantity], [description], [discount], [status]) 
 VALUES 
-	('GT001', N'Găng tay bắt vẹt', 120000, 50, N'Dùng cho việc huấn luyện vẹt, tránh trầy xước hoặc bị đau', 0, 'available'),
+	('GT001', N'Găng tay bắt vẹt', 'toy', 120000, 50, N'Dùng cho việc huấn luyện vẹt, tránh trầy xước hoặc bị đau', 0, 'available'),
 
-	('GA001', N'Máy ghi âm', 600000, 25, N'Dùng cho việc huấn luyện vẹt nói', 0, 'available'),
+	('GA001', N'Máy ghi âm', 'toy', 600000, 25, N'Dùng cho việc huấn luyện vẹt nói', 0, 'available'),
 
-	('CT001', N'Còi huấn luyện vẹt', 90000, 15, N'Huấn luyện trong việc nghe tín hiệu', 0, 'available'),
+	('CT001', N'Còi huấn luyện vẹt', 'toy', 90000, 15, N'Huấn luyện trong việc nghe tín hiệu', 0, 'available'),
 
-	('LN001', N'Lồng Ngoại Nhập Lớn Inox Cho Vẹt Size M',  13800000, 0,
+	('LN001', N'Lồng Ngoại Nhập Lớn Inox Cho Vẹt Size M', 'cage', 13800000, 0,
 	N'Lồng nuôi vẹt inox với chất liệu là inox tránh được chuột cắn phá như các lồng gỗ, tre không những thế còn không bị móc mọt gặm. Là lựa chọn tối ưu cho sự an toàn của vẹt.
 	Kích thước: 61x52x151cm
 	Không gian bên trong lồng lớn.
@@ -339,56 +343,56 @@ VALUES
 	Nan lồng chắc chắn dễ dàng chịu được tác động của chiếc mỏ vẹt.',
 	0, 'out of stock'),
 
-	('BL001', N'Balo Du Lịch Vận Chuyển Vẹt', 500000, 12, 
+	('BL001', N'Balo Du Lịch Vận Chuyển Vẹt', 'cage', 500000, 12, 
 	N'Bird Farm Shop chuyên bán và cung cấp Balo du lịch ngoại nhập chuyên dụng dành cho vẹt. Thiết kế chuyên dụng, chất liệu bền bỉ, phù hợp cho các loại vẹt size nhỏ và vừa. Giúp bạn đi đâu cũng có thể mang thú cưng đi bên cạnh mình một cách thoải mái nhất, tiện lợi nhất. Thiết kế chắc chắn, hiện đại mang phong cách thời trang.
 	Kích thước: Size M (31x28x41)
 	Xuất xứ: Đài Loan
 	Chất liệu: Nhựa cao cấp',
 	5, 'available'),
 
-	('LM001', N'Lồng Màu (Mái Vòm)', 450000, 20,
+	('LM001', N'Lồng Màu (Mái Vòm)', 'cage', 450000, 20,
 	N'Lồng chim thép sơn tĩnh điện rất an toàn cho chim. Lồng rất chắc chắn và khoảng không gian rộng cho chú chim thoải mái hơn. Chuồng Nuôi Chim được sản xuất theo tiêu chuẩn công nghiệp bền đẹp, được hàn từ dây thép chất lượng cao, qua quy trình sơn tĩnh điện theo tiêu chuẩn.
 	Size: 37x28x46
 	Xuất xứ: Đài Loan
 	Chất liệu: thép sơn tĩnh điện',
 	10, 'available'),
 
-	('SU231', N'Sữa tắm vẹt', 80000, 50, 
+	('SU231', N'Sữa tắm vẹt', 'care', 80000, 50, 
 	N'Loại bỏ mùi hôi, diệt khuẩn, triệt hạ vi trùng.', 
 	0, 'Available'),
 
-	('MV157', N'Muối tắm vẹt', 220000, 30, 
+	('MV157', N'Muối tắm vẹt', 'care', 220000, 30, 
 	N'Làm mềm lông, tránh đóng vẩy, giảm stress, làm sạch da lông.', 
 	0, 'Available'),
 
-	('OB356', N'Ống bơm bột', 130000, 50, 
+	('OB356', N'Ống bơm bột', 'care', 130000, 50, 
 	N'Ống bơm bột cao cấp dành cho vẹt non.', 
 	0, 'Available'), 
 
-	('KC213', N'Kéo Cắt Móng Vẹt', 100000, 50, 
+	('KC213', N'Kéo Cắt Móng Vẹt', 'care', 100000, 50, 
 	N'Kéo cắt móng chân chuyên dụng dành cho vẹt với thiết kế cao cấp, an toàn, giúp bạn có thể tự làm đẹp móng chân cho bé vẹt tại nhà.', 
 	0, 'available'),
 
-	('DX202', N'Dây xích đeo chân dành cho chim vẹt', 70000, 50, 
+	('DX202', N'Dây xích đeo chân dành cho chim vẹt', 'toy', 70000, 50, 
 	N'Dây xích deo chân dành choc him vẹt giúp bạn giữ vẹt trong khoản không giới hạn', 
 	0, 'available'),
 
-	('NK200', N'Máy Nhiệt Kế Điện Tử Pha Bột Cho Vẹt', 120000, 25, 
+	('NK200', N'Máy Nhiệt Kế Điện Tử Pha Bột Cho Vẹt', 'care', 120000, 25, 
 	N'Nhiệt kế điện tử hỗ trợ người nuôi canh đo nhiệt độ bột thích hợp không quá nguội hoặc quá nóng ảnh hưởng đến sức khỏe bé vẹt nhà bạn.', 
 	0, 'available')
 GO
 
 INSERT INTO [dbo].[User] ([username],[password],[full_name],[phone],[email],[role],[address],[point],[register_date],[login_by],[status])
 VALUES
-	('customer','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','Hung','0912345678','hung@gmail.com','customer',N'353/7 Nguyễn Trãi, phường Nguyễn Cư Trinh, quận 1, TP.HCM',12,'2023-06-15','form','active'),
-	('toan','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','Toan','0998765432','toan@gmail.com','customer',N'18/5/6 Trương Phước Phan, phường Bình Trị Đông, quận Bình Tân',12,'2023-06-15','form','active'),
-	('hoang','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','Hoang','0987654321','hoang@gmail.com','customer',N'73/7 Trần Bình Trọng, phường 1, quận 5',12,'2023-06-15','form','active'),
-	('hai','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','Hai','0923456789','hai@gmail.com','customer',N'199/5 Trần Bình Trọng, phường 3, quận 5',12,'2023-06-15','form','active'),
-	('tu','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','Tu','0954321678','tu@gmail.com','customer',N'56/1/2A Bùi Minh Trực, phường 5, quận 8',12,'2023-06-15','form','inactive'),
-	('staff','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','staff','0934567890','staff@gmail.com','staff',N'Ha Noi',12,'2023-06-15','form','active'),
-	('staff1','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','staff','0987654321','staff@gmail.com','staff',N'Ha Noi',12,'2023-06-15','form','inactive'),
-	('manager','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','manager','0965432109','manager@gmail.com','manager',N'Ha Noi',12,'2023-06-15','form','active'),
-	('admin','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','admin','0978901234','admin@gmail.com','admin',N'Ha Noi',12,'2023-06-15','form','active')
+	('customer','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Trần Văn Hùng','0912345678','hungxedap@gmail.com','customer',N'353/7 Nguyễn Trãi, phường Nguyễn Cư Trinh, quận 1, TP.HCM',20,'2023-06-15','form','active'),
+	('giaphong','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Lưu Gia Phong','0998765432','phonglgbt@gmail.com','customer',N'18/5/6 Trương Phước Phan, phường Bình Trị Đông, quận Bình Tân, TP.HCM',5,'2023-06-15','form','active'),
+	('nhathoang','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Trần Nhật Hoàng','0987654321','hoangtn@gmail.com','customer',N'73/7 Trần Bình Trọng, phường 1, quận 5, TP.HCM',11,'2023-06-15','form','active'),
+	('huynhduc','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Lê Huỳnh Đức','0923456789','duclh123@gmail.com','customer',N'199/5 Trần Bình Trọng, phường 3, quận 5, TP.HCM',20,'2023-06-15','form','active'),
+	('khachhangvip','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Mạc Hoàng Sa','0954321678','hsavn@gmail.com','customer',N'56/1/2A Bùi Minh Trực, phường 5, quận 8, TP.HCM',25,'2023-06-15','form','inactive'),
+	('staff','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Trương Lê Minh','0934567890','staff@gmail.com','staff',N'359 Lê Đại Hành, phường 13, quận 11, TP.HCM',0,'2023-06-15','form','active'),
+	('staff1','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Trần Công Nhân','0987654321','nhantranvet@gmail.com','staff',N'15 Lê Văn Việt, phường TNP B, quận 9, TP.HCM',0,'2023-06-15','form','inactive'),
+	('manager','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Quản Văn Lý','0965432109','manager@gmail.com','manager',N'210 Pasteur, phường Đa Kao, quận 1, TP.HCM',0,'2023-06-15','form','active'),
+	('admin','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Trần Văn Quyền Năng','0978901234','admin@gmail.com','admin',N'102 Ba Tháng Hai, phường 10, quận 10, TPHCM',0,'2023-06-15','form','active')
 GO
 
 
@@ -649,10 +653,10 @@ GO
 
 INSERT INTO [Order]([order_id],[customer],[order_date],[order_status],[ship_address],[payment_status],[total_price],[applied_point])
 VALUES('230925O0001','customer',2023-09-25,N'Chờ xử lý',null,N'Đã thanh toán',3000000,3),
-	  ('230915O0002','hai',2023-09-15,N'Đang xử lý',null,N'Đã thanh toán',300000,1),
-	  ('230916O0003','hoang',2023-09-16,N'Đang vận chuyển',null,N'Đã thanh toán',300000,1),
-	  ('230917O0004','toan',2023-09-17,N'Đã giao hàng',null,N'Đã thanh toán',300000,1),
-	  ('230918O0005','tu',2023-09-18,N'Đã hủy',null,N'Đã thanh toán',300000,1),
+	  ('230915O0002','giaphong',2023-09-15,N'Đang xử lý',null,N'Đã thanh toán',300000,1),
+	  ('230916O0003','nhathoang',2023-09-16,N'Đang vận chuyển',null,N'Đã thanh toán',300000,1),
+	  ('230917O0004','huynhduc',2023-09-17,N'Đã giao hàng',null,N'Đã thanh toán',300000,1),
+	  ('230918O0005','khachhangvip',2023-09-18,N'Đã hủy',null,N'Đã thanh toán',300000,1),
 	  ('230919O0006','customer',2023-09-19,N'Chưa đánh giá',null,N'Đã thanh toán',300000,1),
 	  ('230912O0007','customer',2023-09-20,N'Đã đánh giá',null,N'Đã thanh toán',300000,1);
 GO
@@ -680,14 +684,14 @@ GO
 INSERT INTO [Feedback]([customer],[order_item_id],[rating],[comment],[feedback_date]) 
 VALUES('customer',1,5,N'Chất lượng ok. Đc tặng cả cái đổ thức ăn. Giao nhanh. Cảm ơn ship và shop','2023-05-23'),
 	  ('customer',2,5,N'Sản phẩm OK.giao hàng hơi chậm.rất vừa với lồng và tiện lợi.mọi người nên mua cho mình 1 cái vừa đỡ mất thời gian vừa nhàn','2023-05-23'),
-	  ('hai',3,5,N'Sản phẩm OK.giao hàng hơi chậm.rất vừa với lồng và tiện lợi','2023-05-24'),
-	  ('hoang',4,5,N'Sản phẩm OK.Chim rất đẹp. Giao hàng nhanh','2023-05-24'),
-	  ('hoang',5,5,N'Sản phẩm OK. Lồng rất vừa, cứng cáp, chất lượng tuyệt vời','2023-05-24'),
-	  ('toan',6,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
-	  ('toan',7,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
-	  ('toan',8,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
-	  ('tu',9,4,N'Giao đúng mẫu đẹp ,ok','2023-05-28'),
-	  ('tu',10,4,N'Nhận được hàng rồi.đẹp quá.rất cứng cáp.sẽ mua thêm','2023-05-28'),
+	  ('giaphong',3,5,N'Sản phẩm OK.giao hàng hơi chậm.rất vừa với lồng và tiện lợi','2023-05-24'),
+	  ('nhathoang',4,5,N'Sản phẩm OK.Chim rất đẹp. Giao hàng nhanh','2023-05-24'),
+	  ('nhathoang',5,5,N'Sản phẩm OK. Lồng rất vừa, cứng cáp, chất lượng tuyệt vời','2023-05-24'),
+	  ('huynhduc',6,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
+	  ('huynhduc',7,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
+	  ('huynhduc',8,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
+	  ('khachhangvip',9,4,N'Giao đúng mẫu đẹp ,ok','2023-05-28'),
+	  ('khachhangvip',10,4,N'Nhận được hàng rồi.đẹp quá.rất cứng cáp.sẽ mua thêm','2023-05-28'),
 	  ('customer',11,5,N'Shop giao hàng rất nhanh mặc dù là ngày gần tết. Chim rất ok','2023-06-12'),
 	  ('customer',12,5,N'sản phẩm ok ship nhanh hơn hẹn','2023-06-12'),
 	  ('customer',13,5,N'sản phẩm ok ship nhanh hơn hẹn','2023-06-12'),

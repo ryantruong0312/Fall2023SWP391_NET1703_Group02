@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,6 +15,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
+        <link rel="icon" type="image/png" href="assets/images/logo-title-bar.png"/>
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
         <title>V.E.T - Cập nhật thông tin cá nhân</title>
@@ -24,6 +27,97 @@
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
 
+        <style type="text/css">
+            body {
+                margin: 0;
+                padding-top: 150px;
+                color: #2e323c;
+                background: #f5f6fa;
+                position: relative;
+                height: 100%;
+            }
+            .account-settings .user-profile {
+                margin: 0 0 1rem 0;
+                padding-bottom: 1rem;
+                text-align: center;
+            }
+            .account-settings .user-profile .user-avatar {
+                margin: 0 0 1rem 0;
+            }
+            .account-settings .user-profile .user-avatar img {
+                width: 90px;
+                height: 90px;
+                -webkit-border-radius: 100px;
+                -moz-border-radius: 100px;
+                border-radius: 100px;
+            }
+            .account-settings .user-profile h5.user-name {
+                margin: 0 0 0.5rem 0;
+            }
+            .account-settings .user-profile h6.user-email {
+                margin: 0;
+                font-size: 0.8rem;
+                font-weight: 400;
+                color: #9fa8b9;
+            }
+            .account-settings .about {
+                margin: 2rem 0 0 0;
+                text-align: center;
+            }
+            .account-settings .about h5 {
+                margin: 0 0 15px 0;
+                color: #007ae1;
+            }
+            .account-settings .about p {
+                font-size: 0.825rem;
+            }
+            .form-control {
+                border: 1px solid #cfd1d8;
+                -webkit-border-radius: 2px;
+                -moz-border-radius: 2px;
+                border-radius: 2px;
+                font-size: .825rem;
+                background: #ffffff;
+                color: #2e323c;
+            }
+
+            .form-group .form-control {
+                white-space: pre-wrap;
+                font-size: 12px;
+            }
+            .form-group a {
+                text-decoration: none;
+                color: black;
+            }
+
+            .card {
+                background: #ffffff;
+                -webkit-border-radius: 5px;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
+                border: 0;
+                margin-bottom: 1rem;
+            }
+
+            .about li {
+                margin-bottom: 10px;
+            }
+
+            .about li:hover {
+                background: #cccccc;
+            }
+
+            .about a .icon{
+                width: 24px;
+                height: 24px;
+                margin: 0px 10px 0px 0px;
+                font-size: 24px;
+            }
+
+            .about a {
+                color: black;
+            }
+        </style>
     </head>
 
     <body>
@@ -122,9 +216,84 @@
             </div>
         </header>
         <!-- ***** Header Area End ***** -->
-        
-        
-        
+
+        <main>
+            <div class="container">
+                <div class="row gutters">
+                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="account-settings">
+                                    <div class="user-profile">
+                                        <div class="user-avatar">
+                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin">
+                                        </div>
+                                        <h5>${sessionScope.LOGIN_USER.fullName}</h5>
+                                    </div>
+                                    <div class="about">
+                                        <ul>
+                                            <li>
+                                                <a href="MainController?action=NavToProfile">
+                                                    <img class="icon" src="assets/images/user.png" alt="alt"/>
+                                                    <span>Thông tin cá nhân</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <form action="MainController">
+                                    <div class="row gutters">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <h6 class="mb-2 text-primary">Thông tin cá nhân</h6>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label for="fullName">Họ & Tên</label>
+                                                <input type="text" class="form-control" id="fullName" name="fullname" value="" placeholder="${requestScope.USER.fullName}">
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label for="eMail">Email</label>
+                                                <input type="text" class="form-control" id="eMail" name="email" value="" placeholder="${requestScope.USER.email}">
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label for="phone">Số điện thoại</label>
+                                                <input type="text" class="form-control" id="phone" name="phone" value="" placeholder="${requestScope.USER.phone}">
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                                            <div class="form-group">
+                                                <label for="address">Địa chỉ</label>
+                                                <input type="hidden" name="address" value="${requestScope.USER.address}">
+                                                <label class="form-control" id="address">${requestScope.USER.address}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row gutters">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="text-right">
+                                                <button type="reset" id="submit" name="submit" class="btn btn-secondary">Hủy bỏ</button>
+                                                <button type="submit" id="submit" class="btn btn-primary" name="action" value="UpdateInformation">Cập nhật</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
         <!-- ***** Footer Start ***** -->
         <footer>
             <div class="container">
@@ -184,8 +353,12 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
-        
-        <!-- jQuery -->
+
+        <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script type="text/javascript">
+
+<!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
 
         <!-- Bootstrap -->
