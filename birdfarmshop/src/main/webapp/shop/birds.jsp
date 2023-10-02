@@ -195,7 +195,7 @@
                             <h2>Sản phẩm của chúng tôi</h2>
                         </div>
                     </div>
-                    <form id="selectBird" action="MainController" method="GET">
+                    <form id="selectBird" action="MainController" method="POST">
                         <input type="hidden" name="action" value="NavToBird"> 
                         <div class="search-bar">
                             <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
