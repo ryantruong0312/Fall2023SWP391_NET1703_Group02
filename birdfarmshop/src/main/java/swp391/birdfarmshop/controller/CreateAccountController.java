@@ -12,31 +12,32 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import swp391.birdfarmshop.dao.UserDAO;
-import swp391.birdfarmshop.model.User;
+import swp391.birdfarmshop.util.JWTUtils;
 
 /**
  *
  * @author tlminh
  */
-@WebServlet(name="RenderProfileController", urlPatterns={"/RenderProfileController"})
-public class RenderProfileController extends HttpServlet {
+@WebServlet(name="CreateAccountController", urlPatterns={"/CreateAccountController"})
+public class CreateAccountController extends HttpServlet {
    
-    private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "profile/profile.jsp";
+   private static final String ERROR = "/WEB-INF/errorpages/error.jsp";
+    private static final String SUCCESS = "RenderAccountsController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            User user = new User();
+            String full_name = request.getParameter("fullname");
             String username = request.getParameter("username");
+            String role = request.getParameter("role");
             UserDAO userDao = new UserDAO();
-            user = userDao.getUserByUsername(username);
-            request.setAttribute("USER", user);
+            String token = JWTUtils.randomPasswordToken();
+            String password = JWTUtils.encodeJWT(token);
+            userDao.createUser(username, "", password, full_name, "", role, "", "inactive");
             url = SUCCESS;
-        } catch (Exception e) {
-            log("Error at RenderProfileController: " + e.toString());
+        } catch (Exception ex) {
+            log("Error at CreateAccountController: " + ex.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

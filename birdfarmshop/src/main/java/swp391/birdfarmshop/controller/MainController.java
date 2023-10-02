@@ -49,6 +49,8 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_CART = "RenderCartController";
     private static final String ACT_NAV_PROFILE = "NavToProfile";
     private static final String DEST_NAV_PROFILE = "RenderProfileController";
+    private static final String ACT_NAV_EDIT_PROFILE = "NavToEditProfile";
+    private static final String DEST_NAV_EDIT_PROFILE = "RenderProfileEditController";
     private static final String ACT_NAV_SHOP_ORDERS = "NavToShopOrders";
     private static final String DEST_NAV_SHOP_ORDERS = "RenderShopOrdersController";
     private static final String ACT_NAV_ACCOUNTS = "NavToAccounts";
@@ -69,6 +71,8 @@ public class MainController extends HttpServlet {
     private static final String DEST_RENDER_BIRD_BREED_ID = "RenderBirdByBreed_idController";
     private static final String ACT_UPDATE_INFO = "UpdateInformation";
     private static final String DEST_UPDATE_INFO = "UpdateInformationController";
+    private static final String ACT_CREATE_ACCOUNT = "CreateAccount";
+    private static final String DEST_CREATE_ACCOUNT = "CreateAccountController";
     private static final String TEST = "/shop/checkout.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -140,8 +144,8 @@ public class MainController extends HttpServlet {
                 case ACT_NAV_BIRD_NESTS:
                     url = DEST_NAV_BIRD_NESTS;
                     break;
-                case ACT_ADD_TO_CART:
-                    url = DEST_ADD_TO_CART;
+                case ACT_NAV_EDIT_PROFILE:
+                    url = DEST_NAV_EDIT_PROFILE;
                     break;
                 case "test":
                     url = TEST;
@@ -157,6 +161,9 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_UPDATE_INFO:
                     url = DEST_UPDATE_INFO;
+                    break;
+                case ACT_CREATE_ACCOUNT:
+                    url = DEST_CREATE_ACCOUNT;
                     break;
                 default:
                     break;

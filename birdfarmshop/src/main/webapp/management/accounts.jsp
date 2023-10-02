@@ -27,7 +27,6 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-
     </head>
 
     <body>
@@ -110,7 +109,7 @@
                                     <c:if test="${sessionScope.LOGIN_USER != null}">
                                     <li class="submenu"><a class="user-name text-right" href="#">${LOGIN_USER.fullName}</a>
                                         <ul>
-                                            <li><a href="${pageScope.toProfile}">Cá nhân</a></li>
+                                            <li><a href="${pageScope.toProfile}&username=${sessionScope.LOGIN_USER.username}">Cá nhân</a></li>
                                             <li><a href="${pageScope.logout}">Đăng xuất</a></li>
                                         </ul>
                                     </li>
@@ -159,12 +158,12 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><img src="assets/images/search-icon.png"></span>
                             </div>
-                            <input type="text" class="form-control" placeholder="Tìm kiếm...">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm...">
                         </div>
                     </div>
                     <div class="col-md-2 text-center">
                         <!-- Button "Cấp mới tài khoản" -->
-                        <button class="btn btn-success mb-3 p-3">Cấp mới tài khoản</button>
+                        <button class="btn btn-success mb-3 p-3" id="createAccountBtn">Cấp mới tài khoản</button>
                     </div>
                 </div>
             </div>
@@ -173,8 +172,8 @@
                 <thead>
                     <tr>
                         <th>STT</th>
-                        <th>Tên tài khoản</th>
                         <th>Tên người dùng</th>
+                        <th>Tên tài khoản</th>
                         <th>Mật khẩu</th>
                         <th>Nhóm người dùng</th>
                         <th>Trạng thái</th>
@@ -187,8 +186,8 @@
                         <c:forEach var="user" items="${requestScope.ACCOUNT_LIST}" varStatus="loop">
                             <tr>
                                 <td>${loop.index + 1}</td>
+                                <td><a href="MainController?action=NavToProfile&username=${user.username}">${user.fullName}</a></td>
                                 <td>${user.username}</td>
-                                <td>${user.fullName}</td>
                                 <td>******</td>
                                 <td>${user.role}</td>
                                 <td>${user.status}</td>
@@ -289,8 +288,57 @@
         </footer>
         <!-- ***** Footer Area Ends ***** -->
 
+        <!-- Bootstrap Modal for Creating New Account -->
+        <div class="modal fade vertical-alignment" id="createAccountModal" tabindex="-1" role="dialog" aria-labelledby="createAccountModalLabel" aria-hidden="true" data-backdrop="false">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createAccountModalLabel">Tạo tài khoản nhân viên</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form for Creating New Account -->
+                        <form id="createAccountForm">
+                            <div class="form-group">
+                                <label for="fullname">Họ và tên:</label>
+                                <input type="text" class="form-control" id="fullname" name="fullname" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Tên tài khoản:</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            <!-- Radio Button Options -->
+                            <div class="form-group">
+                                <label>Nhóm người dùng:</label><br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="role" id="role1" value="customer">
+                                    <label class="form-check-label" for="role1">Khách hàng</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="role" id="role2" value="staff">
+                                    <label class="form-check-label" for="role2">Nhân viên</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="role" id="role3" value="manager">
+                                    <label class="form-check-label" for="role3">Quản lý</label>
+                                </div>
+                            </div>
+                            <input type="hidden" name="action" value="CreateAccount"/>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn btn-primary" onclick="submitForm()">Tạo tài khoản</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
         <!-- Bootstrap -->
         <script src="assets/js/popper.js"></script>
@@ -310,5 +358,65 @@
 
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
+
+        <script>
+                            $(document).ready(function () {
+
+                                // Get a reference to the search input element
+                                var searchInput = $("#searchInput");
+
+                                // Add an event listener for input changes
+                                searchInput.on("input", function () {
+                                    var keyword = searchInput.val().toLowerCase();
+
+                                    // Loop through each row in the table
+                                    $("tbody tr").each(function () {
+                                        var row = $(this);
+
+                                        // Check if any cell in the row contains the keyword
+                                        if (row.text().toLowerCase().includes(keyword)) {
+                                            row.show(); // Show the row if keyword found
+                                        } else {
+                                            row.hide(); // Hide the row if keyword not found
+                                        }
+                                    });
+                                });
+
+                                // Show the modal when the "Cấp mới tài khoản" button is clicked
+                                $("#createAccountBtn").click(function () {
+                                    $("#createAccountModal").modal("show");
+                                });
+
+                                // Handle form submission
+                                $("#submitAccountBtn").click(function () {
+                                    // Get the form data
+                                    const fullname = $("#fullname").val();
+                                    const username = $("#username").val();
+
+                                    // You can perform validation here if needed
+
+                                    // Close the modal
+                                    $("#createAccountModal").modal("hide");
+
+                                    // Send the form data to the server via AJAX or perform any desired action
+                                });
+                            });
+        </script>
+
+        <script>
+            function submitForm() {
+                // Get the form element by its ID
+                var form = document.getElementById("createAccountForm");
+
+                // Define the controller URL
+                var controllerUrl = "/birdfarmshop/MainController";
+
+                // Set the form's action attribute to the controller URL
+                form.action = controllerUrl;
+
+                // Submit the form
+                form.submit();
+            }
+        </script>
     </body>
 </html>

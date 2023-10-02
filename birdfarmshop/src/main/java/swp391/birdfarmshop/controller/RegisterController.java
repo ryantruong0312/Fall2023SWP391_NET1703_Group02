@@ -56,7 +56,7 @@ public class RegisterController extends HttpServlet {
                 String token = JWTUtils.encodeJWT(email);
                 int resultSendMail = EmailService.sendEmail(email, "Kích hoạt tài khoản", EmailUtils.sendActive(name, token));
                 if (resultSendMail == 1) {
-                    int result = user.createUser(account, email, endcodePassword, name, mobile, "form", "inactive");
+                    int result = user.createUser(account, email, endcodePassword, name, mobile, "customer", "form", "inactive");
                     if (result == 0) {
                         session.setAttribute("ERROR", "Tạo tài khoản không thành công");
                         url = DEST_NAV_REGISTER;
