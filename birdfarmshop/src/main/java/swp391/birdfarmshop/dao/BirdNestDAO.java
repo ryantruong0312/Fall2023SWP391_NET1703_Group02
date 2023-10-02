@@ -23,6 +23,7 @@ public class BirdNestDAO {
 
     private static final String GET_NEXT_9_BIRDNEST_LIST = "SELECT * FROM [BirdFarmShop].[dbo].[BirdNest] "
             + "ORDER BY [price] ASC OFFSET ? ROWS FETCH NEXT 9 ROWS ONLY";
+    private static final String GET_BIRD_NEST_BY_ID = "SELECT * FROM [BirdFarmShop].[dbo].[BirdNest] WHERE [nest_id] = ?";
 
     public ArrayList<BirdNestDTO> getBirdNest() throws SQLException {
         ArrayList<BirdNestDTO> list = new ArrayList<>();
@@ -48,7 +49,7 @@ public class BirdNestDAO {
                     String status = rs.getString("status");
                     String image_url = imgDAO.getThumbnailUrlByBirdNestId(nest_id);
                     list.add(new BirdNestDTO(nest_id, nest_name, is_thumbnail, dad_bird_id, mom_bird_id, baby_quantity, status, price, description, image_url));
-                
+
                 }
             }
         } catch (ClassNotFoundException e) {
@@ -67,6 +68,45 @@ public class BirdNestDAO {
             }
         }
         return list;
+    }
+
+    public BirdNestDTO getBirdNestDetailsById(int nestId) throws SQLException, ClassNotFoundException {
+        BirdNestDTO nest = new BirdNestDTO();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ImageDAO imgDao = new ImageDAO();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(GET_BIRD_NEST_BY_ID);
+                stm.setInt(1, nestId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String nest_name = rs.getString("nest_name");
+                    boolean is_thumbnail = rs.getBoolean("is_thumbnail");
+                    String dad_bird_id = rs.getString("dad_bird_id");
+                    String mom_bird_id = rs.getString("mom_bird_id");
+                    int baby_quantity = rs.getInt("baby_quantity");
+                    String status = rs.getString("status");
+                    int price = rs.getInt("price");
+                    String description = rs.getString("description");
+                    ArrayList<String> image_url_arr = imgDao.getImagesByBirdNestId(nestId);
+                    nest = new BirdNestDTO(nestId, nest_name, is_thumbnail, dad_bird_id, mom_bird_id, baby_quantity, status, price, description, image_url_arr);
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return nest;
     }
 
     public BirdNestDTO getBirdNestByID(int nest_id) throws SQLException {

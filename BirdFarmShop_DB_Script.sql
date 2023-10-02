@@ -86,6 +86,23 @@ CREATE TABLE [Accessory]
 )
 GO
 
+DROP TABLE IF EXISTS [BirdNest]
+CREATE TABLE [BirdNest]
+(
+	[nest_id] INT IDENTITY,
+	[nest_name] NVARCHAR(50),
+	[is_thumbnail] BIT,
+	[dad_bird_id] VARCHAR(10),
+	[mom_bird_id] VARCHAR(10),
+	[baby_quantity] SMALLINT,
+	[status] NVARCHAR(20),
+	[price] INT,
+	[description] NVARCHAR(MAX),
+	CONSTRAINT PK_BirdNest PRIMARY KEY ([nest_id]),
+	CONSTRAINT FK_BirdNest_Bird_dadbird FOREIGN KEY ([dad_bird_id]) REFERENCES [Bird]([bird_id]),
+	CONSTRAINT FK_BirdNest_Bird_mombird FOREIGN KEY ([mom_bird_id]) REFERENCES [Bird]([bird_id])
+)
+GO
 
 
 DROP TABLE IF EXISTS [Order]
@@ -125,12 +142,15 @@ CREATE TABLE [OrderItem]
 	[order_item_id] INT IDENTITY,
 	[order_id] VARCHAR(15),
 	[bird_id] VARCHAR(10),
+	[nest_id] INT,
 	[accessory_id] VARCHAR(10),
 	[unit_price] INT,
 	[order_quantity] SMALLINT,
+
 	CONSTRAINT PK_OrderItem PRIMARY KEY ([order_item_id]),
 	CONSTRAINT FK_OrderItem_Order FOREIGN KEY ([order_id]) REFERENCES [Order]([order_id]),
 	CONSTRAINT FK_OrderItem_Bird FOREIGN KEY ([bird_id]) REFERENCES [Bird]([bird_id]),
+	CONSTRAINT FK_OrderItem_Nest FOREIGN KEY ([nest_id]) REFERENCES [BirdNest]([nest_id]),
 	CONSTRAINT FK_OrderItem_Accessory FOREIGN KEY ([accessory_id]) REFERENCES [Accessory]([accessory_id])
 )
 GO
@@ -162,23 +182,7 @@ CREATE TABLE [OrderTracking]
 )
 GO
 
-DROP TABLE IF EXISTS [BirdNest]
-CREATE TABLE [BirdNest]
-(
-	[nest_id] INT IDENTITY,
-	[nest_name] NVARCHAR(50),
-	[is_thumbnail] BIT,
-	[dad_bird_id] VARCHAR(10),
-	[mom_bird_id] VARCHAR(10),
-	[baby_quantity] SMALLINT,
-	[status] NVARCHAR(20),
-	[price] INT,
-	[description] NVARCHAR(MAX),
-	CONSTRAINT PK_BirdNest PRIMARY KEY ([nest_id]),
-	CONSTRAINT FK_BirdNest_Bird_dadbird FOREIGN KEY ([dad_bird_id]) REFERENCES [Bird]([bird_id]),
-	CONSTRAINT FK_BirdNest_Bird_mombird FOREIGN KEY ([mom_bird_id]) REFERENCES [Bird]([bird_id])
-)
-GO
+
 
 DROP TABLE IF EXISTS [Image]
 CREATE TABLE [Image]
@@ -661,24 +665,24 @@ VALUES('230925O0001','customer',2023-09-25,N'Chờ xử lý',null,N'Đã thanh t
 	  ('230912O0007','customer',2023-09-20,N'Đã đánh giá',null,N'Đã thanh toán',300000,1);
 GO
 
-INSERT INTO [OrderItem]([order_id],[bird_id],[accessory_id],[unit_price],[order_quantity])
-VALUES ('230925O0001','CW192',null,2500000,1),
-		('230925O0001',null,'LM001',450000,1),
-		('230915O0002',null,'LN001',13800000,2),
-		('230916O0003','WA301',null,4500000,1),
-		('230916O0003',null,'LM001',450000,1),
-		('230917O0004',null,'GT001',120000,2),
-		('230917O0004',null,'BL001',500000,1),
-		('230917O0004',null,'CT001',90000,1),
-		('230918O0005','CP201',null,3000000,1),
-		('230918O0005',null,'LM001',450000,1),
-		('230919O0006','YC090',null,25000000,1),
-		('230919O0006',null,'LM001',450000,1),
-		('230919O0006',null,'NK200',120000,1),
-		('230912O0007','XT001',null,6500000,1),
-	    ('230912O0007',null,'LM001',450000,1),
-		('230912O0007',null,'GA001',600000,1),
-		('230912O0007',null,'KC213',100000,10)
+INSERT INTO [OrderItem]([order_id],[bird_id],[nest_id],[accessory_id],[unit_price],[order_quantity])
+VALUES ('230925O0001','CW192',null,null,2500000,1),
+		('230925O0001',null,null,'LM001',450000,1),
+		('230915O0002',null,null,'LN001',13800000,2),
+		('230916O0003','WA301',null,null,4500000,1),
+		('230916O0003',null,null,'LM001',450000,1),
+		('230917O0004',null,null,'GT001',120000,2),
+		('230917O0004',null,null,'BL001',500000,1),
+		('230917O0004',null,null,'CT001',90000,1),
+		('230918O0005','CP201',null,null,3000000,1),
+		('230918O0005',null,null,'LM001',450000,1),
+		('230919O0006','YC090',null,null,25000000,1),
+		('230919O0006',null,null,'LM001',450000,1),
+		('230919O0006',null,null,'NK200',120000,1),
+		('230912O0007','XT001',null,null,6500000,1),
+	    ('230912O0007',null,null,'LM001',450000,1),
+		('230912O0007',null,null,'GA001',600000,1),
+		('230912O0007',null,null,'KC213',100000,10)
 GO
 
 INSERT INTO [Feedback]([customer],[order_item_id],[rating],[comment],[feedback_date]) 

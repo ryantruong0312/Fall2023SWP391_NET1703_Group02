@@ -129,12 +129,8 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                                <c:if test="${sessionScope.CART_BIRD == null}">
-                                                <div class="cart-amount">0</div>
-                                            </c:if>
-                                            <c:if test="${sessionScope.CART_BIRD != null}">
-                                                <div class="cart-amount">${sessionScope.CART_BIRD.getSize()}</div>
-                                            </c:if>
+
+                                            <div class="cart-amount">${(sessionScope.CART_BIRD_NEST.getSize()!=null ? sessionScope.CART_BIRD_NEST.getSize():0)+(sessionScope.CART_BIRD.getSize()!=null ? sessionScope.CART_BIRD.getSize():0)}</div>
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
@@ -250,323 +246,323 @@
                             <c:set var="SEARCHLIST" value="${requestScope.SEARCHLIST}"/>
                             <c:set var="BIRDLISTBYBREED_ID" value="${requestScope.BIRDLISTBYBREED_ID}"/> 
                             <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
-                                <div id="content" class="row">
-                                    <c:choose>
-                                        <c:when test="${SEARCHLIST != null}">
-                                            <c:if test="${requestScope.SearchingNotMatch != null}">
-                                                <h4 style="margin-left: 15px; color: #ff3333;">${requestScope.SearchingNotMatch}</h4>
-                                            </c:if>
-                                            <c:if test="${not empty SEARCHLIST}">
-                                                    <c:forEach items="${SEARCHLIST}" var="bird">
-                                                        <div class="bird col-lg-4">
-                                                            <div class="item">
-                                                                <div class="thumb">
-                                                                    <div class="hover-content">
-                                                                        <ul>
-                                                                            <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                                            <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                    <img class="bird-thumbnail" src="${bird.image_url}" alt="">
-                                                                </div>
-                                                                <div class="down-content">
-                                                                    <h4>${bird.bird_name}</h4>
-                                                                    <c:choose>
-                                                                        <c:when test="${bird.discount > 0}">
-                                                                            <span>
-                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
-                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
-                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
+                            <div id="content" class="row">
+                                <c:choose>
+                                    <c:when test="${SEARCHLIST != null}">
+                                        <c:if test="${requestScope.SearchingNotMatch != null}">
+                                            <h4 style="margin-left: 15px; color: #ff3333;">${requestScope.SearchingNotMatch}</h4>
+                                        </c:if>
+                                        <c:if test="${not empty SEARCHLIST}">
+                                            <c:forEach items="${SEARCHLIST}" var="bird">
+                                                <div class="bird col-lg-4">
+                                                    <div class="item">
+                                                        <div class="thumb">
+                                                            <div class="hover-content">
+                                                                <ul>
+                                                                    <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                                    <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                </ul>
+                                                            </div>
+                                                            <img class="bird-thumbnail" src="${bird.image_url}" alt="">
+                                                        </div>
+                                                        <div class="down-content">
+                                                            <h4>${bird.bird_name}</h4>
+                                                            <c:choose>
+                                                                <c:when test="${bird.discount > 0}">
+                                                                    <span>
+                                                                        <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
+                                                                        <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
+                                                                        <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
                                                                             </span>
                                                                         </c:when>
                                                                         <c:otherwise>
                                                                             <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
                                                                         </c:otherwise>
                                                                     </c:choose>
-                                                                </div>
-                                                            </div>
-                                                            <img class="bird-thumbnail" src="${bird.image_url}" alt="">
-                                                        </div>
-                                                    </c:forEach>
-                                            </c:if>
-                                        </c:when>
-                                        <c:when test="${BIRDLISTBYBREED_ID != null}">
-                                            <c:if test="${not empty BIRDLISTBYBREED_ID}">
-                                                    <c:forEach items="${BIRDLISTBYBREED_ID}" var="bird">
-                                                        <div class="bird col-lg-4">
-                                                            <div class="item">
-                                                                <div class="thumb">
-                                                                    <div class="hover-content">
-                                                                        <ul>
-                                                                            <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                                            <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                                        </ul>
+                                                                    </div>
                                                                     </div>
                                                                     <img class="bird-thumbnail" src="${bird.image_url}" alt="">
-                                                                </div>
-                                                                <div class="down-content">
-                                                                    <h4>${bird.bird_name}</h4>
-                                                                    <c:choose>
-                                                                        <c:when test="${bird.discount > 0}">
-                                                                            <span>
-                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
-                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
-                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
-                                                                            </span>
-                                                                        </c:when>
-                                                                        <c:otherwise>
-                                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
-                                                                        </c:otherwise>
-                                                                    </c:choose> 
-                                                                </div>
-                                                            </div>
-                                                            <img class="bird-thumbnail" src="${bird.image_url}" alt="">
-                                                        </div>
-                                                        <div class="down-content">
-                                                            <h4>${bird.bird_name}</h4>
-                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </c:forEach>
-                                        </c:if>
-                                    </c:when>        
-                                    <c:otherwise>
-                                        <c:if test="${BIRDLIST != null}">
-                                            <c:if test="${not empty BIRDLIST}">
-                                                <c:forEach items="${BIRDLIST}" var="bird">
-                                                    <div class="bird col-lg-4">
-                                                        <div class="item">
-                                                            <div class="thumb">
-                                                                <div class="hover-content">
-                                                                    <ul>
-                                                                        <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                                        <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                                    </ul>
-                                                                </div>
-                                                                <div class="down-content">
-                                                                    <h4>${bird.bird_name}</h4>
-                                                                    <c:choose>
-                                                                        <c:when test="${bird.discount > 0}">
-                                                                            <span>
-                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
-                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
-                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
-                                                                            </span>
-                                                                        </c:when>
-                                                                        <c:otherwise>
-                                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
-                                                                        </c:otherwise>
-                                                                    </c:choose> 
-                                                                </div>
-                                                            </div>
-                                                            <div class="down-content">
-                                                                <h4>${bird.bird_name}</h4>
-                                                                <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </c:forEach>
-                                            </c:if>
-                                        </c:if>
-                                    </c:otherwise>
-                                </c:choose>
-                                <div class="col-lg-12">
-                                    <div class="pagination bird-pg">
-                                        <c:if test="${noOfPages > 1 && noOfPages <= 5}">
-                                            <input type="hidden" name="page" value="${requestScope.currentPage}"/>
-                                            <ul>
-                                                <c:if test="${requestScope.currentPage > 1}">
-                                                    <li id="page">
-                                                        <a class="prev-page"><<</a>
-                                                    </li>
-                                                </c:if>
-                                                <c:forEach begin="1" end="${noOfPages}" var="i">
-                                                    <li id="page-number">
-                                                        <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
-                                                    </li>
-                                                </c:forEach>
-                                                <c:if test="${requestScope.currentPage < noOfPages}">
-                                                    <li id="page">
-                                                        <a class="next-page" >>></a>
-                                                    </li>
-                                                </c:if>
-                                            </ul>
-                                        </c:if>    
-                                       <c:if test="${noOfPages > 5}">
-                                            <input name="page" value="${requestScope.currentPage}"/>
-                                            <c:set var="numberOfPage" value="${requestScope.currentPage}"/>
-                                            <ul>
-                                                <li id="page">
-                                                    <a class="prev-page" ><<</a>
-                                                </li>
-                                                    <c:forEach begin="${numberOfPage - 2}" end="${numberOfPage + 2}" var="i">
-                                                    <li id="page-number">
-                                                        <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
-                                                    </li>
-                                                    </c:forEach>
-                                                <li id="page">
-                                                    <a class="next-page">>></a>
-                                                </li>
-                                            </ul>
-                                        </c:if>
-                                    </div>
-                                </div>
-                            </div>
-                    </main>            
-                </div>
-                </form>
-            </div>
-        </section>
-        <!-- ***** Products Area Ends ***** -->
+                                                                    </div>
+                                                                </c:forEach>
+                                                            </c:if>
+                                                        </c:when>
+                                                        <c:when test="${BIRDLISTBYBREED_ID != null}">
+                                                            <c:if test="${not empty BIRDLISTBYBREED_ID}">
+                                                                <c:forEach items="${BIRDLISTBYBREED_ID}" var="bird">
+                                                                    <div class="bird col-lg-4">
+                                                                        <div class="item">
+                                                                            <div class="thumb">
+                                                                                <div class="hover-content">
+                                                                                    <ul>
+                                                                                        <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                                                        <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                                <img class="bird-thumbnail" src="${bird.image_url}" alt="">
+                                                                            </div>
+                                                                            <div class="down-content">
+                                                                                <h4>${bird.bird_name}</h4>
+                                                                                <c:choose>
+                                                                                    <c:when test="${bird.discount > 0}">
+                                                                                        <span>
+                                                                                            <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
+                                                                                            <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
+                                                                                            <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
+                                                                                                </span>
+                                                                                            </c:when>
+                                                                                            <c:otherwise>
+                                                                                                <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                                            </c:otherwise>
+                                                                                        </c:choose> 
+                                                                                        </div>
+                                                                                        </div>
+                                                                                        <img class="bird-thumbnail" src="${bird.image_url}" alt="">
+                                                                                        </div>
+                                                                                        <div class="down-content">
+                                                                                            <h4>${bird.bird_name}</h4>
+                                                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                                        </div>
+                                                                                        </div>
+                                                                                        </div>
+                                                                                    </c:forEach>
+                                                                                </c:if>
+                                                                            </c:when>        
+                                                                            <c:otherwise>
+                                                                                <c:if test="${BIRDLIST != null}">
+                                                                                    <c:if test="${not empty BIRDLIST}">
+                                                                                        <c:forEach items="${BIRDLIST}" var="bird">
+                                                                                            <div class="bird col-lg-4">
+                                                                                                <div class="item">
+                                                                                                    <div class="thumb">
+                                                                                                        <div class="hover-content">
+                                                                                                            <ul>
+                                                                                                                <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                                                                                <li><a href="MainController?action=AddtoCart&type=bird&id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                                                            </ul>
+                                                                                                        </div>
+                                                                                                        <div class="down-content">
+                                                                                                            <h4>${bird.bird_name}</h4>
+                                                                                                            <c:choose>
+                                                                                                                <c:when test="${bird.discount > 0}">
+                                                                                                                    <span>
+                                                                                                                        <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
+                                                                                                                        <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
+                                                                                                                        <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
+                                                                                                                            </span>
+                                                                                                                        </c:when>
+                                                                                                                        <c:otherwise>
+                                                                                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                                                                        </c:otherwise>
+                                                                                                                    </c:choose> 
+                                                                                                                    </div>
+                                                                                                                    </div>
+                                                                                                                    <div class="down-content">
+                                                                                                                        <h4>${bird.bird_name}</h4>
+                                                                                                                        <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                                                                    </div>
+                                                                                                                    </div>
+                                                                                                                    </div>
+                                                                                                                </c:forEach>
+                                                                                                            </c:if>
+                                                                                                        </c:if>
+                                                                                                    </c:otherwise>
+                                                                                                </c:choose>
+                                                                                                <div class="col-lg-12">
+                                                                                                    <div class="pagination bird-pg">
+                                                                                                        <c:if test="${noOfPages > 1 && noOfPages <= 5}">
+                                                                                                            <input type="hidden" name="page" value="${requestScope.currentPage}"/>
+                                                                                                            <ul>
+                                                                                                                <c:if test="${requestScope.currentPage > 1}">
+                                                                                                                    <li id="page">
+                                                                                                                        <a class="prev-page"><<</a>
+                                                                                                                    </li>
+                                                                                                                </c:if>
+                                                                                                                <c:forEach begin="1" end="${noOfPages}" var="i">
+                                                                                                                    <li id="page-number">
+                                                                                                                        <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
+                                                                                                                    </li>
+                                                                                                                </c:forEach>
+                                                                                                                <c:if test="${requestScope.currentPage < noOfPages}">
+                                                                                                                    <li id="page">
+                                                                                                                        <a class="next-page" >>></a>
+                                                                                                                    </li>
+                                                                                                                </c:if>
+                                                                                                            </ul>
+                                                                                                        </c:if>    
+                                                                                                        <c:if test="${noOfPages > 5}">
+                                                                                                            <input name="page" value="${requestScope.currentPage}"/>
+                                                                                                            <c:set var="numberOfPage" value="${requestScope.currentPage}"/>
+                                                                                                            <ul>
+                                                                                                                <li id="page">
+                                                                                                                    <a class="prev-page" ><<</a>
+                                                                                                                </li>
+                                                                                                                <c:forEach begin="${numberOfPage - 2}" end="${numberOfPage + 2}" var="i">
+                                                                                                                    <li id="page-number">
+                                                                                                                        <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
+                                                                                                                    </li>
+                                                                                                                </c:forEach>
+                                                                                                                <li id="page">
+                                                                                                                    <a class="next-page">>></a>
+                                                                                                                </li>
+                                                                                                            </ul>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                </div>
+                                                                                                </main>            
+                                                                                                </div>
+                                                                                                </form>
+                                                                                                </div>
+                                                                                                </section>
+                                                                                                <!-- ***** Products Area Ends ***** -->
 
-        <!-- ***** Footer Start ***** -->
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="first-item">
-                            <div class="logo">
-                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
-                            </div>
-                            <ul>
-                                <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                <li><a href="#">thegioivetcanh@gmail.com</a></li>
-                                <li><a href="#">0913-244-567</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Sản phẩm và dịch vụ</h4>
-                        <ul>
-                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                            <li><a href="${pageScope.toCompare}">So sánh</a></li>
-                            <li><a href="${pageScope.toPair}">Nhân giống</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Đường dẫn hữu ích</h4>
-                        <ul>
-                            <li><a href="${pageScope.toHome}">Trang chủ</a></li>
-                            <li><a href="#">Về chúng tôi</a></li>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Liên hệ</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Thông tin hỗ trợ</h4>
-                        <ul>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Câu hỏi thường gặp</a></li>
-                            <li><a href="#">Giao hàng</a></li>
-                            <li><a href="#">Theo dõi đơn hàng</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="under-footer">
-                            <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
+                                                                                                <!-- ***** Footer Start ***** -->
+                                                                                                <footer>
+                                                                                                    <div class="container">
+                                                                                                        <div class="row">
+                                                                                                            <div class="col-lg-3">
+                                                                                                                <div class="first-item">
+                                                                                                                    <div class="logo">
+                                                                                                                        <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
+                                                                                                                    </div>
+                                                                                                                    <ul>
+                                                                                                                        <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
+                                                                                                                        <li><a href="#">thegioivetcanh@gmail.com</a></li>
+                                                                                                                        <li><a href="#">0913-244-567</a></li>
+                                                                                                                    </ul>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="col-lg-3">
+                                                                                                                <h4>Sản phẩm và dịch vụ</h4>
+                                                                                                                <ul>
+                                                                                                                    <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
+                                                                                                                    <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                                                                                                                    <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
+                                                                                                                    <li><a href="${pageScope.toCompare}">So sánh</a></li>
+                                                                                                                    <li><a href="${pageScope.toPair}">Nhân giống</a></li>
+                                                                                                                </ul>
+                                                                                                            </div>
+                                                                                                            <div class="col-lg-3">
+                                                                                                                <h4>Đường dẫn hữu ích</h4>
+                                                                                                                <ul>
+                                                                                                                    <li><a href="${pageScope.toHome}">Trang chủ</a></li>
+                                                                                                                    <li><a href="#">Về chúng tôi</a></li>
+                                                                                                                    <li><a href="#">Hỗ trợ</a></li>
+                                                                                                                    <li><a href="#">Liên hệ</a></li>
+                                                                                                                </ul>
+                                                                                                            </div>
+                                                                                                            <div class="col-lg-3">
+                                                                                                                <h4>Thông tin hỗ trợ</h4>
+                                                                                                                <ul>
+                                                                                                                    <li><a href="#">Hỗ trợ</a></li>
+                                                                                                                    <li><a href="#">Câu hỏi thường gặp</a></li>
+                                                                                                                    <li><a href="#">Giao hàng</a></li>
+                                                                                                                    <li><a href="#">Theo dõi đơn hàng</a></li>
+                                                                                                                </ul>
+                                                                                                            </div>
+                                                                                                            <div class="col-lg-12">
+                                                                                                                <div class="under-footer">
+                                                                                                                    <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
 
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- ***** Footer Area Ends ***** -->
+                                                                                                                    <ul>
+                                                                                                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                                                                                                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                                                                                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                                                                                                    </ul>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </footer>
+                                                                                                <!-- ***** Footer Area Ends ***** -->
 
-        <!-- jQuery -->
-        <%@include file="../layout/message.jsp" %>
-        <script src="assets/js/jquery-2.1.0.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+                                                                                                <!-- jQuery -->
+                                                                                                <%@include file="../layout/message.jsp" %>
+                                                                                                <script src="assets/js/jquery-2.1.0.min.js"></script>
+                                                                                                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
-        <!-- Bootstrap -->
-        <script src="assets/js/popper.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>
+                                                                                                <!-- Bootstrap -->
+                                                                                                <script src="assets/js/popper.js"></script>
+                                                                                                <script src="assets/js/bootstrap.min.js"></script>
 
-        <!-- Plugins -->
-        <script src="assets/js/owl-carousel.js"></script>
-        <script src="assets/js/accordions.js"></script>
-        <script src="assets/js/datepicker.js"></script>
-        <script src="assets/js/scrollreveal.min.js"></script>
-        <!--        <script src="assets/js/waypoints.min.js"></script>-->
-        <script src="assets/js/jquery.counterup.min.js"></script>
-        <script src="assets/js/imgfix.min.js"></script> 
-        <script src="assets/js/slick.js"></script> 
-        <script src="assets/js/lightbox.js"></script> 
-        <script src="assets/js/isotope.js"></script> 
+                                                                                                <!-- Plugins -->
+                                                                                                <script src="assets/js/owl-carousel.js"></script>
+                                                                                                <script src="assets/js/accordions.js"></script>
+                                                                                                <script src="assets/js/datepicker.js"></script>
+                                                                                                <script src="assets/js/scrollreveal.min.js"></script>
+                                                                                                <!--        <script src="assets/js/waypoints.min.js"></script>-->
+                                                                                                <script src="assets/js/jquery.counterup.min.js"></script>
+                                                                                                <script src="assets/js/imgfix.min.js"></script> 
+                                                                                                <script src="assets/js/slick.js"></script> 
+                                                                                                <script src="assets/js/lightbox.js"></script> 
+                                                                                                <script src="assets/js/isotope.js"></script> 
 
-        <!-- Global Init -->
-        <script>
+                                                                                                <!-- Global Init -->
+                                                                                                <script>
 
-                                $(function () {
-                                    var selectedClass = "";
-                                    $("p").click(function () {
-                                        selectedClass = $(this).attr("data-rel");
-                                        $("#portfolio").fadeTo(50, 0.1);
-                                        $("#portfolio div").not("." + selectedClass).fadeOut();
-                                        setTimeout(function () {
-                                            $("." + selectedClass).fadeIn();
-                                            $("#portfolio").fadeTo(50, 1);
-                                        }, 500);
+                                                                                                                            $(function () {
+                                                                                                                                var selectedClass = "";
+                                                                                                                                $("p").click(function () {
+                                                                                                                                    selectedClass = $(this).attr("data-rel");
+                                                                                                                                    $("#portfolio").fadeTo(50, 0.1);
+                                                                                                                                    $("#portfolio div").not("." + selectedClass).fadeOut();
+                                                                                                                                    setTimeout(function () {
+                                                                                                                                        $("." + selectedClass).fadeIn();
+                                                                                                                                        $("#portfolio").fadeTo(50, 1);
+                                                                                                                                    }, 500);
 
-                                    });
-                                    $("input[name=txtBreedId]").change(function () {
-                                        $("#selectBird").submit();
-                                    });
-                                    $("input[name=txtPrice]").change(function () {
-                                        $("#selectBird").submit();
-                                    });
-                                    $("input[name=txtGender]").change(function () {
-                                        $("#selectBird").submit();
-                                    });
-                                    $("input[name=txtAge]").change(function () {
-                                        $("#selectBird").submit();
-                                    });
-                                    $(".prev-page").click(function (){
-                                        let  page = $('input[name=page]').val();
-                                        let prevPage = Number(page) - 1;
-                                        $('input[name=page]').val(prevPage);
-                                        $("#selectBird").submit();
-                                    });
-                                     $(".next-page").click(function (){
-                                        let  page = $('input[name=page]').val();
-                                        let nextpage = Number(page) + 1;
-                                        $('input[name=page]').val(nextpage);
-                                        $("#selectBird").submit();
-                                    });
-                                });
-                                function takePage(event){
-                                    let value =  event.getAttribute('data-value');
-                                    $('input[name=page]').val(value);
-                                       $("#selectBird").submit();
-                                }
-                                function toggleList(listId) {
-                                    var list = document.getElementById(listId);
-                                    if (list.style.display === "none" || list.style.display === "") {
-                                        list.style.display = "block";
-                                    } else {
-                                        list.style.display = "none";
-                                    }
-                                }
+                                                                                                                                });
+                                                                                                                                $("input[name=txtBreedId]").change(function () {
+                                                                                                                                    $("#selectBird").submit();
+                                                                                                                                });
+                                                                                                                                $("input[name=txtPrice]").change(function () {
+                                                                                                                                    $("#selectBird").submit();
+                                                                                                                                });
+                                                                                                                                $("input[name=txtGender]").change(function () {
+                                                                                                                                    $("#selectBird").submit();
+                                                                                                                                });
+                                                                                                                                $("input[name=txtAge]").change(function () {
+                                                                                                                                    $("#selectBird").submit();
+                                                                                                                                });
+                                                                                                                                $(".prev-page").click(function () {
+                                                                                                                                    let  page = $('input[name=page]').val();
+                                                                                                                                    let prevPage = Number(page) - 1;
+                                                                                                                                    $('input[name=page]').val(prevPage);
+                                                                                                                                    $("#selectBird").submit();
+                                                                                                                                });
+                                                                                                                                $(".next-page").click(function () {
+                                                                                                                                    let  page = $('input[name=page]').val();
+                                                                                                                                    let nextpage = Number(page) + 1;
+                                                                                                                                    $('input[name=page]').val(nextpage);
+                                                                                                                                    $("#selectBird").submit();
+                                                                                                                                });
+                                                                                                                            });
+                                                                                                                            function takePage(event) {
+                                                                                                                                let value = event.getAttribute('data-value');
+                                                                                                                                $('input[name=page]').val(value);
+                                                                                                                                $("#selectBird").submit();
+                                                                                                                            }
+                                                                                                                            function toggleList(listId) {
+                                                                                                                                var list = document.getElementById(listId);
+                                                                                                                                if (list.style.display === "none" || list.style.display === "") {
+                                                                                                                                    list.style.display = "block";
+                                                                                                                                } else {
+                                                                                                                                    list.style.display = "none";
+                                                                                                                                }
+                                                                                                                            }
 
-//            var listItems = document.querySelectorAll("#page-${i}");
-//            listItems.forEach(function (item) {
-//                item.addEventListener("click", function () {\
-//                    listItems.forEach(function (li) {
-//                        li.classList.remove("active");
-//                    });
-//                    item.classList.add("active");
-//                });
-//            });
+                                                                                                                            //            var listItems = document.querySelectorAll("#page-${i}");
+                                                                                                                            //            listItems.forEach(function (item) {
+                                                                                                                            //                item.addEventListener("click", function () {\
+                                                                                                                            //                    listItems.forEach(function (li) {
+                                                                                                                            //                        li.classList.remove("active");
+                                                                                                                            //                    });
+                                                                                                                            //                    item.classList.add("active");
+                                                                                                                            //                });
+                                                                                                                            //            });
 
-        </script>
+                                                                                                </script>
 
-    </body>
+                                                                                                </body>
 
-</html>
+                                                                                                </html>

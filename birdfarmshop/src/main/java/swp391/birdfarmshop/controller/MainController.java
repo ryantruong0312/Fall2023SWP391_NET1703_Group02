@@ -67,11 +67,9 @@ public class MainController extends HttpServlet {
     private static final String DEST_ADD_TO_CART = "AddtoCartController";
     private static final String ACT_SEARCH_ACCESSORY = "RenderSearchAccessories";
     private static final String DEST_SEARCH_ACCESSORY = "RenderSearchAccessoriesController";
-<<<<<<< HEAD
     private static final String ACT_CHECK_OUT = "CheckOut";
     private static final String DEST_CHECK_OUT = "RenderCheckOutController";
 
-=======
     private static final String ACT_SEARCH_BIRD = "SearchBird";
     private static final String DEST_SEARCH_BIRD = "SearchBirdController";
     private static final String ACT_RENDER_BIRD_BREED_ID = "RenderBirdByBreed_id";
@@ -80,8 +78,6 @@ public class MainController extends HttpServlet {
     private static final String DEST_UPDATE_INFO = "UpdateInformationController";
     private static final String ACT_CREATE_ACCOUNT = "CreateAccount";
     private static final String DEST_CREATE_ACCOUNT = "CreateAccountController";
->>>>>>> 072512e554f334318e0011dd0d98ea69e03f0395
-    private static final String TEST = "/shop/checkout.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -154,6 +150,9 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_NAV_EDIT_PROFILE:
                     url = DEST_NAV_EDIT_PROFILE;
+                    break;
+                case ACT_ADD_TO_CART:
+                    url = DEST_ADD_TO_CART;
                     break;
                 case ACT_CHECK_OUT:
                     url = DEST_CHECK_OUT;

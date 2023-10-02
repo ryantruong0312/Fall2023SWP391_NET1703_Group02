@@ -82,7 +82,8 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">8</div>
+                                            <div class="cart-amount">${(sessionScope.CART_BIRD_NEST.getSize()!=null ? sessionScope.CART_BIRD_NEST.getSize():0)+(sessionScope.CART_BIRD.getSize()!=null ? sessionScope.CART_BIRD.getSize():0)}</div>
+
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
@@ -169,7 +170,7 @@
                                             <div class="hover-content">
                                                 <ul>
                                                     <li><a href="MainController?action=NavToBirdNestDetail&id=${birdNest.nest_id}"><i class="fa fa-eye"></i></a></li>
-                                                    <li><a href="ren"><i class="fa fa-shopping-cart"></i></a></li>
+                                                    <li><a href="MainController?action=AddtoCart&type=nest&id=${birdNest.nest_id}"><i class="fa fa-shopping-cart"></i></a></li>
                                                 </ul>
                                             </div>
                                             <img class="thumb" src="${birdNest.image_url}" alt="">
@@ -277,6 +278,8 @@
         <script src="assets/js/bootstrap.min.js"></script>
 
         <!-- Plugins -->
+        <%@include file="../layout/message.jsp" %>
+
         <script src="assets/js/owl-carousel.js"></script>
         <script src="assets/js/accordions.js"></script>
         <script src="assets/js/datepicker.js"></script>
