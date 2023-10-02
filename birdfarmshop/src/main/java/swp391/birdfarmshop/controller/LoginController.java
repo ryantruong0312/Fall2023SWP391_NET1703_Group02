@@ -25,7 +25,7 @@ import swp391.birdfarmshop.util.JWTUtils;
 public class LoginController extends HttpServlet {
 
     private static final String DEST_NAV_HOME = "RenderHomeController";
-
+    private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,7 +45,7 @@ public class LoginController extends HttpServlet {
             UserDAO user = new UserDAO();
             User u = user.findUser(username, username);
             HttpSession session = request.getSession(true);
-            String url = "MainController?action=NavToLogin";
+            String url = DEST_NAV_LOGIN;
             if (u != null) {
                 String decodePassword = JWTUtils.decodeJWT(u.getPassword());
                 if (password.equals(decodePassword)) {
@@ -59,7 +59,7 @@ public class LoginController extends HttpServlet {
                                 cookie.setMaxAge(24 * 60 * 60);
                                 response.addCookie(cookie);
                             }
-                           url = DEST_NAV_HOME;
+                            url =  DEST_NAV_HOME;
                         }
                     } else if (u.getStatus().equals("inactive")) {
                         session.setAttribute("ERROR", "Vui lòng kích hoạt tài khoản của bạn bằng cách nhấp vào liên kết trong email đã đăng ký");
@@ -67,12 +67,14 @@ public class LoginController extends HttpServlet {
                         session.setAttribute("ERROR", "Tài khoản của bạn đã bị khóa, vui lòng liên hệ với cửa hàng");
                     }
                 } else {
-                    session.setAttribute("ERROR", "Email hoặc mật khẩu không chính xác");   
+                    session.setAttribute("ERROR", "Email/tên đăng nhập hoặc mật khẩu không chính xác");
                 }
             } else {
-                session.setAttribute("ERROR", "Email hoặc mật khẩu không chính xác"); 
+                session.setAttribute("ERROR", "Email/tên đăng nhập hoặc mật khẩu không chính xác");
             }
-            response.sendRedirect(url);
+            request.setAttribute("USER_NAME", username);
+            request.setAttribute("PASSWORD_lOGIN", password);
+            request.getRequestDispatcher(url).forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

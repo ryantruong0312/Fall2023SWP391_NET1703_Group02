@@ -46,47 +46,15 @@
                         </tr>
                     </tbody>
                 </table>-->
-        <main>
-            <div class="container vh-100">
-                <div class="row d-flex justify-content-around align-content-center h-100">
-                    <div style="cursor: pointer; margin: auto">
-                        <div class="d-flex">
-                            <div style="height: 30px; width: 30px; border-top: 2px dashed black;border-left: 2px dashed black"></div>
-                            <div style="height: 30px; width: 200px"></div>
-                            <div style="height: 30px; width: 30px; border-top: 2px dashed black;border-right: 2px dashed black "></div>
-                        </div>
-                        <div class="d-flex">
-                            <div style="height: 30px; width: 30px"></div>
-                            <div style="height: 30px; width: 200px; text-align: center;font-size: 15px; font-weight: bold">Chim của khách hàng</div>
-                            <div style="height: 30px; width: 30px"></div>
-                        </div>
-                        <div class="d-flex">
-                            <div style="height: 30px; width: 30px; border-bottom: 2px dashed black;border-left: 2px dashed black"></div>
-                            <div style="height: 30px; width: 200px;"></div>
-                            <div style="height: 30px; width: 30px; border-bottom: 2px dashed black;border-right: 2px dashed black"></div>
-                        </div>
-                    </div>
-                    <div style="border-right: 2px dashed black; height: 300px "></div>
-                    <div style="cursor: pointer; margin: auto">
-                            <div class="d-flex">
-                            <div style="height: 30px; width: 30px; border-top: 2px dashed black;border-left: 2px dashed black"></div>
-                            <div style="height: 30px; width: 200px"></div>
-                            <div style="height: 30px; width: 30px; border-top: 2px dashed black;border-right: 2px dashed black "></div>
-                        </div>
-                        <div class="d-flex">
-                            <div style="height: 30px; width: 30px"></div>
-                            <div style="height: 30px; width: 200px; text-align: center; font-size: 15px; font-weight: bold">Chim trong cửa hàng</div>
-                            <div style="height: 30px; width: 30px"></div>
-                        </div>
-                        <div class="d-flex">
-                            <div style="height: 30px; width: 30px; border-bottom: 2px dashed black;border-left: 2px dashed black"></div>
-                            <div style="height: 30px; width: 200px;"></div>
-                            <div style="height: 30px; width: 30px; border-bottom: 2px dashed black;border-right: 2px dashed black"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
+        <div>
+                <form action="../UploadController" method="POST" enctype="multipart/form-data">
+                  <input type="text" name="description"  />
+                <label>Uploadfile</label>
+                <input type="file" name="filepicture"  />
+                <button type="submit">Submit</button>
+            </form>           
+         <img src="https://birdfarmshop.s3.amazonaws.com/baner-right-image-01.jpg" alt="Your Image">
+        </div>
         <script src="../assets/js/birdshop.js"></script>
         <script src="../assets/js/jquery-3.7.1.min.js"></script>
         <script src="../assets/js/popper.min.js"></script>

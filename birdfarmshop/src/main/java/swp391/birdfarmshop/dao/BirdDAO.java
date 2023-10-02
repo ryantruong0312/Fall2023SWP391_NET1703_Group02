@@ -53,7 +53,7 @@ public class BirdDAO {
             + ",[mom_bird_id],[discount],[status] FROM [BirdFarmShop].[dbo].[Bird]"
             + "WHERE [breed_id] LIKE ? "
             + "ORDER BY (SELECT NULL) OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-    
+
     public List<Bird> getBirds() throws SQLException {
         List<Bird> birdList = new ArrayList<>();
         Connection con = null;
@@ -102,36 +102,8 @@ public class BirdDAO {
         return birdList;
     }
 
-    public int totalBirds() throws SQLException, ClassNotFoundException {
-        Connection con = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        int total = 0;
-        try {
-            con = DBUtils.getConnection();
-            if (con != null) {
-                stm = con.prepareStatement(GET_TOTAL_BIRD);
-                rs = stm.executeQuery();
-                if (rs.next()) {
-                    total = rs.getInt("TotalCount");
-                }
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-        } finally {
-            if (stm != null) {
-                stm.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-            if (rs != null) {
-                rs.close();
-            }
-        }
-        return total;
-    }
-
-    public List<Bird> getDataFromDatabase(int page, int recordsPerPage) throws SQLException, ClassNotFoundException {
+    public List<Bird> getBirdsCustom(String search, String breed, String price_birds, String gender_bird,
+            String age_bird, String page, int recordsPerPage) throws SQLException {
         List<Bird> birdList = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
@@ -140,10 +112,71 @@ public class BirdDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement(GET_9_BIRD_LIST);
-                int start = (page - 1) * recordsPerPage;
-                stm.setInt(1, start);
-                stm.setInt(2, recordsPerPage);
+                String sql = "SELECT [bird_id],[bird_name],[color],[age],[grown_age],[gender],[breed_id]"
+                        + ",[achievement],[reproduction_history],[price],[description],[dad_bird_id]"
+                        + ",[mom_bird_id],[discount],[status]\n"
+                        + " FROM [BirdFarmShop].[dbo].[Bird]\n";
+                if (search != null) {
+                    sql += " WHERE bird_name LIKE N'%" + search + "%'";
+                    if (breed != null) {
+                        sql += " AND breed_id = "+"'"+ breed +"'"+"";
+                    }
+                    if (price_birds != null) {
+                        sql += " AND " + price_birds;
+                    }
+                    if (gender_bird != null) {
+                        sql += " AND gender = " + gender_bird;
+                    }
+                    if (age_bird != null) {
+                        sql += " AND " + age_bird;
+                    }
+                    sql += "\n";
+                }
+                if (search == null && breed != null) {
+                    sql += " WHERE breed_id = "+"'"+ breed +"'"+"";
+                    if (price_birds != null) {
+                        sql += " AND " + price_birds;
+                    }
+                    if (gender_bird != null) {
+                        sql += " AND gender = " + gender_bird;
+                    }
+                    if (age_bird != null) {
+                        sql += " AND " + age_bird;
+                    }
+                    sql += "\n";
+                }
+
+                if (search == null && breed == null
+                        && price_birds != null) {
+                    sql += " WHERE " + price_birds;
+                    if (gender_bird != null) {
+                        sql += " AND gender = " + gender_bird;
+                    }
+                    if (age_bird != null) {
+                        sql += " AND " + age_bird;
+                    }
+                    sql += "\n";
+                }
+                
+                if (search == null && breed == null
+                    && price_birds == null && gender_bird != null) {
+                        sql += " WHERE gender = " + gender_bird;
+                    if (age_bird != null) {
+                        sql += " AND " + age_bird;
+                    }
+                    sql += "\n";
+                }
+                if (search == null && breed == null
+                    && price_birds == null && gender_bird == null
+                    && age_bird != null  ) {
+                        sql += " WHERE" + age_bird +"\n";
+                }
+                if (page != null) {
+                    int pageNumber = Integer.parseInt(page);
+                    int start = (pageNumber - 1) * recordsPerPage;
+                    sql += "ORDER BY (SELECT NULL) OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
+                }
+                stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     String bird_id = rs.getString("bird_id");
@@ -167,6 +200,7 @@ public class BirdDAO {
                     birdList.add(bird);
                 }
             }
+        } catch (ClassNotFoundException | SQLException e) {
         } finally {
             if (stm != null) {
                 stm.close();
@@ -179,6 +213,94 @@ public class BirdDAO {
             }
         }
         return birdList;
+    }
+
+    public int totalBirds(String search, String breed, String price_birds, String gender_bird,
+            String age_bird) throws SQLException, ClassNotFoundException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int total = 0;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String sql = "SELECT COUNT(bird_id) AS [numberOfBird] \n"
+                        + " FROM [BirdFarmShop].[dbo].[Bird]\n";
+                if (search != null) {
+                    sql += " WHERE bird_name LIKE N'%" + search + "%'";
+                    if (breed != null) {
+                        sql += " AND breed_id = "+"'"+ breed +"'"+"";
+                    }
+                    if (price_birds != null) {
+                        sql += " AND " + price_birds;
+                    }
+                    if (gender_bird != null) {
+                        sql += " AND gender = " + gender_bird;
+                    }
+                    if (age_bird != null) {
+                        sql += " AND " + age_bird;
+                    }
+                    sql += "\n";
+                }
+                if (search == null && breed != null) {
+                    sql += " WHERE breed_id = "+"'"+ breed +"'"+"";
+                    if (price_birds != null) {
+                        sql += " AND " + price_birds;
+                    }
+                    if (gender_bird != null) {
+                        sql += " AND gender = " + gender_bird;
+                    }
+                    if (age_bird != null) {
+                        sql += " AND " + age_bird;
+                    }
+                    sql += "\n";
+                }
+
+                if (search == null && breed == null
+                        && price_birds != null) {
+                    sql += " WHERE " + price_birds;
+                    if (gender_bird != null) {
+                        sql += " AND gender = " + gender_bird;
+                    }
+                    if (age_bird != null) {
+                        sql += " AND " + age_bird;
+                    }
+                    sql += "\n";
+                }
+                
+                if (search == null && breed == null
+                    && price_birds == null && gender_bird != null) {
+                        sql += " WHERE gender = " + gender_bird;
+                    if (age_bird != null) {
+                        sql += " AND " + age_bird;
+                    }
+                    sql += "\n";
+                }
+                if (search == null && breed == null
+                    && price_birds == null && gender_bird == null
+                    && age_bird != null  ) {
+                        sql += " WHERE" + age_bird +"\n";
+                }
+                stm = con.prepareStatement(sql);
+                rs = stm.executeQuery();
+                if(rs!= null && rs.next()){
+                   total = rs.getInt("numberOfBird");
+                }
+
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return total;
     }
 
     public BirdDTO getBirdDetailsById(String birdId) throws SQLException {
@@ -300,37 +422,7 @@ public class BirdDAO {
         }
         return result;
     }
-
-    public int numberOfBirdListSearch(String name) throws SQLException {
-        int searchTotal = 0;
-        Connection con = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        try {
-            con = DBUtils.getConnection();
-            if (con != null) {
-                stm = con.prepareStatement(NUMBER_OF_BIRD_LIST_SEARCH);
-                stm.setString(1, "%" + name + "%");
-                rs = stm.executeQuery();
-                if (rs.next()) {
-                    searchTotal = rs.getInt("TotalCount");
-                }
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (stm != null) {
-                stm.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
-        return searchTotal;
-    }
-
+    
     public List<Bird> searchBird(String name, int page, int recordsPerPage) throws SQLException {
         List<Bird> searchList = new ArrayList<>();
         Connection con = null;
@@ -412,7 +504,7 @@ public class BirdDAO {
         }
         return searchTotal;
     }
-    
+
     public List<Bird> getBirdsByBreedId(String breed_id) throws SQLException, ClassNotFoundException {
         List<Bird> birdList = new ArrayList<>();
         Connection con = null;
@@ -459,7 +551,7 @@ public class BirdDAO {
         }
         return birdList;
     }
-    
+
     public List<Bird> getBirdsByBreedId(String breed_id, int page, int recordsPerPage) throws SQLException, ClassNotFoundException {
         List<Bird> birdList = new ArrayList<>();
         Connection con = null;
@@ -559,9 +651,10 @@ public class BirdDAO {
         }
         return b;
     }
+
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         BirdDAO dao = new BirdDAO();
-        List<Bird> birds = dao.getBirdsByBreedId("amazon", 1, 9);
+        List<Bird> birds = dao.getBirdsCustom(null,null,null,null,null,"1",9);
         for (Bird bird : birds) {
             System.out.println(bird);
         }

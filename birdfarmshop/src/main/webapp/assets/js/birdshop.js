@@ -373,7 +373,7 @@ $(".form-register").validate({
         },
         email: {
             required: 'Vui lòng nhập email',
-            email: 'Vui lòng nhập đúng định dạng email'
+            email: 'Vui lòng nhập đúng định dạng email (company@example.com)'
         },
         account: {
             required: 'Vui lòng điền tên đăng nhập',

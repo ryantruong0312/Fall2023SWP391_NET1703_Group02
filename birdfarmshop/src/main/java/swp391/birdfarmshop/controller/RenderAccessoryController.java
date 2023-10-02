@@ -19,7 +19,6 @@ import swp391.birdfarmshop.dao.AccessoryDAO;
 //import swp391.birdfarmshop.dao.ImageDAO;
 //=======
 
-
 //>>>>>>> .theirs
 import swp391.birdfarmshop.model.Accessory;
 //import swp391.birdfarmshop.model.Bird;
@@ -41,14 +40,33 @@ public class RenderAccessoryController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String sAmount = request.getParameter("amount");
-            int amount = Integer.parseInt(sAmount);
+            String page = "1";
+            int numberOfRecord = 9;
             List<Accessory> accessoryList = new ArrayList<Accessory>();
             AccessoryDAO dao = new AccessoryDAO();
-            accessoryList = dao.getNext9Accessory(amount);
-            request.setAttribute("accessoryList", accessoryList);
-            url = SUCCESS;
+            if (request.getParameter("page") != null) {
+                page = request.getParameter("page");
+            }
+            String search = request.getParameter("txtAccessory");
+            String categoryID = request.getParameter("txtType");
+            String price = request.getParameter("txtPrice");
 
+            if (price != null && price.equals("All")) {
+                price = null;
+            }
+            if (categoryID != null && categoryID.equals("All")) {
+                categoryID = null;
+            }
+            accessoryList = dao.getAccessoriesCustom(search, categoryID, price, page, numberOfRecord);
+            int noOfRecords = dao.totalAccessories(search, categoryID, price);
+            int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / numberOfRecord);
+            request.setAttribute("accessoryList", accessoryList);
+            request.setAttribute("SEARCH", search);
+            request.setAttribute("PRICE", price);
+            request.setAttribute("CATEGORY_ID", categoryID);
+            request.setAttribute("noOfPages", noOfPages);
+            request.setAttribute("currentPage", page);
+            url = SUCCESS;
         } catch (Exception e) {
             log("Error at RenderAccessoryController: " + e.toString());
         } finally {
