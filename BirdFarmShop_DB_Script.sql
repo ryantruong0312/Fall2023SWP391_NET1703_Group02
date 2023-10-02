@@ -713,3 +713,70 @@ ON b.bird_id = i.bird_id OR a.accessory_id = i.accessory_id
 WHERE i.is_thumbnail = 1
 GO
 
+INSERT INTO [dbo].[Image] ([image_url],[is_thumbnail],[bird_id],[nest_id],[accessory_id])
+VALUES
+    ('https://vetcanh.com/wp-content/uploads/2021/10/istockphoto-1300151499-612x612-1.webp', 
+    1, 'GW125', NULL, NULL),
+	('https://www.sfzoo.org/wp-content/uploads/2021/03/img_macaw_mw2_large.jpg', 
+    0, 'GW125', NULL, NULL),
+	('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYZ6vQGWKon2EZmCh0UnRI2Y7JjwqwS46Lsg&usqp=CAU', 
+    0, 'GW125', NULL, NULL),
+
+	('https://petmeshop.com/wp-content/uploads/2020/09/hahns-macaw-2.jpg', 
+    1, 'HM350', NULL, NULL),
+	('https://www.thehappychickencoop.com/wp-content/uploads/2022/08/hahns-macaw.jpg', 
+    0, 'HM350', NULL, NULL),
+	('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5tPrZ7LxHZFycwvvSWZDtEqbsB1BKQmUmpg&usqp=CAU', 
+    0, 'HM350', NULL, NULL),
+
+	('https://britishpetinsurance.co.uk/wp-content/uploads/2020/10/6329', 
+    0, 'YC090', NULL, NULL),
+	('https://www.petlink.com.au/Classifieds/pics/877017.jpg', 
+    0, 'YC090', NULL, NULL),
+	('https://cdn-fastly.petguide.com/media/2022/02/28/8279074/hahns-macaw.jpg?size=720x845&nocrop=1', 
+    1, 'YC090', NULL, NULL),
+
+	('https://a-z-animals.com/media/2021/06/Most-Colorful-Animals_-Scarlet-Macaw.jpg', 
+    0, 'YC090', NULL, NULL),
+	('https://vetcanh.com/wp-content/uploads/2021/10/GettyImages-634869043-58a6e83f5f9b58a3c918ca12-scaled.webp', 
+    0, 'YC090', NULL, NULL),
+	('https://images.saymedia-content.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cq_auto:eco%2Cw_1200/MTk3MTEwNDczMDU1ODA2Nzgz/scarlet-macaws.png', 
+    1, 'YC090', NULL, NULL),
+
+	('https://www.theanimalspot.com/wp-content/uploads/2019/01/hyacinthmacawsmall.jpg', 
+    0, 'YC090', NULL, NULL),
+	('https://images.pexels.com/photos/11795466/pexels-photo-11795466.jpeg?cs=srgb&dl=pexels-alteredsnaps-11795466.jpg&fm=jpg', 
+    0, 'YC090', NULL, NULL),
+	('https://zupreem.com/wp-content/uploads/2020/11/shutterstock_1060460099-scaled.jpg', 
+    1, 'YC090', NULL, NULL)
+
+GO
+
+INSERT INTO [dbo].[BirdNest] ([nest_name],[is_thumbnail],[dad_bird_id],[mom_bird_id],[baby_quantity],[status],[price],[description])
+VALUES
+
+	( 'IR003', 0, 'IR001','IR002',2,
+	'available', 4500000, 
+	'...'),
+	( 'CP601', 0, 'CP401','CP501',8,
+	'available', 12000000, 
+	'...'),
+	( 'XX003', 0, 'XA001','XT001',4,
+	'available', 6500000, 
+	'...'),
+	( 'LA972', 0, 'BA602','FA303',2,
+	'available', 200000, 
+	'...')
+GO
+
+INSERT INTO [dbo].[Image] ([image_url],[is_thumbnail],[bird_id],[nest_id],[accessory_id])
+VALUES
+    ('https://cf.shopee.vn/file/4501c1a1f51ddaaa4cb1f69d268663b4', 
+    1, NULL,  1, NULL),
+	('https://i2.ex-cdn.com/homeaz.vn/files/content/2020/07/15/ghe-to-chim-5-1352-homeazvn-1702.jpg', 
+    1, NULL, 2, NULL),
+	('https://cf.shopee.vn/file/0b4302be2417198ab8fd4fd6e9728339', 
+    1, NULL, 3, NULL),
+	('https://lzd-img-global.slatic.net/g/p/c4a8a0c1b33168b64c2b5494d6388aa0.jpg_720x720q80.jpg', 
+    1, NULL, 4, NULL)
+GO

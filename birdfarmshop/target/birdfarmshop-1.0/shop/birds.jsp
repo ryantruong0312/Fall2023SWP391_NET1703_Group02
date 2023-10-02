@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,7 +41,7 @@
         <c:url var="toLogin" value="MainController?action=NavToLogin"/>
         <c:url var="logout" value="MainController?action=Logout"/>
         <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
-        <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
+        <c:url var="toBirds" value="MainController?action=NavToBird&page=1"/>
         <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
         <c:url var="toCart" value="MainController?action=NavToCart"/>
         <c:url var="toProfile" value="MainController?action=NavToProfile"/>
@@ -80,7 +81,7 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <c:if test="${sessionScope.CART_BIRD == null}">
+                                                <c:if test="${sessionScope.CART_BIRD == null}">
                                                 <div class="cart-amount">0</div>
                                             </c:if>
                                             <c:if test="${sessionScope.CART_BIRD != null}">
@@ -131,8 +132,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="inner-content">
-                            <h2>Các sản phẩm chính</h2>
-                            <span>Awesome &amp; Creative HTML CSS layout by TemplateMo</span>
+                            <h2>Vẹt cảnh</h2>
+                            <span>Những chú vẹt thông minh và đáng yêu nhất đã có mặt tại V.E.T</span>
                         </div>
                     </div>
                 </div>
@@ -147,8 +148,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-heading">
-                            <h2>Our Latest Products</h2>
-                            <span>Check out all of our products.</span>
+                            <h2>Sản phẩm của chúng tôi</h2>
                         </div>
                     </div>
                 </div>
@@ -172,7 +172,7 @@
                                         </div>
                                         <div class="down-content">
                                             <h4>${bird.bird_name}</h4>
-                                            <span>${bird.price}</span>
+                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
                                         </div>
                                     </div>
                                 </div>
@@ -182,23 +182,19 @@
                     </c:if>      
                     <div class="col-lg-12">
                         <div class="pagination">
-                            <ul>
-                                <li class="active">
-                                    <a href="MainController?action=NavToBird&amount=0">1</a>
-                                </li>
-                                <li>
-                                    <a href="MainController?action=NavToBird&amount=9">2</a>
-                                </li>
-                                <li>
-                                    <a href="MainController?action=NavToBird&amount=18">3</a>
-                                </li>
-                                <li>
-                                    <a href="#" id="page-4">4</a>
-                                </li>
-                                <li>
-                                    <a href="#">></a>
-                                </li>
-                            </ul>
+                            <c:if test="${noOfPages > 1}">
+                                <ul>
+                                    <li>
+                                        <a href="MainController?action=NavToBird&page=1"><<</a>
+                                    </li>
+                                    <c:forEach begin="1" end="${noOfPages}" var="i">
+                                        <li><a href="MainController?action=NavToBird&page=${i}">${i}</a></li>
+                                        </c:forEach>
+                                    <li>
+                                        <a href="MainController?action=NavToBird&page=${noOfPages}"></a>
+                                    </li>
+                                </ul>
+                            </c:if>
                         </div>
                     </div>
                 </div>
@@ -217,7 +213,7 @@
                             </div>
                             <ul>
                                 <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
+                                <li><a href="#">thegioivetcanh@gmail.com</a></li>
                                 <li><a href="#">0913-244-567</a></li>
                             </ul>
                         </div>
@@ -225,17 +221,17 @@
                     <div class="col-lg-3">
                         <h4>Sản phẩm và dịch vụ</h4>
                         <ul>
-                            <li><a href="#">Vẹt cảnh</a></li>
-                            <li><a href="#">Tổ chim non</a></li>
-                            <li><a href="#">Phụ kiện</a></li>
-                            <li><a href="#">So sánh</a></li>
-                            <li><a href="#">Nhân giống</a></li>
+                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
+                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
+                            <li><a href="${pageScope.toCompare}">So sánh</a></li>
+                            <li><a href="${pageScope.toPair}">Nhân giống</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
                         <h4>Đường dẫn hữu ích</h4>
                         <ul>
-                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="${pageScope.toHome}">Trang chủ</a></li>
                             <li><a href="#">Về chúng tôi</a></li>
                             <li><a href="#">Hỗ trợ</a></li>
                             <li><a href="#">Liên hệ</a></li>

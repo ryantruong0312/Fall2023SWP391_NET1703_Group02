@@ -1,13 +1,15 @@
 <%-- 
-    Document   : checkout
-    Created on : Sep 13, 2023, 11:26:14 PM
+    Document   : home
+    Created on : Sep 13, 2023, 7:25:56 PM
     Author     : tlminh
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="LOGIN_USER" scope="session" value="${sessionScope.LOGIN_USER}" />
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
     <head>
 
@@ -17,22 +19,32 @@
         <meta name="author" content="">
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>Bird Farm Shop - Thanh toán</title>
+        <title>V.E.T - Thế giới Vẹt Cảnh</title>
 
         <!-- Additional CSS Files -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
-        <link rel="stylesheet" type="text/css" href="../assets/css/checkout.css">
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-        <link rel="stylesheet" href="assets/css/checkout.css">
 
+        <style>
+            .breed-img,
+            .category-img
+            {
+                width: 100%;
+                height: 370px;
+            }
+            .breed-name,
+            .category-name
+            {
+                text-align: center;
+            }
+        </style>
 
+    </head>
 
     <body>
-        <c:url var="toHome" value="MainController?action=NavToHome"/>
         <c:url var="toCompare" value="MainController?action=NavToCompare"/>
         <c:url var="toLogin" value="MainController?action=NavToLogin"/>
         <c:url var="logout" value="MainController?action=Logout"/>
@@ -70,7 +82,7 @@
                             <!-- ***** Logo End ***** -->
                             <!-- ***** Menu Start ***** -->
                             <ul class="nav">
-                                <li class="scroll-to-section"><a href="${pageScope.toBirds}" >Trang chủ</a></li>
+                                <li class="scroll-to-section"><a href="#" class="active">Trang chủ</a></li>
                                     <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
                                     <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
@@ -128,63 +140,156 @@
         </header>
         <!-- ***** Header Area End ***** -->
 
-        <main>
+
+        <!-- ***** Subscribe Area Starts ***** -->
+        <div class="main-banner" id="top">
+
             <div class="container">
-                <form action="/action_page.php">
+                <div class="row">
 
-                    <div class="row">
-                        <div class="col-50">
-                            <h3>Địa chỉ thanh toán</h3>
-                            <label for="fname"><i class="fa fa-user"></i>Họ và tên</label>
-                            <input type="text" id="fname" name="firstname" placeholder="Lâm Trường Thọ">
-                            <label for="adr"><i class="fa fa-address-card-o"></i> Địa chỉ</label>
-                            <input type="text" id="adr" name="address" placeholder="Phường Uyên Hưng, thành phố Tân Uyên, tỉnh Bình Dương">
-
-
-                            <div>
-                                <h3>Phương thức thanh toán</h3>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                                    <label class="form-check-label" for="exampleRadios1">
-                                        Tiền mặt
-                                    </label>
+                    <div class="col-12 ">
+                        <div class="section-heading pb-5">
+                            <h2>Địa chỉ thanh toán</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label" ><strong>Giỏ hàng</strong></label>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                                    <label class="form-check-label" for="exampleRadios2">
-                                        Chuyển khoản
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3">
-                                    <label class="form-check-label" for="exampleRadios3">
-                                        Ship COD
-                                    </label>
-                                </div>
+                                 
                             </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label"><strong>Họ và tên</strong></label>
+                                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Nhập họ và tên">
+                                </div> 
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label"><strong>Email</strong></label>
+                                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Nhập email">
+                                </div> 
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label"><strong>Địa chỉ</strong></label>
+                                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Nhập địa chỉ">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="exampleFormControlInput1" class="form-label"><strong>Phương thức thanh toán</strong></label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked value="cash">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Tiền mặt
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="banking">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Chuyển khoản
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" value="COD">
+                                        <label class="form-check-label" for="flexRadioDefault3">
+                                            Ship COD
+                                        </label>
+                                    </div>
+                                    <div class="mt-3">
+                                        <button class="btn btn-success btn-block" type="button">Thanh toán</button>
+                                    </div>
+                                </div>
 
+                            </div>
                         </div>
 
-                        <div class="col-25">
-                            <div class="container">
-                                <h4>Giỏ Hàng
-                                    <span class="price" style="color:black">
-                                        <i class="fa fa-shopping-cart"></i>
-                                    </span>
-                                </h4>
-                                <p><a href="#">sản phẩm 1</a> <span class="price">$15</span></p>
-                                <p><a href="#">sản phẩm 2</a> <span class="price">$5</span></p>
-                                <p><a href="#">sản phẩm 3</a> <span class="price">$8</span></p>
-                                <p><a href="#">sản phẩm 4</a> <span class="price">$2</span></p>
-                                <hr>
-                                <p>Thành tiền <span class="price" style="color:black"><b>$30</b></span></p>
+
+
+                        <div>
+                            <h3>Phương thức thanh toán</h3>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                                <label class="form-check-label" for="exampleRadios1">
+                                    Tiền mặt
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+                                <label class="form-check-label" for="exampleRadios2">
+                                    Chuyển khoản
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3">
+                                <label class="form-check-label" for="exampleRadios3">
+                                    Ship COD
+                                </label>
                             </div>
                         </div>
-                        <input type="submit" value="Continue to checkout" class="btn">
+
+                    </div>
+
+                    <div class="col-25">
+                        <div class="container">
+                            <h4>Giỏ Hàng
+                                <span class="price" style="color:black">
+                                    <i class="fa fa-shopping-cart"></i>
+                                </span>
+                            </h4>
+                            <p><a href="#">sản phẩm 1</a> <span class="price">$15</span></p>
+                            <p><a href="#">sản phẩm 2</a> <span class="price">$5</span></p>
+                            <p><a href="#">sản phẩm 3</a> <span class="price">$8</span></p>
+                            <p><a href="#">sản phẩm 4</a> <span class="price">$2</span></p>
+                            <hr>
+                            <p>Thành tiền <span class="price" style="color:black"><b>$30</b></span></p>
+                        </div>
+                    </div>
+                    <input type="submit" value="Continue to checkout" class="btn">
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="section-heading">
+                            <h2>Đăng ký thông tin để có cơ hội nhận ưu đãi lên đến 30%</h2>
+                            <span>Ưu đãi và tích lũy điểm thưởng giúp bạn mua sắm thả ga tại V.E.T.</span>
+                        </div>
+                        <form id="subscribe" action="" method="get">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <fieldset>
+                                        <input name="name" type="text" id="name" placeholder="Họ và tên của bạn" required="">
+                                    </fieldset>
+                                </div>
+                                <div class="col-lg-5">
+                                    <fieldset>
+                                        <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Địa chỉ email của bạn" required="">
+                                    </fieldset>
+                                </div>
+                                <div class="col-lg-2">
+                                    <fieldset>
+                                        <button type="submit" id="form-submit" class="main-dark-button"><i class="fa fa-paper-plane"></i></button>
+                                    </fieldset>
+                                </div>
+                            </div>
                         </form>
                     </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-6">
+                                <ul>
+                                    <li>Địa chỉ:<br><span>284 Pasteur, P.8 Q.3, TP.HCM</span></li>
+                                    <li>Điện thoại:<br><span>0913-244-567</span></li>
+                                    <li>Kênh thông tin:<br><span><a href="#">Facebook</a>, <a href="#">Instagram</a>, <a href="#">Zalo</a>, <a href="#">Shopee</a></span></li>
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <ul>
+                                    <li>Giờ làm việc:<br><span>07:30 - 19:30 <br>Từ T2 đến T6</span></li>
+                                    <li>Email:<br><span>thegioivetcanh@gmail.com</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </main>
+        </div>
+        <!-- ***** Subscribe Area Ends ***** -->
 
         <!-- ***** Footer Start ***** -->
         <footer>
@@ -245,5 +350,46 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
+        <%@include file="../layout/message.jsp" %>
+        <!-- jQuery -->
+        <script src="assets/js/jquery-2.1.0.min.js"></script>
+
+        <!-- Bootstrap -->
+        <script src="assets/js/popper.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+
+        <!-- Plugins -->
+        <script src="assets/js/owl-carousel.js"></script>
+        <script src="assets/js/accordions.js"></script>
+        <script src="assets/js/datepicker.js"></script>
+        <script src="assets/js/scrollreveal.min.js"></script>
+        <script src="assets/js/waypoints.min.js"></script>
+        <script src="assets/js/jquery.counterup.min.js"></script>
+        <script src="assets/js/imgfix.min.js"></script> 
+        <script src="assets/js/slick.js"></script> 
+        <script src="assets/js/lightbox.js"></script> 
+        <script src="assets/js/isotope.js"></script> 
+
+        <!-- Global Init -->
+        <script src="assets/js/custom.js"></script>
+
+        <script>
+
+            $(function () {
+                var selectedClass = "";
+                $("p").click(function () {
+                    selectedClass = $(this).attr("data-rel");
+                    $("#portfolio").fadeTo(50, 0.1);
+                    $("#portfolio div").not("." + selectedClass).fadeOut();
+                    setTimeout(function () {
+                        $("." + selectedClass).fadeIn();
+                        $("#portfolio").fadeTo(50, 1);
+                    }, 500);
+
+                });
+            });
+
+        </script>
+
     </body>
 </html>

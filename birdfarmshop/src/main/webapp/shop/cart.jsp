@@ -124,15 +124,14 @@
                                     <div class="col-lg-8">
                                         <div class="p-5">
                                             <div class="d-flex justify-content-between align-items-center mb-5">
-                                                <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
-                                                <h6 class="mb-0 text-muted">3 items</h6>
+                                                <h1 class="fw-bold mb-0 text-black">Giỏ Hàng</h1>
+                                                <h6 class="mb-0 text-muted">3 sản phẩm</h6>
                                             </div>
                                             <hr class="my-4">
 
                                             <c:if test="${sessionScope.CART_BIRD != null}">
                                                 <c:forEach items="${sessionScope.CART_BIRD.getCart().values()}" var="bird_id" varStatus="counter">
 
-                                                    <h4>${bird_id.bird_name}</h4>
 
                                                     <div class="row mb-4 d-flex justify-content-between align-items-center">
                                                         <div class="col-md-2 col-lg-2 col-xl-2">
@@ -161,11 +160,7 @@
                                                         <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                                                             <h6 class="mb-0">${bird_id.price}</h6>
                                                         </div>
-                                                        <div class="col-md-2 col-lg-2 col-xl-2">
-                                                            <img
-                                                                src="${bird_id.image_urls[0]}"
-                                                                class="img-fluid rounded-3" alt="Chú chim đáng yêu">
-                                                        </div>
+
                                                     </div>
 
                                                 </c:forEach>
@@ -178,26 +173,26 @@
                                     </div>
                                     <div class="col-lg-4 bg-grey">
                                         <div class="p-5">
-                                            <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+                                            <h3 class="fw-bold mb-5 mt-2 pt-1">Thanh toán</h3>
                                             <hr class="my-4">
-                                            <h5 class="text-uppercase mb-3">Give code</h5>
+                                            <h5 class="text-uppercase mb-3">Mã giảm giá</h5>
 
                                             <div class="mb-5">
                                                 <div class="form-outline">
                                                     <input type="text" id="form3Examplea2" class="form-control form-control-lg" />
-                                                    <label class="form-label" for="form3Examplea2">Enter your code</label>
+                                                    <label class="form-label" for="form3Examplea2">Nhập mã giảm giá</label>
                                                 </div>
                                             </div>
 
                                             <hr class="my-4">
 
                                             <div class="d-flex justify-content-between mb-5">
-                                                <h5 class="text-uppercase">Total price</h5>
+                                                <h5 class="text-uppercase">Tổng tiền</h5>
                                                 <h5>€ 137.00</h5>
                                             </div>
 
-                                            <button type="button" class="btn btn-dark btn-block btn-lg"
-                                                    data-mdb-ripple-color="dark">Register</button>
+                                            <a href = MainController?action=CheckOut ><button type="button" class="btn btn-dark btn-block btn-lg"
+                                                    data-mdb-ripple-color="dark" >Thanh toán</button></a>
 
                                         </div>
                                     </div>
