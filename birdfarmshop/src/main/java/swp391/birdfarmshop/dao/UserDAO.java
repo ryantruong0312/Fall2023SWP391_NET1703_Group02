@@ -20,8 +20,10 @@ import swp391.birdfarmshop.util.DBUtils;
  * @author tlminh
  */
 public class UserDAO {
-    
+
     private static final String GET_ACCOUNT_LIST = "SELECT [username], [full_name], [role], [status] FROM [User]";
+    private static final String GET_USER_BY_USERNAME = "SELECT [username], [full_name], [role], [email], [phone],"
+            + " [register_date], [point], [address], [status] FROM [User] WHERE username = ?";
 
     public User getUser(String username, String password) {
         User u = null;
@@ -105,13 +107,13 @@ public class UserDAO {
         return u;
     }
 
-    public int createUser(String user, String email, String password, String name, String mobile, String loginBy, String status) {
+    public int createUser(String user, String email, String password, String name, String mobile, String role, String loginBy, String status) {
         int result = 0;
         Connection cnn = null;
         try {
             cnn = DBUtils.getConnection();
             String sql = "INSERT INTO [User](username,[password],full_name,phone,email,register_date,[role],[login_by],[status])\n"
-                    + "VALUES(?,?,?,?,?,?,'customer',?,?)";
+                    + "VALUES(?,?,?,?,?,?,?,?,?)";
             PreparedStatement pst = cnn.prepareStatement(sql);
             pst.setString(1, user);
             pst.setString(2, password);
@@ -120,8 +122,9 @@ public class UserDAO {
             pst.setString(5, email);
             LocalDate currentDate = LocalDate.now();
             pst.setString(6, "" + currentDate);
-            pst.setString(7, loginBy);
-            pst.setString(8, status);
+            pst.setString(7, role);
+            pst.setString(8, loginBy);
+            pst.setString(9, status);
             result = pst.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,7 +140,7 @@ public class UserDAO {
         return result;
     }
 
-    public int updatePassword(String user,String password) {
+    public int updatePassword(String user, String password) {
         int result = 0;
         Connection cnn = null;
         try {
@@ -192,7 +195,7 @@ public class UserDAO {
         }
         return result;
     }
-    
+
     public ArrayList<AccountDTO> getAccountList() throws SQLException {
         ArrayList<AccountDTO> accountList = new ArrayList<>();
         Connection con = null;
@@ -224,5 +227,73 @@ public class UserDAO {
             }
         }
         return accountList;
+    }
+
+    public boolean updateInfo(String fullName, String phone, String email, String address, String username) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("UPDATE [dbo].[User]\n"
+                        + "SET [full_name] = ?,[phone] = ?,[email] = ?,[address] = ?\n"
+                        + "WHERE [username] = ?");
+                stm.setString(1, fullName);
+                stm.setString(2, phone);
+                stm.setString(3, email);
+                stm.setString(4, address);
+                stm.setString(5, username);
+                int rowsAffected = stm.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+
+    public User getUserByUsername(String username) throws SQLException {
+        User user = new User();
+        Connection con = null;
+        PreparedStatement ptm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                ptm = con.prepareStatement(GET_USER_BY_USERNAME);
+                ptm.setString(1, username);
+                rs = ptm.executeQuery();
+                if (rs != null && rs.next()) {
+                    username = rs.getString("username");
+                    String fullName = rs.getString("full_name");
+                    String phone = rs.getString("phone");
+                    String email = rs.getString("email");
+                    String role = rs.getString("role");
+                    String address = rs.getString("address");
+                    int point = rs.getInt("point");
+                    Date registerDate = rs.getDate("register_date");
+                    String status = rs.getString("status");
+                    user = new User(username, "*****", fullName, phone, email, role, address, point, registerDate, "", status);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (ptm != null) {
+                ptm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return user;
     }
 }

@@ -142,7 +142,7 @@
                                     <c:if test="${sessionScope.LOGIN_USER != null}">
                                     <li class="submenu"><a class="user-name text-right" href="#">${LOGIN_USER.fullName}</a>
                                         <ul>
-                                            <li><a href="${pageScope.toProfile}">Cá nhân</a></li>
+                                            <li><a href="${pageScope.toProfile}&username=${sessionScope.LOGIN_USER.username}">Cá nhân</a></li>
                                             <li><a href="${pageScope.logout}">Đăng xuất</a></li>
                                         </ul>
                                     </li>
@@ -165,8 +165,8 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="inner-content">
-                            <h2>Single Product Page</h2>
-                            <span>Awesome &amp; Creative HTML CSS layout by TemplateMo</span>
+                            <h2>Thông tin chi tiết</h2>
+                            <span>Tất tần tật thông tin và mô tả về chú vẹt sẽ được tìm thấy tại đây!</span>
                         </div>
                     </div>
                 </div>
@@ -197,12 +197,23 @@
                     <div class="col-lg-4">
                         <div class="right-content">
                             <h4>${birdDetails.bird_name}</h4>
-                            <span class="price"><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</span>
+                            <c:choose>
+                                <c:when test="${birdDetails.discount > 0}">
+                                    <span>
+                                        <span style="display: inline-block;"><del><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</del></span>
+                                        <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${birdDetails.discount}%</span>
+                                        <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${birdDetails.price - birdDetails.price * birdDetails.discount / 100}" pattern="#,###"/> ₫<span>
+                                    </span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</span>
+                                </c:otherwise>
+                            </c:choose>
                             <span>${birdDetails.description}</span>
                             <div class="quote">
                                 <c:if test="${not empty birdDetails.dad_bird_name && not empty birdDetails.mom_bird_name}">
                                     <i class="fa fa-quote-left"></i><p>${birdDetails.dad_bird_name} lai với ${birdDetails.mom_bird_name}</p>
-                                    </c:if>
+                                </c:if>
                             </div>
                             <div class="quantity-content">
                                 <div class="left-content">
@@ -215,8 +226,7 @@
                                 </div>
                             </div>
                             <div class="total">
-                                <h4>Tổng đơn hàng: </h4>
-                                <div class="main-border-button"><a href="#">Thêm vào giỏ hàng</a></div>
+                                <div class="main-border-button"><a href="MainController?action=AddtoCart&bird_id=${birdDetails.bird_id}">Thêm vào giỏ hàng</a></div>
                             </div>
                         </div>
                     </div>
@@ -238,7 +248,7 @@
                             </div>
                             <ul>
                                 <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
+                                <li><a href="#">thegioivetcanh@gmail.com</a></li>
                                 <li><a href="#">0913-244-567</a></li>
                             </ul>
                         </div>
@@ -246,17 +256,17 @@
                     <div class="col-lg-3">
                         <h4>Sản phẩm và dịch vụ</h4>
                         <ul>
-                            <li><a href="#">Vẹt cảnh</a></li>
-                            <li><a href="#">Tổ chim non</a></li>
-                            <li><a href="#">Phụ kiện</a></li>
-                            <li><a href="#">So sánh</a></li>
-                            <li><a href="#">Nhân giống</a></li>
+                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
+                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
+                            <li><a href="${pageScope.toCompare}">So sánh</a></li>
+                            <li><a href="${pageScope.toPair}">Nhân giống</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-3">
                         <h4>Đường dẫn hữu ích</h4>
                         <ul>
-                            <li><a href="#">Trang chủ</a></li>
+                            <li><a href="${pageScope.toHome}">Trang chủ</a></li>
                             <li><a href="#">Về chúng tôi</a></li>
                             <li><a href="#">Hỗ trợ</a></li>
                             <li><a href="#">Liên hệ</a></li>

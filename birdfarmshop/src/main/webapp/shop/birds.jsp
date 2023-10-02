@@ -29,7 +29,11 @@
 
         <style>
             .bird-thumbnail{
-                width: 350px;
+                width: 358.44px;
+                height: 400px;
+            }
+            .thumb img {
+                width: 358.44px !important;
                 height: 400px;
             }
             .activeNav{
@@ -153,7 +157,7 @@
                                     <c:if test="${sessionScope.LOGIN_USER != null}">
                                     <li class="submenu"><a href="">${LOGIN_USER.fullName}</a>
                                         <ul>
-                                            <li><a href="${pageScope.toProfile}">Cá nhân</a></li>
+                                            <li><a href="${pageScope.toProfile}&username=${sessionScope.LOGIN_USER.username}">Cá nhân</a></li>
                                             <li><a href="${pageScope.logout}">Đăng xuất</a></li>
                                         </ul>
                                     </li>
@@ -246,45 +250,75 @@
                             <c:set var="SEARCHLIST" value="${requestScope.SEARCHLIST}"/>
                             <c:set var="BIRDLISTBYBREED_ID" value="${requestScope.BIRDLISTBYBREED_ID}"/> 
                             <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
-                            <div id="content" class="row">
-                                <c:choose>
-                                    <c:when test="${SEARCHLIST != null}">
-                                        <c:if test="${requestScope.SearchingNotMatch != null}">
-                                            <h4 style="margin-left: 15px; color: #ff3333;">${requestScope.SearchingNotMatch}</h4>
-                                        </c:if>
-                                        <c:if test="${not empty SEARCHLIST}">
-                                            <c:forEach items="${SEARCHLIST}" var="bird">
-                                                <div class="bird col-lg-4">
-                                                    <div class="item">
-                                                        <div class="thumb">
-                                                            <div class="hover-content">
-                                                                <ul>
-                                                                    <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                                    <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                                </ul>
+                                <div id="content" class="row">
+                                    <c:choose>
+                                        <c:when test="${SEARCHLIST != null}">
+                                            <c:if test="${requestScope.SearchingNotMatch != null}">
+                                                <h4 style="margin-left: 15px; color: #ff3333;">${requestScope.SearchingNotMatch}</h4>
+                                            </c:if>
+                                            <c:if test="${not empty SEARCHLIST}">
+                                                    <c:forEach items="${SEARCHLIST}" var="bird">
+                                                        <div class="bird col-lg-4">
+                                                            <div class="item">
+                                                                <div class="thumb">
+                                                                    <div class="hover-content">
+                                                                        <ul>
+                                                                            <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                                            <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <img class="bird-thumbnail" src="${bird.image_url}" alt="">
+                                                                </div>
+                                                                <div class="down-content">
+                                                                    <h4>${bird.bird_name}</h4>
+                                                                    <c:choose>
+                                                                        <c:when test="${bird.discount > 0}">
+                                                                            <span>
+                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
+                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
+                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
+                                                                            </span>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                </div>
                                                             </div>
                                                             <img class="bird-thumbnail" src="${bird.image_url}" alt="">
                                                         </div>
-                                                        <div class="down-content">
-                                                            <h4>${bird.bird_name}</h4>
-                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </c:forEach>
-                                        </c:if>
-                                    </c:when>
-                                    <c:when test="${BIRDLISTBYBREED_ID != null}">
-                                        <c:if test="${not empty BIRDLISTBYBREED_ID}">
-                                            <c:forEach items="${BIRDLISTBYBREED_ID}" var="bird">
-                                                <div class="bird col-lg-4">
-                                                    <div class="item">
-                                                        <div class="thumb">
-                                                            <div class="hover-content">
-                                                                <ul>
-                                                                    <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                                    <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                                </ul>
+                                                    </c:forEach>
+                                            </c:if>
+                                        </c:when>
+                                        <c:when test="${BIRDLISTBYBREED_ID != null}">
+                                            <c:if test="${not empty BIRDLISTBYBREED_ID}">
+                                                    <c:forEach items="${BIRDLISTBYBREED_ID}" var="bird">
+                                                        <div class="bird col-lg-4">
+                                                            <div class="item">
+                                                                <div class="thumb">
+                                                                    <div class="hover-content">
+                                                                        <ul>
+                                                                            <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                                            <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <img class="bird-thumbnail" src="${bird.image_url}" alt="">
+                                                                </div>
+                                                                <div class="down-content">
+                                                                    <h4>${bird.bird_name}</h4>
+                                                                    <c:choose>
+                                                                        <c:when test="${bird.discount > 0}">
+                                                                            <span>
+                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
+                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
+                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
+                                                                            </span>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                        </c:otherwise>
+                                                                    </c:choose> 
+                                                                </div>
                                                             </div>
                                                             <img class="bird-thumbnail" src="${bird.image_url}" alt="">
                                                         </div>
@@ -310,7 +344,21 @@
                                                                         <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
                                                                     </ul>
                                                                 </div>
-                                                                <img class="bird-thumbnail" src="${bird.image_url}" alt="">
+                                                                <div class="down-content">
+                                                                    <h4>${bird.bird_name}</h4>
+                                                                    <c:choose>
+                                                                        <c:when test="${bird.discount > 0}">
+                                                                            <span>
+                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
+                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
+                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
+                                                                            </span>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                        </c:otherwise>
+                                                                    </c:choose> 
+                                                                </div>
                                                             </div>
                                                             <div class="down-content">
                                                                 <h4>${bird.bird_name}</h4>

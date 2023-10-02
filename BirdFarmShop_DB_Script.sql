@@ -384,15 +384,15 @@ GO
 
 INSERT INTO [dbo].[User] ([username],[password],[full_name],[phone],[email],[role],[address],[point],[register_date],[login_by],[status])
 VALUES
-	('customer','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','Hung','0912345678','hung@gmail.com','customer',N'353/7 Nguyễn Trãi, phường Nguyễn Cư Trinh, quận 1, TP.HCM',12,'2023-06-15','form','active'),
-	('toan','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','Toan','0998765432','toan@gmail.com','customer',N'18/5/6 Trương Phước Phan, phường Bình Trị Đông, quận Bình Tân',12,'2023-06-15','form','active'),
-	('hoang','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','Hoang','0987654321','hoang@gmail.com','customer',N'73/7 Trần Bình Trọng, phường 1, quận 5',12,'2023-06-15','form','active'),
-	('hai','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','Hai','0923456789','hai@gmail.com','customer',N'199/5 Trần Bình Trọng, phường 3, quận 5',12,'2023-06-15','form','active'),
-	('tu','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','Tu','0954321678','tu@gmail.com','customer',N'56/1/2A Bùi Minh Trực, phường 5, quận 8',12,'2023-06-15','form','inactive'),
-	('staff','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','staff','0934567890','staff@gmail.com','staff',N'Ha Noi',12,'2023-06-15','form','active'),
-	('staff1','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','staff','0987654321','staff@gmail.com','staff',N'Ha Noi',12,'2023-06-15','form','inactive'),
-	('manager','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','manager','0965432109','manager@gmail.com','manager',N'Ha Noi',12,'2023-06-15','form','active'),
-	('admin','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o','admin','0978901234','admin@gmail.com','admin',N'Ha Noi',12,'2023-06-15','form','active')
+	('customer','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Trần Văn Hùng','0912345678','hungxedap@gmail.com','customer',N'353/7 Nguyễn Trãi, phường Nguyễn Cư Trinh, quận 1, TP.HCM',20,'2023-06-15','form','active'),
+	('giaphong','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Lưu Gia Phong','0998765432','phonglgbt@gmail.com','customer',N'18/5/6 Trương Phước Phan, phường Bình Trị Đông, quận Bình Tân, TP.HCM',5,'2023-06-15','form','active'),
+	('nhathoang','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Trần Nhật Hoàng','0987654321','hoangtn@gmail.com','customer',N'73/7 Trần Bình Trọng, phường 1, quận 5, TP.HCM',11,'2023-06-15','form','active'),
+	('huynhduc','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Lê Huỳnh Đức','0923456789','duclh123@gmail.com','customer',N'199/5 Trần Bình Trọng, phường 3, quận 5, TP.HCM',20,'2023-06-15','form','active'),
+	('khachhangvip','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Mạc Hoàng Sa','0954321678','hsavn@gmail.com','customer',N'56/1/2A Bùi Minh Trực, phường 5, quận 8, TP.HCM',25,'2023-06-15','form','inactive'),
+	('staff','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Trương Lê Minh','0934567890','staff@gmail.com','staff',N'359 Lê Đại Hành, phường 13, quận 11, TP.HCM',0,'2023-06-15','form','active'),
+	('staff1','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Trần Công Nhân','0987654321','nhantranvet@gmail.com','staff',N'15 Lê Văn Việt, phường TNP B, quận 9, TP.HCM',0,'2023-06-15','form','inactive'),
+	('manager','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Quản Văn Lý','0965432109','manager@gmail.com','manager',N'210 Pasteur, phường Đa Kao, quận 1, TP.HCM',0,'2023-06-15','form','active'),
+	('admin','eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjMiLCJpYXQiOjE2OTUyMjkyNTh9.H2Ot0OvkGby0DxT1L4BvPCkeowjnvu5vj2x_jouZF0o',N'Trần Văn Quyền Năng','0978901234','admin@gmail.com','admin',N'102 Ba Tháng Hai, phường 10, quận 10, TPHCM',0,'2023-06-15','form','active')
 GO
 
 
@@ -653,10 +653,10 @@ GO
 
 INSERT INTO [Order]([order_id],[customer],[order_date],[order_status],[ship_address],[payment_status],[total_price],[applied_point])
 VALUES('230925O0001','customer',2023-09-25,N'Chờ xử lý',null,N'Đã thanh toán',3000000,3),
-	  ('230915O0002','hai',2023-09-15,N'Đang xử lý',null,N'Đã thanh toán',300000,1),
-	  ('230916O0003','hoang',2023-09-16,N'Đang vận chuyển',null,N'Đã thanh toán',300000,1),
-	  ('230917O0004','toan',2023-09-17,N'Đã giao hàng',null,N'Đã thanh toán',300000,1),
-	  ('230918O0005','tu',2023-09-18,N'Đã hủy',null,N'Đã thanh toán',300000,1),
+	  ('230915O0002','giaphong',2023-09-15,N'Đang xử lý',null,N'Đã thanh toán',300000,1),
+	  ('230916O0003','nhathoang',2023-09-16,N'Đang vận chuyển',null,N'Đã thanh toán',300000,1),
+	  ('230917O0004','huynhduc',2023-09-17,N'Đã giao hàng',null,N'Đã thanh toán',300000,1),
+	  ('230918O0005','khachhangvip',2023-09-18,N'Đã hủy',null,N'Đã thanh toán',300000,1),
 	  ('230919O0006','customer',2023-09-19,N'Chưa đánh giá',null,N'Đã thanh toán',300000,1),
 	  ('230912O0007','customer',2023-09-20,N'Đã đánh giá',null,N'Đã thanh toán',300000,1);
 GO
@@ -684,14 +684,14 @@ GO
 INSERT INTO [Feedback]([customer],[order_item_id],[rating],[comment],[feedback_date]) 
 VALUES('customer',1,5,N'Chất lượng ok. Đc tặng cả cái đổ thức ăn. Giao nhanh. Cảm ơn ship và shop','2023-05-23'),
 	  ('customer',2,5,N'Sản phẩm OK.giao hàng hơi chậm.rất vừa với lồng và tiện lợi.mọi người nên mua cho mình 1 cái vừa đỡ mất thời gian vừa nhàn','2023-05-23'),
-	  ('hai',3,5,N'Sản phẩm OK.giao hàng hơi chậm.rất vừa với lồng và tiện lợi','2023-05-24'),
-	  ('hoang',4,5,N'Sản phẩm OK.Chim rất đẹp. Giao hàng nhanh','2023-05-24'),
-	  ('hoang',5,5,N'Sản phẩm OK. Lồng rất vừa, cứng cáp, chất lượng tuyệt vời','2023-05-24'),
-	  ('toan',6,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
-	  ('toan',7,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
-	  ('toan',8,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
-	  ('tu',9,4,N'Giao đúng mẫu đẹp ,ok','2023-05-28'),
-	  ('tu',10,4,N'Nhận được hàng rồi.đẹp quá.rất cứng cáp.sẽ mua thêm','2023-05-28'),
+	  ('giaphong',3,5,N'Sản phẩm OK.giao hàng hơi chậm.rất vừa với lồng và tiện lợi','2023-05-24'),
+	  ('nhathoang',4,5,N'Sản phẩm OK.Chim rất đẹp. Giao hàng nhanh','2023-05-24'),
+	  ('nhathoang',5,5,N'Sản phẩm OK. Lồng rất vừa, cứng cáp, chất lượng tuyệt vời','2023-05-24'),
+	  ('huynhduc',6,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
+	  ('huynhduc',7,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
+	  ('huynhduc',8,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
+	  ('khachhangvip',9,4,N'Giao đúng mẫu đẹp ,ok','2023-05-28'),
+	  ('khachhangvip',10,4,N'Nhận được hàng rồi.đẹp quá.rất cứng cáp.sẽ mua thêm','2023-05-28'),
 	  ('customer',11,5,N'Shop giao hàng rất nhanh mặc dù là ngày gần tết. Chim rất ok','2023-06-12'),
 	  ('customer',12,5,N'sản phẩm ok ship nhanh hơn hẹn','2023-06-12'),
 	  ('customer',13,5,N'sản phẩm ok ship nhanh hơn hẹn','2023-06-12'),
