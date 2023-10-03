@@ -149,11 +149,11 @@
                             <h2>Sản phẩm của chúng tôi</h2>
                         </div>
                     </div>
-                    <form id="selectBird" action="MainController" method="POST">
-                        <input type="hidden" name="action" value="NavToBird"> 
+                    <form id="selectNest" action="MainController" method="POST">
+                        <input type="hidden" name="action" value="NavToBirdNests"> 
                         <div class="search-bar">
                             <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                            <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                            <input type="text" name="txtBirdNest    " id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
                             <input type="submit" value="Tìm kiếm">
                         </div>
                 </div>
@@ -184,34 +184,34 @@
                     <!-- Nội dung chính -->
                     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                         <div id="content" class="row">
-                            <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
+                            <c:set var="NESTLIST" value="${requestScope.BIRD_NEST_LIST}"/>
                                 <div id="content" class="row">
-                                        <c:if test="${BIRDLIST != null}">
-                                            <c:if test="${not empty BIRDLIST}">
-                                                <c:forEach items="${BIRDLIST}" var="bird">
+                                        <c:if test="${NESTLIST != null}">
+                                            <c:if test="${not empty NESTLIST}">
+                                                <c:forEach items="${NESTLIST}" var="nest">
                                                     <div class="bird col-lg-4">
                                                         <div class="item">
                                                             <div class="thumb">
                                                                 <div class="hover-content">
                                                                     <ul>
-                                                                        <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                                        <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                        <li><a href="MainController?action=NavToBirdDetails&bird_id=${nest.nest_id}"><i class="fa fa-eye"></i></a></li>
+                                                                        <li><a href="MainController?action=AddtoCart&bird_id=${nest.nest_id}"><i class="fa fa-shopping-cart"></i></a></li>
                                                                     </ul>
                                                                 </div>
-                                                                <img class="bird-thumbnail" src="${bird.image_url}" alt="${bird.bird_name}">
+                                                                <img class="bird-thumbnail" src="${nest.image_url}" alt="${nest.nest_name}">
                                                                 </div>
                                                                 <div class="down-content">
-                                                                    <h4>${bird.bird_name}</h4>
+                                                                    <h4>${nest.nest_name}</h4>
                                                                     <c:choose>
-                                                                        <c:when test="${bird.discount > 0}">
+                                                                        <c:when test="${nest.discount > 0}">
                                                                             <span>
-                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
-                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
-                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
+                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${nest.price}" pattern="#,###"/> ₫</del></span>
+                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${nest.discount}%</span>
+                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${nest.price - nest.price * nest.discount / 100}" pattern="#,###"/> ₫<span>
                                                                             </span>
                                                                         </c:when>
                                                                         <c:otherwise>
-                                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                            <span><fmt:formatNumber value="${nest.price}" pattern="#,###"/> ₫</span>
                                                                         </c:otherwise>
                                                                     </c:choose> 
                                                                 </div>
@@ -383,7 +383,30 @@
                                     }, 500);
 
                                 });
-                            });
+                                $("input[name=txtBreedId]").change(function () {
+                                        $("#selectNest").submit();
+                                });
+                                $("input[name=txtPrice]").change(function () {
+                                        $("#selectNest").submit();
+                                });
+                                    $(".prev-page").click(function (){
+                                        let  page = $('input[name=page]').val();
+                                        let prevPage = Number(page) - 1;
+                                        $('input[name=page]').val(prevPage);
+                                        $("#selectBird").submit();
+                                    });
+                                     $(".next-page").click(function (){
+                                        let  page = $('input[name=page]').val();
+                                        let nextpage = Number(page) + 1;
+                                        $('input[name=page]').val(nextpage);
+                                        $("#selectBird").submit();
+                                    });
+                                });
+                                function takePage(event){
+                                    let value =  event.getAttribute('data-value');
+                                    $('input[name=page]').val(value);
+                                       $("#selectBird").submit();
+                                }
 
         </script>
 

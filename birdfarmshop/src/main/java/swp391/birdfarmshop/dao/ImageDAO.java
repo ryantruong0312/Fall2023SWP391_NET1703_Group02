@@ -186,7 +186,7 @@ public class ImageDAO {
         return url;
     }
     
-    public String getThumbnailUrlByBirdNestId(int birdNestID) throws SQLException {
+    public String getThumbnailUrlByBirdNestId(String birdNestID) throws SQLException {
         String url = "";
         Connection con = null;
         PreparedStatement stm = null;
@@ -195,7 +195,7 @@ public class ImageDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement(GET_THUMBNAIL_BY_BIRDNEST_ID);
-                stm.setInt(1, birdNestID);
+                stm.setString(1, birdNestID);
                 rs = stm.executeQuery();
                 if (rs.next()) {
                     url = rs.getString("image_url");

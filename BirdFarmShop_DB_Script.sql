@@ -389,8 +389,8 @@ GO
 
 INSERT INTO [dbo].[BirdNest] ([nest_id],[nest_name],[breed_id],[dad_bird_id],[mom_bird_id],[baby_quantity],[status],[price],[description])
 VALUES
-	('BN001', 'Tổ chim Vẹt Xích Thái lai Indian Ringneck', 'asian', 'XT001','IR001', 5, 'Còn hàng', 1200000,
-	'Tổ chim con lai giữa Vẹt Xích Thái (African Grey Parrot) và vẹt Indian Ringneck (Indian Ringneck Parakeet) 
+	('BN001', N'Tổ chim Vẹt Xích Thái lai Indian Ringneck', 'asian', 'XT001','IR001', 5, N'Còn hàng', 1200000,
+	N'Tổ chim con lai giữa Vẹt Xích Thái (African Grey Parrot) và vẹt Indian Ringneck (Indian Ringneck Parakeet) 
 	là một loài chim động cơ hoàn hảo kết hợp sự thông minh và nét đẹp từ cả hai loài cha mẹ. 
 	Đây là một loài chim có ngoại hình đa dạng, với nhiều biến thể màu lông và đặc điểm thể loại khác nhau.
 	Tổ chim con lai này thường có kích thước trung bình, thừa hưởng hình dáng gọn gàng và thanh lịch từ vẹt Indian Ringneck, với một vóc dáng mảnh mai, đuôi dài và mỏ sắc bén. 
@@ -398,8 +398,8 @@ VALUES
 	Tổ chim con lai giữa Vẹt Xích Thái và vẹt Indian Ringneck là một loài chim động cơ hấp dẫn, với sự kết hợp độc đáo giữa ngoại hình và tính cách từ cả hai loài cha mẹ. 
 	Chúng là những người bạn thú vị và thông minh cho những người yêu chim, nhưng đòi hỏi sự chăm sóc và tập trung đặc biệt để đảm bảo sức khỏe và hạnh phúc của chúng.'),
 
-	('BN002', 'Tổ chim Vẹt Rainbow Lory lai Red Lory', 'australian', 'RL409','RL391', 4, 'Còn hàng', 480000,
-	'Tổ chim con lai giữa Vẹt Rainbow Lory và Vẹt Red Lory là một sự kết hợp độc đáo giữa hai loài vẹt với ngoại hình và tính cách đa dạng.
+	('BN002', N'Tổ chim Vẹt Rainbow Lory lai Red Lory', 'australian', 'RL409','RL391', 4, N'Còn hàng', 480000,
+	N'Tổ chim con lai giữa Vẹt Rainbow Lory và Vẹt Red Lory là một sự kết hợp độc đáo giữa hai loài vẹt với ngoại hình và tính cách đa dạng.
 	Con lai giữa Vẹt Rainbow Lory và Vẹt Red Lory thường rất thông minh và dễ đào tạo. Chúng có khả năng học nhanh và thích thú với các hoạt động giải đố.
 	Tổ chim con lai này có năng lượng dồi dào và thích vận động. Chúng cần được cung cấp đủ lượng thời gian để bay và chơi đùa.
 	Tiếng kêu của tổ chim con lai này có thể kế thừa từ cả hai loài cha mẹ. Ví dụ, chúng có thể phát ra tiếng kêu trầm ấm của Vẹt Red Lory hoặc tiếng kêu sôi động và vui nhộn của Vẹt Rainbow Lory.

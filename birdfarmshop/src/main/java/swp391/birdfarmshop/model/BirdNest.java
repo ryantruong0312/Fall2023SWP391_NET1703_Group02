@@ -19,12 +19,13 @@ public class BirdNest {
     private String status;
     private int price;
     private int discount;
+    private String image_url;
     private String description;
 
     public BirdNest() {
     }
 
-    public BirdNest(String nest_id, String nest_name, String breed_id, String dad_bird_id, String mom_bird_id, int baby_quantity, String status, int price, int discount, String description) {
+    public BirdNest(String nest_id, String nest_name, String breed_id, String dad_bird_id, String mom_bird_id, int baby_quantity, String status, int price, int discount, String image_url, String description) {
         this.nest_id = nest_id;
         this.nest_name = nest_name;
         this.breed_id = breed_id;
@@ -34,9 +35,10 @@ public class BirdNest {
         this.status = status;
         this.price = price;
         this.discount = discount;
+        this.image_url = image_url;
         this.description = description;
     }
-
+    
     public String getNest_id() {
         return nest_id;
     }
@@ -116,5 +118,14 @@ public class BirdNest {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+    
 
 }

@@ -459,25 +459,6 @@
                                     $('input[name=page]').val(value);
                                        $("#selectBird").submit();
                                 }
-                                function toggleList(listId) {
-                                    var list = document.getElementById(listId);
-                                    if (list.style.display === "none" || list.style.display === "") {
-                                        list.style.display = "block";
-                                    } else {
-                                        list.style.display = "none";
-                                    }
-                                }
-
-//            var listItems = document.querySelectorAll("#page-${i}");
-//            listItems.forEach(function (item) {
-//                item.addEventListener("click", function () {\
-//                    listItems.forEach(function (li) {
-//                        li.classList.remove("active");
-//                    });
-//                    item.classList.add("active");
-//                });
-//            });
-
         </script>
 
     </body>

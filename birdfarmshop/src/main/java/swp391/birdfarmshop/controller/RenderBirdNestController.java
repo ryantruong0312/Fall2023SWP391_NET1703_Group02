@@ -10,14 +10,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import static java.rmi.server.LogStream.log;
-import java.util.ArrayList;
 import java.util.List;
-import static org.apache.http.auth.AuthProtocolState.SUCCESS;
-import swp391.birdfarmshop.dao.AccessoryDAO;
+import swp391.birdfarmshop.dao.BirdBreedDAO;
 import swp391.birdfarmshop.dao.BirdNestDAO;
-import swp391.birdfarmshop.dto.BirdNestDTO;
-import swp391.birdfarmshop.model.Accessory;
+import swp391.birdfarmshop.model.BirdBreed;
+import swp391.birdfarmshop.model.BirdNest;
 
 /**
  *
@@ -33,10 +30,35 @@ public class RenderBirdNestController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
-
         try {
-            
-           
+            String page = "1";
+            int recordsPerPage = 9;
+            BirdBreedDAO breed = new BirdBreedDAO();
+            List<BirdBreed> listBreeds = breed.getBirdBreeds();
+
+            if (request.getParameter("page") != null) {
+                page = request.getParameter("page");
+            }
+            String search = request.getParameter("txtBirdNest");
+            String breedId = request.getParameter("txtBreedId");
+            String price = request.getParameter("txtPrice");
+            if (breedId != null && breedId.equals("All")) {
+                breedId = null;
+            }
+            if (price != null && price.equals("All")) {
+                price = null;
+            }
+            BirdNestDAO nestDao = new BirdNestDAO();
+            List<BirdNest> nestList = nestDao.getBirdsNest(search, breedId, price, page, recordsPerPage);
+            int noOfRecords = nestDao.totalBirdsNest(search, breedId, price, page, recordsPerPage);
+            int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+            request.setAttribute("BREED_ID", breedId);
+            request.setAttribute("PRICE", price);
+            request.setAttribute("SEARCH", search);
+            request.setAttribute("BREEDLIST", listBreeds);
+            request.setAttribute("BIRD_NEST_LIST", nestList);
+            request.setAttribute("noOfPages", noOfPages);
+            request.setAttribute("currentPage", page);
             url = SUCCESS;
         } catch (Exception e) {
             log("Error at RenderAccessoryController: " + e.toString());
