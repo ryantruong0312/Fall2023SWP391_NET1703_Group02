@@ -12,44 +12,37 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import swp391.birdfarmshop.dao.AccessoryDAO;
-import swp391.birdfarmshop.dto.AccessoryDTO;
+import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dto.CartDTO;
-import swp391.birdfarmshop.model.Accessory;
+import swp391.birdfarmshop.model.Bird;
 
 /**
  *
  * @author tlminh
  */
-@WebServlet(name = "AddAccessoryToCartController", urlPatterns = {"/AddAccessoryToCartController"})
-public class AddAccessoryToCartController extends HttpServlet {
+@WebServlet(name = "RemoveBirdFromCartController", urlPatterns = {"/RemoveBirdFromCartController"})
+public class RemoveBirdFromCartController extends HttpServlet {
 
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "MainController?action=NavToHome";
+    private static final String SUCCESS = "shop/cart.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String accessory_id = request.getParameter("accessory_id");
-            int order_quantity = Integer.parseInt(request.getParameter("order_quantity"));
-            AccessoryDAO adao = new AccessoryDAO();
-            Accessory accessory = adao.getAccessoryByID(accessory_id);
+            String bird_id = request.getParameter("bird_id");
+            BirdDAO birdDao = new BirdDAO();
+            Bird bird = birdDao.getBirdById(bird_id);
             HttpSession session = request.getSession();
             if (session != null) {
                 CartDTO cart = (CartDTO) session.getAttribute("CART");
-                if (cart == null) {
-                    cart = new CartDTO();
-                }
-                boolean checkAdd = cart.addAccessoryToCart(accessory, order_quantity);
-                if (checkAdd) {
-                    url = SUCCESS;
-                    session.setAttribute("CART", cart);
-                }
+                cart.removeBirdFromCart(bird);
+                url = SUCCESS;
+                session.setAttribute("CART", cart);
             }
         } catch (Exception e) {
-            log("Error at AddAccessoryToCartController: " + e.toString());
+            log("Error at RemoveBirdFromCartController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

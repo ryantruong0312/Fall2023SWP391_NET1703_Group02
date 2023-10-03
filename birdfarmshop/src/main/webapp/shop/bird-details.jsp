@@ -118,8 +118,12 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">${sessionScope.CART.totalItem}</div>
-
+                                            <div class="cart-amount">
+                                                <c:choose>
+                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
+                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
+                                                </c:choose>
+                                            </div>
                                         </li>
 
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
@@ -213,26 +217,26 @@
                                     <div class="mt-2">
                                         <h4>Mô tả sản phẩm: </h4>
                                         <span>${birdDetails.description}</span>
-                                    <div>
-                                    <div class="quote">
-                                        <c:if test="${not empty birdDetails.dad_bird_name && not empty birdDetails.mom_bird_name}">
-                                            <i class="fa fa-quote-left"></i><p>${birdDetails.dad_bird_name} lai với ${birdDetails.mom_bird_name}</p>
-                                            </c:if>
-                                    </div>
-                                    <div class="quantity-content">
-                                        <div class="left-content">
-                                            <h6>Chỉ duy nhất</h6>
-                                        </div>
-                                        <div class="right-content">
-                                            <div class="quantity buttons_added">
-                                                <input type="button" value="-" class="minus"><input type="button" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="" inputmode=""><input type="button" value="+" class="plus">
+                                        <div>
+                                            <div class="quote">
+                                                <c:if test="${not empty birdDetails.dad_bird_name && not empty birdDetails.mom_bird_name}">
+                                                    <i class="fa fa-quote-left"></i><p>${birdDetails.dad_bird_name} lai với ${birdDetails.mom_bird_name}</p>
+                                                    </c:if>
+                                            </div>
+                                            <div class="quantity-content">
+                                                <div class="left-content">
+                                                    <h6>Chỉ duy nhất</h6>
+                                                </div>
+                                                <div class="right-content">
+                                                    <div class="quantity buttons_added">
+                                                        <input type="button" value="-" class="minus"><input type="button" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="" inputmode=""><input type="button" value="+" class="plus">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="total">
+                                                <div class="main-border-button"><a href="MainController?action=AddtoCart&type=bird&id=${birdDetails.bird_id}">Thêm vào giỏ hàng</a></div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="total">
-                                        <div class="main-border-button"><a href="MainController?action=AddtoCart&type=bird&id=${birdDetails.bird_id}">Thêm vào giỏ hàng</a></div>
-                                    </div>
-                                    </div>
                                     </div>
                                     </div>
                                     </div>

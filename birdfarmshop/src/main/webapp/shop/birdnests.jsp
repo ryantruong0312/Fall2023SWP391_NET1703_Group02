@@ -83,8 +83,12 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">${sessionScope.CART.totalItem}</div>
-
+                                            <div class="cart-amount">
+                                                <c:choose>
+                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
+                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
+                                                </c:choose>
+                                            </div>
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
@@ -140,7 +144,7 @@
         <!-- ***** Main Banner Area End ***** -->
 
 
- <!-- ***** Products Area Starts ***** -->
+        <!-- ***** Products Area Starts ***** -->
         <section class="section" id="products">
             <div class="container">
                 <div class="row">
@@ -185,208 +189,208 @@
                     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                         <div id="content" class="row">
                             <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
-                                <div id="content" class="row">
-                                        <c:if test="${BIRDLIST != null}">
-                                            <c:if test="${not empty BIRDLIST}">
-                                                <c:forEach items="${BIRDLIST}" var="bird">
-                                                    <div class="bird col-lg-4">
-                                                        <div class="item">
-                                                            <div class="thumb">
-                                                                <div class="hover-content">
-                                                                    <ul>
-                                                                        <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                                        <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                                    </ul>
+                            <div id="content" class="row">
+                                <c:if test="${BIRDLIST != null}">
+                                    <c:if test="${not empty BIRDLIST}">
+                                        <c:forEach items="${BIRDLIST}" var="bird">
+                                            <div class="bird col-lg-4">
+                                                <div class="item">
+                                                    <div class="thumb">
+                                                        <div class="hover-content">
+                                                            <ul>
+                                                                <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                                <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                            </ul>
+                                                        </div>
+                                                        <img class="bird-thumbnail" src="${bird.image_url}" alt="${bird.bird_name}">
+                                                    </div>
+                                                    <div class="down-content">
+                                                        <h4>${bird.bird_name}</h4>
+                                                        <c:choose>
+                                                            <c:when test="${bird.discount > 0}">
+                                                                <span>
+                                                                    <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
+                                                                    <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
+                                                                    <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
+                                                                        </span>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                    </c:otherwise>
+                                                                </c:choose> 
                                                                 </div>
-                                                                <img class="bird-thumbnail" src="${bird.image_url}" alt="${bird.bird_name}">
+
                                                                 </div>
-                                                                <div class="down-content">
-                                                                    <h4>${bird.bird_name}</h4>
-                                                                    <c:choose>
-                                                                        <c:when test="${bird.discount > 0}">
-                                                                            <span>
-                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
-                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
-                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
-                                                                            </span>
-                                                                        </c:when>
-                                                                        <c:otherwise>
-                                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
-                                                                        </c:otherwise>
-                                                                    </c:choose> 
                                                                 </div>
-                                                      
+                                                            </c:forEach>
+                                                        </c:if>
+                                                    </c:if>
+                                                    <div class="col-lg-12">
+                                                        <div class="pagination bird-pg">
+                                                            <c:if test="${noOfPages > 1 && noOfPages <= 5}">
+                                                                <input type="hidden" name="page" value="${requestScope.currentPage}"/>
+                                                                <ul>
+                                                                    <c:if test="${requestScope.currentPage > 1}">
+                                                                        <li id="page">
+                                                                            <a class="prev-page"><<</a>
+                                                                        </li>
+                                                                    </c:if>
+                                                                    <c:forEach begin="1" end="${noOfPages}" var="i">
+                                                                        <li id="page-number">
+                                                                            <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
+                                                                        </li>
+                                                                    </c:forEach>
+                                                                    <c:if test="${requestScope.currentPage < noOfPages}">
+                                                                        <li id="page">
+                                                                            <a class="next-page" >>></a>
+                                                                        </li>
+                                                                    </c:if>
+                                                                </ul>
+                                                            </c:if>    
+                                                            <c:if test="${noOfPages > 5}">
+                                                                <input name="page" value="${requestScope.currentPage}"/>
+                                                                <c:set var="numberOfPage" value="${requestScope.currentPage}"/>
+                                                                <ul>
+                                                                    <li id="page">
+                                                                        <a class="prev-page" ><<</a>
+                                                                    </li>
+                                                                    <c:forEach begin="${numberOfPage - 2}" end="${numberOfPage + 2}" var="i">
+                                                                        <li id="page-number">
+                                                                            <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
+                                                                        </li>
+                                                                    </c:forEach>
+                                                                    <li id="page">
+                                                                        <a class="next-page">>></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </c:if>
                                                         </div>
                                                     </div>
-                                                </c:forEach>
-                                            </c:if>
-                                        </c:if>
-                                <div class="col-lg-12">
-                                    <div class="pagination bird-pg">
-                                        <c:if test="${noOfPages > 1 && noOfPages <= 5}">
-                                            <input type="hidden" name="page" value="${requestScope.currentPage}"/>
-                                            <ul>
-                                                <c:if test="${requestScope.currentPage > 1}">
-                                                    <li id="page">
-                                                        <a class="prev-page"><<</a>
-                                                    </li>
-                                                </c:if>
-                                                <c:forEach begin="1" end="${noOfPages}" var="i">
-                                                    <li id="page-number">
-                                                        <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
-                                                    </li>
-                                                </c:forEach>
-                                                <c:if test="${requestScope.currentPage < noOfPages}">
-                                                    <li id="page">
-                                                        <a class="next-page" >>></a>
-                                                    </li>
-                                                </c:if>
-                                            </ul>
-                                        </c:if>    
-                                       <c:if test="${noOfPages > 5}">
-                                            <input name="page" value="${requestScope.currentPage}"/>
-                                            <c:set var="numberOfPage" value="${requestScope.currentPage}"/>
-                                            <ul>
-                                                <li id="page">
-                                                    <a class="prev-page" ><<</a>
-                                                </li>
-                                                    <c:forEach begin="${numberOfPage - 2}" end="${numberOfPage + 2}" var="i">
-                                                    <li id="page-number">
-                                                        <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
-                                                    </li>
-                                                    </c:forEach>
-                                                <li id="page">
-                                                    <a class="next-page">>></a>
-                                                </li>
-                                            </ul>
-                                        </c:if>
-                                    </div>
-                                </div>
-                            </div>
-                    </main>            
-                </div>
-                </form>
-            </div>
-        </section>
-        <!-- ***** Products Area Ends ***** -->
-        
-        <!-- ***** Footer Start ***** -->
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="first-item">
-                            <div class="logo">
-                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
-                            </div>
-                            <ul>
-                                <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                <li><a href="#">thegioivetcanh@gmail.com</a></li>
-                                <li><a href="#">0913-244-567</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Sản phẩm và dịch vụ</h4>
-                        <ul>
-                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                            <li><a href="${pageScope.toCompare}">So sánh</a></li>
-                            <li><a href="${pageScope.toPair}">Nhân giống</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Đường dẫn hữu ích</h4>
-                        <ul>
-                            <li><a href="${pageScope.toHome}">Trang chủ</a></li>
-                            <li><a href="#">Về chúng tôi</a></li>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Liên hệ</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Thông tin hỗ trợ</h4>
-                        <ul>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Câu hỏi thường gặp</a></li>
-                            <li><a href="#">Giao hàng</a></li>
-                            <li><a href="#">Theo dõi đơn hàng</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="under-footer">
-                            <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
+                                                    </div>
+                                                    </main>            
+                                                    </div>
+                                                    </form>
+                                                    </div>
+                                                    </section>
+                                                    <!-- ***** Products Area Ends ***** -->
 
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- ***** Footer Area Ends ***** -->
+                                                    <!-- ***** Footer Start ***** -->
+                                                    <footer>
+                                                        <div class="container">
+                                                            <div class="row">
+                                                                <div class="col-lg-3">
+                                                                    <div class="first-item">
+                                                                        <div class="logo">
+                                                                            <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
+                                                                        </div>
+                                                                        <ul>
+                                                                            <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
+                                                                            <li><a href="#">thegioivetcanh@gmail.com</a></li>
+                                                                            <li><a href="#">0913-244-567</a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <h4>Sản phẩm và dịch vụ</h4>
+                                                                    <ul>
+                                                                        <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
+                                                                        <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                                                                        <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
+                                                                        <li><a href="${pageScope.toCompare}">So sánh</a></li>
+                                                                        <li><a href="${pageScope.toPair}">Nhân giống</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <h4>Đường dẫn hữu ích</h4>
+                                                                    <ul>
+                                                                        <li><a href="${pageScope.toHome}">Trang chủ</a></li>
+                                                                        <li><a href="#">Về chúng tôi</a></li>
+                                                                        <li><a href="#">Hỗ trợ</a></li>
+                                                                        <li><a href="#">Liên hệ</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <h4>Thông tin hỗ trợ</h4>
+                                                                    <ul>
+                                                                        <li><a href="#">Hỗ trợ</a></li>
+                                                                        <li><a href="#">Câu hỏi thường gặp</a></li>
+                                                                        <li><a href="#">Giao hàng</a></li>
+                                                                        <li><a href="#">Theo dõi đơn hàng</a></li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-lg-12">
+                                                                    <div class="under-footer">
+                                                                        <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
+
+                                                                        <ul>
+                                                                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                                                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                                                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </footer>
+                                                    <!-- ***** Footer Area Ends ***** -->
 
 
-        <!-- Include Bootstrap JS (for modal) -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+                                                    <!-- Include Bootstrap JS (for modal) -->
+                                                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
-        <!-- JavaScript for Add to Cart Popup -->
-        <script>
-                            function addToCart() {
-                                var result = confirm("Do you want to add Mom and/or Dad bird to the cart?");
-                                if (result) {
-                                    // Add logic to add birds to the cart here
-                                    alert("Bird(s) added to cart!");
-                                }
-                            }
-        </script>
+                                                    <!-- JavaScript for Add to Cart Popup -->
+                                                    <script>
+                                                                                function addToCart() {
+                                                                                    var result = confirm("Do you want to add Mom and/or Dad bird to the cart?");
+                                                                                    if (result) {
+                                                                                        // Add logic to add birds to the cart here
+                                                                                        alert("Bird(s) added to cart!");
+                                                                                    }
+                                                                                }
+                                                    </script>
 
-        <!-- jQuery -->
-        <script src="assets/js/jquery-2.1.0.min.js"></script>
+                                                    <!-- jQuery -->
+                                                    <script src="assets/js/jquery-2.1.0.min.js"></script>
 
-        <!-- Bootstrap -->
-        <script src="assets/js/popper.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>
+                                                    <!-- Bootstrap -->
+                                                    <script src="assets/js/popper.js"></script>
+                                                    <script src="assets/js/bootstrap.min.js"></script>
 
-        <!-- Plugins -->
-        <%@include file="../layout/message.jsp" %>
+                                                    <!-- Plugins -->
+                                                    <%@include file="../layout/message.jsp" %>
 
-        <script src="assets/js/owl-carousel.js"></script>
-        <script src="assets/js/accordions.js"></script>
-        <script src="assets/js/datepicker.js"></script>
-        <script src="assets/js/scrollreveal.min.js"></script>
-        <script src="assets/js/waypoints.min.js"></script>
-        <script src="assets/js/jquery.counterup.min.js"></script>
-        <script src="assets/js/imgfix.min.js"></script> 
-        <script src="assets/js/slick.js"></script> 
-        <script src="assets/js/lightbox.js"></script> 
-        <script src="assets/js/isotope.js"></script> 
+                                                    <script src="assets/js/owl-carousel.js"></script>
+                                                    <script src="assets/js/accordions.js"></script>
+                                                    <script src="assets/js/datepicker.js"></script>
+                                                    <script src="assets/js/scrollreveal.min.js"></script>
+                                                    <script src="assets/js/waypoints.min.js"></script>
+                                                    <script src="assets/js/jquery.counterup.min.js"></script>
+                                                    <script src="assets/js/imgfix.min.js"></script> 
+                                                    <script src="assets/js/slick.js"></script> 
+                                                    <script src="assets/js/lightbox.js"></script> 
+                                                    <script src="assets/js/isotope.js"></script> 
 
-        <!-- Global Init -->
-        <script src="assets/js/custom.js"></script>
+                                                    <!-- Global Init -->
+                                                    <script src="assets/js/custom.js"></script>
 
-        <script>
+                                                    <script>
 
-                            $(function () {
-                                var selectedClass = "";
-                                $("p").click(function () {
-                                    selectedClass = $(this).attr("data-rel");
-                                    $("#portfolio").fadeTo(50, 0.1);
-                                    $("#portfolio div").not("." + selectedClass).fadeOut();
-                                    setTimeout(function () {
-                                        $("." + selectedClass).fadeIn();
-                                        $("#portfolio").fadeTo(50, 1);
-                                    }, 500);
+                                                                                $(function () {
+                                                                                    var selectedClass = "";
+                                                                                    $("p").click(function () {
+                                                                                        selectedClass = $(this).attr("data-rel");
+                                                                                        $("#portfolio").fadeTo(50, 0.1);
+                                                                                        $("#portfolio div").not("." + selectedClass).fadeOut();
+                                                                                        setTimeout(function () {
+                                                                                            $("." + selectedClass).fadeIn();
+                                                                                            $("#portfolio").fadeTo(50, 1);
+                                                                                        }, 500);
 
-                                });
-                            });
+                                                                                    });
+                                                                                });
 
-        </script>
+                                                    </script>
 
-    </body>
+                                                    </body>
 
-</html>
+                                                    </html>

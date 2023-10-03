@@ -4,12 +4,15 @@
  */
 package swp391.birdfarmshop.dto;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.model.BirdNest;
+import swp391.birdfarmshop.model.OrderedAccessoryItem;
 
 /**
  *
@@ -17,9 +20,9 @@ import swp391.birdfarmshop.model.BirdNest;
  */
 public class CartDTO {
 
-    private ArrayList<Bird> birdList;
-    private ArrayList<BirdNest> birdNestList;
-    private Map<Accessory, Integer> accessoryList;
+    private Map<String, Bird> birdList;
+    private Map<String, BirdNest> birdNestList;
+    private Map<String, OrderedAccessoryItem> accessoryList;
     private int birdTotalPrice;
     private int birdNestTotalPrice;
     private int accessoryTotalPrice;
@@ -27,22 +30,11 @@ public class CartDTO {
     private int totalItem;
 
     public CartDTO() {
-        birdList = new ArrayList<>();
-        birdNestList = new ArrayList<>();
+        birdList = new HashMap<>();
+        birdNestList = new HashMap<>();
         accessoryList = new HashMap<>();
         cartTotalPrice = 0;
         totalItem = 0;
-    }
-
-    public CartDTO(ArrayList<Bird> birdList, ArrayList<BirdNest> birdNestList, Map<Accessory, Integer> accessoryList, int birdTotalPrice, int birdNestTotalPrice, int accessoryTotalPrice, int cartTotalPrice, int totalItem) {
-        this.birdList = birdList;
-        this.birdNestList = birdNestList;
-        this.accessoryList = accessoryList;
-        this.birdTotalPrice = birdTotalPrice;
-        this.birdNestTotalPrice = birdNestTotalPrice;
-        this.accessoryTotalPrice = accessoryTotalPrice;
-        this.cartTotalPrice = cartTotalPrice;
-        this.totalItem = totalItem;
     }
 
     public int getTotalItem() {
@@ -53,27 +45,27 @@ public class CartDTO {
         this.totalItem = totalItem;
     }
 
-    public ArrayList<Bird> getBirdList() {
+    public Map<String, Bird> getBirdList() {
         return birdList;
     }
 
-    public void setBirdList(ArrayList<Bird> birdList) {
+    public void setBirdList(Map<String, Bird> birdList) {
         this.birdList = birdList;
     }
 
-    public ArrayList<BirdNest> getBirdNestList() {
+    public Map<String, BirdNest> getBirdNestList() {
         return birdNestList;
     }
 
-    public void setBirdNestList(ArrayList<BirdNest> birdNestList) {
+    public void setBirdNestList(Map<String, BirdNest> birdNestList) {
         this.birdNestList = birdNestList;
     }
 
-    public Map<Accessory, Integer> getAccessoryList() {
+    public Map<String, OrderedAccessoryItem> getAccessoryList() {
         return accessoryList;
     }
 
-    public void setAccessoryList(Map<Accessory, Integer> accessoryList) {
+    public void setAccessoryList(Map<String, OrderedAccessoryItem> accessoryList) {
         this.accessoryList = accessoryList;
     }
 
@@ -111,10 +103,10 @@ public class CartDTO {
 
     public boolean addBirdToCart(Bird bird) {
         boolean check = false;
-        if (!this.birdList.contains(bird)) {
-            this.birdList.add(bird);
+        if (!this.birdList.containsKey(bird.getBird_id())) {
+            this.birdList.put(bird.getBird_id(), bird);
             this.totalItem += 1;
-            cartTotalPrice += (bird.getPrice() - (bird.getPrice() * bird.getDiscount()));
+            cartTotalPrice += (bird.getPrice() - (bird.getPrice() * bird.getDiscount() / 100));
             check = true;
         }
         return check;
@@ -122,29 +114,41 @@ public class CartDTO {
 
     public boolean addBirdNestToCart(BirdNest birdnest) {
         boolean check = false;
-        if (!this.birdNestList.contains(birdnest)) {
-            this.birdNestList.add(birdnest);
+        if (!this.birdNestList.containsKey(birdnest.getNest_id())) {
+            this.birdNestList.put(birdnest.getNest_id(), birdnest);
             this.totalItem += 1;
-            cartTotalPrice += (birdnest.getPrice() - (birdnest.getPrice() * birdnest.getDiscount()));
+            cartTotalPrice += (birdnest.getPrice() - (birdnest.getPrice() * birdnest.getDiscount() / 100));
             check = true;
         }
         return check;
     }
 
-    public boolean addAccessoryToCart(Accessory accessory, int quantity) {
+    public boolean addAccessoryToCart(Accessory accessory, int quantity) throws SQLException {
         boolean check = false;
-        if (this.accessoryList.containsKey(accessory)) {
-            int currentQuant = this.accessoryList.get(accessory);
-            this.accessoryList.put(accessory, currentQuant + quantity);
+        if (this.accessoryList.containsKey(accessory.getAccessory_id())) {
+            int currentQuant = this.accessoryList.get(accessory.getAccessory_id()).getOrder_quantity();
+            this.accessoryList.get(accessory.getAccessory_id()).setOrder_quantity(currentQuant + quantity);
             this.totalItem += quantity;
-            this.cartTotalPrice += ((accessory.getUnit_price() - (accessory.getUnit_price() * accessory.getDiscount())) * quantity);
+            this.cartTotalPrice += ((accessory.getUnit_price() - (accessory.getUnit_price() * accessory.getDiscount() / 100)) * quantity);
             check = true;
         } else {
-            this.accessoryList.put(accessory, quantity);
+            this.accessoryList.put(accessory.getAccessory_id(), new OrderedAccessoryItem(accessory, quantity));
             this.totalItem += quantity;
-            this.cartTotalPrice += ((accessory.getUnit_price() - (accessory.getUnit_price() * accessory.getDiscount())) * quantity);
+            this.cartTotalPrice += ((accessory.getUnit_price() - (accessory.getUnit_price() * accessory.getDiscount() / 100)) * quantity);
             check = true;
         }
         return check;
+    }
+
+    public void removeBirdFromCart(Bird bird) {
+        this.birdList.remove(bird.getBird_id());
+        this.totalItem -= 1;
+        this.cartTotalPrice -= (bird.getPrice() - (bird.getPrice() * bird.getDiscount() / 100));
+    }
+
+    public void removeAccessoryFromCart(Accessory accessory, int order_quantity) {
+        this.accessoryList.remove(accessory.getAccessory_id());
+        this.totalItem -= order_quantity;
+        this.cartTotalPrice -= ((accessory.getUnit_price() - (accessory.getUnit_price() * accessory.getDiscount() / 100)) * order_quantity);
     }
 }

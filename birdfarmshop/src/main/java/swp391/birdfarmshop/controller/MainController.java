@@ -67,6 +67,10 @@ public class MainController extends HttpServlet {
     private static final String DEST_ADD_BIRD_TO_CART = "AddBirdToCartController";
     private static final String ACT_ADD_ACCESSORY_TO_CART = "AddAccessoryToCart";
     private static final String DEST_ADD_ACCESSORY_TO_CART = "AddAccessoryToCartController";
+    private static final String ACT_REMOVE_BIRD_FROM_CART = "RemoveBirdFromCart";
+    private static final String DEST_REMOVE_BIRD_FROM_CART = "RemoveBirdFromCartController";
+    private static final String ACT_REMOVE_ACCESSORY_FROM_CART = "RemoveAccessoryFromCart";
+    private static final String DEST_REMOVE_ACCESSORY_FROM_CART = "RemoveAccessoryFromCartController";
     private static final String ACT_SEARCH_ACCESSORY = "RenderSearchAccessories";
     private static final String DEST_SEARCH_ACCESSORY = "RenderSearchAccessoriesController";
     private static final String ACT_CHECK_OUT = "CheckOut";
@@ -179,6 +183,12 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_CREATE_ACCOUNT:
                     url = DEST_CREATE_ACCOUNT;
+                    break;
+                case ACT_REMOVE_ACCESSORY_FROM_CART:
+                    url = DEST_REMOVE_ACCESSORY_FROM_CART;
+                    break;
+                case ACT_REMOVE_BIRD_FROM_CART:
+                    url = DEST_REMOVE_BIRD_FROM_CART;
                     break;
                 default:
                     break;
