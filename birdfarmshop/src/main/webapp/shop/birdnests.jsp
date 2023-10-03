@@ -140,50 +140,136 @@
         <!-- ***** Main Banner Area End ***** -->
 
 
-
-        <div class="container mt-5">
-            <div class="row">
-                <!-- Left Column - Mom Bird -->
-                <div class="col-lg-4">
-                    <div class="text-center">
-                        <a href="mom_bird_detail.jsp">
-                            <img src="mom_bird.jpg" alt="Mom Bird" class="img-thumbnail">
-                        </a>
-                        <div class="mt-2">
-                            <h5 class="bird-info-name"><a href="mom_bird_detail.jsp">Mom Bird</a></h5>
+ <!-- ***** Products Area Starts ***** -->
+        <section class="section" id="products">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-heading">
+                            <h2>Sản phẩm của chúng tôi</h2>
                         </div>
                     </div>
-                </div>
-
-                <!-- Center Column - Baby Birds -->
-                <div class="col-lg-4">
-                    <img src="baby_birds.jpg" alt="Baby Birds" class="img-fluid rounded">
-                </div>
-
-                <!-- Right Column - Dad Bird and Nest Info -->
-                <div class="col-lg-4">
-                    <div class="text-center">
-                        <a href="dad_bird_detail.jsp">
-                            <img src="dad_bird.jpg" alt="Dad Bird" class="img-thumbnail">
-                        </a>
-                        <div class="mt-2">
-                            <h5 class="bird-info-name"><a href="dad_bird_detail.jsp">Dad Bird</a></h5>
+                    <form id="selectBird" action="MainController" method="POST">
+                        <input type="hidden" name="action" value="NavToBird"> 
+                        <div class="search-bar">
+                            <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                            <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                            <input type="submit" value="Tìm kiếm">
                         </div>
-                    </div>
-                    <div class="mt-4">
-                        <h2>Bird Nest Details</h2>
-                        <p><strong>Name:</strong> Parrot Nest</p>
-                        <p><strong>Number of Babies:</strong> 3</p>
-                        <p><strong>Age:</strong> 2 months</p>
-                        <p><strong>Description:</strong> A cozy nest for parrot babies.</p>
-                        <p><strong>Bird Breed:</strong> Parrot</p>
-                        <p><strong>Price:</strong> $50.00</p>
-                        <button class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
-                    </div>
                 </div>
             </div>
-        </div>
-
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Sidebar -->
+                    <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                        <div class="position-sticky">
+                            <h3>Phân loại theo</h3>
+                            <div class="type" onclick="toggleList('typeList-1')">Giống vẹt</div>
+                            <ol style="display: block;" id="typeList-1">   
+                                <li><input type="radio" id="type-0" name="txtBreedId" ${requestScope.BREED_ID == null ? "checked":""} value="All"><label for="type-0">Tất cả các loài vẹt</label></li>
+                                    <c:forEach var="breed" items="${requestScope.BREEDLIST}" varStatus="counter">
+                                    <li><input type="radio" id="type-${counter.count}" name="txtBreedId" value="${breed.breed_id}" ${requestScope.BREED_ID == breed.breed_id ? "checked":""}><label for="type-${counter.count}">${breed.breed_name}</label></li>
+                                    </c:forEach>
+                            </ol>
+                            <div class="type" onclick="toggleList('typeList-2')">Giá cả</div>
+                            <ol style="display: block;" id="typeList-2">
+                                <input type="hidden" name="action" value="NavToBird">    
+                                <li><input type="radio" ${requestScope.PRICE == null  ? "checked":""} id="type-65" name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
+                                <li><input type="radio" ${requestScope.PRICE == "price < 5000000" ? "checked":""} id="type-6" name="txtPrice" value="price < 5000000"><label for="type-6">dưới 5,000,000đ</label></li>
+                                <li><input type="radio" ${requestScope.PRICE == "price >= 5000000 AND price <= 20000000" ? "checked":""} id="type-7" name="txtPrice" value="price >= 5000000 AND price <= 20000000"><label for="type-7">5,000,000 - 20,000,000</label></li>
+                                <li><input type="radio" ${requestScope.PRICE == "price > 20000000" ? "checked":""} id="type-8" name="txtPrice" value="price > 20000000"><label for="type-8">Trên 20,000,000</label></li>
+                            </ol>
+                        </div>
+                    </nav>
+                    <!-- Nội dung chính -->
+                    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                        <div id="content" class="row">
+                            <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
+                                <div id="content" class="row">
+                                        <c:if test="${BIRDLIST != null}">
+                                            <c:if test="${not empty BIRDLIST}">
+                                                <c:forEach items="${BIRDLIST}" var="bird">
+                                                    <div class="bird col-lg-4">
+                                                        <div class="item">
+                                                            <div class="thumb">
+                                                                <div class="hover-content">
+                                                                    <ul>
+                                                                        <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                                        <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                    </ul>
+                                                                </div>
+                                                                <img class="bird-thumbnail" src="${bird.image_url}" alt="${bird.bird_name}">
+                                                                </div>
+                                                                <div class="down-content">
+                                                                    <h4>${bird.bird_name}</h4>
+                                                                    <c:choose>
+                                                                        <c:when test="${bird.discount > 0}">
+                                                                            <span>
+                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
+                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
+                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
+                                                                            </span>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                                        </c:otherwise>
+                                                                    </c:choose> 
+                                                                </div>
+                                                      
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
+                                            </c:if>
+                                        </c:if>
+                                <div class="col-lg-12">
+                                    <div class="pagination bird-pg">
+                                        <c:if test="${noOfPages > 1 && noOfPages <= 5}">
+                                            <input type="hidden" name="page" value="${requestScope.currentPage}"/>
+                                            <ul>
+                                                <c:if test="${requestScope.currentPage > 1}">
+                                                    <li id="page">
+                                                        <a class="prev-page"><<</a>
+                                                    </li>
+                                                </c:if>
+                                                <c:forEach begin="1" end="${noOfPages}" var="i">
+                                                    <li id="page-number">
+                                                        <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
+                                                    </li>
+                                                </c:forEach>
+                                                <c:if test="${requestScope.currentPage < noOfPages}">
+                                                    <li id="page">
+                                                        <a class="next-page" >>></a>
+                                                    </li>
+                                                </c:if>
+                                            </ul>
+                                        </c:if>    
+                                       <c:if test="${noOfPages > 5}">
+                                            <input name="page" value="${requestScope.currentPage}"/>
+                                            <c:set var="numberOfPage" value="${requestScope.currentPage}"/>
+                                            <ul>
+                                                <li id="page">
+                                                    <a class="prev-page" ><<</a>
+                                                </li>
+                                                    <c:forEach begin="${numberOfPage - 2}" end="${numberOfPage + 2}" var="i">
+                                                    <li id="page-number">
+                                                        <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
+                                                    </li>
+                                                    </c:forEach>
+                                                <li id="page">
+                                                    <a class="next-page">>></a>
+                                                </li>
+                                            </ul>
+                                        </c:if>
+                                    </div>
+                                </div>
+                            </div>
+                    </main>            
+                </div>
+                </form>
+            </div>
+        </section>
+        <!-- ***** Products Area Ends ***** -->
+        
         <!-- ***** Footer Start ***** -->
         <footer>
             <div class="container">

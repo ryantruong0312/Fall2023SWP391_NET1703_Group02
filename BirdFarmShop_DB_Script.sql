@@ -97,6 +97,7 @@ CREATE TABLE [BirdNest]
 	[baby_quantity] SMALLINT,
 	[status] NVARCHAR(20),
 	[price] INT,
+	[discount] SMALLINT,
 	[description] NVARCHAR(MAX),
 	CONSTRAINT PK_BirdNest PRIMARY KEY ([nest_id]),
 	CONSTRAINT FK_BirdNest_BirdBreed FOREIGN KEY ([breed_id]) REFERENCES [BirdBreed]([breed_id]),

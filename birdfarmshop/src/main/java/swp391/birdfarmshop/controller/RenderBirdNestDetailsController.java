@@ -10,22 +10,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import swp391.birdfarmshop.dao.AccessoryDAO;
-import swp391.birdfarmshop.dao.BirdNestDAO;
-import swp391.birdfarmshop.dao.FeedbackDAO;
-import swp391.birdfarmshop.dto.AccessoryDTO;
-import swp391.birdfarmshop.dto.BirdNestDTO;
-import swp391.birdfarmshop.dto.FeedbackDTO;
-import swp391.birdfarmshop.dto.StarDTO;
 
 /**
  *
  * @author ASUS
  */
-@WebServlet(name = "RenderBirdNestDetalController", urlPatterns = {"/RenderBirdNestDetalController"})
-public class RenderBirdNestDetalController extends HttpServlet {
+@WebServlet(name = "RenderBirdNestDetailsController", urlPatterns = {"/RenderBirdNestDetailsController"})
+public class RenderBirdNestDetailsController extends HttpServlet {
 
     private static final String ERROR = "errorpages/error.jsp";
     private static final String SUCCESS = "shop/birdnest-details.jsp";
@@ -35,30 +26,9 @@ public class RenderBirdNestDetalController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String nest_id_txt = request.getParameter("id");
-            System.out.println("abc" + nest_id_txt);
-            if (nest_id_txt != null) {
-                System.out.println("1");
-
-                int nest_id = Integer.parseInt(nest_id_txt);
-                BirdNestDAO birdNestDAO = new BirdNestDAO();
-                BirdNestDTO birdNestDTO = birdNestDAO.getBirdNestByID(nest_id);
-                System.out.println("0");
-//                FeedbackDAO f = new FeedbackDAO();
-//                ArrayList<FeedbackDTO> feedbackList = f.getFeedbackByIdProduct(accessory_id);
-//                request.setAttribute("feedbackList", feedbackList);
-//                StarDTO starCustomer = f.getRatingByIdProduct(accessory_id);
-//                request.setAttribute("starCustomer", starCustomer);
-                if (birdNestDTO != null) {
-                    System.out.println("3");
-                    request.setAttribute("birdNest", birdNestDTO);
-                    url = SUCCESS;
-                }
-
-            }
-
+            url = SUCCESS;
         } catch (Exception e) {
-            log("Error at RenderAccessoryDetailsController: " + e.toString());
+            log("Error at RenderBirdNestDetailsController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
