@@ -89,9 +89,9 @@ GO
 DROP TABLE IF EXISTS [BirdNest]
 CREATE TABLE [BirdNest]
 (
-	[nest_id] INT IDENTITY,
+	[nest_id] VARCHAR(10),
 	[nest_name] NVARCHAR(50),
-	[is_thumbnail] BIT,
+	[breed_id] VARCHAR(10),
 	[dad_bird_id] VARCHAR(10),
 	[mom_bird_id] VARCHAR(10),
 	[baby_quantity] SMALLINT,
@@ -99,6 +99,7 @@ CREATE TABLE [BirdNest]
 	[price] INT,
 	[description] NVARCHAR(MAX),
 	CONSTRAINT PK_BirdNest PRIMARY KEY ([nest_id]),
+	CONSTRAINT FK_BirdNest_BirdBreed FOREIGN KEY ([breed_id]) REFERENCES [BirdBreed]([breed_id]),
 	CONSTRAINT FK_BirdNest_Bird_dadbird FOREIGN KEY ([dad_bird_id]) REFERENCES [Bird]([bird_id]),
 	CONSTRAINT FK_BirdNest_Bird_mombird FOREIGN KEY ([mom_bird_id]) REFERENCES [Bird]([bird_id])
 )
@@ -142,7 +143,7 @@ CREATE TABLE [OrderItem]
 	[order_item_id] INT IDENTITY,
 	[order_id] VARCHAR(15),
 	[bird_id] VARCHAR(10),
-	[nest_id] INT,
+	[nest_id] VARCHAR(10),
 	[accessory_id] VARCHAR(10),
 	[unit_price] INT,
 	[order_quantity] SMALLINT,
@@ -179,25 +180,6 @@ CREATE TABLE [OrderTracking]
 	[content] NVARCHAR(100),
 	CONSTRAINT PK_OrderTracking PRIMARY KEY ([tracking_id]),
 	CONSTRAINT FK_OrderTracking_Order FOREIGN KEY ([order_id]) REFERENCES [Order]([order_id])
-)
-GO
-
-DROP TABLE IF EXISTS [BirdNest]
-CREATE TABLE [BirdNest]
-(
-	[nest_id] VARCHAR(10),
-	[nest_name] NVARCHAR(50),
-	[breed_id] VARCHAR(10),
-	[dad_bird_id] VARCHAR(10),
-	[mom_bird_id] VARCHAR(10),
-	[baby_quantity] SMALLINT,
-	[status] NVARCHAR(20),
-	[price] INT,
-	[description] NVARCHAR(MAX),
-	CONSTRAINT PK_BirdNest PRIMARY KEY ([nest_id]),
-	CONSTRAINT FK_BirdNest_BirdBreed FOREIGN KEY ([breed_id]) REFERENCES [BirdBreed]([breed_id]),
-	CONSTRAINT FK_BirdNest_Bird_dadbird FOREIGN KEY ([dad_bird_id]) REFERENCES [Bird]([bird_id]),
-	CONSTRAINT FK_BirdNest_Bird_mombird FOREIGN KEY ([mom_bird_id]) REFERENCES [Bird]([bird_id])
 )
 GO
 
