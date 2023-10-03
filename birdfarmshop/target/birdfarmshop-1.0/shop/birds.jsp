@@ -129,12 +129,12 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                                <c:if test="${sessionScope.CART_BIRD == null}">
-                                                <div class="cart-amount">0</div>
-                                            </c:if>
-                                            <c:if test="${sessionScope.CART_BIRD != null}">
-                                                <div class="cart-amount">${sessionScope.CART_BIRD.getSize()}</div>
-                                            </c:if>
+                                            <div class="cart-amount">
+                                                <c:choose>
+                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
+                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
+                                                </c:choose>
+                                            </div>
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
@@ -238,9 +238,9 @@
                             <div class="type" onclick="toggleList('typeList-4')">Tuổi</div>
                             <ol style="display: block;" id="typeList-4">
                                 <li><input type="radio" ${requestScope.AGE == null ? "checked":""}  id="type-115" name="txtAge" value="All"><label for="type-115">Tất cả</label></li>
-                                <li><input type="radio" ${requestScope.AGE == "age < 5" ? "checked":""} id="type-11" name="txtAge" value="age < 5"><label for="type-11">dưới 5 tháng</label></li>
-                                <li><input type="radio" ${requestScope.AGE == "age >= 5 AND age <= 18" ? "checked":""} id="type-12" name="txtAge" value="age >= 5 AND age <= 18"><label for="type-12">từ 5 - 18 tháng</label></li>
-                                <li><input type="radio" ${requestScope.AGE == "age > 18" ? "checked":""} id="type-13" name="txtAge" value="age > 18"><label for="type-13">trên 18 tháng</label></li>
+                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) < 5" ? "checked":""} id="type-11" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) < 5"><label for="type-11">dưới 5 tháng</label></li>
+                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18" ? "checked":""} id="type-12" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18"><label for="type-12">từ 5 - 18 tháng</label></li>
+                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) > 18" ? "checked":""} id="type-13" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) > 18"><label for="type-13">trên 18 tháng</label></li>
                             </ol>
                         </div>
                     </nav>
@@ -248,42 +248,40 @@
                     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                         <div id="content" class="row">
                             <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
-                                <div id="content" class="row">
-                                        <c:if test="${BIRDLIST != null}">
-                                            <c:if test="${not empty BIRDLIST}">
-                                                <c:forEach items="${BIRDLIST}" var="bird">
-                                                    <div class="bird col-lg-4">
-                                                        <div class="item">
-                                                            <div class="thumb">
-                                                                <div class="hover-content">
-                                                                    <ul>
-                                                                        <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                                        <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                                    </ul>
-                                                                </div>
-                                                                <img class="bird-thumbnail" src="${bird.image_url}" alt="${bird.bird_name}">
-                                                                </div>
-                                                                <div class="down-content">
-                                                                    <h4>${bird.bird_name}</h4>
-                                                                    <c:choose>
-                                                                        <c:when test="${bird.discount > 0}">
-                                                                            <span>
-                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
-                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
-                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
-                                                                            </span>
-                                                                        </c:when>
-                                                                        <c:otherwise>
-                                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
-                                                                        </c:otherwise>
-                                                                    </c:choose> 
-                                                                </div>
-                                                      
+                            <div id="content" class="row">
+                                <c:if test="${BIRDLIST != null}">
+                                    <c:if test="${not empty BIRDLIST}">
+                                        <c:forEach items="${BIRDLIST}" var="bird">
+                                            <div class="bird col-lg-3">
+                                                <div class="item">
+                                                    <div class="thumb">
+                                                        <div class="hover-content">
+                                                            <ul>
+                                                                <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                                <li><a href="MainController?action=AddBirdToCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                            </ul>
                                                         </div>
+                                                        <img class="bird-thumbnail" src="${bird.image_url}" alt="${bird.bird_name}">
                                                     </div>
-                                                </c:forEach>
-                                            </c:if>
-                                        </c:if>
+                                                    <div class="down-content">
+                                                        <h4>${bird.bird_name}</h4>
+                                                        <c:choose>
+                                                            <c:when test="${bird.discount > 0}">
+                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
+                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
+                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫</span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                            </c:otherwise>
+                                                        </c:choose> 
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </c:if>
+                                </c:if>
                                 <div class="col-lg-12">
                                     <div class="pagination bird-pg">
                                         <c:if test="${noOfPages > 1 && noOfPages <= 5}">
@@ -306,18 +304,18 @@
                                                 </c:if>
                                             </ul>
                                         </c:if>    
-                                       <c:if test="${noOfPages > 5}">
+                                        <c:if test="${noOfPages > 5}">
                                             <input name="page" value="${requestScope.currentPage}"/>
                                             <c:set var="numberOfPage" value="${requestScope.currentPage}"/>
                                             <ul>
                                                 <li id="page">
                                                     <a class="prev-page" ><<</a>
                                                 </li>
-                                                    <c:forEach begin="${numberOfPage - 2}" end="${numberOfPage + 2}" var="i">
+                                                <c:forEach begin="${numberOfPage - 2}" end="${numberOfPage + 2}" var="i">
                                                     <li id="page-number">
                                                         <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
                                                     </li>
-                                                    </c:forEach>
+                                                </c:forEach>
                                                 <li id="page">
                                                     <a class="next-page">>></a>
                                                 </li>
@@ -417,66 +415,66 @@
         <!-- Global Init -->
         <script>
 
-                                $(function () {
-                                    var selectedClass = "";
-                                    $("p").click(function () {
-                                        selectedClass = $(this).attr("data-rel");
-                                        $("#portfolio").fadeTo(50, 0.1);
-                                        $("#portfolio div").not("." + selectedClass).fadeOut();
-                                        setTimeout(function () {
-                                            $("." + selectedClass).fadeIn();
-                                            $("#portfolio").fadeTo(50, 1);
-                                        }, 500);
+                                                            $(function () {
+                                                                var selectedClass = "";
+                                                                $("p").click(function () {
+                                                                    selectedClass = $(this).attr("data-rel");
+                                                                    $("#portfolio").fadeTo(50, 0.1);
+                                                                    $("#portfolio div").not("." + selectedClass).fadeOut();
+                                                                    setTimeout(function () {
+                                                                        $("." + selectedClass).fadeIn();
+                                                                        $("#portfolio").fadeTo(50, 1);
+                                                                    }, 500);
 
-                                    });
-                                    $("input[name=txtBreedId]").change(function () {
-                                        $("#selectBird").submit();
-                                    });
-                                    $("input[name=txtPrice]").change(function () {
-                                        $("#selectBird").submit();
-                                    });
-                                    $("input[name=txtGender]").change(function () {
-                                        $("#selectBird").submit();
-                                    });
-                                    $("input[name=txtAge]").change(function () {
-                                        $("#selectBird").submit();
-                                    });
-                                    $(".prev-page").click(function (){
-                                        let  page = $('input[name=page]').val();
-                                        let prevPage = Number(page) - 1;
-                                        $('input[name=page]').val(prevPage);
-                                        $("#selectBird").submit();
-                                    });
-                                     $(".next-page").click(function (){
-                                        let  page = $('input[name=page]').val();
-                                        let nextpage = Number(page) + 1;
-                                        $('input[name=page]').val(nextpage);
-                                        $("#selectBird").submit();
-                                    });
-                                });
-                                function takePage(event){
-                                    let value =  event.getAttribute('data-value');
-                                    $('input[name=page]').val(value);
-                                       $("#selectBird").submit();
-                                }
-                                function toggleList(listId) {
-                                    var list = document.getElementById(listId);
-                                    if (list.style.display === "none" || list.style.display === "") {
-                                        list.style.display = "block";
-                                    } else {
-                                        list.style.display = "none";
-                                    }
-                                }
+                                                                });
+                                                                $("input[name=txtBreedId]").change(function () {
+                                                                    $("#selectBird").submit();
+                                                                });
+                                                                $("input[name=txtPrice]").change(function () {
+                                                                    $("#selectBird").submit();
+                                                                });
+                                                                $("input[name=txtGender]").change(function () {
+                                                                    $("#selectBird").submit();
+                                                                });
+                                                                $("input[name=txtAge]").change(function () {
+                                                                    $("#selectBird").submit();
+                                                                });
+                                                                $(".prev-page").click(function () {
+                                                                    let  page = $('input[name=page]').val();
+                                                                    let prevPage = Number(page) - 1;
+                                                                    $('input[name=page]').val(prevPage);
+                                                                    $("#selectBird").submit();
+                                                                });
+                                                                $(".next-page").click(function () {
+                                                                    let  page = $('input[name=page]').val();
+                                                                    let nextpage = Number(page) + 1;
+                                                                    $('input[name=page]').val(nextpage);
+                                                                    $("#selectBird").submit();
+                                                                });
+                                                            });
+                                                            function takePage(event) {
+                                                                let value = event.getAttribute('data-value');
+                                                                $('input[name=page]').val(value);
+                                                                $("#selectBird").submit();
+                                                            }
+                                                            function toggleList(listId) {
+                                                                var list = document.getElementById(listId);
+                                                                if (list.style.display === "none" || list.style.display === "") {
+                                                                    list.style.display = "block";
+                                                                } else {
+                                                                    list.style.display = "none";
+                                                                }
+                                                            }
 
-//            var listItems = document.querySelectorAll("#page-${i}");
-//            listItems.forEach(function (item) {
-//                item.addEventListener("click", function () {\
-//                    listItems.forEach(function (li) {
-//                        li.classList.remove("active");
-//                    });
-//                    item.classList.add("active");
-//                });
-//            });
+                                                            //            var listItems = document.querySelectorAll("#page-${i}");
+                                                            //            listItems.forEach(function (item) {
+                                                            //                item.addEventListener("click", function () {\
+                                                            //                    listItems.forEach(function (li) {
+                                                            //                        li.classList.remove("active");
+                                                            //                    });
+                                                            //                    item.classList.add("active");
+                                                            //                });
+                                                            //            });
 
         </script>
 

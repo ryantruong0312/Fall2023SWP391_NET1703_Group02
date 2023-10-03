@@ -153,11 +153,11 @@
                             <h2>Sản phẩm của chúng tôi</h2>
                         </div>
                     </div>
-                    <form id="selectBird" action="MainController" method="POST">
-                        <input type="hidden" name="action" value="NavToBird"> 
+                    <form id="selectNest" action="MainController" method="POST">
+                        <input type="hidden" name="action" value="NavToBirdNests"> 
                         <div class="search-bar">
                             <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                            <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                            <input type="text" name="txtBirdNest    " id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
                             <input type="submit" value="Tìm kiếm">
                         </div>
                 </div>
@@ -188,135 +188,36 @@
                     <!-- Nội dung chính -->
                     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                         <div id="content" class="row">
-                            <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
-                            <div id="content" class="row">
-                                <c:if test="${BIRDLIST != null}">
-                                    <c:if test="${not empty BIRDLIST}">
-                                        <c:forEach items="${BIRDLIST}" var="bird">
-                                            <div class="bird col-lg-4">
-                                                <div class="item">
-                                                    <div class="thumb">
-                                                        <div class="hover-content">
-                                                            <ul>
-                                                                <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                                <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                            </ul>
-                                                        </div>
-                                                        <img class="bird-thumbnail" src="${bird.image_url}" alt="${bird.bird_name}">
-                                                    </div>
-                                                    <div class="down-content">
-                                                        <h4>${bird.bird_name}</h4>
-                                                        <c:choose>
-                                                            <c:when test="${bird.discount > 0}">
-                                                                <span>
-                                                                    <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
-                                                                    <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
-                                                                    <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
-                                                                        </span>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
-                                                                    </c:otherwise>
-                                                                </c:choose> 
-                                                                </div>
-
-                                                                </div>
-                                                                </div>
-                                                            </c:forEach>
-                                                        </c:if>
-                                                    </c:if>
-                                                    <div class="col-lg-12">
-                                                        <div class="pagination bird-pg">
-                                                            <c:if test="${noOfPages > 1 && noOfPages <= 5}">
-                                                                <input type="hidden" name="page" value="${requestScope.currentPage}"/>
-                                                                <ul>
-                                                                    <c:if test="${requestScope.currentPage > 1}">
-                                                                        <li id="page">
-                                                                            <a class="prev-page"><<</a>
-                                                                        </li>
-                                                                    </c:if>
-                                                                    <c:forEach begin="1" end="${noOfPages}" var="i">
-                                                                        <li id="page-number">
-                                                                            <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
-                                                                        </li>
-                                                                    </c:forEach>
-                                                                    <c:if test="${requestScope.currentPage < noOfPages}">
-                                                                        <li id="page">
-                                                                            <a class="next-page" >>></a>
-                                                                        </li>
-                                                                    </c:if>
-                                                                </ul>
-                                                            </c:if>    
-                                                            <c:if test="${noOfPages > 5}">
-                                                                <input name="page" value="${requestScope.currentPage}"/>
-                                                                <c:set var="numberOfPage" value="${requestScope.currentPage}"/>
-                                                                <ul>
-                                                                    <li id="page">
-                                                                        <a class="prev-page" ><<</a>
-                                                                    </li>
-                                                                    <c:forEach begin="${numberOfPage - 2}" end="${numberOfPage + 2}" var="i">
-                                                                        <li id="page-number">
-                                                                            <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
-                                                                        </li>
-                                                                    </c:forEach>
-                                                                    <li id="page">
-                                                                        <a class="next-page">>></a>
-                                                                    </li>
-                                                                </ul>
-                                                            </c:if>
-                                                        </div>
-                                                    </div>
-                                                    </div>
-                                                    </main>            
-                                                    </div>
-                                                    </form>
-                                                    </div>
-                                                    </section>
-                                                    <!-- ***** Products Area Ends ***** -->
-
-                                                    <!-- ***** Footer Start ***** -->
-                                                    <footer>
-                                                        <div class="container">
-                                                            <div class="row">
-                                                                <div class="col-lg-3">
-                                                                    <div class="first-item">
-                                                                        <div class="logo">
-                                                                            <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
-                                                                        </div>
-                                                                        <ul>
-                                                                            <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                                                            <li><a href="#">thegioivetcanh@gmail.com</a></li>
-                                                                            <li><a href="#">0913-244-567</a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-3">
-                                                                    <h4>Sản phẩm và dịch vụ</h4>
+                            <c:set var="NESTLIST" value="${requestScope.BIRD_NEST_LIST}"/>
+                                <div id="content" class="row">
+                                        <c:if test="${NESTLIST != null}">
+                                            <c:if test="${not empty NESTLIST}">
+                                                <c:forEach items="${NESTLIST}" var="nest">
+                                                    <div class="bird col-lg-4">
+                                                        <div class="item">
+                                                            <div class="thumb">
+                                                                <div class="hover-content">
                                                                     <ul>
-                                                                        <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                                                                        <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                                                                        <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                                                                        <li><a href="${pageScope.toCompare}">So sánh</a></li>
-                                                                        <li><a href="${pageScope.toPair}">Nhân giống</a></li>
+                                                                        <li><a href="MainController?action=NavToBirdDetails&bird_id=${nest.nest_id}"><i class="fa fa-eye"></i></a></li>
+                                                                        <li><a href="MainController?action=AddtoCart&bird_id=${nest.nest_id}"><i class="fa fa-shopping-cart"></i></a></li>
                                                                     </ul>
                                                                 </div>
-                                                                <div class="col-lg-3">
-                                                                    <h4>Đường dẫn hữu ích</h4>
-                                                                    <ul>
-                                                                        <li><a href="${pageScope.toHome}">Trang chủ</a></li>
-                                                                        <li><a href="#">Về chúng tôi</a></li>
-                                                                        <li><a href="#">Hỗ trợ</a></li>
-                                                                        <li><a href="#">Liên hệ</a></li>
-                                                                    </ul>
+                                                                <img class="bird-thumbnail" src="${nest.image_url}" alt="${nest.nest_name}">
                                                                 </div>
-                                                                <div class="col-lg-3">
-                                                                    <h4>Thông tin hỗ trợ</h4>
-                                                                    <ul>
-                                                                        <li><a href="#">Hỗ trợ</a></li>
-                                                                        <li><a href="#">Câu hỏi thường gặp</a></li>
-                                                                        <li><a href="#">Giao hàng</a></li>
-                                                                        <li><a href="#">Theo dõi đơn hàng</a></li>
-                                                                    </ul>
+                                                                <div class="down-content">
+                                                                    <h4>${nest.nest_name}</h4>
+                                                                    <c:choose>
+                                                                        <c:when test="${nest.discount > 0}">
+                                                                            <span>
+                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${nest.price}" pattern="#,###"/> ₫</del></span>
+                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${nest.discount}%</span>
+                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${nest.price - nest.price * nest.discount / 100}" pattern="#,###"/> ₫<span>
+                                                                            </span>
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            <span><fmt:formatNumber value="${nest.price}" pattern="#,###"/> ₫</span>
+                                                                        </c:otherwise>
+                                                                    </c:choose> 
                                                                 </div>
                                                                 <div class="col-lg-12">
                                                                     <div class="under-footer">
@@ -389,7 +290,31 @@
                                                                                     });
                                                                                 });
 
-                                                    </script>
+                                });
+                                $("input[name=txtBreedId]").change(function () {
+                                        $("#selectNest").submit();
+                                });
+                                $("input[name=txtPrice]").change(function () {
+                                        $("#selectNest").submit();
+                                });
+                                    $(".prev-page").click(function (){
+                                        let  page = $('input[name=page]').val();
+                                        let prevPage = Number(page) - 1;
+                                        $('input[name=page]').val(prevPage);
+                                        $("#selectBird").submit();
+                                    });
+                                     $(".next-page").click(function (){
+                                        let  page = $('input[name=page]').val();
+                                        let nextpage = Number(page) + 1;
+                                        $('input[name=page]').val(nextpage);
+                                        $("#selectBird").submit();
+                                    });
+                                });
+                                function takePage(event){
+                                    let value =  event.getAttribute('data-value');
+                                    $('input[name=page]').val(value);
+                                       $("#selectBird").submit();
+                                }
 
                                                     </body>
 

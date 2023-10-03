@@ -194,6 +194,11 @@
         <section class="section" id="products">
             <div class="container">
                 <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-heading">
+                            <h2>Sản phẩm của chúng tôi</h2>
+                        </div>
+                    </div>
                     <form id="selectBird" action="MainController" method="POST">
                         <input type="hidden" name="action" value="NavToBird"> 
                         <div class="search-bar">
@@ -209,22 +214,22 @@
                     <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
                         <div class="position-sticky">
                             <h3>Phân loại theo</h3>
-                            <div class="type" onclick="toggleList('typeList-1')">Giống vẹt</div>
+                            <div class="type" onclick="toggleList('typeList-1')">Loài</div>
                             <ol style="display: block;" id="typeList-1">   
-                                <li><input type="radio" id="type-0" name="txtBreedId" ${requestScope.BREED_ID == null ? "checked":""} value="All"><label for="type-0">Tất cả</label></li>
+                                <li><input type="radio" id="type-0" name="txtBreedId" ${requestScope.BREED_ID == null ? "checked":""} value="All"><label for="type-0">Tất cả các loài vẹt</label></li>
                                     <c:forEach var="breed" items="${requestScope.BREEDLIST}" varStatus="counter">
                                     <li><input type="radio" id="type-${counter.count}" name="txtBreedId" value="${breed.breed_id}" ${requestScope.BREED_ID == breed.breed_id ? "checked":""}><label for="type-${counter.count}">${breed.breed_name}</label></li>
                                     </c:forEach>
                             </ol>
-                            <div class="type" onclick="toggleList('typeList-2')">Giá bán</div>
+                            <div class="type" onclick="toggleList('typeList-2')">Giá cả</div>
                             <ol style="display: block;" id="typeList-2">
                                 <input type="hidden" name="action" value="NavToBird">    
                                 <li><input type="radio" ${requestScope.PRICE == null  ? "checked":""} id="type-65" name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
-                                <li><input type="radio" ${requestScope.PRICE == "price < 5000000" ? "checked":""} id="type-6" name="txtPrice" value="price < 5000000"><label for="type-6">Dưới 5,000,000₫</label></li>
-                                <li><input type="radio" ${requestScope.PRICE == "price >= 5000000 AND price <= 20000000" ? "checked":""} id="type-7" name="txtPrice" value="price >= 5000000 AND price <= 20000000"><label for="type-7">Từ 5,000,000₫ - 20,000,000₫</label></li>
-                                <li><input type="radio" ${requestScope.PRICE == "price > 20000000" ? "checked":""} id="type-8" name="txtPrice" value="price > 20000000"><label for="type-8">Trên 20,000,000₫</label></li>
+                                <li><input type="radio" ${requestScope.PRICE == "price < 5000000" ? "checked":""} id="type-6" name="txtPrice" value="price < 5000000"><label for="type-6">dưới 5,000,000đ</label></li>
+                                <li><input type="radio" ${requestScope.PRICE == "price >= 5000000 AND price <= 20000000" ? "checked":""} id="type-7" name="txtPrice" value="price >= 5000000 AND price <= 20000000"><label for="type-7">5,000,000 - 20,000,000</label></li>
+                                <li><input type="radio" ${requestScope.PRICE == "price > 20000000" ? "checked":""} id="type-8" name="txtPrice" value="price > 20000000"><label for="type-8">Trên 20,000,000</label></li>
                             </ol>
-                            <div class="type" onclick="toggleList('typeList-3')">Giới tính</div>
+                            <div class="type" onclick="toggleList('typeList-3')">Giống</div>
                             <ol style="display: block;" id="typeList-3">
                                 <li><input type="radio" ${requestScope.GENDER == null ? "checked":""} id="type-95" name="txtGender" value="All"><label for="type-95">Tất cả</label></li>
                                 <li><input type="radio" ${requestScope.GENDER == "1" ? "checked":""} id="type-9" name="txtGender" value="1"><label for="type-9">Trống</label></li>
@@ -233,9 +238,9 @@
                             <div class="type" onclick="toggleList('typeList-4')">Tuổi</div>
                             <ol style="display: block;" id="typeList-4">
                                 <li><input type="radio" ${requestScope.AGE == null ? "checked":""}  id="type-115" name="txtAge" value="All"><label for="type-115">Tất cả</label></li>
-                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) < 5" ? "checked":""} id="type-11" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) < 5"><label for="type-11">Dưới 5 tháng</label></li>
-                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18" ? "checked":""} id="type-12" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18"><label for="type-12">Từ 5 - 18 tháng</label></li>
-                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) > 18" ? "checked":""} id="type-13" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) > 18"><label for="type-13">Trên 18 tháng</label></li>
+                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) < 5" ? "checked":""} id="type-11" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) < 5"><label for="type-11">dưới 5 tháng</label></li>
+                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18" ? "checked":""} id="type-12" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18"><label for="type-12">từ 5 - 18 tháng</label></li>
+                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) > 18" ? "checked":""} id="type-13" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) > 18"><label for="type-13">trên 18 tháng</label></li>
                             </ol>
                         </div>
                     </nav>
