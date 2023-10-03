@@ -1,54 +1,62 @@
-
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 package swp391.birdfarmshop.controller;
 
-import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import swp391.birdfarmshop.dao.AccessoryDAO;
+import swp391.birdfarmshop.dao.BirdNestDAO;
 import swp391.birdfarmshop.dao.FeedbackDAO;
 import swp391.birdfarmshop.dto.AccessoryDTO;
+import swp391.birdfarmshop.dto.BirdNestDTO;
 import swp391.birdfarmshop.dto.FeedbackDTO;
 import swp391.birdfarmshop.dto.StarDTO;
 
 /**
  *
- * @author Admin
+ * @author ASUS
  */
-@WebServlet(name = "RenderAccessoryDetailsController", urlPatterns = {"/RenderAccessoryDetailsController"})
-public class RenderAccessoryDetailsController extends HttpServlet {
+@WebServlet(name = "RenderBirdNestDetalController", urlPatterns = {"/RenderBirdNestDetalController"})
+public class RenderBirdNestDetalController extends HttpServlet {
 
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "shop/accessory-details.jsp";
+    private static final String SUCCESS = "shop/birdnest-details.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String accessory_id = request.getParameter("id");
-            AccessoryDAO a = new AccessoryDAO();
-            AccessoryDTO ac = a.getAccessoriesByID(accessory_id);
-            FeedbackDAO f = new FeedbackDAO();
-            ArrayList<FeedbackDTO> feedbackList = f.getFeedbackByIdProduct(accessory_id);
-            request.setAttribute("feedbackList", feedbackList);
-            StarDTO starCustomer = f.getRatingByIdProduct(accessory_id);
-            request.setAttribute("starCustomer", starCustomer);
-            if (ac != null) {
-                request.setAttribute("a", ac);
-                
-                url = SUCCESS;
-            }else{
-                url = ERROR;
+            String nest_id_txt = request.getParameter("id");
+            System.out.println("abc" + nest_id_txt);
+            if (nest_id_txt != null) {
+                System.out.println("1");
+
+                int nest_id = Integer.parseInt(nest_id_txt);
+                BirdNestDAO birdNestDAO = new BirdNestDAO();
+                BirdNestDTO birdNestDTO = birdNestDAO.getBirdNestByID(nest_id);
+                System.out.println("0");
+//                FeedbackDAO f = new FeedbackDAO();
+//                ArrayList<FeedbackDTO> feedbackList = f.getFeedbackByIdProduct(accessory_id);
+//                request.setAttribute("feedbackList", feedbackList);
+//                StarDTO starCustomer = f.getRatingByIdProduct(accessory_id);
+//                request.setAttribute("starCustomer", starCustomer);
+                if (birdNestDTO != null) {
+                    System.out.println("3");
+                    request.setAttribute("birdNest", birdNestDTO);
+                    url = SUCCESS;
+                }
+
             }
+
         } catch (Exception e) {
             log("Error at RenderAccessoryDetailsController: " + e.toString());
         } finally {

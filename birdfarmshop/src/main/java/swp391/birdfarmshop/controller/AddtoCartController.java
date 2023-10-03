@@ -14,6 +14,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import swp391.birdfarmshop.dao.BirdNestDAO;
+import swp391.birdfarmshop.dto.BirdNestDTO;
+import swp391.birdfarmshop.dto.CartBirdNestDTO;
 
 /**
  *
@@ -21,42 +24,60 @@ import jakarta.servlet.http.HttpSession;
  */
 public class AddtoCartController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private static final String ERROR = "errorpages/error.jsp";
+    private static final String SUCCESS_BIRD = "MainController?action=NavToBird&amount=0";
+    private static final String SUCCESS_NEST = "MainController?action=NavToBirdNests";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        String url = ERROR;
         try {
-            String bird_id = request.getParameter("bird_id");
-            BirdDAO dao = new BirdDAO();
-            BirdDTO dto = dao.getBirdDetailsById(bird_id);
-            boolean isSoldOut = dao.isBirdSoldOut(bird_id);
+            String id = request.getParameter("id");
+            String type = request.getParameter("type");
             HttpSession session = request.getSession();
-            if (isSoldOut) {
-                session.setAttribute("ERROR", "Chim \"" + dto.getBird_name() + "\" không có sẵn");
-            } else {
-                CartBirdDTO cart_bird = (CartBirdDTO) session.getAttribute("CART_BIRD");
-                if (cart_bird == null) {
-                    cart_bird = new CartBirdDTO(null);
-                }
-                cart_bird.add(dto);
-                session.setAttribute("CART_BIRD", cart_bird);
-                session.setAttribute("SUCCESS", "Đã thêm \"" + dto.getBird_name() + "\" vào giở hàng thành công!!");
 
+            if (id != null && type != null) {
+                if ("bird".equals(type)) {
+                    BirdDAO dao = new BirdDAO();
+                    BirdDTO dto = dao.getBirdDetailsById(id);
+                    boolean isSoldOut = dao.isBirdSoldOut(id);
+                    if (isSoldOut) {
+                        session.setAttribute("ERROR", "Chim \"" + dto.getBird_name() + "\" không có sẵn");
+                    } else {
+                        CartBirdDTO cart_bird = (CartBirdDTO) session.getAttribute("CART_BIRD");
+                        if (cart_bird == null) {
+                            cart_bird = new CartBirdDTO(null);
+                        }
+                        cart_bird.add(dto);
+                        session.setAttribute("CART_BIRD", cart_bird);
+                        session.setAttribute("SUCCESS", "Đã thêm \"" + dto.getBird_name() + "\" vào giở hàng thành công!!");
+                        url = SUCCESS_BIRD;
+                    }
+                } else if ("nest".equals(type)) {
+                    System.out.println("12");
+                    BirdNestDAO dao = new BirdNestDAO();
+                    BirdNestDTO dto = dao.getBirdNestDetailsById(Integer.parseInt(id));
+                    System.out.println(dto.getNest_id());
+                    CartBirdNestDTO cart_bird_nest = (CartBirdNestDTO) session.getAttribute("CART_BIRD_NEST");
+                    System.out.println("6");
+                    if (cart_bird_nest == null) {
+
+                        cart_bird_nest = new CartBirdNestDTO(null);
+                    }
+                    System.out.println("3");
+                    cart_bird_nest.add(dto);
+                    session.setAttribute("CART_BIRD_NEST", cart_bird_nest);
+                    session.setAttribute("SUCCESS", "Đã thêm sản phẩm\"" + dto.getNest_name() + "\" vào giở hàng thành công!!");
+                    System.out.println("5");
+                    url = SUCCESS_NEST;
+                }
             }
 
         } catch (Exception e) {
             log("Error at AddtoCartController: " + e.toString());
         } finally {
-            response.sendRedirect("MainController?action=NavToBird&amount=0");
+            response.sendRedirect(url);
 
         }
     }

@@ -86,6 +86,23 @@ CREATE TABLE [Accessory]
 )
 GO
 
+DROP TABLE IF EXISTS [BirdNest]
+CREATE TABLE [BirdNest]
+(
+	[nest_id] INT IDENTITY,
+	[nest_name] NVARCHAR(50),
+	[is_thumbnail] BIT,
+	[dad_bird_id] VARCHAR(10),
+	[mom_bird_id] VARCHAR(10),
+	[baby_quantity] SMALLINT,
+	[status] NVARCHAR(20),
+	[price] INT,
+	[description] NVARCHAR(MAX),
+	CONSTRAINT PK_BirdNest PRIMARY KEY ([nest_id]),
+	CONSTRAINT FK_BirdNest_Bird_dadbird FOREIGN KEY ([dad_bird_id]) REFERENCES [Bird]([bird_id]),
+	CONSTRAINT FK_BirdNest_Bird_mombird FOREIGN KEY ([mom_bird_id]) REFERENCES [Bird]([bird_id])
+)
+GO
 
 
 DROP TABLE IF EXISTS [Order]
@@ -125,12 +142,15 @@ CREATE TABLE [OrderItem]
 	[order_item_id] INT IDENTITY,
 	[order_id] VARCHAR(15),
 	[bird_id] VARCHAR(10),
+	[nest_id] INT,
 	[accessory_id] VARCHAR(10),
 	[unit_price] INT,
 	[order_quantity] SMALLINT,
+
 	CONSTRAINT PK_OrderItem PRIMARY KEY ([order_item_id]),
 	CONSTRAINT FK_OrderItem_Order FOREIGN KEY ([order_id]) REFERENCES [Order]([order_id]),
 	CONSTRAINT FK_OrderItem_Bird FOREIGN KEY ([bird_id]) REFERENCES [Bird]([bird_id]),
+	CONSTRAINT FK_OrderItem_Nest FOREIGN KEY ([nest_id]) REFERENCES [BirdNest]([nest_id]),
 	CONSTRAINT FK_OrderItem_Accessory FOREIGN KEY ([accessory_id]) REFERENCES [Accessory]([accessory_id])
 )
 GO
@@ -162,23 +182,7 @@ CREATE TABLE [OrderTracking]
 )
 GO
 
-DROP TABLE IF EXISTS [BirdNest]
-CREATE TABLE [BirdNest]
-(
-	[nest_id] INT IDENTITY,
-	[nest_name] NVARCHAR(50),
-	[is_thumbnail] BIT,
-	[dad_bird_id] VARCHAR(10),
-	[mom_bird_id] VARCHAR(10),
-	[baby_quantity] SMALLINT,
-	[status] NVARCHAR(20),
-	[price] INT,
-	[description] NVARCHAR(MAX),
-	CONSTRAINT PK_BirdNest PRIMARY KEY ([nest_id]),
-	CONSTRAINT FK_BirdNest_Bird_dadbird FOREIGN KEY ([dad_bird_id]) REFERENCES [Bird]([bird_id]),
-	CONSTRAINT FK_BirdNest_Bird_mombird FOREIGN KEY ([mom_bird_id]) REFERENCES [Bird]([bird_id])
-)
-GO
+
 
 DROP TABLE IF EXISTS [Image]
 CREATE TABLE [Image]
@@ -661,24 +665,24 @@ VALUES('230925O0001','customer',2023-09-25,N'Chờ xử lý',null,N'Đã thanh t
 	  ('230912O0007','customer',2023-09-20,N'Đã đánh giá',null,N'Đã thanh toán',300000,1);
 GO
 
-INSERT INTO [OrderItem]([order_id],[bird_id],[accessory_id],[unit_price],[order_quantity])
-VALUES ('230925O0001','CW192',null,2500000,1),
-		('230925O0001',null,'LM001',450000,1),
-		('230915O0002',null,'LN001',13800000,2),
-		('230916O0003','WA301',null,4500000,1),
-		('230916O0003',null,'LM001',450000,1),
-		('230917O0004',null,'GT001',120000,2),
-		('230917O0004',null,'BL001',500000,1),
-		('230917O0004',null,'CT001',90000,1),
-		('230918O0005','CP201',null,3000000,1),
-		('230918O0005',null,'LM001',450000,1),
-		('230919O0006','YC090',null,25000000,1),
-		('230919O0006',null,'LM001',450000,1),
-		('230919O0006',null,'NK200',120000,1),
-		('230912O0007','XT001',null,6500000,1),
-	    ('230912O0007',null,'LM001',450000,1),
-		('230912O0007',null,'GA001',600000,1),
-		('230912O0007',null,'KC213',100000,10)
+INSERT INTO [OrderItem]([order_id],[bird_id],[nest_id],[accessory_id],[unit_price],[order_quantity])
+VALUES ('230925O0001','CW192',null,null,2500000,1),
+		('230925O0001',null,null,'LM001',450000,1),
+		('230915O0002',null,null,'LN001',13800000,2),
+		('230916O0003','WA301',null,null,4500000,1),
+		('230916O0003',null,null,'LM001',450000,1),
+		('230917O0004',null,null,'GT001',120000,2),
+		('230917O0004',null,null,'BL001',500000,1),
+		('230917O0004',null,null,'CT001',90000,1),
+		('230918O0005','CP201',null,null,3000000,1),
+		('230918O0005',null,null,'LM001',450000,1),
+		('230919O0006','YC090',null,null,25000000,1),
+		('230919O0006',null,null,'LM001',450000,1),
+		('230919O0006',null,null,'NK200',120000,1),
+		('230912O0007','XT001',null,null,6500000,1),
+	    ('230912O0007',null,null,'LM001',450000,1),
+		('230912O0007',null,null,'GA001',600000,1),
+		('230912O0007',null,null,'KC213',100000,10)
 GO
 
 INSERT INTO [Feedback]([customer],[order_item_id],[rating],[comment],[feedback_date]) 
@@ -717,3 +721,70 @@ ON b.bird_id = i.bird_id OR a.accessory_id = i.accessory_id
 WHERE i.is_thumbnail = 1
 GO
 
+INSERT INTO [dbo].[Image] ([image_url],[is_thumbnail],[bird_id],[nest_id],[accessory_id])
+VALUES
+    ('https://vetcanh.com/wp-content/uploads/2021/10/istockphoto-1300151499-612x612-1.webp', 
+    1, 'GW125', NULL, NULL),
+	('https://www.sfzoo.org/wp-content/uploads/2021/03/img_macaw_mw2_large.jpg', 
+    0, 'GW125', NULL, NULL),
+	('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYZ6vQGWKon2EZmCh0UnRI2Y7JjwqwS46Lsg&usqp=CAU', 
+    0, 'GW125', NULL, NULL),
+
+	('https://petmeshop.com/wp-content/uploads/2020/09/hahns-macaw-2.jpg', 
+    1, 'HM350', NULL, NULL),
+	('https://www.thehappychickencoop.com/wp-content/uploads/2022/08/hahns-macaw.jpg', 
+    0, 'HM350', NULL, NULL),
+	('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5tPrZ7LxHZFycwvvSWZDtEqbsB1BKQmUmpg&usqp=CAU', 
+    0, 'HM350', NULL, NULL),
+
+	('https://britishpetinsurance.co.uk/wp-content/uploads/2020/10/6329', 
+    0, 'YC090', NULL, NULL),
+	('https://www.petlink.com.au/Classifieds/pics/877017.jpg', 
+    0, 'YC090', NULL, NULL),
+	('https://cdn-fastly.petguide.com/media/2022/02/28/8279074/hahns-macaw.jpg?size=720x845&nocrop=1', 
+    1, 'YC090', NULL, NULL),
+
+	('https://a-z-animals.com/media/2021/06/Most-Colorful-Animals_-Scarlet-Macaw.jpg', 
+    0, 'YC090', NULL, NULL),
+	('https://vetcanh.com/wp-content/uploads/2021/10/GettyImages-634869043-58a6e83f5f9b58a3c918ca12-scaled.webp', 
+    0, 'YC090', NULL, NULL),
+	('https://images.saymedia-content.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cq_auto:eco%2Cw_1200/MTk3MTEwNDczMDU1ODA2Nzgz/scarlet-macaws.png', 
+    1, 'YC090', NULL, NULL),
+
+	('https://www.theanimalspot.com/wp-content/uploads/2019/01/hyacinthmacawsmall.jpg', 
+    0, 'YC090', NULL, NULL),
+	('https://images.pexels.com/photos/11795466/pexels-photo-11795466.jpeg?cs=srgb&dl=pexels-alteredsnaps-11795466.jpg&fm=jpg', 
+    0, 'YC090', NULL, NULL),
+	('https://zupreem.com/wp-content/uploads/2020/11/shutterstock_1060460099-scaled.jpg', 
+    1, 'YC090', NULL, NULL)
+
+GO
+
+INSERT INTO [dbo].[BirdNest] ([nest_name],[is_thumbnail],[dad_bird_id],[mom_bird_id],[baby_quantity],[status],[price],[description])
+VALUES
+
+	( 'IR003', 0, 'IR001','IR002',2,
+	'available', 4500000, 
+	'...'),
+	( 'CP601', 0, 'CP401','CP501',8,
+	'available', 12000000, 
+	'...'),
+	( 'XX003', 0, 'XA001','XT001',4,
+	'available', 6500000, 
+	'...'),
+	( 'LA972', 0, 'BA602','FA303',2,
+	'available', 200000, 
+	'...')
+GO
+
+INSERT INTO [dbo].[Image] ([image_url],[is_thumbnail],[bird_id],[nest_id],[accessory_id])
+VALUES
+    ('https://cf.shopee.vn/file/4501c1a1f51ddaaa4cb1f69d268663b4', 
+    1, NULL,  1, NULL),
+	('https://i2.ex-cdn.com/homeaz.vn/files/content/2020/07/15/ghe-to-chim-5-1352-homeazvn-1702.jpg', 
+    1, NULL, 2, NULL),
+	('https://cf.shopee.vn/file/0b4302be2417198ab8fd4fd6e9728339', 
+    1, NULL, 3, NULL),
+	('https://lzd-img-global.slatic.net/g/p/c4a8a0c1b33168b64c2b5494d6388aa0.jpg_720x720q80.jpg', 
+    1, NULL, 4, NULL)
+GO

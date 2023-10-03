@@ -60,11 +60,16 @@ public class MainController extends HttpServlet {
     private static final String ACT_NAV_BIRD_PAIR = "NavToPairBirds";
     private static final String DEST_NAV_BIRD_PAIR = "RenderBirdPairController";
     private static final String ACT_NAV_BIRD_NESTS = "NavToBirdNests";
-    private static final String DEST_NAV_BIRD_NESTS = "RenderBirdNestsController";
+    private static final String DEST_NAV_BIRD_NESTS = "RenderBirdNestController";
+        private static final String ACT_NAV_BIRD_NESTS_DETAIL = "NavToBirdNestDetail";
+    private static final String DEST_NAV_BIRD_NESTS_DETAIL = "RenderBirdNestDetalController";
     private static final String ACT_ADD_TO_CART = "AddtoCart";
     private static final String DEST_ADD_TO_CART = "AddtoCartController";
     private static final String ACT_SEARCH_ACCESSORY = "RenderSearchAccessories";
     private static final String DEST_SEARCH_ACCESSORY = "RenderSearchAccessoriesController";
+    private static final String ACT_CHECK_OUT = "CheckOut";
+    private static final String DEST_CHECK_OUT = "RenderCheckOutController";
+
     private static final String ACT_SEARCH_BIRD = "SearchBird";
     private static final String DEST_SEARCH_BIRD = "SearchBirdController";
     private static final String ACT_RENDER_BIRD_BREED_ID = "RenderBirdByBreed_id";
@@ -73,7 +78,6 @@ public class MainController extends HttpServlet {
     private static final String DEST_UPDATE_INFO = "UpdateInformationController";
     private static final String ACT_CREATE_ACCOUNT = "CreateAccount";
     private static final String DEST_CREATE_ACCOUNT = "CreateAccountController";
-    private static final String TEST = "/shop/checkout.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -147,8 +151,14 @@ public class MainController extends HttpServlet {
                 case ACT_NAV_EDIT_PROFILE:
                     url = DEST_NAV_EDIT_PROFILE;
                     break;
-                case "test":
-                    url = TEST;
+                case ACT_ADD_TO_CART:
+                    url = DEST_ADD_TO_CART;
+                    break;
+                case ACT_CHECK_OUT:
+                    url = DEST_CHECK_OUT;
+                    break;
+                case ACT_NAV_BIRD_NESTS_DETAIL:
+                    url = DEST_NAV_BIRD_NESTS_DETAIL;
                     break;
                 case ACT_SEARCH_ACCESSORY:
                     url = DEST_SEARCH_ACCESSORY;
