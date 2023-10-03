@@ -151,6 +151,9 @@ public class MainController extends HttpServlet {
                 case ACT_NAV_EDIT_PROFILE:
                     url = DEST_NAV_EDIT_PROFILE;
                     break;
+                case ACT_ADD_TO_CART:
+                    url = DEST_ADD_TO_CART;
+                    break;
                 case ACT_CHECK_OUT:
                     url = DEST_CHECK_OUT;
                     break;

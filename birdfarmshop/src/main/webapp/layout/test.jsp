@@ -53,7 +53,7 @@
                 <input type="file" name="filepicture"  />
                 <button type="submit">Submit</button>
             </form>           
-         <img src="https://birdfarmshop.s3.amazonaws.com/baner-right-image-01.jpg" alt="Your Image">
+<!--         <img src="https://birdfarmshop.s3.amazonaws.com/baner-right-image-01.jpg" alt="Your Image">-->
         </div>
         <script src="../assets/js/birdshop.js"></script>
         <script src="../assets/js/jquery-3.7.1.min.js"></script>

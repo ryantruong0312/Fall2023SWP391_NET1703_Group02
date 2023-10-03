@@ -667,7 +667,7 @@ public class BirdDAO {
         BirdDAO dao = new BirdDAO();
         List<Bird> birds = dao.getBirdsCustom(null, null, null, null, null, "1", 9);
         for (Bird bird : birds) {
-            System.out.println(bird);
+            System.out.println(bird.getImage_url());
         }
     }
 }

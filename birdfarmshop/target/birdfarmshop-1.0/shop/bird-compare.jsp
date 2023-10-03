@@ -68,7 +68,8 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">8</div>
+                                            <div class="cart-amount">${(sessionScope.CART_BIRD_NEST.getSize()!=null ? sessionScope.CART_BIRD_NEST.getSize():0)+(sessionScope.CART_BIRD.getSize()!=null ? sessionScope.CART_BIRD.getSize():0)}</div>
+
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
@@ -122,7 +123,7 @@
             </div>
         </div>
         <!-- ***** Main Banner Area End ***** -->
-        
+
         <main>
             <section class="cd-products-comparison-table">
                 <header>
@@ -565,7 +566,7 @@
                 document.getElementById("birdStatus3").textContent = selectedBird.birdStatus;
                 document.getElementById("birdPrice3").textContent = selectedBird.birdPrice + " ₫";
             });
-            
+
             // Add an event handler for the birdSelect4 element
             var birdSelect4 = document.getElementById("birdSelect4");
             birdSelect4.addEventListener("change", function () {
@@ -584,7 +585,7 @@
                 document.getElementById("birdStatus4").textContent = selectedBird.birdStatus;
                 document.getElementById("birdPrice4").textContent = selectedBird.birdPrice + " ₫";
             });
-            
+
             // Add an event handler for the birdSelect5 element
             var birdSelect5 = document.getElementById("birdSelect5");
             birdSelect5.addEventListener("change", function () {
@@ -603,7 +604,7 @@
                 document.getElementById("birdStatus5").textContent = selectedBird.birdStatus;
                 document.getElementById("birdPrice5").textContent = selectedBird.birdPrice + " ₫";
             });
-            
+
             // Add an event handler for the birdSelect6 element
             var birdSelect6 = document.getElementById("birdSelect6");
             birdSelect6.addEventListener("change", function () {

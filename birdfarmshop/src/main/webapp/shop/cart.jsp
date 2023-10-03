@@ -73,7 +73,8 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section active">
                                             <a href="#"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">8</div>
+                                            <div class="cart-amount">${(sessionScope.CART_BIRD_NEST.getSize()!=null ? sessionScope.CART_BIRD_NEST.getSize():0)+(sessionScope.CART_BIRD.getSize()!=null ? sessionScope.CART_BIRD.getSize():0)}</div>
+
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
@@ -168,6 +169,43 @@
                                                 <!--                            <button onClick="loadMoreBird()">Load More </button>-->
                                             </c:if>
 
+                                                <c:if test="${sessionScope.CART_BIRD_NEST != null}">
+                                                <c:forEach items="${sessionScope.CART_BIRD_NEST.getCart().values()}" var="nest_id" varStatus="counter">
+
+
+                                                    <div class="row mb-4 d-flex justify-content-between align-items-center">
+                                                        <div class="col-md-2 col-lg-2 col-xl-2">
+                                                            <img
+                                                                src="${nest_id.image_url_arr[0]}"
+                                                                class="img-fluid rounded-3" alt="">
+                                                        </div>
+                                                        <div class="col-md-3 col-lg-3 col-xl-3">
+                                                            <h6 class="text-muted">${nest_id.nest_id}</h6>
+                                                            <h6 class="text-black mb-0">${nest_id.nest_name}</h6>
+                                                        </div>
+                                                        <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                                            <button class="btn btn-link px-2"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                                                <i class="fas fa-minus"></i>
+                                                            </button>
+
+                                                            <input id="form1" min="0" name="quantity" value="1" type="number"
+                                                                   class="form-control form-control-sm" />
+
+                                                            <button class="btn btn-link px-2"
+                                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                                                <i class="fas fa-plus"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                                            <h6 class="mb-0">${nest_id.price}</h6>
+                                                        </div>
+
+                                                    </div>
+
+                                                </c:forEach>
+                                                <!--                            <button onClick="loadMoreBird()">Load More </button>-->
+                                            </c:if>
 
                                             <hr class="my-4">
                                         </div>
@@ -193,7 +231,7 @@
                                             </div>
 
                                             <a href = MainController?action=CheckOut ><button type="button" class="btn btn-dark btn-block btn-lg"
-                                                    data-mdb-ripple-color="dark" >Thanh toán</button></a>
+                                                                                              data-mdb-ripple-color="dark" >Thanh toán</button></a>
 
                                         </div>
                                     </div>

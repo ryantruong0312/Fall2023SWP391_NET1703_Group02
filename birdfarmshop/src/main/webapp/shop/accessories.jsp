@@ -28,7 +28,7 @@
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
 
-            <style>
+        <style>
             .thumb{
                 width: 370px;
                 height: 350px;
@@ -126,7 +126,8 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">8</div>
+                                            <div class="cart-amount">${(sessionScope.CART_BIRD_NEST.getSize()!=null ? sessionScope.CART_BIRD_NEST.getSize():0)+(sessionScope.CART_BIRD.getSize()!=null ? sessionScope.CART_BIRD.getSize():0)}</div>
+
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
@@ -216,7 +217,7 @@
                             </ol>
                             <div class="type" onclick="toggleList('typeList-2')">Giá cả</div>
                             <ol style="display: block;" id="typeList-2">
-                                  <li><input type="radio" id="type-65" ${requestScope.PRICE == null ? "checked": ""} name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
+                                <li><input type="radio" id="type-65" ${requestScope.PRICE == null ? "checked": ""} name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
                                 <li><input type="radio" id="type-6" ${requestScope.PRICE == "unit_price < 300000" ? "checked": ""}  name="txtPrice" value="unit_price < 300000"><label for="type-6">dưới 300,000đ</label></li>
                                 <li><input type="radio" id="type-7" ${requestScope.PRICE == "unit_price >= 600000 AND unit_price <= 900000" ? "checked": ""} name="txtPrice" value="unit_price >= 600000 AND unit_price <= 900000"><label for="type-7">300,000 - 600,000</label></li>
                                 <li><input type="radio" id="type-8" ${requestScope.PRICE == "unit_price > 900000" ? "checked": ""} name="txtPrice" value="unit_price > 900000"><label for="type-8">trên 900,000</label></li>
@@ -374,7 +375,7 @@
         <script src="assets/js/accordions.js"></script>
         <script src="assets/js/datepicker.js"></script>
         <script src="assets/js/scrollreveal.min.js"></script>
-<!--        <script src="assets/js/waypoints.min.js"></script>-->
+        <!--        <script src="assets/js/waypoints.min.js"></script>-->
         <script src="assets/js/jquery.counterup.min.js"></script>
         <script src="assets/js/imgfix.min.js"></script> 
         <script src="assets/js/slick.js"></script> 
@@ -386,42 +387,42 @@
 
         <script>
 
-                                                                $(function () {
-                                                                    var selectedClass = "";
-                                                                    $("p").click(function () {
-                                                                        selectedClass = $(this).attr("data-rel");
-                                                                        $("#portfolio").fadeTo(50, 0.1);
-                                                                        $("#portfolio div").not("." + selectedClass).fadeOut();
-                                                                        setTimeout(function () {
-                                                                            $("." + selectedClass).fadeIn();
-                                                                            $("#portfolio").fadeTo(50, 1);
-                                                                        }, 500);
+                                                        $(function () {
+                                                            var selectedClass = "";
+                                                            $("p").click(function () {
+                                                                selectedClass = $(this).attr("data-rel");
+                                                                $("#portfolio").fadeTo(50, 0.1);
+                                                                $("#portfolio div").not("." + selectedClass).fadeOut();
+                                                                setTimeout(function () {
+                                                                    $("." + selectedClass).fadeIn();
+                                                                    $("#portfolio").fadeTo(50, 1);
+                                                                }, 500);
 
-                                                                    });
-                                                                    $("input[name=txtType]").change(function () {
-                                                                        $("#selectAccessory").submit();
-                                                                    });
-                                                                    $("input[name=txtPrice]").change(function () {
-                                                                        $("#selectAccessory").submit();
-                                                                    });
-                                                                    $(".prev-page").click(function () {
-                                                                        let  page = $('input[name=page]').val();
-                                                                        let prevPage = Number(page) - 1;
-                                                                        $('input[name=page]').val(prevPage);
-                                                                        $("#selectAccessory").submit();
-                                                                    });
-                                                                    $(".next-page").click(function () {
-                                                                        let  page = $('input[name=page]').val();
-                                                                        let nextpage = Number(page) + 1;
-                                                                        $('input[name=page]').val(nextpage);
-                                                                        $("#selectAccessory").submit();
-                                                                    });
-                                                                });
-                                                                function takePage(event) {
-                                                                    let value = event.getAttribute('data-value');
-                                                                    $('input[name=page]').val(value);
-                                                                    $("#selectAccessory").submit();
-                                                                }
+                                                            });
+                                                            $("input[name=txtType]").change(function () {
+                                                                $("#selectAccessory").submit();
+                                                            });
+                                                            $("input[name=txtPrice]").change(function () {
+                                                                $("#selectAccessory").submit();
+                                                            });
+                                                            $(".prev-page").click(function () {
+                                                                let  page = $('input[name=page]').val();
+                                                                let prevPage = Number(page) - 1;
+                                                                $('input[name=page]').val(prevPage);
+                                                                $("#selectAccessory").submit();
+                                                            });
+                                                            $(".next-page").click(function () {
+                                                                let  page = $('input[name=page]').val();
+                                                                let nextpage = Number(page) + 1;
+                                                                $('input[name=page]').val(nextpage);
+                                                                $("#selectAccessory").submit();
+                                                            });
+                                                        });
+                                                        function takePage(event) {
+                                                            let value = event.getAttribute('data-value');
+                                                            $('input[name=page]').val(value);
+                                                            $("#selectAccessory").submit();
+                                                        }
 
         </script>
 

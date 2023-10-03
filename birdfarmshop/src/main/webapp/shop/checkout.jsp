@@ -100,7 +100,8 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">8</div>
+                                            <div class="cart-amount">${(sessionScope.CART_BIRD_NEST.getSize()!=null ? sessionScope.CART_BIRD_NEST.getSize():0)+(sessionScope.CART_BIRD.getSize()!=null ? sessionScope.CART_BIRD.getSize():0)}</div>
+
                                         </li>
 
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
@@ -157,7 +158,7 @@
                                 <div class="mb-3">
                                     <label for="exampleFormControlInput1" class="form-label" ><strong>Giỏ hàng</strong></label>
                                 </div>
-                                 
+
                             </div>
                             <div class="col-6">
                                 <div class="mb-3">

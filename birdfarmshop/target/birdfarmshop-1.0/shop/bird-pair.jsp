@@ -33,7 +33,7 @@
         <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
         <c:url var="toReports" value="MainController?action=NavToReports"/>
         <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
-        
+
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
             <div class="container">
@@ -61,10 +61,11 @@
                                             <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
                                             <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
                                             </c:if>
-                                            <li class="scroll-to-section"><a href="#" class="active">Nhân giống</a></li>
+                                        <li class="scroll-to-section"><a href="#" class="active">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">8</div>
+                                            <div class="cart-amount">${(sessionScope.CART_BIRD_NEST.getSize()!=null ? sessionScope.CART_BIRD_NEST.getSize():0)+(sessionScope.CART_BIRD.getSize()!=null ? sessionScope.CART_BIRD.getSize():0)}</div>
+
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
@@ -140,7 +141,7 @@
                     </div>
                     <div class="line-pagination"></div>
                     <div class="box-chose type-shop">
-                            <div class="d-flex">
+                        <div class="d-flex">
                             <div class="box box-top--left"></div>
                             <div class="box-middle"></div>
                             <div class="box box-top--right"></div>
@@ -190,8 +191,8 @@
                         </div>
                     </div>
                 </div>
-                 <!-- butotn pair start -->      
-                 <!-- butotn pair end -->
+                <!-- butotn pair start -->      
+                <!-- butotn pair end -->
                 <!-- Second Column -->
                 <div class="comparison-column">
                     <div class="column-content">
@@ -208,7 +209,7 @@
                         <!-- EL to populate the bird name combo box -->
                         <select class="combo-box" id="birdSelect2"  >
                         </select>
-                        
+
                         <!-- Additional rows to display bird information -->
                         <div id="birdInformation2"> 
                             <div class="bird-info-row">
@@ -240,8 +241,8 @@
                                 <option value="${breed.breed_id}">${breed.breed_name}</option>
                             </c:forEach>
                         </select>
-                        
-                          <!-- EL to populate the bird name combo box -->
+
+                        <!-- EL to populate the bird name combo box -->
                         <select class="combo-box" id="birdSelect3"  >
                         </select>
                         <div class="mt-4">
@@ -260,8 +261,8 @@
                         </div>
                     </div>
                 </div>
-                 <!-- butotn pair start -->      
-                 <!-- butotn pair end -->
+                <!-- butotn pair start -->      
+                <!-- butotn pair end -->
                 <!-- Second Column -->
                 <div class="comparison-column">
                     <div class="column-content">
@@ -274,15 +275,15 @@
                                 <option value="${breed.breed_id}">${breed.breed_name}</option>
                             </c:forEach>
                         </select>
-                        
+
                         <!-- EL to populate the bird name combo box -->
                         <select class="combo-box" id="birdSelect4">
                         </select>
-                        
+
                         <div style="height: 32px;" class="mt-4">
-                       
+
                         </div>    
-                        
+
                         <!-- Additional rows to display bird information -->
                         <div id="birdInformation4"> 
                             <div class="bird-info-row">
