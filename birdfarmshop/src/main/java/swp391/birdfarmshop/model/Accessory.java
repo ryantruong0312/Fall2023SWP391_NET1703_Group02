@@ -12,6 +12,7 @@ public class Accessory {
 
     private String accessory_id;
     private String accessory_name;
+    private String category_id;
     private int unit_price;
     private int stock_quantity;
     private String description;
@@ -22,15 +23,24 @@ public class Accessory {
     public Accessory() {
     }
 
-    public Accessory(String accessory_id, String accessory_name, int unit_price, int stock_quantity, String description, int discount, String status, String image_url) {
+    public Accessory(String accessory_id, String accessory_name, String category_id, int unit_price, int stock_quantity, String description, int discount, String status, String image_url) {
         this.accessory_id = accessory_id;
         this.accessory_name = accessory_name;
+        this.category_id = category_id;
         this.unit_price = unit_price;
         this.stock_quantity = stock_quantity;
         this.description = description;
         this.discount = discount;
         this.status = status;
         this.image_url = image_url;
+    }
+
+    public String getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(String category_id) {
+        this.category_id = category_id;
     }
 
     public String getAccessory_id() {
@@ -96,7 +106,5 @@ public class Accessory {
     public void setImage_url(String image_url) {
         this.image_url = image_url;
     }
-    
-    
 
 }

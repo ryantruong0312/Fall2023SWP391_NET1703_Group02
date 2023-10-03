@@ -24,14 +24,17 @@ public class CartDTO {
     private int birdNestTotalPrice;
     private int accessoryTotalPrice;
     private int cartTotalPrice;
+    private int totalItem;
 
     public CartDTO() {
         birdList = new ArrayList<>();
         birdNestList = new ArrayList<>();
         accessoryList = new HashMap<>();
+        cartTotalPrice = 0;
+        totalItem = 0;
     }
 
-    public CartDTO(ArrayList<Bird> birdList, ArrayList<BirdNest> birdNestList, Map<Accessory, Integer> accessoryList, int birdTotalPrice, int birdNestTotalPrice, int accessoryTotalPrice, int cartTotalPrice) {
+    public CartDTO(ArrayList<Bird> birdList, ArrayList<BirdNest> birdNestList, Map<Accessory, Integer> accessoryList, int birdTotalPrice, int birdNestTotalPrice, int accessoryTotalPrice, int cartTotalPrice, int totalItem) {
         this.birdList = birdList;
         this.birdNestList = birdNestList;
         this.accessoryList = accessoryList;
@@ -39,6 +42,15 @@ public class CartDTO {
         this.birdNestTotalPrice = birdNestTotalPrice;
         this.accessoryTotalPrice = accessoryTotalPrice;
         this.cartTotalPrice = cartTotalPrice;
+        this.totalItem = totalItem;
+    }
+
+    public int getTotalItem() {
+        return totalItem;
+    }
+
+    public void setTotalItem(int totalItem) {
+        this.totalItem = totalItem;
     }
 
     public ArrayList<Bird> getBirdList() {
@@ -101,6 +113,8 @@ public class CartDTO {
         boolean check = false;
         if (!this.birdList.contains(bird)) {
             this.birdList.add(bird);
+            this.totalItem += 1;
+            cartTotalPrice += (bird.getPrice() - (bird.getPrice() * bird.getDiscount()));
             check = true;
         }
         return check;
@@ -110,6 +124,8 @@ public class CartDTO {
         boolean check = false;
         if (!this.birdNestList.contains(birdnest)) {
             this.birdNestList.add(birdnest);
+            this.totalItem += 1;
+            cartTotalPrice += (birdnest.getPrice() - (birdnest.getPrice() * birdnest.getDiscount()));
             check = true;
         }
         return check;
@@ -119,10 +135,14 @@ public class CartDTO {
         boolean check = false;
         if (this.accessoryList.containsKey(accessory)) {
             int currentQuant = this.accessoryList.get(accessory);
-            this.accessoryList.replace(accessory, currentQuant + quantity);
+            this.accessoryList.put(accessory, currentQuant + quantity);
+            this.totalItem += quantity;
+            this.cartTotalPrice += ((accessory.getUnit_price() - (accessory.getUnit_price() * accessory.getDiscount())) * quantity);
             check = true;
         } else {
             this.accessoryList.put(accessory, quantity);
+            this.totalItem += quantity;
+            this.cartTotalPrice += ((accessory.getUnit_price() - (accessory.getUnit_price() * accessory.getDiscount())) * quantity);
             check = true;
         }
         return check;

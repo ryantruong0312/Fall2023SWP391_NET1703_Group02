@@ -36,7 +36,7 @@ public class RenderAccessoryDetailsController extends HttpServlet {
         try {
             String accessory_id = request.getParameter("id");
             AccessoryDAO a = new AccessoryDAO();
-            AccessoryDTO ac = a.getAccessoriesByID(accessory_id);
+            AccessoryDTO ac = a.getAccessoryDetailsByID(accessory_id);
             FeedbackDAO f = new FeedbackDAO();
             ArrayList<FeedbackDTO> feedbackList = f.getFeedbackByIdProduct(accessory_id);
             request.setAttribute("feedbackList", feedbackList);

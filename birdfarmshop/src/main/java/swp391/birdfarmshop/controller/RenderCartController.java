@@ -13,7 +13,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import swp391.birdfarmshop.dao.AccessoryCategoryDAO;
 import swp391.birdfarmshop.dao.BirdBreedDAO;
+import swp391.birdfarmshop.model.AccessoryCategory;
 import swp391.birdfarmshop.model.BirdBreed;
 
 /**
@@ -35,6 +37,10 @@ public class RenderCartController extends HttpServlet {
             BirdBreedDAO breedDao = new BirdBreedDAO();
             breeds = breedDao.getBirdBreeds();
             request.setAttribute("BREED_LIST", breeds);
+            List<AccessoryCategory> categories = new ArrayList<>();
+            AccessoryCategoryDAO categoryDao = new AccessoryCategoryDAO();
+            categories = categoryDao.getAccessoryCategories();
+            request.setAttribute("CATEGORY_LIST", categories);
             url = SUCCESS;
         } catch (Exception e) {
             log("Error at RenderCartController: " + e.toString());

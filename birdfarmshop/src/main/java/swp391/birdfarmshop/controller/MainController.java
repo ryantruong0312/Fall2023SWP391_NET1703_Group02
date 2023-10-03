@@ -61,10 +61,12 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_BIRD_PAIR = "RenderBirdPairController";
     private static final String ACT_NAV_BIRD_NESTS = "NavToBirdNests";
     private static final String DEST_NAV_BIRD_NESTS = "RenderBirdNestController";
-        private static final String ACT_NAV_BIRD_NESTS_DETAIL = "NavToBirdNestDetail";
+    private static final String ACT_NAV_BIRD_NESTS_DETAIL = "NavToBirdNestDetail";
     private static final String DEST_NAV_BIRD_NESTS_DETAIL = "RenderBirdNestDetalController";
-    private static final String ACT_ADD_TO_CART = "AddtoCart";
-    private static final String DEST_ADD_TO_CART = "AddtoCartController";
+    private static final String ACT_ADD_BIRD_TO_CART = "AddBirdToCart";
+    private static final String DEST_ADD_BIRD_TO_CART = "AddBirdToCartController";
+    private static final String ACT_ADD_ACCESSORY_TO_CART = "AddAccessoryToCart";
+    private static final String DEST_ADD_ACCESSORY_TO_CART = "AddAccessoryToCartController";
     private static final String ACT_SEARCH_ACCESSORY = "RenderSearchAccessories";
     private static final String DEST_SEARCH_ACCESSORY = "RenderSearchAccessoriesController";
     private static final String ACT_CHECK_OUT = "CheckOut";
@@ -151,8 +153,11 @@ public class MainController extends HttpServlet {
                 case ACT_NAV_EDIT_PROFILE:
                     url = DEST_NAV_EDIT_PROFILE;
                     break;
-                case ACT_ADD_TO_CART:
-                    url = DEST_ADD_TO_CART;
+                case ACT_ADD_BIRD_TO_CART:
+                    url = DEST_ADD_BIRD_TO_CART;
+                    break;
+                case ACT_ADD_ACCESSORY_TO_CART:
+                    url = DEST_ADD_ACCESSORY_TO_CART;
                     break;
                 case ACT_CHECK_OUT:
                     url = DEST_CHECK_OUT;
