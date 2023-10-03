@@ -40,39 +40,48 @@
                 background-color: black;
                 color: white !important;
             }
-            .search-bar {
-                margin: 0 0 10px 120px;
-                border: 5px;
+            
+            .section-heading form {
                 border-radius: 8px;
                 border: 1px solid rgb(221, 221, 227);
+                width: 28%;
+                min-width: 280px;
+                margin: 0 auto;
             }
-            .search-bar input {
+            .section-heading input {
                 border: 0;
                 background: none;
-                outline: none;
             }
-            .search-bar input[type=submit] {
-                float: right;
+            .section-heading img {
+                margin: 5px;
             }
-            .search-bar img {
-                margin-left: 5px;
+            .section-heading a {
+                border-radius: 20px;
+                border: 1px solid rgb(221, 221, 227);
+                width: 20%;
+                background-color: lightgray;
+                padding: 5px;
+                color: red;
+                display: flex;
+                justify-content: center;
+                margin: 0 auto;
             }
-
+            .search-container {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            
             .type {
                 cursor: pointer;
                 background-color: #cccccc;
                 padding: 0 0 0 5px; /*top right bot left*/
-                margin: 5px 0 5px 5px;
-            }
-            .type + ol {
-                display: none;
+                margin: 5px 0 5px 0px;
             }
             #typeList-1, #typeList-2, #typeList-3, #typeList-4 {
-                margin-left: 10px;
-            }
-
-            .position-sticky li {
                 margin-bottom: 5px;
+            }
+            li input[type="radio"] + label {
+                margin-left: 5px;
             }
             .bird-pg li{
                 cursor: pointer;
@@ -80,6 +89,7 @@
             a {
                 color: black;
             }
+            
         </style>
     </head>
 
@@ -144,7 +154,7 @@
                                     <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
                                     <li class="submenu"><a href="" class="active">Sản phẩm</a>
                                         <ul>
-                                            <li><a href="#" class="active">Vẹt cảnh</a></li>
+                                            <li><a href="${pageScope.toBirds}" class="active">Vẹt cảnh</a></li>
                                             <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
                                             <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
@@ -194,13 +204,23 @@
         <section class="section" id="products">
             <div class="container">
                 <div class="row">
-                    <form id="selectBird" action="MainController" method="POST">
-                        <input type="hidden" name="action" value="NavToBird"> 
-                        <div class="search-bar">
-                            <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                            <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
-                            <input type="submit" value="Tìm kiếm">
+                    <div class="col-lg-12">
+                        <div style="border: 0px;" class="section-heading">
+                            <h2>Sản phẩm của chúng tôi</h2>
                         </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="section-heading">
+                            <form id="selectBird" action="MainController" method="POST">
+                                <input type="hidden" name="action" value="NavToBird"> 
+                                <div class="search-container">
+                                    <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                                    <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                                    <input type="submit" value="Tìm kiếm">
+                                </div>
+                        </div>
+                        <a href="MainController?action=NavToAddBird"><span>Tạo mới chim</span></a>
+                    </div>
                 </div>
             </div>
             <div class="container-fluid">
@@ -221,7 +241,7 @@
                                 <input type="hidden" name="action" value="NavToBird">    
                                 <li><input type="radio" ${requestScope.PRICE == null  ? "checked":""} id="type-65" name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
                                 <li><input type="radio" ${requestScope.PRICE == "price < 5000000" ? "checked":""} id="type-6" name="txtPrice" value="price < 5000000"><label for="type-6">Dưới 5,000,000₫</label></li>
-                                <li><input type="radio" ${requestScope.PRICE == "price >= 5000000 AND price <= 20000000" ? "checked":""} id="type-7" name="txtPrice" value="price >= 5000000 AND price <= 20000000"><label for="type-7">Từ 5,000,000₫ - 20,000,000₫</label></li>
+                                <li><input type="radio" ${requestScope.PRICE == "price >= 5000000 AND price <= 20000000" ? "checked":""} id="type-7" name="txtPrice" value="price >= 5000000 AND price <= 20000000"><label for="type-7">5,000,000₫ - 20,000,000₫</label></li>
                                 <li><input type="radio" ${requestScope.PRICE == "price > 20000000" ? "checked":""} id="type-8" name="txtPrice" value="price > 20000000"><label for="type-8">Trên 20,000,000₫</label></li>
                             </ol>
                             <div class="type" onclick="toggleList('typeList-3')">Giống</div>
@@ -233,9 +253,9 @@
                             <div class="type" onclick="toggleList('typeList-4')">Tuổi</div>
                             <ol style="display: block;" id="typeList-4">
                                 <li><input type="radio" ${requestScope.AGE == null ? "checked":""}  id="type-115" name="txtAge" value="All"><label for="type-115">Tất cả</label></li>
-                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) < 5" ? "checked":""} id="type-11" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) < 5"><label for="type-11">dưới 5 tháng</label></li>
-                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18" ? "checked":""} id="type-12" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18"><label for="type-12">từ 5 - 18 tháng</label></li>
-                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) > 18" ? "checked":""} id="type-13" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) > 18"><label for="type-13">trên 18 tháng</label></li>
+                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) < 5" ? "checked":""} id="type-11" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) < 5"><label for="type-11">Dưới 5 tháng</label></li>
+                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18" ? "checked":""} id="type-12" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18"><label for="type-12">Từ 5 - 18 tháng</label></li>
+                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) > 18" ? "checked":""} id="type-13" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) > 18"><label for="type-13">Trên 18 tháng</label></li>
                             </ol>
                         </div>
                     </nav>
@@ -247,7 +267,7 @@
                                 <c:if test="${BIRDLIST != null}">
                                     <c:if test="${not empty BIRDLIST}">
                                         <c:forEach items="${BIRDLIST}" var="bird">
-                                            <div class="bird col-lg-3">
+                                            <div class="bird col-lg-4">
                                                 <div class="item">
                                                     <div class="thumb">
                                                         <div class="hover-content">
@@ -271,7 +291,6 @@
                                                             </c:otherwise>
                                                         </c:choose> 
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </c:forEach>

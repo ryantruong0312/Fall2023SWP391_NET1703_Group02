@@ -34,6 +34,22 @@
         <c:url var="toReports" value="MainController?action=NavToReports"/>
         <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
 
+        <style>
+            .back-choose h6 {
+                text-align: center;
+                margin-bottom: 5px;
+            }
+            .back-choose a {
+                border-radius: 20px;
+                border: 1px solid rgb(221, 221, 227);
+                width: 20%;
+                background-color: lightgray;
+                padding: 5px;
+                color: red;
+                display: flex;
+                justify-content: center;
+            }
+        </style>
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
             <div class="container">
@@ -231,6 +247,8 @@
         <main class="my-5 bird-customer">
             <div class="back-choose py-4">
                 <h5>Chọn phương pháp ghép cặp</h5>
+                <h6>Khách hàng cần thêm chim trước khi ghép cặp</h6>
+                <a style="margin: 0 auto !important;" href="MainController?action=NavToAddBird"><span>Tạo mới chim</span></a>
             </div>
             <div class="comparison-container mx-3">
                 <!-- First Column -->
