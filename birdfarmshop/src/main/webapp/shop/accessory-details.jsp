@@ -29,7 +29,29 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
+        <style>
+            .image-container {
+                display: flex;
+                align-items: center;
+            }
 
+            .right-image {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .left-image img{
+                width: 400px;
+                height: 400px;
+                margin-right: 10px;
+            }
+
+            .right-image img{
+                width: 200px;
+                height: 200px;
+                margin-right: 2px;
+            }
+        </style>
     </head>
 
     <body>
@@ -88,7 +110,7 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">${(sessionScope.CART_BIRD_NEST.getSize()!=null ? sessionScope.CART_BIRD_NEST.getSize():0)+(sessionScope.CART_BIRD.getSize()!=null ? sessionScope.CART_BIRD.getSize():0)}</div>
+                                            <div class="cart-amount">${sessionScope.CART.totalItem}</div>
 
                                         </li>
 
@@ -272,6 +294,84 @@
 </footer>
 <!-- ***** Footer Area Ends ***** -->
 
+<script>
+    function incrementQuantity(inputId, maxQuantity, unitPrice)
+    {
+        var quantityInput = document.getElementById(inputId);
+        var currentValue = parseInt(quantityInput.value);
+
+        var total1 = document.getElementById("total");
+        var warning = document.getElementById("warning");
+        if (!isNaN(currentValue) && currentValue < maxQuantity) {
+            quantityInput.value = currentValue + 1;
+            total1.innerHTML = unitPrice * quantityInput.value + " ₫";
+
+            warning.innerHTML = "";
+        } else {
+            //alert("Số lượng không đủ!");
+            warning.innerHTML = "Số lượng không đủ!";
+        }
+    }
+
+
+    function decrementQuantity(inputId, unitPrice) {
+        var quantityInput = document.getElementById(inputId);
+        var currentValue = parseInt(quantityInput.value);
+        var total = document.getElementById("total");
+        var warning = document.getElementById("warning");
+        if (!isNaN(currentValue) && currentValue > 0) {
+            quantityInput.value = currentValue - 1;
+            total.innerHTML = unitPrice * quantityInput.value + " ₫";
+            warning.innerHTML = "";
+        }
+    }
+
+    function formatNumber(n) {
+        // format number 1000000 to 1.234.567
+        return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    function ConvertToNumber(priceStr) {
+        var priceParts = priceStr.split(".");
+        var price = "";
+        for (var i = 0; i < priceParts.length; i++) {
+            price += priceParts[i];
+        }
+        return Number.parseInt(price);
+    }
+
+
+    function updateTotal() {
+        var unitPrice = document.getElementById("unit_price");
+        var quantityInput = document.getElementById("quantityInput"); // Lấy phần tử input số lượng
+
+        console.log(unitPrice);
+        console.log(quantityInput);
+    }
+
+
+    function addToCart() {
+        var name = document.getElementById("nameAccessory");
+        var quantity = document.getElementById("quantityInput");
+        var total = document.getElementById("total");
+        sessionStorage.setItem("name", JSON.stringify(name));
+        sessionStorage.setItem("quantity", JSON.stringify(quantity));
+        sessionStorage.setItem("total", JSON.stringify(total));
+
+    }
+
+    function swapImages(clickedImage) {
+        const leftImage = document.querySelector('.left-image img');
+        const rightImage1 = document.querySelectorAll('.right-images img')[0];
+        const rightImage2 = document.querySelectorAll('.right-images img')[1];
+
+        const tempSrc = leftImage.src;
+        leftImage.src = clickedImage.src;
+        clickedImage.src = tempSrc;
+    }
+
+</script>
+
 <!-- jQuery -->
 <script src="assets/js/jquery-2.1.0.min.js"></script>
 
@@ -294,127 +394,8 @@
 <!-- Global Init -->
 <script src="assets/js/custom.js"></script>
 
-<script>
-                                                $(function () {
-                                                    var selectedClass = "";
-                                                    $("p").click(function () {
-                                                        selectedClass = $(this).attr("data-rel");
-                                                        $("#portfolio").fadeTo(50, 0.1);
-                                                        $("#portfolio div").not("." + selectedClass).fadeOut();
-                                                        setTimeout(function () {
-                                                            $("." + selectedClass).fadeIn();
-                                                            $("#portfolio").fadeTo(50, 1);
-                                                        }, 500);
-
-                                                    });
-                                                });
-
-                                                function incrementQuantity(inputId, maxQuantity, unitPrice)
-                                                {
-                                                    var quantityInput = document.getElementById(inputId);
-                                                    var currentValue = parseInt(quantityInput.value);
-
-                                                    var total1 = document.getElementById("total");
-                                                    var warning = document.getElementById("warning");
-                                                    if (!isNaN(currentValue) && currentValue < maxQuantity) {
-                                                        quantityInput.value = currentValue + 1;
-                                                        total1.innerHTML = unitPrice * quantityInput.value + " ₫";
-
-                                                        warning.innerHTML = "";
-                                                    } else {
-                                                        //alert("Số lượng không đủ!");
-                                                        warning.innerHTML = "Số lượng không đủ!";
-                                                    }
-                                                }
-
-
-                                                function decrementQuantity(inputId, unitPrice) {
-                                                    var quantityInput = document.getElementById(inputId);
-                                                    var currentValue = parseInt(quantityInput.value);
-                                                    var total = document.getElementById("total");
-                                                    var warning = document.getElementById("warning");
-                                                    if (!isNaN(currentValue) && currentValue > 0) {
-                                                        quantityInput.value = currentValue - 1;
-                                                        total.innerHTML = unitPrice * quantityInput.value + " ₫";
-                                                        warning.innerHTML = "";
-                                                    }
-                                                }
-
-                                                function formatNumber(n) {
-                                                    // format number 1000000 to 1.234.567
-                                                    return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                                                }
-
-                                                function ConvertToNumber(priceStr) {
-                                                    var priceParts = priceStr.split(".");
-                                                    var price = "";
-                                                    for (var i = 0; i < priceParts.length; i++) {
-                                                        price += priceParts[i];
-                                                    }
-                                                    return Number.parseInt(price);
-                                                }
-
-
-                                                function updateTotal() {
-                                                    var unitPrice = document.getElementById("unit_price");
-                                                    var quantityInput = document.getElementById("quantityInput"); // Lấy phần tử input số lượng
-
-                                                    console.log(unitPrice);
-                                                    console.log(quantityInput);
-                                                }
-
-
-                                                function addToCart() {
-                                                    var name = document.getElementById("nameAccessory");
-                                                    var quantity = document.getElementById("quantityInput");
-                                                    var total = document.getElementById("total");
-                                                    sessionStorage.setItem("name", JSON.stringify(name));
-                                                    sessionStorage.setItem("quantity", JSON.stringify(quantity));
-                                                    sessionStorage.setItem("total", JSON.stringify(total));
-
-                                                }
-
-                                                function swapImages(clickedImage) {
-                                                    const leftImage = document.querySelector('.left-image img');
-                                                    const rightImage1 = document.querySelectorAll('.right-images img')[0];
-                                                    const rightImage2 = document.querySelectorAll('.right-images img')[1];
-
-                                                    const tempSrc = leftImage.src;
-                                                    leftImage.src = clickedImage.src;
-                                                    clickedImage.src = tempSrc;
-                                                }
-
-</script>
-
-
-
-<style>
-    .image-container {
-        display: flex;
-        align-items: center;
-    }
-
-    .right-image {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .left-image img{
-        width: 400px;
-        height: 400px;
-        margin-right: 10px;
-    }
-
-    .right-image img{
-        width: 200px;
-        height: 200px;
-        margin-right: 2px;
-    }
-</style>
 
 
 </body>
-
-
 </html>
 

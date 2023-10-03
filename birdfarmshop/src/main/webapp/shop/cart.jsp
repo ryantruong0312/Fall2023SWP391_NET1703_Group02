@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -73,7 +74,7 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section active">
                                             <a href="#"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">${(sessionScope.CART_BIRD_NEST.getSize()!=null ? sessionScope.CART_BIRD_NEST.getSize():0)+(sessionScope.CART_BIRD.getSize()!=null ? sessionScope.CART_BIRD.getSize():0)}</div>
+                                            <div class="cart-amount">${sessionScope.CART.totalItem}</div>
 
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
@@ -113,8 +114,8 @@
             </div>
         </header>
         <!-- ***** Header Area End ***** -->
-        
-                <!-- ***** Main Banner Area Start ***** -->
+
+        <!-- ***** Main Banner Area Start ***** -->
         <div class="page-heading" id="top">
             <div class="container">
                 <div class="row">
@@ -129,176 +130,115 @@
         </div>
         <!-- ***** Main Banner Area End ***** -->
 
-        <section class="h-100" style="background-color: #eee;">
-            <div class="container h-100 py-5">
+        <section class="h-100">
+            <div class="container-fluid h-100 py-5">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-10">
 
                         <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
-                            <div>
-                                <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!" class="text-body">price <i
-                                            class="fas fa-angle-down mt-1"></i></a></p>
-                            </div>
-                        </div>
+                            <h3 class="fw-normal mb-0 text-black">Vẹt cảnh</h3>
+                        </div><hr>
+                        <c:forEach items="${sessionScope.CART.birdList}" var="bird">
+                            <div class="card rounded-3 mb-4">
+                                <div class="card-body p-4">
+                                    <div class="row d-flex justify-content-between align-items-center">
+                                        <div class="col-md-2 col-lg-2 col-xl-2" style="text-align: center;">
+                                            <img src="${bird.image_url}" class="img-fluid rounded-3" alt="Vẹt cảnh" style="height: 150px; width: 120px;">
+                                        </div>
+                                        <div class="col-md-4 col-lg-4 col-xl-4">
+                                            <p class="lead fw-bold mb-2" style="font-size: 23px;">${bird.bird_name}</p>
+                                            <c:forEach var="breed" items="${requestScope.BREED_LIST}">
+                                                <c:if test="${breed.breed_id == bird.breed_id}">
+                                                    <p><span class="text-muted">Giống: </span>${breed.breed_name}
+                                                    </c:if>
+                                                </c:forEach>
+                                        </div>
 
-                        <div class="card rounded-3 mb-4">
-                            <div class="card-body p-4">
-                                <div class="row d-flex justify-content-between align-items-center">
-                                    <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img
-                                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                                            class="img-fluid rounded-3" alt="Cotton T-shirt">
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xl-3">
-                                        <p class="lead fw-normal mb-2">Basic T-shirt</p>
-                                        <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                        <button class="btn btn-link px-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-
-                                        <input id="form1" min="0" name="quantity" value="2" type="number"
-                                               class="form-control form-control-sm" />
-
-                                        <button class="btn btn-link px-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                        <h5 class="mb-0">$499.00</h5>
-                                    </div>
-                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                        <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                                        <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
+                                            <button class="btn btn-link px-2" style="visibility: hidden"
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                                <img src="assets/images/decrease-button.png"/>
+                                            </button>
+                                            <input id="form1" min="0" name="quantity" value="1" type="number" disabled=""
+                                                   class="form-control form-control-sm" style="text-align: center; height: 40px; border: 1px solid; font-size: 16px;"/>
+                                            <button class="btn btn-link px-2" style="visibility: hidden"
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                                <img src="assets/images/increase-button.png"/>
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                            <h5 class="mb-0" style="font-weight: bold;"><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</h5>
+                                        </div>
+                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                            <a href="#!" class="text-danger"><img src="assets/images/remove-button.png"/></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </c:forEach>
 
-                        <div class="card rounded-3 mb-4">
-                            <div class="card-body p-4">
-                                <div class="row d-flex justify-content-between align-items-center">
-                                    <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img
-                                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                                            class="img-fluid rounded-3" alt="Cotton T-shirt">
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xl-3">
-                                        <p class="lead fw-normal mb-2">Basic T-shirt</p>
-                                        <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                        <button class="btn btn-link px-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="fw-normal mb-0 text-black">Tổ chim non</h3>
+                        </div><hr>
 
-                                        <input id="form1" min="0" name="quantity" value="2" type="number"
-                                               class="form-control form-control-sm" />
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="fw-normal mb-0 text-black">Phụ kiện</h3>
+                        </div><hr>
+                        <c:forEach items="${sessionScope.CART.accessoryList}" var="accessory">
+                            <div class="card rounded-3 mb-4">
+                                <div class="card-body p-4">
+                                    <div class="row d-flex justify-content-between align-items-center">
+                                        <div class="col-md-2 col-lg-2 col-xl-2" style="text-align: center;">
+                                            <img src="${accessory.key.image_url}" class="img-fluid rounded-3" alt="Phụ kiện" style="height: 150px; width: 120px;">
+                                        </div>
+                                        <div class="col-md-4 col-lg-4 col-xl-4">
+                                            <p class="lead fw-bold mb-2" style="font-size: 23px;">${accessory.key.accessory_name}</p>
+                                            <c:forEach var="category" items="${requestScope.CATEGORY_LIST}">
+                                                <c:if test="${accessory.key.category_id == category.category_id}">
+                                                    <p><span class="text-muted">Loại phụ kiện: </span>${category.category_name}
+                                                    </c:if>
+                                                </c:forEach>
 
-                                        <button class="btn btn-link px-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                        <h5 class="mb-0">$499.00</h5>
-                                    </div>
-                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                        <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
+                                        </div>
+                                        <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
+                                            <button class="btn btn-link px-2" 
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                                <img src="assets/images/decrease-button.png"/>
+                                            </button>
+
+                                            <input id="form1" min="0" name="quantity" value="${accessory.value}" type="number"
+                                                   class="form-control form-control-sm" style="text-align: center; height: 40px; border: 1px solid; font-size: 16px;"/>
+
+                                            <button class="btn btn-link px-2"
+                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                                <img src="assets/images/increase-button.png"/>
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                            <h5 class="mb-0" style="font-weight: bold;"><fmt:formatNumber value="${accessory.key.unit_price * accessory.value}" pattern="#,###"/> ₫</h5>
+                                        </div>
+                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                            <a href="#!" class="text-danger"><img src="assets/images/remove-button.png"/></i></a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="card rounded-3 mb-4">
-                            <div class="card-body p-4">
-                                <div class="row d-flex justify-content-between align-items-center">
-                                    <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img
-                                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                                            class="img-fluid rounded-3" alt="Cotton T-shirt">
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xl-3">
-                                        <p class="lead fw-normal mb-2">Basic T-shirt</p>
-                                        <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                        <button class="btn btn-link px-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-
-                                        <input id="form1" min="0" name="quantity" value="2" type="number"
-                                               class="form-control form-control-sm" />
-
-                                        <button class="btn btn-link px-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                        <h5 class="mb-0">$499.00</h5>
-                                    </div>
-                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                        <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card rounded-3 mb-4">
-                            <div class="card-body p-4">
-                                <div class="row d-flex justify-content-between align-items-center">
-                                    <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img
-                                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                                            class="img-fluid rounded-3" alt="Cotton T-shirt">
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xl-3">
-                                        <p class="lead fw-normal mb-2">Basic T-shirt</p>
-                                        <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                        <button class="btn btn-link px-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-
-                                        <input id="form1" min="0" name="quantity" value="2" type="number"
-                                               class="form-control form-control-sm" />
-
-                                        <button class="btn btn-link px-2"
-                                                onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </div>
-                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                        <h5 class="mb-0">$499.00</h5>
-                                    </div>
-                                    <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                        <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        </c:forEach>
 
                         <div class="card mb-4">
                             <div class="card-body p-4 d-flex flex-row">
                                 <div class="form-outline flex-fill">
-                                    <input type="text" id="form1" class="form-control form-control-lg" />
-                                    <label class="form-label" for="form1">Discound code</label>
+                                    <input type="text" id="form1" class="form-control form-control-lg" placeholder="Nhập mã khuyến mãi" />
                                 </div>
-                                <button type="button" class="btn btn-outline-warning btn-lg ms-3">Apply</button>
+                                <button type="button" class="btn btn-outline-warning btn-lg ms-3">Áp dụng</button>
                             </div>
-                        </div>
+                        </div><hr>
+                        <h3 style="text-align: right">Tổng cộng</h3>
+                        <h4 style="text-align: right"><fmt:formatNumber value="${sessionScope.CART.cartTotalPrice}" pattern="#,###"/> ₫</h4>
 
                         <div class="card">
                             <div class="card-body">
-                                <button type="button" class="btn btn-warning btn-block btn-lg">Proceed to Pay</button>
+                                <button type="button" class="btn btn-warning btn-block btn-lg">Tiến hành thanh toán</button>
                             </div>
                         </div>
 
@@ -391,19 +331,19 @@
         <script src="assets/js/custom.js"></script>
         <script>
 
-                                                    $(function () {
-                                                        var selectedClass = "";
-                                                        $("p").click(function () {
-                                                            selectedClass = $(this).attr("data-rel");
-                                                            $("#portfolio").fadeTo(50, 0.1);
-                                                            $("#portfolio div").not("." + selectedClass).fadeOut();
-                                                            setTimeout(function () {
-                                                                $("." + selectedClass).fadeIn();
-                                                                $("#portfolio").fadeTo(50, 1);
-                                                            }, 500);
+                                                        $(function () {
+                                                            var selectedClass = "";
+                                                            $("p").click(function () {
+                                                                selectedClass = $(this).attr("data-rel");
+                                                                $("#portfolio").fadeTo(50, 0.1);
+                                                                $("#portfolio div").not("." + selectedClass).fadeOut();
+                                                                setTimeout(function () {
+                                                                    $("." + selectedClass).fadeIn();
+                                                                    $("#portfolio").fadeTo(50, 1);
+                                                                }, 500);
 
+                                                            });
                                                         });
-                                                    });
         </script>
     </body>
 </html>

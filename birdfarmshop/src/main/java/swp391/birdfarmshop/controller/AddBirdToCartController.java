@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
@@ -11,47 +10,53 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
-import swp391.birdfarmshop.dao.AccessoryCategoryDAO;
-import swp391.birdfarmshop.dao.BirdBreedDAO;
-import swp391.birdfarmshop.model.AccessoryCategory;
-import swp391.birdfarmshop.model.BirdBreed;
+import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
+import swp391.birdfarmshop.dao.BirdDAO;
+import swp391.birdfarmshop.dto.CartDTO;
+import swp391.birdfarmshop.model.Bird;
 
 /**
  *
  * @author tlminh
  */
-@WebServlet(name="RenderCartController", urlPatterns={"/RenderCartController"})
-public class RenderCartController extends HttpServlet {
-   
+@WebServlet(name = "AddBirdToCartController", urlPatterns = {"/AddBirdToCartController"})
+public class AddBirdToCartController extends HttpServlet {
+
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "shop/cart.jsp";
+    private static final String SUCCESS = "MainController?action=NavToHome";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+
         String url = ERROR;
         try {
-            List<BirdBreed> breeds = new ArrayList<>();
-            BirdBreedDAO breedDao = new BirdBreedDAO();
-            breeds = breedDao.getBirdBreeds();
-            request.setAttribute("BREED_LIST", breeds);
-            List<AccessoryCategory> categories = new ArrayList<>();
-            AccessoryCategoryDAO categoryDao = new AccessoryCategoryDAO();
-            categories = categoryDao.getAccessoryCategories();
-            request.setAttribute("CATEGORY_LIST", categories);
-            url = SUCCESS;
+            String bird_id = request.getParameter("bird_id");
+            BirdDAO birdDao = new BirdDAO();
+            Bird bird = birdDao.getBirdById(bird_id);
+            HttpSession session = request.getSession();
+            if (session != null) {
+                CartDTO cart = (CartDTO) session.getAttribute("CART");
+                if (cart == null) {
+                    cart = new CartDTO();
+                }
+                boolean checkAdd = cart.addBirdToCart(bird);
+                if (checkAdd) {
+                    url = SUCCESS;
+                    session.setAttribute("CART", cart);
+                }
+            }
         } catch (Exception e) {
-            log("Error at RenderCartController: " + e.toString());
+            log("Error at AddBirdToCartController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -59,12 +64,13 @@ public class RenderCartController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -72,12 +78,13 @@ public class RenderCartController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

@@ -17,10 +17,6 @@
         <servlet-class>swp391.birdfarmshop.controller.RenderBirdDetailsController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddtoCartController</servlet-name>
-        <servlet-class>swp391.birdfarmshop.controller.AddtoCartController</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>RenderBirdByBreed_idController</servlet-name>
         <servlet-class>swp391.birdfarmshop.controller.RenderBirdByBreed_idController</servlet-class>
     </servlet>
@@ -43,10 +39,6 @@
     <servlet-mapping>
         <servlet-name>RenderBirdDetailsController</servlet-name>
         <url-pattern>/RenderBirdDetailsController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AddtoCartController</servlet-name>
-        <url-pattern>/AddtoCartController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RenderBirdByBreed_idController</servlet-name>
