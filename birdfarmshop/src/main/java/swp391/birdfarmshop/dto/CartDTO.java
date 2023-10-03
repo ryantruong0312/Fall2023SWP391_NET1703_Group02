@@ -5,10 +5,8 @@
 package swp391.birdfarmshop.dto;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.model.BirdNest;

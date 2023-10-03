@@ -194,11 +194,6 @@
         <section class="section" id="products">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-heading">
-                            <h2>Sản phẩm của chúng tôi</h2>
-                        </div>
-                    </div>
                     <form id="selectBird" action="MainController" method="POST">
                         <input type="hidden" name="action" value="NavToBird"> 
                         <div class="search-bar">
@@ -225,9 +220,9 @@
                             <ol style="display: block;" id="typeList-2">
                                 <input type="hidden" name="action" value="NavToBird">    
                                 <li><input type="radio" ${requestScope.PRICE == null  ? "checked":""} id="type-65" name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
-                                <li><input type="radio" ${requestScope.PRICE == "price < 5000000" ? "checked":""} id="type-6" name="txtPrice" value="price < 5000000"><label for="type-6">dưới 5,000,000đ</label></li>
-                                <li><input type="radio" ${requestScope.PRICE == "price >= 5000000 AND price <= 20000000" ? "checked":""} id="type-7" name="txtPrice" value="price >= 5000000 AND price <= 20000000"><label for="type-7">5,000,000 - 20,000,000</label></li>
-                                <li><input type="radio" ${requestScope.PRICE == "price > 20000000" ? "checked":""} id="type-8" name="txtPrice" value="price > 20000000"><label for="type-8">Trên 20,000,000</label></li>
+                                <li><input type="radio" ${requestScope.PRICE == "price < 5000000" ? "checked":""} id="type-6" name="txtPrice" value="price < 5000000"><label for="type-6">Dưới 5,000,000₫</label></li>
+                                <li><input type="radio" ${requestScope.PRICE == "price >= 5000000 AND price <= 20000000" ? "checked":""} id="type-7" name="txtPrice" value="price >= 5000000 AND price <= 20000000"><label for="type-7">Từ 5,000,000₫ - 20,000,000₫</label></li>
+                                <li><input type="radio" ${requestScope.PRICE == "price > 20000000" ? "checked":""} id="type-8" name="txtPrice" value="price > 20000000"><label for="type-8">Trên 20,000,000₫</label></li>
                             </ol>
                             <div class="type" onclick="toggleList('typeList-3')">Giống</div>
                             <ol style="display: block;" id="typeList-3">
@@ -391,30 +386,8 @@
         </footer>
         <!-- ***** Footer Area Ends ***** -->
 
-        <!-- jQuery -->
-        <%@include file="../layout/message.jsp" %>
         <script src="assets/js/jquery-2.1.0.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-
-        <!-- Bootstrap -->
-        <script src="assets/js/popper.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>
-
-        <!-- Plugins -->
-        <script src="assets/js/owl-carousel.js"></script>
-        <script src="assets/js/accordions.js"></script>
-        <script src="assets/js/datepicker.js"></script>
-        <script src="assets/js/scrollreveal.min.js"></script>
-        <!--        <script src="assets/js/waypoints.min.js"></script>-->
-        <script src="assets/js/jquery.counterup.min.js"></script>
-        <script src="assets/js/imgfix.min.js"></script> 
-        <script src="assets/js/slick.js"></script> 
-        <script src="assets/js/lightbox.js"></script> 
-        <script src="assets/js/isotope.js"></script> 
-
-        <!-- Global Init -->
         <script>
-
                                                             $(function () {
                                                                 var selectedClass = "";
                                                                 $("p").click(function () {
@@ -465,18 +438,30 @@
                                                                     list.style.display = "none";
                                                                 }
                                                             }
-
-                                                            //            var listItems = document.querySelectorAll("#page-${i}");
-                                                            //            listItems.forEach(function (item) {
-                                                            //                item.addEventListener("click", function () {\
-                                                            //                    listItems.forEach(function (li) {
-                                                            //                        li.classList.remove("active");
-                                                            //                    });
-                                                            //                    item.classList.add("active");
-                                                            //                });
-                                                            //            });
-
         </script>
+
+        <!-- jQuery -->
+        <%@include file="../layout/message.jsp" %>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+        <!-- Bootstrap -->
+        <script src="assets/js/popper.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+
+        <!-- Plugins -->
+        <script src="assets/js/owl-carousel.js"></script>
+        <script src="assets/js/accordions.js"></script>
+        <script src="assets/js/datepicker.js"></script>
+        <script src="assets/js/scrollreveal.min.js"></script>
+        <!--        <script src="assets/js/waypoints.min.js"></script>-->
+        <script src="assets/js/jquery.counterup.min.js"></script>
+        <script src="assets/js/imgfix.min.js"></script> 
+        <script src="assets/js/slick.js"></script> 
+        <script src="assets/js/lightbox.js"></script> 
+        <script src="assets/js/isotope.js"></script> 
+
+        <!-- Global Init -->
+
 
     </body>
 
