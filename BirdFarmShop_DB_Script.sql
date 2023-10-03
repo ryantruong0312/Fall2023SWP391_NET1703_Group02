@@ -42,7 +42,7 @@ CREATE TABLE [Bird]
 	[bird_id] VARCHAR(10) NOT NULL,
 	[bird_name] NVARCHAR(50),
 	[color] NVARCHAR(50),
-	[age] SMALLINT,
+	[birthday] DATE,
 	[grown_age] SMALLINT,
 	[gender] BIT,
 	[breed_id] VARCHAR(10),
@@ -165,9 +165,9 @@ GO
 DROP TABLE IF EXISTS [BirdNest]
 CREATE TABLE [BirdNest]
 (
-	[nest_id] INT IDENTITY,
+	[nest_id] VARCHAR(10),
 	[nest_name] NVARCHAR(50),
-	[is_thumbnail] BIT,
+	[breed_id] VARCHAR(10),
 	[dad_bird_id] VARCHAR(10),
 	[mom_bird_id] VARCHAR(10),
 	[baby_quantity] SMALLINT,
@@ -175,6 +175,7 @@ CREATE TABLE [BirdNest]
 	[price] INT,
 	[description] NVARCHAR(MAX),
 	CONSTRAINT PK_BirdNest PRIMARY KEY ([nest_id]),
+	CONSTRAINT FK_BirdNest_BirdBreed FOREIGN KEY ([breed_id]) REFERENCES [BirdBreed]([breed_id]),
 	CONSTRAINT FK_BirdNest_Bird_dadbird FOREIGN KEY ([dad_bird_id]) REFERENCES [Bird]([bird_id]),
 	CONSTRAINT FK_BirdNest_Bird_mombird FOREIGN KEY ([mom_bird_id]) REFERENCES [Bird]([bird_id])
 )
@@ -187,7 +188,7 @@ CREATE TABLE [Image]
 	[image_url] VARCHAR(MAX),
 	[is_thumbnail] BIT,
 	[bird_id] VARCHAR(10),
-	[nest_id] INT,
+	[nest_id] VARCHAR(10),
 	[accessory_id] VARCHAR(10),
 	CONSTRAINT FK_Image_Bird FOREIGN KEY ([bird_id]) REFERENCES [Bird]([bird_id]),
 	CONSTRAINT FK_Image_Accessory FOREIGN KEY ([accessory_id]) REFERENCES [Accessory]([accessory_id]),
@@ -211,16 +212,16 @@ VALUES
 	('cage', N'Lồng & cây đứng', 'https://petmeshop.com/wp-content/uploads/2023/05/cay-dung-de-ban-inox-size-s-loai-a-27x29x14.png'),
 	('toy', N'Phụ kiện trang trí - Đồ chơi', 'https://petmeshop.com/wp-content/uploads/2020/09/Clicker-3.png')
 
-INSERT INTO [Bird] ([bird_id], [bird_name], [color], [age], [grown_age], [gender], [breed_id], [achievement], [reproduction_history], [price], [description], [dad_bird_id], [mom_bird_id], [discount], [status]) 
+INSERT INTO [Bird] ([bird_id], [bird_name], [color], [birthday], [grown_age], [gender], [breed_id], [achievement], [reproduction_history], [price], [description], [dad_bird_id], [mom_bird_id], [discount], [status]) 
 VALUES 
-	('XT001', N'Vẹt Xích Thái XT001', N'Xanh lá,vàng', 10, 36, 1, 'asian', 
+	('XT001', N'Vẹt Xích Thái XT001', N'Xanh lá,vàng', '2021-01-01', 20, 1, 'asian', 
 	N'Giải 3 cuộc thi Vẹt Châu Á Schauwerbung 2023', 
 	0, 6500000, 
 	N'Xét ở góc độ sinh học, Xích Thái (Vẹt Má Vàng) thuộc nhóm vẹt rừng đuôi dài có viền cổ – Ringneck/Long-tail Parakeets, với 2 đặc trưng của loài: chim trống trưởng thành có đường viền sẫm màu phía sau gáy (ring) và các cá thể chim đều có đuôi rất dài, chiếm khoảng 1/2 tổng chiều dài toàn thân. Xét ở góc độ vật nuôi – Alexandrine Parakeet được coi là loài vẹt khá thân thiện, dễ thuần, sức đề kháng khá tốt, với tuổi thọ có thể đạt đến 30-40 năm.
 	Được đánh giá là loài vẹt có khả năng nhại tốt, thực tế chất lượng nhại giọng nói của Vẹt má vàng thua xa chim Nhồng hoặc vẹt xám Châu Phi. Chim bắt chước giọng người không giỏi lắm, đặc biệt khó bắt chước các từ nhiều nguyên âm o, a. Ghi nhận trên thế giới, chỉ một số ít cá thể có thể nhớ và học được đến khoảng 20 từ.',
-	NULL, NULL, 0, N'Còn hàng'),
+	NULL, NULL, 0, N'Đang sinh sản'),
 
-	('IR001', N'Vẹt Indian Ringneck IR001', N'Xanh dương', 16, 18, 1, 'asian', 
+	('IR001', N'Vẹt Indian Ringneck IR001', N'Xanh dương', '2022-06-01', 18, 1, 'asian', 
 	N'Top 4 cuộc thi Hội Đam Mê Lông Vũ TP.HCM 2020-2021', 
 	1, 9000000, 
 	N'Indian Ringneck hay còn gọi là Rose-ringed Parakeets thực sự là những sinh vật kỳ diệu. Thực vậy, chỉ cần nhìn vào những con chim bạn có thể dễ dàng nhận ra chúng qua màu sắc, cái mỏ nổi và long đuôi dài. Cả chim trống và mái đều có đuôi lớn và dài bao gồm 12 lông, 2 lông đuôi lớn chím phần lớn kích thước của con vẹt. Về màu sắc chúng có những màu phổ biến như xanh lá, trắng, vàng, xanh dương. Một số dòng đặc biệt có các màu sắc khá đẹp như xám khói, tím, xanh pastel… Con trống và mái có vẻ ngoài rất giống nhau tuy nhiên những con vẹt trống khi trưởng thành có thể phân biệt bằng vòng đen, trắng hoặc hồng quanh cổ.
@@ -228,101 +229,101 @@ VALUES
 	Giống như hầu hết các loài vẹt, ringneck thông minh và làm vật nuôi tốt. Chúng học hỏi khá nhanh và thích thể hiện. Ngoài ra chúng còn có thể nói và phát âm khá rõ, một số con nói khá tốt như các loài vẹt Xám Châu Phi hay Amazon tuy khả năng ghi nhớ về số lượng từ vựng không tốt bằng.',
 	NULL, NULL, 5, N'Còn hàng'),
 
-	('IR002', N'Vẹt Indian Ringneck IR002', N'Trắng', 10, 18, 0, 'asian', 
+	('IR002', N'Vẹt Indian Ringneck IR002', N'Trắng', '2021-12-01', 15, 0, 'asian', 
 	N'Giải 2 Cuộc Thi Vẹt Châu Á-Australasia 2022', 
 	0, 9000000, 
 	N'Indian Ringneck hay còn gọi là Rose-ringed Parakeets thực sự là những sinh vật kỳ diệu. Thực vậy, chỉ cần nhìn vào những con chim bạn có thể dễ dàng nhận ra chúng qua màu sắc, cái mỏ nổi và long đuôi dài. Cả chim trống và mái đều có đuôi lớn và dài bao gồm 12 lông, 2 lông đuôi lớn chím phần lớn kích thước của con vẹt. Về màu sắc chúng có những màu phổ biến như xanh lá, trắng, vàng, xanh dương. Một số dòng đặc biệt có các màu sắc khá đẹp như xám khói, tím, xanh pastel… Con trống và mái có vẻ ngoài rất giống nhau tuy nhiên những con vẹt trống khi trưởng thành có thể phân biệt bằng vòng đen, trắng hoặc hồng quanh cổ.
 	Ringnecks có nguồn gốc từ Châu Á và Châu Phi và có thể được tìm thấy trong các khu rừng hoặc môi trường khô cằn và cũng xa lạ khi có thể thấy chúng tại các khu đô thị như ở California, Florida và cả vương quốc Anh.
 	Giống như hầu hết các loài vẹt, ringneck thông minh và làm vật nuôi tốt. Chúng học hỏi khá nhanh và thích thể hiện. Ngoài ra chúng còn có thể nói và phát âm khá rõ, một số con nói khá tốt như các loài vẹt Xám Châu Phi hay Amazon tuy khả năng ghi nhớ về số lượng từ vựng không tốt bằng.',
-	NULL, NULL, 0, N'Đang ghép cặp'),
+	NULL, NULL, 0, N'Đang sinh sản'),
 
-	('XA001', N'Vẹt Xích Ấn XA001', N'Xanh lá', 12, 18, 1, 'asian', 
+	('XA001', N'Vẹt Xích Ấn XA001', N'Xanh lá', '2022-10-01', 18, 1, 'asian', 
 	N'Top 5 The National Cage Bird Show (NCBS) 2022', 
 	0, 15000000, 
 	N'Vẹt xích Ấn – xích Nepal có nguồn gốc từ vùng đông nam châu Á, bao gồm Nepal, Ấn Độ, Pakistan, và Sri Lanka. Chúng thường sống trong các khu rừng, cánh đồng và vùng đồng cỏ.
 	Vẹt xích Ấn có một cái mỏ lớn, màu đen và một đốm màu đỏ trên vai. Một đặc điểm nổi bật của chúng là vòng cổ màu đỏ tươi rực, tạo ra sự tương phản đẹp với bộ lông xanh sẫm. Chúng là những vẹt thông minh và thích thể hiện khả năng nói chuyện. Tuy nhiên, khả năng nói chuyện của từng cá thể có thể khác nhau.',
 	NULL, NULL, 0, N'Đang ghép cặp'),
 
-	('CP101', N'Vẹt xám CP101', N'Xám', 12, 48, 0, 'african', N'Chưa có', 0, 
+	('CP101', N'Vẹt xám CP101', N'Xám', '2022-10-01', 48, 0, 'african', N'Chưa có', 0, 
 	2500000, 
 	NULL, 
 	NULL, NULL, 15, N'Còn hàng'),
 
-    ('CP201', N'Vẹt Cape Parrot CP201', N'Xám, xanh', 12, 4, 1, 'african', N'Chưa có', 0, 
+    ('CP201', N'Vẹt Cape Parrot CP201', N'Xám, xanh', '2022-10-01', 4, 1, 'african', N'Chưa có', 0, 
 	3000000, NULL, 
 	NULL, NULL, 0, N'Đang ghép cặp'),
 
-    ('CP301', N'Vẹt Senegal CP301', N'Xanh lá, vàng', 12, 6, 0, 'african', N'Chưa có', 2, 
+    ('CP301', N'Vẹt Senegal CP301', N'Xanh lá, vàng', '2022-10-01', 6, 0, 'african', N'Chưa có', 2, 
 	8000000, 
 	NULL, 
 	NULL, NULL, 0, N'Còn hàng'),
 
-    ('CP401', N'Vẹt cổ trắng CP401', N'Xanh lá, đỏ', 16, 12, 0, 'african', N'Chưa có', 1, 
+    ('CP401', N'Vẹt cổ trắng CP401', N'Xanh lá, đỏ', '2022-06-01', 12, 0, 'african', N'Chưa có', 1, 
 	19000000, 
 	NULL, 
 	NULL, NULL, 0, N'Đang sinh sản'),
 
-    ('CP501', N'Vẹt Lovebird CP501', N'Xanh, vàng, cam', 20, 11, 1, 'african', N'Chưa có', 1, 2000000, 
+    ('CP501', N'Vẹt Lovebird CP501', N'Xanh, vàng, cam', '2022-01-01', 11, 1, 'african', N'Chưa có', 1, 2000000, 
     NULL, 
     NULL, NULL, 0, N'Đang sinh sản'),
 
-	('WA301', N'Vẹt Orange Winged Amazon WA301', N'xanh lá, vàng', 18, 24, 0, 'amazon', 
+	('WA301', N'Vẹt Orange Winged Amazon WA301', N'xanh lá, vàng', '2022-02-01', 24, 0, 'amazon', 
 	N'Giải khuyến khích cuộc thi Phong trào vẹt kiểng Sài Gòn 2020', 0, 3000000, 
 	NULL, 
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('BA602', N'Vẹt Blue-fronted Amazon BA602', N'xanh lá, xanh dương', 12, 30, 0, 'amazon', 
+	('BA602', N'Vẹt Blue-fronted Amazon BA602', N'xanh lá, xanh dương', '2022-10-01', 30, 0, 'amazon', 
 	N'Top 2 The Parrot Society UK Show 2021', 0, 3000000, 
 	NULL, 
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('FA303', N'Vẹt Red Faced Amazon FA303', N'xanh lá, đỏ', 12, 10, 0, 'amazon', 
+	('FA303', N'Vẹt Red Faced Amazon FA303', N'xanh lá, đỏ', '2022-10-01', 10, 0, 'amazon', 
 	N'Tham gia World Parrot Trust Parrot Festival 2022', 0, 3000000,
 	NULL, 
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('HA104', N'Vẹt Double Yellow Headed Amazon HA104', N'xanh lá, vàng, đỏ', 14, 8, 0, 'amazon', 
+	('HA104', N'Vẹt Double Yellow Headed Amazon HA104', N'xanh lá, vàng, đỏ', '2022-08-01', 8, 0, 'amazon', 
 	N'Giải 3 Nghị Lượng Chim Vẹt Việt Nam 2022-2023', 0, 4500000,
 	NULL, 
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('NA505', N'Vẹt Yellow Naped Amazon NA505',N'xanh lá, vàng', 10, 30, 0, 'amazon', N'Top 4 Giải thi đấu Chim Vẹt Cảnh Việt Nam 2020', 0, 9000000,
+	('NA505', N'Vẹt Yellow Naped Amazon NA505',N'xanh lá, vàng', '2022-12-01', 30, 0, 'amazon', N'Top 4 Giải thi đấu Chim Vẹt Cảnh Việt Nam 2020', 0, 9000000,
 	NULL, 
 	NULL, NULL, 0, N'Đã bán'),
 
-	('CL201', N'Vẹt Cockatiel Lutino CL201', N'xám, vàng, cam', 10, 24, 1, 'australian', N'Chưa có', 0, 2500000,
+	('CL201', N'Vẹt Cockatiel Lutino CL201', N'xám, vàng, cam', '2022-12-01', 24, 1, 'australian', N'Chưa có', 0, 2500000,
 	N'Vẹt Cockatiel Lutino nổi bật với lớp lông màu vàng cam ánh hồng, đầu có mảng màu tương tự, mắt đỏ rực, và đuôi dài màu cam. Loài vẹt này thường rất tình cảm, thân thiện, và dễ huấn luyện, làm cho nó trở thành một thú cưng lý tưởng cho người mới nuôi vẹt.',
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('CW192', N'Vẹt Cockatiel White Face CW192', N'xám, trắng', 10, 16, 0, 'australian', N'Chưa có', 1, 3500000,
+	('CW192', N'Vẹt Cockatiel White Face CW192', N'xám, trắng', '2022-12-01', 16, 0, 'australian', N'Chưa có', 1, 3500000,
 	N'Lông trắng mịn, mắt đỏ, không vùng màu cam trên mặt. Tính cách thân thiện, tinh quái. Dễ huấn luyện, thích tương tác.',
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('RL391', N'Vẹt Rainbow Lory RL391', N'đen, đỏ, tím, xanh lá, vàng', 10, 5, 0, 'australian', N'Chưa có', 0, 9500000,
+	('RL391', N'Vẹt Rainbow Lory RL391', N'đen, đỏ, tím, xanh lá, vàng', '2022-12-01', 6, 0, 'australian', N'Chưa có', 0, 9500000,
 	N'Lông nhiều màu sắc rực rỡ, mỏ cam, tính cách vui vẻ, tươi mới, yêu đời. Yêu thích tương tác và cần chế độ ăn uống đa dạng, hoạt động vui chơi để duy trì sức khỏe tốt và làm phong phú cuộc sống của người nuôi.',
-	NULL, NULL, 0, N'Đang ghép cặp'),
+	NULL, NULL, 0, N'Đang sinh sản'),
 	
-	('RL409', N'Vẹt Red Lory RL409', N'đỏ', 12, 18, 1, 'australian', NULL, 1, 15000000, 
+	('RL409', N'Vẹt Red Lory RL409', N'đỏ', '2022-02-01', 18, 1, 'australian', NULL, 1, 15000000, 
 	N'Lông đỏ tươi sáng, mỏ và mắt đen nổi bật, tính cách hòa đồng, thích hát hò và tương tác, yêu thích ăn uống đa dạng, làm phong phú cuộc sống gia đình bằng niềm vui vẹt.', 
-	NULL, NULL, 0, N'Đang ghép cặp'),
+	NULL, NULL, 0, N'Đang sinh sản'),
 
-	('VE358', N'Vẹt Eclectus VE358', N'Xanh lá', 10, 24, 1, 'australian', NULL, 1, 25000000, 
+	('VE358', N'Vẹt Eclectus VE358', N'Xanh lá', '2022-12-01', 24, 1, 'australian', NULL, 1, 25000000, 
 	N'Vẹt Eclectus là một loài vẹt đa dạng màu sắc, với đực thường có lông màu xanh smaragd và cái có lông màu đỏ tươi. Chúng có mỏ mạnh mẽ và đôi mắt nâu sáng. Eclectus thích tương tác, thông minh và thích học tiếng nói. Tính cách độc lập và thích khám phá, yêu thích chế độ ăn uống chứa nhiều rau quả tươi ngon.', 
 	NULL, NULL, 0, N'Còn hàng'),
 
-	('HM350', N'Vẹt Hahn’s Macaw HM350', N'xanh lá, đỏ', 12, 45, 1, 'macaw', N'chưa có',0, 15000000 ,N'Hahn’s Macaw rất thông minh và nổi bật với khả năng nói rất tốt nên chúng vẫn là một lựa chọn tốt cho những người yêu chim muốn có vẹt đuôi dài nhưng chưa sẵn sàng đón tiếp một thành viên quá to lớn.',
+	('HM350', N'Vẹt Hahn’s Macaw HM350', N'xanh lá, đỏ', '2022-12-01', 45, 1, 'macaw', N'chưa có',0, 15000000 ,N'Hahn’s Macaw rất thông minh và nổi bật với khả năng nói rất tốt nên chúng vẫn là một lựa chọn tốt cho những người yêu chim muốn có vẹt đuôi dài nhưng chưa sẵn sàng đón tiếp một thành viên quá to lớn.',
 	NULL, NULL, 0, N'Còn hàng'),
 	
-	('YC090', N'Vẹt Yellow Collared Macaw YC090', N'xanh lá', 11, 50, 1, 'macaw', N'chưa có',0, 25000000 ,N'Vẹt Yellow-collared Macaw có kích thước nhỏ hơn so với một số loài vẹt khác, với chiều dài khoảng 35-37 cm. Bộ lông của chúng chủ yếu màu xanh da trời và vàng, với cổ màu vàng rực rỡ, đó là nguồn gốc của tên gọi của loài vẹt này. Chúng có vẻ ngoài dễ thương và thu hút, và thường được nuôi làm vật nuôi trong các gia đình',
+	('YC090', N'Vẹt Yellow Collared Macaw YC090', N'xanh lá', '2022-11-01', 50, 1, 'macaw', N'chưa có',0, 25000000 ,N'Vẹt Yellow-collared Macaw có kích thước nhỏ hơn so với một số loài vẹt khác, với chiều dài khoảng 35-37 cm. Bộ lông của chúng chủ yếu màu xanh da trời và vàng, với cổ màu vàng rực rỡ, đó là nguồn gốc của tên gọi của loài vẹt này. Chúng có vẻ ngoài dễ thương và thu hút, và thường được nuôi làm vật nuôi trong các gia đình',
 	NULL, NULL, 0, N'Còn hàng'),
 	
-	('SM808', N'Vẹt Scarlet Macaw SM808', N'đỏ, vàng, xanh dương', 15, 60, 1, 'macaw', N'chưa có',0, 200000000 ,N'Scarlet thông minh, xinh đẹp và cũng rất ham học hỏi. Scarlet được huấn luyện đúng cách sẽ có thể làm được nhiều trò cũng như có tài ăn nói rất giỏi. Scarlet tràn đầy năng lượng, thích chơi đùa và tương tác với chủ nuôi, khá ồn ào và thích gây sự chú ý.',
+	('SM808', N'Vẹt Scarlet Macaw SM808', N'đỏ, vàng, xanh dương', '2022-07-01', 60, 1, 'macaw', N'chưa có',0, 200000000 ,N'Scarlet thông minh, xinh đẹp và cũng rất ham học hỏi. Scarlet được huấn luyện đúng cách sẽ có thể làm được nhiều trò cũng như có tài ăn nói rất giỏi. Scarlet tràn đầy năng lượng, thích chơi đùa và tương tác với chủ nuôi, khá ồn ào và thích gây sự chú ý.',
 	NULL, NULL, 0, N'Còn hàng'),
 	
-	('HM101', N'Vẹt Hyacinth Macaw HM101', N'xanh dương', 17, 60, 1, 'macaw', N'chưa có',0, 700000000 ,N'Hyacinth là giống vẹt đắt đỏ nhất thế giới và cũng là giống vẹt được cho là một trong những loài vẹt lớn nhất thế giới. Vẹt khá thuần và trầm tính, và là vật nuôi tuyệt vời. Chúng ngọt ngào, dịu dàng và không thích làm ồn cũng như rất thích vui đùa và gắn bó với gia đình, đặc biệt là chúng rất thân thiện với trẻ con.',
+	('HM101', N'Vẹt Hyacinth Macaw HM101', N'xanh dương', '2022-07-01', 60, 1, 'macaw', N'chưa có',0, 700000000 ,N'Hyacinth là giống vẹt đắt đỏ nhất thế giới và cũng là giống vẹt được cho là một trong những loài vẹt lớn nhất thế giới. Vẹt khá thuần và trầm tính, và là vật nuôi tuyệt vời. Chúng ngọt ngào, dịu dàng và không thích làm ồn cũng như rất thích vui đùa và gắn bó với gia đình, đặc biệt là chúng rất thân thiện với trẻ con.',
 	NULL, NULL, 0, N'Còn hàng'),
 	
-	('GW125', N'Vẹt Green Winged Macaw GW125', N'đỏ, xanh dương, xanh lá', 20, 60, 1, 'macaw', N'chưa có',0, 160000000 ,N'Green Winged thuộc trong top những loài vẹt Nam Mỹ có kích thước lớn nhất, to thứ nhì sau Vẹt Hyacinth. Green-winged tuy lớn con nhưng lại nổi tiếng là loài vẹt hiền hoà, được ví von như gã khổng lồ dịu dàng. Loài vẹt này do đó được yêu thích không phải chỉ bởi bộ lông xinh đẹp với ba màu đỏ, xanh lá và xanh dương nhưng còn vì sự dịu dàng, trầm tính hơn những loài Macaw khác. Do đó, Green-winged được chọn là người bạn đồng hành hoặc vật nuôi gia đình rất tốt.',
+	('GW125', N'Vẹt Green Winged Macaw GW125', N'đỏ, xanh dương, xanh lá', '2022-02-01', 60, 1, 'macaw', N'chưa có',0, 160000000 ,N'Green Winged thuộc trong top những loài vẹt Nam Mỹ có kích thước lớn nhất, to thứ nhì sau Vẹt Hyacinth. Green-winged tuy lớn con nhưng lại nổi tiếng là loài vẹt hiền hoà, được ví von như gã khổng lồ dịu dàng. Loài vẹt này do đó được yêu thích không phải chỉ bởi bộ lông xinh đẹp với ba màu đỏ, xanh lá và xanh dương nhưng còn vì sự dịu dàng, trầm tính hơn những loài Macaw khác. Do đó, Green-winged được chọn là người bạn đồng hành hoặc vật nuôi gia đình rất tốt.',
 	NULL, NULL, 0, N'Còn hàng')	
 GO
 
@@ -380,6 +381,26 @@ VALUES
 	('NK200', N'Máy Nhiệt Kế Điện Tử Pha Bột Cho Vẹt', 'care', 120000, 25, 
 	N'Nhiệt kế điện tử hỗ trợ người nuôi canh đo nhiệt độ bột thích hợp không quá nguội hoặc quá nóng ảnh hưởng đến sức khỏe bé vẹt nhà bạn.', 
 	0, 'available')
+GO
+
+INSERT INTO [dbo].[BirdNest] ([nest_id],[nest_name],[breed_id],[dad_bird_id],[mom_bird_id],[baby_quantity],[status],[price],[description])
+VALUES
+	('BN001', 'Tổ chim Vẹt Xích Thái lai Indian Ringneck', 'asian', 'XT001','IR001', 5, 'Còn hàng', 1200000,
+	'Tổ chim con lai giữa Vẹt Xích Thái (African Grey Parrot) và vẹt Indian Ringneck (Indian Ringneck Parakeet) 
+	là một loài chim động cơ hoàn hảo kết hợp sự thông minh và nét đẹp từ cả hai loài cha mẹ. 
+	Đây là một loài chim có ngoại hình đa dạng, với nhiều biến thể màu lông và đặc điểm thể loại khác nhau.
+	Tổ chim con lai này thường có kích thước trung bình, thừa hưởng hình dáng gọn gàng và thanh lịch từ vẹt Indian Ringneck, với một vóc dáng mảnh mai, đuôi dài và mỏ sắc bén. 
+	Màu lông có thể thay đổi phụ thuộc vào biến thể của cha mẹ, nhưng thường là sự kết hợp giữa lông xám mạnh mẽ từ Vẹt Xích Thái và màu sắc rực rỡ từ vẹt Indian Ringneck.
+	Tổ chim con lai giữa Vẹt Xích Thái và vẹt Indian Ringneck là một loài chim động cơ hấp dẫn, với sự kết hợp độc đáo giữa ngoại hình và tính cách từ cả hai loài cha mẹ. 
+	Chúng là những người bạn thú vị và thông minh cho những người yêu chim, nhưng đòi hỏi sự chăm sóc và tập trung đặc biệt để đảm bảo sức khỏe và hạnh phúc của chúng.'),
+
+	('BN002', 'Tổ chim Vẹt Rainbow Lory lai Red Lory', 'australian', 'RL409','RL391', 4, 'Còn hàng', 480000,
+	'Tổ chim con lai giữa Vẹt Rainbow Lory và Vẹt Red Lory là một sự kết hợp độc đáo giữa hai loài vẹt với ngoại hình và tính cách đa dạng.
+	Con lai giữa Vẹt Rainbow Lory và Vẹt Red Lory thường rất thông minh và dễ đào tạo. Chúng có khả năng học nhanh và thích thú với các hoạt động giải đố.
+	Tổ chim con lai này có năng lượng dồi dào và thích vận động. Chúng cần được cung cấp đủ lượng thời gian để bay và chơi đùa.
+	Tiếng kêu của tổ chim con lai này có thể kế thừa từ cả hai loài cha mẹ. Ví dụ, chúng có thể phát ra tiếng kêu trầm ấm của Vẹt Red Lory hoặc tiếng kêu sôi động và vui nhộn của Vẹt Rainbow Lory.
+	Tổ chim con lai giữa Vẹt Rainbow Lory và Vẹt Red Lory là một loài chim thú vị và quyến rũ, mang trong mình sự hòa quyện giữa ngoại hình và tính cách của cả hai loài cha mẹ.')
+	
 GO
 
 INSERT INTO [dbo].[User] ([username],[password],[full_name],[phone],[email],[role],[address],[point],[register_date],[login_by],[status])
@@ -648,7 +669,21 @@ VALUES
 	('https://static.wikia.nocookie.net/naturerules1/images/c/c8/3a2c398337c8af500ddbf3061bdf8274.jpg/revision/latest?cb=20210117003112', 
 	0, 'GW125', NULL, NULL),
 	('https://www.sfzoo.org/wp-content/uploads/2021/03/img_macaw_mw2_large.jpg', 
-	0, 'GW125', NULL, NULL)
+	0, 'GW125', NULL, NULL),
+
+	('https://petschoolshop.com/wp-content/uploads/2019/02/vet-xich-baby.jpg', 
+	0, NULL, 'BN001', NULL),
+	('https://chimcanh.net/wp-content/uploads/2019/04/maxresdefault-1.jpg', 
+	0, NULL, 'BN001', NULL),
+	('https://bizweb.dktcdn.net/100/462/524/products/z4223156920621-f8b825ebed0b809f1c7c12c927a19a61.jpg?v=1680231999937', 
+	1, NULL, 'BN001', NULL),
+
+	('https://s1.storage.5giay.vn/image/2016/11/20161110_d4492fd93903bc52814dce1293f53e1d_1478750192.jpg', 
+	0, NULL, 'BN002', NULL),
+	('https://bizweb.dktcdn.net/100/462/524/products/e149c111-4684-4e03-98fa-c369909573a2-jpeg.jpg?v=1671080265377', 
+	0, NULL, 'BN002', NULL),
+	('https://sinhvatkieng.com/wp-content/uploads/2018/07/d9ae800c36497db4ca0855e58e8d90b3.jpeg', 
+	1, NULL, 'BN002', NULL)
 GO
 
 INSERT INTO [Order]([order_id],[customer],[order_date],[order_status],[ship_address],[payment_status],[total_price],[applied_point])
@@ -717,70 +752,3 @@ ON b.bird_id = i.bird_id OR a.accessory_id = i.accessory_id
 WHERE i.is_thumbnail = 1
 GO
 
-INSERT INTO [dbo].[Image] ([image_url],[is_thumbnail],[bird_id],[nest_id],[accessory_id])
-VALUES
-    ('https://vetcanh.com/wp-content/uploads/2021/10/istockphoto-1300151499-612x612-1.webp', 
-    1, 'GW125', NULL, NULL),
-	('https://www.sfzoo.org/wp-content/uploads/2021/03/img_macaw_mw2_large.jpg', 
-    0, 'GW125', NULL, NULL),
-	('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYZ6vQGWKon2EZmCh0UnRI2Y7JjwqwS46Lsg&usqp=CAU', 
-    0, 'GW125', NULL, NULL),
-
-	('https://petmeshop.com/wp-content/uploads/2020/09/hahns-macaw-2.jpg', 
-    1, 'HM350', NULL, NULL),
-	('https://www.thehappychickencoop.com/wp-content/uploads/2022/08/hahns-macaw.jpg', 
-    0, 'HM350', NULL, NULL),
-	('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5tPrZ7LxHZFycwvvSWZDtEqbsB1BKQmUmpg&usqp=CAU', 
-    0, 'HM350', NULL, NULL),
-
-	('https://britishpetinsurance.co.uk/wp-content/uploads/2020/10/6329', 
-    0, 'YC090', NULL, NULL),
-	('https://www.petlink.com.au/Classifieds/pics/877017.jpg', 
-    0, 'YC090', NULL, NULL),
-	('https://cdn-fastly.petguide.com/media/2022/02/28/8279074/hahns-macaw.jpg?size=720x845&nocrop=1', 
-    1, 'YC090', NULL, NULL),
-
-	('https://a-z-animals.com/media/2021/06/Most-Colorful-Animals_-Scarlet-Macaw.jpg', 
-    0, 'YC090', NULL, NULL),
-	('https://vetcanh.com/wp-content/uploads/2021/10/GettyImages-634869043-58a6e83f5f9b58a3c918ca12-scaled.webp', 
-    0, 'YC090', NULL, NULL),
-	('https://images.saymedia-content.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cq_auto:eco%2Cw_1200/MTk3MTEwNDczMDU1ODA2Nzgz/scarlet-macaws.png', 
-    1, 'YC090', NULL, NULL),
-
-	('https://www.theanimalspot.com/wp-content/uploads/2019/01/hyacinthmacawsmall.jpg', 
-    0, 'YC090', NULL, NULL),
-	('https://images.pexels.com/photos/11795466/pexels-photo-11795466.jpeg?cs=srgb&dl=pexels-alteredsnaps-11795466.jpg&fm=jpg', 
-    0, 'YC090', NULL, NULL),
-	('https://zupreem.com/wp-content/uploads/2020/11/shutterstock_1060460099-scaled.jpg', 
-    1, 'YC090', NULL, NULL)
-
-GO
-
-INSERT INTO [dbo].[BirdNest] ([nest_name],[is_thumbnail],[dad_bird_id],[mom_bird_id],[baby_quantity],[status],[price],[description])
-VALUES
-
-	( 'IR003', 0, 'IR001','IR002',2,
-	'available', 4500000, 
-	'...'),
-	( 'CP601', 0, 'CP401','CP501',8,
-	'available', 12000000, 
-	'...'),
-	( 'XX003', 0, 'XA001','XT001',4,
-	'available', 6500000, 
-	'...'),
-	( 'LA972', 0, 'BA602','FA303',2,
-	'available', 200000, 
-	'...')
-GO
-
-INSERT INTO [dbo].[Image] ([image_url],[is_thumbnail],[bird_id],[nest_id],[accessory_id])
-VALUES
-    ('https://cf.shopee.vn/file/4501c1a1f51ddaaa4cb1f69d268663b4', 
-    1, NULL,  1, NULL),
-	('https://i2.ex-cdn.com/homeaz.vn/files/content/2020/07/15/ghe-to-chim-5-1352-homeazvn-1702.jpg', 
-    1, NULL, 2, NULL),
-	('https://cf.shopee.vn/file/0b4302be2417198ab8fd4fd6e9728339', 
-    1, NULL, 3, NULL),
-	('https://lzd-img-global.slatic.net/g/p/c4a8a0c1b33168b64c2b5494d6388aa0.jpg_720x720q80.jpg', 
-    1, NULL, 4, NULL)
-GO

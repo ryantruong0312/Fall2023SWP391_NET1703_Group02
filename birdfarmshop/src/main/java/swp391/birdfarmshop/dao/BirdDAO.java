@@ -5,9 +5,13 @@
 package swp391.birdfarmshop.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dto.BirdDTO;
@@ -20,7 +24,7 @@ import swp391.birdfarmshop.util.DBUtils;
  */
 public class BirdDAO {
 
-    private static final String GET_BIRD_LIST = "SELECT [bird_id],[bird_name],[color],[age],[grown_age],[gender],[breed_id]"
+    private static final String GET_BIRD_LIST = "SELECT [bird_id],[bird_name],[color],[birthday],[grown_age],[gender],[breed_id]"
             + ",[achievement],[reproduction_history],[price],[description],[dad_bird_id]"
             + ",[mom_bird_id],[discount],[status]FROM [BirdFarmShop].[dbo].[Bird]";
     private static final String GET_TOTAL_BIRD = "SELECT COUNT(*) AS [TotalCount] FROM [BirdFarmShop].[dbo].[Bird]";
@@ -60,6 +64,8 @@ public class BirdDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         ImageDAO imgDao = new ImageDAO();
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
         try {
             con = DBUtils.getConnection();
             if (con != null) {
@@ -69,7 +75,7 @@ public class BirdDAO {
                     String bird_id = rs.getString("bird_id");
                     String bird_name = rs.getString("bird_name");
                     String color = rs.getString("color");
-                    int age = rs.getInt("age");
+                    Date birthday = rs.getDate("birthday");
                     int grown_age = rs.getInt("grown_age");
                     boolean gender = rs.getBoolean("gender");
                     String breed_id = rs.getString("breed_id");
@@ -82,7 +88,12 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
-                    Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id,
+                    LocalDate birthDate = birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    // Calculate the period between the birthdate and the current date
+                    Period period = Period.between(birthDate, currentDate);
+                    // Calculate the age in months
+                    int ageInMonths = period.getYears() * 12 + period.getMonths();
+                    Bird bird = new Bird(bird_id, bird_name, color, ageInMonths, grown_age, gender, breed_id,
                             achievement, reproduction_history, price, description, dad_bird_id, mom_bird_id, discount, status, image_url);
                     birdList.add(bird);
                 }
@@ -119,7 +130,7 @@ public class BirdDAO {
                 if (search != null) {
                     sql += " WHERE bird_name LIKE N'%" + search + "%'";
                     if (breed != null) {
-                        sql += " AND breed_id = "+"'"+ breed +"'"+"";
+                        sql += " AND breed_id = " + "'" + breed + "'" + "";
                     }
                     if (price_birds != null) {
                         sql += " AND " + price_birds;
@@ -133,7 +144,7 @@ public class BirdDAO {
                     sql += "\n";
                 }
                 if (search == null && breed != null) {
-                    sql += " WHERE breed_id = "+"'"+ breed +"'"+"";
+                    sql += " WHERE breed_id = " + "'" + breed + "'" + "";
                     if (price_birds != null) {
                         sql += " AND " + price_birds;
                     }
@@ -157,19 +168,19 @@ public class BirdDAO {
                     }
                     sql += "\n";
                 }
-                
+
                 if (search == null && breed == null
-                    && price_birds == null && gender_bird != null) {
-                        sql += " WHERE gender = " + gender_bird;
+                        && price_birds == null && gender_bird != null) {
+                    sql += " WHERE gender = " + gender_bird;
                     if (age_bird != null) {
                         sql += " AND " + age_bird;
                     }
                     sql += "\n";
                 }
                 if (search == null && breed == null
-                    && price_birds == null && gender_bird == null
-                    && age_bird != null  ) {
-                        sql += " WHERE" + age_bird +"\n";
+                        && price_birds == null && gender_bird == null
+                        && age_bird != null) {
+                    sql += " WHERE" + age_bird + "\n";
                 }
                 if (page != null) {
                     int pageNumber = Integer.parseInt(page);
@@ -229,7 +240,7 @@ public class BirdDAO {
                 if (search != null) {
                     sql += " WHERE bird_name LIKE N'%" + search + "%'";
                     if (breed != null) {
-                        sql += " AND breed_id = "+"'"+ breed +"'"+"";
+                        sql += " AND breed_id = " + "'" + breed + "'" + "";
                     }
                     if (price_birds != null) {
                         sql += " AND " + price_birds;
@@ -243,7 +254,7 @@ public class BirdDAO {
                     sql += "\n";
                 }
                 if (search == null && breed != null) {
-                    sql += " WHERE breed_id = "+"'"+ breed +"'"+"";
+                    sql += " WHERE breed_id = " + "'" + breed + "'" + "";
                     if (price_birds != null) {
                         sql += " AND " + price_birds;
                     }
@@ -267,24 +278,24 @@ public class BirdDAO {
                     }
                     sql += "\n";
                 }
-                
+
                 if (search == null && breed == null
-                    && price_birds == null && gender_bird != null) {
-                        sql += " WHERE gender = " + gender_bird;
+                        && price_birds == null && gender_bird != null) {
+                    sql += " WHERE gender = " + gender_bird;
                     if (age_bird != null) {
                         sql += " AND " + age_bird;
                     }
                     sql += "\n";
                 }
                 if (search == null && breed == null
-                    && price_birds == null && gender_bird == null
-                    && age_bird != null  ) {
-                        sql += " WHERE" + age_bird +"\n";
+                        && price_birds == null && gender_bird == null
+                        && age_bird != null) {
+                    sql += " WHERE" + age_bird + "\n";
                 }
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
-                if(rs!= null && rs.next()){
-                   total = rs.getInt("numberOfBird");
+                if (rs != null && rs.next()) {
+                    total = rs.getInt("numberOfBird");
                 }
 
             }
@@ -422,7 +433,7 @@ public class BirdDAO {
         }
         return result;
     }
-    
+
     public List<Bird> searchBird(String name, int page, int recordsPerPage) throws SQLException {
         List<Bird> searchList = new ArrayList<>();
         Connection con = null;
@@ -654,7 +665,7 @@ public class BirdDAO {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         BirdDAO dao = new BirdDAO();
-        List<Bird> birds = dao.getBirdsCustom(null,null,null,null,null,"1",9);
+        List<Bird> birds = dao.getBirdsCustom(null, null, null, null, null, "1", 9);
         for (Bird bird : birds) {
             System.out.println(bird);
         }

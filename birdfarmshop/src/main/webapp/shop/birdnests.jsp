@@ -27,6 +27,7 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <style>
             .thumb{
@@ -138,76 +139,49 @@
         <!-- ***** Main Banner Area End ***** -->
 
 
-        <!-- ***** Products Area Starts ***** -->
 
-        <section class="section" id="products">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="section-heading">
-                            <h2>Sản phẩm của chúng tôi</h2>
+        <div class="container mt-5">
+            <div class="row">
+                <!-- Left Column - Mom Bird -->
+                <div class="col-lg-4">
+                    <div class="text-center">
+                        <a href="mom_bird_detail.jsp">
+                            <img src="mom_bird.jpg" alt="Mom Bird" class="img-thumbnail">
+                        </a>
+                        <div class="mt-2">
+                            <h5 class="bird-info-name"><a href="mom_bird_detail.jsp">Mom Bird</a></h5>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="container">
-                <div>
-                    <form action="RenderSearchAccessoriesController" method="GET">
-                        <input type="text" name="name" id="search" placeholder="Tìm kiếm" style="margin-bottom: 15px" value="${name}">
-                        <input type="hidden" name="searchTerm" value="${birdNestList}">
-                        <button type="submit">Tìm kiếm</button>
-                    </form>
+
+                <!-- Center Column - Baby Birds -->
+                <div class="col-lg-4">
+                    <img src="baby_birds.jpg" alt="Baby Birds" class="img-fluid rounded">
                 </div>
-                <div class="row">
-                    <c:if test="${requestScope.birdNestList != null}">
-                        <c:set var="birdNestList" value="${requestScope.birdNestList}"/>
-                        <c:if test="${not empty birdNestList}">
-                            <c:forEach items="${birdNestList}" var="birdNest" varStatus="counter">
-                                <div class="bird col-lg-4">
-                                    <div class="item">
-                                        <div class="thumb">
-                                            <div class="hover-content">
-                                                <ul>
-                                                    <li><a href="MainController?action=NavToBirdNestDetail&id=${birdNest.nest_id}"><i class="fa fa-eye"></i></a></li>
-                                                    <li><a href="ren"><i class="fa fa-shopping-cart"></i></a></li>
-                                                </ul>
-                                            </div>
-                                            <img class="thumb" src="${birdNest.image_url}" alt="">
-                                        </div>
-                                        <div class="down-content">
-                                            <h4>${birdNest.nest_name}</h4>
-                                            <span><fmt:formatNumber value="${birdNest.price}" pattern="#,###"/> ₫</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </c:if>
-                    </c:if>      
-                    <div class="col-lg-12">
-                        <div class="pagination">
-                            <ul>
-                                <li class="active">
-                                    <a href="MainController?action=NavToAccessory&amount=0">1</a>
-                                </li>
-                                <li>
-                                    <a href="MainController?action=NavToAccessory&amount=9">2</a>
-                                </li>
-                                <!--                                <li>
-                                                                    <a href="MainController?action=NavToAccessory&amount=18">3</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#" id="page-4">4</a>
-                                                                </li>
-                                                                <li>
-                                                                    <a href="#">></a>
-                                                                </li>-->
-                            </ul>
+
+                <!-- Right Column - Dad Bird and Nest Info -->
+                <div class="col-lg-4">
+                    <div class="text-center">
+                        <a href="dad_bird_detail.jsp">
+                            <img src="dad_bird.jpg" alt="Dad Bird" class="img-thumbnail">
+                        </a>
+                        <div class="mt-2">
+                            <h5 class="bird-info-name"><a href="dad_bird_detail.jsp">Dad Bird</a></h5>
                         </div>
+                    </div>
+                    <div class="mt-4">
+                        <h2>Bird Nest Details</h2>
+                        <p><strong>Name:</strong> Parrot Nest</p>
+                        <p><strong>Number of Babies:</strong> 3</p>
+                        <p><strong>Age:</strong> 2 months</p>
+                        <p><strong>Description:</strong> A cozy nest for parrot babies.</p>
+                        <p><strong>Bird Breed:</strong> Parrot</p>
+                        <p><strong>Price:</strong> $50.00</p>
+                        <button class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- ***** Products Area Ends ***** -->
+        </div>
 
         <!-- ***** Footer Start ***** -->
         <footer>
@@ -269,6 +243,21 @@
         </footer>
         <!-- ***** Footer Area Ends ***** -->
 
+
+        <!-- Include Bootstrap JS (for modal) -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+        <!-- JavaScript for Add to Cart Popup -->
+        <script>
+                            function addToCart() {
+                                var result = confirm("Do you want to add Mom and/or Dad bird to the cart?");
+                                if (result) {
+                                    // Add logic to add birds to the cart here
+                                    alert("Bird(s) added to cart!");
+                                }
+                            }
+        </script>
+
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
 
@@ -293,19 +282,19 @@
 
         <script>
 
-            $(function () {
-                var selectedClass = "";
-                $("p").click(function () {
-                    selectedClass = $(this).attr("data-rel");
-                    $("#portfolio").fadeTo(50, 0.1);
-                    $("#portfolio div").not("." + selectedClass).fadeOut();
-                    setTimeout(function () {
-                        $("." + selectedClass).fadeIn();
-                        $("#portfolio").fadeTo(50, 1);
-                    }, 500);
+                            $(function () {
+                                var selectedClass = "";
+                                $("p").click(function () {
+                                    selectedClass = $(this).attr("data-rel");
+                                    $("#portfolio").fadeTo(50, 0.1);
+                                    $("#portfolio div").not("." + selectedClass).fadeOut();
+                                    setTimeout(function () {
+                                        $("." + selectedClass).fadeIn();
+                                        $("#portfolio").fadeTo(50, 1);
+                                    }, 500);
 
-                });
-            });
+                                });
+                            });
 
         </script>
 
