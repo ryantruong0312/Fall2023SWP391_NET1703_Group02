@@ -210,7 +210,10 @@
                                             <span><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</span>
                                         </c:otherwise>
                                     </c:choose>
-                                    <span>${birdDetails.description}</span>
+                                    <div class="mt-2">
+                                        <h4>Mô tả sản phẩm: </h4>
+                                        <span>${birdDetails.description}</span>
+                                    <div>
                                     <div class="quote">
                                         <c:if test="${not empty birdDetails.dad_bird_name && not empty birdDetails.mom_bird_name}">
                                             <i class="fa fa-quote-left"></i><p>${birdDetails.dad_bird_name} lai với ${birdDetails.mom_bird_name}</p>
