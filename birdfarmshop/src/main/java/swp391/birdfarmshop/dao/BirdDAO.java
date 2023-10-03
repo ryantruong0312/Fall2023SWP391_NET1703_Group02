@@ -24,7 +24,7 @@ import swp391.birdfarmshop.util.DBUtils;
  */
 public class BirdDAO {
 
-    private static final String GET_BIRD_LIST = "SELECT [bird_id],[bird_name],[color],[birthday],[grown_age],[gender],[breed_id]"
+    private static final String GET_BIRD_LIST = "SELECT [bird_id],[bird_name],[color],DATEDIFF(MONTH, birthday, GETDATE()) AS age,[grown_age],[gender],[breed_id]"
             + ",[achievement],[reproduction_history],[price],[description],[dad_bird_id]"
             + ",[mom_bird_id],[discount],[status]FROM [BirdFarmShop].[dbo].[Bird]";
     private static final String GET_TOTAL_BIRD = "SELECT COUNT(*) AS [TotalCount] FROM [BirdFarmShop].[dbo].[Bird]";
@@ -33,7 +33,7 @@ public class BirdDAO {
             + ",[mom_bird_id],[discount],[status] FROM [BirdFarmShop].[dbo].[Bird] "
             + "ORDER BY (SELECT NULL) OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
     private static final String GET_BIRD_NAME_BY_ID = "SELECT [bird_name] FROM [Bird] WHERE [bird_id] = ?";
-    private static final String GET_BIRD_BY_ID = "SELECT * FROM [Bird] WHERE [bird_id] = ?";
+    private static final String GET_BIRD_BY_ID = "SELECT DATEDIFF(MONTH, birthday, GETDATE()) AS age, * FROM [Bird] WHERE [bird_id] = ?";
     private static final String IS_BIRD_SOLD_OUT = "SELECT [status] FROM [Bird] WHERE [bird_id] = ? AND [status] = N'Đã bán'";
     private static final String SEARCH_BIRDS_BY_NAME = "SELECT [bird_id],[bird_name],[color],[age],[grown_age],[gender],[breed_id]"
             + ",[achievement],[reproduction_history],[price],[description],[dad_bird_id]"
@@ -75,7 +75,7 @@ public class BirdDAO {
                     String bird_id = rs.getString("bird_id");
                     String bird_name = rs.getString("bird_name");
                     String color = rs.getString("color");
-                    Date birthday = rs.getDate("birthday");
+                    int age = rs.getInt("age");
                     int grown_age = rs.getInt("grown_age");
                     boolean gender = rs.getBoolean("gender");
                     String breed_id = rs.getString("breed_id");
@@ -88,12 +88,8 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
-                    LocalDate birthDate = birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                    // Calculate the period between the birthdate and the current date
-                    Period period = Period.between(birthDate, currentDate);
                     // Calculate the age in months
-                    int ageInMonths = period.getYears() * 12 + period.getMonths();
-                    Bird bird = new Bird(bird_id, bird_name, color, ageInMonths, grown_age, gender, breed_id,
+                    Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id,
                             achievement, reproduction_history, price, description, dad_bird_id, mom_bird_id, discount, status, image_url);
                     birdList.add(bird);
                 }
@@ -123,7 +119,7 @@ public class BirdDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String sql = "SELECT [bird_id],[bird_name],[color],[age],[grown_age],[gender],[breed_id]"
+                String sql = "SELECT [bird_id],[bird_name],[color],DATEDIFF(MONTH, birthday, GETDATE()) AS age,[grown_age],[gender],[breed_id]"
                         + ",[achievement],[reproduction_history],[price],[description],[dad_bird_id]"
                         + ",[mom_bird_id],[discount],[status]\n"
                         + " FROM [BirdFarmShop].[dbo].[Bird]\n";
