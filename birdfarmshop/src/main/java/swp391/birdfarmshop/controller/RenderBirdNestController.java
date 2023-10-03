@@ -36,15 +36,7 @@ public class RenderBirdNestController extends HttpServlet {
 
         try {
             
-            String sAmount = request.getParameter("amount");
-            if (sAmount == null ) {
-                sAmount = "0";
-            }
-            int amount = Integer.parseInt(sAmount);
-            List<BirdNestDTO> birdNestList = new ArrayList<BirdNestDTO>();
-            BirdNestDAO dao = new BirdNestDAO();
-            birdNestList = dao.getNext9BirdNest(amount);
-            request.setAttribute("birdNestList", birdNestList);
+           
             url = SUCCESS;
         } catch (Exception e) {
             log("Error at RenderAccessoryController: " + e.toString());
