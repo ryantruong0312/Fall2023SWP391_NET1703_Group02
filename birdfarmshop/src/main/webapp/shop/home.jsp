@@ -316,7 +316,7 @@
                                         <div class="thumb">
                                             <div class="hover-content">
                                                 <ul>
-                                                    <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
+                                                    <li><a href="MainController?action=NavToAccessory&txtType=${category.category_id}"><i class="fa fa-eye"></i></a></li>
                                                 </ul>
                                             </div>
                                             <img class="category-img" src="${category.category_thumbnail}" alt="">
