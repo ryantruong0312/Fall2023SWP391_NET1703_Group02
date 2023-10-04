@@ -216,6 +216,47 @@ public class ImageDAO {
         return url;
     }
     
+    public boolean addNewImageBird(String url, String is_thumbnail, String bird_id) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        boolean is_thumbnaill;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("INSERT INTO [dbo].[Image]\n" +
+"           ([image_url],[is_thumbnail],[bird_id],[nest_id],[accessory_id])\n" +
+"           VALUES (?,?,?,?,?)");
+                stm.setString(1, url);
+                if(is_thumbnail.equals("1"))
+                    is_thumbnaill = true;
+                else 
+                    is_thumbnaill = false;
+                stm.setBoolean(2, is_thumbnaill);
+                stm.setString(3, bird_id);
+                stm.setString(4, null);
+                stm.setString(5, null);
+                
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return false;
+    }
+    
     public static void main(String[] args) throws SQLException {
         ImageDAO d = new ImageDAO();
         System.out.println(d.getThumbnailUrlByAccessoryId("BL001"));

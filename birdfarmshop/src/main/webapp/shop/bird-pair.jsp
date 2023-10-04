@@ -34,6 +34,22 @@
         <c:url var="toReports" value="MainController?action=NavToReports"/>
         <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
 
+        <style>
+            .back-choose h6 {
+                text-align: center;
+                margin-bottom: 5px;
+            }
+            .back-choose a {
+                border-radius: 20px;
+                border: 1px solid rgb(221, 221, 227);
+                width: 20%;
+                background-color: lightgray;
+                padding: 5px;
+                color: red;
+                display: flex;
+                justify-content: center;
+            }
+        </style>
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
             <div class="container">
@@ -195,13 +211,10 @@
                         </div>
                     </div>
                 </div>
-                <!-- butotn pair start -->      
-                <!-- butotn pair end -->
                 <!-- Second Column -->
                 <div class="comparison-column">
                     <div class="column-content">
-                        <h2>Chọn một chú vẹt mái</h2>
-
+                        <h2>Chọn một chú vẹt mái</h2>        
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect2">
                             <option value = "">Chọn giống vẹt</option>
@@ -231,12 +244,18 @@
         <main class="my-5 bird-customer">
             <div class="back-choose py-4">
                 <h5>Chọn phương pháp ghép cặp</h5>
+                <h6>Khách hàng cần thêm chim trước khi ghép cặp</h6>
+                <a style="margin: 0 auto !important;" href="MainController?action=NavToAddBird"><span>Tạo mới chim</span></a>
             </div>
             <div class="comparison-container mx-3">
                 <!-- First Column -->
-                <div class="comparison-column">
+                <div class="comparison-column customer-select--bird">
+                    <form action="MainController">
+                        <input type="hidden" name="action" value="NavToCreateBirdCustomer" />
+                        <button type="submit" class="button-create">Thêm vẹt mới</button>
+                    </form>
                     <div class="column-content">
-                        <h2>Chọn một chú vẹt của khách</h2>
+                            <h2>Chọn một chú vẹt của khách</h2>
 
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect3">
@@ -265,10 +284,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- butotn pair start -->      
-                <!-- butotn pair end -->
+                
                 <!-- Second Column -->
-                <div class="comparison-column">
+                <div class="comparison-column second-box">
                     <div class="column-content">
                         <h2>Chọn một chú vẹt của cửa hàng</h2>
 
@@ -302,7 +320,6 @@
                 <button class="button-pair">Tiến hành ghép</button>  
             </div>
         </main>
-        <div class="testajax"></div>
         <!-- ***** Footer Start ***** -->
         <footer>
             <div class="container">
@@ -362,10 +379,25 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
+        <%@include file="../layout/message.jsp" %>
         <script src="assets/js/jquery-3.7.1.min.js"></script>
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/jquery.validate.min.js" ></script>
         <script type="text/javascript" src="assets/js/birdshop.js"></script>
+        <script>
+            $(function () {
+                var selectedClass = "";
+                $("p").click(function () {
+                    selectedClass = $(this).attr("data-rel");
+                    $("#portfolio").fadeTo(50, 0.1);
+                    $("#portfolio div").not("." + selectedClass).fadeOut();
+                    setTimeout(function () {
+                        $("." + selectedClass).fadeIn();
+                        $("#portfolio").fadeTo(50, 1);
+                    }, 500);
 
+                });
+            });
+        </script>
     </body>
 </html>

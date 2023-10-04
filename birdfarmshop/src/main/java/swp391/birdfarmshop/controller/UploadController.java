@@ -41,22 +41,14 @@ public class UploadController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String description = request.getParameter("description");
-            Part part = (Part) request.getPart("filepicture");
-            String fileName = getFileName(part);
-            S3Utils.uploadFile(fileName, part.getInputStream());
-            out.print(""+"suces");
+//            String description = request.getParameter("description");
+//            Part part = (Part) request.getPart("filepicture");
+//            String fileName = getFileName(part);
+//            S3Utils.uploadFile(fileName, part.getInputStream());
+//            out.print(""+"suces");
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private String getFileName(Part part) {
-        String contentDisposition = part.getHeader("content-disposition");
-        int beginIndex = contentDisposition.indexOf("filename=") + 10;
-        int endIndex = contentDisposition.length()-1;
-        contentDisposition = contentDisposition.substring(beginIndex, endIndex);
-        return contentDisposition;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

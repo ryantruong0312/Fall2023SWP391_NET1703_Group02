@@ -276,7 +276,7 @@
                                         <div class="thumb">
                                             <div class="hover-content">
                                                 <ul>
-                                                    <li><a href="MainController?action=RenderBirdByBreed_id&breed_id=${breed.breed_id}"><i class="fa fa-eye"></i></a></li>
+                                                    <li><a href="MainController?action=NavToBird&breed_id=${breed.breed_id}"><i class="fa fa-eye"></i></a></li>
                                                 </ul>
                                             </div>
                                             <img class="breed-img" src="${breed.breed_thumbnail}" alt="">

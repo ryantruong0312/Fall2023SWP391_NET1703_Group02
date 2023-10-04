@@ -8,51 +8,62 @@ package swp391.birdfarmshop.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import swp391.birdfarmshop.dao.BirdBreedDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
-import swp391.birdfarmshop.model.Bird;
+import swp391.birdfarmshop.model.BirdBreed;
+import swp391.birdfarmshop.util.ImageUtils;
 
 /**
  *
- * @author phong pc
+ * @author Admin
  */
-public class RenderBirdByBreed_idController extends HttpServlet {
-   
-    private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "shop/birds.jsp";
-    
+@WebServlet(name="CreateBirdCustomer", urlPatterns={"/CreateBirdCustomer"})
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024,//1mb
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 11
+)
+public class CreateBirdCustomer extends HttpServlet {
+     private static final String DEST_NAV_CREATE_BIRD_CUSTOMER = "shop/add-bird.jsp";
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException, ClassNotFoundException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
-        try {
-            int page = 1;
-            int recordsPerPage = 9;
-            String breed_id = request.getParameter("breed_id");
-            if(request.getParameter("page") != null)
-                page = Integer.parseInt(request.getParameter("page"));
+        String url = DEST_NAV_CREATE_BIRD_CUSTOMER;
+        try (PrintWriter out = response.getWriter()) {
+            HttpSession session = request.getSession();
+            List<BirdBreed> breedList = new ArrayList<>();
+            BirdBreedDAO breedDao = new BirdBreedDAO();
             BirdDAO birdDao = new BirdDAO();
-            List<Bird> birdListByBreed_id = birdDao.getBirdsByBreedId(breed_id, page, recordsPerPage);
-            for (Bird bird : birdListByBreed_id) {
-                System.out.println(bird.getBird_name());
+            breedList = breedDao.getBirdBreeds();
+            String breedId = request.getParameter("txtBreedId");
+            String birdId = request.getParameter("txtBirdId");
+            String nameBird = request.getParameter("nameBird");
+            Part part = (Part) request.getPart("filePicture");
+            if(part != null){
+                 String file = ImageUtils.getFileName(part); 
             }
-            int noOfRecords = birdDao.numberOfBirdsByBreedId(breed_id);
-            int noOfPages = (int) Math.round(noOfRecords * 1.0 / recordsPerPage);
-            request.setAttribute("BIRDLISTBYBREED_ID", birdListByBreed_id);
-            request.setAttribute("noOfPages", noOfPages);
-            request.setAttribute("currentPage", page);
-            request.setAttribute("breed_id", breed_id);
-            url = SUCCESS;
-        } catch (SQLException e) {
-            log("Error at RenderHomeController: " + e.toString());
-        } finally {
+                 
+             
+            request.setAttribute("BIRD_BREEDS", breedList);
             request.getRequestDispatcher(url).forward(request, response);
+        }catch(Exception e){
+            e.printStackTrace();
         }
     } 
 
@@ -67,11 +78,7 @@ public class RenderBirdByBreed_idController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(RenderBirdByBreed_idController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     } 
 
     /** 
@@ -84,11 +91,7 @@ public class RenderBirdByBreed_idController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(RenderBirdByBreed_idController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /** 
