@@ -44,7 +44,7 @@ public class BirdDAO {
             + "FROM [BirdFarmShop].[dbo].[Bird]"
             + "WHERE [bird_name] LIKE ? ";
     private static final String GET_BIRD_BY_BREED_ID = "SELECT [bird_id],[bird_name],[color]\n"
-            + "      ,[age],[grown_age] ,[gender]\n"
+            + "      ,DATEDIFF(MONTH, birthday, GETDATE()) AS age,[grown_age] ,[gender]\n"
             + "      ,[breed_id] ,[achievement]\n"
             + "      ,[reproduction_history]\n"
             + "      ,[price],[description]\n"

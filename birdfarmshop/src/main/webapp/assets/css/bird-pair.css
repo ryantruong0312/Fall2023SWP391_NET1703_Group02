@@ -26,6 +26,7 @@ main {
     background-color: #f7f7f7;
     border: 1px solid #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 /* Style for column content */
@@ -137,7 +138,14 @@ h2 {
     background: rgb(254,96,84);
     background: linear-gradient(90deg, rgba(254,96,84,1) 0%, rgba(239,50,162,1) 100%);
 }
-
+.button-createBird{
+    height: 60px;
+    width: 200px;
+    border-radius: 20px;
+    border: none;
+    color: yellow;
+    background: green;
+}
 
 .gender-row{
     display: flex;
@@ -213,9 +221,9 @@ h2 {
     font-weight: bold;
 }
 @media (max-width: 768px){
-    
+
     .type-pair .line-pagination{
-       border-right: none; 
+        border-right: none;
     }
     .comparison-container{
         display: block;
@@ -223,6 +231,11 @@ h2 {
     .comparison-column{
         margin: 0 40px;
         margin-bottom: 20px;
+    }
+    .new-bird .comparison-column{
+        flex: none;
+        width: 460px!important;
+        margin: auto;
     }
 }
 @media (max-width: 1200px){
@@ -256,9 +269,39 @@ h2 {
         font-size: 13px;
         height: 40px;
     }
+    .button-createBird{
+        font-size: 13px;
+        height: 40px; 
+    }
 }
 .bird-customer select:disabled{
     color: black;
     font-weight: 600;
     background-color: #ffffff;
+}
+.bird-customer .button-create{
+    position: absolute;
+    top: -25px;
+    left: 0;
+    line-height: 40px;
+    border-radius: 5px;
+    border: none;
+    background-color: red;
+    color: white;
+}
+.customer-create--bird label{
+    margin: 0;
+}
+.box-button-create{
+   margin-top:  50px;
+   text-align: center;
+}
+.new-bird{
+    display: block;
+    margin-top: 100px;   
+}
+.new-bird .comparison-column{
+    flex: 0;
+    width: 550px;
+    margin: auto;
 }
