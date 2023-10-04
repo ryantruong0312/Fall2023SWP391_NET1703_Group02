@@ -126,27 +126,32 @@
                     <h2>Thêm một chú vẹt mới</h2>
                     <form id="form-createBird" action="CreateBirdCustomer" method="POST" enctype="multipart/form-data"> 
                         <!-- EL to populate the category combo box -->
-                        <select class="combo-box" id="breedSelect3">
+                        <select class="combo-box" name="txtBreedId" id="breedSelect3">
                             <option value = "">Chọn giống vẹt</option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                                <option value="${breed.breed_id}">${breed.breed_name}</option>
+                                <option value="${breed.breed_id}" ${requestScope.BREEDID == breed.breed_id ? "selected":""}>${breed.breed_name}</option>
                             </c:forEach>
                         </select>
-                        <input type="hidden" name="txtBreedId" value="" />
                         <!-- EL to populate the bird name combo box -->
-                        <div class="mt-4 d-flex align-items-center justify-content-between">
-                            <label style="color: black; width: 150px" for="idBird">Mã số con vẹt: </label>
-                            <input type="text" id="idBird" class="form-control" name="txtBirdId" value="" required="">          
+                        <div class="mt-4">
+                            <label class="mb-1" style="color: black; width: 150px" for="idBird">Mã số con vẹt: </label>
+                            <input type="text" id="idBird" class="form-control" name="txtBirdId" value="${requestScope.BIRDID}" required=""> 
                         </div>
-                        <div class="mt-3 d-flex align-items-lg-end-center justify-content-between">
-                            <label style="color: black; width: 150px" for="name">Tên con vẹt: </label>
-                            <input type="text" id="account" class="form-control" name="nameBird" value="" required="">          
-                        </div>      
-                        <div class="mt-3 d-flex align-items-center justify-content-between">
+                        <div class="mt-3">
+                            <label class="mb-1" style="color: black; width: 150px" for="name">Tên con vẹt: </label>
+                            <input type="text" id="account" class="form-control" name="nameBird" value="${requestScope.NAMEBIRD}" required="">          
+                        </div> 
+                        <div class="mt-3 d-flex align-items-center">
+                            <label for="gender-1" class="mb-1" class="mr-4">Giới tính: </label>
+                            <input id="gender-1" class="ml-4 mr-1" type="radio" name="gender" value="1" checked=""/><label for="gender-1">Trống</label>
+                            <p style="display: inline-block; width: 30px"></p>
+                            <input id="gender-2" class="mr-1"type="radio" name="gender" value="0" ${requestScope.GENDER == 0 ? "checked":""}/><label for="gender-2">Mái</label>
+                        </div>
+                        <div class="mt-3">
                             <label style="color: black; width: 150px"  for="imageBird">Ảnh con vẹt: </label>
-                            <input style="background: none; border: none" type="file" id="imageBird" class="form-control" name="filePicture" required="">          
+                            <input style="background: none; border: none" type="file" id="imageBird" class="form-control mt-2" name="filePicture" required="">          
                         </div>  
-
+                        
                         <!-- Additional rows to display bird information -->
                         <div id="birdInformation3">         
                             <div class="bird-info-row">
@@ -242,7 +247,6 @@
                                             });
                                             $('#breedSelect3').change(function () {
                                                 let breedId = $(this).val();
-                                                $('input[name=txtBreedId]').val(breedId);
                                                 $('input[type=file]').val('');
                                                 $('#birdInformation3').html(`<div class="bird-info-row">
                                                             <img id="birdImage1" src="assets/images/bird-compare-1.jpg" alt="Bird Image">

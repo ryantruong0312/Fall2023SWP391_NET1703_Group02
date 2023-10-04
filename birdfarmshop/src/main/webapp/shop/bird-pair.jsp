@@ -34,22 +34,6 @@
         <c:url var="toReports" value="MainController?action=NavToReports"/>
         <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
 
-        <style>
-            .back-choose h6 {
-                text-align: center;
-                margin-bottom: 5px;
-            }
-            .back-choose a {
-                border-radius: 20px;
-                border: 1px solid rgb(221, 221, 227);
-                width: 20%;
-                background-color: lightgray;
-                padding: 5px;
-                color: red;
-                display: flex;
-                justify-content: center;
-            }
-        </style>
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
             <div class="container">
@@ -189,7 +173,7 @@
                 <div class="comparison-column">
                     <div class="column-content">
                         <h2>Chọn một chú vẹt trống</h2>
-
+                    
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect1">
                             <option value = "">Chọn giống vẹt</option>
@@ -242,10 +226,10 @@
             </div>
         </main>
         <main class="my-5 bird-customer">
+            <c:set var="user" value="${sessionScope.LOGIN_USER}"/>
+            <input type="hidden" name="username" value="${not empty user ? user.username:''}">
             <div class="back-choose py-4">
                 <h5>Chọn phương pháp ghép cặp</h5>
-                <h6>Khách hàng cần thêm chim trước khi ghép cặp</h6>
-                <a style="margin: 0 auto !important;" href="MainController?action=NavToAddBird"><span>Tạo mới chim</span></a>
             </div>
             <div class="comparison-container mx-3">
                 <!-- First Column -->
@@ -256,7 +240,7 @@
                     </form>
                     <div class="column-content">
                             <h2>Chọn một chú vẹt của khách</h2>
-
+                        
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect3">
                             <option value = "">Chọn giống vẹt</option>
@@ -268,13 +252,6 @@
                         <!-- EL to populate the bird name combo box -->
                         <select class="combo-box" id="birdSelect3"  >
                         </select>
-                        <div class="mt-4">
-                            <label>Giới tính: </label>
-                            <input id="gender-1" class="ml-4" type="radio" name="gender" value="1"/> Trống
-                            <p style="display: inline-block; width: 30px"></p>
-                            <input id="gender-2" class=""type="radio" name="gender" value="0"/> Mái
-                        </div>
-
                         <!-- Additional rows to display bird information -->
                         <div id="birdInformation3">         
                             <div class="bird-info-row">
@@ -300,11 +277,7 @@
 
                         <!-- EL to populate the bird name combo box -->
                         <select class="combo-box" id="birdSelect4">
-                        </select>
-
-                        <div style="height: 32px;" class="mt-4">
-
-                        </div>    
+                        </select>  
 
                         <!-- Additional rows to display bird information -->
                         <div id="birdInformation4"> 
