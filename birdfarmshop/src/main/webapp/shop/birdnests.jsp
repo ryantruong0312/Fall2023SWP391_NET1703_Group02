@@ -34,7 +34,7 @@
                 width: 370px;
                 height: 390px;
             }
-            .bird-thumbnail{
+            .birdnest-thumbnail{
                 width: 358.44px;
                 height: 400px;
             }
@@ -248,7 +248,7 @@
                                                                 <li><a href="MainController?action=AddtoCart&bird_id=${nest.nest_id}"><i class="fa fa-shopping-cart"></i></a></li>
                                                             </ul>
                                                         </div>
-                                                        <img class="bird-thumbnail" src="${nest.image_url}" alt="${nest.nest_name}">
+                                                        <img class="birdnest-thumbnail" src="${nest.image_url}" alt="${nest.nest_name}">
                                                     </div>
                                                     <div class="down-content">
                                                         <h4>${nest.nest_name}</h4>

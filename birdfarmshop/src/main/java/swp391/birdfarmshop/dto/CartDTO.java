@@ -11,6 +11,7 @@ import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.model.BirdNest;
 import swp391.birdfarmshop.model.OrderedAccessoryItem;
+import swp391.birdfarmshop.model.OrderedBirdItem;
 
 /**
  *
@@ -18,7 +19,7 @@ import swp391.birdfarmshop.model.OrderedAccessoryItem;
  */
 public class CartDTO {
 
-    private Map<String, Bird> birdList;
+    private Map<String, OrderedBirdItem> birdList;
     private Map<String, BirdNest> birdNestList;
     private Map<String, OrderedAccessoryItem> accessoryList;
     private int birdTotalPrice;
@@ -43,11 +44,11 @@ public class CartDTO {
         this.totalItem = totalItem;
     }
 
-    public Map<String, Bird> getBirdList() {
+    public Map<String, OrderedBirdItem> getBirdList() {
         return birdList;
     }
 
-    public void setBirdList(Map<String, Bird> birdList) {
+    public void setBirdList(Map<String, OrderedBirdItem> birdList) {
         this.birdList = birdList;
     }
 
@@ -99,12 +100,12 @@ public class CartDTO {
         this.cartTotalPrice = cartTotalPrice;
     }
 
-    public boolean addBirdToCart(Bird bird) {
+    public boolean addBirdToCart(Bird bird, Accessory cage) {
         boolean check = false;
         if (!this.birdList.containsKey(bird.getBird_id())) {
-            this.birdList.put(bird.getBird_id(), bird);
-            this.totalItem += 1;
-            cartTotalPrice += (bird.getPrice() - (bird.getPrice() * bird.getDiscount() / 100));
+            this.birdList.put(bird.getBird_id(), new OrderedBirdItem(bird, cage));
+            this.totalItem += 2;
+            cartTotalPrice += ((bird.getPrice() - (bird.getPrice() * bird.getDiscount() / 100)) + (cage.getUnit_price()- (cage.getUnit_price() * cage.getDiscount() / 100)));
             check = true;
         }
         return check;
@@ -139,9 +140,9 @@ public class CartDTO {
     }
 
     public void removeBirdFromCart(Bird bird) {
-        this.birdList.remove(bird.getBird_id());
-        this.totalItem -= 1;
-        this.cartTotalPrice -= (bird.getPrice() - (bird.getPrice() * bird.getDiscount() / 100));
+        OrderedBirdItem item = this.birdList.remove(bird.getBird_id());
+        this.totalItem -= 2;
+        this.cartTotalPrice -= ((bird.getPrice() - (bird.getPrice() * bird.getDiscount() / 100)) + (item.getCage().getUnit_price()- (item.getCage().getUnit_price() * item.getCage().getDiscount() / 100)));
     }
 
     public void removeAccessoryFromCart(Accessory accessory, int order_quantity) {

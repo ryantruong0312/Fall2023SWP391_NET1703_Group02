@@ -28,7 +28,7 @@ public class AccessoryDAO {
             + " FROM [BirdFarmShop].[dbo].[Accessory]\n"
             + " WHERE [accessory_name] LIKE ?'";
     private static final String GET_ACCESSORY_BY_ID = "SELECT * FROM Accessory WHERE accessory_id = ?";
-    
+
     public ArrayList<Accessory> getAccessories() throws SQLException {
         ArrayList<Accessory> list = new ArrayList<>();
         Connection con = null;
@@ -273,7 +273,7 @@ public class AccessoryDAO {
         }
         return accessory;
     }
-    
+
     public List<Accessory> getNext9Accessory(int amount) throws SQLException {
         List<Accessory> next9AccessoryList = new ArrayList<>();
         Connection con = null;
@@ -357,4 +357,48 @@ public class AccessoryDAO {
         }
         return next9AccessoryList;
     }
+
+    public List<Accessory> getCageList() throws SQLException {
+        List<Accessory> cages = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ImageDAO imgDao = new ImageDAO();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("SELECT *\n"
+                        + "FROM [BirdFarmShop].[dbo].[Accessory]\n"
+                        + "WHERE [category_id] = 'cage'");
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String accessory_id = rs.getString("accessory_id");
+                    String accessory_name = rs.getString("accessory_name");
+                    String category_id = rs.getString("category_id");
+                    int unit_price = rs.getInt("unit_price");
+                    int stock_quantity = rs.getInt("stock_quantity");
+                    String description = rs.getString("description");
+                    int discount = rs.getInt("discount");
+                    String status = rs.getString("status");
+                    String image_url = imgDao.getThumbnailUrlByAccessoryId(accessory_id);
+                    cages.add(new Accessory(accessory_id, accessory_name, category_id, unit_price, stock_quantity, description, discount, status, image_url));
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            // Handle exceptions here, e.g., log or throw
+        } finally {
+            // Close resources in the finally block
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return cages;
+    }
+
 }
