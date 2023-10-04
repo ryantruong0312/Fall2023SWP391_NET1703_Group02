@@ -83,7 +83,7 @@
 
             .form-group .form-control {
                 white-space: pre-wrap;
-                font-size: 12px;
+                font-size: 16px;
             }
             .form-group a {
                 text-decoration: none;
@@ -101,6 +101,10 @@
 
             .about li {
                 margin-bottom: 10px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                padding-left: 5px;
+                text-align: left;
             }
 
             .about li:hover {
@@ -116,6 +120,13 @@
 
             .about a {
                 color: black;
+            }
+            .text-primary{
+                text-transform: uppercase;
+                font-size: 20px;
+            }
+            .gutters{
+                margin-bottom: 20px;
             }
         </style>
     </head>
@@ -260,26 +271,25 @@
                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <label for="fullName">Họ & Tên</label>
-                                                <input type="text" class="form-control" id="fullName" name="fullname" value="" placeholder="${requestScope.USER.fullName}">
+                                                <input type="text" class="form-control" id="fullName" name="fullname" value="${requestScope.USER.fullName}">
                                             </div>
                                         </div>
                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <label for="eMail">Email</label>
-                                                <input type="text" class="form-control" id="eMail" name="email" value="" placeholder="${requestScope.USER.email}">
+                                                <input type="text" class="form-control" id="eMail" name="email" value="${requestScope.USER.email}" disabled="">
                                             </div>
                                         </div>
                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <label for="phone">Số điện thoại</label>
-                                                <input type="text" class="form-control" id="phone" name="phone" value="" placeholder="${requestScope.USER.phone}">
+                                                <input type="text" class="form-control" id="phone" name="phone" value="${requestScope.USER.phone}">
                                             </div>
                                         </div>
                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <label for="address">Địa chỉ</label>
-                                                <input type="hidden" name="address" value="${requestScope.USER.address}">
-                                                <label class="form-control" id="address">${requestScope.USER.address}</label>
+                                                <input type="text" class="form-control" id="address" name="address" value="${requestScope.USER.address}">
                                             </div>
                                         </div>
                                     </div>

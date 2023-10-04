@@ -12,8 +12,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.util.List;
+import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dto.CartDTO;
+import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
 
 /**
@@ -34,13 +37,22 @@ public class AddBirdToCartController extends HttpServlet {
             String bird_id = request.getParameter("bird_id");
             BirdDAO birdDao = new BirdDAO();
             Bird bird = birdDao.getBirdById(bird_id);
+            AccessoryDAO adao = new AccessoryDAO();
+            List<Accessory> cageList = adao.getCageList();
+            Accessory cheapestCage = cageList.get(0);
+            int cheapestCagePrice = cheapestCage.getUnit_price() - cheapestCage.getUnit_price() * cheapestCage.getDiscount() / 100;
+            for (Accessory cage : cageList) {
+                if ((cage.getUnit_price() - cage.getUnit_price() * cage.getDiscount() / 100) < cheapestCagePrice) {
+                    cheapestCage = cage;
+                }
+            }
             HttpSession session = request.getSession();
             if (session != null) {
                 CartDTO cart = (CartDTO) session.getAttribute("CART");
                 if (cart == null) {
                     cart = new CartDTO();
                 }
-                boolean checkAdd = cart.addBirdToCart(bird);
+                boolean checkAdd = cart.addBirdToCart(bird, cheapestCage);
                 if (checkAdd) {
                     url = SUCCESS;
                     session.setAttribute("CART", cart);

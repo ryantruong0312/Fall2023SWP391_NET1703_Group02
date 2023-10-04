@@ -233,9 +233,9 @@
                             <div class="type" onclick="toggleList('typeList-4')">Tuổi</div>
                             <ol style="display: block;" id="typeList-4">
                                 <li><input type="radio" ${requestScope.AGE == null ? "checked":""}  id="type-115" name="txtAge" value="All"><label for="type-115">Tất cả</label></li>
-                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) < 5" ? "checked":""} id="type-11" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) < 5"><label for="type-11">dưới 5 tháng</label></li>
-                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18" ? "checked":""} id="type-12" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18"><label for="type-12">từ 5 - 18 tháng</label></li>
-                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) > 18" ? "checked":""} id="type-13" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) > 18"><label for="type-13">trên 18 tháng</label></li>
+                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) < 5" ? "checked":""} id="type-11" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) < 5"><label for="type-11">Dưới 5 tháng</label></li>
+                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18" ? "checked":""} id="type-12" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18"><label for="type-12">Từ 5 - 18 tháng</label></li>
+                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) > 18" ? "checked":""} id="type-13" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) > 18"><label for="type-13">Trên 18 tháng</label></li>
                             </ol>
                         </div>
                     </nav>
