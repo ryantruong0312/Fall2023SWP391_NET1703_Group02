@@ -261,12 +261,6 @@
                                                     <span>Đơn hàng</span>
                                                 </a>
                                             </li>
-                                            <li>
-                                                <a href="MainController?action=NavToProfile">
-                                                    <img class="icon" src="assets/images/ticket.png" alt="alt"/>
-                                                    <span>Voucher</span>
-                                                </a>
-                                            </li>
                                         </ul>
                                     </div>
                                 </div>
