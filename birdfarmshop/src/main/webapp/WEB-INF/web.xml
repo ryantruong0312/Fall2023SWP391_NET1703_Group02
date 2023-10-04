@@ -20,6 +20,10 @@
         <servlet-name>UpdateInformationController</servlet-name>
         <servlet-class>swp391.birdfarmshop.controller.UpdateInformationController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddNewBirdController</servlet-name>
+        <servlet-class>swp391.birdfarmshop.controller.AddNewBirdController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>UpdateInformationController</servlet-name>
         <url-pattern>/UpdateInformationController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddNewBirdController</servlet-name>
+        <url-pattern>/AddNewBirdController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

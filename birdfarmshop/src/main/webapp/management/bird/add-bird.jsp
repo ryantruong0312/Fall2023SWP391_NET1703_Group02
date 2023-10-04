@@ -1,10 +1,12 @@
 <%-- 
     Document   : add-bird
-    Created on : Sep 13, 2023, 11:53:03 PM
+    Created on : Sep 13, 2023, 11:53:46 PM
     Author     : tlminh
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,7 +18,7 @@
         <link rel="icon" type="image/png" href="assets/images/logo-title-bar.png"/>
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>V.E.T - Thêm mới vẹt cảnh</title>
+        <title>V.E.T - Cập nhật thông tin vẹt cảnh</title>
 
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -27,6 +29,19 @@
 
     </head>
 
+    <style>
+        .col-lg-12 .product-part {
+            margin: 0 0 10px 10px;
+        }
+        .col-lg-12 input {
+            margin-bottom: 10px;
+            width: 50%;
+        }
+        .col-lg-12 span {
+            margin-top: 100px;
+        }
+    </style>
+    
     <body>
         <c:url var="toCompare" value="MainController?action=NavToCompare"/>
         <c:url var="toHome" value="MainController?action=NavToHome"/>
@@ -83,7 +98,12 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">8</div>
+                                            <div class="cart-amount">
+                                                <c:choose>
+                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
+                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
+                                                </c:choose>
+                                            </div>
                                         </li>
 
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
@@ -124,7 +144,112 @@
         </header>
         <!-- ***** Header Area End ***** -->
         
+        <!-- ***** Main Banner Area Start ***** -->
+        <div class="page-heading" id="top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="inner-content">
+                            <h2>Vẹt cảnh</h2>
+                            <span>Những chú vẹt thông minh và đáng yêu nhất đã có mặt tại V.E.T</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ***** Main Banner Area End ***** -->
+
         
+        <!-- ***** Products Area Starts ***** -->
+        <section class="section" id="products">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-heading">
+                            <h2>Thêm mới sản phẩm</h2>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <form action="MainController" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="action" value="AddNewBird">
+                            <p><c:out value="${requestScope.error}"/></p>
+                            <div class="form-outline">
+                                <label>ID của chim (Bao gồm 2 chữ hoa và 3 chữ số)</label>
+                                <input type="text" name="txtBirdId" class="input form-control" pattern="[A-Z]{2}\d{3}"/>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Tên</label>
+                                <input type="text" name="txtBirdName" class="input form-control" required=""/>                          
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Màu Sắc</label>
+                                <input type="text" name="txtBirdColor" class="input form-control" "/>      
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Ngày Sinh (20yy-mm-dd)</label>
+                                <input type="text" name="txtBirdDate" class="input form-control" required="" pattern="^20([0-2][0-9])-([0][1-9]|1[0-2])-([0-2][0-9]|3[01])$"/>
+                            </div>
+                            <div class="form-outline  mt-2">
+                                <label>Tuổi trưởng thành</label>
+                                <input type="text" name="txtBirdGrownAge" class="input form-control"/>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Giới tính (Đực | Cái)</label>
+                                <input type="text" name="txtBirdGender" class="input form-control" pattern="(Đực)|(Cái)"/>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Giống loài</label>
+                                <select name="txtBirdBreed"">
+                                    <option value="asian">Châu Á</option>
+                                    <option value="australian">Châu Úc</option>
+                                    <option value="african">Chấu Phi</option>
+                                    <option value="amazon">Châu Mỹ/Amazon</option>
+                                    <option value="macaw">Chấu Mỹ/Macaw</option>
+                                </select>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Thành tựu</label>
+                                <input type="text" name="txtBirdAchievement" class="input form-control"/>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Lịch sử sinh sản</label>
+                                <input type="text" name="txtBirdReproduction_history" class="input form-control"/>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Giá</label>
+                                <input type="text" name="txtBirdPrice"class="input form-control"/>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Mô tả</label>
+                                <input type="text" name="txtBirdDescription" class="input form-control"/>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>ID của chim bố (Bao gồm 2 chữ hoa và 3 chữ số)</label>
+                                <input type="text" name="txtBirdDad" class="input form-control" pattern="[A-Z]{2}\d{3}"/>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>ID của chim mẹ (Bao gồm 2 chữ hoa và 3 chữ số)</label>
+                                <input type="text" name="txtBirdMom" class="input form-control" pattern="[A-Z]{2}\d{3}"/>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Giảm giá</label>
+                                <input type="text" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$"/>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Trạng thái(Còn hàng | Đang sinh sản | Đang ghép cặp)</label>
+                                <input type="text" name="txtBirdStatus" class="input form-control" pattern="(Còn hàng)|(Đang sinh sản)|(Đang ghép cặp)"/>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Chọn hình ảnh của chim</label>
+                                <input type="file" name="imageFiles" multiple required>
+                            </div>
+                            <button type="submit" name="action" value="AddNewBird">Tạo mới</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- ***** Products Area Ends ***** -->
         
         <!-- ***** Footer Start ***** -->
         <footer>
