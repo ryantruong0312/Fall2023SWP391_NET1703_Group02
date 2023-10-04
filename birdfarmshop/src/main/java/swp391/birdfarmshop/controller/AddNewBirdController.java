@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.util.Collection;
 import swp391.birdfarmshop.dao.BirdDAO;
+import swp391.birdfarmshop.dao.ImageDAO;
 
 /**
  *
@@ -33,7 +34,6 @@ public class AddNewBirdController extends HttpServlet {
             String txtBirdName = request.getParameter("txtBirdName");
             String txtBirdColor = request.getParameter("txtBirdColor");
             String txtBirdDate = request.getParameter("txtBirdDate");
-            String localDate = request.getParameter(txtBirdDate);
             String txtBirdGrownAge = request.getParameter("txtBirdGrownAge");
             String txtBirdGender = request.getParameter("txtBirdGender");
             String txtBirdBreed = request.getParameter("txtBirdBreed");
@@ -45,32 +45,39 @@ public class AddNewBirdController extends HttpServlet {
             String txtBirdMom = request.getParameter("txtBirdMom");
             String txtBirdDiscount = request.getParameter("txtBirdDiscount");
             String txtBirdStatus = request.getParameter("txtBirdStatus");
+            String txtImage_1 = request.getParameter("txtImage_1");
+            String txtImage_2 = request.getParameter("txtImage_2");
+            String txtImage_3 = request.getParameter("txtImage_3");
             BirdDAO birdDao = new BirdDAO();
-            boolean check = birdDao.addNewBird(txtBirdId, txtBirdName, txtBirdColor, localDate, txtBirdGrownAge,
+            boolean check = birdDao.addNewBird(txtBirdId, txtBirdName, txtBirdColor, txtBirdDate, txtBirdGrownAge,
                     txtBirdGender, txtBirdBreed, txtBirdAchievement, txtBirdReproduction_history, 
                     txtBirdPrice, txtBirdDescription, txtBirdDad, txtBirdMom, txtBirdDiscount, txtBirdStatus);
-            
+            ImageDAO imageDao = new ImageDAO();
+            boolean check_image1 = imageDao.addNewImageBird(txtImage_1, "1", txtBirdId);
+            boolean check_image2 = imageDao.addNewImageBird(txtImage_2, "0", txtBirdId);
+            boolean check_image3 = imageDao.addNewImageBird(txtImage_3, "0", txtBirdId);
             if(check) {
+                request.setAttribute("MESSAGE", "Đăng kí thành công");
                 url = SUCCESS;
             }
             
-            Collection<Part> parts = request.getParts();
-            int imageCount = 0; // Biến đếm số lượng tệp hình ảnh
-            for (Part part : parts) {
-                if (isImageFile(part)) {
-                    imageCount++; // Tăng biến đếm nếu phát hiện tệp hình ảnh
-
-                    if (imageCount > 3) {
-                        // Nếu đã nhận được 3 tệp hình ảnh, từ chối tệp hình ảnh thứ 4
-                        response.getWriter().write("Chỉ cho phép tải lên tối đa 3 tệp hình ảnh.");
-                        return;
-                    }
-
-                    String fileName = getFileName(part); // Lấy tên tệp
-                    // Xử lý tệp hình ảnh ở đây
-                    // Lưu vào cơ sở dữ liệu hoặc thư mục trên máy chủ
-                }
-            }
+//            Collection<Part> parts = request.getParts();
+//            int imageCount = 0; // Biến đếm số lượng tệp hình ảnh
+//            for (Part part : parts) {
+//                if (isImageFile(part)) {
+//                    imageCount++; // Tăng biến đếm nếu phát hiện tệp hình ảnh
+//
+//                    if (imageCount > 3) {
+//                        // Nếu đã nhận được 3 tệp hình ảnh, từ chối tệp hình ảnh thứ 4
+//                        response.getWriter().write("Chỉ cho phép tải lên tối đa 3 tệp hình ảnh.");
+//                        return;
+//                    }
+//
+//                    String fileName = getFileName(part); // Lấy tên tệp
+//                    // Xử lý tệp hình ảnh ở đây
+//                    // Lưu vào cơ sở dữ liệu hoặc thư mục trên máy chủ
+//                }
+//            }
 
             // Sau khi xử lý xong, bạn có thể chuyển hướng hoặc hiển thị thông báo thành công
         }catch (Exception e) {

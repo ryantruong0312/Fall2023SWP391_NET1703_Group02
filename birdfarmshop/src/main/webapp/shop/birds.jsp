@@ -47,6 +47,7 @@
                 width: 28%;
                 min-width: 280px;
                 margin: 0 auto;
+                margin-top: 20px;
             }
             .section-heading input {
                 border: 0;
@@ -55,22 +56,26 @@
             .section-heading img {
                 margin: 5px;
             }
-            .section-heading a {
-                border-radius: 20px;
-                border: 1px solid rgb(221, 221, 227);
-                width: 20%;
-                background-color: lightgray;
-                padding: 5px;
-                color: red;
-                display: flex;
-                justify-content: center;
-                margin: 0 auto;
-            }
             .search-container {
                 display: flex;
                 flex-wrap: wrap;
+                display: flex;
+                align-items: center;
             }
-            
+            .col-lg-12 a {
+                position: absolute;
+                bottom: 10px;
+                right: 0;
+                border-radius: 10px;
+                border: 1px solid rgb(221, 221, 227);
+                background-color: #f5c6cb;
+                text-align: center;
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .col-lg-12 span {
+                padding: 5px;
+            }
             .type {
                 cursor: pointer;
                 background-color: #cccccc;
@@ -207,10 +212,6 @@
                     <div class="col-lg-12">
                         <div style="border: 0px;" class="section-heading">
                             <h2>Sản phẩm của chúng tôi</h2>
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="section-heading">
                             <form id="selectBird" action="MainController" method="POST">
                                 <input type="hidden" name="action" value="NavToBird"> 
                                 <div class="search-container">
@@ -219,7 +220,10 @@
                                     <input type="submit" value="Tìm kiếm">
                                 </div>
                         </div>
-                        <a href="MainController?action=NavToAddBird"><span>Tạo mới chim</span></a>
+                        <c:if test="${sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'staff'}">
+                            <a href="MainController?action=NavToAddBird"><span>Tạo mới chim</span></a>
+<!--                            <a href="MainController?action=NavToUpdateBird"><span>Cập nhật chim</span></a>-->
+                        </c:if>
                     </div>
                 </div>
             </div>

@@ -518,19 +518,20 @@ public class BirdDAO {
         ResultSet rs = null;
         boolean sex;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = (Date) dateFormat.parse(birthday);
+        java.util.Date utilDate = dateFormat.parse(birthday);
+        Date sqlDate = new Date(utilDate.getTime());
         try {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement("INSERT INTO [dbo].[Bird]\n"
-+ "           ([bird_id],[bird_name],[color],[birthday],[grown_age],[gender],[breed_id],[achievement],"
-+ "[reproduction_history],[price],[description],[dad_bird_id],[mom_bird_id],[discount],[status])\n"
-+ "     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ");
++ "             ([bird_id],[bird_name],[color],[birthday],[grown_age],[gender],[breed_id],[achievement],"
++ "             [reproduction_history],[price],[description],[dad_bird_id],[mom_bird_id],[discount],[status])\n"
++ "             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ");
                 stm.setString(1, bird_id);
                 stm.setString(2, bird_name);
                 stm.setString(3, color);
                 if(birthday != null)
-                    stm.setDate(4, date);
+                    stm.setDate(4, sqlDate);
                 if(grown_age != null)
                     stm.setInt(5, Integer.parseInt(grown_age));
                 if(gender.equals("Đực")) {
@@ -551,7 +552,6 @@ public class BirdDAO {
                 if(discount != null)
                     stm.setInt(14, Integer.parseInt(discount));
                 stm.setString(15, status);
-                rs = stm.executeQuery();
                 int row = stm.executeUpdate();
                 if(row > 0) 
                     return true;
@@ -571,11 +571,11 @@ public class BirdDAO {
         return false;
     }
     
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        BirdDAO dao = new BirdDAO();
-        List<Bird> birds = dao.getBirdsCustom(null, null, null, null, null, "1", 9);
-        for (Bird bird : birds) {
-            System.out.println(bird.getImage_url());
-        }
-    }
+//    public static void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
+//        BirdDAO dao = new BirdDAO();
+//        boolean bird = dao.addNewBird("XT201", "Vẹt Xích Thái", "Xanh, trắng", "2022-12-02", 
+//                "8", "Cái", "asian", "Top 1 thi đua vẹt", "0", "50000000", 
+//                "", null, null, "10", "Còn hàng");
+//        System.out.println(bird);
+//    }
 }
