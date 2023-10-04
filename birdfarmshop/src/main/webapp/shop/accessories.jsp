@@ -58,14 +58,13 @@
             .type {
                 cursor: pointer;
                 background-color: #cccccc;
-                padding: 0 0 0 5px; /*top right bot left*/
-                margin: 5px 0 5px 5px;
+                padding-left: 5px;
             }
             .type + ol {
                 display: none;
             }
-            #typeList-1, #typeList-2, #typeList-3, #typeList-4 {
-                margin-left: 10px;
+            li input[type="radio"] + label {
+                margin-left: 5px;
             }
 
             .position-sticky li {
@@ -126,8 +125,12 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">${sessionScope.CART.totalItem}</div>
-
+                                            <div class="cart-amount">
+                                                <c:choose>
+                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
+                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
+                                                </c:choose>
+                                            </div>
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
@@ -188,6 +191,11 @@
         <section class="section" id="products">
             <div class="container">
                 <div class="row">
+                    <div class="col-lg-12">
+                        <div style="border: 0px;" class="section-heading">
+                            <h2>Phụ kiện của chúng tôi</h2>
+                        </div>
+                    </div>
                     <form id="selectAccessory" action="MainController" method="POST">
                         <input type="hidden" name="action" value="NavToAccessory"> 
                         <div class="search-bar">
@@ -232,7 +240,7 @@
                                 <c:set var="accessoryList" value="${requestScope.accessoryList}"/>
                                 <c:if test="${not empty accessoryList}">
                                     <c:forEach items="${accessoryList}" var="accessory" varStatus="counter">
-                                        <div class="bird col-lg-3">
+                                        <div class="bird col-lg-4">
                                             <div class="item">
                                                 <div class="thumb">
                                                     <div class="hover-content">
@@ -245,7 +253,16 @@
                                                 </div>
                                                 <div class="down-content">
                                                     <h4>${accessory.accessory_name}</h4>
-                                                    <span><fmt:formatNumber value="${accessory.unit_price}" pattern="#,###"/> ₫</span>
+                                                    <c:choose>
+                                                        <c:when test="${accessory.discount > 0}">
+                                                            <span style="display: inline-block;"><del><fmt:formatNumber value="${accessory.unit_price}" pattern="#,###"/> ₫</del></span>
+                                                            <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${accessory.discount}%</span>
+                                                            <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${accessory.unit_price - accessory.unit_price * accessory.discount / 100}" pattern="#,###"/> ₫</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span><fmt:formatNumber value="${accessory.unit_price}" pattern="#,###"/> ₫</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 </div>
                                             </div>
                                         </div>

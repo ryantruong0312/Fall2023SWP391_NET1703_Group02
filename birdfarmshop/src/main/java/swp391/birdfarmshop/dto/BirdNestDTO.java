@@ -12,42 +12,32 @@ import java.util.ArrayList;
  */
 public class BirdNestDTO {
 
-    private int nest_id;
+    private String nest_id;
     private String nest_name;
-    private boolean is_thumbnail;
     private String dad_bird_id;
+    private String dad_bird_name;
+    private String dad_bird_thumbnail;
     private String mom_bird_id;
+    private String mom_bird_name;
+    private String mom_bird_thumbnail;
     private int baby_quantity;
     private String status;
     private int price;
     private String description;
     private String image_url;
-    private ArrayList<String> image_url_arr;
-    
-    private BirdDTO dad_bird;
-    private BirdDTO mom_bird;
 
-    public BirdNestDTO(int nest_id, String nest_name, boolean is_thumbnail, String dad_bird_id, String mom_bird_id, int baby_quantity, String status, int price, String description, ArrayList<String> image_url_arr) {
-        this.nest_id = nest_id;
-        this.nest_name = nest_name;
-        this.is_thumbnail = is_thumbnail;
-        this.dad_bird_id = dad_bird_id;
-        this.mom_bird_id = mom_bird_id;
-        this.baby_quantity = baby_quantity;
-        this.status = status;
-        this.price = price;
-        this.description = description;
-        this.image_url_arr = image_url_arr;
+    public BirdNestDTO() {
     }
 
-    
-
-    public BirdNestDTO(int nest_id, String nest_name, boolean is_thumbnail, String dad_bird_id, String mom_bird_id, int baby_quantity, String status, int price, String description, String image_url) {
+    public BirdNestDTO(String nest_id, String nest_name, String dad_bird_id, String dad_bird_name, String dad_bird_thumbnail, String mom_bird_id, String mom_bird_name, String mom_bird_thumbnail, int baby_quantity, String status, int price, String description, String image_url) {
         this.nest_id = nest_id;
         this.nest_name = nest_name;
-        this.is_thumbnail = is_thumbnail;
         this.dad_bird_id = dad_bird_id;
+        this.dad_bird_name = dad_bird_name;
+        this.dad_bird_thumbnail = dad_bird_thumbnail;
         this.mom_bird_id = mom_bird_id;
+        this.mom_bird_name = mom_bird_name;
+        this.mom_bird_thumbnail = mom_bird_thumbnail;
         this.baby_quantity = baby_quantity;
         this.status = status;
         this.price = price;
@@ -55,14 +45,11 @@ public class BirdNestDTO {
         this.image_url = image_url;
     }
 
-    public BirdNestDTO() {
-    }
-
-    public int getNest_id() {
+    public String getNest_id() {
         return nest_id;
     }
 
-    public void setNest_id(int nest_id) {
+    public void setNest_id(String nest_id) {
         this.nest_id = nest_id;
     }
 
@@ -74,14 +61,6 @@ public class BirdNestDTO {
         this.nest_name = nest_name;
     }
 
-    public boolean isIs_thumbnail() {
-        return is_thumbnail;
-    }
-
-    public void setIs_thumbnail(boolean is_thumbnail) {
-        this.is_thumbnail = is_thumbnail;
-    }
-
     public String getDad_bird_id() {
         return dad_bird_id;
     }
@@ -90,12 +69,44 @@ public class BirdNestDTO {
         this.dad_bird_id = dad_bird_id;
     }
 
+    public String getDad_bird_name() {
+        return dad_bird_name;
+    }
+
+    public void setDad_bird_name(String dad_bird_name) {
+        this.dad_bird_name = dad_bird_name;
+    }
+
+    public String getDad_bird_thumbnail() {
+        return dad_bird_thumbnail;
+    }
+
+    public void setDad_bird_thumbnail(String dad_bird_thumbnail) {
+        this.dad_bird_thumbnail = dad_bird_thumbnail;
+    }
+
     public String getMom_bird_id() {
         return mom_bird_id;
     }
 
     public void setMom_bird_id(String mom_bird_id) {
         this.mom_bird_id = mom_bird_id;
+    }
+
+    public String getMom_bird_name() {
+        return mom_bird_name;
+    }
+
+    public void setMom_bird_name(String mom_bird_name) {
+        this.mom_bird_name = mom_bird_name;
+    }
+
+    public String getMom_bird_thumbnail() {
+        return mom_bird_thumbnail;
+    }
+
+    public void setMom_bird_thumbnail(String mom_bird_thumbnail) {
+        this.mom_bird_thumbnail = mom_bird_thumbnail;
     }
 
     public int getBaby_quantity() {
@@ -138,31 +149,5 @@ public class BirdNestDTO {
         this.image_url = image_url;
     }
 
-    public ArrayList<String> getImage_url_arr() {
-        return image_url_arr;
-    }
-
-    public void setImage_url_arr(ArrayList<String> image_url_arr) {
-        this.image_url_arr = image_url_arr;
-    }
-
-    public BirdDTO getDad_bird() {
-        return dad_bird;
-    }
-
-    public void setDad_bird(BirdDTO dad_bird) {
-        this.dad_bird = dad_bird;
-    }
-
-    public BirdDTO getMom_bird() {
-        return mom_bird;
-    }
-
-    public void setMom_bird(BirdDTO mom_bird) {
-        this.mom_bird = mom_bird;
-    }
-    
-    
-
-    
+   
 }

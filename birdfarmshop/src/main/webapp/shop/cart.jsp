@@ -74,8 +74,12 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section active">
                                             <a href="#"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">${sessionScope.CART.totalItem}</div>
-
+                                            <div class="cart-amount">
+                                                <c:choose>
+                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
+                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
+                                                </c:choose>
+                                            </div>
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
@@ -143,12 +147,12 @@
                                 <div class="card-body p-4">
                                     <div class="row d-flex justify-content-between align-items-center">
                                         <div class="col-md-2 col-lg-2 col-xl-2" style="text-align: center;">
-                                            <img src="${bird.image_url}" class="img-fluid rounded-3" alt="Vẹt cảnh" style="height: 150px; width: 120px;">
+                                            <img src="${bird.value.image_url}" class="img-fluid rounded-3" alt="Vẹt cảnh" style="height: 150px; width: 120px;">
                                         </div>
                                         <div class="col-md-4 col-lg-4 col-xl-4">
-                                            <p class="lead fw-bold mb-2" style="font-size: 23px;">${bird.bird_name}</p>
+                                            <p class="lead fw-bold mb-2" style="font-size: 23px;">${bird.value.bird_name}</p>
                                             <c:forEach var="breed" items="${requestScope.BREED_LIST}">
-                                                <c:if test="${breed.breed_id == bird.breed_id}">
+                                                <c:if test="${breed.breed_id == bird.value.breed_id}">
                                                     <p><span class="text-muted">Giống: </span>${breed.breed_name}
                                                     </c:if>
                                                 </c:forEach>
@@ -167,10 +171,19 @@
                                             </button>
                                         </div>
                                         <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                            <h5 class="mb-0" style="font-weight: bold;"><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</h5>
+                                            <c:choose>
+                                                <c:when test="${bird.value.discount > 0}">
+                                                    <h5 class="mb-0" style="font-weight: bold; display: inline-block"><del><fmt:formatNumber value="${bird.value.price}" pattern="#,###"/> ₫</del></h5>
+                                                    <h5 style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.value.discount}%</h5>
+                                                    <h5 style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.value.price - bird.value.price * bird.value.discount / 100}" pattern="#,###"/> ₫</h5>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <h5 class="mb-0" style="font-weight: bold; display: inline-block"><fmt:formatNumber value="${bird.value.price}" pattern="#,###"/> ₫</h5>
+                                                </c:otherwise>
+                                            </c:choose> 
                                         </div>
                                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <a href="#!" class="text-danger"><img src="assets/images/remove-button.png"/></a>
+                                            <a href="MainController?action=RemoveBirdFromCart&bird_id=${bird.key}" class="text-danger"><img src="assets/images/remove-button.png"/></a>
                                         </div>
                                     </div>
                                 </div>
@@ -189,12 +202,12 @@
                                 <div class="card-body p-4">
                                     <div class="row d-flex justify-content-between align-items-center">
                                         <div class="col-md-2 col-lg-2 col-xl-2" style="text-align: center;">
-                                            <img src="${accessory.key.image_url}" class="img-fluid rounded-3" alt="Phụ kiện" style="height: 150px; width: 120px;">
+                                            <img src="${accessory.value.accessory.image_url}" class="img-fluid rounded-3" alt="Phụ kiện" style="height: 150px; width: 120px;">
                                         </div>
                                         <div class="col-md-4 col-lg-4 col-xl-4">
-                                            <p class="lead fw-bold mb-2" style="font-size: 23px;">${accessory.key.accessory_name}</p>
+                                            <p class="lead fw-bold mb-2" style="font-size: 23px;">${accessory.value.accessory.accessory_name}</p>
                                             <c:forEach var="category" items="${requestScope.CATEGORY_LIST}">
-                                                <c:if test="${accessory.key.category_id == category.category_id}">
+                                                <c:if test="${accessory.value.accessory.category_id == category.category_id}">
                                                     <p><span class="text-muted">Loại phụ kiện: </span>${category.category_name}
                                                     </c:if>
                                                 </c:forEach>
@@ -206,7 +219,7 @@
                                                 <img src="assets/images/decrease-button.png"/>
                                             </button>
 
-                                            <input id="form1" min="0" name="quantity" value="${accessory.value}" type="number"
+                                            <input id="form1" min="0" name="quantity" value="${accessory.value.order_quantity}" type="number"
                                                    class="form-control form-control-sm" style="text-align: center; height: 40px; border: 1px solid; font-size: 16px;"/>
 
                                             <button class="btn btn-link px-2"
@@ -215,10 +228,19 @@
                                             </button>
                                         </div>
                                         <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                            <h5 class="mb-0" style="font-weight: bold;"><fmt:formatNumber value="${accessory.key.unit_price * accessory.value}" pattern="#,###"/> ₫</h5>
+                                            <c:choose>
+                                                <c:when test="${accessory.value.accessory.discount > 0}">
+                                                    <h5 class="mb-0" style="font-weight: bold; display: inline-block"><del><fmt:formatNumber value="${accessory.value.accessory.unit_price}" pattern="#,###"/> ₫</del></h5>
+                                                    <h5 style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${accessory.value.accessory.discount}%</h5>
+                                                    <h5 style="font-size: 20px; color: red;"><fmt:formatNumber value="${accessory.value.accessory.unit_price - accessory.value.accessory.unit_price * accessory.value.accessory.discount / 100}" pattern="#,###"/> ₫</h5>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <h5 class="mb-0" style="font-weight: bold; display: inline-block"><fmt:formatNumber value="${accessory.value.accessory.unit_price}" pattern="#,###"/> ₫</h5>
+                                                </c:otherwise>
+                                            </c:choose> 
                                         </div>
                                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <a href="#!" class="text-danger"><img src="assets/images/remove-button.png"/></i></a>
+                                            <a href="MainController?action=RemoveAccessoryFromCart&accessory_id=${accessory.key}" class="text-danger"><img src="assets/images/remove-button.png"/></i></a>
                                         </div>
                                     </div>
                                 </div>

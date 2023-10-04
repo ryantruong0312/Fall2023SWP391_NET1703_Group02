@@ -192,7 +192,12 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">8</div>
+                                            <div class="cart-amount">
+                                                <c:choose>
+                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
+                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
+                                                </c:choose>
+                                            </div>
                                         </li>
 
                                         <c:if test="${sessionScope.LOGIN_USER == null}">

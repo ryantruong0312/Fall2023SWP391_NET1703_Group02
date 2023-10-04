@@ -99,8 +99,12 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">${sessionScope.CART.totalItem}</div>
-
+                                            <div class="cart-amount">
+                                                <c:choose>
+                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
+                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
+                                                </c:choose>
+                                            </div>
                                         </li>
 
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
@@ -272,7 +276,7 @@
                                         <div class="thumb">
                                             <div class="hover-content">
                                                 <ul>
-                                                    <li><a href="MainController?action=RenderBirdByBreed_id&breed_id=${breed.breed_id}"><i class="fa fa-eye"></i></a></li>
+                                                    <li><a href="MainController?action=NavToBird&breed_id=${breed.breed_id}"><i class="fa fa-eye"></i></a></li>
                                                 </ul>
                                             </div>
                                             <img class="breed-img" src="${breed.breed_thumbnail}" alt="">
