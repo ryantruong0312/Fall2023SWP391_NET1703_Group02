@@ -103,7 +103,7 @@ public class StarDTO {
     public double totalRating() {
         if(totalStar() == 0) return 0;
         double number = ((double) totalAllPerStar() / totalStar());
-        return number;
+        return Math.round(number * 10) / 10.0;
     }    
      public double percentTotalRating() {
         double number = (double) Math.round((double) totalRating() / 5 * 100 * 100) / 100;
