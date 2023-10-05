@@ -222,7 +222,6 @@
                         </div>
                         <c:if test="${sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'staff'}">
                             <a href="MainController?action=NavToAddBird"><span>Tạo mới chim</span></a>
-<!--                            <a href="MainController?action=NavToUpdateBird"><span>Cập nhật chim</span></a>-->
                         </c:if>
                     </div>
                 </div>

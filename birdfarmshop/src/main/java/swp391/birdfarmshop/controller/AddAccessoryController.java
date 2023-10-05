@@ -5,78 +5,62 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
-//import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import swp391.birdfarmshop.dao.AccessoryDAO;
-//<<<<<<< .mine
-//import swp391.birdfarmshop.dao.BirdDAO;
-//import swp391.birdfarmshop.dao.ImageDAO;
-//=======
-
-//>>>>>>> .theirs
-import swp391.birdfarmshop.model.Accessory;
-//import swp391.birdfarmshop.model.User;
-//import swp391.birdfarmshop.model.Bird;
-//import swp391.birdfarmshop.model.AccessoryBreed;
-//import swp391.birdfarmshop.model.Image;
+import swp391.birdfarmshop.dao.ImageDAO;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "RenderAccessoryController", urlPatterns = {"/RenderAccessoryController"})
-public class RenderAccessoryController extends HttpServlet {
+@WebServlet(name = "AddAccessoryController", urlPatterns = {"/AddAccessoryController"})
+public class AddAccessoryController extends HttpServlet {
 
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "shop/accessories.jsp";
+    private static final String SUCCESS = "management/add-accessory.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String page = "1";
-            int numberOfRecord = 9;
-            List<Accessory> accessoryList = new ArrayList<Accessory>();
-            AccessoryDAO dao = new AccessoryDAO();
-            if (request.getParameter("page") != null) {
-                page = request.getParameter("page");
-            }
-            String search = request.getParameter("txtAccessory");
-            String categoryID = request.getParameter("txtType");
-            String price = request.getParameter("txtPrice");
+            String txtAccessoryID = request.getParameter("txtAccessoryID");
+            String txtAccessoryName = request.getParameter("txtAccessoryName");
+            String txtCategoryID = request.getParameter("txtCategoryID");
+            String txtPrice = request.getParameter("txtPrice");
+            String txtStockQuantity = request.getParameter("txtStockQuantity");
+            String txtDescribe = request.getParameter("txtDescribe");
+            String txtDiscount = request.getParameter("txtDiscount");
+            String txtImage_1 = request.getParameter("txtImage_1");
+            String txtImage_2 = request.getParameter("txtImage_2");
+            String txtImage_3 = request.getParameter("txtImage_3");
+            
+            System.out.println(txtCategoryID);
 
-            if (price != null && price.equals("All")) {
-                price = null;
+            AccessoryDAO d = new AccessoryDAO();
+            boolean rs = d.insertAccessory(txtAccessoryID, txtAccessoryName, txtCategoryID, txtPrice, txtStockQuantity, txtDescribe, txtDiscount);
+            ImageDAO i = new ImageDAO();
+            
+            boolean checkImage_1 = i.addNewAccessoryImage(txtImage_1, true, txtAccessoryID);
+            boolean checkImage_2 = i.addNewAccessoryImage(txtImage_2, false, txtAccessoryID);
+            boolean checkImage_3 = i.addNewAccessoryImage(txtImage_3, false, txtAccessoryID);
+            
+            if(rs){
+                String reminder = "Thêm phụ kiện thành công";
+                request.setAttribute("reminder", reminder);
+                url = SUCCESS;
             }
-            if (categoryID != null && categoryID.equals("All")) {
-                categoryID = null;
-            }
-//            User u = new User();
-//            if(u.getRole().equalsIgnoreCase("admin") || u.getRole().equalsIgnoreCase("manager")){
-//                request.setAttribute("user", u);
-//            }
-            accessoryList = dao.getAccessoriesCustom(search, categoryID, price, page, numberOfRecord);
-            int noOfRecords = dao.totalAccessories(search, categoryID, price);
-            int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / numberOfRecord);
-            request.setAttribute("accessoryList", accessoryList);
-            request.setAttribute("SEARCH", search);
-            request.setAttribute("PRICE", price);
-            request.setAttribute("CATEGORY_ID", categoryID);
-            request.setAttribute("noOfPages", noOfPages);
-            request.setAttribute("currentPage", page);
-            url = SUCCESS;
         } catch (Exception e) {
-            log("Error at RenderAccessoryController: " + e.toString());
+            log("Error at RenderAddAccessoryController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

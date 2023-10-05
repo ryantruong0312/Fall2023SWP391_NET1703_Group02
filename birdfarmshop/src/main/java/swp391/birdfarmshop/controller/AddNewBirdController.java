@@ -23,7 +23,7 @@ import swp391.birdfarmshop.dao.ImageDAO;
 public class AddNewBirdController extends HttpServlet {
    
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "management/bird/add-bird.jsp";
+    private static final String SUCCESS = "management/add-bird.jsp";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {

@@ -194,14 +194,16 @@
                     <div class="col-lg-4">
                         <div class="right-content">
                             <h4 id="nameAccessory">${a.accessory_name}</h4>
-                            <span id="unit_price" class="price">${a.unit_price} ₫</span>
-                            <!--                        <ul class="stars">
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                    </ul>-->
+                            <c:choose>
+                                <c:when test="${a.discount > 0}">
+                                    <span style="display: inline-block;"><del><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/>${a.unit_price} ₫</del></span>
+                                    <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${a.discount}%</span>
+                                    <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${a.unit_price - a.unit_price * a.discount / 100}" pattern="#,###"/>${a.unit_price - a.unit_price * a.discount / 100} ₫</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/>${a.unit_price} ₫</span>
+                                </c:otherwise>
+                            </c:choose>
                             <div class="descript">
                                 <h4>Mô tả sản phẩm: </h4>
                                 <span>${a.description}</span>

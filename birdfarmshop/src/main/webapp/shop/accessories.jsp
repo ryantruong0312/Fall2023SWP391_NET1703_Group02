@@ -76,6 +76,16 @@
             a {
                 color: black;
             }
+            #input-accessory{
+                display: block;
+                margin: 0 auto;
+                border-radius: 10px; /* Điều này làm cho góc bo tròn */
+                padding: 10px 20px; /* Điều này làm cho nút trở nên lớn hơn và dễ đọc hơn */
+                background-color: #007bff; /* Màu nền */
+                color: #fff; /* Màu chữ */
+                cursor: pointer; /* Biến con trỏ thành bàn tay khi di chuột vào nút */
+                border: none;
+            }
         </style>
     </head>
 
@@ -94,6 +104,7 @@
         <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
         <c:url var="toReports" value="MainController?action=NavToReports"/>
         <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
+        <c:url var="toAddAccessory" value="MainController?action=NavToAddAccessory"/>
 
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
@@ -225,6 +236,11 @@
                                 <li><input type="radio" id="type-7" ${requestScope.PRICE == "unit_price >= 300000 AND unit_price <= 600000" ? "checked": ""} name="txtPrice" value="unit_price >= 300000 AND unit_price <= 600000"><label for="type-7">Từ 300,000₫ - 600,000₫</label></li>
                                 <li><input type="radio" id="type-8" ${requestScope.PRICE == "unit_price > 600000" ? "checked": ""} name="txtPrice" value="unit_price > 600000"><label for="type-8">Trên 600,000₫</label></li>
                             </ol>
+                            <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
+                                <a href="${toAddAccessory}">
+                                    <button id="input-accessory" type="button">Tạo phụ kiện mới</button>
+                                </a>
+                            </c:if>
                         </div>
                     </nav>
                     <!-- Nội dung chính -->
