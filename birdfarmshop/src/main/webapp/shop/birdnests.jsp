@@ -27,27 +27,18 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <style>
-            .thumb{
+             .thumb{
                 width: 370px;
-                height: 390px;
-            }
-            .birdnest-thumbnail{
-                width: 358.44px;
-                height: 400px;
-            }
-            .thumb img {
-                width: 358.44px !important;
-                height: 400px;
+                height: 350px;
             }
             .activeNav{
                 background-color: black;
                 color: white !important;
             }
             .search-bar {
-                margin: 0 0 10px 120px;
+                margin: 0 0 15px 120px;
                 border: 5px;
                 border-radius: 8px;
                 border: 1px solid rgb(221, 221, 227);
@@ -67,15 +58,14 @@
             .type {
                 cursor: pointer;
                 background-color: #cccccc;
-                padding: 0 0 0 5px; /*top right bot left*/
-                margin: 5px 0 5px 5px;
+                padding-left: 5px;
             }
             .type + ol {
                 display: none;
             }
-            #typeList-1, #typeList-2, #typeList-3, #typeList-4 {
-                margin-left: 10px;
-            }
+            li input[type="radio"] + label {
+                margin-left: 5px;
+            }   
 
             .position-sticky li {
                 margin-bottom: 5px;
@@ -200,6 +190,11 @@
         <section class="section" id="products">
             <div class="container">
                 <div class="row">
+                    <div class="col-lg-12">
+                        <div style="border: 0px;" class="section-heading">
+                            <h2>Sản phẩm của chúng tôi</h2>
+                        </div>
+                    </div>
                     <form id="selectNest" action="MainController" method="POST">
                         <input type="hidden" name="action" value="NavToBirdNests"> 
                         <div class="search-bar">
@@ -226,7 +221,7 @@
                             <ol style="display: block;" id="typeList-2">
                                 <li><input type="radio" ${requestScope.PRICE == null  ? "checked":""} id="type-65" name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
                                 <li><input type="radio" ${requestScope.PRICE == "price < 5000000" ? "checked":""} id="type-6" name="txtPrice" value="price < 5000000"><label for="type-6">Dưới 5,000,000₫</label></li>
-                                <li><input type="radio" ${requestScope.PRICE == "price >= 5000000 AND price <= 20000000" ? "checked":""} id="type-7" name="txtPrice" value="price >= 5000000 AND price <= 20000000"><label for="type-7">Từ 5,000,000₫ - 20,000,000₫</label></li>
+                                <li><input type="radio" ${requestScope.PRICE == "price >= 5000000 AND price <= 20000000" ? "checked":""} id="type-7" name="txtPrice" value="price >= 5000000 AND price <= 20000000"><label for="type-7">5,000,000₫ - 20,000,000₫</label></li>
                                 <li><input type="radio" ${requestScope.PRICE == "price > 20000000" ? "checked":""} id="type-8" name="txtPrice" value="price > 20000000"><label for="type-8">Trên 20,000,000₫</label></li>
                             </ol>
                         </div>
@@ -239,7 +234,7 @@
                                 <c:if test="${NESTLIST != null}">
                                     <c:if test="${not empty NESTLIST}">
                                         <c:forEach items="${NESTLIST}" var="nest">
-                                            <div class="bird col-lg-3">
+                                            <div class="bird col-sm-7 col-md-7 col-lg-5 col-xl-">
                                                 <div class="item">
                                                     <div class="thumb">
                                                         <div class="hover-content">
@@ -268,7 +263,7 @@
                                         </c:forEach>
                                     </c:if>
                                 </c:if>
-                                <div class="col-lg-12">
+                                <div class="col-lg-8">
                                     <div class="pagination bird-pg">
                                         <c:if test="${noOfPages > 1 && noOfPages <= 5}">
                                             <input type="hidden" name="page" value="${requestScope.currentPage}"/>

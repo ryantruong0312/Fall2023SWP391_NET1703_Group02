@@ -1,7 +1,7 @@
 <%-- 
-    Document   : birds
-    Created on : Sep 13, 2023, 11:19:25 PM
-    Author     : tlminh
+Document   : birds
+Created on : Sep 13, 2023, 11:19:25 PM
+Author     : tlminh
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -40,7 +40,7 @@
                 background-color: black;
                 color: white !important;
             }
-            
+
             .section-heading form {
                 border-radius: 8px;
                 border: 1px solid rgb(221, 221, 227);
@@ -56,11 +56,22 @@
             .section-heading img {
                 margin: 5px;
             }
-            .search-container {
-                display: flex;
-                flex-wrap: wrap;
-                display: flex;
-                align-items: center;
+            .search-bar {
+                margin: 0 0 10px 120px;
+                border: 5px;
+                border-radius: 8px;
+                border: 1px solid rgb(221, 221, 227);
+            }
+            .search-bar input {
+                border: 0;
+                background: none;
+                outline: none;
+            }
+            .search-bar input[type=submit] {
+                float: right;
+            }
+            .search-bar img {
+                margin-left: 5px;
             }
             .col-lg-12 a {
                 position: absolute;
@@ -94,7 +105,9 @@
             a {
                 color: black;
             }
-            
+            .bird-cart{
+                cursor: pointer;
+            }
         </style>
     </head>
 
@@ -212,19 +225,19 @@
                     <div class="col-lg-12">
                         <div style="border: 0px;" class="section-heading">
                             <h2>Sản phẩm của chúng tôi</h2>
-                            <form id="selectBird" action="MainController" method="POST">
-                                <input type="hidden" name="action" value="NavToBird"> 
-                                <div class="search-container">
-                                    <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                                    <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
-                                    <input type="submit" value="Tìm kiếm">
-                                </div>
+                        </div>
+                    </div>
+                    <form id="selectBird" action="MainController" method="POST">
+                        <input type="hidden" name="action" value="NavToBird"> 
+                        <div class="search-bar">
+                            <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                            <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                            <input type="submit" value="Tìm kiếm">
                         </div>
                         <c:if test="${sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'staff'}">
                             <a href="MainController?action=NavToAddBird"><span>Tạo mới chim</span></a>
-<!--                            <a href="MainController?action=NavToUpdateBird"><span>Cập nhật chim</span></a>-->
+                            <!--                            <a href="MainController?action=NavToUpdateBird"><span>Cập nhật chim</span></a>-->
                         </c:if>
-                    </div>
                 </div>
             </div>
             <div class="container-fluid">
@@ -267,17 +280,17 @@
                     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                         <div id="content" class="row">
                             <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
-                            <div id="content" class="row">
+                            <div id="content" class="row justify-content-center">
                                 <c:if test="${BIRDLIST != null}">
                                     <c:if test="${not empty BIRDLIST}">
                                         <c:forEach items="${BIRDLIST}" var="bird">
-                                            <div class="bird col-lg-4">
+                                            <div class="bird col-sm-7 col-md-7 col-lg-5 col-xl-4">
                                                 <div class="item">
                                                     <div class="thumb">
                                                         <div class="hover-content">
                                                             <ul>
                                                                 <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                                <li><a href="MainController?action=AddBirdToCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                <li><a class="bird-cart" data-value="${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
                                                             </ul>
                                                         </div>
                                                         <img class="bird-thumbnail" src="${bird.image_url}" alt="${bird.bird_name}">
@@ -300,7 +313,7 @@
                                         </c:forEach>
                                     </c:if>
                                 </c:if>
-                                <div class="col-lg-12">
+                                <div class="col-lg-8">
                                     <div class="pagination bird-pg">
                                         <c:if test="${noOfPages > 1 && noOfPages <= 5}">
                                             <input type="hidden" name="page" value="${requestScope.currentPage}"/>
@@ -446,6 +459,38 @@
                                                                     let nextpage = Number(page) + 1;
                                                                     $('input[name=page]').val(nextpage);
                                                                     $("#selectBird").submit();
+                                                                });
+                                                                $(".bird-cart").click(function () {
+                                                                    let birdId = $(this).attr('data-value');
+                                                                    $.ajax({
+                                                                        url: "AddBirdToCartController",
+                                                                        type: 'POST',
+                                                                        data: {bird_id: birdId},
+                                                                        success: function (data) {
+                                                                            if (data == 0) {
+                                                                                toast({
+                                                                                    title: 'Lỗi',
+                                                                                    message: 'Sản phẩm này đã có trong giỏ hàng',
+                                                                                    type: 'error',
+                                                                                    duration: 3000
+                                                                                });
+                                                                            } else {
+                                                                                toast({
+                                                                                    title: 'Thành công',
+                                                                                    message: 'Thêm sản phẩm vào giỏ hàng thành công',
+                                                                                    type: 'success',
+                                                                                    duration: 3000
+                                                                                });
+                                                                                $.ajax({
+                                                                                    url: "AddBirdToCartController",
+                                                                                    type: 'POST',
+                                                                                    success: function (data) {
+                                                                                         $('.cart-amount').html(data);
+                                                                                    }
+                                                                                });
+                                                                            }
+                                                                        }
+                                                                    });
                                                                 });
                                                             });
                                                             function takePage(event) {

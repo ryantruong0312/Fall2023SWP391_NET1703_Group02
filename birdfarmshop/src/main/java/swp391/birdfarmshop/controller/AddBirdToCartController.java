@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 import swp391.birdfarmshop.dao.AccessoryDAO;
@@ -26,43 +27,48 @@ import swp391.birdfarmshop.model.Bird;
 @WebServlet(name = "AddBirdToCartController", urlPatterns = {"/AddBirdToCartController"})
 public class AddBirdToCartController extends HttpServlet {
 
-    private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "MainController?action=NavToHome";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String url = ERROR;
+        PrintWriter out = response.getWriter();
         try {
             String bird_id = request.getParameter("bird_id");
             BirdDAO birdDao = new BirdDAO();
-            Bird bird = birdDao.getBirdById(bird_id);
-            AccessoryDAO adao = new AccessoryDAO();
-            List<Accessory> cageList = adao.getCageList();
-            Accessory cheapestCage = cageList.get(0);
-            int cheapestCagePrice = cheapestCage.getUnit_price() - cheapestCage.getUnit_price() * cheapestCage.getDiscount() / 100;
-            for (Accessory cage : cageList) {
-                if ((cage.getUnit_price() - cage.getUnit_price() * cage.getDiscount() / 100) < cheapestCagePrice) {
-                    cheapestCage = cage;
-                }
-            }
             HttpSession session = request.getSession();
-            if (session != null) {
-                CartDTO cart = (CartDTO) session.getAttribute("CART");
-                if (cart == null) {
-                    cart = new CartDTO();
+            if (bird_id != null) {
+                Bird bird = birdDao.getBirdById(bird_id);
+                AccessoryDAO adao = new AccessoryDAO();
+                List<Accessory> cageList = adao.getCageList();
+                Accessory cheapestCage = cageList.get(0);
+                int cheapestCagePrice = cheapestCage.getUnit_price() - cheapestCage.getUnit_price() * cheapestCage.getDiscount() / 100;
+                for (Accessory cage : cageList) {
+                    if ((cage.getUnit_price() - cage.getUnit_price() * cage.getDiscount() / 100) < cheapestCagePrice) {
+                        cheapestCage = cage;
+                    }
                 }
-                boolean checkAdd = cart.addBirdToCart(bird, cheapestCage);
-                if (checkAdd) {
-                    url = SUCCESS;
-                    session.setAttribute("CART", cart);
+                if (session != null) {
+                    CartDTO cart = (CartDTO) session.getAttribute("CART");
+                    if (cart == null) {
+                        cart = new CartDTO();
+                    }
+                    boolean checkAdd = cart.addBirdToCart(bird, cheapestCage);
+                    if (checkAdd) {
+                        out.println(1);
+                        session.setAttribute("CART", cart);
+                    } else {
+                        out.println(0);
+                    }
+                }
+            }else{
+                CartDTO cart = (CartDTO) session.getAttribute("CART");
+                if(cart != null){
+                     int amountItems = cart.getTotalItem();
+                     out.println(amountItems);
                 }
             }
         } catch (Exception e) {
             log("Error at AddBirdToCartController: " + e.toString());
-        } finally {
-            request.getRequestDispatcher(url).forward(request, response);
-        }
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
