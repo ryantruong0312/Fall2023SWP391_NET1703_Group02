@@ -61,6 +61,21 @@ CREATE TABLE [Bird]
 )
 GO
 
+DROP TABLE IF EXISTS [CustomerBird]
+CREATE TABLE [CustomerBird]
+(	
+	[customer_id] VARCHAR(25),
+	[bird_id]  INT IDENTITY,
+	[bird_name] NVARCHAR(50),
+	[breed_id] VARCHAR(10),
+	[gender] BIT,
+	[status] NVARCHAR(20),
+	[image_url] VARCHAR(MAX),
+	CONSTRAINT PK_CustomerBird PRIMARY KEY ([bird_id]),
+	CONSTRAINT FK_CustomerBird_User FOREIGN KEY ([customer_id]) REFERENCES [User]([username]),
+	CONSTRAINT FK_CustomerBird_BirdBreed FOREIGN KEY ([breed_id]) REFERENCES [BirdBreed]([breed_id])
+)
+
 DROP TABLE IF EXISTS [AccessoryCategory]
 CREATE TABLE [AccessoryCategory]
 (	
@@ -82,7 +97,8 @@ CREATE TABLE [Accessory]
 	[description] NVARCHAR(MAX),
 	[discount] SMALLINT,
 	[status] NVARCHAR(20),
-	CONSTRAINT PK_Accessory PRIMARY KEY ([accessory_id])
+	CONSTRAINT PK_Accessory PRIMARY KEY ([accessory_id]),
+	CONSTRAINT FK_Accessory_AccessoryCategory FOREIGN KEY ([category_id]) REFERENCES [AccessoryCategory]([category_id])
 )
 GO
 

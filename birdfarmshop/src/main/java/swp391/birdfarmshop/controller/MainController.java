@@ -85,6 +85,8 @@ public class MainController extends HttpServlet {
     private static final String DEST_CREATE_ACCOUNT = "CreateAccountController";
     private static final String ACT_ADD_BIRD = "AddNewBird";
     private static final String DEST_ADD_BIRD = "AddNewBirdController";
+    private static final String ACT_CREATE_BIRDS_CUSTOMER = "NavToCreateBirdCustomer";
+    private static final String DEST_CREATE_BIRDS_CUSTOMER = "CreateBirdCustomer";
     private static final String TEST = "/shop/checkout.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -194,6 +196,9 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_ADD_BIRD:
                     url = DEST_ADD_BIRD;
+                    break;
+                case ACT_CREATE_BIRDS_CUSTOMER:
+                    url = DEST_CREATE_BIRDS_CUSTOMER;
                     break;
                 default:
                     break;

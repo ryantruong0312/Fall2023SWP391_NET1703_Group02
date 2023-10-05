@@ -33,7 +33,7 @@ public class BirdDAO {
     private static final String GET_BIRD_BY_ID = "SELECT DATEDIFF(MONTH, birthday, GETDATE()) AS age, * FROM [Bird] WHERE [bird_id] = ?";
     private static final String IS_BIRD_SOLD_OUT = "SELECT [status] FROM [Bird] WHERE [bird_id] = ? AND [status] = N'Đã bán'";
     private static final String GET_BIRD_BY_BREED_ID = "SELECT [bird_id],[bird_name],[color]\n"
-            + "      ,[age],[grown_age] ,[gender]\n"
+            + "      ,DATEDIFF(MONTH, birthday, GETDATE()) AS age,[grown_age] ,[gender]\n"
             + "      ,[breed_id] ,[achievement]\n"
             + "      ,[reproduction_history]\n"
             + "      ,[price],[description]\n"
