@@ -53,13 +53,13 @@ public class UpdateInformationController extends HttpServlet {
                     email = user.getEmail();
                 if(phone.isEmpty())
                     phone = user.getPhone();
-                if(!changingStreet.isBlank())
+                if(!changingStreet.isEmpty())
                     street = changingStreet;
-                if(!changingWard.isBlank())
+                if(!changingWard.isEmpty())
                     ward = changingWard;
-                if(!changingDistrict.isBlank())
+                if(!changingDistrict.isEmpty())
                     district = changingDistrict;
-                if(!changingCity.isBlank())
+                if(!changingCity.isEmpty())
                     city = changingCity;
                 address = street + "," + ward + "," + district + "," + city;
                 UserDAO userDao = new UserDAO();
