@@ -221,7 +221,10 @@
                                 </div>
                         </div>
                         <c:if test="${sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'staff'}">
-                            <a href="MainController?action=NavToAddBird"><span>Tạo mới chim</span></a>
+                            <form action="MainController">
+                                <input type="hidden" name="getAttribute" value="${requestScope.BIRDLIST}">
+                                <button style="float: right;" type="submit" name="action" value="AddNewBird">Tạo mới chim</button>
+                            </form>
 <!--                            <a href="MainController?action=NavToUpdateBird"><span>Cập nhật chim</span></a>-->
                         </c:if>
                     </div>

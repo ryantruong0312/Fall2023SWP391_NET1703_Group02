@@ -169,8 +169,12 @@
                             <h2>Thêm mới sản phẩm</h2>
                         </div>
                     </div>
-                    <div class="col-lg-12 form-custom">
-                        <form action="MainController" method="POST" enctype="multipart/form-data">
+                </div>
+            </div>
+            <div class="container">
+                <form action="MainController" method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-lg-6 form-custom">
                             <input type="hidden" name="action" value="AddNewBird">
                             <p><c:out value="${requestScope.MESSAGE}"/></p>
                             <div class="form-outline mt-2">
@@ -215,6 +219,8 @@
                                 <label>Lịch sử sinh sản</label>
                                 <input type="text" name="txtBirdReproduction_history" class="input form-control"/>
                             </div>
+                        </div>
+                        <div class="col-lg-6 form-custom">
                             <div class="form-outline mt-2">
                                 <label>Giá</label>
                                 <input type="text" name="txtBirdPrice"class="input form-control"/>
@@ -255,10 +261,10 @@
                                 <label>Chọn hình ảnh của chim</label>
                                 <input type="file" name="imageFiles" multiple required>
                             </div>-->
-                            <button type="submit" name="action" value="AddNewBird">Tạo mới</button>
-                        </form>
+                            <button style="float: right;" type="submit" name="action" value="AddNewBird">Tạo mới</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </section>
         <!-- ***** Products Area Ends ***** -->

@@ -83,8 +83,6 @@ public class MainController extends HttpServlet {
     private static final String DEST_UPDATE_INFO = "UpdateInformationController";
     private static final String ACT_CREATE_ACCOUNT = "CreateAccount";
     private static final String DEST_CREATE_ACCOUNT = "CreateAccountController";
-    private static final String ACT_NAV_ADD_BIRD = "NavToAddBird";
-    private static final String DEST_NAV_ADD_BIRD = "/management/bird/add-bird.jsp";
     private static final String ACT_ADD_BIRD = "AddNewBird";
     private static final String DEST_ADD_BIRD = "AddNewBirdController";
     private static final String TEST = "/shop/checkout.jsp";
@@ -193,9 +191,6 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_REMOVE_BIRD_FROM_CART:
                     url = DEST_REMOVE_BIRD_FROM_CART;
-                    break;
-                case ACT_NAV_ADD_BIRD:
-                    url = DEST_NAV_ADD_BIRD;
                     break;
                 case ACT_ADD_BIRD:
                     url = DEST_ADD_BIRD;
