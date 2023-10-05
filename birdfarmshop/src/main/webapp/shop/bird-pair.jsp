@@ -72,7 +72,7 @@
                                             </div>
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
-                                            <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
+                                            <li id="checkLogin" data-login="false" class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
                                             </c:if>
                                         </c:if>
                                     </c:if>

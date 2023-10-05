@@ -8,6 +8,16 @@ $('.type-shop').click(function (event){
     $('.bird-customer').css('display','none');
 });
 $('.type-customer').click(function (event){
+    let login = $('#checkLogin').attr('data-login');
+    if(login === 'false'){   
+          toast({
+                title: 'Lỗi',
+                message: 'Bạn chưa đăng nhập',
+                type: 'error',
+                duration: 3000
+            });
+       return;     
+    }
     $('.type-pair').css('display','none');
     $('.bird-shop').css('display','none');
     $('.bird-customer').css('display','block');
@@ -350,11 +360,6 @@ $(".form-register").validate({
 });
 $('#form-createBird').validate({
     rules: {
-        txtBirdId: {
-            required: true,
-            maxlength: 10,
-            regex: /^[A-Z]{2}\d+$/
-        },
         nameBird: {
             required: true
         },
@@ -363,11 +368,6 @@ $('#form-createBird').validate({
         }
     },
     messages: {
-        txtBirdId: {
-            required: 'Vui lòng nhập mã vẹt của bạn',
-            maxlength: 'Mã không quá 10 kí tự',
-            regex: 'Mã bắt đầu 2 kí tự viết hoa và sau là số'
-        },
         nameBird: {
             required: 'Vui lòng nhập tên vẹt của bạn'
         },

@@ -25,16 +25,16 @@ public class BirdCustomerDAO {
         try {
             cnn = DBUtils.getConnection();
             if (cnn != null) {
-                String sql = "INSERT INTO [dbo].[BirdCustomer] \n"
-                           + "VALUES (?,?,?,?,?,?,?)";
+                String sql = "INSERT INTO [CustomerBird]([customer_id],[bird_name],"
+                        + "               [breed_id],[gender],[status],[image_url]) \n"
+                        + "   VALUES (?,?,?,?,?,?)";
                 PreparedStatement pst = cnn.prepareStatement(sql);
-                pst.setString(1, bird_id);
+                pst.setString(1, username);
                 pst.setString(2, name);
-                pst.setString(3, gender);
-                pst.setString(4, breed_id);
-                pst.setString(5, username);
+                pst.setString(3, breed_id);
+                pst.setString(4, gender);
+                pst.setString(5, status);
                 pst.setString(6, image_url);
-                pst.setString(7, status);
                 result = pst.executeUpdate();
             }
         } catch (Exception e) {
@@ -58,8 +58,8 @@ public class BirdCustomerDAO {
             cnn = DBUtils.getConnection();
             if (cnn != null) {
                 String sql = "SELECT [bird_id],[bird_name],[gender],[breed_id],\n"
-                           + "	     [customer],[img_url],[status]\n"
-                           + "FROM BirdCustomer\n";
+                           + "	     [customer_id],[image_url],[status]\n"
+                           + "FROM CustomerBird\n";
                 if(search != null){
                     sql += " WHERE bird_name LIKE N'%"+search+"%'\n";
                 }
@@ -73,12 +73,12 @@ public class BirdCustomerDAO {
                 Statement st = cnn.createStatement();
                 ResultSet rs = st.executeQuery(sql);
                 while(rs.next()){
-                    String bird_id = rs.getString("bird_id");
+                    int bird_id = rs.getInt("bird_id");
                     String bird_name = rs.getString("bird_name");
                     boolean gender = rs.getBoolean("gender");
                     String breed_id = rs.getString("breed_id");
-                    String customer = rs.getString("customer");
-                    String img_url = rs.getString("img_url");
+                    String customer = rs.getString("customer_id");
+                    String img_url = rs.getString("image_url");
                     String status = rs.getString("status");
                     BirdCustomer b = new BirdCustomer(bird_id, bird_name, gender, breed_id, customer, img_url, status);
                     birdCustomerList.add(b);
@@ -105,10 +105,10 @@ public class BirdCustomerDAO {
             cnn = DBUtils.getConnection();
             if (cnn != null) {
                 String sql = "SELECT [bird_id],[bird_name],[gender],[breed_id],\n"
-                        + "	     [customer],[img_url],[status]\n"
-                        + "FROM BirdCustomer\n";
+                        + "	     [customer_id],[image_url],[status]\n"
+                        + "FROM CustomerBird\n";
                 if(customer != null){
-                    sql += " WHERE customer = '"+customer+"'\n";
+                    sql += " WHERE customer_id = '"+customer+"'\n";
                     if(breedId != null){
                         sql += " AND breed_id = '"+breedId+"'\n";
                     }
@@ -126,11 +126,11 @@ public class BirdCustomerDAO {
                 Statement st = cnn.createStatement();
                 ResultSet rs = st.executeQuery(sql);
                 while (rs.next()) {
-                    String bird_id = rs.getString("bird_id");
+                    int bird_id = rs.getInt("bird_id");
                     String bird_name = rs.getString("bird_name");
                     boolean gender = rs.getBoolean("gender");
                     String breed_id = rs.getString("breed_id");
-                    String img_url = rs.getString("img_url");
+                    String img_url = rs.getString("image_url");
                     String status = rs.getString("status");
                     BirdCustomer b = new BirdCustomer(bird_id, bird_name, gender, breed_id, customer, img_url, status);
                     birdCustomerList.add(b);
@@ -157,19 +157,19 @@ public class BirdCustomerDAO {
             cnn = DBUtils.getConnection();
             if (cnn != null) {
                 String sql = "SELECT [bird_id],[bird_name],[gender],[breed_id],\n"
-                           + "	     [customer],[img_url],[status]\n"
-                           + "FROM BirdCustomer\n"
+                           + "	     [customer_id],[image_url],[status]\n"
+                           + "FROM CustomerBird\n"
                            + "WHERE bird_id = ?";
                 PreparedStatement pst = cnn.prepareStatement(sql);
                 pst.setString(1,birdId );
                 ResultSet rs = pst.executeQuery();
                 if(rs != null && rs.next()) {
-                    String bird_id = rs.getString("bird_id");
+                    int bird_id = rs.getInt("bird_id");
                     String bird_name = rs.getString("bird_name");
                     boolean gender = rs.getBoolean("gender");
                     String breed_id = rs.getString("breed_id");
-                    String username = rs.getString("customer");
-                    String img_url = rs.getString("img_url");
+                    String username = rs.getString("customer_id");
+                    String img_url = rs.getString("image_url");
                     String status = rs.getString("status");
                      b = new BirdCustomer(bird_id, bird_name, gender, breed_id, username, img_url, status);
                 }
@@ -187,5 +187,4 @@ public class BirdCustomerDAO {
         }
         return b;
     }
-    
 }

@@ -133,10 +133,6 @@
                             </c:forEach>
                         </select>
                         <!-- EL to populate the bird name combo box -->
-                        <div class="mt-4">
-                            <label class="mb-1" style="color: black; width: 150px" for="idBird">Mã số con vẹt: </label>
-                            <input type="text" id="idBird" class="form-control" name="txtBirdId" value="${requestScope.BIRDID}" required=""> 
-                        </div>
                         <div class="mt-3">
                             <label class="mb-1" style="color: black; width: 150px" for="name">Tên con vẹt: </label>
                             <input type="text" id="account" class="form-control" name="nameBird" value="${requestScope.NAMEBIRD}" required="">          

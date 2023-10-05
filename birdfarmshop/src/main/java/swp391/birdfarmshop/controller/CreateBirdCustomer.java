@@ -42,7 +42,6 @@ import swp391.birdfarmshop.util.S3Utils;
 public class CreateBirdCustomer extends HttpServlet {
 
     private static final String DEST_NAV_CREATE_BIRD_CUSTOMER = "shop/add-customerBird.jsp";
-    private static final String DEST_NAV_BIRD_PAIR = "RenderBirdPairController";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

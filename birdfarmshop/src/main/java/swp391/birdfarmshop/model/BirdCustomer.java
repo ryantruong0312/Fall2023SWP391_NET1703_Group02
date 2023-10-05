@@ -10,7 +10,7 @@ package swp391.birdfarmshop.model;
  */
 public class BirdCustomer {
     
-    private String bird_id;
+    private int bird_id;
     private String name;
     private boolean gender;
     private String breed_id;
@@ -18,7 +18,7 @@ public class BirdCustomer {
     private String img_url;
     private String status;
 
-    public BirdCustomer(String bird_id, String name, boolean gender, String breed_id, String username, String img_url, String status) {
+    public BirdCustomer(int bird_id, String name, boolean gender, String breed_id, String username, String img_url, String status) {
         this.bird_id = bird_id;
         this.name = name;
         this.gender = gender;
@@ -28,11 +28,11 @@ public class BirdCustomer {
         this.status = status;
     }
 
-    public String getBird_id() {
+    public int getBird_id() {
         return bird_id;
     }
 
-    public void setBird_id(String bird_id) {
+    public void setBird_id(int bird_id) {
         this.bird_id = bird_id;
     }
 
