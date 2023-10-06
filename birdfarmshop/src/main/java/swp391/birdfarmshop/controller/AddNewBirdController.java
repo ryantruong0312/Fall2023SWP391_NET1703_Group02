@@ -12,10 +12,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dao.ImageDAO;
 import swp391.birdfarmshop.dto.BirdDTO;
@@ -31,17 +35,17 @@ public class AddNewBirdController extends HttpServlet {
     private static final String SUCCESS = "management/add-bird.jsp";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+    throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         PrintWriter out = response.getWriter();
         String female = request.getParameter("femaleBird");
         String male = request.getParameter("maleBird");
+        String btAction = request.getParameter("btAction");
+        BirdDAO birdDao = new BirdDAO();
+        List<BirdDTO> birds = birdDao.getAllBirds();
         try {               
-            String btAction = request.getParameter("btAction");
             if(btAction == null) {
-                BirdDAO birdDao = new BirdDAO();
-                List<BirdDTO> birds = birdDao.getAllBirds();
                 HashMap<String,String> breed = new HashMap<>();
                 List<String> listStatus = new ArrayList<>();
                 List<Bird> maleBirds = new ArrayList<>();
@@ -54,7 +58,7 @@ public class AddNewBirdController extends HttpServlet {
                         }
                     }
                 }
-                  if(male != null){
+                if(male != null){
                     maleBirds = birdDao.getBirdsByBreedId(male);
                     for (Bird bird :maleBirds) {
                         if(bird.isGender()){
@@ -82,8 +86,16 @@ public class AddNewBirdController extends HttpServlet {
                 request.setAttribute("MALEBIRDS", maleBirds);
                 request.setAttribute("FEMALEBIRDS", femaleBirds);
                 url = SUCCESS;
-            }else {
+            }
+            if(btAction.equals("Add")) {
                 String txtBirdId = request.getParameter("txtBirdId");
+                for (BirdDTO bird : birds) {
+                    if(bird.getBird_id().equals(txtBirdId)) {
+                        request.setAttribute("MESSAGE", "ID ĐÃ TỒN TẠI. NHẬP ID MỚI");
+                        request.getRequestDispatcher(SUCCESS).forward(request, response);
+                        break;
+                    }
+                }
                 String txtBirdName = request.getParameter("txtBirdName");
                 String txtBirdColor = request.getParameter("txtBirdColor");
                 String txtBirdDate = request.getParameter("txtBirdDate");
@@ -101,19 +113,19 @@ public class AddNewBirdController extends HttpServlet {
                 String txtImage_1 = request.getParameter("txtImage_1");
                 String txtImage_2 = request.getParameter("txtImage_2");
                 String txtImage_3 = request.getParameter("txtImage_3");
-                BirdDAO birdDao = new BirdDAO();
-                boolean check = birdDao.addNewBird(txtBirdId, txtBirdName, txtBirdColor, txtBirdDate, txtBirdGrownAge,
-                        txtBirdGender, txtBirdBreed, txtBirdAchievement, txtBirdReproduction_history, 
-                        txtBirdPrice, txtBirdDescription, txtBirdDad, txtBirdMom, txtBirdDiscount, txtBirdStatus);
+                boolean check = birdDao.addNewBird(txtBirdId, txtBirdName + " " + txtBirdId,txtBirdColor, 
+                        txtBirdDate, txtBirdGrownAge, txtBirdGender, txtBirdBreed, 
+                        txtBirdAchievement, txtBirdReproduction_history, txtBirdPrice, 
+                        txtBirdDescription, txtBirdDad, txtBirdMom, txtBirdDiscount, txtBirdStatus);
                 ImageDAO imageDao = new ImageDAO();
                 boolean check_image1 = imageDao.addNewImageBird(txtImage_1, "1", txtBirdId);
                 boolean check_image2 = imageDao.addNewImageBird(txtImage_2, "0", txtBirdId);
                 boolean check_image3 = imageDao.addNewImageBird(txtImage_3, "0", txtBirdId);
-                if(check) {
+                if(check && check_image1) {
                     request.setAttribute("MESSAGE", "Đăng kí thành công");
-                    url = SUCCESS;
                 }
             }
+            url = SUCCESS;
 //            Collection<Part> parts = request.getParts();
 //            int imageCount = 0; // Biến đếm số lượng tệp hình ảnh
 //            for (Part part : parts) {
@@ -131,12 +143,14 @@ public class AddNewBirdController extends HttpServlet {
 //                    // Lưu vào cơ sở dữ liệu hoặc thư mục trên máy chủ
 //                }
 //            }
-        }catch (Exception e) {
-            e.printStackTrace();
+        }catch (ClassNotFoundException | SQLException | ParseException e) {
         }finally {
-           if(female==null && male == null){
-              request.getRequestDispatcher(url).forward(request, response);
-           }
+            if(female==null && male == null){
+               request.getRequestDispatcher(url).forward(request, response);
+            }
+            if(btAction.equals("Add")) {
+                request.getRequestDispatcher(url).forward(request, response);
+            }
         }
     } 
 
@@ -151,7 +165,11 @@ public class AddNewBirdController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(AddNewBirdController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     } 
 
     /** 
@@ -164,7 +182,11 @@ public class AddNewBirdController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(AddNewBirdController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** 

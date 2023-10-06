@@ -511,8 +511,8 @@ public class BirdDAO {
         return b;
     }
 
-    public boolean addNewBird(String bird_id, String bird_name, String color, String birthday, String grown_age, String gender
-      , String breed_id, String achievement, String reproduction_history, String price, String description
+    public boolean addNewBird(String bird_id, String bird_name, String color, String birthday, String grown_age
+      , String gender, String breed_id, String achievement, String reproduction_history, String price, String description
       , String dad_bird_id, String mom_bird_id, String discount, String status) throws SQLException, ParseException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -634,11 +634,9 @@ public class BirdDAO {
         return birds;
     }
     
-    public static void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
-        BirdDAO dao = new BirdDAO();
-        List<BirdDTO> birds = dao.getAllBirds();
-        for (BirdDTO bird : birds) {
-            System.out.println(bird.getBird_name());
-        }
-    }
+//    public static void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
+//        BirdDAO dao = new BirdDAO();
+//        boolean check = dao.addNewBird("AS101", "cape", "vàng, đỏ", "2023-10-07", "11", "Đực", "asian", "Chưa có", "1", "3000000", "Hàng Việt Nam", "XT001", "IR002", "1", "Còn hàng");
+//        System.out.println(check);
+//    }
 }

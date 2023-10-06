@@ -219,14 +219,6 @@ public class ImageDAO {
         return url;
     }
 
-    public static void main(String[] args) throws SQLException {
-        ImageDAO im = new ImageDAO();
-        ArrayList<String> list = im.getUrlByAccessoryId("LN001");
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.get(0));
-        }
-    }
-
     public String getThumbnailUrlByBirdNestId(String birdNestID) throws SQLException {
         String url = "";
         Connection con = null;
@@ -260,7 +252,6 @@ public class ImageDAO {
     public boolean addNewImageBird(String url, String is_thumbnail, String bird_id) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        ResultSet rs = null;
         boolean is_thumbnaill;
         try {
             con = DBUtils.getConnection();
@@ -279,8 +270,8 @@ public class ImageDAO {
                 stm.setString(4, null);
                 stm.setString(5, null);
 
-                rs = stm.executeQuery();
-                if (rs.next()) {
+                int rs = stm.executeUpdate();
+                if (rs > 0) {
                     return true;
                 }
             }
@@ -292,11 +283,7 @@ public class ImageDAO {
             if (con != null) {
                 con.close();
             }
-            if (rs != null) {
-                rs.close();
-            }
-        }
-        return false;
+        }        return false;
     }
 
     public boolean addNewAccessoryImage(String url, boolean type, String accessoryID) throws SQLException {
@@ -329,4 +316,10 @@ public class ImageDAO {
         }
         return false;
     }
+    
+//    public static void main(String[] args) throws SQLException {
+//        ImageDAO im = new ImageDAO();
+//        boolean check = im.addNewImageBird("https://tse2.mm.bing.net/th?id=OIP.CKLFsDQ0esKNWk8fhLxzpwHaEK&pid=Api&P=0&h=220", "0", "AS101");
+//        System.out.println(check);
+//    }
 }
