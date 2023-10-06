@@ -106,37 +106,59 @@
                     </div>
                 </div>
                 <div class="col-m-6 col-sm-6 col-md-7 col-lg-8 col-xl-9">
-                    <c:forEach var="feedback" items="${requestScope.feedbackList}">
-                        <div class="mx-4 mt-4 user-comment">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-2 font-weight-bold"><c:out value="${feedback.fullName}"/></h6>
-                                    <div class="rating">
-                                        <c:forEach begin="0" end="5" step="1" varStatus="loopIndex">
-                                            <c:if test="${loopIndex.index < feedback.rating}">
-                                                <span class="fa fa-star star-checked"></span>
-                                            </c:if>
-                                            <c:if test="${loopIndex.index > feedback.rating}">
-                                                <span class="fa fa-star"></span>
-                                            </c:if>
-                                        </c:forEach>
+                    <div class="comment-list">
+                        <c:forEach var="feedback" items="${requestScope.feedbackList}">
+                            <div class="mx-4 mt-4 user-comment">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-2 font-weight-bold"><c:out value="${feedback.fullName}"/></h6>
+                                        <div class="rating">
+                                            <c:forEach begin="0" end="5" step="1" varStatus="loopIndex">
+                                                <c:if test="${loopIndex.index < feedback.rating}">
+                                                    <span class="fa fa-star star-checked"></span>
+                                                </c:if>
+                                                <c:if test="${loopIndex.index > feedback.rating}">
+                                                    <span class="fa fa-star"></span>
+                                                </c:if>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="text-muted user-select-none"><c:out value="${feedback.feedbackDate}"/></p>
                                     </div>
                                 </div>
-                                <div>
-                                    <p class="text-muted user-select-none"><c:out value="${feedback.feedbackDate}   "/></p>
-                                </div>
+                                <p class="mt-2"><c:out value="${feedback.comment}"/></p>
                             </div>
-                            <p class="mt-2"><c:out value="${feedback.comment}"/></p>
-                        </div>
-                    </c:forEach>
-                    <div class="d-flex float-right align-items-center page-pagination">
-                        <div class="page-prev page-disable"><i class="fa fa-angle-left" aria-hidden="true"></i></i></div>
-                        <div class="page-navTo ml-3 page-active">1</div>
-                        <div class="page-navTo">2</div>
-                        <div class="page-navTo">3</div>
-                        <div class="page-navTo">4</div>
-                        <div class="page-navTo">5</div>
-                        <div class="page-next ml-3"><i class="fa fa-angle-right" aria-hidden="true"></i></i></div>
+                        </c:forEach>
+                        <c:if test="${noOfPages != 1}">
+                            <div class="d-flex float-right align-items-center page-pagination">
+                                <c:set var="numberOfPage" value="${requestScope.currentPage}"/>
+                                <input type="hidden" name="page" value="${numberOfPage}"/>
+                                <c:if test="${noOfPages >= 1 && noOfPages <= 5}">  
+                                    <div onclick="PrevPage()" class="page-prev ${numberOfPage <= 1 ? "page-disable":""}"><i class="fa fa-angle-left" aria-hidden="true"></i></i></div>
+                                    <c:forEach begin="1" end="${noOfPages}" var="i">
+                                        <div onclick="NavToNewPage(this)" class="page-navTo ${i == requestScope.currentPage ? "page-active":""}" data-value="${i}">${i}</div>       
+                                    </c:forEach>
+                                    <div onclick="NextPage()" class="page-next ml-3 ${numberOfPage >= noOfPages ? "page-disable":""}"><i class="fa fa-angle-right" aria-hidden="true"></i></i></div>
+                                </c:if>    
+                                <c:if test="${noOfPages > 5}">
+                                    <c:if test="${numberOfPage > 2}">
+                                        <div onclick="PrevPage()" class="page-prev ${numberOfPage <= 1 ? "page-disable":""}"><i class="fa fa-angle-left" aria-hidden="true"></i></i></div>
+                                        <c:forEach begin="${numberOfPage - 2}" end="${numberOfPage + 2}" var="i">
+                                            <div class="page-navTo ${i == requestScope.currentPage ? "page-active":""}" data-value="${i}">${i}</div>      
+                                        </c:forEach>
+                                        <div onclick="NextPage()" class="page-next ml-3 ${numberOfPage >= noOfPages ? "page-disable":""}"><i class="fa fa-angle-right" aria-hidden="true"></i></i></div>
+                                    </c:if>
+                                    <c:if test="${numberOfPage <= 2}">
+                                        <div onclick="PrevPage()" class="page-prev ${numberOfPage <= 1 ? "page-disable":""}"><i class="fa fa-angle-left" aria-hidden="true"></i></i></div>
+                                        <c:forEach begin="1" end="5" var="i">   
+                                            <div class="page-navTo ${i == requestScope.currentPage ? "page-active":""}" data-value="${i}>${i}</div>          
+                                            </c:forEach>                   
+                                            <div onclick="NextPage()" class="page-next ml-3 ${numberOfPage >= noOfPages ? "page-disable":""}"><i class="fa fa-angle-right" aria-hidden="true"></i></i></div>
+                                    </c:if>        
+                                </c:if>
+                            </div>
+                        </c:if>
                     </div>
                 </div>
             </div>

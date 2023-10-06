@@ -256,10 +256,5 @@ public class ImageDAO {
         }
         return false;
     }
-    
-    public static void main(String[] args) throws SQLException {
-        ImageDAO d = new ImageDAO();
-        System.out.println(d.getThumbnailUrlByAccessoryId("BL001"));
-    }
-    
+       
 }

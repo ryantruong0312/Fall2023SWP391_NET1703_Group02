@@ -215,10 +215,11 @@ h2 {
     border-right: 2px dashed black;
 }
 .back-choose h5{
-    text-align: center;
+    margin: auto;
     margin-bottom: 50px;
     cursor: pointer;
     font-weight: bold;
+    width: 300px;
 }
 @media (max-width: 768px){
 
@@ -304,4 +305,7 @@ h2 {
     flex: 0;
     width: 550px;
     margin: auto;
+}
+.customer-create--bird .error{
+    font-size: 0.9rem;
 }

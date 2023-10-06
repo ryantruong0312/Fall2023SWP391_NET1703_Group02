@@ -234,7 +234,7 @@
                                                 </div>
                                             </div>
                                             <div class="total">
-                                                <div class="main-border-button"><a href="MainController?action=AddtoCart&type=bird&id=${birdDetails.bird_id}">Thêm vào giỏ hàng</a></div>
+                                                <div class="main-border-button"><a class="bird-cart" style="cursor: pointer" data-value="${birdDetails.bird_id}">Thêm vào giỏ hàng</a></div>
                                             </div>
                                         </div>
                                     </div>
@@ -304,7 +304,7 @@
                                         </div>
                                     </footer>
                                     <!-- ***** Footer Area Ends ***** -->
-
+                                    <%@include file="../layout/message.jsp" %>
                                     <!-- jQuery -->
                                     <script src="assets/js/jquery-2.1.0.min.js"></script>
 
@@ -340,6 +340,38 @@
                                                     $("#portfolio").fadeTo(50, 1);
                                                 }, 500);
 
+                                            });
+                                            $(".bird-cart").click(function () {
+                                                let birdId = $(this).attr('data-value');
+                                                $.ajax({
+                                                    url: "AddBirdToCartController",
+                                                    type: 'POST',
+                                                    data: {bird_id: birdId},
+                                                    success: function (data) {
+                                                        if (data == 0) {
+                                                            toast({
+                                                                title: 'Lỗi',
+                                                                message: 'Sản phẩm này đã có trong giỏ hàng',
+                                                                type: 'error',
+                                                                duration: 3000
+                                                            });
+                                                        } else {
+                                                            toast({
+                                                                title: 'Thành công',
+                                                                message: 'Thêm sản phẩm vào giỏ hàng thành công',
+                                                                type: 'success',
+                                                                duration: 3000
+                                                            });
+                                                            $.ajax({
+                                                                url: "AddBirdToCartController",
+                                                                type: 'POST',
+                                                                success: function (data) {
+                                                                    $('.cart-amount').html(data);
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+                                                });
                                             });
                                         });
 
