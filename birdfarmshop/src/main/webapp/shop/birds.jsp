@@ -232,12 +232,8 @@
                             <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
                             <input type="submit" value="Tìm kiếm">
                         </div>
-                        <c:if test="${sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'staff'}">
-                            <form action="MainController">
-                                <input type="hidden" name="getAttribute" value="${requestScope.BIRDLIST}">
-                                <button style="float: right;" type="submit" name="action" value="AddNewBird">Tạo mới chim</button>
-                            </form>
-                            <!--                            <a href="MainController?action=NavToUpdateBird"><span>Cập nhật chim</span></a>-->
+                        <c:if test="${sessionScope.LOGIN_USER.role == null || sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'staff'}">
+                            <a style="float: right;" href="MainController?action=AddNewBird"><span>Thêm mới chim</span></a>
                         </c:if>
                 </div>
             </div>

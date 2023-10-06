@@ -12,9 +12,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dao.ImageDAO;
+import swp391.birdfarmshop.dto.BirdDTO;
+import swp391.birdfarmshop.model.Bird;
 
 /**
  *
@@ -30,9 +35,22 @@ public class AddNewBirdController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String getAttribute = request.getParameter("getAttribute");
-            if(getAttribute != null) {
-                System.out.println(getAttribute);
+            String btAction = request.getParameter("btAction");
+            if(btAction == null) {
+                BirdDAO birdDao = new BirdDAO();
+                List<BirdDTO> birds = birdDao.getAllBirds();
+                HashMap<String,String> breed = new HashMap<>();
+                List<String> listStatus = new ArrayList<>();
+                for (BirdDTO bird : birds) {
+                    if(!breed.containsKey(bird.getBreed_id())){
+                        breed.put(bird.getBreed_id(), bird.getBreed_name());
+                    }
+                    if(!listStatus.contains(bird.getStatus())) {
+                        listStatus.add(bird.getStatus());
+                    }
+                }
+                request.setAttribute("BREED", breed);
+                request.setAttribute("STATUS", listStatus);
                 url = SUCCESS;
             }else {
                 String txtBirdId = request.getParameter("txtBirdId");
@@ -83,11 +101,8 @@ public class AddNewBirdController extends HttpServlet {
 //                    // Lưu vào cơ sở dữ liệu hoặc thư mục trên máy chủ
 //                }
 //            }
-
-            // Sau khi xử lý xong, bạn có thể chuyển hướng hoặc hiển thị thông báo thành công
         }catch (Exception e) {
             e.printStackTrace();
-            // Xử lý lỗi ở đây nếu cần
         }finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
