@@ -215,7 +215,7 @@
                                 <c:forEach var="image" items="${list}" varStatus="loop">
                                     <div class="form-outline mt-2">
                                         <label>Hình ảnh sản phẩm</label>
-                                        <input style="color: blue;" type="text" name="txtImage_${loop.index + 2}" class="input form-control" value="${image}" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" required/>
+                                        <input style="color: blue;" type="text" name="txtImage_${loop.index + 2}" class="input form-control" value="${image}" required/>
                                     </div>
                                 </c:forEach>
                             </c:if>

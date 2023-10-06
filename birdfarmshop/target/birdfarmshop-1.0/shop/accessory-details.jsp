@@ -31,7 +31,6 @@
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
         <style>
-<<<<<<< HEAD
             .overlay-text {
                 position: absolute;
                 top: 50%;
@@ -58,14 +57,6 @@
             .image-bottom {
                 display: inline-block;
                 margin: 10px 10px 0 0;
-=======
-            body{
-                croll-behavior: smooth;
-            }
-            .image-container {
-                display: flex;
-                align-items: center;
->>>>>>> 1e5991b8ef085349b3399d55d3822b2c9860805d
             }
 
             #mainImage {
@@ -228,7 +219,6 @@
                     </form>
                 </c:if>           
                 <div class="row">
-<<<<<<< HEAD
                     <div class="col-lg-8">
                         <div class="image-container">
                             <div class="image-top">
@@ -237,20 +227,6 @@
                                     <c:if test="${requestScope.MESSAGE != null}">
                                         <div class="overlay-text">${MESSAGE}</div>
                                     </c:if>
-=======
-                    <div class="col-lg-8">                    
-                        <c:if test="${a != null}">
-                            <input type="hidden" name="accessory_id" value="${a.accessory_id}"/>
-                            <c:set var="image_url" value="${a.image_url}" />
-                            <div class="image-container">
-                                <div class="left-image">
-                                    <img id="image_main" src="${image_url[0]}" alt="Image 1" onclick="swapImages(this)">
-                                </div>
-
-                                <div class="right-image">
-                                    <img src="${image_url[1]}" alt="Image 2" onclick="swapImages(this)">
-                                    <img src="${image_url[2]}" alt="Image 3" onclick="swapImages(this)">
->>>>>>> 1e5991b8ef085349b3399d55d3822b2c9860805d
                                 </div>
                             </div>
                             <div class="image-bottom">
@@ -307,7 +283,6 @@
                                     </div>                            
                             </div>
                         </div>
-<<<<<<< HEAD
                         <c:choose>
                             <c:when test="${a.stock_quantity > 0}">
                                 <div class="total">
@@ -337,14 +312,6 @@
                                 </div>
                             </c:otherwise>
                         </c:choose>   
-=======
-                        <div class="total">
-                            <h4 style="float: left;">Tổng cộng: <span id="total">${a.unit_price} ₫</span></h4>
-                            <div type="button" class="main-border-button" style="margin-left: 100px; float: left;"><a style="cursor: pointer" class="accessory-cart" data-value="${a.accessory_id}">Thêm vào giỏ hàng</a></div>
-                            <div style="clear: both;"></div>
-                        </div>
-
->>>>>>> 1e5991b8ef085349b3399d55d3822b2c9860805d
                     </div>
                 </div>
             </div>
@@ -496,57 +463,57 @@
         leftImage.src = clickedImage.src;
         clickedImage.src = tempSrc;
     }
-            function NavToNewPage(event){
-               let page = $(event).attr('data-value');
-               let accessory_id = $('input[name=accessory_id]').val();
-               if(accessory_id){
-                   $.ajax({
-                       url: 'RenderAccessoryDetailsController',
-                       type: 'POST',
-                       data: {page: page, id: accessory_id},
-                       success: function (data){
-                          $('.comment-list').html(data);
-                          window.scrollTo(0, 800);
-                       }
-                   });
-               }
-            }
-            
-            function PrevPage(){
-                    let page = $('input[name=page]').val();
-                    let prevPage = Number(page) - 1;
-                    let accessory_id = $('input[name=accessory_id]').val();
-                    if(accessory_id && prevPage > 0){
-                        $.ajax({
-                            url: 'RenderAccessoryDetailsController',
-                            type: 'POST',
-                            data: {page: prevPage, id: accessory_id},
-                            success: function (data){
-                               $('.comment-list').html(data);
-                               window.scrollTo(0, 800);
-                            }
-                        });
-                    } 
-            }
-            
-            function NextPage(){
-                    let page = $('input[name=page]').val();
-                    let limitPage = $('input[name=numberOfPage]').val();
-                    let amountPage = Number(limitPage);
-                    let nextPage = Number(page) + 1;
-                    let accessory_id = $('input[name=accessory_id]').val();
-                    if(accessory_id && nextPage < amountPage){
-                        $.ajax({
-                            url: 'RenderAccessoryDetailsController',
-                            type: 'POST',
-                            data: {page: nextPage, id: accessory_id},
-                            success: function (data){
-                               $('.comment-list').html(data);
-                               window.scrollTo(0, 800);
-                            }
-                        });
-                    } 
-            }
+    function NavToNewPage(event) {
+        let page = $(event).attr('data-value');
+        let accessory_id = $('input[name=accessory_id]').val();
+        if (accessory_id) {
+            $.ajax({
+                url: 'RenderAccessoryDetailsController',
+                type: 'POST',
+                data: {page: page, id: accessory_id},
+                success: function (data) {
+                    $('.comment-list').html(data);
+                    window.scrollTo(0, 800);
+                }
+            });
+        }
+    }
+
+    function PrevPage() {
+        let page = $('input[name=page]').val();
+        let prevPage = Number(page) - 1;
+        let accessory_id = $('input[name=accessory_id]').val();
+        if (accessory_id && prevPage > 0) {
+            $.ajax({
+                url: 'RenderAccessoryDetailsController',
+                type: 'POST',
+                data: {page: prevPage, id: accessory_id},
+                success: function (data) {
+                    $('.comment-list').html(data);
+                    window.scrollTo(0, 800);
+                }
+            });
+        }
+    }
+
+    function NextPage() {
+        let page = $('input[name=page]').val();
+        let limitPage = $('input[name=numberOfPage]').val();
+        let amountPage = Number(limitPage);
+        let nextPage = Number(page) + 1;
+        let accessory_id = $('input[name=accessory_id]').val();
+        if (accessory_id && nextPage < amountPage) {
+            $.ajax({
+                url: 'RenderAccessoryDetailsController',
+                type: 'POST',
+                data: {page: nextPage, id: accessory_id},
+                success: function (data) {
+                    $('.comment-list').html(data);
+                    window.scrollTo(0, 800);
+                }
+            });
+        }
+    }
 
     document.getElementById("AddToCart").addEventListener("click", function (event) {
         event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
@@ -585,42 +552,42 @@
 <!-- Global Init -->
 <script src="assets/js/custom.js"></script>
 <script>
-                                                $(function (){
-                                                        $(".accessory-cart").click(function () {
-                                                                let accessory_id = $(this).attr('data-value');
-                                                                let quantity = $('input[name=quantity]').val();
-                                                                $.ajax({
-                                                                    url: "AddAccessoryToCartController",
-                                                                    type: 'POST',
-                                                                    data: {accessory_id :accessory_id, order_quantity: quantity},
-                                                                    success: function (data) {
-                                                                        if (data == 0) {
-                                                                            toast({
-                                                                                title: 'Lỗi',
-                                                                                message: 'Sản phẩm này đã có trong giỏ hàng',
-                                                                                type: 'error',
-                                                                                duration: 3000
-                                                                            });
-                                                                        } else {
-                                                                            toast({
-                                                                                title: 'Thành công',
-                                                                                message: 'Thêm sản phẩm vào giỏ hàng thành công',
-                                                                                type: 'success',
-                                                                                duration: 3000
-                                                                            });
-                                                                            $.ajax({
-                                                                                url: "AddAccessoryToCartController",
-                                                                                type: 'POST',
-                                                                                data: {order_quantity: 1},
-                                                                                success: function (data) {
-                                                                                    $('.cart-amount').html(data);
-                                                                                }
-                                                                            });
-                                                                        }
-                                                                    }
-                                                                });
-                                                            });
-                                                         });
+    $(function () {
+        $(".accessory-cart").click(function () {
+            let accessory_id = $(this).attr('data-value');
+            let quantity = $('input[name=quantity]').val();
+            $.ajax({
+                url: "AddAccessoryToCartController",
+                type: 'POST',
+                data: {accessory_id: accessory_id, order_quantity: quantity},
+                success: function (data) {
+                    if (data == 0) {
+                        toast({
+                            title: 'Lỗi',
+                            message: 'Sản phẩm này đã có trong giỏ hàng',
+                            type: 'error',
+                            duration: 3000
+                        });
+                    } else {
+                        toast({
+                            title: 'Thành công',
+                            message: 'Thêm sản phẩm vào giỏ hàng thành công',
+                            type: 'success',
+                            duration: 3000
+                        });
+                        $.ajax({
+                            url: "AddAccessoryToCartController",
+                            type: 'POST',
+                            data: {order_quantity: 1},
+                            success: function (data) {
+                                $('.cart-amount').html(data);
+                            }
+                        });
+                    }
+                }
+            });
+        });
+    });
 </script>
 
 
