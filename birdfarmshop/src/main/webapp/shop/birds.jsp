@@ -232,7 +232,7 @@
                             <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
                             <input type="submit" value="Tìm kiếm">
                         </div>
-                        <c:if test="${sessionScope.LOGIN_USER.role == null || sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'staff'}">
+                        <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'staff'}">
                             <a style="float: right;" href="MainController?action=AddNewBird"><span>Thêm mới chim</span></a>
                         </c:if>
                 </div>
