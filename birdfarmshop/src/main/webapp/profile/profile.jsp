@@ -131,6 +131,10 @@
                 font-style: italic;
                 font-weight: bold;
             }
+            .nav-item{
+                width: 20%;
+                text-align: center;
+            }
         </style>
 
     </head>
@@ -254,13 +258,13 @@
                                     <div class="about">
                                         <ul>
                                             <li>
-                                                <a href="MainController?action=NavToProfile">
+                                                <a href="#" class="profile-link">
                                                     <img class="icon" src="assets/images/user.png" alt="alt"/>
                                                     <span>Thông tin người dùng</span>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="MainController?action=NavToProfile">
+                                                <a href="#" class="order-link">
                                                     <img class="icon" src="assets/images/test.png" alt="alt"/>
                                                     <span>Đơn hàng</span>
                                                 </a>
@@ -273,7 +277,7 @@
                     </div>
                     <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                         <div class="card h-100">
-                            <div class="card-body">
+                            <div class="card-body profile-section">
                                 <form action="MainController">
                                     <div class="row gutters">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -300,7 +304,7 @@
                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <label>Địa chỉ</label>
-                                                <input type="text" disabled="" class="form-control" placeholder="${requestScope.USER.address}">
+                                                <textarea disabled="" class="form-control" placeholder="${requestScope.USER.address}"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -346,6 +350,137 @@
                                     </div>
                                 </form>
                             </div>
+
+                            <div class="card-body order-section">
+                                <!-- Tab buttons -->
+                                <ul class="nav nav-tabs" id="orderTabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#pendingTab">Chờ xử lý</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#processedTab">Đang đóng hàng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#inTransitTab">Đang giao</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#deliveredTab">Đã giao</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#deliveredTab">Đã hủy</a>
+                                    </li>
+                                </ul>
+
+                                <!-- Tab content -->
+                                <div class="tab-content">
+                                    <!-- Pending Orders Tab -->
+                                    <div class="tab-pane fade show active" id="pendingTab">
+                                        <div class="row">
+                                            <!-- Card components for pending orders -->
+                                            <div class="col-12">
+                                                <div class="card w-100"> <!-- Add the w-100 class to make the card expand to full width -->
+                                                    <div class="card-body">
+                                                        <!-- Order ID and Create Date -->
+                                                        <div class="d-flex justify-content-between align-items-start">
+                                                            <h5 class="card-title mb-0">Order ID: 1</h5>
+                                                            <p class="card-text text-right">Create Date: 2023-10-06</p>
+                                                        </div>
+
+                                                        <!-- Table-like structure for order items -->
+                                                        <div class="table-responsive">
+                                                            <table class="table table-borderless">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Index</th>
+                                                                        <th>Item Name</th>
+                                                                        <th>Quantity</th>
+                                                                        <th>Item Price</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>1</td>
+                                                                        <td>Product 1</td>
+                                                                        <td>2</td>
+                                                                        <td>$50.00</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>2</td>
+                                                                        <td>Product 2</td>
+                                                                        <td>1</td>
+                                                                        <td>$50.00</td>
+                                                                    </tr>
+                                                                    <!-- Add more rows as needed -->
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Card components for pending orders -->
+                                            <div class="col-12">
+                                                <div class="card w-100"> <!-- Add the w-100 class to make the card expand to full width -->
+                                                    <div class="card-body">
+                                                        <!-- Order ID and Create Date -->
+                                                        <div class="d-flex justify-content-between align-items-start">
+                                                            <h5 class="card-title mb-0">Order ID: 1</h5>
+                                                            <p class="card-text text-right">Create Date: 2023-10-06</p>
+                                                        </div>
+
+                                                        <!-- Table-like structure for order items -->
+                                                        <div class="table-responsive">
+                                                            <table class="table table-borderless">
+                                                                <!-- ... (table content as previously mentioned) ... -->
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Card components for pending orders -->
+                                            <div class="col-12">
+                                                <div class="card w-100"> <!-- Add the w-100 class to make the card expand to full width -->
+                                                    <div class="card-body">
+                                                        <!-- Order ID and Create Date -->
+                                                        <div class="d-flex justify-content-between align-items-start">
+                                                            <h5 class="card-title mb-0">Order ID: 1</h5>
+                                                            <p class="card-text text-right">Create Date: 2023-10-06</p>
+                                                        </div>
+
+                                                        <!-- Table-like structure for order items -->
+                                                        <div class="table-responsive">
+                                                            <table class="table table-borderless">
+                                                                <!-- ... (table content as previously mentioned) ... -->
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Add more card components as needed -->
+                                        </div>
+                                    </div>
+
+                                    <!-- Processed Orders Tab -->
+                                    <div class="tab-pane fade" id="processedTab">
+                                        <!-- Similar structure as the Pending Orders Tab -->
+                                    </div>
+
+                                    <!-- In-transit Orders Tab -->
+                                    <div class="tab-pane fade" id="inTransitTab">
+                                        <!-- Similar structure as the Pending Orders Tab -->
+                                    </div>
+
+                                    <!-- Delivered Orders Tab -->
+                                    <div class="tab-pane fade" id="deliveredTab">
+                                        <!-- Similar structure as the Pending Orders Tab -->
+                                    </div>
+
+                                    <!-- Cancelled Orders Tab -->
+                                    <div class="tab-pane fade" id="deliveredTab">
+                                        <!-- Similar structure as the Pending Orders Tab -->
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -412,6 +547,27 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
+
+        <script>
+            // Function to show the profile section and hide the order section
+            function showProfileSection() {
+                document.querySelector('.profile-section').style.display = 'block';
+                document.querySelector('.order-section').style.display = 'none';
+            }
+
+            // Function to show the order section and hide the profile section
+            function showOrderSection() {
+                document.querySelector('.profile-section').style.display = 'none';
+                document.querySelector('.order-section').style.display = 'block';
+            }
+
+            // Initially, show the profile section (you can change this based on your default behavior)
+            showProfileSection();
+
+            // Add click event listeners to the links in the .about section
+            document.querySelector('.about .profile-link').addEventListener('click', showProfileSection);
+            document.querySelector('.about .order-link').addEventListener('click', showOrderSection);
+        </script>
 
         <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
