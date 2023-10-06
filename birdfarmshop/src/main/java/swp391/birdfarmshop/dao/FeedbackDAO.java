@@ -19,7 +19,7 @@ import swp391.birdfarmshop.util.DBUtils;
  */
 public class FeedbackDAO {
 
-    public ArrayList<FeedbackDTO> getFeedbackByIdProduct(String id) {
+    public ArrayList<FeedbackDTO> getFeedbackByIdProduct(String id,String page, int recordsPerPage) {
         ArrayList<FeedbackDTO> list = new ArrayList<>();
         Connection cnn = null;
         try {
@@ -36,7 +36,12 @@ public class FeedbackDAO {
                         + "      ,[accessory_name]\n"
                         + "      ,[image_url]\n"
                         + "  FROM [BirdFarmShop].[dbo].[View_Feedback]\n"
-                        + "WHERE [bird_id] = ? OR [accessory_id] = ?";
+                        + "WHERE [bird_id] = ? OR [accessory_id] = ? \n";
+                if (page != null) {
+                    int pageNumber = Integer.parseInt(page);
+                    int start = (pageNumber - 1) * recordsPerPage;
+                    sql += "ORDER BY feedback_date DESC OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
+                }
                 PreparedStatement pst = cnn.prepareStatement(sql);
                 pst.setString(1, id);
                 pst.setString(2, id);
@@ -70,7 +75,36 @@ public class FeedbackDAO {
         }
         return list;
     }
-
+    public int totalFeedbackByIdProduct(String id) {
+        int number =0;
+        Connection cnn = null;
+        try {
+            cnn = DBUtils.getConnection();
+            if (cnn != null) {
+                String sql = "SELECT COUNT(feedback_date) AS Amount"
+                            + "  FROM [BirdFarmShop].[dbo].[View_Feedback]\n"
+                        + "WHERE [bird_id] = ? OR [accessory_id] = ? \n";
+                PreparedStatement pst = cnn.prepareStatement(sql);
+                pst.setString(1, id);
+                pst.setString(2, id);
+                ResultSet rs = pst.executeQuery();
+                if (rs != null && rs.next()) {
+                    number = rs.getInt("Amount");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cnn != null) {
+                try {
+                    cnn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return number;
+    }
     public StarDTO getRatingByIdProduct(String id) {
         StarDTO s = null;
         Connection cnn = null;

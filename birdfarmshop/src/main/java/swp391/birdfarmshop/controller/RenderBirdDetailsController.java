@@ -35,14 +35,25 @@ public class RenderBirdDetailsController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
+            String page = "1";
+            int numberOfRecords = 5;
+            if (request.getParameter("page") != null) {
+                page = request.getParameter("page");
+            }
+
             String bird_id = request.getParameter("bird_id");
             BirdDAO birdDao = new BirdDAO();
             FeedbackDAO f = new FeedbackDAO();
-            ArrayList<FeedbackDTO> feedbackList = f.getFeedbackByIdProduct(bird_id);
-            request.setAttribute("feedbackList", feedbackList);
+            ArrayList<FeedbackDTO> feedbackList = f.getFeedbackByIdProduct(bird_id, page, numberOfRecords);
+            int numberOfFeebacks = f.totalFeedbackByIdProduct(bird_id);
+            int numberOfPage = (int) Math.ceil(numberOfFeebacks * 1.0 / numberOfRecords);
+
             StarDTO starCustomer = f.getRatingByIdProduct(bird_id);
+            BirdDTO birdDetails = birdDao.getBirdDetailsById(bird_id);
+            request.setAttribute("noOfPages", numberOfPage);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("feedbackList", feedbackList);
             request.setAttribute("starCustomer", starCustomer);
-            BirdDTO birdDetails = birdDao.getBirdDetailsById(bird_id);    
             request.setAttribute("birdDetails", birdDetails);
             url = SUCCESS;
         } catch (SQLException e) {

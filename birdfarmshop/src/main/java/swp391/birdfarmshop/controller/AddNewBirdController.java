@@ -12,9 +12,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dao.ImageDAO;
+import swp391.birdfarmshop.dto.BirdDTO;
+import swp391.birdfarmshop.model.Bird;
 
 /**
  *
@@ -30,37 +35,55 @@ public class AddNewBirdController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String txtBirdId = request.getParameter("txtBirdId");
-            String txtBirdName = request.getParameter("txtBirdName");
-            String txtBirdColor = request.getParameter("txtBirdColor");
-            String txtBirdDate = request.getParameter("txtBirdDate");
-            String txtBirdGrownAge = request.getParameter("txtBirdGrownAge");
-            String txtBirdGender = request.getParameter("txtBirdGender");
-            String txtBirdBreed = request.getParameter("txtBirdBreed");
-            String txtBirdAchievement = request.getParameter("txtBirdAchievement");
-            String txtBirdReproduction_history = request.getParameter("txtBirdReproduction_history");
-            String txtBirdPrice = request.getParameter("txtBirdPrice");
-            String txtBirdDescription = request.getParameter("txtBirdDescription");
-            String txtBirdDad = request.getParameter("txtBirdDad");
-            String txtBirdMom = request.getParameter("txtBirdMom");
-            String txtBirdDiscount = request.getParameter("txtBirdDiscount");
-            String txtBirdStatus = request.getParameter("txtBirdStatus");
-            String txtImage_1 = request.getParameter("txtImage_1");
-            String txtImage_2 = request.getParameter("txtImage_2");
-            String txtImage_3 = request.getParameter("txtImage_3");
-            BirdDAO birdDao = new BirdDAO();
-            boolean check = birdDao.addNewBird(txtBirdId, txtBirdName, txtBirdColor, txtBirdDate, txtBirdGrownAge,
-                    txtBirdGender, txtBirdBreed, txtBirdAchievement, txtBirdReproduction_history, 
-                    txtBirdPrice, txtBirdDescription, txtBirdDad, txtBirdMom, txtBirdDiscount, txtBirdStatus);
-            ImageDAO imageDao = new ImageDAO();
-            boolean check_image1 = imageDao.addNewImageBird(txtImage_1, "1", txtBirdId);
-            boolean check_image2 = imageDao.addNewImageBird(txtImage_2, "0", txtBirdId);
-            boolean check_image3 = imageDao.addNewImageBird(txtImage_3, "0", txtBirdId);
-            if(check) {
-                request.setAttribute("MESSAGE", "Đăng kí thành công");
+            String btAction = request.getParameter("btAction");
+            if(btAction == null) {
+                BirdDAO birdDao = new BirdDAO();
+                List<BirdDTO> birds = birdDao.getAllBirds();
+                HashMap<String,String> breed = new HashMap<>();
+                List<String> listStatus = new ArrayList<>();
+                for (BirdDTO bird : birds) {
+                    if(!breed.containsKey(bird.getBreed_id())){
+                        breed.put(bird.getBreed_id(), bird.getBreed_name());
+                    }
+                    if(!listStatus.contains(bird.getStatus())) {
+                        listStatus.add(bird.getStatus());
+                    }
+                }
+                request.setAttribute("BREED", breed);
+                request.setAttribute("STATUS", listStatus);
                 url = SUCCESS;
+            }else {
+                String txtBirdId = request.getParameter("txtBirdId");
+                String txtBirdName = request.getParameter("txtBirdName");
+                String txtBirdColor = request.getParameter("txtBirdColor");
+                String txtBirdDate = request.getParameter("txtBirdDate");
+                String txtBirdGrownAge = request.getParameter("txtBirdGrownAge");
+                String txtBirdGender = request.getParameter("txtBirdGender");
+                String txtBirdBreed = request.getParameter("txtBirdBreed");
+                String txtBirdAchievement = request.getParameter("txtBirdAchievement");
+                String txtBirdReproduction_history = request.getParameter("txtBirdReproduction_history");
+                String txtBirdPrice = request.getParameter("txtBirdPrice");
+                String txtBirdDescription = request.getParameter("txtBirdDescription");
+                String txtBirdDad = request.getParameter("txtBirdDad");
+                String txtBirdMom = request.getParameter("txtBirdMom");
+                String txtBirdDiscount = request.getParameter("txtBirdDiscount");
+                String txtBirdStatus = request.getParameter("txtBirdStatus");
+                String txtImage_1 = request.getParameter("txtImage_1");
+                String txtImage_2 = request.getParameter("txtImage_2");
+                String txtImage_3 = request.getParameter("txtImage_3");
+                BirdDAO birdDao = new BirdDAO();
+                boolean check = birdDao.addNewBird(txtBirdId, txtBirdName, txtBirdColor, txtBirdDate, txtBirdGrownAge,
+                        txtBirdGender, txtBirdBreed, txtBirdAchievement, txtBirdReproduction_history, 
+                        txtBirdPrice, txtBirdDescription, txtBirdDad, txtBirdMom, txtBirdDiscount, txtBirdStatus);
+                ImageDAO imageDao = new ImageDAO();
+                boolean check_image1 = imageDao.addNewImageBird(txtImage_1, "1", txtBirdId);
+                boolean check_image2 = imageDao.addNewImageBird(txtImage_2, "0", txtBirdId);
+                boolean check_image3 = imageDao.addNewImageBird(txtImage_3, "0", txtBirdId);
+                if(check) {
+                    request.setAttribute("MESSAGE", "Đăng kí thành công");
+                    url = SUCCESS;
+                }
             }
-            
 //            Collection<Part> parts = request.getParts();
 //            int imageCount = 0; // Biến đếm số lượng tệp hình ảnh
 //            for (Part part : parts) {
@@ -78,11 +101,8 @@ public class AddNewBirdController extends HttpServlet {
 //                    // Lưu vào cơ sở dữ liệu hoặc thư mục trên máy chủ
 //                }
 //            }
-
-            // Sau khi xử lý xong, bạn có thể chuyển hướng hoặc hiển thị thông báo thành công
         }catch (Exception e) {
             e.printStackTrace();
-            // Xử lý lỗi ở đây nếu cần
         }finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

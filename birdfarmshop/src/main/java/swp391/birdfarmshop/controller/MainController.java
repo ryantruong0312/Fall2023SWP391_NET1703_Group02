@@ -75,16 +75,12 @@ public class MainController extends HttpServlet {
     private static final String DEST_SEARCH_ACCESSORY = "RenderSearchAccessoriesController";
     private static final String ACT_CHECK_OUT = "CheckOut";
     private static final String DEST_CHECK_OUT = "RenderCheckOutController";
-    private static final String ACT_SEARCH_BIRD = "SearchBird";
-    private static final String DEST_SEARCH_BIRD = "SearchBirdController";
     private static final String ACT_RENDER_BIRD_BREED_ID = "RenderBirdByBreed_id";
     private static final String DEST_RENDER_BIRD_BREED_ID = "RenderBirdByBreed_idController";
-    private static final String ACT_UPDATE_INFO = "UpdateInformation";
-    private static final String DEST_UPDATE_INFO = "UpdateInformationController";
+    private static final String ACT_UPDATE_PROFILE = "UpdateProfile";
+    private static final String DEST_UPDATE_PROFILE = "UpdateProfileController";
     private static final String ACT_CREATE_ACCOUNT = "CreateAccount";
     private static final String DEST_CREATE_ACCOUNT = "CreateAccountController";
-    private static final String ACT_NAV_ADD_BIRD = "NavToAddBird";
-    private static final String DEST_NAV_ADD_BIRD = "/management/bird/add-bird.jsp";
     private static final String ACT_ADD_BIRD = "AddNewBird";
     private static final String DEST_ADD_BIRD = "AddNewBirdController";
     private static final String ACT_NAV_ADD_ACCESSORY = "NavToAddAccessory";
@@ -182,14 +178,11 @@ public class MainController extends HttpServlet {
                 case ACT_SEARCH_ACCESSORY:
                     url = DEST_SEARCH_ACCESSORY;
                     break;
-                case ACT_SEARCH_BIRD:
-                    url = DEST_SEARCH_BIRD;
-                    break;
                 case ACT_RENDER_BIRD_BREED_ID:
                     url = DEST_RENDER_BIRD_BREED_ID;
                     break;
-                case ACT_UPDATE_INFO:
-                    url = DEST_UPDATE_INFO;
+                case ACT_UPDATE_PROFILE:
+                    url = DEST_UPDATE_PROFILE;
                     break;
                 case ACT_CREATE_ACCOUNT:
                     url = DEST_CREATE_ACCOUNT;
@@ -199,9 +192,6 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_REMOVE_BIRD_FROM_CART:
                     url = DEST_REMOVE_BIRD_FROM_CART;
-                    break;
-                case ACT_NAV_ADD_BIRD:
-                    url = DEST_NAV_ADD_BIRD;
                     break;
                 case ACT_ADD_BIRD:
                     url = DEST_ADD_BIRD;

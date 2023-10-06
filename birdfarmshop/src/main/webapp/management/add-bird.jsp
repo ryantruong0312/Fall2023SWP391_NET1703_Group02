@@ -40,6 +40,10 @@
         .col-lg-12 span {
             margin-top: 100px;
         }
+        li input[type="radio"] + label {
+                margin-left: 5px;
+        }
+        
     </style>
     
     <body>
@@ -48,7 +52,7 @@
         <c:url var="toLogin" value="MainController?action=NavToLogin"/>
         <c:url var="logout" value="MainController?action=Logout"/>
         <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
-        <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
+        <c:url var="toBirds" value="MainController?action=NavToBird"/>
         <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
         <c:url var="toCart" value="MainController?action=NavToCart"/>
         <c:url var="toProfile" value="MainController?action=NavToProfile"/>
@@ -169,96 +173,112 @@
                             <h2>Thêm mới sản phẩm</h2>
                         </div>
                     </div>
-                    <div class="col-lg-12 form-custom">
-                        <form action="MainController" method="POST" enctype="multipart/form-data">
+                </div>
+            </div>
+            <div class="container">
+                <form action="MainController" method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-lg-6 form-custom">
                             <input type="hidden" name="action" value="AddNewBird">
                             <p><c:out value="${requestScope.MESSAGE}"/></p>
-                            <div class="form-outline mt-2">
+                            <div class="form-outline mb-3">
                                 <label>Giống loài</label>
-                                <select name="txtBirdBreed"">
-                                    <option value="asian">Châu Á</option>
-                                    <option value="australian">Châu Úc</option>
-                                    <option value="african">Chấu Phi</option>
-                                    <option value="amazon">Châu Mỹ/Amazon</option>
-                                    <option value="macaw">Chấu Mỹ/Macaw</option>
-                                </select>
+                                <ol>
+                                    <c:forEach var="breed" items="${requestScope.BREED}" varStatus="counter">
+                                        <li><input type="radio" id="type-${counter.count}" name="txtBirdBreed" value="${breed.key}" onclick="hideInput()"/><label for="type-${counter.count}">${breed.value}</label></li>
+                                    </c:forEach>
+                                    <li><input type="radio" id="other" onclick="showInput()" name="txtBirdBreed"/><label for="other">Khác</label></li>
+                                </ol>
+                                <div id="otherInput" style="display: none;">    
+                                    <input type="text" id="otherBreed" class="input form-control"  name="txtOtherBirdBreed" pattern="[A-Za-z]+" value="" placeholder="Nhập giống loài khác" />
+                                </div>
                             </div>
-                            <div class="form-outline">
+                            <div class="form-outline mb-3">
+                                <label>Giới tính</label>
+                                <ol>
+                                    <li><input type="radio" id="gender-1" name="txtBirdGender" value="Đực"/><label for="gender-1">Trống</label></li>
+                                    <li><input type="radio" id="gender-0" name="txtBirdGender" value="Cái"/><label for="gender-0">Mái</label></li>
+                                </ol>
+                            </div>
+                            <div class="form-outline mb-3">
+                                <label>Trạng thái</label>
+                                <ol>
+                                    <c:forEach var="status" items="${requestScope.STATUS}" varStatus="counter">
+                                        <li><input type="radio" id="status-${counter.count}" name="txtBirdStatus" value="${status}"/><label for="status-${counter.count}">${status}</label></li>
+                                    </c:forEach>
+                                </ol>
+                            </div>
+                            <div class="form-outline mb-3">
                                 <label>ID của chim (Bao gồm 2 chữ hoa và 3 chữ số)</label>
-                                <input type="text" name="txtBirdId" class="input form-control form-control" pattern="[A-Z]{2}\d{3}"/>
+                                <input type="text" name="txtBirdId" class="input form-control" pattern="[A-Z]{2}\d{3}"/>
                             </div>
-                            <div class="form-outline mt-2">
+                            <div class="form-outline mb-3">
                                 <label>Tên</label>
-                                <input type="text" name="txtBirdName" class="input form-control" required=""/>                          
+                                <input type="text" name="txtBirdName" class="input form-control" required="" pattern="[A-Za-z]+" title="Vui lòng chỉ nhập chữ cái"/>                          
                             </div>
-                            <div class="form-outline mt-2">
+                            <div class="form-outline mb-3">
                                 <label>Màu Sắc</label>
-                                <input type="text" name="txtBirdColor" class="input form-control"/>      
+                                <input type="text" name="txtBirdColor" class="input form-control" value=""/>      
                             </div>
-                            <div class="form-outline mt-2">
+                            <div class="form-outline mb-3">
                                 <label>Ngày Sinh (20yy-mm-dd)</label>
                                 <input type="text" name="txtBirdDate" class="input form-control" required="" pattern="^20([0-2][0-9])-([0][1-9]|1[0-2])-([0-2][0-9]|3[01])$"/>
                             </div>
-                            <div class="form-outline  mt-2">
+                            <div class="form-outline mb-3">
                                 <label>Tuổi trưởng thành</label>
-                                <input type="text" name="txtBirdGrownAge" class="input form-control"/>
+                                <input type="number" name="txtBirdGrownAge" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số"/>
                             </div>
-                            <div class="form-outline mt-2">
-                                <label>Giới tính (Đực | Cái)</label>
-                                <input type="text" name="txtBirdGender" class="input form-control" pattern="(Đực)|(Cái)"/>
-                            </div>
-                            <div class="form-outline mt-2">
+                        </div>
+                        <div class="col-lg-6 form-custom">
+                            <div class="form-outline mb-3">
                                 <label>Thành tựu</label>
-                                <input type="text" name="txtBirdAchievement" class="input form-control"/>
+                                <input type="text" name="txtBirdAchievement" class="input form-control" value=""/>
                             </div>
-                            <div class="form-outline mt-2">
+                            <div class="form-outline mb-3">
                                 <label>Lịch sử sinh sản</label>
-                                <input type="text" name="txtBirdReproduction_history" class="input form-control"/>
+                                <input type="number" name="txtBirdReproduction_history" class="input form-control" value="" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số"/>
                             </div>
-                            <div class="form-outline mt-2">
+                            <div class="form-outline mb-3">
                                 <label>Giá</label>
-                                <input type="text" name="txtBirdPrice"class="input form-control"/>
+                                <input type="number" name="txtBirdPrice" class="input form-control" value="" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số"/>
                             </div>
                             <div class="form-outline mt-2">
                                 <label>Mô tả</label>
-                                <input type="text" name="txtBirdDescription" class="input form-control"/>
+                                <input type="text" name="txtBirdDescription" class="input form-control" value=""/>
                             </div>
-                            <div class="form-outline mt-2">
+                            <div class="form-outline mb-3">
                                 <label>ID của chim bố (Bao gồm 2 chữ hoa và 3 chữ số)</label>
-                                <input type="text" name="txtBirdDad" class="input form-control" pattern="[A-Z]{2}\d{3}"/>
+                                <input type="text" name="txtBirdDad" class="input form-control" pattern="[A-Z]{2}\d{3}" value=""/>
                             </div>
-                            <div class="form-outline mt-2">
+                            <div class="form-outline mb-3">
                                 <label>ID của chim mẹ (Bao gồm 2 chữ hoa và 3 chữ số)</label>
-                                <input type="text" name="txtBirdMom" class="input form-control" pattern="[A-Z]{2}\d{3}"/>
+                                <input type="text" name="txtBirdMom" class="input form-control" pattern="[A-Z]{2}\d{3}" value=""/>
                             </div>
-                            <div class="form-outline mt-2">
+                            <div class="form-outline mb-3">
                                 <label>Giảm giá</label>
-                                <input type="text" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$"/>
+                                <input type="number" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" title="Vui lòng chỉ nhập chữ số" value=""/>
                             </div>
-                            <div class="form-outline mt-2">
-                                <label>Trạng thái(Còn hàng | Đang sinh sản | Đang ghép cặp)</label>
-                                <input type="text" name="txtBirdStatus" class="input form-control" pattern="(Còn hàng)|(Đang sinh sản)|(Đang ghép cặp)"/>
-                            </div>
-                            <div class="form-outline mt-2">
+                            <div class="form-outline mb-3">
                                 <label>Hình ảnh sản phẩm 1 (Bắt buộc)</label>
-                                <input type="text" name="txtImage_1" class="input form-control" required="" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$"/>
+                                <input type="text" name="txtImage_1" class="input form-control" required="" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" value=""/>
                             </div>
-                            <div class="form-outline mt-2">
+                            <div class="form-outline mb-3">
                                 <label>Hình ảnh sản phẩm 2</label>
-                                <input type="text" name="txtImage_2" class="input form-control" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$"/>
+                                <input type="text" name="txtImage_2" class="input form-control" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" value=""/>
                             </div>
-                            <div class="form-outline mt-2">
+                            <div class="form-outline mb-3">
                                 <label>Hình ảnh sản phẩm 3</label>
-                                <input type="text" name="txtImage_3" class="input form-control" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$"/>
+                                <input type="text" name="txtImage_3" class="input form-control" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" value=""/>
                             </div>
 <!--                            <div class="form-outline mt-2">
                                 <label>Chọn hình ảnh của chim</label>
                                 <input type="file" name="imageFiles" multiple required>
                             </div>-->
-                            <button type="submit" name="action" value="AddNewBird">Tạo mới</button>
-                        </form>
+                            <input type="hidden" name="btAction" value="Add"/>
+                            <button style="float: right;" type="submit" name="action" value="AddNewBird">Tạo mới</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </section>
         <!-- ***** Products Area Ends ***** -->
@@ -344,5 +364,16 @@
 
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
+        <script>
+            function showInput() {
+                var otherInput = document.getElementById('otherInput');
+                otherInput.style.display = 'block';
+            }
+
+            function hideInput() {
+                var otherInput = document.getElementById('otherInput');
+                otherInput.style.display = 'none';
+            }
+        </script>
     </body>
 </html>

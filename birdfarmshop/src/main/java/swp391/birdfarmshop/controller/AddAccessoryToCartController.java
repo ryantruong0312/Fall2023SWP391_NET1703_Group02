@@ -24,34 +24,39 @@ import swp391.birdfarmshop.model.Accessory;
 @WebServlet(name = "AddAccessoryToCartController", urlPatterns = {"/AddAccessoryToCartController"})
 public class AddAccessoryToCartController extends HttpServlet {
 
-    private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "MainController?action=NavToHome";
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String url = ERROR;
+        PrintWriter out = response.getWriter();
         try {
             String accessory_id = request.getParameter("accessory_id");
             int order_quantity = Integer.parseInt(request.getParameter("order_quantity"));
             AccessoryDAO adao = new AccessoryDAO();
             Accessory accessory = adao.getAccessoryByID(accessory_id);
             HttpSession session = request.getSession();
-            if (session != null) {
-                CartDTO cart = (CartDTO) session.getAttribute("CART");
-                if (cart == null) {
-                    cart = new CartDTO();
+            if (accessory_id != null) {
+                if (session != null) {
+                    CartDTO cart = (CartDTO) session.getAttribute("CART");
+                    if (cart == null) {
+                        cart = new CartDTO();
+                    }
+                    boolean checkAdd = cart.addAccessoryToCart(accessory, order_quantity);
+                    if (checkAdd) {
+                        out.println(1);
+                        session.setAttribute("CART", cart);
+                    }else{
+                        out.println(0);
+                    }
                 }
-                boolean checkAdd = cart.addAccessoryToCart(accessory, order_quantity);
-                if (checkAdd) {
-                    url = SUCCESS;
-                    session.setAttribute("CART", cart);
+            } else {
+                CartDTO cart = (CartDTO) session.getAttribute("CART");
+                if (cart != null) {
+                    int amountItems = cart.getTotalItem();
+                    out.println(amountItems);
                 }
             }
         } catch (Exception e) {
             log("Error at AddAccessoryToCartController: " + e.toString());
-        } finally {
-            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

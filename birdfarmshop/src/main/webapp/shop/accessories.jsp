@@ -38,7 +38,7 @@
                 color: white !important;
             }
             .search-bar {
-                margin: 0 0 10px 120px;
+                margin: 0 0 15px 120px;
                 border: 5px;
                 border-radius: 8px;
                 border: 1px solid rgb(221, 221, 227);
@@ -240,18 +240,12 @@
                     </nav>
                     <!-- Nội dung chính -->
                     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                        <div id="content" class="row">
-                            <c:if test="${requestScope.error != null}">
-                                <div>${error}</div>
-                            </c:if>
-                            <c:if test="${requestScope.error1 != null}">
-                                <div>${error1}</div>
-                            </c:if>
+                        <div id="content" class="row justify-content-center">
                             <c:if test="${requestScope.accessoryList != null}">
                                 <c:set var="accessoryList" value="${requestScope.accessoryList}"/>
                                 <c:if test="${not empty accessoryList}">
                                     <c:forEach items="${accessoryList}" var="accessory" varStatus="counter">
-                                        <div class="bird col-lg-4">
+                                        <div class="bird col-sm-7 col-md-7 col-lg-5 col-xl-4">
                                             <div class="item">
                                                 <div class="thumb">
                                                     <div class="hover-content">
@@ -286,7 +280,7 @@
                                     </c:forEach>
                                 </c:if>
                             </c:if>
-                            <div class="col-lg-12">
+                            <div class="col-lg-8">
                                 <div class="pagination bird-pg">
                                     <c:if test="${noOfPages > 1 && noOfPages <= 5}">
                                         <input type="hidden" name="page" value="${requestScope.currentPage}"/>
@@ -391,7 +385,7 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
-
+        <%@include file="../layout/message.jsp" %>
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
 
@@ -445,6 +439,39 @@
                                                                 let nextpage = Number(page) + 1;
                                                                 $('input[name=page]').val(nextpage);
                                                                 $("#selectAccessory").submit();
+                                                            });
+                                                            $(".accessory-cart").click(function () {
+                                                                let accessory_id = $(this).attr('data-value');
+                                                                $.ajax({
+                                                                    url: "AddAccessoryToCartController",
+                                                                    type: 'POST',
+                                                                    data: {accessory_id :accessory_id, order_quantity: 1},
+                                                                    success: function (data) {
+                                                                        if (data == 0) {
+                                                                            toast({
+                                                                                title: 'Lỗi',
+                                                                                message: 'Sản phẩm này đã có trong giỏ hàng',
+                                                                                type: 'error',
+                                                                                duration: 3000
+                                                                            });
+                                                                        } else {
+                                                                            toast({
+                                                                                title: 'Thành công',
+                                                                                message: 'Thêm sản phẩm vào giỏ hàng thành công',
+                                                                                type: 'success',
+                                                                                duration: 3000
+                                                                            });
+                                                                            $.ajax({
+                                                                                url: "AddAccessoryToCartController",
+                                                                                type: 'POST',
+                                                                                data: {order_quantity: 1},
+                                                                                success: function (data) {
+                                                                                    $('.cart-amount').html(data);
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                });
                                                             });
                                                         });
                                                         function takePage(event) {

@@ -463,6 +463,57 @@
         leftImage.src = clickedImage.src;
         clickedImage.src = tempSrc;
     }
+            function NavToNewPage(event){
+               let page = $(event).attr('data-value');
+               let accessory_id = $('input[name=accessory_id]').val();
+               if(accessory_id){
+                   $.ajax({
+                       url: 'RenderAccessoryDetailsController',
+                       type: 'POST',
+                       data: {page: page, id: accessory_id},
+                       success: function (data){
+                          $('.comment-list').html(data);
+                          window.scrollTo(0, 800);
+                       }
+                   });
+               }
+            }
+            
+            function PrevPage(){
+                    let page = $('input[name=page]').val();
+                    let prevPage = Number(page) - 1;
+                    let accessory_id = $('input[name=accessory_id]').val();
+                    if(accessory_id && prevPage > 0){
+                        $.ajax({
+                            url: 'RenderAccessoryDetailsController',
+                            type: 'POST',
+                            data: {page: prevPage, id: accessory_id},
+                            success: function (data){
+                               $('.comment-list').html(data);
+                               window.scrollTo(0, 800);
+                            }
+                        });
+                    } 
+            }
+            
+            function NextPage(){
+                    let page = $('input[name=page]').val();
+                    let limitPage = $('input[name=numberOfPage]').val();
+                    let amountPage = Number(limitPage);
+                    let nextPage = Number(page) + 1;
+                    let accessory_id = $('input[name=accessory_id]').val();
+                    if(accessory_id && nextPage < amountPage){
+                        $.ajax({
+                            url: 'RenderAccessoryDetailsController',
+                            type: 'POST',
+                            data: {page: nextPage, id: accessory_id},
+                            success: function (data){
+                               $('.comment-list').html(data);
+                               window.scrollTo(0, 800);
+                            }
+                        });
+                    } 
+            }
 
     document.getElementById("AddToCart").addEventListener("click", function (event) {
         event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
@@ -478,7 +529,7 @@
     });
 
 </script>
-
+<%@include file="../layout/message.jsp" %>
 <!-- jQuery -->
 <script src="assets/js/jquery-2.1.0.min.js"></script>
 
@@ -500,7 +551,44 @@
 
 <!-- Global Init -->
 <script src="assets/js/custom.js"></script>
-
+<script>
+                                                $(function (){
+                                                        $(".accessory-cart").click(function () {
+                                                                let accessory_id = $(this).attr('data-value');
+                                                                let quantity = $('input[name=quantity]').val();
+                                                                $.ajax({
+                                                                    url: "AddAccessoryToCartController",
+                                                                    type: 'POST',
+                                                                    data: {accessory_id :accessory_id, order_quantity: quantity},
+                                                                    success: function (data) {
+                                                                        if (data == 0) {
+                                                                            toast({
+                                                                                title: 'Lỗi',
+                                                                                message: 'Sản phẩm này đã có trong giỏ hàng',
+                                                                                type: 'error',
+                                                                                duration: 3000
+                                                                            });
+                                                                        } else {
+                                                                            toast({
+                                                                                title: 'Thành công',
+                                                                                message: 'Thêm sản phẩm vào giỏ hàng thành công',
+                                                                                type: 'success',
+                                                                                duration: 3000
+                                                                            });
+                                                                            $.ajax({
+                                                                                url: "AddAccessoryToCartController",
+                                                                                type: 'POST',
+                                                                                data: {order_quantity: 1},
+                                                                                success: function (data) {
+                                                                                    $('.cart-amount').html(data);
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }
+                                                                });
+                                                            });
+                                                         });
+</script>
 
 
 </body>
