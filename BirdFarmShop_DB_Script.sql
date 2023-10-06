@@ -52,7 +52,7 @@ CREATE TABLE [Bird]
 	[description] NVARCHAR(MAX),
 	[dad_bird_id] VARCHAR(10),
 	[mom_bird_id] VARCHAR(10),
-	[discount] SMALLINT,
+	[discount] SMALLINT CONSTRAINT DF_Bird_discount DEFAULT 0,
 	[status] NVARCHAR(20),
 	CONSTRAINT PK_Bird PRIMARY KEY ([bird_id]),
 	CONSTRAINT FK_Bird_BirdBreed FOREIGN KEY ([breed_id]) REFERENCES [BirdBreed]([breed_id]),
@@ -95,7 +95,7 @@ CREATE TABLE [Accessory]
 	[unit_price] INT,
 	[stock_quantity] SMALLINT,
 	[description] NVARCHAR(MAX),
-	[discount] SMALLINT,
+	[discount] SMALLINT CONSTRAINT DF_Accessory_discount DEFAULT 0,
 	[status] NVARCHAR(20),
 	CONSTRAINT PK_Accessory PRIMARY KEY ([accessory_id]),
 	CONSTRAINT FK_Accessory_AccessoryCategory FOREIGN KEY ([category_id]) REFERENCES [AccessoryCategory]([category_id])
@@ -113,7 +113,7 @@ CREATE TABLE [BirdNest]
 	[baby_quantity] SMALLINT,
 	[status] NVARCHAR(20),
 	[price] INT,
-	[discount] SMALLINT,
+	[discount] SMALLINT CONSTRAINT DF_BirdNest_discount DEFAULT 0,
 	[description] NVARCHAR(MAX),
 	CONSTRAINT PK_BirdNest PRIMARY KEY ([nest_id]),
 	CONSTRAINT FK_BirdNest_BirdBreed FOREIGN KEY ([breed_id]) REFERENCES [BirdBreed]([breed_id]),
@@ -349,11 +349,11 @@ GO
 
 INSERT INTO [Accessory] ([accessory_id], [accessory_name], [category_id], [unit_price], [stock_quantity], [description], [discount], [status]) 
 VALUES 
-	('GT001', N'Găng tay bắt vẹt', 'toy', 120000, 50, N'Dùng cho việc huấn luyện vẹt, tránh trầy xước hoặc bị đau', 0, 'available'),
+	('GT001', N'Găng tay bắt vẹt', 'toy', 120000, 50, N'Dùng cho việc huấn luyện vẹt, tránh trầy xước hoặc bị đau', 0, N'còn hàng'),
 
-	('GA001', N'Máy ghi âm', 'toy', 600000, 25, N'Dùng cho việc huấn luyện vẹt nói', 0, 'available'),
+	('GA001', N'Máy ghi âm', 'toy', 600000, 25, N'Dùng cho việc huấn luyện vẹt nói', 0, N'còn hàng'),
 
-	('CT001', N'Còi huấn luyện vẹt', 'toy', 90000, 15, N'Huấn luyện trong việc nghe tín hiệu', 0, 'available'),
+	('CT001', N'Còi huấn luyện vẹt', 'toy', 90000, 15, N'Huấn luyện trong việc nghe tín hiệu', 0, N'còn hàng'),
 
 	('LN001', N'Lồng Ngoại Nhập Lớn Inox Cho Vẹt Size M', 'cage', 13800000, 0,
 	N'Lồng nuôi vẹt inox với chất liệu là inox tránh được chuột cắn phá như các lồng gỗ, tre không những thế còn không bị móc mọt gặm. Là lựa chọn tối ưu cho sự an toàn của vẹt.
@@ -362,45 +362,45 @@ VALUES
 	Có thể biến tấu khi vẹt sinh sản.
 	Chốt khóa chắc chắn và dễ thao tác khóa.
 	Nan lồng chắc chắn dễ dàng chịu được tác động của chiếc mỏ vẹt.',
-	0, 'out of stock'),
+	0, N'hết hàng'),
 
 	('BL001', N'Balo Du Lịch Vận Chuyển Vẹt', 'cage', 500000, 12, 
 	N'Bird Farm Shop chuyên bán và cung cấp Balo du lịch ngoại nhập chuyên dụng dành cho vẹt. Thiết kế chuyên dụng, chất liệu bền bỉ, phù hợp cho các loại vẹt size nhỏ và vừa. Giúp bạn đi đâu cũng có thể mang thú cưng đi bên cạnh mình một cách thoải mái nhất, tiện lợi nhất. Thiết kế chắc chắn, hiện đại mang phong cách thời trang.
 	Kích thước: Size M (31x28x41)
 	Xuất xứ: Đài Loan
 	Chất liệu: Nhựa cao cấp',
-	5, 'available'),
+	5, N'còn hàng'),
 
 	('LM001', N'Lồng Màu (Mái Vòm)', 'cage', 450000, 20,
 	N'Lồng chim thép sơn tĩnh điện rất an toàn cho chim. Lồng rất chắc chắn và khoảng không gian rộng cho chú chim thoải mái hơn. Chuồng Nuôi Chim được sản xuất theo tiêu chuẩn công nghiệp bền đẹp, được hàn từ dây thép chất lượng cao, qua quy trình sơn tĩnh điện theo tiêu chuẩn.
 	Size: 37x28x46
 	Xuất xứ: Đài Loan
 	Chất liệu: thép sơn tĩnh điện',
-	10, 'available'),
+	10, N'còn hàng'),
 
 	('SU231', N'Sữa tắm vẹt', 'care', 80000, 50, 
 	N'Loại bỏ mùi hôi, diệt khuẩn, triệt hạ vi trùng.', 
-	0, 'Available'),
+	0, N'còn hàng'),
 
 	('MV157', N'Muối tắm vẹt', 'care', 220000, 30, 
 	N'Làm mềm lông, tránh đóng vẩy, giảm stress, làm sạch da lông.', 
-	0, 'Available'),
+	0, N'còn hàng'),
 
 	('OB356', N'Ống bơm bột', 'care', 130000, 50, 
 	N'Ống bơm bột cao cấp dành cho vẹt non.', 
-	0, 'Available'), 
+	0, N'còn hàng'), 
 
 	('KC213', N'Kéo Cắt Móng Vẹt', 'care', 100000, 50, 
 	N'Kéo cắt móng chân chuyên dụng dành cho vẹt với thiết kế cao cấp, an toàn, giúp bạn có thể tự làm đẹp móng chân cho bé vẹt tại nhà.', 
-	0, 'available'),
+	0, N'còn hàng'),
 
 	('DX202', N'Dây xích đeo chân dành cho chim vẹt', 'toy', 70000, 50, 
 	N'Dây xích deo chân dành choc him vẹt giúp bạn giữ vẹt trong khoản không giới hạn', 
-	0, 'available'),
+	0, N'còn hàng'),
 
 	('NK200', N'Máy Nhiệt Kế Điện Tử Pha Bột Cho Vẹt', 'care', 120000, 25, 
 	N'Nhiệt kế điện tử hỗ trợ người nuôi canh đo nhiệt độ bột thích hợp không quá nguội hoặc quá nóng ảnh hưởng đến sức khỏe bé vẹt nhà bạn.', 
-	0, 'available')
+	0, N'còn hàng')
 GO
 
 INSERT INTO [dbo].[BirdNest] ([nest_id],[nest_name],[breed_id],[dad_bird_id],[mom_bird_id],[baby_quantity],[status],[price],[description])
@@ -444,8 +444,6 @@ VALUES
 	('https://petmeshop.com/wp-content/uploads/2020/09/Long-ngoai-nhap-inox-lon-cho-vet-6.jpg', 
     0, NULL, NULL, 'LN001'),
 	('https://petmeshop.com/wp-content/uploads/2020/09/Long-ngoai-nhap-inox-lon-cho-vet-7.jpg', 
-    0, NULL, NULL, 'LN001'),
-	('https://petmeshop.com/wp-content/uploads/2020/09/Long-ngoai-nhap-inox-lon-cho-vet-8.jpg', 
     0, NULL, NULL, 'LN001'),
 
 	('https://petmeshop.com/wp-content/uploads/2020/09/Ba-lo-van-chuyen-vet-0.jpg', 

@@ -1,8 +1,4 @@
-<%-- 
-    Document   : view-profile
-    Created on : Sep 13, 2023, 11:26:47 PM
-    Author     : tlminh
---%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

@@ -76,6 +76,16 @@
             a {
                 color: black;
             }
+            #input-accessory{
+                display: block;
+                margin: 0 auto;
+                border-radius: 10px; /* Điều này làm cho góc bo tròn */
+                padding: 10px 20px; /* Điều này làm cho nút trở nên lớn hơn và dễ đọc hơn */
+                background-color: #007bff; /* Màu nền */
+                color: #fff; /* Màu chữ */
+                cursor: pointer; /* Biến con trỏ thành bàn tay khi di chuột vào nút */
+                border: none;
+            }
         </style>
     </head>
 
@@ -192,11 +202,6 @@
         <section class="section" id="products">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div style="border: 0px;" class="section-heading">
-                            <h2>Sản phẩm của chúng tôi</h2>
-                        </div>
-                    </div>
                     <form id="selectAccessory" action="MainController" method="POST">
                         <input type="hidden" name="action" value="NavToAccessory"> 
                         <div class="search-bar">
@@ -226,9 +231,11 @@
                                 <li><input type="radio" id="type-7" ${requestScope.PRICE == "unit_price >= 300000 AND unit_price <= 600000" ? "checked": ""} name="txtPrice" value="unit_price >= 300000 AND unit_price <= 600000"><label for="type-7">Từ 300,000₫ - 600,000₫</label></li>
                                 <li><input type="radio" id="type-8" ${requestScope.PRICE == "unit_price > 600000" ? "checked": ""} name="txtPrice" value="unit_price > 600000"><label for="type-8">Trên 600,000₫</label></li>
                             </ol>
-                            <a href="${toAddAccessory}">
-                                <button id="button-addacessory" type="button">Tạo mới phụ kiện</button>
-                            </a>
+                            <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
+                                <a href="${toAddAccessory}">
+                                    <button id="input-accessory" type="button">Thêm mới phụ kiện</button>
+                                </a>
+                            </c:if>
                         </div>
                     </nav>
                     <!-- Nội dung chính -->
@@ -243,8 +250,14 @@
                                                 <div class="thumb">
                                                     <div class="hover-content">
                                                         <ul>
-                                                            <li><a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a></li>
-                                                            <li><a style="cursor: pointer" class="accessory-cart" data-value="${accessory.accessory_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                            <li>
+                                                                <a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a>
+                                                            </li>
+                                                            <c:if test="${accessory.stock_quantity > 0}">
+                                                                <li>
+                                                                    <a href="MainController?action=AddAccessoryToCart&accessory_id=${accessory.accessory_id}&order_quantity=1"><i class="fa fa-shopping-cart"></i></a>
+                                                                </li>
+                                                            </c:if>
                                                         </ul>
                                                     </div>
                                                     <img class="thumb" src="${accessory.image_url}" alt="">

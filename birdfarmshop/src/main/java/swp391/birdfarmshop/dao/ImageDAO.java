@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.model.Bird;
+import swp391.birdfarmshop.model.Image;
 import swp391.birdfarmshop.util.DBUtils;
 
 /**
@@ -25,7 +26,6 @@ public class ImageDAO {
     private static final String GET_IMAGES_BY_ACCESSORY_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [accessory_id] = ?";
     private static final String GET_THUMBNAIL_BY_BIRDNEST_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [nest_id] = ? AND [is_thumbnail] = 1";
     private static final String GET_IMAGES_BY_BIRDNEST_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [nest_id] = ?";
-
 
     public String getThumbnailUrlByBirdId(String birdId) throws SQLException {
         String url = "";
@@ -123,8 +123,8 @@ public class ImageDAO {
         }
         return urls;
     }
-    
-     public ArrayList<String> getImagesByBirdNestId(int birdnestId) throws SQLException {
+
+    public ArrayList<String> getImagesByBirdNestId(int birdnestId) throws SQLException {
         ArrayList<String> urls = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
@@ -155,7 +155,6 @@ public class ImageDAO {
         return urls;
     }
 
-
     public String getThumbnailUrlByAccessoryId(String accessoryId) throws SQLException {
         String url = "";
         Connection con = null;
@@ -185,7 +184,49 @@ public class ImageDAO {
         }
         return url;
     }
-    
+
+    public ArrayList<String> getUrlByAccessoryId(String accessoryId) throws SQLException {
+        ArrayList<String> url = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String urls = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(" select [image_url]\n"
+                        + "  FROM [BirdFarmShop].[dbo].[Image]\n"
+                        + "  where [accessory_id] = ? and [is_thumbnail] = 0");
+                stm.setString(1, accessoryId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    urls = rs.getString("image_url");
+                    url.add(urls);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return url;
+    }
+
+    public static void main(String[] args) throws SQLException {
+        ImageDAO im = new ImageDAO();
+        ArrayList<String> list = im.getUrlByAccessoryId("LN001");
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(0));
+        }
+    }
+
     public String getThumbnailUrlByBirdNestId(String birdNestID) throws SQLException {
         String url = "";
         Connection con = null;
@@ -215,7 +256,7 @@ public class ImageDAO {
         }
         return url;
     }
-    
+
     public boolean addNewImageBird(String url, String is_thumbnail, String bird_id) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -224,19 +265,20 @@ public class ImageDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement("INSERT INTO [dbo].[Image]\n" +
-"           ([image_url],[is_thumbnail],[bird_id],[nest_id],[accessory_id])\n" +
-"           VALUES (?,?,?,?,?)");
+                stm = con.prepareStatement("INSERT INTO [dbo].[Image]\n"
+                        + "           ([image_url],[is_thumbnail],[bird_id],[nest_id],[accessory_id])\n"
+                        + "           VALUES (?,?,?,?,?)");
                 stm.setString(1, url);
-                if(is_thumbnail.equals("1"))
+                if (is_thumbnail.equals("1")) {
                     is_thumbnaill = true;
-                else 
+                } else {
                     is_thumbnaill = false;
+                }
                 stm.setBoolean(2, is_thumbnaill);
                 stm.setString(3, bird_id);
                 stm.setString(4, null);
                 stm.setString(5, null);
-                
+
                 rs = stm.executeQuery();
                 if (rs.next()) {
                     return true;
@@ -256,5 +298,35 @@ public class ImageDAO {
         }
         return false;
     }
-       
+
+    public boolean addNewAccessoryImage(String url, boolean type, String accessoryID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("INSERT INTO [BirdFarmShop].[dbo].[Image] ([image_url], [is_thumbnail], [bird_id], [nest_id], [accessory_id])\n"
+                        + "VALUES(?, ?, ?, ?, ?)");
+                stm.setString(1, url);
+                stm.setBoolean(2, type);
+                stm.setString(3, null);
+                stm.setString(4, null);
+                stm.setString(5, accessoryID);
+
+                int rs = stm.executeUpdate();
+                if (rs > 0) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
 }

@@ -21,6 +21,7 @@ import swp391.birdfarmshop.dao.AccessoryDAO;
 
 //>>>>>>> .theirs
 import swp391.birdfarmshop.model.Accessory;
+//import swp391.birdfarmshop.model.User;
 //import swp391.birdfarmshop.model.Bird;
 //import swp391.birdfarmshop.model.AccessoryBreed;
 //import swp391.birdfarmshop.model.Image;
