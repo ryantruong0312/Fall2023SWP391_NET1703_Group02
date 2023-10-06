@@ -43,7 +43,26 @@
         li input[type="radio"] + label {
                 margin-left: 5px;
         }
+        .custom-columns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .custom-columns li {
+            flex: 0 0 calc(50% - 20px);
+        }
         
+        .column-container {
+            display: inline-block;
+            flex-direction: column;
+            width: 49.5%;
+        }
+        .column-container input {
+            width: 100%;
+        }
     </style>
     
     <body>
@@ -183,9 +202,9 @@
                             <p><c:out value="${requestScope.MESSAGE}"/></p>
                             <div class="form-outline mb-3">
                                 <label>Giống loài</label>
-                                <ol>
+                                <ol class="custom-columns">
                                     <c:forEach var="breed" items="${requestScope.BREED}" varStatus="counter">
-                                        <li><input type="radio" id="type-${counter.count}" name="txtBirdBreed" value="${breed.key}" onclick="hideInput()"/><label for="type-${counter.count}">${breed.value}</label></li>
+                                        <li><input type="radio" id="${breed.key}" name="txtBirdBreed" value="${breed.key}" onclick="hideInput()"/><label for="${breed.key}">${breed.value}</label></li>
                                     </c:forEach>
                                     <li><input type="radio" id="other" onclick="showInput()" name="txtBirdBreed"/><label for="other">Khác</label></li>
                                 </ol>
@@ -193,16 +212,17 @@
                                     <input type="text" id="otherBreed" class="input form-control"  name="txtOtherBirdBreed" pattern="[A-Za-z]+" value="" placeholder="Nhập giống loài khác" />
                                 </div>
                             </div>
+
                             <div class="form-outline mb-3">
                                 <label>Giới tính</label>
-                                <ol>
+                                <ol class="custom-columns">
                                     <li><input type="radio" id="gender-1" name="txtBirdGender" value="Đực"/><label for="gender-1">Trống</label></li>
                                     <li><input type="radio" id="gender-0" name="txtBirdGender" value="Cái"/><label for="gender-0">Mái</label></li>
                                 </ol>
                             </div>
                             <div class="form-outline mb-3">
                                 <label>Trạng thái</label>
-                                <ol>
+                                <ol class="custom-columns">
                                     <c:forEach var="status" items="${requestScope.STATUS}" varStatus="counter">
                                         <li><input type="radio" id="status-${counter.count}" name="txtBirdStatus" value="${status}"/><label for="status-${counter.count}">${status}</label></li>
                                     </c:forEach>
@@ -225,36 +245,47 @@
                                 <input type="text" name="txtBirdDate" class="input form-control" required="" pattern="^20([0-2][0-9])-([0][1-9]|1[0-2])-([0-2][0-9]|3[01])$"/>
                             </div>
                             <div class="form-outline mb-3">
-                                <label>Tuổi trưởng thành</label>
-                                <input type="number" name="txtBirdGrownAge" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số"/>
+                                <label>Thành tựu</label>
+                                <textarea name="txtBirdAchievement" class="input form-control" value=""></textarea>
                             </div>
                         </div>
                         <div class="col-lg-6 form-custom">
-                            <div class="form-outline mb-3">
-                                <label>Thành tựu</label>
-                                <input type="text" name="txtBirdAchievement" class="input form-control" value=""/>
+                            <div class="form-outline mt-2">
+                                <label>Mô tả</label>
+                                <textarea name="txtBirdDescription" class="input form-control" value=""></textarea>
                             </div>
                             <div class="form-outline mb-3">
+                                <label>ID của chim bố</label>
+                                <select id="birdMaleList" name="txtBirdDad" class="input form-control">
+                                    <option value="">Option 1</option>
+                                    <%--                            <c:set var="selectedRadioId" value="${requestScope.selectedRadioId}" />
+                                    <c:forEach items="${requestScope.MALEBIRDS}" var="birdDad">
+                                        <c:if test="${birdDad.breed_id == selectedRadioId}">
+                                            <option value="${birdDad.bird_id}">${birdDad.bird_name}</option>
+                                        </c:if>
+                                    </c:forEach>
+       --%>
+                                </select>
+                            </div>
+                            <div class="form-outline mb-3">
+                                <label>ID của chim mẹ</label>
+                                <select id="femaleBird" name="txtBirdMom" class="input form-control">
+                                    <%--
+                                    <c:forEach items="${FEMALEBIRDS}" var="birdMom">
+                                        <option value="${birdMom.bird_id}">${birdMom.bird_name}</option>
+                                    </c:forEach>
+                                    --%>
+                                </select>
+                            </div>
+                            <div class="form-outline mb-3 column-container">
+                                <label>Tuổi trưởng thành</label>
+                                <input type="number" name="txtBirdGrownAge" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số"/>
                                 <label>Lịch sử sinh sản</label>
                                 <input type="number" name="txtBirdReproduction_history" class="input form-control" value="" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số"/>
                             </div>
-                            <div class="form-outline mb-3">
+                            <div class="form-outline mb-3 column-container">
                                 <label>Giá</label>
                                 <input type="number" name="txtBirdPrice" class="input form-control" value="" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số"/>
-                            </div>
-                            <div class="form-outline mt-2">
-                                <label>Mô tả</label>
-                                <input type="text" name="txtBirdDescription" class="input form-control" value=""/>
-                            </div>
-                            <div class="form-outline mb-3">
-                                <label>ID của chim bố (Bao gồm 2 chữ hoa và 3 chữ số)</label>
-                                <input type="text" name="txtBirdDad" class="input form-control" pattern="[A-Z]{2}\d{3}" value=""/>
-                            </div>
-                            <div class="form-outline mb-3">
-                                <label>ID của chim mẹ (Bao gồm 2 chữ hoa và 3 chữ số)</label>
-                                <input type="text" name="txtBirdMom" class="input form-control" pattern="[A-Z]{2}\d{3}" value=""/>
-                            </div>
-                            <div class="form-outline mb-3">
                                 <label>Giảm giá</label>
                                 <input type="number" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" title="Vui lòng chỉ nhập chữ số" value=""/>
                             </div>
@@ -374,6 +405,29 @@
                 var otherInput = document.getElementById('otherInput');
                 otherInput.style.display = 'none';
             }
+                   
+                                $('input[name=txtBirdBreed]').change(function(){
+                                   let selectedRadioId = $(this).val();
+                                   $.ajax({
+                                      url: 'MainController?action=AddNewBird',
+                                      type: 'POST',
+                                      data: {maleBird : selectedRadioId},
+                                      success: function (data) {
+                                          console.log(data);
+                                          $('#birdMaleList').html(data)
+                                      }
+                                   });
+                                    $.ajax({
+                                      url: 'MainController?action=AddNewBird',
+                                      type: 'POST',
+                                      data: {femaleBird : selectedRadioId},
+                                      success: function (data) {
+                                          console.log(data);
+                                          $('#femaleBird').html(data)
+                                      }
+                                   });
+                                });
+                      
         </script>
     </body>
 </html>

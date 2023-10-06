@@ -34,13 +34,34 @@ public class AddNewBirdController extends HttpServlet {
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
-        try {
+        PrintWriter out = response.getWriter();
+        String female = request.getParameter("femaleBird");
+        String male = request.getParameter("maleBird");
+        try {               
             String btAction = request.getParameter("btAction");
             if(btAction == null) {
                 BirdDAO birdDao = new BirdDAO();
                 List<BirdDTO> birds = birdDao.getAllBirds();
                 HashMap<String,String> breed = new HashMap<>();
                 List<String> listStatus = new ArrayList<>();
+                List<Bird> maleBirds = new ArrayList<>();
+                List<Bird> femaleBirds = new ArrayList<>();
+                if(female != null){
+                    femaleBirds = birdDao.getBirdsByBreedId(female);
+                    for (Bird bird :femaleBirds) {
+                        if(!bird.isGender()){
+                            out.println(" <option value=\""+bird.getBird_id()+"\">"+bird.getBird_name()+"</option>");
+                        }
+                    }
+                }
+                  if(male != null){
+                    maleBirds = birdDao.getBirdsByBreedId(male);
+                    for (Bird bird :maleBirds) {
+                        if(bird.isGender()){
+                            out.println(" <option value=\""+bird.getBird_id()+"\">"+bird.getBird_name()+"</option>");
+                        }
+                    }
+                }
                 for (BirdDTO bird : birds) {
                     if(!breed.containsKey(bird.getBreed_id())){
                         breed.put(bird.getBreed_id(), bird.getBreed_name());
@@ -48,9 +69,18 @@ public class AddNewBirdController extends HttpServlet {
                     if(!listStatus.contains(bird.getStatus())) {
                         listStatus.add(bird.getStatus());
                     }
+//                    if(bird.getGender().equals("Đực") && (bird.getAge() > bird.getGrown_age())) {
+//                        maleBirds.add(bird);
+//                    }
+//                    if(bird.getGender().equals("Cái") && (bird.getAge() > bird.getGrown_age())) {
+//                        femaleBirds.add(bird);
+//                    }
                 }
+//                request.setAttribute("selectedRadioId", selectedRadioId);
                 request.setAttribute("BREED", breed);
                 request.setAttribute("STATUS", listStatus);
+                request.setAttribute("MALEBIRDS", maleBirds);
+                request.setAttribute("FEMALEBIRDS", femaleBirds);
                 url = SUCCESS;
             }else {
                 String txtBirdId = request.getParameter("txtBirdId");
@@ -104,7 +134,9 @@ public class AddNewBirdController extends HttpServlet {
         }catch (Exception e) {
             e.printStackTrace();
         }finally {
-            request.getRequestDispatcher(url).forward(request, response);
+           if(female==null && male == null){
+              request.getRequestDispatcher(url).forward(request, response);
+           }
         }
     } 
 
