@@ -30,6 +30,41 @@
     </head>
 
     <style>
+        .form-outline{
+            position: relative
+        }
+        .input{
+            font-size: 15px;
+            height: 50px;
+            background-color: transparent;
+        }
+        .form-outline .input:valid {
+            color: rgba(255, 255, 255,0.8);
+        }
+        .form-outline .input:focus
+        {
+            color: #3b71d1;
+            border: 2px solid #3b71ca !important;
+            box-shadow: none;
+            background-color: white;
+        }
+        label.error  {
+            color: red;
+            font-size: 0.8rem;
+            margin-bottom: -10px;
+        }
+        .btn-custom {
+            line-height: 30px;
+        }
+        .btn-custom img{
+            height: 20px;
+            width: 20px;
+        }
+        @media (max-width: 992px){
+            .home-custom{
+                max-width: 730px;
+            }
+        }
         .col-lg-12 .product-part {
             margin: 0 0 10px 10px;
         }
@@ -250,7 +285,7 @@
                             </div>
                         </div>
                         <div class="col-lg-6 form-custom">
-                            <div class="form-outline mt-2">
+                            <div class="form-outline mb-3">
                                 <label>Mô tả</label>
                                 <textarea name="txtBirdDescription" class="input form-control" value=""></textarea>
                             </div>
