@@ -1,5 +1,3 @@
-
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
@@ -28,26 +26,28 @@ import swp391.birdfarmshop.dto.StarDTO;
 @WebServlet(name = "RenderAccessoryDetailsController", urlPatterns = {"/RenderAccessoryDetailsController"})
 public class RenderAccessoryDetailsController extends HttpServlet {
 
+    private static final String ERROR = "errorpages/error.jsp";
     private static final String SUCCESS = "shop/accessory-details.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        String url = ERROR;
         try {
             String page = "1";
             int numberOfRecords = 5;
             String tmpPage = request.getParameter("page");
-            if(tmpPage != null){
+            if (tmpPage != null) {
                 page = tmpPage;
             }
             String accessory_id = request.getParameter("id");
             AccessoryDAO a = new AccessoryDAO();
             AccessoryDTO ac = a.getAccessoryDetailsByID(accessory_id);
             FeedbackDAO f = new FeedbackDAO();
-            ArrayList<FeedbackDTO> feedbackList = f.getFeedbackByIdProduct(accessory_id,page,numberOfRecords);
+            ArrayList<FeedbackDTO> feedbackList = f.getFeedbackByIdProduct(accessory_id, page, numberOfRecords);
             int numberOfFeebacks = f.totalFeedbackByIdProduct(accessory_id);
-            int numberOfPage = (int) Math.ceil(numberOfFeebacks * 1.0 /numberOfRecords );
+            int numberOfPage = (int) Math.ceil(numberOfFeebacks * 1.0 / numberOfRecords);
             StarDTO starCustomer = f.getRatingByIdProduct(accessory_id);
             request.setAttribute("noOfPages", numberOfPage);
             request.setAttribute("currentPage", page);
@@ -58,54 +58,54 @@ public class RenderAccessoryDetailsController extends HttpServlet {
             request.setAttribute("im", im);
             if (ac != null) {
                 request.setAttribute("a", ac);
-                if(ac.getStock_quantity() == 0){
-                    String message = "H?t h�ng";
+                if (ac.getStock_quantity() == 0) {
+                    String message = "Hết hàng";
                     request.setAttribute("MESSAGE", message);
                 }
                 url = SUCCESS;
-            }else{
+            } else {
                 url = ERROR;
             }
-            if(accessory_id != null && request.getParameter("page")!= null){
+            if (accessory_id != null && request.getParameter("page") != null) {
                 for (FeedbackDTO feedbackDTO : feedbackList) {
-                    out.println(" <div class=\"mx-4 mt-4 user-comment\">\n" +
-"                                <div class=\"d-flex justify-content-between align-items-center\">\n" +
-"                                    <div>\n" +
-"                                        <h6 class=\"mb-2 font-weight-bold\">"+feedbackDTO.getFullName()+"</h6>\n" +
-"                                        <div class=\"rating\">");
+                    out.println(" <div class=\"mx-4 mt-4 user-comment\">\n"
+                            + "                                <div class=\"d-flex justify-content-between align-items-center\">\n"
+                            + "                                    <div>\n"
+                            + "                                        <h6 class=\"mb-2 font-weight-bold\">" + feedbackDTO.getFullName() + "</h6>\n"
+                            + "                                        <div class=\"rating\">");
                     for (int i = 1; i <= 5; i++) {
-                        if(i <= feedbackDTO.getRating()){
+                        if (i <= feedbackDTO.getRating()) {
                             out.println("  <span class=\"fa fa-star star-checked\"></span>");
-                        }else{
+                        } else {
                             out.println("<span class=\"fa fa-star\"></span>");
                         }
                     }
-                    out.println("     </div>\n" +
-"                                    </div>\n" +
-"                                    <div>\n" +
-"                                        <p class=\"text-muted user-select-none\">"+feedbackDTO.getFeedbackDate()+"</p>\n" +
-"                                    </div>\n" +
-"                                </div>\n" +
-"                                <p class=\"mt-2\">"+feedbackDTO.getComment()+"</p>\n" +
-"                            </div>");
+                    out.println("     </div>\n"
+                            + "                                    </div>\n"
+                            + "                                    <div>\n"
+                            + "                                        <p class=\"text-muted user-select-none\">" + feedbackDTO.getFeedbackDate() + "</p>\n"
+                            + "                                    </div>\n"
+                            + "                                </div>\n"
+                            + "                                <p class=\"mt-2\">" + feedbackDTO.getComment() + "</p>\n"
+                            + "                            </div>");
                 }
-                if(numberOfPage != 1){
+                if (numberOfPage != 1) {
                     int nPage = Integer.parseInt(page);
-                    String prev_page= null;
+                    String prev_page = null;
                     String activePage = null;
                     String next_page = null;
-                    out.println("<div class=\"d-flex float-right align-items-center page-pagination\">\n" +
-"                                <input type=\"hidden\" name=\"page\" value="+nPage+" />\n"
-                              +" <input type=\"hidden\" name=\"numberOfPage\" value="+numberOfPage+" />\n");
-                    if(numberOfPage > 1 && numberOfPage <=5){
-                        prev_page = nPage <= 1 ? " page-disable":"";
-                        out.println("  <div onclick=\"PrevPage()\" class=\"page-prev"+prev_page+"\"><i class=\"fa fa-angle-left\" aria-hidden=\"true\"></i></i></div>");
+                    out.println("<div class=\"d-flex float-right align-items-center page-pagination\">\n"
+                            + "                                <input type=\"hidden\" name=\"page\" value=" + nPage + " />\n"
+                            + " <input type=\"hidden\" name=\"numberOfPage\" value=" + numberOfPage + " />\n");
+                    if (numberOfPage > 1 && numberOfPage <= 5) {
+                        prev_page = nPage <= 1 ? " page-disable" : "";
+                        out.println("  <div onclick=\"PrevPage()\" class=\"page-prev" + prev_page + "\"><i class=\"fa fa-angle-left\" aria-hidden=\"true\"></i></i></div>");
                         for (int i = 1; i <= numberOfPage; i++) {
-                            activePage = nPage == i ? "page-active":"";
-                            out.println("<div onclick=\"NavToNewPage(this)\" class=\"page-navTo "+activePage+"\" data-value=\""+i+"\">"+i+"</div>");
+                            activePage = nPage == i ? "page-active" : "";
+                            out.println("<div onclick=\"NavToNewPage(this)\" class=\"page-navTo " + activePage + "\" data-value=\"" + i + "\">" + i + "</div>");
                         }
-                        next_page = nPage >= numberOfPage ? " page-disable":"";
-                        out.println("<div onclick=\"NextPage()\" class=\"page-next ml-3"+ next_page  +"\"><i class=\"fa fa-angle-right\" aria-hidden=\"true\"></i></i></div>");
+                        next_page = nPage >= numberOfPage ? " page-disable" : "";
+                        out.println("<div onclick=\"NextPage()\" class=\"page-next ml-3" + next_page + "\"><i class=\"fa fa-angle-right\" aria-hidden=\"true\"></i></i></div>");
                     }
                     if (numberOfPage > 5) {
                         if (nPage > 2) {
@@ -133,6 +133,8 @@ public class RenderAccessoryDetailsController extends HttpServlet {
             }
         } catch (Exception e) {
             log("Error at RenderAccessoryDetailsController: " + e.toString());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 
