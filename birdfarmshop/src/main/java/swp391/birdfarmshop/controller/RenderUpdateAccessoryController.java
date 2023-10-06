@@ -5,7 +5,7 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -13,27 +13,49 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import swp391.birdfarmshop.dao.AccessoryCategoryDAO;
+import swp391.birdfarmshop.dao.AccessoryDAO;
+import swp391.birdfarmshop.dao.ImageDAO;
+import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.AccessoryCategory;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "RenderAddAccessoryController", urlPatterns = {"/RenderAddAccessoryController"})
-public class RenderAddAccessoryController extends HttpServlet {
+@WebServlet(name = "RenderUpdateAccessoryController", urlPatterns = {"/RenderUpdateAccessoryController"})
+public class RenderUpdateAccessoryController extends HttpServlet {
 
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "management/add-accessory.jsp";
+    private static final String SUCCESS = "management/edit-accessory.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
+            String user = request.getParameter("user_role");
+            String id = request.getParameter("accessory_id");
+            AccessoryDAO d = new AccessoryDAO();
+            Accessory a = d.getAccessoryByID(id);
             AccessoryCategoryDAO dao = new AccessoryCategoryDAO();
             List<AccessoryCategory> ac = dao.getAccessoryCategories();
+            ImageDAO im = new ImageDAO();
+            String url_thumnail = im.getThumbnailUrlByAccessoryId(id);
+            List<String> list = im.getUrlByAccessoryId(id);
+            if(!list.isEmpty()){
+                request.setAttribute("list", list);
+            }
+            if(url_thumnail != null){
+                request.setAttribute("url_thumnail", url_thumnail);
+            }
             if (ac != null) {
                 request.setAttribute("ac", ac);
+            }
+            if(user.equals("admin") || user.equals("manager")){
+                request.setAttribute("user", user);
+            }
+            if(a != null){
+                request.setAttribute("a", a);
             }
             url = SUCCESS;
         } catch (Exception e) {
@@ -43,7 +65,7 @@ public class RenderAddAccessoryController extends HttpServlet {
         }
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

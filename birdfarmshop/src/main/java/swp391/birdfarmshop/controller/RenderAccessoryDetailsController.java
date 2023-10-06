@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.dao.FeedbackDAO;
+import swp391.birdfarmshop.dao.ImageDAO;
 import swp391.birdfarmshop.dto.AccessoryDTO;
 import swp391.birdfarmshop.dto.FeedbackDTO;
 import swp391.birdfarmshop.dto.StarDTO;
@@ -42,9 +43,15 @@ public class RenderAccessoryDetailsController extends HttpServlet {
             request.setAttribute("feedbackList", feedbackList);
             StarDTO starCustomer = f.getRatingByIdProduct(accessory_id);
             request.setAttribute("starCustomer", starCustomer);
+            ImageDAO image = new ImageDAO();
+            String im = image.getThumbnailUrlByAccessoryId(accessory_id);
+            request.setAttribute("im", im);
             if (ac != null) {
                 request.setAttribute("a", ac);
-                
+                if(ac.getStock_quantity() == 0){
+                    String message = "Hết hàng";
+                    request.setAttribute("MESSAGE", message);
+                }
                 url = SUCCESS;
             }else{
                 url = ERROR;

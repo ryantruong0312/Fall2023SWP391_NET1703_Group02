@@ -39,8 +39,6 @@ public class AddAccessoryController extends HttpServlet {
             String txtImage_1 = request.getParameter("txtImage_1");
             String txtImage_2 = request.getParameter("txtImage_2");
             String txtImage_3 = request.getParameter("txtImage_3");
-            
-            System.out.println(txtCategoryID);
 
             AccessoryDAO d = new AccessoryDAO();
             boolean rs = d.insertAccessory(txtAccessoryID, txtAccessoryName, txtCategoryID, txtPrice, txtStockQuantity, txtDescribe, txtDiscount);

@@ -11,29 +11,43 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import swp391.birdfarmshop.dao.AccessoryCategoryDAO;
-import swp391.birdfarmshop.model.AccessoryCategory;
+import swp391.birdfarmshop.dao.AccessoryDAO;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "RenderAddAccessoryController", urlPatterns = {"/RenderAddAccessoryController"})
-public class RenderAddAccessoryController extends HttpServlet {
+@WebServlet(name = "UpdateAccessoryController", urlPatterns = {"/UpdateAccessoryController"})
+public class UpdateAccessoryController extends HttpServlet {
 
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "management/add-accessory.jsp";
+    private static final String SUCCESS = "management/edit-accessory.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            AccessoryCategoryDAO dao = new AccessoryCategoryDAO();
-            List<AccessoryCategory> ac = dao.getAccessoryCategories();
-            if (ac != null) {
-                request.setAttribute("ac", ac);
+
+            String txtAccessoryID = request.getParameter("txtAccessoryID");
+            String txtAccessoryName = request.getParameter("txtAccessoryName");
+            String txtCategoryID = request.getParameter("txtCategoryID");
+            String txtPrice = request.getParameter("txtPrice");
+            String txtStockQuantity = request.getParameter("txtStockQuantity");
+            String txtDescribe = request.getParameter("txtDescribe");
+            String txtDiscount = request.getParameter("txtDiscount");
+            String txtImage_1 = request.getParameter("txtImage_1");
+            String txtImage_2 = request.getParameter("txtImage_2");
+            String txtImage_3 = request.getParameter("txtImage_3");
+            
+            AccessoryDAO d = new AccessoryDAO();
+            boolean rs = d.updateAccessory(txtAccessoryID, txtAccessoryName, txtCategoryID, txtPrice, txtStockQuantity, txtDescribe, txtDiscount);
+            if(rs){
+                String message = "Chỉnh sửa thành công";
+                request.setAttribute("MESSAGE", message);
+            }else{
+                String error = "Chỉnh sửa thất bại";
+                request.setAttribute("error", error);
             }
             url = SUCCESS;
         } catch (Exception e) {
@@ -43,7 +57,7 @@ public class RenderAddAccessoryController extends HttpServlet {
         }
     }
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

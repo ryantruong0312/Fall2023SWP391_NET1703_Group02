@@ -245,7 +245,7 @@
                                 <input style="color: blue;" type="text" name="txtImage_3" class="input form-control" value="" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$"/>
                             </div>
                         </div>
-                            <c:if test="${requestScope.reminder}">
+                            <c:if test="${requestScope.reminder != null}">
                                 <div>${reminder}</div>
                             </c:if>
 

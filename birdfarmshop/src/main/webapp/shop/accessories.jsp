@@ -202,11 +202,6 @@
         <section class="section" id="products">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div style="border: 0px;" class="section-heading">
-                            <h2>Phụ kiện của chúng tôi</h2>
-                        </div>
-                    </div>
                     <form id="selectAccessory" action="MainController" method="POST">
                         <input type="hidden" name="action" value="NavToAccessory"> 
                         <div class="search-bar">
@@ -238,7 +233,7 @@
                             </ol>
                             <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
                                 <a href="${toAddAccessory}">
-                                    <button id="input-accessory" type="button">Tạo phụ kiện mới</button>
+                                    <button id="input-accessory" type="button">Thêm mới phụ kiện</button>
                                 </a>
                             </c:if>
                         </div>
@@ -261,8 +256,14 @@
                                                 <div class="thumb">
                                                     <div class="hover-content">
                                                         <ul>
-                                                            <li><a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a></li>
-                                                            <li><a href="MainController?action=AddAccessoryToCart&accessory_id=${accessory.accessory_id}&order_quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
+                                                            <li>
+                                                                <a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a>
+                                                            </li>
+                                                            <c:if test="${accessory.stock_quantity > 0}">
+                                                                <li>
+                                                                    <a href="MainController?action=AddAccessoryToCart&accessory_id=${accessory.accessory_id}&order_quantity=1"><i class="fa fa-shopping-cart"></i></a>
+                                                                </li>
+                                                            </c:if>
                                                         </ul>
                                                     </div>
                                                     <img class="thumb" src="${accessory.image_url}" alt="">

@@ -58,10 +58,6 @@ public class RenderAccessoryController extends HttpServlet {
             if (categoryID != null && categoryID.equals("All")) {
                 categoryID = null;
             }
-//            User u = new User();
-//            if(u.getRole().equalsIgnoreCase("admin") || u.getRole().equalsIgnoreCase("manager")){
-//                request.setAttribute("user", u);
-//            }
             accessoryList = dao.getAccessoriesCustom(search, categoryID, price, page, numberOfRecord);
             int noOfRecords = dao.totalAccessories(search, categoryID, price);
             int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / numberOfRecord);
