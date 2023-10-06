@@ -77,8 +77,8 @@ public class MainController extends HttpServlet {
     private static final String DEST_CHECK_OUT = "RenderCheckOutController";
     private static final String ACT_RENDER_BIRD_BREED_ID = "RenderBirdByBreed_id";
     private static final String DEST_RENDER_BIRD_BREED_ID = "RenderBirdByBreed_idController";
-    private static final String ACT_UPDATE_INFO = "UpdateInformation";
-    private static final String DEST_UPDATE_INFO = "UpdateInformationController";
+    private static final String ACT_UPDATE_PROFILE = "UpdateProfile";
+    private static final String DEST_UPDATE_PROFILE = "UpdateProfileController";
     private static final String ACT_CREATE_ACCOUNT = "CreateAccount";
     private static final String DEST_CREATE_ACCOUNT = "CreateAccountController";
     private static final String ACT_ADD_BIRD = "AddNewBird";
@@ -177,8 +177,8 @@ public class MainController extends HttpServlet {
                 case ACT_RENDER_BIRD_BREED_ID:
                     url = DEST_RENDER_BIRD_BREED_ID;
                     break;
-                case ACT_UPDATE_INFO:
-                    url = DEST_UPDATE_INFO;
+                case ACT_UPDATE_PROFILE:
+                    url = DEST_UPDATE_PROFILE;
                     break;
                 case ACT_CREATE_ACCOUNT:
                     url = DEST_CREATE_ACCOUNT;

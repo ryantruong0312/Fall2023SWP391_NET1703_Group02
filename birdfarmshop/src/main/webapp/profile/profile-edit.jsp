@@ -249,7 +249,7 @@
                                     <div class="about">
                                         <ul>
                                             <li>
-                                                <a href="MainController?action=NavToProfile">
+                                                <a href="#">
                                                     <img class="icon" src="assets/images/user.png" alt="alt"/>
                                                     <span>Thông tin cá nhân</span>
                                                 </a>
@@ -271,38 +271,102 @@
                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <label for="fullName">Họ & Tên</label>
-                                                <input type="text" class="form-control" id="fullName" name="fullname" value="${requestScope.USER.fullName}">
+                                                <input type="text" class="form-control" id="fullName" name="fullname" value="${sessionScope.LOGIN_USER.fullName}" required="">
                                             </div>
                                         </div>
                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <label for="eMail">Email</label>
-                                                <input type="text" class="form-control" id="eMail" name="email" value="${requestScope.USER.email}" disabled="">
+                                                <input type="text" class="form-control" id="eMail" name="email" value="${sessionScope.LOGIN_USER.email}" disabled="">
                                             </div>
                                         </div>
                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <label for="phone">Số điện thoại</label>
-                                                <input type="text" class="form-control" id="phone" name="phone" value="${requestScope.USER.phone}">
+                                                <input type="text" class="form-control" id="phone" name="phone" value="${sessionScope.LOGIN_USER.phone}" required="">
                                             </div>
                                         </div>
                                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                             <div class="form-group">
                                                 <label for="address">Địa chỉ</label>
-                                                <input type="text" class="form-control" id="address" name="address" value="${requestScope.USER.address}">
+                                                <textarea class="form-control" name="address" required=""/>${sessionScope.LOGIN_USER.address}</textarea>
                                             </div>
                                         </div>
                                     </div>
+                                    <input type="hidden" name="username" value="${sessionScope.LOGIN_USER.username}"/>
                                     <div class="row gutters">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                             <div class="text-right">
-                                                <button type="reset" id="submit" name="submit" class="btn btn-secondary">Hủy bỏ</button>
-                                                <button type="submit" id="submit" class="btn btn-primary" name="action" value="UpdateInformation">Cập nhật</button>
+                                                <a href="MainController?action=NavToProfile&username=${sessionScope.LOGIN_USER.username}" class="btn btn-secondary">Hủy bỏ</a>
+                                                <button type="submit" id="submit" class="btn btn-primary" name="action" value="UpdateProfile">Cập nhật</button>
                                             </div>
                                         </div>
                                     </div>
                                 </form>
                             </div>
+
+                            <div class="card-body">
+                                <!-- Tab buttons -->
+                                <ul class="nav nav-tabs" id="orderTabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" data-toggle="tab" href="#pendingTab">Pending</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#processedTab">Processed</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#inTransitTab">In-transit</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#deliveredTab">Delivered</a>
+                                    </li>
+                                </ul>
+
+                                <!-- Tab content -->
+                                <div class="tab-content">
+                                    <!-- Pending Orders Tab -->
+                                    <div class="tab-pane fade show active" id="pendingTab">
+                                        <table class="table">
+                                            <!-- Add table headers here -->
+                                            <thead>
+                                                <tr>
+                                                    <th>Order ID</th>
+                                                    <th>Order Items</th>
+                                                    <th>Create Date</th>
+                                                    <th>Total Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- Populate with pending order data -->
+                                                <!-- Example row:
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Product 1, Product 2</td>
+                                                    <td>2023-10-06</td>
+                                                    <td>$100.00</td>
+                                                </tr>
+                                                -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- Processed Orders Tab -->
+                                    <div class="tab-pane fade" id="processedTab">
+                                        <!-- Similar structure as the Pending Orders Tab -->
+                                    </div>
+
+                                    <!-- In-transit Orders Tab -->
+                                    <div class="tab-pane fade" id="inTransitTab">
+                                        <!-- Similar structure as the Pending Orders Tab -->
+                                    </div>
+
+                                    <!-- Delivered Orders Tab -->
+                                    <div class="tab-pane fade" id="deliveredTab">
+                                        <!-- Similar structure as the Pending Orders Tab -->
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -371,9 +435,9 @@
 
         <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script type="text/javascript">
+        <script type="text/javascript"></script>
 
-<!-- jQuery -->
+        <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
 
         <!-- Bootstrap -->

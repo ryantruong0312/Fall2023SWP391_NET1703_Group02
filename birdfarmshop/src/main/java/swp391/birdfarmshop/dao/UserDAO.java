@@ -229,20 +229,19 @@ public class UserDAO {
         return accountList;
     }
 
-    public boolean updateInfo(String fullName, String phone, String email, String address, String username) throws SQLException {
+    public boolean updateProfile(String fullName, String phone, String address, String username) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         try {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement("UPDATE [dbo].[User]\n"
-                        + "SET [full_name] = ?,[phone] = ?,[email] = ?,[address] = ?\n"
+                        + "SET [full_name] = ?,[phone] = ?,[address] = ?\n"
                         + "WHERE [username] = ?");
                 stm.setString(1, fullName);
                 stm.setString(2, phone);
-                stm.setString(3, email);
-                stm.setString(4, address);
-                stm.setString(5, username);
+                stm.setString(3, address);
+                stm.setString(4, username);
                 int rowsAffected = stm.executeUpdate();
                 return rowsAffected > 0;
             }
