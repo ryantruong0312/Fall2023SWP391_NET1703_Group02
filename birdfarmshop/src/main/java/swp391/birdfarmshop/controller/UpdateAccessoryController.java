@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.dao.ImageDAO;
+import swp391.birdfarmshop.dto.AccessoryDTO;
 
 /**
  *
@@ -37,6 +38,8 @@ public class UpdateAccessoryController extends HttpServlet {
             String txtDescribe = request.getParameter("txtDescribe");
             String txtDiscount = request.getParameter("txtDiscount");
             String txtImage = request.getParameter("txtImage");
+            request.setAttribute("im", txtImage);
+            
             String txtImage_1 = request.getParameter("txtImage_1");
             String txtImage_2 = request.getParameter("txtImage_2");
             String Image_id_1 = request.getParameter("Image_id_1");
@@ -49,14 +52,13 @@ public class UpdateAccessoryController extends HttpServlet {
             boolean checkImage_1 = i.updateImageAccessory(txtAccessoryID, false, txtImage_1, Image_id_1);
             if(Image_id_2 != null){
                 boolean checkImage_2 = i.updateImageAccessory(txtAccessoryID, false, txtImage_2, Image_id_2);
-            }          
-            if(rs){
-                String message = "Chỉnh sửa thành công";
-                request.setAttribute("MESSAGE", message);
-            }else{
-                String error = "Chỉnh sửa thất bại";
-                request.setAttribute("error", error);
             }
+            
+            AccessoryDAO a = new AccessoryDAO();
+            AccessoryDTO ac = a.getAccessoryDetailsByID(txtAccessoryID);
+            request.setAttribute("a", ac);
+            
+            
             url = SUCCESS;
         } catch (Exception e) {
             log("Error at RenderAddAccessoryController: " + e.toString());

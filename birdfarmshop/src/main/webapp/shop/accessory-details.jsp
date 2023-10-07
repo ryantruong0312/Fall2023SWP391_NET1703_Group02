@@ -222,8 +222,7 @@
                     <div class="col-lg-8">
                         <div class="image-container">
                             <div class="image-top">
-                                <div class="overlay-container">
-                                    
+                                <div class="overlay-container">                                   
                                     <img id="mainImage" style="width: 500px; height: 400px; border: 1px solid;" src="${im}" alt="Image main" onclick="swapImages()">
                                     <c:if test="${requestScope.MESSAGE != null}">
                                         <div class="overlay-text">${MESSAGE}</div>
