@@ -376,6 +376,36 @@ $('#form-createBird').validate({
         }
     }  
 });
+$('#form-order').validate({
+    rules: {
+        name: {
+            required: true,
+            maxlength: 30,
+            regex: /^(?!\s)[\s\S]*$/
+        },
+        mobile: {
+            required: true,
+            regex: /^0([0-9]{9,10})$/
+        },
+        address: {
+            required: true
+        }
+    },
+    messages: {
+        name: {
+            required: 'Vui lòng nhập tên của bạn',
+            maxlength: 'Không nhập quá 30 kí tự',
+            regex: "Không nhập kí tự trắng đầu tiên"
+        },
+        mobile: {
+            required: 'Vui lòng nhập điện thoại của bạn',
+            regex: 'Vui lòng nhập đúng định dạng số điện thoại bắt đầu số 0 và có 10 số'
+        },
+        address: {
+            required: 'Vui lòng nhập địa chỉ nhận hàng'
+        }
+    }
+});
 $.validator.addMethod(
         "regex",
         function (value, element, regexp) {

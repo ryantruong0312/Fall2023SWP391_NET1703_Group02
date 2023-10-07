@@ -12,6 +12,7 @@ import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.model.BirdNest;
 import swp391.birdfarmshop.model.OrderedAccessoryItem;
 import swp391.birdfarmshop.model.OrderedBirdItem;
+import swp391.birdfarmshop.model.OrderedBirdPairItem;
 
 /**
  *
@@ -22,6 +23,8 @@ public class CartDTO {
     private Map<String, OrderedBirdItem> birdList;
     private Map<String, BirdNest> birdNestList;
     private Map<String, OrderedAccessoryItem> accessoryList;
+    private Map<String, OrderedBirdPairItem> birdPairList;
+    private int birdPairTotalPrice;
     private int birdTotalPrice;
     private int birdNestTotalPrice;
     private int accessoryTotalPrice;
@@ -32,6 +35,7 @@ public class CartDTO {
         birdList = new HashMap<>();
         birdNestList = new HashMap<>();
         accessoryList = new HashMap<>();
+        birdPairList = new HashMap<>();
         cartTotalPrice = 0;
         totalItem = 0;
     }
@@ -100,6 +104,31 @@ public class CartDTO {
         this.cartTotalPrice = cartTotalPrice;
     }
 
+    public Map<String, OrderedBirdPairItem> getBirdPairList() {
+        return birdPairList;
+    }
+
+    public void setBirdPairList(Map<String, OrderedBirdPairItem> birdPairList) {
+        this.birdPairList = birdPairList;
+    }
+
+    public int getBirdPairTotalPrice() {
+        return birdPairTotalPrice;
+    }
+
+    public void setBirdPairTotalPrice(int birdPairTotalPrice) {
+        this.birdPairTotalPrice = birdPairTotalPrice;
+    }
+    public boolean addBirdPairToCart(String key ,Bird birdMale, Bird BirdFemale) {
+        boolean check = false;
+        if (!this.birdPairList.containsKey(key)) {
+            
+            this.totalItem += 2;
+            cartTotalPrice += 0;
+            check = true;
+        }
+        return check;
+    }
     public boolean addBirdToCart(Bird bird, Accessory cage) {
         boolean check = false;
         if (!this.birdList.containsKey(bird.getBird_id())) {

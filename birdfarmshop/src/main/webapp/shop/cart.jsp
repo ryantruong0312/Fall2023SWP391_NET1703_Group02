@@ -306,7 +306,10 @@
 
                         <div class="card">
                             <div class="card-body">
-                                <button type="button" class="btn btn-warning btn-block btn-lg">Tiến hành thanh toán</button>
+                                <form action="MainController">
+                                    <input type="hidden" name="action" value="NavToCheckout"/>
+                                    <button type="submit" class="btn btn-warning btn-block btn-lg">Tiến hành thanh toán</button>
+                                </form>
                             </div>
                         </div>
 
@@ -377,6 +380,7 @@
         <!-- ***** Footer Area Ends ***** -->
 
         <!-- jQuery -->
+        <%@include file="../layout/message.jsp" %>
         <script src="assets/js/jquery-2.1.0.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <!-- Bootstrap -->
