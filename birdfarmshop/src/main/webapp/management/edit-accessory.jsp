@@ -208,14 +208,15 @@
 
                             <div class="form-outline mt-2">
                                 <label>Hình ảnh sản phẩm (Bắt buộc)</label>
-                                <input style="color: blue;" type="text" name="txtImage_1"  class="input form-control" value="${url_thumnail}" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" required/>
+                                <input style="color: blue;" type="text" name="txtImage"  class="input form-control" value="${url_thumnail}" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" required/>
                             </div>
 
                             <c:if test="${requestScope.list != null}">
                                 <c:forEach var="image" items="${list}" varStatus="loop">
                                     <div class="form-outline mt-2">
                                         <label>Hình ảnh sản phẩm</label>
-                                        <input style="color: blue;" type="text" name="txtImage_${loop.index + 2}" class="input form-control" value="${image}" required/>
+                                        <input style="color: blue;" type="text" name="txtImage_${loop.index + 1}" class="input form-control" value="${image.image_url}" required/>
+                                        <input type="hidden" name="Image_id_${loop.index + 1}" value="${image.image_id}">
                                     </div>
                                 </c:forEach>
                             </c:if>
@@ -223,10 +224,10 @@
                         </div>
                             
                                 <c:if test="${requestScope.MESSAGE != null}">
-                                    <div>${MESSAGE}}</div>
+                                    <div>${MESSAGE}</div>
                                 </c:if>
                                 <c:if test="${requestScope.Error != null}">
-                                    <div>${error}}</div>
+                                    <div>${error}</div>
                                 </c:if>
 
                         <div class="col-lg-12">

@@ -5,13 +5,14 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+//import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import swp391.birdfarmshop.dao.AccessoryDAO;
+import swp391.birdfarmshop.dao.ImageDAO;
 
 /**
  *
@@ -21,14 +22,13 @@ import swp391.birdfarmshop.dao.AccessoryDAO;
 public class UpdateAccessoryController extends HttpServlet {
 
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "management/edit-accessory.jsp";
+    private static final String SUCCESS = "shop/accessory-details.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-
             String txtAccessoryID = request.getParameter("txtAccessoryID");
             String txtAccessoryName = request.getParameter("txtAccessoryName");
             String txtCategoryID = request.getParameter("txtCategoryID");
@@ -36,12 +36,20 @@ public class UpdateAccessoryController extends HttpServlet {
             String txtStockQuantity = request.getParameter("txtStockQuantity");
             String txtDescribe = request.getParameter("txtDescribe");
             String txtDiscount = request.getParameter("txtDiscount");
+            String txtImage = request.getParameter("txtImage");
             String txtImage_1 = request.getParameter("txtImage_1");
             String txtImage_2 = request.getParameter("txtImage_2");
-            String txtImage_3 = request.getParameter("txtImage_3");
-            
+            String Image_id_1 = request.getParameter("Image_id_1");
+            String Image_id_2 = request.getParameter("Image_id_2");
             AccessoryDAO d = new AccessoryDAO();
             boolean rs = d.updateAccessory(txtAccessoryID, txtAccessoryName, txtCategoryID, txtPrice, txtStockQuantity, txtDescribe, txtDiscount);
+            
+            ImageDAO i = new ImageDAO();
+            boolean checkImage =  i.updateThumbnailImageAccessory(txtAccessoryID, true, txtImage);
+            boolean checkImage_1 = i.updateImageAccessory(txtAccessoryID, false, txtImage_1, Image_id_1);
+            if(Image_id_2 != null){
+                boolean checkImage_2 = i.updateImageAccessory(txtAccessoryID, false, txtImage_2, Image_id_2);
+            }          
             if(rs){
                 String message = "Chỉnh sửa thành công";
                 request.setAttribute("MESSAGE", message);

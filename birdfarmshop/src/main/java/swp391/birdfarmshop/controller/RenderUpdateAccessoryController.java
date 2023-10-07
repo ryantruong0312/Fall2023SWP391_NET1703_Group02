@@ -17,6 +17,7 @@ import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.dao.ImageDAO;
 import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.AccessoryCategory;
+import swp391.birdfarmshop.model.Image;
 
 /**
  *
@@ -41,7 +42,7 @@ public class RenderUpdateAccessoryController extends HttpServlet {
             List<AccessoryCategory> ac = dao.getAccessoryCategories();
             ImageDAO im = new ImageDAO();
             String url_thumnail = im.getThumbnailUrlByAccessoryId(id);
-            List<String> list = im.getUrlByAccessoryId(id);
+            List<Image> list = im.getImageByAccessoryId(id);
             if(!list.isEmpty()){
                 request.setAttribute("list", list);
             }

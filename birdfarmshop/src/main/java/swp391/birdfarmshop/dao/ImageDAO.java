@@ -10,7 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import swp391.birdfarmshop.model.Bird;
+//import java.util.List;
+//import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.model.Image;
 import swp391.birdfarmshop.util.DBUtils;
 
@@ -219,14 +220,6 @@ public class ImageDAO {
         return url;
     }
 
-    public static void main(String[] args) throws SQLException {
-        ImageDAO im = new ImageDAO();
-        ArrayList<String> list = im.getUrlByAccessoryId("LN001");
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(list.get(0));
-        }
-    }
-
     public String getThumbnailUrlByBirdNestId(String birdNestID) throws SQLException {
         String url = "";
         Connection con = null;
@@ -328,5 +321,115 @@ public class ImageDAO {
             }
         }
         return false;
+    }
+
+    public boolean updateImageAccessory(String txtAccessoryID, boolean type, String urlImage, String ImageID) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        int rs = 0;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(" UPDATE [BirdFarmShop].[dbo].[Image]\n"
+                        + "  SET [image_url] = ? \n"
+                        + "  WHERE [accessory_id] = ? AND is_thumbnail = ? AND [image_id] = ?");
+                stm.setString(1, urlImage);
+                stm.setString(2, txtAccessoryID);
+                stm.setBoolean(3, type);
+                stm.setInt(4, Integer.parseInt(ImageID));
+                rs = stm.executeUpdate();
+                if (rs > 0) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            // Handle exceptions here, e.g., log or throw
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+    
+    public boolean updateThumbnailImageAccessory(String txtAccessoryID, boolean type, String urlImage) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        int rs = 0;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(" UPDATE [BirdFarmShop].[dbo].[Image]\n"
+                        + "  SET [image_url] = ? \n"
+                        + "  WHERE [accessory_id] = ? AND is_thumbnail = ?");
+                stm.setString(1, urlImage);
+                stm.setString(2, txtAccessoryID);
+                stm.setBoolean(3, type);
+                rs = stm.executeUpdate();
+                if (rs > 0) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            // Handle exceptions here, e.g., log or throw
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Image> getImageByAccessoryId(String accessoryId) throws SQLException {
+        ArrayList<Image> list = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("  SELECT [image_id] ,[image_url] ,[is_thumbnail], [bird_id], [nest_id], [accessory_id]\n"
+                        + "  FROM [BirdFarmShop].[dbo].[Image]\n"
+                        + "  WHERE [accessory_id] = ? AND [is_thumbnail] = 0");
+                stm.setString(1, accessoryId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int image_id = rs.getInt("image_id");
+                    String image_url = rs.getString("image_url");
+                    boolean is_thumbnail = rs.getBoolean("is_thumbnail");
+                    String bird_id = rs.getString("bird_id");
+                    String nest_id = rs.getString("nest_id");
+                    String accessory_id = rs.getString("accessory_id");
+                    Image image = new Image(image_id, image_url, is_thumbnail, bird_id, nest_id, accessory_id);
+                    list.add(image);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return list;
+    }
+    
+    public static void main(String[] args) throws SQLException {
+        ImageDAO i = new ImageDAO();
+        ArrayList<Image> list = i.getImageByAccessoryId("LN001");
+        for(Image im : list){
+            System.out.println(im.getImage_id());
+        }
     }
 }

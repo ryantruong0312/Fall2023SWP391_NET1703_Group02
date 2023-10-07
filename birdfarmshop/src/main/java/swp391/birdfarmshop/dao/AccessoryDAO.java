@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dto.AccessoryDTO;
 import swp391.birdfarmshop.model.Accessory;
-import swp391.birdfarmshop.model.Bird;
+//import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.util.DBUtils;
 
 /**
@@ -460,7 +460,7 @@ public class AccessoryDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement("  UPDATE [BirdFarmShop].[dbo].[Accessory]\n"
-                        + "    SET "
+                        + "    SET  "
                         + "    [accessory_name] = ?,\n"
                         + "    [category_id] = ?,\n"
                         + "    [unit_price] = ?,\n"

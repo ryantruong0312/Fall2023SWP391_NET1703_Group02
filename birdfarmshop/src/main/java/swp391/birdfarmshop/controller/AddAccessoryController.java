@@ -43,12 +43,14 @@ public class AddAccessoryController extends HttpServlet {
             AccessoryDAO d = new AccessoryDAO();
             boolean rs = d.insertAccessory(txtAccessoryID, txtAccessoryName, txtCategoryID, txtPrice, txtStockQuantity, txtDescribe, txtDiscount);
             ImageDAO i = new ImageDAO();
-            
+
             boolean checkImage_1 = i.addNewAccessoryImage(txtImage_1, true, txtAccessoryID);
             boolean checkImage_2 = i.addNewAccessoryImage(txtImage_2, false, txtAccessoryID);
-            boolean checkImage_3 = i.addNewAccessoryImage(txtImage_3, false, txtAccessoryID);
-            
-            if(rs){
+            if (!txtImage_3.equals("")) {
+                boolean checkImage_3 = i.addNewAccessoryImage(txtImage_3, false, txtAccessoryID);
+            }
+
+            if (rs) {
                 String reminder = "Thêm phụ kiện thành công";
                 request.setAttribute("reminder", reminder);
                 url = SUCCESS;

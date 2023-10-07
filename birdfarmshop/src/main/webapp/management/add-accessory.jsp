@@ -237,7 +237,7 @@
 
                             <div class="form-outline mt-2">
                                 <label>Hình ảnh sản phẩm 2</label>
-                                <input style="color: blue;" type="text" name="txtImage_2" class="input form-control" value="" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$"/>
+                                <input style="color: blue;" type="text" name="txtImage_2" class="input form-control" value="" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" required=""/>
                             </div>
 
                             <div class="form-outline mt-2">
