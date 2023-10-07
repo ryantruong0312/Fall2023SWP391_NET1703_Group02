@@ -9,7 +9,7 @@ package swp391.birdfarmshop.model;
  * @author tlminh
  */
 public class Image {
-    private String image_id;
+    private int image_id;
     private String image_url;
     private boolean is_thumbnail;
     private String bird_id;
@@ -19,7 +19,7 @@ public class Image {
     public Image() {
     }
 
-    public Image(String image_id, String image_url, boolean is_thumbnail, String bird_id, String nest_id, String accessory_id) {
+    public Image(int image_id, String image_url, boolean is_thumbnail, String bird_id, String nest_id, String accessory_id) {
         this.image_id = image_id;
         this.image_url = image_url;
         this.is_thumbnail = is_thumbnail;
@@ -28,11 +28,11 @@ public class Image {
         this.accessory_id = accessory_id;
     }
 
-    public String getImage_id() {
+    public int getImage_id() {
         return image_id;
     }
 
-    public void setImage_id(String image_id) {
+    public void setImage_id(int image_id) {
         this.image_id = image_id;
     }
 

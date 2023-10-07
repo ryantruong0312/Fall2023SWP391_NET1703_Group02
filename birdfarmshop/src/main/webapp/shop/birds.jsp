@@ -1,7 +1,5 @@
 <%-- 
-Document   : birds
-Created on : Sep 13, 2023, 11:19:25 PM
-Author     : tlminh
+    Author     : tlminh
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -57,10 +55,10 @@ Author     : tlminh
                 margin: 5px;
             }
             .search-bar {
-                margin: 0 0 10px 120px;
-                border: 5px;
                 border-radius: 8px;
                 border: 1px solid rgb(221, 221, 227);
+                margin: 0 auto;
+                margin-bottom: 40px;
             }
             .search-bar input {
                 border: 0;
@@ -73,19 +71,20 @@ Author     : tlminh
             .search-bar img {
                 margin-left: 5px;
             }
+            form {
+                margin: 0 auto;
+            }
             .col-lg-12 a {
-                position: absolute;
-                bottom: 10px;
-                right: 0;
                 border-radius: 10px;
                 border: 1px solid rgb(221, 221, 227);
                 background-color: #f5c6cb;
-                text-align: center;
                 display: flex;
-                flex-wrap: wrap;
-            }
-            .col-lg-12 span {
-                padding: 5px;
+                justify-content: center;
+                align-items: center;
+                margin: 0 auto;
+                width: 50%;
+                margin-bottom: 30px;
+                margin-top: 20px;
             }
             .type {
                 cursor: pointer;
@@ -229,15 +228,16 @@ Author     : tlminh
                     </div>
                     <form id="selectBird" action="MainController" method="POST">
                         <input type="hidden" name="action" value="NavToBird"> 
-                        <div class="search-bar">
-                            <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                            <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
-                            <input type="submit" value="Tìm kiếm">
+                        <div class="col-lg-12">
+                            <div class="search-bar">
+                                <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                                <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                                <input type="submit" value="Tìm kiếm">
+                            </div>
+                            <c:if test="${sessionScope.LOGIN_USER.role == null || sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
+                                <a href="MainController?action=AddNewBird"><span>Thêm mới chim</span></a>
+                            </c:if>
                         </div>
-                        <c:if test="${sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'staff'}">
-                            <a href="MainController?action=NavToAddBird"><span>Tạo mới chim</span></a>
-                            <!--                            <a href="MainController?action=NavToUpdateBird"><span>Cập nhật chim</span></a>-->
-                        </c:if>
                 </div>
             </div>
             <div class="container-fluid">

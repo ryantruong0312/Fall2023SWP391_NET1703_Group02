@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dto.AccessoryDTO;
 import swp391.birdfarmshop.model.Accessory;
-import swp391.birdfarmshop.model.Bird;
+//import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.util.DBUtils;
 
 /**
@@ -401,4 +401,103 @@ public class AccessoryDAO {
         return cages;
     }
 
+    public boolean insertAccessory(String txtAccessoryID, String txtAccessoryName, String txtCategoryID, String txtPrice, String txtStockQuantity, String txtDescribe, String txtDiscount) throws SQLException {
+        String status;
+        Connection con = null;
+        PreparedStatement stm = null;
+        int rs;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("INSERT INTO [BirdFarmShop].[dbo].[Accessory]\n"
+                        + "           ([accessory_id]\n"
+                        + "           ,[accessory_name]\n"
+                        + "           ,[category_id]\n"
+                        + "           ,[unit_price]\n"
+                        + "           ,[stock_quantity]\n"
+                        + "           ,[description]\n"
+                        + "           ,[discount]\n"
+                        + "           ,[status])\n"
+                        + "     VALUES\n"
+                        + "           (?, ?, ?, ?, ?, ?, ?, ?)");
+                stm.setString(1, txtAccessoryID);
+                stm.setString(2, txtAccessoryName);
+                stm.setString(3, txtCategoryID);
+                stm.setInt(4, Integer.parseInt(txtPrice));
+                stm.setInt(5, Integer.parseInt(txtStockQuantity));
+                stm.setString(6, txtDescribe);
+                stm.setInt(7, Integer.parseInt(txtDiscount));
+                if (Integer.parseInt(txtStockQuantity) > 0) {
+                    status = "còn hàng";
+                } else {
+                    status = "hết hàng";
+                }
+                stm.setString(8, status);
+                rs = stm.executeUpdate();
+                if (rs > 0) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            // Handle exceptions here, e.g., log or throw
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+
+    public boolean updateAccessory(String txtAccessoryID, String txtAccessoryName, String txtCategoryID, String txtPrice, String txtStockQuantity, String txtDescribe, String txtDiscount) throws SQLException {
+        String status;
+        Connection con = null;
+        PreparedStatement stm = null;
+        int rs = 0;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("  UPDATE [BirdFarmShop].[dbo].[Accessory]\n"
+                        + "    SET  "
+                        + "    [accessory_name] = ?,\n"
+                        + "    [category_id] = ?,\n"
+                        + "    [unit_price] = ?,\n"
+                        + "    [stock_quantity] = ?,\n"
+                        + "    [description] = ?,\n"
+                        + "    [discount] = ?,\n"
+                        + "    [status] = ?"
+                        + "    WHERE [accessory_id] = ?; ");
+
+                stm.setString(1, txtAccessoryName);
+                stm.setString(2, txtCategoryID);
+                stm.setInt(3, Integer.parseInt(txtPrice));
+                stm.setInt(4, Integer.parseInt(txtStockQuantity));
+                stm.setString(5, txtDescribe);
+                stm.setInt(6, Integer.parseInt(txtDiscount));
+                if (Integer.parseInt(txtStockQuantity) > 0) {
+                   stm.setString(7, "còn hàng");
+                } else {
+                   stm.setString(7, "hết hàng");
+                }
+                
+                stm.setString(8, txtAccessoryID);
+                rs = stm.executeUpdate();
+                if (rs > 0) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            // Handle exceptions here, e.g., log or throw
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
 }
