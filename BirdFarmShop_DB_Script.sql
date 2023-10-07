@@ -130,7 +130,9 @@ CREATE TABLE [Order]
 	[customer] VARCHAR(25),
 	[order_date] DATETIME,
 	[order_status] NVARCHAR(20),
-	[ship_address] NVARCHAR(50),
+	[name_receiver] NVARCHAR(50),
+	[phone_receiver] VARCHAR(15),
+	[address_receiver] NVARCHAR(MAX),
 	[payment_status] NVARCHAR(20),
 	[total_price] INT,
 	[applied_point] SMALLINT,
@@ -704,7 +706,7 @@ VALUES
 	1, NULL, 'BN002', NULL)
 GO
 
-INSERT INTO [Order]([order_id],[customer],[order_date],[order_status],[ship_address],[payment_status],[total_price],[applied_point])
+INSERT INTO [Order]([order_id],[customer],[order_date],[order_status],[address_receiver],[payment_status],[total_price],[applied_point])
 VALUES('230925O0001','customer',2023-09-25,N'Chờ xử lý',null,N'Đã thanh toán',3000000,3),
 	  ('230915O0002','giaphong',2023-09-15,N'Đang xử lý',null,N'Đã thanh toán',300000,1),
 	  ('230916O0003','nhathoang',2023-09-16,N'Đang vận chuyển',null,N'Đã thanh toán',300000,1),
@@ -759,7 +761,7 @@ SELECT u.full_name,u.email,f.rating,f.comment,f.feedback_date,o.bird_id,b.bird_n
 FROM [USER] u
 RIGHT JOIN [Feedback] f
 ON u.username = f.customer
-RIGHT JOIN [OrderItem] o
+LEFT JOIN [OrderItem] o
 ON f.order_item_id = o.order_item_id
 LEFT JOIN [Bird] b
 ON o.bird_id = b.bird_id

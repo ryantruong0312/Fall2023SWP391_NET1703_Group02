@@ -9,7 +9,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import swp391.birdfarmshop.dto.CartDTO;
+import swp391.birdfarmshop.model.User;
 
 
 /**
@@ -18,16 +21,30 @@ import java.io.IOException;
  */
 @WebServlet(name = "RenderCheckOutController", urlPatterns = {"/RenderCheckOutController"})
 public class RenderCheckOutController extends HttpServlet {
-
-    private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "shop/checkout.jsp";
+    
+private static final String DEST_NAV_CART = "RenderCartController";
     
 protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
+        String url = DEST_NAV_CART;
         try {
-            url = SUCCESS;
+            HttpSession session = request.getSession();
+            User u  = (User) session.getAttribute("LOGIN_USER");
+            if(u != null){
+                CartDTO cart = (CartDTO) session.getAttribute("CART");
+                if(cart != null){
+                    if(cart.getTotalItem() > 0){
+                        url = "shop/checkout.jsp";
+                    }else{
+                     session.setAttribute("ERROR", "Không có sản phẩm nào trong giỏ hàng của bạn");
+                    }
+                }else{
+                    session.setAttribute("ERROR", "Không có sản phẩm nào trong giỏ hàng của bạn");
+                }
+            }else{
+                session.setAttribute("ERROR", "Bạn chưa đăng nhập");
+            }
         } catch (Exception e) {
             log("Error at RenderCheckOutController: " + e.toString());
         } finally {

@@ -58,12 +58,14 @@ public class AddBirdToCartController extends HttpServlet {
                     } else {
                         out.println(0);
                     }
+                    return;
                 }
             }else{
                 CartDTO cart = (CartDTO) session.getAttribute("CART");
                 if(cart != null){
                      int amountItems = cart.getTotalItem();
                      out.println(amountItems);
+                     return;
                 }
             }
         } catch (Exception e) {

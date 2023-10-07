@@ -254,9 +254,7 @@
                                                                 <a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a>
                                                             </li>
                                                             <c:if test="${accessory.stock_quantity > 0}">
-                                                                <li>
-                                                                    <a href="MainController?action=AddAccessoryToCart&accessory_id=${accessory.accessory_id}&order_quantity=1"><i class="fa fa-shopping-cart"></i></a>
-                                                                </li>
+                                                                <li><a style="cursor: pointer" class="accessory-cart" data-value="${accessory.accessory_id}"><i class="fa fa-shopping-cart"></i></a></li>
                                                             </c:if>
                                                         </ul>
                                                     </div>

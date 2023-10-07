@@ -6,8 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="LOGIN_USER" scope="session" value="${sessionScope.LOGIN_USER}" />
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,21 +27,6 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-
-        <style>
-            .breed-img,
-            .category-img
-            {
-                width: 100%;
-                height: 370px;
-            }
-            .breed-name,
-            .category-name
-            {
-                text-align: center;
-            }
-        </style>
-
     </head>
 
     <body>
@@ -60,15 +44,6 @@
         <c:url var="toReports" value="MainController?action=NavToReports"/>
         <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
 
-        <!-- ***** Preloader Start ***** -->
-        <div id="preloader">
-            <div class="jumper">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>  
-        <!-- ***** Preloader End ***** -->
 
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
@@ -144,155 +119,173 @@
 
 
         <!-- ***** Subscribe Area Starts ***** -->
-        <div class="main-banner" id="top">
-
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-12 ">
-                        <div class="section-heading pb-5">
-                            <h2>Địa chỉ thanh toán</h2>
-                        </div>
+        <div class="main-banner" style="border-bottom: none" id="top">
+            <main id="maincontent" class="page-checkout">
+                <div class="container">
+                    <form id="form-order" action="MainController" method="POST">
+                        <input type="hidden" name="action" value="NavToPayment">
                         <div class="row">
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label" ><strong>Giỏ hàng</strong></label>
-                                </div>
+                            <div class="col-lg-7">
+                                <h5 class="font-weight-bold mb-3">Giỏ hàng của bạn</h5>
+                                <div class="box-cart">
+                                    <c:forEach items="${sessionScope.CART.birdList}" var="bird">
+                                        <div class="item-cart pr-3 my-3">
+                                            <div class="d-flex align-items-center py-3 mx-3">
+                                                <div class="image-item">
+                                                    <img src="${bird.value.bird.image_url}" alt="${bird.value.bird.bird_name}" />
+                                                </div>
+                                                <div class="infor-item px-5">
+                                                    <h5>${bird.value.bird.bird_name}</h5>
+                                                    <div class="mt-2">
+                                                        <p> 1
+                                                            <span style="font-size: 13px; margin-right: 5px">x</span>
+                                                            <c:choose>
+                                                                <c:when test="${bird.value.bird.discount > 0}">
+                                                                <p style="font-size: 14px;">  <fmt:formatNumber value="${bird.value.bird.price - bird.value.bird.price * bird.value.bird.discount / 100}" pattern="#,###"/> ₫</p>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${bird.value.bird.price}" pattern="#,###"/> ₫</p>
+                                                            </c:otherwise>
+                                                        </c:choose> 
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="price-item ml-4 px-3">
+                                                    <c:choose>
+                                                        <c:when test="${bird.value.bird.discount > 0}">
+                                                            <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${bird.value.bird.price - bird.value.bird.price * bird.value.bird.discount / 100}" pattern="#,###"/> ₫</p>
+                                                            <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.value.bird.discount}%</p>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${bird.value.bird.price}" pattern="#,###"/> ₫</p>
+                                                        </c:otherwise>
+                                                    </c:choose> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="item-cart pr-3 my-3">
+                                            <div class="d-flex align-items-center py-3 mx-3">
+                                                <div class="image-item">
+                                                    <img src="${bird.value.cage.image_url}" alt="${bird.value.cage.accessory_name}" />
+                                                </div>
+                                                <div class="infor-item px-5">
+                                                    <h5>${bird.value.cage.accessory_name}</h5>
+                                                    <div class="mt-2">
+                                                        <p> 1
+                                                            <span style="font-size: 13px; margin-right: 5px">x</span>
+                                                            <c:choose>
+                                                                <c:when test="${bird.value.cage.discount > 0}">
+                                                                <p style="font-size: 14px;">  <fmt:formatNumber value="${bird.value.cage.unit_price - bird.value.cage.unit_price * bird.value.cage.discount / 100}" pattern="#,###"/> ₫</p>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${bird.value.cage.unit_price}" pattern="#,###"/> ₫</p>
+                                                            </c:otherwise>
+                                                        </c:choose> 
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="price-item ml-4 px-3">
+                                                    <c:choose>
+                                                        <c:when test="${bird.value.cage.discount > 0}">
+                                                            <p class="float-right"style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${bird.value.cage.unit_price - bird.value.cage.unit_price * bird.value.cage.discount / 100}" pattern="#,###"/> ₫</p>
+                                                            <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.value.cage.discount}%</p>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${bird.value.cage.unit_price}" pattern="#,###"/> ₫</p>
+                                                        </c:otherwise>
+                                                    </c:choose> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                    <c:forEach items="${sessionScope.CART.accessoryList}" var="accessory">
+                                        <div class="item-cart pr-3 my-3">
+                                            <div class="d-flex align-items-center justify-content-between py-3 mx-3">
+                                                <div class="image-item">
+                                                    <img src="${accessory.value.accessory.image_url}" alt="${accessory.value.accessory.accessory_name}" />
+                                                </div>
+                                                <div class="infor-item px-5">
+                                                    <h5>${accessory.value.accessory.accessory_name}</h5>
+                                                    <div class="mt-2">
+                                                        <p>${accessory.value.order_quantity}
+                                                            <span style="font-size: 13px; margin-right: 5px">x</span>
+                                                            <c:choose>
+                                                                <c:when test="${accessory.value.accessory.discount > 0}">
+                                                                <p style="font-size: 14px;">  <fmt:formatNumber value="${accessory.value.accessory.unit_price - accessory.value.accessory.unit_price * accessory.value.accessory.discount / 100}" pattern="#,###"/> ₫</p>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${accessory.value.accessory.unit_price}" pattern="#,###"/> ₫</p>
+                                                            </c:otherwise>
+                                                        </c:choose> 
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="price-item ml-4 px-3">
+                                                    <c:choose>
+                                                        <c:when test="${accessory.value.accessory.discount > 0}">
+                                                            <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${accessory.value.order_quantity * accessory.value.accessory.unit_price - accessory.value.accessory.unit_price * accessory.value.accessory.discount / 100}" pattern="#,###"/> ₫</p>
+                                                            <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${accessory.value.accessory.discount}%</p>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${accessory.value.accessory.unit_price}" pattern="#,###"/> ₫</p>
+                                                        </c:otherwise>
+                                                    </c:choose> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
 
+                                </div>
                             </div>
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label"><strong>Họ và tên</strong></label>
-                                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Nhập họ và tên">
-                                </div> 
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label"><strong>Email</strong></label>
-                                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Nhập email">
-                                </div> 
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label"><strong>Địa chỉ</strong></label>
-                                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="Nhập địa chỉ">
+                            <div class="col-lg-5 info-checkout mt-3">
+                                <div class="form-group mt-3">
+                                    <label for="user-receiver">Tên người nhận hàng:</label>
+                                    <input id="user-receiver" class="input form-control" type="text" name="name" value="${sessionScope.LOGIN_USER.fullName}" required=""/>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="exampleFormControlInput1" class="form-label"><strong>Phương thức thanh toán</strong></label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked value="cash">
-                                        <label class="form-check-label" for="flexRadioDefault1">
-                                            Tiền mặt
-                                        </label>
+                                <div class="form-group">
+                                    <label for="mobile">Số điện thoại nhận hàng:</label>
+                                    <input id="mobile" class="input form-control" type="text" name="mobile" value="${sessionScope.LOGIN_USER.phone}" required=""/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Địa chỉ nhận hàng:</label>
+                                    <input id="address" class="input form-control" type="text" name="address" value="${sessionScope.LOGIN_USER.address}" required=""/>
+                                </div>
+                                <div class="overall-menoy">
+                                    <h5 class="mt-3">Tổng tiền thanh toán</h5>
+                                    <div class="d-flex mt-3 total-items">
+                                        <div class="d-flex align-items-center">
+                                            <p>Số lượng sản phẩm: </p>
+                                            <span style="font-weight: bold; font-size: 20px" class="ml-3">${sessionScope.CART.getTotalItem()}</span>
+                                        </div>
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="banking">
-                                        <label class="form-check-label" for="flexRadioDefault2">
-                                            Chuyển khoản
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" value="COD">
-                                        <label class="form-check-label" for="flexRadioDefault3">
-                                            Ship COD
-                                        </label>
-                                    </div>
-                                    <div class="mt-3">
-                                        <button class="btn btn-success btn-block" type="button">Thanh toán</button>
+                                    <div class="d-flex mt-3 total-money">
+                                        <div class="d-flex align-items-center">
+                                            <p>Tổng tiền: </p>
+                                            <span class="ml-3"><fmt:formatNumber value="${sessionScope.CART.cartTotalPrice}" pattern="#,###"/> ₫</span>
+                                        </div>
                                     </div>
                                 </div>
-
+                                <div class="payment-method mt-5">
+                                    <h5 class="mt-3">Chọn phương thức thanh toán</h5>
+                                    <table class="mt-3">
+                                        <tr>
+                                            <td><input id="money" class="" type="radio" name="method" value="" checked=""/></td>
+                                            <td><i class="fa fa-money ml-3 icon-money" aria-hidden="true"></i></td>
+                                            <td><label for="money" class="ml-3">Thanh toán khi nhận hàng</label></td>
+                                        </tr>
+                                        <tr class="credit-payment">
+                                            <td><input id="credit" class="" type="radio" name="method" value=""/></td>
+                                            <td><i class="fa fa-credit-card ml-3 icon-credit" aria-hidden="true"></i></td>
+                                            <td><label for="credit" class="ml-3">Thanh toán qua thẻ tín dụng</label></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <button type="submit" class="mt-4 btn btn-primary w-100">Đặt hàng</button>
                             </div>
                         </div>
-
-
-
-                        <div>
-                            <h3>Phương thức thanh toán</h3>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                                <label class="form-check-label" for="exampleRadios1">
-                                    Tiền mặt
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                                <label class="form-check-label" for="exampleRadios2">
-                                    Chuyển khoản
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3">
-                                <label class="form-check-label" for="exampleRadios3">
-                                    Ship COD
-                                </label>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="col-25">
-                        <div class="container">
-                            <h4>Giỏ Hàng
-                                <span class="price" style="color:black">
-                                    <i class="fa fa-shopping-cart"></i>
-                                </span>
-                            </h4>
-                            <p><a href="#">sản phẩm 1</a> <span class="price">$15</span></p>
-                            <p><a href="#">sản phẩm 2</a> <span class="price">$5</span></p>
-                            <p><a href="#">sản phẩm 3</a> <span class="price">$8</span></p>
-                            <p><a href="#">sản phẩm 4</a> <span class="price">$2</span></p>
-                            <hr>
-                            <p>Thành tiền <span class="price" style="color:black"><b>$30</b></span></p>
-                        </div>
-                    </div>
-                    <input type="submit" value="Continue to checkout" class="btn">
                     </form>
-                </div>
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="section-heading">
-                            <h2>Đăng ký thông tin để có cơ hội nhận ưu đãi lên đến 30%</h2>
-                            <span>Ưu đãi và tích lũy điểm thưởng giúp bạn mua sắm thả ga tại V.E.T.</span>
-                        </div>
-                        <form id="subscribe" action="" method="get">
-                            <div class="row">
-                                <div class="col-lg-5">
-                                    <fieldset>
-                                        <input name="name" type="text" id="name" placeholder="Họ và tên của bạn" required="">
-                                    </fieldset>
-                                </div>
-                                <div class="col-lg-5">
-                                    <fieldset>
-                                        <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Địa chỉ email của bạn" required="">
-                                    </fieldset>
-                                </div>
-                                <div class="col-lg-2">
-                                    <fieldset>
-                                        <button type="submit" id="form-submit" class="main-dark-button"><i class="fa fa-paper-plane"></i></button>
-                                    </fieldset>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="row">
-                            <div class="col-6">
-                                <ul>
-                                    <li>Địa chỉ:<br><span>284 Pasteur, P.8 Q.3, TP.HCM</span></li>
-                                    <li>Điện thoại:<br><span>0913-244-567</span></li>
-                                    <li>Kênh thông tin:<br><span><a href="#">Facebook</a>, <a href="#">Instagram</a>, <a href="#">Zalo</a>, <a href="#">Shopee</a></span></li>
-                                </ul>
-                            </div>
-                            <div class="col-6">
-                                <ul>
-                                    <li>Giờ làm việc:<br><span>07:30 - 19:30 <br>Từ T2 đến T6</span></li>
-                                    <li>Email:<br><span>thegioivetcanh@gmail.com</span></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- ***** Subscribe Area Ends ***** -->
-
+            </main>
+        </div>   
         <!-- ***** Footer Start ***** -->
         <footer>
             <div class="container">
@@ -355,11 +348,11 @@
         <%@include file="../layout/message.jsp" %>
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
-
         <!-- Bootstrap -->
         <script src="assets/js/popper.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
-
+        <script src="assets/js/jquery.validate.min.js"></script>
+        <script src="assets/js/birdshop.js"></script>
         <!-- Plugins -->
         <script src="assets/js/owl-carousel.js"></script>
         <script src="assets/js/accordions.js"></script>
@@ -371,7 +364,6 @@
         <script src="assets/js/slick.js"></script> 
         <script src="assets/js/lightbox.js"></script> 
         <script src="assets/js/isotope.js"></script> 
-
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
 
@@ -389,6 +381,15 @@
                     }, 500);
 
                 });
+               $('.credit-payment').click(function (e){
+                    e.preventDefault();
+                    toast({
+                        title: 'Lỗi',
+                        message: 'Tính năng đang bị lỗi',
+                        type: 'error',
+                        duration: 3000  
+                        });
+               });
             });
 
         </script>
