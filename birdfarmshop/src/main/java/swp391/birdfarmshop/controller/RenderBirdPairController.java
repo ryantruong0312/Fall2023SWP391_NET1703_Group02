@@ -106,6 +106,7 @@ public class RenderBirdPairController extends HttpServlet {
                         out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
                     }
                 }
+                return;
             }
             if (username != null && breedId != null) {
                 List<BirdCustomer> birdCustomerList = new ArrayList<>();
