@@ -253,7 +253,6 @@ public class ImageDAO {
     public boolean addNewImageBird(String url, String is_thumbnail, String bird_id) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
-        ResultSet rs = null;
         boolean is_thumbnaill;
         try {
             con = DBUtils.getConnection();
@@ -272,8 +271,8 @@ public class ImageDAO {
                 stm.setString(4, null);
                 stm.setString(5, null);
 
-                rs = stm.executeQuery();
-                if (rs.next()) {
+                int rs = stm.executeUpdate();
+                if (rs > 0) {
                     return true;
                 }
             }
@@ -285,11 +284,7 @@ public class ImageDAO {
             if (con != null) {
                 con.close();
             }
-            if (rs != null) {
-                rs.close();
-            }
-        }
-        return false;
+        }        return false;
     }
 
     public boolean addNewAccessoryImage(String url, boolean type, String accessoryID) throws SQLException {

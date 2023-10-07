@@ -30,6 +30,38 @@
     </head>
 
     <style>
+        .form-add{
+            position: relative
+        }
+        .input{
+            font-size: 15px;
+            height: 50px;
+            background-color: transparent;
+        }
+        .form-add .input:focus
+        {
+            color: #3b71d1;
+            border: 2px solid #3b71ca !important;
+            box-shadow: none;
+            background-color: white;
+        }
+        label.error  {
+            color: red;
+            font-size: 0.8rem;
+            margin-bottom: -10px;
+        }
+        .btn-custom {
+            line-height: 30px;
+        }
+        .btn-custom img{
+            height: 20px;
+            width: 20px;
+        }
+        @media (max-width: 992px){
+            .home-custom{
+                max-width: 730px;
+            }
+        }
         .col-lg-12 .product-part {
             margin: 0 0 10px 10px;
         }
@@ -195,12 +227,16 @@
                 </div>
             </div>
             <div class="container">
-                <form action="MainController" method="POST" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4 style="text-align: center; color: red;"><c:out value="${requestScope.MESSAGE}"/></h4>
+                    </div>
+                </div>
+                <form action="MainController" method="GET" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-6 form-custom">
                             <input type="hidden" name="action" value="AddNewBird">
-                            <p><c:out value="${requestScope.MESSAGE}"/></p>
-                            <div class="form-outline mb-3">
+                            <div class="form-add mb-3">
                                 <label>Giống loài</label>
                                 <ol class="custom-columns">
                                     <c:forEach var="breed" items="${requestScope.BREED}" varStatus="counter">
@@ -213,14 +249,14 @@
                                 </div>
                             </div>
 
-                            <div class="form-outline mb-3">
+                            <div class="form-add mb-3">
                                 <label>Giới tính</label>
                                 <ol class="custom-columns">
                                     <li><input type="radio" id="gender-1" name="txtBirdGender" value="Đực"/><label for="gender-1">Trống</label></li>
                                     <li><input type="radio" id="gender-0" name="txtBirdGender" value="Cái"/><label for="gender-0">Mái</label></li>
                                 </ol>
                             </div>
-                            <div class="form-outline mb-3">
+                            <div class="form-add mb-3">
                                 <label>Trạng thái</label>
                                 <ol class="custom-columns">
                                     <c:forEach var="status" items="${requestScope.STATUS}" varStatus="counter">
@@ -228,33 +264,33 @@
                                     </c:forEach>
                                 </ol>
                             </div>
-                            <div class="form-outline mb-3">
+                            <div class="form-add mb-3">
                                 <label>ID của chim (Bao gồm 2 chữ hoa và 3 chữ số)</label>
-                                <input type="text" name="txtBirdId" class="input form-control" pattern="[A-Z]{2}\d{3}"/>
+                                <input type="text" name="txtBirdId" class="input form-control" pattern="[A-Z]{2}\d{3}" value="${txtBirdId}"/>
                             </div>
-                            <div class="form-outline mb-3">
+                            <div class="form-add mb-3">
                                 <label>Tên</label>
-                                <input type="text" name="txtBirdName" class="input form-control" required="" pattern="[A-Za-z]+" title="Vui lòng chỉ nhập chữ cái"/>                          
+                                <input type="text" name="txtBirdName" class="input form-control" pattern="[A-Za-z]+" title="Vui lòng chỉ nhập chữ cái" value="${txtBirdName}"/>                          
                             </div>
-                            <div class="form-outline mb-3">
+                            <div class="form-add mb-3">
                                 <label>Màu Sắc</label>
-                                <input type="text" name="txtBirdColor" class="input form-control" value=""/>      
+                                <input type="text" name="txtBirdColor" class="input form-control" value="${txtBirdColor}"/>      
                             </div>
-                            <div class="form-outline mb-3">
+                            <div class="form-add mb-3">
                                 <label>Ngày Sinh (20yy-mm-dd)</label>
-                                <input type="text" name="txtBirdDate" class="input form-control" required="" pattern="^20([0-2][0-9])-([0][1-9]|1[0-2])-([0-2][0-9]|3[01])$"/>
+                                <input type="text" name="txtBirdDate" class="input form-control" pattern="^20([0-2][0-9])-([0][1-9]|1[0-2])-([0-2][0-9]|3[01])$" value="${txtBirdDate}"/>
                             </div>
-                            <div class="form-outline mb-3">
+                            <div class="form-add mb-3">
                                 <label>Thành tựu</label>
-                                <textarea name="txtBirdAchievement" class="input form-control" value=""></textarea>
+                                <textarea name="txtBirdAchievement" class="input form-control" value="${txtBirdAchievement}"></textarea>
                             </div>
                         </div>
                         <div class="col-lg-6 form-custom">
-                            <div class="form-outline mt-2">
+                            <div class="form-add mb-3">
                                 <label>Mô tả</label>
-                                <textarea name="txtBirdDescription" class="input form-control" value=""></textarea>
+                                <textarea name="txtBirdDescription" class="input form-control" value="${txtBirdDescription}"></textarea>
                             </div>
-                            <div class="form-outline mb-3">
+                            <div class="form-add mb-3">
                                 <label>ID của chim bố</label>
                                 <select id="birdMaleList" name="txtBirdDad" class="input form-control">
                                     <option value="">Option 1</option>
@@ -267,7 +303,7 @@
        --%>
                                 </select>
                             </div>
-                            <div class="form-outline mb-3">
+                            <div class="form-add mb-3">
                                 <label>ID của chim mẹ</label>
                                 <select id="femaleBird" name="txtBirdMom" class="input form-control">
                                     <%--
@@ -277,29 +313,29 @@
                                     --%>
                                 </select>
                             </div>
-                            <div class="form-outline mb-3 column-container">
+                            <div class="form-add mb-3 column-container">
                                 <label>Tuổi trưởng thành</label>
-                                <input type="number" name="txtBirdGrownAge" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số"/>
+                                <input type="number" name="txtBirdGrownAge" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${txtBirdGrownAge}"/>
                                 <label>Lịch sử sinh sản</label>
-                                <input type="number" name="txtBirdReproduction_history" class="input form-control" value="" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số"/>
+                                <input type="number" name="txtBirdReproduction_history" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${txtBirdReproduction_history}"/>
                             </div>
-                            <div class="form-outline mb-3 column-container">
+                            <div class="form-add mb-3 column-container">
                                 <label>Giá</label>
-                                <input type="number" name="txtBirdPrice" class="input form-control" value="" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số"/>
+                                <input type="number" name="txtBirdPrice" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${txtBirdPrice}"/>
                                 <label>Giảm giá</label>
-                                <input type="number" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" title="Vui lòng chỉ nhập chữ số" value=""/>
+                                <input type="number" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" title="Vui lòng chỉ nhập chữ số" value="${txtBirdDiscount}"/>
                             </div>
-                            <div class="form-outline mb-3">
+                            <div class="form-add mb-3">
                                 <label>Hình ảnh sản phẩm 1 (Bắt buộc)</label>
-                                <input type="text" name="txtImage_1" class="input form-control" required="" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" value=""/>
+                                <input type="text" name="txtImage_1" class="input form-control" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" value="${txtImage_1}" required="" />
                             </div>
-                            <div class="form-outline mb-3">
+                            <div class="form-add mb-3">
                                 <label>Hình ảnh sản phẩm 2</label>
-                                <input type="text" name="txtImage_2" class="input form-control" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" value=""/>
+                                <input type="text" name="txtImage_2" class="input form-control" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" value="${txtImage_2}"/>
                             </div>
-                            <div class="form-outline mb-3">
+                            <div class="form-add mb-3">
                                 <label>Hình ảnh sản phẩm 3</label>
-                                <input type="text" name="txtImage_3" class="input form-control" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" value=""/>
+                                <input type="text" name="txtImage_3" class="input form-control" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" value="${txtImage_3}"/>
                             </div>
 <!--                            <div class="form-outline mt-2">
                                 <label>Chọn hình ảnh của chim</label>
