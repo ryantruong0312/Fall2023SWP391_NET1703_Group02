@@ -305,7 +305,7 @@
                             </div>
                             <div class="form-add mb-3">
                                 <label>ID của chim mẹ</label>
-                                <select id="femaleBird" name="txtBirdMom" class="input form-control">
+                                <select id="birdFemaleList" name="txtBirdMom" class="input form-control">
                                     <%--
                                     <c:forEach items="${FEMALEBIRDS}" var="birdMom">
                                         <option value="${birdMom.bird_id}">${birdMom.bird_name}</option>
@@ -459,7 +459,7 @@
                                       data: {femaleBird : selectedRadioId},
                                       success: function (data) {
                                           console.log(data);
-                                          $('#femaleBird').html(data)
+                                          $('#birdFemaleList').html(data)
                                       }
                                    });
                                 });

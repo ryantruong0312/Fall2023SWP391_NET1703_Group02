@@ -49,6 +49,21 @@
                 height: 200px;
                 margin-top: 2px;
             }
+            
+            .col-lg-12 a {
+                border-radius: 10px;
+                border: 1px solid rgb(221, 221, 227);
+                background-color: #f5c6cb;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0 auto;
+                width: 50%;
+                margin-bottom: 30px;
+                margin-top: 20px;
+                width: 150px;
+                float: right;
+            }
         </style>
         <script>
             function swapImages(clickedImage) {
@@ -184,6 +199,13 @@
         <c:set var="birdDetails" value="${requestScope.birdDetails}"/>
         <section class="section" id="product">
             <div class="container">
+                <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <a href="MainController?action=UpdateBird&bird_id=${birdDetails.bird_id}"><span>Cập nhật chim</span></a>
+                    </div>
+                </div>
+                </c:if>
                 <div class="row">
                     <div class="col-lg-8">
                         <c:if test="${birdDetails != null}">

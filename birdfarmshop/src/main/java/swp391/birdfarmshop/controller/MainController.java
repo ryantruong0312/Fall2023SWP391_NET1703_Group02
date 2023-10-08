@@ -93,6 +93,8 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_CHECKOUT = "RenderCheckOutController";
     private static final String ACT_NAV_PAYMENT = "NavToPayment";
     private static final String DEST_NAV_PAYMENT = "AddOrderController";
+    private static final String ACT_UPDATE_BIRD = "UpdateBird";
+    private static final String DEST_UPDATE_BIRD = "UpdateBirdController";
     private static final String TEST = "/shop/checkout.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -215,6 +217,9 @@ public class MainController extends HttpServlet {
                 case ACT_NAV_PAYMENT:
                     url = DEST_NAV_PAYMENT;
                 break;
+                case ACT_UPDATE_BIRD:
+                    url = DEST_UPDATE_BIRD;
+                    break;
                 default:
                     break;
             }

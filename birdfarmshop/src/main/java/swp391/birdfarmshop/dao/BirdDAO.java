@@ -634,6 +634,69 @@ public class BirdDAO {
         return birds;
     }
     
+    public boolean updateBird(String bird_id, String bird_name, String color, String birthday, String grown_age
+      , String gender, String breed_id, String achievement, String reproduction_history, String price, String description
+      , String dad_bird_id, String mom_bird_id, String discount, String status) throws SQLException, ParseException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        boolean sex;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date utilDate = dateFormat.parse(birthday);
+        Date sqlDate = new Date(utilDate.getTime());
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("UPDATE [dbo].[Bird]\n"
++ "             SET [bird_id] = ?,[bird_name] = ?,[color] = ?,[birthday] = ?,[grown_age] = ?,[gender] = ?,[breed_id] = ?,"
++ "             [achievement] = ?, [reproduction_history] = ?,[price] = ?,[description] = ?,[dad_bird_id] = ?,"
++ "             [mom_bird_id] = ?, [discount] = ?,[status] = ?\n"
++ "              WHERE [bird_id] = ?");
+                stm.setString(1, bird_id);
+                stm.setString(2, bird_name);
+                stm.setString(3, color);
+                if(birthday != null)
+                    stm.setDate(4, sqlDate);
+                if(grown_age != null)
+                    stm.setInt(5, Integer.parseInt(grown_age));
+                if(gender.equals("Đực")) {
+                    sex = true;
+                } else {
+                    sex = false;
+                }
+                stm.setBoolean(6, sex);
+                stm.setString(7, breed_id);
+                stm.setString(8, achievement);
+                if(reproduction_history != null)
+                    stm.setInt(9, Integer.parseInt(reproduction_history));
+                if(price != null)
+                    stm.setInt(10, Integer.parseInt(price));
+                stm.setString(11, description);
+                stm.setString(12, dad_bird_id);
+                stm.setString(13, mom_bird_id);
+                if(discount != null)
+                    stm.setInt(14, Integer.parseInt(discount));
+                stm.setString(15, status);
+                stm.setString(16, bird_id);
+                int row = stm.executeUpdate();
+                if(row > 0) 
+                    return true;
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return false;
+    }
+    
 //    public static void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
 //        BirdDAO dao = new BirdDAO();
 //        boolean check = dao.addNewBird("AS101", "cape", "vàng, đỏ", "2023-10-07", "11", "Đực", "asian", "Chưa có", "1", "3000000", "Hàng Việt Nam", "XT001", "IR002", "1", "Còn hàng");
