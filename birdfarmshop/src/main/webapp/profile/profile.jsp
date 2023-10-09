@@ -36,6 +36,10 @@
                 padding-bottom: 1rem;
                 text-align: center;
             }
+            .about .active-profile a
+            {
+                color:  orange;
+            }
             .account-settings .user-profile .user-avatar {
                 margin: 0 0 1rem 0;
             }
@@ -151,7 +155,7 @@
         <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
         <c:url var="toReports" value="MainController?action=NavToReports"/>
         <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
-
+        <c:url var="toUpdatePassword" value="MainController?action=NavToUpdatePassword"/>
         <!-- ***** Preloader Start ***** -->
         <div id="preloader">
             <div class="jumper">
@@ -241,36 +245,7 @@
         <main>
             <div class="container">
                 <div class="row gutters">
-                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <div class="account-settings">
-                                    <div class="user-profile">
-                                        <div class="user-avatar">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin">
-                                        </div>
-                                        <h5>${sessionScope.LOGIN_USER.fullName}</h5>
-                                    </div>
-                                    <div class="about">
-                                        <ul>
-                                            <li>
-                                                <a href="#" class="profile-link">
-                                                    <img class="icon" src="assets/images/user.png" alt="alt"/>
-                                                    <span>Thông tin người dùng</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="#" class="order-link">
-                                                    <img class="icon" src="assets/images/test.png" alt="alt"/>
-                                                    <span>Đơn hàng</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <%@include file="../layout/sidebar-profile.jsp" %>
                     <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                         <div class="card h-100">
                             <div class="card-body profile-section">
@@ -339,7 +314,7 @@
                                     <div class="row gutters">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                             <div class="text-right">
-                                                <a href="${pageScope.toEditProfile}&username=${requestScope.USER.username}" class="btn btn-primary">Đổi mật khẩu</a>   
+                                                <a href="${pageScope.toUpdatePassword}" class="btn btn-primary">Đổi mật khẩu</a>   
                                                 <a href="${pageScope.toEditProfile}&username=${requestScope.USER.username}" class="btn btn-primary">Chỉnh sửa</a>
                                             </div>
                                         </div>
@@ -543,7 +518,7 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
-
+        <%@include file="../layout/message.jsp" %>
         <script>
             // Function to show the profile section and hide the order section
             function showProfileSection() {
@@ -567,9 +542,7 @@
 
         <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script type="text/javascript">
-
-        </script>
+  
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
 

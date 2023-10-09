@@ -406,6 +406,60 @@ $('#form-order').validate({
         }
     }
 });
+$('#createAccountForm').validate({
+    rules: {
+        fullname: {
+            required: true,
+            maxlength: 30,
+            regex: /^(?!\s)[\s\S]*$/
+        },
+        username: {
+            required: true,
+            minlength: 5,
+            regex: /^[^\s]+$/
+        }
+    },
+    messages: {
+        fullname: {
+            required: 'Vui lòng nhập tên của nhân viên',
+            maxlength: 'Không nhập quá 30 kí tự',
+            regex: "Không nhập kí tự trắng đầu tiên"
+        },
+        username: {
+            required: 'Vui lòng nhập tài khoản của nhân viên',
+            minlength: 'Tên tài khoản phải có ít nhất 5 ký tự',
+            regex: "Tài khoản không chứa khoảng trắng"
+        }
+    }  
+});
+$("#form-updatePassword").validate({
+    rules: {
+        oldpassword: {
+            required: true
+        },
+        newpassword: {
+            required: true,
+            regex: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+        },
+        're-password': {
+            required: true,
+            equalTo: "[name=newpassword]"
+        }
+    },
+    messages: {
+        oldpassword: {
+            required: 'Vui lòng điền tên mật khẩu cũ'
+        },
+        newpassword: {
+            required: 'Vui lòng nhập mật khẩu mới của bạn',
+            regex: 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt'
+        },
+        're-password': {
+            required: 'Vui lòng nhập mật khẩu mới của bạn',
+            equalTo: 'Xác nhận mật khẩu không đúng'
+        }
+    }
+});
 $.validator.addMethod(
         "regex",
         function (value, element, regexp) {
