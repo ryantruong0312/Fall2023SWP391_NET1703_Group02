@@ -11,8 +11,12 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+//import swp391.birdfarmshop.dao.AccessoryCategoryDAO;
 import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.dao.ImageDAO;
+import swp391.birdfarmshop.dto.AccessoryDTO;
+//import swp391.birdfarmshop.model.AccessoryCategory;
+//import swp391.birdfarmshop.model.Image;
 
 /**
  *
@@ -37,27 +41,46 @@ public class UpdateAccessoryController extends HttpServlet {
             String txtDescribe = request.getParameter("txtDescribe");
             String txtDiscount = request.getParameter("txtDiscount");
             String txtImage = request.getParameter("txtImage");
+            String txtNewQuantity = request.getParameter("txtNewQuantity");
+
             String txtImage_1 = request.getParameter("txtImage_1");
             String txtImage_2 = request.getParameter("txtImage_2");
             String Image_id_1 = request.getParameter("Image_id_1");
             String Image_id_2 = request.getParameter("Image_id_2");
             AccessoryDAO d = new AccessoryDAO();
-            boolean rs = d.updateAccessory(txtAccessoryID, txtAccessoryName, txtCategoryID, txtPrice, txtStockQuantity, txtDescribe, txtDiscount);
-            
             ImageDAO i = new ImageDAO();
-            boolean checkImage =  i.updateThumbnailImageAccessory(txtAccessoryID, true, txtImage);
-            boolean checkImage_1 = i.updateImageAccessory(txtAccessoryID, false, txtImage_1, Image_id_1);
-            if(Image_id_2 != null){
-                boolean checkImage_2 = i.updateImageAccessory(txtAccessoryID, false, txtImage_2, Image_id_2);
-            }          
-            if(rs){
-                String message = "Chỉnh sửa thành công";
-                request.setAttribute("MESSAGE", message);
-            }else{
-                String error = "Chỉnh sửa thất bại";
-                request.setAttribute("error", error);
+            if (txtNewQuantity == null) {
+                boolean rs = d.updateAccessory(txtAccessoryID, txtAccessoryName, txtCategoryID, txtPrice, txtStockQuantity, txtDescribe, txtDiscount);
+                request.setAttribute("im", txtImage);
+                boolean checkImage = i.updateThumbnailImageAccessory(txtAccessoryID, true, txtImage);
+                boolean checkImage_1 = i.updateImageAccessory(txtAccessoryID, false, txtImage_1, Image_id_1);
+                if (Image_id_2 != null) {
+                    boolean checkImage_2 = i.updateImageAccessory(txtAccessoryID, false, txtImage_2, Image_id_2);
+                }
+                AccessoryDAO a = new AccessoryDAO();
+                AccessoryDTO ac = a.getAccessoryDetailsByID(txtAccessoryID);
+                if (ac.getStatus().equalsIgnoreCase("hết hàng")) {
+                    String message = "Hết hàng";
+                    request.setAttribute("MESSAGE", message);
+                }
+                request.setAttribute("a", ac);
+
+                url = SUCCESS;
+            } else {
+                boolean rs = d.updateAccessoryQuantity(txtAccessoryID, txtNewQuantity);
+                String im = i.getThumbnailUrlByAccessoryId(txtAccessoryID);
+                request.setAttribute("im", im);
+                AccessoryDAO a = new AccessoryDAO();
+                AccessoryDTO ac = a.getAccessoryDetailsByID(txtAccessoryID);
+                if (ac.getStatus().equalsIgnoreCase("hết hàng")) {
+                    String message = "Hết hàng";
+                    request.setAttribute("MESSAGE", message);
+                }
+                request.setAttribute("a", ac);
+
+                url = SUCCESS;
             }
-            url = SUCCESS;
+
         } catch (Exception e) {
             log("Error at RenderAddAccessoryController: " + e.toString());
         } finally {

@@ -166,12 +166,11 @@
                     </div>
                     <form action="UpdateAccessoryController" method="GET">
                         <div class="col-lg-12 form-left">
-
                             <div class="form-outline">
                                 <label>ID của phụ kiện (Bao gồm 2 chữ hoa và 3 chữ số)</label>
                                 <input style="color: blue;" type="text" name="txtAccessoryID" class="input form-control" pattern="[A-Z]{2}\d{3}" value="${a.accessory_id}" readonly=""/>
                             </div>
-
+                            
                             <div class="form-outline mt-2">
                                 <label>Tên</label>
                                 <input style="color: blue;" type="text" name="txtAccessoryName" class="input form-control" value="${a.accessory_name}" required/>
@@ -198,7 +197,7 @@
 
                             <div class="form-outline mt-2">
                                 <label for="txtDescribe">Mô tả</label><br>
-                                <textarea class="form-control" id="txtDescribe" name="txtDescribe" rows="5" cols="50" style="width: 554px; height: 75px; color: blue;">${a.description}</textarea>
+                                <textarea class="form-control" id="txtDescribe" name="txtDescribe" rows="5" cols="50" style="width: 554px; height: 125px; color: blue;">${a.description}</textarea>
                             </div>
 
                             <div class="form-outline mt-2">
@@ -222,13 +221,13 @@
                             </c:if>
 
                         </div>
-                            
-                                <c:if test="${requestScope.MESSAGE != null}">
-                                    <div>${MESSAGE}</div>
-                                </c:if>
-                                <c:if test="${requestScope.Error != null}">
-                                    <div>${error}</div>
-                                </c:if>
+
+                        <c:if test="${requestScope.MESSAGE != null}">
+                            <div>${MESSAGE}</div>
+                        </c:if>
+                        <c:if test="${requestScope.Error != null}">
+                            <div>${error}</div>
+                        </c:if>
 
                         <div class="col-lg-12">
                             <button class="button-submit" type="submit">Hoàn tất</button>

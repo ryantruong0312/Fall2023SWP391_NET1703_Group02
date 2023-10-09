@@ -1,7 +1,7 @@
-    <%-- 
-    Document   : accessories
-    Created on : Sep 13, 2023, 11:20:56 PM
-    Author     : tlminh
+<%-- 
+Document   : accessories
+Created on : Sep 13, 2023, 11:20:56 PM
+Author     : tlminh
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -38,10 +38,11 @@
                 color: white !important;
             }
             .search-bar {
-                margin: 0 0 15px 120px;
+                margin: 7px 0 10px 75px;
                 border: 5px;
                 border-radius: 8px;
                 border: 1px solid rgb(221, 221, 227);
+                
             }
             .search-bar input {
                 border: 0;
@@ -78,13 +79,34 @@
             }
             #input-accessory{
                 display: block;
-                margin: 0 auto;
                 border-radius: 10px; /* Điều này làm cho góc bo tròn */
-                padding: 10px 20px; /* Điều này làm cho nút trở nên lớn hơn và dễ đọc hơn */
+                padding: 10px; /* Điều này làm cho nút trở nên lớn hơn và dễ đọc hơn */
                 background-color: #007bff; /* Màu nền */
                 color: #fff; /* Màu chữ */
                 cursor: pointer; /* Biến con trỏ thành bàn tay khi di chuột vào nút */
                 border: none;
+                font-size: 15px;
+                margin-left: 295px;
+            }
+            .overlay-text {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: rgba(0, 0, 0, 0.5);
+                border-radius: 80%;
+                color: #fff;
+                padding: 30px;
+                font-size: 50px;
+                text-align: center;
+                margin-right: 1px;
+                margin-top: 0px;
+            }
+            .overlay-container {
+                position: relative;
+            }
+            #selectAccessory{
+                margin-top:  5px;
             }
         </style>
     </head>
@@ -202,13 +224,23 @@
         <section class="section" id="products">
             <div class="container">
                 <div class="row">
-                    <form id="selectAccessory" action="MainController" method="POST">
-                        <input type="hidden" name="action" value="NavToAccessory"> 
-                        <div class="search-bar">
-                            <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                            <input type="text" name="txtAccessory" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
-                            <input type="submit" value="Tìm kiếm">
-                        </div>
+                    <div class="col-md-7">
+                        <form id="selectAccessory" action="MainController" method="POST">
+                            <input type="hidden" name="action" value="NavToAccessory"> 
+                            <div class="search-bar">
+                                <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                                <input type="text" name="txtAccessory" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                                <input type="submit" value="Tìm kiếm">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-5" style="margin-bottom: 15px; ">
+                        <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
+                            <a href="${toAddAccessory}">
+                                <button id="input-accessory" type="button">Thêm mới phụ kiện</button>
+                            </a>
+                        </c:if>
+                    </div>
                 </div>
             </div>
             <div class="container-fluid">
@@ -231,11 +263,6 @@
                                 <li><input type="radio" id="type-7" ${requestScope.PRICE == "unit_price >= 300000 AND unit_price <= 600000" ? "checked": ""} name="txtPrice" value="unit_price >= 300000 AND unit_price <= 600000"><label for="type-7">Từ 300,000₫ - 600,000₫</label></li>
                                 <li><input type="radio" id="type-8" ${requestScope.PRICE == "unit_price > 600000" ? "checked": ""} name="txtPrice" value="unit_price > 600000"><label for="type-8">Trên 600,000₫</label></li>
                             </ol>
-                            <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
-                                <a href="${toAddAccessory}">
-                                    <button id="input-accessory" type="button">Thêm mới phụ kiện</button>
-                                </a>
-                            </c:if>
                         </div>
                     </nav>
                     <!-- Nội dung chính -->
@@ -255,10 +282,15 @@
                                                             </li>
                                                             <c:if test="${accessory.stock_quantity > 0}">
                                                                 <li><a style="cursor: pointer" class="accessory-cart" data-value="${accessory.accessory_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                            </c:if>
+                                                                    </c:if>
                                                         </ul>
                                                     </div>
-                                                    <img class="thumb" src="${accessory.image_url}" alt="">
+                                                    <div class="overlay-container">
+                                                        <img class="thumb" src="${accessory.image_url}" alt="">
+                                                        <c:if test="${accessory.stock_quantity == 0}">
+                                                            <div class="overlay-text">Hết hàng</div>
+                                                        </c:if>
+                                                    </div>
                                                 </div>
                                                 <div class="down-content">
                                                     <h4>${accessory.accessory_name}</h4>
@@ -443,7 +475,7 @@
                                                                 $.ajax({
                                                                     url: "AddAccessoryToCartController",
                                                                     type: 'POST',
-                                                                    data: {accessory_id :accessory_id, order_quantity: 1},
+                                                                    data: {accessory_id: accessory_id, order_quantity: 1},
                                                                     success: function (data) {
                                                                         if (data == 0) {
                                                                             toast({

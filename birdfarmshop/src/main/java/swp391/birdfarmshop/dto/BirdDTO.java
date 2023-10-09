@@ -4,7 +4,6 @@
  */
 package swp391.birdfarmshop.dto;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,6 @@ public class BirdDTO {
     private String bird_id;
     private String bird_name;
     private String color;
-    private Date birthday;
     private int age;
     private int grown_age;
     private String gender;
@@ -38,11 +36,10 @@ public class BirdDTO {
     public BirdDTO() {
     }
 
-    public BirdDTO(String bird_id, String bird_name, String color, Date birthday, int age, int grown_age, String gender, String breed_id, String breed_name, String achievement, int reproduction_history, int price, String description, String dad_bird_id, String dad_bird_name, String mom_bird_id, String mom_bird_name, int discount, String status, ArrayList<String> image_urls) {
+    public BirdDTO(String bird_id, String bird_name, String color, int age, int grown_age, String gender, String breed_id, String breed_name, String achievement, int reproduction_history, int price, String description, String dad_bird_id, String dad_bird_name, String mom_bird_id, String mom_bird_name, int discount, String status, ArrayList<String> image_urls) {
         this.bird_id = bird_id;
         this.bird_name = bird_name;
         this.color = color;
-        this.birthday = birthday;
         this.age = age;
         this.grown_age = grown_age;
         this.gender = gender;
@@ -211,14 +208,6 @@ public class BirdDTO {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
     }
 
 }
