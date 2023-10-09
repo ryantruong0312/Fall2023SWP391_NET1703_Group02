@@ -235,7 +235,6 @@
                 <form action="MainController" method="GET" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-6 form-custom">
-                            <input type="hidden" name="action" value="AddNewBird">
                             <div class="form-add mb-3">
                                 <label>Giống loài</label>
                                 <ol class="custom-columns">
@@ -248,7 +247,6 @@
                                     <input type="text" id="otherBreed" class="input form-control"  name="txtOtherBirdBreed" pattern="[A-Za-z]+" value="" placeholder="Nhập giống loài khác" />
                                 </div>
                             </div>
-
                             <div class="form-add mb-3">
                                 <label>Giới tính</label>
                                 <ol class="custom-columns">
@@ -270,7 +268,7 @@
                             </div>
                             <div class="form-add mb-3">
                                 <label>Tên</label>
-                                <input type="text" name="txtBirdName" class="input form-control" pattern="[A-Za-z]+" title="Vui lòng chỉ nhập chữ cái" value="${txtBirdName}"/>                          
+                                <input type="text" name="txtBirdName" class="input form-control" title="Vui lòng chỉ nhập chữ cái" value="${txtBirdName}"/>                          
                             </div>
                             <div class="form-add mb-3">
                                 <label>Màu Sắc</label>

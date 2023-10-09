@@ -238,12 +238,21 @@
                                     </c:choose>
                                     <div class="mt-2">
                                         <h4>Mô tả sản phẩm: </h4>
-                                        <span>${birdDetails.description}</span>
+                                        <c:if test="${not empty birdDetails.description}">
+                                            <span>Thông tin: ${birdDetails.description}</span>
+                                        </c:if>
+                                        <c:if test="${not empty birdDetails.achievement}">
+                                            <span>Thành tựu: ${birdDetails.achievement}</span>
+                                        </c:if>
+                                        <span>Màu sắc: ${birdDetails.color}</span>
+                                        <span>Tháng tuổi: ${birdDetails.age}</span>
+                                        <span>Thời gian trưởng thành: ${birdDetails.grown_age} tháng</span>
+                                        <span>Số lần giao phối: ${birdDetails.reproduction_history}</span>
                                         <div>
                                             <div class="quote">
                                                 <c:if test="${not empty birdDetails.dad_bird_name && not empty birdDetails.mom_bird_name}">
                                                     <i class="fa fa-quote-left"></i><p>${birdDetails.dad_bird_name} lai với ${birdDetails.mom_bird_name}</p>
-                                                    </c:if>
+                                                </c:if>
                                             </div>
                                             <div class="quantity-content">
                                                 <div class="left-content">

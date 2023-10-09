@@ -312,6 +312,7 @@ public class BirdDAO {
                     String bird_id = rs.getString("bird_id");
                     String bird_name = rs.getString("bird_name");
                     String color = rs.getString("color");
+                    Date birdthday = rs.getDate("birthday");
                     int age = rs.getInt("age");
                     int grown_age = rs.getInt("grown_age");
                     boolean sex = rs.getBoolean("gender");
@@ -333,7 +334,7 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     ArrayList<String> image_urls = imgDao.getImagesByBirdId(birdId);
-                    bird = new BirdDTO(bird_id, bird_name, color, age, grown_age, gender, breed_id, breed_name,
+                    bird = new BirdDTO(bird_id, bird_name, color, birdthday, age, grown_age, gender, breed_id, breed_name,
                             achievement, reproduction_history, price, description, dad_bird_id, dad_bird_name, mom_bird_id, mom_bird_name, discount, status, image_urls);
                 }
             }
@@ -582,9 +583,9 @@ public class BirdDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement("SELECT [bird_id],[bird_name],[color],DATEDIFF(MONTH, birthday, GETDATE()) AS age,[grown_age]"+ 
-",[gender],bird.[breed_id] AS breed_id,breed.[breed_name] AS breed_name\n" +
-",[achievement],[reproduction_history],[price],[description],[dad_bird_id],[mom_bird_id],[discount],[status]\n" +
+                stm = con.prepareStatement("SELECT [bird_id],[bird_name],[color],[birthday]," +
+"DATEDIFF(MONTH, birthday, GETDATE()) AS age,[grown_age],[gender],bird.[breed_id] AS breed_id,breed.[breed_name] AS breed_name,\n" +
+"[achievement],[reproduction_history],[price],[description],[dad_bird_id],[mom_bird_id],[discount],[status]\n" +
 "FROM [BirdFarmShop].[dbo].[Bird] AS bird\n" +
 "LEFT JOIN BirdBreed AS breed\n" +
 "ON bird.breed_id = breed.breed_id");
@@ -593,6 +594,7 @@ public class BirdDAO {
                     String bird_id = rs.getString("bird_id");
                     String bird_name = rs.getString("bird_name");
                     String color = rs.getString("color");
+                    Date birthday = rs.getDate("birthday");
                     int age = rs.getInt("age");
                     int grown_age = rs.getInt("grown_age");
                     boolean sex = rs.getBoolean("gender");
@@ -614,7 +616,7 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     ArrayList<String> image_urls = imgDao.getImagesByBirdId(bird_id);
-                    bird = new BirdDTO(bird_id, bird_name, color, age, grown_age, gender, breed_id, breed_name,
+                    bird = new BirdDTO(bird_id, bird_name, color, birthday, age, grown_age, gender, breed_id, breed_name,
                             achievement, reproduction_history, price, description, dad_bird_id, dad_bird_name, mom_bird_id, mom_bird_name, discount, status, image_urls);
                     birds.add(bird);
                 }
@@ -651,7 +653,7 @@ public class BirdDAO {
 + "             SET [bird_id] = ?,[bird_name] = ?,[color] = ?,[birthday] = ?,[grown_age] = ?,[gender] = ?,[breed_id] = ?,"
 + "             [achievement] = ?, [reproduction_history] = ?,[price] = ?,[description] = ?,[dad_bird_id] = ?,"
 + "             [mom_bird_id] = ?, [discount] = ?,[status] = ?\n"
-+ "              WHERE [bird_id] = ?");
++ "             WHERE [bird_id] = ?");
                 stm.setString(1, bird_id);
                 stm.setString(2, bird_name);
                 stm.setString(3, color);
@@ -672,8 +674,15 @@ public class BirdDAO {
                 if(price != null)
                     stm.setInt(10, Integer.parseInt(price));
                 stm.setString(11, description);
+                if(dad_bird_id.isBlank()) {
+                    dad_bird_id = null;
+                }
                 stm.setString(12, dad_bird_id);
+                if(mom_bird_id.isBlank()) {
+                    mom_bird_id = null;
+                }
                 stm.setString(13, mom_bird_id);
+                System.out.println(dad_bird_id + " " + mom_bird_id);
                 if(discount != null)
                     stm.setInt(14, Integer.parseInt(discount));
                 stm.setString(15, status);
@@ -697,9 +706,9 @@ public class BirdDAO {
         return false;
     }
     
-//    public static void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
-//        BirdDAO dao = new BirdDAO();
-//        boolean check = dao.addNewBird("AS101", "cape", "vàng, đỏ", "2023-10-07", "11", "Đực", "asian", "Chưa có", "1", "3000000", "Hàng Việt Nam", "XT001", "IR002", "1", "Còn hàng");
-//        System.out.println(check);
-//    }
+    public static void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
+        BirdDAO dao = new BirdDAO();
+        boolean check = dao.updateBird("Cl201", "Vẹt Cockatiel Lutin", "xám, vàng, cam", "2020-02-02", "24", "Đực", "australian", "Nhiều", "0", "2500000", "Hàng Việt Nam", "", "", "0", "Còn hàng");
+        System.out.println(check);
+    }
 }
