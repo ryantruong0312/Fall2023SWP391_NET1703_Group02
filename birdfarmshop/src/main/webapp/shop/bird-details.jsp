@@ -49,6 +49,21 @@
                 height: 200px;
                 margin-top: 2px;
             }
+            
+            .col-lg-12 a {
+                border-radius: 10px;
+                border: 1px solid rgb(221, 221, 227);
+                background-color: #f5c6cb;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0 auto;
+                width: 50%;
+                margin-bottom: 30px;
+                margin-top: 20px;
+                width: 150px;
+                float: right;
+            }
         </style>
         <script>
             function swapImages(clickedImage) {
@@ -184,6 +199,13 @@
         <c:set var="birdDetails" value="${requestScope.birdDetails}"/>
         <section class="section" id="product">
             <div class="container">
+                <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <a href="MainController?action=UpdateBird&bird_id=${birdDetails.bird_id}"><span>Cập nhật chim</span></a>
+                    </div>
+                </div>
+                </c:if>
                 <div class="row">
                     <div class="col-lg-8">
                         <c:if test="${birdDetails != null}">
@@ -216,12 +238,21 @@
                                     </c:choose>
                                     <div class="mt-2">
                                         <h4>Mô tả sản phẩm: </h4>
-                                        <span>${birdDetails.description}</span>
+                                        <c:if test="${not empty birdDetails.description}">
+                                            <span>Thông tin: ${birdDetails.description}</span>
+                                        </c:if>
+                                        <c:if test="${not empty birdDetails.achievement}">
+                                            <span>Thành tựu: ${birdDetails.achievement}</span>
+                                        </c:if>
+                                        <span>Màu sắc: ${birdDetails.color}</span>
+                                        <span>Tháng tuổi: ${birdDetails.age}</span>
+                                        <span>Thời gian trưởng thành: ${birdDetails.grown_age} tháng</span>
+                                        <span>Số lần giao phối: ${birdDetails.reproduction_history}</span>
                                         <div>
                                             <div class="quote">
                                                 <c:if test="${not empty birdDetails.dad_bird_name && not empty birdDetails.mom_bird_name}">
                                                     <i class="fa fa-quote-left"></i><p>${birdDetails.dad_bird_name} lai với ${birdDetails.mom_bird_name}</p>
-                                                    </c:if>
+                                                </c:if>
                                             </div>
                                             <div class="quantity-content">
                                                 <div class="left-content">

@@ -226,11 +226,13 @@
                     <div class="col-lg-8">
                         <div class="image-container">
                             <div class="image-top">
-                                <div class="overlay-container">                                   
-                                    <img id="mainImage" src="${im}" alt="Image main" onclick="swapImages()">
+                                <div class="overlay-container">
+                                      <input type="hidden" name="accessory_id" value="${a.accessory_id}"/>
+                                    <img id="mainImage" style="width: 500px; height: 400px; border: 1px solid;" src="${im}" alt="Image main" onclick="swapImages()">
                                     <c:if test="${requestScope.MESSAGE != null}">
                                         <div class="overlay-text">${MESSAGE}</div>
                                     </c:if>
+                                </div>
                                 </div> 
                             </div>
                             <div class="image-bottom">
@@ -267,7 +269,7 @@
                                 <div class="left-content">
                                     <h6>Số lượng</h6>
                                 </div>
-                                <form action="MainController">
+                            
                                     <div class="right-content">
                                         <div class="quantity buttons_added">
                                             <div class="quantity buttons_added">
@@ -304,13 +306,13 @@
                                     </div>
                                     <div style="clear: both;"></div>
                                 </div>
-                                </form>
+                     
                             </c:when>
                             <c:otherwise>
                                 <div class="total">
                                     <h4 style="float: left;">Tổng cộng: <span id="total">0 ₫</span></h4>
                                     <div type="button" class="main-border-button" style="margin-left: 185px; margin-top: 20px; float: left;" id="buttonContainer">
-                                        <a href="#" id="AddToCart" class="btn btn-primary">Thêm vào giỏ hàng</a>
+                                          <div type="button" class="main-border-button" style="margin-left: 100px; float: left;"><a style="cursor: pointer" class="accessory-cart" data-value="${a.accessory_id}">Thêm vào giỏ hàng</a></div>
                                     </div>
                                     <div style="clear: both;"></div>
                                 </div>

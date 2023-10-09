@@ -81,7 +81,7 @@ public class CreateBirdCustomer extends HttpServlet {
                             String img_url = Constants.C3_HOST + nameImage;
 //                            S3Utils.uploadFile(nameImage, part.getInputStream());
                             int result = bcd.createNewBirdCustomer(birdId, nameBird, gender, 
-                                breedId,u.getUsername(), img_url, "Còn hàng");
+                                breedId,u.getUsername(), img_url, "Chưa ghép cặp");
                             if (result == 0){
                                 session.setAttribute("ERROR", "Thêm vẹt mới thất bại");
                             } else {
@@ -99,10 +99,6 @@ public class CreateBirdCustomer extends HttpServlet {
                 }
             }
             request.setAttribute("BIRD_BREEDS", breedList);
-            request.setAttribute("BREEDID", breedId);
-            request.setAttribute("BIRDID", birdId);
-            request.setAttribute("NAMEBIRD", nameBird);
-            request.setAttribute("GENDER", gender);
             request.getRequestDispatcher(url).forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();

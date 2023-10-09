@@ -29,9 +29,20 @@ public class RenderAccountsController extends HttpServlet {
         String url = ERROR;
         try {
             url = SUCCESS;
+            String page = "1";
+            int numberOfRecords = 10;
+            if(request.getParameter("page") != null){
+                page = request.getParameter("page");
+            }
+            String search = request.getParameter("search");
             ArrayList<AccountDTO> accountList = new ArrayList<>();
             UserDAO userDao = new UserDAO();
-            accountList = userDao.getAccountList();
+            accountList = userDao.getAccountList(search,page,numberOfRecords);
+            int numberOfAccount = userDao.totalAccount(search);
+            int numberOfPage = (int) Math.ceil(numberOfAccount * 1.0 / numberOfRecords);
+            request.setAttribute("SEARCH", search);
+            request.setAttribute("noOfPages", numberOfPage);
+            request.setAttribute("currentPage", page);
             request.setAttribute("ACCOUNT_LIST", accountList);
         } catch (Exception e) {
             log("Error at RenderAccountsController: " + e.toString());

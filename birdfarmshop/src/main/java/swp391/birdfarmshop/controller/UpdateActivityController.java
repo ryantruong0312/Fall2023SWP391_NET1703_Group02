@@ -8,24 +8,25 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import swp391.birdfarmshop.dao.UserDAO;
 import swp391.birdfarmshop.model.User;
+import swp391.birdfarmshop.services.EmailService;
+import swp391.birdfarmshop.util.EmailUtils;
 import swp391.birdfarmshop.util.JWTUtils;
 
 /**
  *
- * @author tlminh
+ * @author Admin
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
-public class LoginController extends HttpServlet {
+@WebServlet(name = "UpdateActivityController", urlPatterns = {"/UpdateActivityController"})
+public class UpdateActivityController extends HttpServlet {
 
-    private static final String DEST_NAV_HOME = "RenderHomeController";
-    private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
+    private static final String DEST_NAV_ACCOUNTS = "RenderAccountsController";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,44 +38,45 @@ public class LoginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         try {
-            String username = request.getParameter("account");
-            String password = request.getParameter("password");
-            String save = request.getParameter("checkbox");
-            String encodePassword = JWTUtils.encodeJWT(password);
-            UserDAO user = new UserDAO();
-            User u = user.findUser(username, username);
-            HttpSession session = request.getSession(true);
-            String url = DEST_NAV_LOGIN;
+            String user = request.getParameter("username");
+            String type = request.getParameter("type");
+            HttpSession session = request.getSession();
+            UserDAO ud = new UserDAO();
+            User u = ud.getUserByUsername(user);
             if (u != null) {
-                String decodePassword = JWTUtils.decodeJWT(u.getPassword());
-                if (password.equals(decodePassword)) {
-                    if (u.getStatus().equals("active")) {
-                        if (session != null) {
-                            session.setAttribute("LOGIN_USER", u);
-                            session.setAttribute("SUCCESS", "Đăng nhập thành công");
-                            if (save != null) {
-                                String encodeEmail = JWTUtils.encodeJWT(u.getEmail());
-                                Cookie cookie = new Cookie("token", encodeEmail);
-                                cookie.setMaxAge(24 * 60 * 60);
-                                response.addCookie(cookie);
-                            }
-                            url =  DEST_NAV_HOME;
-                        }
-                    } else if (u.getStatus().equals("inactive")) {
-                        session.setAttribute("ERROR", "Vui lòng kích hoạt tài khoản của bạn bằng cách nhấn vào liên kết trong email đã đăng ký");
+                if (type.equals("lock")) {
+                    int result = ud.updateActive(user, "lock");
+                    if (result == 0) {
+                        session.setAttribute("ERROR", "Khóa tài khoản thất bại");
                     } else {
-                        session.setAttribute("ERROR", "Tài khoản của bạn đã bị khóa, vui lòng liên hệ với cửa hàng");
+                        session.setAttribute("SUCCESS", "Khóa tài khoản thành công");
+                    }
+                } else if (type.equals("open")) {
+                    int result = ud.updateActive(user, "active");
+                    if (result == 0) {
+                        session.setAttribute("ERROR", "Mở khóa tài khoản thất bại");
+                    } else {
+                        session.setAttribute("SUCCESS", "Mở khóa tài khoản thành công");
                     }
                 } else {
-                    session.setAttribute("ERROR", "Email/tên đăng nhập hoặc mật khẩu không chính xác");
+                    String token = "Thegioivetcanh123@";
+                    String password = JWTUtils.encodeJWT(token);
+                    int result = ud.updatePassword(user, password);
+                    if (result == 0) {
+                        session.setAttribute("SUCCESS", "Cấp lại mật khẩu thất bại");
+                    } else {
+                        session.setAttribute("SUCCESS", "Cấp lại mật khẩu thành công");
+                    }
                 }
             } else {
-                session.setAttribute("ERROR", "Email/tên đăng nhập hoặc mật khẩu không chính xác");
+                session.setAttribute("ERROR", "Không tìm thấy tài khoản" + user);
             }
-            request.getRequestDispatcher(url).forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            request.getRequestDispatcher(DEST_NAV_ACCOUNTS).forward(request, response);
         }
     }
 

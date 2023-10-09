@@ -42,28 +42,28 @@
                             <!-- name input -->
                             <div class="form-outline">
                                 <label class="form-label" for="name">Họ và tên</label>
-                                <input type="text" id="name" name="name" class="input form-control form-control-lg" value="${requestScope.NAME}" required=""/>
+                                <input type="text" id="name" name="name" class="input form-control form-control-lg" value="${param.name}" required=""/>
                             </div>
                             <!-- email input -->
                             <div class="form-outline mt-2">
                                 <label class="form-label" for="email">Email</label>
-                                <input type="text" id="email" name="email" class="input form-control form-control-lg" value="${requestScope.EMAIL}" required=""/>                          
+                                <input type="text" id="email" name="email" class="input form-control form-control-lg" value="${param.email}" required=""/>                          
                             </div>
                             <!-- mobile input -->
                             <div class="form-outline mt-2">
                                 <label class="form-label" for="mobile">Số điện thoại</label>
-                                <input type="text" id="mobile" name="mobile" class="input form-control form-control-lg" value="${requestScope.MOBILE}" required=""/>      
+                                <input type="text" id="mobile" name="mobile" class="input form-control form-control-lg" value="${param.mobile}" required=""/>      
                             </div>
                             <!-- user input -->
                             <div class="form-outline mt-2">
                                 <label class="form-label" for="account">Tên đăng nhập</label>
-                                <input type="text" id="account" name="account" class="input form-control form-control-lg" value="${requestScope.ACCOUNT}" required=""/>
+                                <input type="text" id="account" name="account" class="input form-control form-control-lg" value="${param.account}" required=""/>
                             </div>
 
                             <!-- Password input -->
                             <div class="form-outline  mt-2">
                                 <label class="form-label" for="password">Mật khẩu</label>
-                                <input type="password" id="password" name="password" class="input form-control form-control-lg" value="${requestScope.PASSWORD}" required=""/>
+                                <input type="password" id="password" name="password" class="input form-control form-control-lg" value="${param.password}" required=""/>
                                 <div class="show-password">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </div>
@@ -71,7 +71,7 @@
                             <!--Password input -->
                             <div class="form-outline mt-2">
                                 <label class="form-label" for="re-password">Xác nhận mật khẩu</label>
-                                <input type="password" id="re-password" name="re-password" class="input form-control form-control-lg" value="${requestScope.PASSWORD}" required=""/>
+                                <input type="password" id="re-password" name="re-password" class="input form-control form-control-lg" value="${param.password}" required=""/>
                                 <div class="show-re-password">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </div>

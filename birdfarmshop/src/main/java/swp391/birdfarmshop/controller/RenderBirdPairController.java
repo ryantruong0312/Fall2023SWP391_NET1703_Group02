@@ -110,10 +110,10 @@ public class RenderBirdPairController extends HttpServlet {
             }
             if (username != null && breedId != null) {
                 List<BirdCustomer> birdCustomerList = new ArrayList<>();
-                birdCustomerList = bcd.getBirdCustomerByCustomer(username, breedId, "1", 9);
+                birdCustomerList = bcd.getBirdCustomerByCustomer(username, breedId, null, 0);
                 out.println("<option value = \"\">Chọn vẹt</option>");
                 for (BirdCustomer bird : birdCustomerList) {
-                    if (bird.getStatus().equals("Còn hàng")) {
+                    if (bird.getStatus().equals("Chưa ghép cặp")) {
                         out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getName() + "</option>");
                     }
                 }

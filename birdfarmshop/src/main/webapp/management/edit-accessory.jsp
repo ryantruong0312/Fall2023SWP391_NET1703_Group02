@@ -166,12 +166,11 @@
                     </div>
                     <form action="UpdateAccessoryController" method="GET">
                         <div class="col-lg-12 form-left">
-
                             <div class="form-outline">
                                 <label>ID của phụ kiện (Bao gồm 2 chữ hoa và 3 chữ số)</label>
                                 <input style="color: blue;" type="text" name="txtAccessoryID" class="input form-control" pattern="[A-Z]{2}\d{3}" value="${a.accessory_id}" readonly=""/>
                             </div>
-
+                            
                             <div class="form-outline mt-2">
                                 <label>Tên</label>
                                 <input style="color: blue;" type="text" name="txtAccessoryName" class="input form-control" value="${a.accessory_name}" required/>
@@ -222,13 +221,13 @@
                             </c:if>
 
                         </div>
-                            
-                                <c:if test="${requestScope.MESSAGE != null}">
-                                    <div>${MESSAGE}</div>
-                                </c:if>
-                                <c:if test="${requestScope.Error != null}">
-                                    <div>${error}</div>
-                                </c:if>
+
+                        <c:if test="${requestScope.MESSAGE != null}">
+                            <div>${MESSAGE}</div>
+                        </c:if>
+                        <c:if test="${requestScope.Error != null}">
+                            <div>${error}</div>
+                        </c:if>
 
                         <div class="col-lg-12">
                             <button class="button-submit" type="submit">Hoàn tất</button>

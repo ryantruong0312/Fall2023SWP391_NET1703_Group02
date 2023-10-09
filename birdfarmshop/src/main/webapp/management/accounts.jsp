@@ -147,18 +147,20 @@
             </div>
         </div>
         <!-- ***** Main Banner Area End ***** -->
-
-        <main style="width: 80%; margin: 0 auto;">
+        <main class="py-5 mb-5" style="width: 80%; margin: 0 auto;">
             <div class="mt-3">
                 <div class="row">
                     <div class="col-md-4">
                     </div>
                     <div class="col-md-6 my-2">
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><img src="assets/images/search-icon.png"></span>
-                            </div>
-                            <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm...">
+                            <form class="d-flex w-100" action="RenderAccountsController" method="POST">
+                                <div class="input-group-prepend">
+                                    <button class="input-group-text"><img src="assets/images/search-icon.png"></button>
+                                 
+                                </div>                  
+                                   <input type="text" class="form-control" id="searchInput" name="search" placeholder="Tìm kiếm..." value="${requestScope.SEARCH}">
+                            </form>
                         </div>
                     </div>
                     <div class="col-md-2 text-center">
@@ -174,7 +176,6 @@
                         <th>STT</th>
                         <th>Tên người dùng</th>
                         <th>Tên tài khoản</th>
-                        <th>Mật khẩu</th>
                         <th>Nhóm người dùng</th>
                         <th>Trạng thái</th>
                         <th style="text-align: center;">Khóa tài khoản</th>
@@ -188,105 +189,175 @@
                                 <td>${loop.index + 1}</td>
                                 <td><a href="MainController?action=NavToProfile&username=${user.username}">${user.fullName}</a></td>
                                 <td>${user.username}</td>
-                                <td>******</td>
-                                <td>${user.role}</td>
-                                <td>${user.status}</td>
-                                <c:if test="${user.status == 'active'}">
-                                    <td style="text-align: center;"><button class="btn btn-danger">Khóa</button></td>
-                                </c:if>
-                                <c:if test="${user.status == 'inactive'}">
-                                    <td style="text-align: center;"><button class="btn btn-danger">Mở Khóa</button></td>
-                                </c:if>
-                                <td style="text-align: center;"><button class="btn btn-primary">Cấp lại MK</button></td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${user.role == 'admin'}">
+                                            Quản trị viên
+                                        </c:when>
+                                        <c:when test="${user.role == 'manager'}">
+                                            Quản lý
+                                        </c:when>
+                                        <c:when test="${user.role == 'staff'}">
+                                            Nhân viên 
+                                        </c:when>
+                                        <c:otherwise>
+                                            Khách hàng
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${user.status == 'active'}">
+                                            Đang hoạt động 
+                                        </c:when>
+                                        <c:when test="${user.status == 'inactive'}">
+                                            Chưa kích hoạt
+                                        </c:when>
+                                        <c:otherwise>
+                                            Đã bị khóa  
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td style="text-align: center;">
+                                    <c:if test="${user.role != 'admin'}">
+                                        <c:choose>
+                                            <c:when test="${user.status == 'active'}">
+                                                <form action="MainController" method="POST">
+                                                    <input type="hidden" name="action" value="UpdateActivity"/>
+                                                    <input type="hidden" name="username" value="${user.username}"/>
+                                                    <input type="hidden" name="type" value="lock"/>
+                                                    <button type="submit" class="btn btn-danger">Khóa</button>
+                                                </form>
+                                            </c:when>
+                                            <c:when test="${user.status == 'lock'}">
+                                                <form action="MainController" method="POST">
+                                                    <input type="hidden" name="action" value="UpdateActivity"/>
+                                                    <input type="hidden" name="username" value="${user.username}"/>
+                                                    <input type="hidden" name="type" value="open"/>
+                                                    <button type="submit" class="btn btn-danger">Mở Khóa</button>
+                                                </form>
+                                            </c:when>
+                                        </c:choose>
+                                    </c:if>
+                                </td>
+                                <td style="text-align: center;">
+                                    <c:if test="${user.role != 'admin'}">
+                                        <form action="MainController" method="POST">
+                                            <input type="hidden" name="action" value="UpdateActivity"/>
+                                            <input type="hidden" name="username" value="${user.username}"/>
+                                            <input type="hidden" name="type" value="reset"/>
+                                            <button class="btn btn-primary">Cấp lại MK</button>
+                                        </form>
+                                    </c:if>
+                                </td>
                             </tr>
                         </c:forEach>
                     </c:if>
                     <c:if test="${sessionScope.LOGIN_USER.role == 'manager'}">
-                        <c:forEach var="user" items="${requestScope.ACCOUNT_LIST}" varStatus="loop">
-                            <c:if test="${user.role == 'staff'}">
+                        <c:set var="count" value="0"/>
+                        <c:forEach var="userMG" items="${requestScope.ACCOUNT_LIST}">
+                            <c:if test="${userMG.role == 'staff'}">
                                 <tr>
-                                    <td>${loop.index + 1}</td>
-                                    <td>${user.username}</td>
-                                    <td>${user.fullName}</td>
-                                    <td>******</td>
-                                    <td>${user.role}</td>
-                                    <td>${user.status}</td>
-                                    <c:if test="${user.status == 'active'}">
-                                        <td style="text-align: center;"><button class="btn btn-danger">Khóa</button></td>
-                                    </c:if>
-                                    <c:if test="${user.status == 'inactive'}">
-                                        <td style="text-align: center;"><button class="btn btn-danger">Mở Khóa</button></td>
-                                    </c:if>
-                                    <td style="text-align: center;"><button class="btn btn-primary">Cấp lại MK</button></td>
+                                    <c:set var="count" value="${count + 1}"/>
+                                    <td>${count}</td>
+                                    <td>${userMG.username}</td>
+                                    <td>${userMG.fullName}</td>
+                                    <td>
+                                        <c:if test="${userMG.role == 'staff'}">
+                                            Nhân viên
+                                        </c:if>
+                                    </td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${userMG.status == 'active'}">
+                                                Đang hoạt động 
+                                            </c:when>
+                                            <c:when test="${userMG.status == 'inactive'}">
+                                                Chưa kích hoạt
+                                            </c:when>
+                                            <c:otherwise>
+                                                Đã bị khóa  
+                                            </c:otherwise>
+                                        </c:choose>   
+                                    </td>
+                                    <c:choose>
+                                        <c:when test="${userMG.status == 'active'}">
+                                            <td style="text-align: center;">
+                                                <form action="MainController" method="POST">
+                                                    <input type="hidden" name="action" value="UpdateActivity"/>
+                                                    <input type="hidden" name="username" value="${userMG.username}"/>
+                                                    <input type="hidden" name="type" value="lock"/>
+                                                    <button type="submit" class="btn btn-danger">Khóa</button>
+                                                </form>
+                                            </td>
+                                        </c:when>
+                                        <c:when test="${userMG.status == 'lock'}">
+                                            <td style="text-align: center;">
+                                                <form action="MainController" method="POST">
+                                                    <input type="hidden" name="action" value="UpdateActivity"/>
+                                                    <input type="hidden" name="username" value="${userMG.username}"/>
+                                                    <input type="hidden" name="type" value="open"/>
+                                                    <button type="submit" class="btn btn-danger">Mở Khóa</button>
+                                                </form>
+                                            </td>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <td style="text-align: center;"></td>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <td style="text-align: center;">
+                                        <form action="MainController" method="POST">
+                                            <input type="hidden" name="action" value="UpdateActivity"/>
+                                            <input type="hidden" name="username" value="${userMG.username}"/>
+                                            <input type="hidden" name="type" value="reset"/>
+                                            <button class="btn btn-primary">Cấp lại MK</button>
+                                        </form>
+                                    </td>
                                 </tr>
                             </c:if>
                         </c:forEach>
                     </c:if>
-
                 </tbody>
             </table>
-        </main>
-
-
-        <!-- ***** Footer Start ***** -->
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="first-item">
-                            <div class="logo">
-                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
-                            </div>
-                            <ul>
-                                <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
-                                <li><a href="#">0913-244-567</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Sản phẩm và dịch vụ</h4>
-                        <ul>
-                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                            <li><a href="${pageScope.toCompare}">So sánh</a></li>
-                            <li><a href="${pageScope.toPair}">Nhân giống</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Đường dẫn hữu ích</h4>
-                        <ul>
-                            <li><a href="${pageScope.toHome}">Trang chủ</a></li>
-                            <li><a href="#">Về chúng tôi</a></li>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Liên hệ</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Thông tin hỗ trợ</h4>
-                        <ul>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Câu hỏi thường gặp</a></li>
-                            <li><a href="#">Giao hàng</a></li>
-                            <li><a href="#">Theo dõi đơn hàng</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="under-footer">
-                            <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
-
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
+            <c:if test="${noOfPages != 1}">
+                <div class="d-flex float-right align-items-center page-pagination">
+                    <c:set var="numberOfPage" value="${requestScope.currentPage}"/>
+                    <input type="hidden" name="numberOfPage" value="${requestScope.noOfPages}"/>
+                    <input type="hidden" name="page" value="${numberOfPage}"/>
+                    <c:if test="${noOfPages >= 1 && noOfPages <= 5}">  
+                        <div onclick="PrevPage()" class="page-prev ${numberOfPage <= 1 ? "page-disable":""}"><i class="fa fa-angle-left" aria-hidden="true"></i></i></div>
+                        <c:forEach begin="1" end="${noOfPages}" var="i">
+                            <div onclick="NavToNewPage(this)" class="page-navTo ${i == requestScope.currentPage ? "page-active":""}" data-value="${i}">${i}</div>       
+                        </c:forEach>
+                        <div onclick="NextPage()" class="page-next ml-3 ${numberOfPage >= noOfPages ? "page-disable":""}"><i class="fa fa-angle-right" aria-hidden="true"></i></i></div>
+                    </c:if>    
+                    <c:if test="${noOfPages > 5}">
+                        <c:if test="${numberOfPage > 2}">
+                            <div onclick="PrevPage()" class="page-prev ${numberOfPage <= 1 ? "page-disable":""}"><i class="fa fa-angle-left" aria-hidden="true"></i></i></div>
+                            <c:if test="${numberOfPage + 2 < noOfPages}">
+                                <c:set var="beginItem" value="${numberOfPage - 2 }"/>
+                                <c:set var="endItem" value="${numberOfPage + 2 }"/>
+                            </c:if>
+                            <c:if test="${numberOfPage + 2 >= noOfPages}">
+                                <c:set var="beginItem" value="${noOfPages - 4}"/>
+                                <c:set var="endItem" value="${noOfPages}"/>
+                            </c:if>
+                            <c:forEach begin="${beginItem}" end="${endItem}" var="i">
+                                <div onclick="NavToNewPage(this)" class="page-navTo ${i == requestScope.currentPage ? "page-active":""}" data-value="${i}">${i}</div>      
+                            </c:forEach>
+                            <div onclick="NextPage()" class="page-next ml-3 ${numberOfPage >= noOfPages ? "page-disable":""}"><i class="fa fa-angle-right" aria-hidden="true"></i></i></div>
+                        </c:if>
+                        <c:if test="${numberOfPage <= 2}">
+                            <div onclick="PrevPage()" class="page-prev ${numberOfPage <= 1 ? "page-disable":""}"><i class="fa fa-angle-left" aria-hidden="true"></i></i></div>
+                            <c:forEach var="i" begin="1" end="5">
+                                <div onclick="NavToNewPage(this)" class="page-navTo ${i == requestScope.currentPage ? "page-active":""}" data-value="${i}">${i}</div>           
+                            </c:forEach>                   
+                            <div onclick="NextPage()" class="page-next ml-3 ${numberOfPage >= noOfPages ? "page-disable":""}"><i class="fa fa-angle-right" aria-hidden="true"></i></i></div>
+                        </c:if>        
+                    </c:if>
                 </div>
-            </div>
-        </footer>
-        <!-- ***** Footer Area Ends ***** -->
+            </c:if>
+        </main>
 
         <!-- Bootstrap Modal for Creating New Account -->
         <div class="modal fade vertical-alignment" id="createAccountModal" tabindex="-1" role="dialog" aria-labelledby="createAccountModalLabel" aria-hidden="true" data-backdrop="false">
@@ -298,48 +369,56 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <!-- Form for Creating New Account -->
-                        <form id="createAccountForm">
+                    <form id="createAccountForm" action="MainController" method="POST">
+                        <input type="hidden" name="action" value="CreateAccount"/>
+                        <div class="modal-body">
+                            <!-- Form for Creating New Account -->
+
                             <div class="form-group">
-                                <label for="fullname">Họ và tên:</label>
-                                <input type="text" class="form-control" id="fullname" name="fullname" required>
+                                <label for="fullName">Họ và tên:</label>
+                                <input type="text" class="form-control" id="fullName" name="fullname" value="${param.fullname}" required="">
                             </div>
                             <div class="form-group">
                                 <label for="username">Tên tài khoản:</label>
-                                <input type="text" class="form-control" id="username" name="username" required>
+                                <input type="text" class="form-control" id="username" name="username" value="${param.username}" required="">
                             </div>
                             <!-- Radio Button Options -->
                             <div class="form-group">
-                                <label>Nhóm người dùng:</label><br>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="role" id="role1" value="customer">
-                                    <label class="form-check-label" for="role1">Khách hàng</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="role" id="role2" value="staff">
-                                    <label class="form-check-label" for="role2">Nhân viên</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="role" id="role3" value="manager">
-                                    <label class="form-check-label" for="role3">Quản lý</label>
-                                </div>
+                                <c:if test="${sessionScope.LOGIN_USER.role == 'admin'}">
+                                    <label>Nhóm người dùng:</label><br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="role" id="role2" checked="" value="staff">
+                                        <label class="form-check-label" for="role2">Nhân viên</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="role" id="role3" value="manager">
+                                        <label class="form-check-label" for="role3">Quản lý</label>
+                                    </div>
+                                </c:if>
+                                <c:if test="${sessionScope.LOGIN_USER.role == 'manager'}">
+                                    <label>Nhóm người dùng:</label><br>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="role" id="role2" checked="" value="staff">
+                                        <label class="form-check-label" for="role2">Nhân viên</label>
+                                    </div>
+                                </c:if>
                             </div>
-                            <input type="hidden" name="action" value="CreateAccount"/>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                        <button type="button" class="btn btn-primary" onclick="submitForm()">Tạo tài khoản</button>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-secondary reset">Đặt lại</button>
+                            <button type="submit" class="btn btn-primary">Tạo tài khoản</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
 
         <!-- jQuery -->
-        <script src="assets/js/jquery-2.1.0.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+        <%@include file="../layout/message.jsp" %>
+        <script src="assets/js/jquery-3.7.1.min.js"></script>
+        <script src="assets/js/jquery.validate.min.js"></script>
+        <script src="assets/js/birdshop.js"></script>
         <!-- Bootstrap -->
         <script src="assets/js/popper.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
@@ -349,8 +428,6 @@
         <script src="assets/js/accordions.js"></script>
         <script src="assets/js/datepicker.js"></script>
         <script src="assets/js/scrollreveal.min.js"></script>
-        <script src="assets/js/waypoints.min.js"></script>
-        <script src="assets/js/jquery.counterup.min.js"></script>
         <script src="assets/js/imgfix.min.js"></script> 
         <script src="assets/js/slick.js"></script> 
         <script src="assets/js/lightbox.js"></script> 
@@ -360,63 +437,40 @@
         <script src="assets/js/custom.js"></script>
 
         <script>
-                            $(document).ready(function () {
-
-                                // Get a reference to the search input element
-                                var searchInput = $("#searchInput");
-
-                                // Add an event listener for input changes
-                                searchInput.on("input", function () {
-                                    var keyword = searchInput.val().toLowerCase();
-
-                                    // Loop through each row in the table
-                                    $("tbody tr").each(function () {
-                                        var row = $(this);
-
-                                        // Check if any cell in the row contains the keyword
-                                        if (row.text().toLowerCase().includes(keyword)) {
-                                            row.show(); // Show the row if keyword found
-                                        } else {
-                                            row.hide(); // Hide the row if keyword not found
-                                        }
-                                    });
-                                });
 
                                 // Show the modal when the "Cấp mới tài khoản" button is clicked
                                 $("#createAccountBtn").click(function () {
                                     $("#createAccountModal").modal("show");
                                 });
-
-                                // Handle form submission
-                                $("#submitAccountBtn").click(function () {
-                                    // Get the form data
-                                    const fullname = $("#fullname").val();
-                                    const username = $("#username").val();
-
-                                    // You can perform validation here if needed
-
-                                    // Close the modal
-                                    $("#createAccountModal").modal("hide");
-
-                                    // Send the form data to the server via AJAX or perform any desired action
+                                $('.reset').click(function () {
+                                $('input[name=fullname]').val("");
+                                        $('input[name=username]').val("");
                                 });
-                            });
-        </script>
+       
+                                function NavToNewPage(event) {
+                                    let page = $(event).attr('data-value');
+                                    if (page) {
+                                        window.location.href = "MainController?action=NavToAccounts&page=" + page;
+                                    }
+                                }
 
-        <script>
-            function submitForm() {
-                // Get the form element by its ID
-                var form = document.getElementById("createAccountForm");
+                                function PrevPage() {
+                                    let page = $('input[name=page]').val();
+                                    let prevPage = Number(page) - 1;
+                                    if (prevPage > 0) {
+                                        window.location.href = "MainController?action=NavToAccounts&page=1";
+                                    }
+                                }
 
-                // Define the controller URL
-                var controllerUrl = "/birdfarmshop/MainController";
-
-                // Set the form's action attribute to the controller URL
-                form.action = controllerUrl;
-
-                // Submit the form
-                form.submit();
-            }
+                                function NextPage() {
+                                    let page = $('input[name=page]').val();
+                                    let limitPage = $('input[name=numberOfPage]').val();
+                                    let amountPage = Number(limitPage);
+                                    let nextPage = Number(page) + 1;
+                                    if (nextPage <= amountPage) {
+                                        window.location.href = "MainController?action=NavToAccounts&page=" + amountPage;
+                                    }
+                                }
         </script>
     </body>
 </html>

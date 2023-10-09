@@ -144,6 +144,14 @@
                                 <c:if test="${noOfPages > 5}">
                                     <c:if test="${numberOfPage > 2}">
                                         <div onclick="PrevPage()" class="page-prev ${numberOfPage <= 1 ? "page-disable":""}"><i class="fa fa-angle-left" aria-hidden="true"></i></i></div>
+                                        <c:if test="${numberOfPage + 2 < noOfPages}">
+                                            <c:set var="beginItem" value="${numberOfPage - 2 }"/>
+                                            <c:set var="endItem" value="${numberOfPage + 2 }"/>
+                                        </c:if>
+                                        <c:if test="${numberOfPage + 2 >= noOfPages}">
+                                            <c:set var="beginItem" value="${noOfPages-numberOfPage + 4}"/>
+                                            <c:set var="endItem" value="${noOfPages}"/>
+                                        </c:if>
                                         <c:forEach begin="${numberOfPage - 2}" end="${numberOfPage + 2}" var="i">
                                             <div class="page-navTo ${i == requestScope.currentPage ? "page-active":""}" data-value="${i}">${i}</div>      
                                         </c:forEach>
@@ -152,7 +160,7 @@
                                     <c:if test="${numberOfPage <= 2}">
                                         <div onclick="PrevPage()" class="page-prev ${numberOfPage <= 1 ? "page-disable":""}"><i class="fa fa-angle-left" aria-hidden="true"></i></i></div>
                                         <c:forEach begin="1" end="5" var="i">   
-                                            <div class="page-navTo ${i == requestScope.currentPage ? "page-active":""}" data-value="${i}>${i}</div>          
+                                            <div class="page-navTo ${i == requestScope.currentPage ? "page-active":""}" data-value="${i}">${i}</div>          
                                             </c:forEach>                   
                                             <div onclick="NextPage()" class="page-next ml-3 ${numberOfPage >= noOfPages ? "page-disable":""}"><i class="fa fa-angle-right" aria-hidden="true"></i></i></div>
                                     </c:if>        

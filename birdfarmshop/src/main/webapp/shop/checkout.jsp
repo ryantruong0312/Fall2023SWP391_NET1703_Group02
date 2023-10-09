@@ -240,15 +240,15 @@
                             <div class="col-lg-5 info-checkout mt-3">
                                 <div class="form-group mt-3">
                                     <label for="user-receiver">Tên người nhận hàng:</label>
-                                    <input id="user-receiver" class="input form-control" type="text" name="name" value="${sessionScope.LOGIN_USER.fullName}" required=""/>
+                                    <input id="user-receiver" class="input form-control" type="text" name="name" value="${sessionScope.LOGIN_USER.fullName || param.name}" required=""/>
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile">Số điện thoại nhận hàng:</label>
-                                    <input id="mobile" class="input form-control" type="text" name="mobile" value="${sessionScope.LOGIN_USER.phone}" required=""/>
+                                    <input id="mobile" class="input form-control" type="text" name="mobile" value="${sessionScope.LOGIN_USER.phone || param.mobile}" required=""/>
                                 </div>
                                 <div class="form-group">
                                     <label for="address">Địa chỉ nhận hàng:</label>
-                                    <input id="address" class="input form-control" type="text" name="address" value="${sessionScope.LOGIN_USER.address}" required=""/>
+                                    <input id="address" class="input form-control" type="text" name="address" value="${sessionScope.LOGIN_USER.address || param.address}" required=""/>
                                 </div>
                                 <div class="overall-menoy">
                                     <h5 class="mt-3">Tổng tiền thanh toán</h5>
@@ -385,7 +385,7 @@
                     e.preventDefault();
                     toast({
                         title: 'Lỗi',
-                        message: 'Tính năng đang bị lỗi',
+                        message: 'Hệ thống chưa hỗ trợ thanh toán trực tuyến',
                         type: 'error',
                         duration: 3000  
                         });
