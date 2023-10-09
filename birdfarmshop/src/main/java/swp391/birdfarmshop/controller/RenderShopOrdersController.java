@@ -11,6 +11,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import swp391.birdfarmshop.dao.OrderDAO;
+import swp391.birdfarmshop.dao.OrderItemDAO;
+import swp391.birdfarmshop.model.Order;
+import swp391.birdfarmshop.model.OrderItem;
 
 /**
  *
@@ -27,6 +34,20 @@ public class RenderShopOrdersController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
+            OrderDAO orderDao = new OrderDAO();
+            ArrayList<Order> orderList = orderDao.getAllOfOrder();
+            for (Order order : orderList) {
+                System.out.println(order.getOrder_id());
+            }
+            OrderItemDAO orderItemDao = new OrderItemDAO();
+            ArrayList<OrderItem> orderItemList;
+            HashMap<String, ArrayList> orderItemMap = new HashMap<>();
+            for (Order order : orderList) {
+                orderItemList = orderItemDao.getItemOfOrder(order.getOrder_id());
+                orderItemMap.put(order.getOrder_id(), orderItemList);
+            }
+            request.setAttribute("ORDERLIST", orderList);
+            request.setAttribute("ORDERITEMMAP", orderItemMap);
             url = SUCCESS;
         } catch (Exception e) {
             log("Error at RenderShopOrdersController: " + e.toString());

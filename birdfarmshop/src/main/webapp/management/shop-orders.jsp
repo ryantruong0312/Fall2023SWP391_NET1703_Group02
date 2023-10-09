@@ -45,6 +45,18 @@
         <c:url var="toReports" value="MainController?action=NavToReports"/>
         <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
 
+        <style>
+        table {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        th {
+            width: 300px;
+        }
+        td {
+            width: 100px;
+        }
+        </style>
         <!-- ***** Preloader Start ***** -->
         <div id="preloader">
             <div class="jumper">
@@ -126,7 +138,71 @@
         </header>
         <!-- ***** Header Area End ***** -->
         
+        <!-- ***** Main Banner Area Start ***** -->
+        <div class="page-heading" id="top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="inner-content">
+                            <h2>Vẹt cảnh</h2>
+                            <span>Những chú vẹt thông minh và đáng yêu nhất đã có mặt tại V.E.T</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ***** Main Banner Area End ***** -->
         
+        
+        <main>
+            <div class="container">
+                <div class="col-lg-12">
+                    <h1 style="text-align: center;">Danh sách đơn hàng</h1>
+                    <c:set value="${requestScope.ORDERLIST}" var="orderList"/>
+                    <c:set value="${requestScope.ORDERITEMMAP}" var="orderItemMap"/>
+                    <c:forEach items="${orderList}" var="order">
+                        <div style="background-color: pink; display: flex; align-items: center; justify-content: space-around; margin-bottom: 20px;" onclick="toggleList('${order.order_id}')">
+                            <h4 style="float: left;">Order ID: ${order.order_id}</h4>
+                            <h5 style="float: right;">Create Date: ${order.order_date}</h5><br><br>
+                        </div>
+                        <table id="${order.order_id}" style="display: none;">
+                            <thead style="justify-content: center;">
+                                <tr>
+                                    <th>STT</th>
+                                    <th>ID sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Giá</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${orderItemMap}" var="orderItemList">
+                                    <c:forEach items="${orderItemList.value}" var="orderItem" varStatus="counter">
+                                        <c:if test="${orderItem.order_id == order.order_id}">
+                                        <tr>
+                                            <td>${counter.count}</td>
+                                            <c:choose>
+                                                <c:when test="${orderItem.bird_id != null}">
+                                                    <td>${orderItem.bird_id}</td>
+                                                </c:when>
+                                                <c:when test="$${orderItem.nest_id != null}">
+                                                    <td>${orderItem.nest_id}</td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <td>${orderItem.accessory_id}</td>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <td>${orderItem.order_quantity}</td>
+                                            <td>${orderItem.unit_price}</td>
+                                        </tr>
+                                        </c:if>
+                                    </c:forEach>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </c:forEach>
+                </div>        
+            </div>
+        </main>
         
         <!-- ***** Footer Start ***** -->
         <footer>
@@ -209,5 +285,16 @@
 
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
+        
+        <script>
+            function toggleList(listId) {
+                var list = document.getElementById(listId);
+                if (list.style.display === "none" || list.style.display === "") {
+                    list.style.display = "block";
+                } else {
+                    list.style.display = "none";
+                }
+            }
+        </script>
     </body>
 </html>

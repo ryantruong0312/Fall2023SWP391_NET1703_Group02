@@ -264,9 +264,11 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <c:if test="${birdDetails.status != 'Đã bán' || LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
                                             <div class="total">
                                                 <div class="main-border-button"><a class="bird-cart" style="cursor: pointer" data-value="${birdDetails.bird_id}">Thêm vào giỏ hàng</a></div>
                                             </div>
+                                            </c:if>
                                         </div>
                                     </div>
                                     </div>

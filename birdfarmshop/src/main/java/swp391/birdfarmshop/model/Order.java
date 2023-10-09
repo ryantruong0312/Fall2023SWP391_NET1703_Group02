@@ -35,7 +35,9 @@ public class Order {
         this.point = point;
     }
 
-    
+    public Order() {
+    }
+
     public String getOrder_id() {
         return order_id;
     }
