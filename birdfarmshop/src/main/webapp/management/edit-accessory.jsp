@@ -198,7 +198,7 @@
 
                             <div class="form-outline mt-2">
                                 <label for="txtDescribe">Mô tả</label><br>
-                                <textarea class="form-control" id="txtDescribe" name="txtDescribe" rows="5" cols="50" style="width: 554px; height: 75px; color: blue;">${a.description}</textarea>
+                                <textarea class="form-control" id="txtDescribe" name="txtDescribe" rows="5" cols="50" style="width: 554px; height: 125px; color: blue;">${a.description}</textarea>
                             </div>
 
                             <div class="form-outline mt-2">
