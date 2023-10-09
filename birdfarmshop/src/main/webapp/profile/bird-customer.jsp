@@ -1,8 +1,4 @@
-<%-- 
-    Document   : change-password
-    Created on : Sep 13, 2023, 11:27:23 PM
-    Author     : tlminh
---%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -10,15 +6,22 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
         <link rel="icon" type="image/png" href="assets/images/logo-title-bar.png"/>
-        <title>V.E.T Cập nhật mật khẩu</title>
+        <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+        <title>V.E.T - Thông tin cá nhân</title>
+
+        <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-
         <style type="text/css">
             body {
                 margin: 0;
@@ -32,10 +35,6 @@
                 margin: 0 0 1rem 0;
                 padding-bottom: 1rem;
                 text-align: center;
-            }
-            .about .active-profile a
-            {
-                color:  orange;
             }
             .account-settings .user-profile .user-avatar {
                 margin: 0 0 1rem 0;
@@ -106,7 +105,10 @@
             .about li:hover {
                 background: #cccccc;
             }
-
+            .about .active-profile a
+            {
+                color:  orange;
+            }
             .about a .icon{
                 width: 24px;
                 height: 24px;
@@ -132,8 +134,40 @@
                 width: 20%;
                 text-align: center;
             }
+            .image-item img{
+                height: 100px;
+                width: 100px;
+            }
+            .card .bird {
+                border: 1px solid #e9e9ed;
+                border-radius: 15px;
+                padding: 0 12px;
+            }
+            .card .order{
+                width: 40px;
+            }
+            .body-bird{
+                max-height: 585px;
+                overflow-y: scroll;
+            }
+            .body-bird::-webkit-scrollbar {
+                border-radius: 0;
+                width: 8px;
+            }
+
+            .body-bird::-webkit-scrollbar-thumb {
+                border-radius: 4px;
+                background-color: rgba(22, 24, 35, 0.06);
+            }
+
+            .body-bird::-webkit-scrollbar-track {
+                border-radius: 0;
+                background-color: rgba(0, 0, 0, 0);
+            }
         </style>
+
     </head>
+
     <body>
         <c:url var="toCompare" value="MainController?action=NavToCompare"/>
         <c:url var="toHome" value="MainController?action=NavToHome"/>
@@ -236,6 +270,7 @@
             </div>
         </header>
         <!-- ***** Header Area End ***** -->
+
         <main>
             <div class="container">
                 <div class="row gutters">
@@ -243,38 +278,147 @@
                     <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                         <div class="card h-100">
                             <div class="card-body profile-section">
-                                <form id="form-updatePassword" action="MainController" method="POST">
-                                    <input type="hidden" name="action" value="UpdatePassword">
-                                    <input type="hidden" name="username" value="${sessionScope.LOGIN_USER.username}">
-                                    <div class="row gutters">
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <h6 class="mb-2 text-primary">Cập nhật mật khẩu</h6>
+                                <div class="row gutters">
+                                    <div class="card-body order-section">
+                                        <!-- Tab buttons -->
+                                        <ul class="nav nav-tabs" id="orderTabs">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" data-toggle="tab" href="#allBird">Tất cả</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#pairBird">Đang ghép cặp</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#yetPairBird">Chưa ghép cặp</a>
+                                            </li>
+                                        </ul>
+
+                                        <!-- Tab content -->
+                                        <div class="tab-content">
+                                            <!-- Pending Orders Tab -->
+                                            <div class="tab-pane fade show active" id="allBird">
+                                                <div class="row">
+                                                    <!-- Card components for pending orders -->
+                                                    <div class="col-12 body-bird">
+                                                        <c:choose>
+                                                            <c:when test="${not empty requestScope.BIRDCUMTOMER}">
+                                                                <c:forEach var="birdAll" items="${requestScope.BIRDCUMTOMER}" varStatus="counter">
+                                                                    <div class="card w-100 mt-2"> <!-- Add the w-100 class to make the card expand to full width -->
+                                                                        <div class="card-body bird">
+                                                                            <!-- Order ID and Create Date -->
+                                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                                <div class="order">
+                                                                                    <h6 class="text-center">${counter.count}</h6>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <h5>${birdAll.name}</h5>
+                                                                                </div>
+                                                                                <div class="image-item">
+                                                                                    <img src="${birdAll.img_url}" alt="${birdAll.name}" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </c:forEach>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <div class="mt-5">
+                                                                    <h4 class="text-center">Bạn chưa có con chim nào</h4>
+                                                                </div>
+                                                            </c:otherwise>
+                                                        </c:choose>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="tab-pane fade" id="pairBird">
+                                                <div class="row">
+                                                    <!-- Card components for pending orders -->
+                                                    <div class="col-12 body-bird">
+                                                        <c:choose>
+                                                            <c:when test="${not empty requestScope.BIRDCUMTOMER}">
+                                                                <c:set var="counter2" value="0"/>
+                                                                <c:forEach var="birdPair" items="${requestScope.BIRDCUMTOMER}">
+                                                                    <c:if test="${birdPair.status == 'Đang ghép cặp'}">
+                                                                        <c:set var="counter2" value="${counter2 + 1}"/>
+                                                                        <div class="card w-100 mt-2"> <!-- Add the w-100 class to make the card expand to full width -->
+                                                                            <div class="card-body bird">
+                                                                                <!-- Order ID and Create Date -->
+                                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                                    <div class="order">
+                                                                                        <h6 class="text-center">${counter2}</h6>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <h5>${birdPair.name}</h5>
+                                                                                    </div>
+                                                                                    <div class="image-item">
+                                                                                        <img src="${birdPair.img_url}" alt="${birdPair.name}" />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <div class="mt-5">
+                                                                    <h4 class="text-center">Bạn chưa có con chim nào</h4>
+                                                                </div>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="yetPairBird">
+                                                <div class="row">
+                                                    <!-- Card components for pending orders -->
+                                                    <div class="col-12 body-bird">
+                                                        <c:choose>
+                                                            <c:when test="${not empty requestScope.BIRDCUMTOMER}">
+                                                                <c:set var="counter3" value="0"/>
+                                                                <c:forEach var="yetPairBird" items="${requestScope.BIRDCUMTOMER}">
+                                                                    <c:if test="${yetPairBird.status == 'Chưa ghép cặp'}">
+                                                                        <c:set var="counter3" value="${counter3 + 1}"/>
+                                                                        <div class="card w-100 mt-2"> <!-- Add the w-100 class to make the card expand to full width -->
+                                                                            <div class="card-body bird">
+                                                                                <!-- Order ID and Create Date -->
+                                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                                    <div class="order">
+                                                                                        <h6 class="text-center">${counter3}</h6>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <h5>${yetPairBird.name}</h5>
+                                                                                    </div>
+                                                                                    <div class="image-item">
+                                                                                        <img src="${yetPairBird.img_url}" alt="${yetPairBird.name}" />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <div class="mt-5">
+                                                                    <h4 class="text-center">Bạn chưa có con chim nào</h4>
+                                                                </div>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                            <div class="form-group">
-                                                <label for="oldpassword">Mật khẩu cũ</label>
-                                                <input id="oldpassword" type="password" name="oldpassword" value="${param.oldpassword}" class="form-control">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="newpassword">Mật khẩu mới</label>
-                                                <input id="newpassword" type="password" name="newpassword" value="${param.newpassword}" class="form-control">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="confirm">Xác nhận mật khẩu mới</label>
-                                                <input id="confirm" type="password" name="re-password" value="${param.newpassword}" class="form-control" ">
-                                            </div>
-                                            <div class="text-center">
-                                                <button class="btn btn-primary" type="submit">Cập nhật mật khẩu</button>
-                                            </div>
-                                        </div>
-                                    </div>             
-                                </form>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </main>
+
+
         <!-- ***** Footer Start ***** -->
         <footer>
             <div class="container">
@@ -333,27 +477,32 @@
                 </div>
             </div>
         </footer>
-        <!-- ***** Footer Area Ends ***** -->                                        
-        <%@include file="../layout/message.jsp" %>
+        <!-- ***** Footer Area Ends ***** -->
+
     </script>
     <!-- jQuery -->
-    <script src="assets/js/jquery-3.7.1.min.js"></script>
-    <script src="assets/js/jquery.validate.min.js"></script>
+    <script src="assets/js/jquery-2.1.0.min.js"></script>
+
     <!-- Bootstrap -->
     <script src="assets/js/popper.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/birdshop.js"></script>
+
     <!-- Plugins -->
     <script src="assets/js/owl-carousel.js"></script>
     <script src="assets/js/accordions.js"></script>
     <script src="assets/js/datepicker.js"></script>
     <script src="assets/js/scrollreveal.min.js"></script>
+    <script src="assets/js/waypoints.min.js"></script>
+    <script src="assets/js/jquery.counterup.min.js"></script>
     <script src="assets/js/imgfix.min.js"></script> 
     <script src="assets/js/slick.js"></script> 
     <script src="assets/js/lightbox.js"></script> 
     <script src="assets/js/isotope.js"></script> 
 
     <!-- Global Init -->
-    <script src="assets/js/custom.js"></script>                                       
+    <script src="assets/js/custom.js"></script>
+    <script>
+
+    </script>
 </body>
 </html>

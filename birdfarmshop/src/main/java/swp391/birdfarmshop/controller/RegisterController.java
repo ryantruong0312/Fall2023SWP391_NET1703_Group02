@@ -72,11 +72,6 @@ public class RegisterController extends HttpServlet {
                     session.setAttribute("ERROR", "Tên đăng nhập đã được sử dụng");
                 }
             }
-            request.setAttribute("NAME", name);
-            request.setAttribute("EMAIL", email);
-            request.setAttribute("MOBILE", mobile);
-            request.setAttribute("ACCOUNT", account);
-            request.setAttribute("PASSWORD", password);
             request.getRequestDispatcher(url).forward(request, response);
         } catch (Exception e) {
             log("Error at RegisterController: " + e.toString());

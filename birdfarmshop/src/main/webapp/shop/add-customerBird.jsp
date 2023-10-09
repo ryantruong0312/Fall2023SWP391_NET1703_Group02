@@ -129,19 +129,19 @@
                         <select class="combo-box" name="txtBreedId" id="breedSelect3">
                             <option value = "">Chọn giống vẹt</option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                                <option value="${breed.breed_id}" ${requestScope.BREEDID == breed.breed_id ? "selected":""}>${breed.breed_name}</option>
+                                <option value="${breed.breed_id}" ${param.txtBreedId == breed.breed_id ? "selected":""}>${breed.breed_name}</option>
                             </c:forEach>
                         </select>
                         <!-- EL to populate the bird name combo box -->
                         <div class="mt-3">
                             <label class="mb-1" style="color: black; width: 150px" for="name">Tên con vẹt: </label>
-                            <input type="text" id="account" class="form-control" name="nameBird" value="${requestScope.NAMEBIRD}" required="">          
+                            <input type="text" id="account" class="form-control" name="nameBird" value="${param.nameBird}" required="">          
                         </div> 
                         <div class="mt-3 d-flex align-items-center">
                             <label for="gender-1" class="mb-1" class="mr-4">Giới tính: </label>
                             <input id="gender-1" class="ml-4 mr-1" type="radio" name="gender" value="1" checked=""/><label for="gender-1">Trống</label>
                             <p style="display: inline-block; width: 30px"></p>
-                            <input id="gender-2" class="mr-1"type="radio" name="gender" value="0" ${requestScope.GENDER == 0 ? "checked":""}/><label for="gender-2">Mái</label>
+                            <input id="gender-2" class="mr-1"type="radio" name="gender" value="0" ${param.gender == 0 ? "checked":""}/><label for="gender-2">Mái</label>
                         </div>
                         <div class="mt-3">
                             <label style="color: black; width: 150px"  for="imageBird">Ảnh con vẹt: </label>

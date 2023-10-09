@@ -71,6 +71,10 @@
             .account-settings .about p {
                 font-size: 0.825rem;
             }
+            .about .active-profile a
+            {
+                color:  orange;
+            }
             .form-control {
                 border: 1px solid #cfd1d8;
                 -webkit-border-radius: 2px;
@@ -236,30 +240,7 @@
         <main>
             <div class="container">
                 <div class="row gutters">
-                    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <div class="account-settings">
-                                    <div class="user-profile">
-                                        <div class="user-avatar">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin">
-                                        </div>
-                                        <h5>${sessionScope.LOGIN_USER.fullName}</h5>
-                                    </div>
-                                    <div class="about">
-                                        <ul>
-                                            <li>
-                                                <a href="#">
-                                                    <img class="icon" src="assets/images/user.png" alt="alt"/>
-                                                    <span>Thông tin cá nhân</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <%@include file="../layout/sidebar-profile.jsp" %>
                     <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                         <div class="card h-100">
                             <div class="card-body">

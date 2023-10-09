@@ -232,6 +232,7 @@
                             <div class="search-bar">
                                 <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
                                 <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                                <input type="hidden" name="page" value="1" />
                                 <input type="submit" value="Tìm kiếm">
                             </div>
                             <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
@@ -280,7 +281,7 @@
                     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                         <div id="content" class="row">
                             <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
-                            <div id="content" class="row justify-content-center">
+                            <div id="content" class="row">
                                 <c:if test="${BIRDLIST != null}">
                                     <c:if test="${not empty BIRDLIST}">
                                         <c:forEach items="${BIRDLIST}" var="bird">

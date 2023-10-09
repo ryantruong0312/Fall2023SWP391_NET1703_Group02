@@ -187,4 +187,11 @@ public class BirdCustomerDAO {
         }
         return b;
     }
+    public static void main(String[] args) {
+        BirdCustomerDAO bcd = new BirdCustomerDAO();
+        ArrayList<BirdCustomer> list = bcd.getBirdCustomerByCustomer("customer", "amazon", null, 0);
+        for (BirdCustomer birdCustomer : list) {
+            System.out.println(list);
+        }
+    }
 }

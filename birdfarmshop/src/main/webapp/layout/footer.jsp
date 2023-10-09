@@ -66,8 +66,10 @@
 <!-- ***** Footer Area Ends ***** -->
 
 <!-- jQuery -->
-<script src="assets/js/jquery-2.1.0.min.js"></script>
-
+<%@include file="../layout/message.jsp" %>
+<script src="assets/js/jquery-3.7.1.min.js"></script>
+<script src="assets/js/jquery.validate.min.js"></script>
+<script src="assets/js/birdshop.js"></script>
 <!-- Bootstrap -->
 <script src="assets/js/popper.js"></script>
 <script src="assets/js/bootstrap.min.js"></script>
@@ -77,8 +79,6 @@
 <script src="assets/js/accordions.js"></script>
 <script src="assets/js/datepicker.js"></script>
 <script src="assets/js/scrollreveal.min.js"></script>
-<script src="assets/js/waypoints.min.js"></script>
-<script src="assets/js/jquery.counterup.min.js"></script>
 <script src="assets/js/imgfix.min.js"></script> 
 <script src="assets/js/slick.js"></script> 
 <script src="assets/js/lightbox.js"></script> 
@@ -86,22 +86,3 @@
 
 <!-- Global Init -->
 <script src="assets/js/custom.js"></script>
-
-<script>
-
-    $(function () {
-        var selectedClass = "";
-        $("p").click(function () {
-            selectedClass = $(this).attr("data-rel");
-            $("#portfolio").fadeTo(50, 0.1);
-            $("#portfolio div").not("." + selectedClass).fadeOut();
-            setTimeout(function () {
-                $("." + selectedClass).fadeIn();
-                $("#portfolio").fadeTo(50, 1);
-            }, 500);
-
-        });
-    });
-
-</script>
-

@@ -111,7 +111,16 @@ public class RenderAccessoryDetailsController extends HttpServlet {
                         if (nPage > 2) {
                             prev_page = nPage <= 1 ? " page-disable" : "";
                             out.println("  <div onclick=\"PrevPage()\" class=\"page-prev" + prev_page + "\"><i class=\"fa fa-angle-left\" aria-hidden=\"true\"></i></i></div>");
-                            for (int i = nPage - 2; i <= nPage + 2; i++) {
+                            int begin = 0;
+                            int end = 0;
+                            if(numberOfPage + 2 < numberOfFeebacks){
+                                begin = nPage - 2;
+                                end = nPage + 2;
+                            }else{
+                                 begin = numberOfFeebacks - 4;
+                                 end = numberOfFeebacks;
+                            }
+                            for (int i = begin; i <= end + 2; i++) {
                                 activePage = nPage == i ? " page-active" : "";
                                 out.println("<div onclick=\"NavToNewPage(this)\" class=\"page-navTo" + activePage + "\" data-value=\"" + i + "\">" + i + "</div>");
                             }

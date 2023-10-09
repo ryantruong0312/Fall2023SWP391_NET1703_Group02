@@ -40,13 +40,13 @@
 
                             <div class="form-outline mb-3">
                                 <label class="form-label mb-1" for="account">Email/Tên đăng nhập</label>
-                                <input type="text" id="account" name="account" class="input form-control form-control-lg" value="${requestScope.USER_NAME}" required=""/>          
+                                <input type="text" id="account" name="account" class="input form-control form-control-lg" value="${param.account}" required=""/>          
                             </div>
 
                             <!-- Password input -->
                             <div class="form-outline mb-3">
                                 <label class="form-label mb-1" for="password">Mật khẩu</label>
-                                <input type="password" id="password" name="password" class="input form-control form-control-lg" value="${requestScope.PASSWORD_lOGIN}" required=""/>
+                                <input type="password" id="password" name="password" class="input form-control form-control-lg" value="${param.password}" required=""/>
                                 <div class="show-password">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </div>
