@@ -674,11 +674,11 @@ public class BirdDAO {
                 if(price != null)
                     stm.setInt(10, Integer.parseInt(price));
                 stm.setString(11, description);
-                if(dad_bird_id.isBlank()) {
+                if(dad_bird_id.isEmpty()) {
                     dad_bird_id = null;
                 }
                 stm.setString(12, dad_bird_id);
-                if(mom_bird_id.isBlank()) {
+                if(mom_bird_id.isEmpty()) {
                     mom_bird_id = null;
                 }
                 stm.setString(13, mom_bird_id);

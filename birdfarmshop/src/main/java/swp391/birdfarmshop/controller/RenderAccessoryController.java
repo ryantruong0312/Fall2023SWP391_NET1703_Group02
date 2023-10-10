@@ -61,6 +61,12 @@ public class RenderAccessoryController extends HttpServlet {
             accessoryList = dao.getAccessoriesCustom(search, categoryID, price, page, numberOfRecord);
             int noOfRecords = dao.totalAccessories(search, categoryID, price);
             int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / numberOfRecord);
+            for(Accessory a : accessoryList){
+                if(a.getStatus().equals("hết hàng")){
+                    String message = "hết hàng";
+                    request.setAttribute("message", message);
+                }
+            }
             request.setAttribute("accessoryList", accessoryList);
             request.setAttribute("SEARCH", search);
             request.setAttribute("PRICE", price);
