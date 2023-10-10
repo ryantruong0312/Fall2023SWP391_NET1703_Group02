@@ -21,9 +21,9 @@ import swp391.birdfarmshop.util.DBUtils;
  */
 public class UserDAO {
 
-    private static final String GET_ACCOUNT_LIST = "SELECT [username], [full_name], [role], [status] FROM [User]\n";
+    private static final String GET_ACCOUNT_LIST = "SELECT [username], [full_name], [role], [status] FROM [User]";
     private static final String GET_USER_BY_USERNAME = "SELECT [username], [full_name], [role], [email], [phone],"
-            + " [register_date], [point], [address],[login_by], [status] FROM [User] WHERE username = ?";
+            + " [register_date], [point], [address], [status] FROM [User] WHERE username = ?";
 
     public User getUser(String username, String password) {
         User u = null;
@@ -196,7 +196,7 @@ public class UserDAO {
         return result;
     }
 
-    public ArrayList<AccountDTO> getAccountList(String search, String page, int recordsPerPage) throws SQLException {
+    public ArrayList<AccountDTO> getAccountList() throws SQLException {
         ArrayList<AccountDTO> accountList = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
@@ -204,19 +204,7 @@ public class UserDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String sql = GET_ACCOUNT_LIST;
-                if(search != null){
-                    sql += " WHERE username LIKE N'%"+search+"%' "
-                            + "OR full_name LIKE N'%"+search+"%' "
-                            + "OR role LIKE N'%" + search + "%' "
-                            + "OR status LIKE N'%" + search + "%' ";
-                }
-                if (page != null) {
-                    int pageNumber = Integer.parseInt(page);
-                    int start = (pageNumber - 1) * recordsPerPage;
-                    sql += "ORDER BY (SELECT NULL) OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
-                }
-                stm = con.prepareStatement(sql);
+                stm = con.prepareStatement(GET_ACCOUNT_LIST);
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     String username = rs.getString("username");
@@ -240,43 +228,7 @@ public class UserDAO {
         }
         return accountList;
     }
-        public int totalAccount(String search) throws SQLException {
-        int result = 0;
-        Connection con = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        try {
-            con = DBUtils.getConnection();
-            if (con != null) {
-                String sql = "SELECT COUNT(username) AS [Amount] \n"
-                        +    "FROM [User]";
-                if(search != null){
-                    sql += " WHERE username LIKE N'%"+search+"%' "
-                            + "OR full_name LIKE N'%"+search+"%' "
-                            + "OR role LIKE N'%" + search + "%' "
-                            + "OR status LIKE N'%" + search + "%' ";
-                }
-                stm = con.prepareStatement(sql);
-                rs = stm.executeQuery();
-                if (rs != null && rs.next()) {
-                   result = rs.getInt("Amount");
-                }
-            }
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if (stm != null) {
-                stm.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-            if (rs != null) {
-                rs.close();
-            }
-        }
-        return result;
-    }
+
     public boolean updateProfile(String fullName, String phone, String address, String username) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -306,7 +258,7 @@ public class UserDAO {
     }
 
     public User getUserByUsername(String username) throws SQLException {
-        User user = null;
+        User user = new User();
         Connection con = null;
         PreparedStatement ptm = null;
         ResultSet rs = null;
@@ -325,13 +277,11 @@ public class UserDAO {
                     String address = rs.getString("address");
                     int point = rs.getInt("point");
                     Date registerDate = rs.getDate("register_date");
-                    String loginBy = rs.getString("login_by");
                     String status = rs.getString("status");
-                    user = new User(username, "*****", fullName, phone, email, role, address, point, registerDate, loginBy, status);
+                    user = new User(username, "*****", fullName, phone, email, role, address, point, registerDate, "", status);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException | SQLException e) {
         } finally {
             if (ptm != null) {
                 ptm.close();
