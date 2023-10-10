@@ -34,7 +34,6 @@ public class RenderUpdateAccessoryController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String user = request.getParameter("user_role");
             String id = request.getParameter("accessory_id");
             AccessoryDAO d = new AccessoryDAO();
             Accessory a = d.getAccessoryByID(id);
@@ -43,21 +42,19 @@ public class RenderUpdateAccessoryController extends HttpServlet {
             ImageDAO im = new ImageDAO();
             String url_thumnail = im.getThumbnailUrlByAccessoryId(id);
             List<Image> list = im.getImageByAccessoryId(id);
-            if(!list.isEmpty()){
+            if (!list.isEmpty()) {
                 request.setAttribute("list", list);
             }
-            if(url_thumnail != null){
+            if (url_thumnail != null) {
                 request.setAttribute("url_thumnail", url_thumnail);
             }
             if (ac != null) {
                 request.setAttribute("ac", ac);
             }
-            if(user.equals("admin") || user.equals("manager")){
-                request.setAttribute("user", user);
-            }
-            if(a != null){
+            if (a != null) {
                 request.setAttribute("a", a);
             }
+
             url = SUCCESS;
         } catch (Exception e) {
             log("Error at RenderAddAccessoryController: " + e.toString());

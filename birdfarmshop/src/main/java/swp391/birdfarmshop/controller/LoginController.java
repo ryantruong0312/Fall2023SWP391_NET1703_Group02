@@ -62,7 +62,7 @@ public class LoginController extends HttpServlet {
                             url =  DEST_NAV_HOME;
                         }
                     } else if (u.getStatus().equals("inactive")) {
-                        session.setAttribute("ERROR", "Vui lòng kích hoạt tài khoản của bạn bằng cách nhấp vào liên kết trong email đã đăng ký");
+                        session.setAttribute("ERROR", "Vui lòng kích hoạt tài khoản của bạn bằng cách nhấn vào liên kết trong email đã đăng ký");
                     } else {
                         session.setAttribute("ERROR", "Tài khoản của bạn đã bị khóa, vui lòng liên hệ với cửa hàng");
                     }
@@ -72,8 +72,6 @@ public class LoginController extends HttpServlet {
             } else {
                 session.setAttribute("ERROR", "Email/tên đăng nhập hoặc mật khẩu không chính xác");
             }
-            request.setAttribute("USER_NAME", username);
-            request.setAttribute("PASSWORD_lOGIN", password);
             request.getRequestDispatcher(url).forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();

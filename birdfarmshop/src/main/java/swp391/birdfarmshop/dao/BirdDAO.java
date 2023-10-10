@@ -313,6 +313,7 @@ public class BirdDAO {
                     String bird_id = rs.getString("bird_id");
                     String bird_name = rs.getString("bird_name");
                     String color = rs.getString("color");
+                    Date birdthday = rs.getDate("birthday");
                     int age = rs.getInt("age");
                     int grown_age = rs.getInt("grown_age");
                     boolean sex = rs.getBoolean("gender");
@@ -335,7 +336,7 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     ArrayList<String> image_urls = imgDao.getImagesByBirdId(birdId);
-                    bird = new BirdDTO(bird_id, bird_name, color, age, grown_age, gender, breed_id, breed_name,
+                    bird = new BirdDTO(bird_id, bird_name, color, birdthday, age, grown_age, gender, breed_id, breed_name,
                             achievement, reproduction_history, price, description, dad_bird_id, dad_bird_name, mom_bird_id, mom_bird_name, discount, status, image_urls);
                 }
             }
@@ -589,17 +590,20 @@ public class BirdDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement("SELECT [bird_id],[bird_name],[color],DATEDIFF(MONTH, birthday, GETDATE()) AS age,[grown_age]"
-                        + ",[gender],bird.[breed_id] AS breed_id,breed.[breed_name] AS breed_name\n"
-                        + ",[achievement],[reproduction_history],[price],[description],[dad_bird_id],[mom_bird_id],[discount],[status]\n"
-                        + "FROM [BirdFarmShop].[dbo].[Bird] AS bird\n"
-                        + "LEFT JOIN BirdBreed AS breed\n"
-                        + "ON bird.breed_id = breed.breed_id");
+
+                stm = con.prepareStatement("SELECT [bird_id],[bird_name],[color],[birthday]," +
+"DATEDIFF(MONTH, birthday, GETDATE()) AS age,[grown_age],[gender],bird.[breed_id] AS breed_id,breed.[breed_name] AS breed_name,\n" +
+"[achievement],[reproduction_history],[price],[description],[dad_bird_id],[mom_bird_id],[discount],[status]\n" +
+"FROM [BirdFarmShop].[dbo].[Bird] AS bird\n" +
+"LEFT JOIN BirdBreed AS breed\n" +
+"ON bird.breed_id = breed.breed_id");
+
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     String bird_id = rs.getString("bird_id");
                     String bird_name = rs.getString("bird_name");
                     String color = rs.getString("color");
+                    Date birthday = rs.getDate("birthday");
                     int age = rs.getInt("age");
                     int grown_age = rs.getInt("grown_age");
                     boolean sex = rs.getBoolean("gender");
@@ -622,7 +626,7 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     ArrayList<String> image_urls = imgDao.getImagesByBirdId(bird_id);
-                    bird = new BirdDTO(bird_id, bird_name, color, age, grown_age, gender, breed_id, breed_name,
+                    bird = new BirdDTO(bird_id, bird_name, color, birthday, age, grown_age, gender, breed_id, breed_name,
                             achievement, reproduction_history, price, description, dad_bird_id, dad_bird_name, mom_bird_id, mom_bird_name, discount, status, image_urls);
                     birds.add(bird);
                 }
@@ -642,7 +646,7 @@ public class BirdDAO {
         return birds;
     }
 
-    public ArrayList<BirdDTO> getBirdsByGender(boolean gender) throws SQLException {
+    public ArrayList<BirdDTO> getBirdsByGender(boolean gender) throws SQLException, ClassNotFoundException {
         ArrayList<BirdDTO> arrlist_b = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
@@ -661,7 +665,77 @@ public class BirdDAO {
                     b.setBird_id(bird_id);
                     arrlist_b.add(b);
                 }
+                 }
+        } 
+         finally {
+            if (stm != null) {
+                stm.close();
             }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+                return arrlist_b;
+    }
+    
+    public boolean updateBird(String bird_id, String bird_name, String color, String birthday, String grown_age
+      , String gender, String breed_id, String achievement, String reproduction_history, String price, String description
+      , String dad_bird_id, String mom_bird_id, String discount, String status) throws SQLException, ParseException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        boolean sex;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date utilDate = dateFormat.parse(birthday);
+        Date sqlDate = new Date(utilDate.getTime());
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("UPDATE [dbo].[Bird]\n"
++ "             SET [bird_id] = ?,[bird_name] = ?,[color] = ?,[birthday] = ?,[grown_age] = ?,[gender] = ?,[breed_id] = ?,"
++ "             [achievement] = ?, [reproduction_history] = ?,[price] = ?,[description] = ?,[dad_bird_id] = ?,"
++ "             [mom_bird_id] = ?, [discount] = ?,[status] = ?\n"
++ "             WHERE [bird_id] = ?");
+                stm.setString(1, bird_id);
+                stm.setString(2, bird_name);
+                stm.setString(3, color);
+                if(birthday != null)
+                    stm.setDate(4, sqlDate);
+                if(grown_age != null)
+                    stm.setInt(5, Integer.parseInt(grown_age));
+                if(gender.equals("Đực")) {
+                    sex = true;
+                } else {
+                    sex = false;
+                }
+                stm.setBoolean(6, sex);
+                stm.setString(7, breed_id);
+                stm.setString(8, achievement);
+                if(reproduction_history != null)
+                    stm.setInt(9, Integer.parseInt(reproduction_history));
+                if(price != null)
+                    stm.setInt(10, Integer.parseInt(price));
+                stm.setString(11, description);
+                if(dad_bird_id.isEmpty()) {
+                    dad_bird_id = null;
+                }
+                stm.setString(12, dad_bird_id);
+                if(mom_bird_id.isEmpty()) {
+                    mom_bird_id = null;
+                }
+                stm.setString(13, mom_bird_id);
+                System.out.println(dad_bird_id + " " + mom_bird_id);
+                if(discount != null)
+                    stm.setInt(14, Integer.parseInt(discount));
+                stm.setString(15, status);
+                stm.setString(16, bird_id);
+                int row = stm.executeUpdate();
+                if(row > 0) 
+                    return true;
+           }
         } catch (ClassNotFoundException | SQLException e) {
         } finally {
             if (stm != null) {
@@ -674,12 +748,13 @@ public class BirdDAO {
                 rs.close();
             }
         }
-        return arrlist_b;
+        
+        return false;
     }
-
-//    public static void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
-//        BirdDAO dao = new BirdDAO();
-//        boolean check = dao.addNewBird("AS101", "cape", "vàng, đỏ", "2023-10-07", "11", "Đực", "asian", "Chưa có", "1", "3000000", "Hàng Việt Nam", "XT001", "IR002", "1", "Còn hàng");
-//        System.out.println(check);
-//    }
+    
+    public static void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
+        BirdDAO dao = new BirdDAO();
+        boolean check = dao.updateBird("Cl201", "Vẹt Cockatiel Lutin", "xám, vàng, cam", "2020-02-02", "24", "Đực", "australian", "Nhiều", "0", "2500000", "Hàng Việt Nam", "", "", "0", "Còn hàng");
+        System.out.println(check);
+    }
 }

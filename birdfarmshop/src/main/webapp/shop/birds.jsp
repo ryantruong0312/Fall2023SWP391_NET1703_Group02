@@ -232,6 +232,7 @@
                             <div class="search-bar">
                                 <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
                                 <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                                <input type="hidden" name="page" value="1" />
                                 <input type="submit" value="Tìm kiếm">
                             </div>
                             <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
@@ -280,7 +281,7 @@
                     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                         <div id="content" class="row">
                             <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
-                            <div id="content" class="row justify-content-center">
+                            <div id="content" class="row">
                                 <c:if test="${BIRDLIST != null}">
                                     <c:if test="${not empty BIRDLIST}">
                                         <c:forEach items="${BIRDLIST}" var="bird">
@@ -290,13 +291,18 @@
                                                         <div class="hover-content">
                                                             <ul>
                                                                 <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                                <c:if test="${bird.status != 'Đã bán' || LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
                                                                 <li><a class="bird-cart" data-value="${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                </c:if>
                                                             </ul>
                                                         </div>
                                                         <img class="bird-thumbnail" src="${bird.image_url}" alt="${bird.bird_name}">
                                                     </div>
                                                     <div class="down-content">
                                                         <h4>${bird.bird_name}</h4>
+                                                        <c:if test="${bird.status == 'Đã bán'}">
+                                                            <h6 style="text-align: center; background-color: pink;">Sản phẩm đã bán</h6>
+                                                        </c:if>
                                                         <c:choose>
                                                             <c:when test="${bird.discount > 0}">
                                                                 <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
