@@ -227,22 +227,21 @@
                         <div class="image-container">
                             <div class="image-top">
                                 <div class="overlay-container">
-                                      <input type="hidden" name="accessory_id" value="${a.accessory_id}"/>
+                                    <input type="hidden" name="accessory_id" value="${a.accessory_id}"/>
                                     <img id="mainImage" style="width: 500px; height: 400px; border: 1px solid;" src="${im}" alt="Image main" onclick="swapImages()">
                                     <c:if test="${requestScope.MESSAGE != null}">
                                         <div class="overlay-text">${MESSAGE}</div>
                                     </c:if>
                                 </div>
-                                </div> 
-                            </div>
-                            <div class="image-bottom">
-                                <c:forEach items="${a.image_url}" var="accessory">
-                                    <c:if test="${im ne accessory}">
-                                        <img style="width: 100px; height: 75px; border: 1px solid;" class="accessory-image" src="${accessory}" alt="" onclick="swapImages(this)">
-                                    </c:if>
-                                </c:forEach>
-                            </div>                         
+                            </div> 
                         </div>
+                        <div class="image-bottom">
+                            <c:forEach items="${a.image_url}" var="accessory">
+                                <c:if test="${im ne accessory}">
+                                    <img style="width: 100px; height: 75px; border: 1px solid;" class="accessory-image" src="${accessory}" alt="" onclick="swapImages(this)">
+                                </c:if>
+                            </c:forEach>
+                        </div>                         
                     </div>
 
                     <div class="col-lg-4">
@@ -269,24 +268,24 @@
                                 <div class="left-content">
                                     <h6>Số lượng</h6>
                                 </div>
-                            
-                                    <div class="right-content">
+
+                                <div class="right-content">
+                                    <div class="quantity buttons_added">
                                         <div class="quantity buttons_added">
-                                            <div class="quantity buttons_added">
-                                                <input type="button" value="-" class="minus" onclick="decrementQuantity('quantityInput', ${a.unit_price}, ${a.discount})">
-                                                <c:choose>
-                                                    <c:when test="${a.stock_quantity > 0}">
-                                                        <input type="number" step="1" min="1" max="${a.stock_quantity}" name="order_quantity" id="quantityInput" value="1" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <input type="number" step="1" min="0" max="${a.stock_quantity}" name="quantity" id="quantityInput" value="0" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <input type="button" value="+" class="plus" onclick="incrementQuantity('quantityInput', ${a.stock_quantity}, ${a.unit_price}, ${a.discount})">
-                                            </div>
+                                            <input type="button" value="-" class="minus" onclick="decrementQuantity('quantityInput', ${a.unit_price}, ${a.discount})">
+                                            <c:choose>
+                                                <c:when test="${a.stock_quantity > 0}">
+                                                    <input type="number" step="1" min="1" max="${a.stock_quantity}" name="order_quantity" id="quantityInput" value="1" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <input type="number" step="1" min="0" max="${a.stock_quantity}" name="quantity" id="quantityInput" value="0" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <input type="button" value="+" class="plus" onclick="incrementQuantity('quantityInput', ${a.stock_quantity}, ${a.unit_price}, ${a.discount})">
                                         </div>
-                                        <div id="warning"></div>
-                                    </div>                            
+                                    </div>
+                                    <div id="warning"></div>
+                                </div>                            
                             </div>
                         </div>
                         <c:choose>
@@ -306,13 +305,13 @@
                                     </div>
                                     <div style="clear: both;"></div>
                                 </div>
-                     
+
                             </c:when>
                             <c:otherwise>
                                 <div class="total">
                                     <h4 style="float: left;">Tổng cộng: <span id="total">0 ₫</span></h4>
                                     <div type="button" class="main-border-button" style="margin-left: 185px; margin-top: 20px; float: left;" id="buttonContainer">
-                                          <div type="button" class="main-border-button" style="margin-left: 100px; float: left;"><a style="cursor: pointer" class="accessory-cart" data-value="${a.accessory_id}">Thêm vào giỏ hàng</a></div>
+                                        <div type="button" class="main-border-button" style="margin-left: 100px; float: left;"><a style="cursor: pointer" class="accessory-cart" data-value="${a.accessory_id}">Thêm vào giỏ hàng</a></div>
                                     </div>
                                     <div style="clear: both;"></div>
                                 </div>

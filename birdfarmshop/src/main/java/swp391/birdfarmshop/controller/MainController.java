@@ -94,7 +94,8 @@ public class MainController extends HttpServlet {
     private static final String ACT_NAV_PAYMENT = "NavToPayment";
     private static final String DEST_NAV_PAYMENT = "AddOrderController";
     private static final String ACT_UPDATE_BIRD = "UpdateBird";
-    private static final String DEST_UPDATE_BIRD = "UpdateBirdController";   private static final String ACT_UPDATE_ACTIVITY = "UpdateActivity";
+    private static final String DEST_UPDATE_BIRD = "UpdateBirdController";   
+    private static final String ACT_UPDATE_ACTIVITY = "UpdateActivity";
     private static final String DEST_UPDATE_ACTIVITY= "UpdateActivityController";
     private static final String ACT_NAV_BIRD_CUSTOMER = "NavToBirdCustomer";
     private static final String DEST_NAV_BIRD_CUSTOMER = "RenderBirdCustomerController";
