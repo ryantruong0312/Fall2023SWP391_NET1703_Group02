@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dto.BirdNestDTO;
@@ -154,4 +155,44 @@ public class BirdNestDAO {
         return number;
     }
 
+    public boolean addNewBirdNest(BirdNestDTO dto) throws SQLException, ParseException, ClassNotFoundException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("INSERT INTO [dbo].[BirdNest]\n"
+                        + "             ([nest_id],[nest_name],[breed_id],[dad_bird_id],[mom_bird_id],[baby_quantity]"
+                        + "             ,[price],[description],[discount],[status])\n"
+                        + "             VALUES (?,?,?,?,?,?,?,?,?,?) ");
+                stm.setString(1, dto.getNest_id());
+                stm.setString(2, dto.getNest_name());
+                stm.setString(3, dto.getBreed_id());
+                stm.setString(4, dto.getDad_bird_id());
+                stm.setString(5, dto.getMom_bird_id());
+                stm.setInt(6, dto.getBaby_quantity());
+                stm.setInt(7, dto.getPrice());
+                stm.setString(8, dto.getDescription());
+                stm.setInt(9, dto.getDiscount());
+                stm.setString(10, dto.getStatus());
+                int row = stm.executeUpdate();
+                if (row > 0) {
+                    return true;
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return false;
+    }
+    
 }

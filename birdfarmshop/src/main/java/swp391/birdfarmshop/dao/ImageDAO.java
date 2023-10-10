@@ -284,7 +284,49 @@ public class ImageDAO {
             if (con != null) {
                 con.close();
             }
-        }        return false;
+        }
+        return false;
+    }
+
+    public boolean addNewImageBirdNest(String url, String is_thumbnail, String nest_id) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        boolean is_thumbnaill;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("INSERT INTO [dbo].[Image]\n"
+                        + "           ([image_url],[is_thumbnail],[bird_id],[nest_id],[accessory_id])\n"
+                        + "           VALUES (?,?,?,?,?)");
+                stm.setString(1, url);
+                if (is_thumbnail.equals("1")) {
+                    is_thumbnaill = true;
+                } else {
+                    is_thumbnaill = false;
+                }
+                stm.setBoolean(2, is_thumbnaill);
+                stm.setString(3, null);
+                stm.setString(4, nest_id);
+                stm.setString(5, null);
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return false;
     }
 
     public boolean addNewAccessoryImage(String url, boolean type, String accessoryID) throws SQLException {
@@ -349,7 +391,7 @@ public class ImageDAO {
         }
         return false;
     }
-    
+
     public boolean updateThumbnailImageAccessory(String txtAccessoryID, boolean type, String urlImage) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -419,11 +461,11 @@ public class ImageDAO {
         }
         return list;
     }
-    
+
     public static void main(String[] args) throws SQLException {
         ImageDAO i = new ImageDAO();
         ArrayList<Image> list = i.getImageByAccessoryId("LN001");
-        for(Image im : list){
+        for (Image im : list) {
             System.out.println(im.getImage_id());
         }
     }

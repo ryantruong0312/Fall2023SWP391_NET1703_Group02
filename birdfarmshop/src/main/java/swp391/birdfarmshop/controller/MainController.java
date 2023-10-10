@@ -93,7 +93,10 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_CHECKOUT = "RenderCheckOutController";
     private static final String ACT_NAV_PAYMENT = "NavToPayment";
     private static final String DEST_NAV_PAYMENT = "AddOrderController";
-    private static final String TEST = "/shop/checkout.jsp";
+    private static final String ACT_NAV_ADD_BIRD_NEST = "NavToNewBirdNest";
+    private static final String DEST_NAV_ADD_BIRD_NEST = "RenderNewBirdNestController";
+    private static final String ACT_ADD_BIRD_NEST = "AddNewBirdNest";
+    private static final String DEST_ADD_BIRD_NEST = "AddNewBirdNestController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -209,12 +212,18 @@ public class MainController extends HttpServlet {
                 case ACT_NAV_UPDATE_ACCESSORY:
                     url = DEST_NAV_UPDATE_ACCESSORY;
                     break;
-				 case ACT_NAV_CHECKOUT:
+                case ACT_NAV_CHECKOUT:
                     url = DEST_NAV_CHECKOUT;
                     break;
                 case ACT_NAV_PAYMENT:
                     url = DEST_NAV_PAYMENT;
-                break;
+                    break;
+                case ACT_NAV_ADD_BIRD_NEST:
+                    url = DEST_NAV_ADD_BIRD_NEST;
+                    break;
+                case ACT_ADD_BIRD_NEST:
+                    url = DEST_ADD_BIRD_NEST;
+                    break;
                 default:
                     break;
             }
