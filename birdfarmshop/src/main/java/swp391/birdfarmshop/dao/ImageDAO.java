@@ -420,11 +420,32 @@ public class ImageDAO {
         return list;
     }
     
-    public static void main(String[] args) throws SQLException {
-        ImageDAO i = new ImageDAO();
-        ArrayList<Image> list = i.getImageByAccessoryId("LN001");
-        for(Image im : list){
-            System.out.println(im.getImage_id());
-        }
+    public boolean updateImageBird(String url, String bird_id) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("UPDATE [dbo].[Image]\n"
+                        + "                 SET [image_url] = ?\n"
+                        + "                 WHERE [bird_id] = ?");
+                stm.setString(1, url);
+                stm.setString(2, bird_id);
+
+                int rs = stm.executeUpdate();
+                if (rs > 0) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }        
+        return false;
     }
 }

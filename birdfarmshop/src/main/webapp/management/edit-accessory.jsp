@@ -27,38 +27,37 @@
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
 
+        <style>
+            .col-lg-12 .product-part {
+                margin: 0 0 10px 10px;
+            }
+            .col-lg-12 input {
+                margin-bottom: 10px;
+                width: 50%;
+            }
+            .col-lg-12 span {
+                margin-top: 100px;
+            }
+            .form-left{
+                padding-top: 8px;
+            }
+            .button-submit{
+                margin-top: 15px;
+                width: 175px;
+                font-size: 25px;
+                height: 50px;
+                border-radius: 10px;
+                background-color: #0c5460;
+                color: white;
+            }
+            #id{
+                height: 100px;
+            }
+            .form-outline input{
+                width: 554px;
+            }
+        </style>
     </head>
-
-    <style>
-        .col-lg-12 .product-part {
-            margin: 0 0 10px 10px;
-        }
-        .col-lg-12 input {
-            margin-bottom: 10px;
-            width: 50%;
-        }
-        .col-lg-12 span {
-            margin-top: 100px;
-        }
-        .form-left{
-            padding-top: 8px;
-        }
-        .button-submit{
-            margin-top: 15px;
-            width: 175px;
-            font-size: 25px;
-            height: 50px;
-            border-radius: 10px;
-            background-color: #0c5460;
-            color: white;
-        }
-        #id{
-            height: 100px;
-        }
-        .form-outline input{
-            width: 554px;
-        }
-    </style>
 
     <body>
         <c:url var="toCompare" value="MainController?action=NavToCompare"/>
@@ -170,7 +169,7 @@
                                 <label>ID của phụ kiện (Bao gồm 2 chữ hoa và 3 chữ số)</label>
                                 <input style="color: blue;" type="text" name="txtAccessoryID" class="input form-control" pattern="[A-Z]{2}\d{3}" value="${a.accessory_id}" readonly=""/>
                             </div>
-                            
+
                             <div class="form-outline mt-2">
                                 <label>Tên</label>
                                 <input style="color: blue;" type="text" name="txtAccessoryName" class="input form-control" value="${a.accessory_name}" required/>
@@ -235,91 +234,90 @@
                     </form>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
 
-    <!-- ***** Footer Start ***** -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="first-item">
-                        <div class="logo">
-                            <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
+        <!-- ***** Footer Start ***** -->
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="first-item">
+                            <div class="logo">
+                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
+                            </div>
+                            <ul>
+                                <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
+                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
+                                <li><a href="#">0913-244-567</a></li>
+                            </ul>
                         </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <h4>Sản phẩm và dịch vụ</h4>
                         <ul>
-                            <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                            <li><a href="#">thegioivetcanh@petshop.com</a></li>
-                            <li><a href="#">0913-244-567</a></li>
+                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
+                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
+                            <li><a href="${pageScope.toCompare}">So sánh</a></li>
+                            <li><a href="${pageScope.toPair}">Nhân giống</a></li>
                         </ul>
                     </div>
-                </div>
-                <div class="col-lg-3">
-                    <h4>Sản phẩm và dịch vụ</h4>
-                    <ul>
-                        <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                        <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                        <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                        <li><a href="${pageScope.toCompare}">So sánh</a></li>
-                        <li><a href="${pageScope.toPair}">Nhân giống</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h4>Đường dẫn hữu ích</h4>
-                    <ul>
-                        <li><a href="${pageScope.toHome}">Trang chủ</a></li>
-                        <li><a href="#">Về chúng tôi</a></li>
-                        <li><a href="#">Hỗ trợ</a></li>
-                        <li><a href="#">Liên hệ</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h4>Thông tin hỗ trợ</h4>
-                    <ul>
-                        <li><a href="#">Hỗ trợ</a></li>
-                        <li><a href="#">Câu hỏi thường gặp</a></li>
-                        <li><a href="#">Giao hàng</a></li>
-                        <li><a href="#">Theo dõi đơn hàng</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-12">
-                    <div class="under-footer">
-                        <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
-
+                    <div class="col-lg-3">
+                        <h4>Đường dẫn hữu ích</h4>
                         <ul>
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="${pageScope.toHome}">Trang chủ</a></li>
+                            <li><a href="#">Về chúng tôi</a></li>
+                            <li><a href="#">Hỗ trợ</a></li>
+                            <li><a href="#">Liên hệ</a></li>
                         </ul>
+                    </div>
+                    <div class="col-lg-3">
+                        <h4>Thông tin hỗ trợ</h4>
+                        <ul>
+                            <li><a href="#">Hỗ trợ</a></li>
+                            <li><a href="#">Câu hỏi thường gặp</a></li>
+                            <li><a href="#">Giao hàng</a></li>
+                            <li><a href="#">Theo dõi đơn hàng</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="under-footer">
+                            <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
+
+                            <ul>
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </footer>
-    <!-- ***** Footer Area Ends ***** -->
+        </footer>
+        <!-- ***** Footer Area Ends ***** -->
 
-    <!-- jQuery -->
-    <script src="assets/js/jquery-2.1.0.min.js"></script>
+        <!-- jQuery -->
+        <script src="assets/js/jquery-2.1.0.min.js"></script>
 
-    <!-- Bootstrap -->
-    <script src="assets/js/popper.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
+        <!-- Bootstrap -->
+        <script src="assets/js/popper.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
 
-    <!-- Plugins -->
-    <script src="assets/js/owl-carousel.js"></script>
-    <script src="assets/js/accordions.js"></script>
-    <script src="assets/js/datepicker.js"></script>
-    <script src="assets/js/scrollreveal.min.js"></script>
-    <script src="assets/js/waypoints.min.js"></script>
-    <script src="assets/js/jquery.counterup.min.js"></script>
-    <script src="assets/js/imgfix.min.js"></script> 
-    <script src="assets/js/slick.js"></script> 
-    <script src="assets/js/lightbox.js"></script> 
-    <script src="assets/js/isotope.js"></script> 
+        <!-- Plugins -->
+        <script src="assets/js/owl-carousel.js"></script>
+        <script src="assets/js/accordions.js"></script>
+        <script src="assets/js/datepicker.js"></script>
+        <script src="assets/js/scrollreveal.min.js"></script>
+        <script src="assets/js/waypoints.min.js"></script>
+        <script src="assets/js/jquery.counterup.min.js"></script>
+        <script src="assets/js/imgfix.min.js"></script> 
+        <script src="assets/js/slick.js"></script> 
+        <script src="assets/js/lightbox.js"></script> 
+        <script src="assets/js/isotope.js"></script> 
 
-    <!-- Global Init -->
-    <script src="assets/js/custom.js"></script>
-</body>
+        <!-- Global Init -->
+        <script src="assets/js/custom.js"></script>
+    </body>
 </html>
 

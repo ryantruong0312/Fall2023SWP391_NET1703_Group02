@@ -35,7 +35,7 @@
         <c:url var="toLogin" value="MainController?action=NavToLogin"/>
         <c:url var="logout" value="MainController?action=Logout"/>
         <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
-        <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
+        <c:url var="toBirds" value="MainController?action=NavToBird"/>
         <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
         <c:url var="toCart" value="MainController?action=NavToCart"/>
         <c:url var="toProfile" value="MainController?action=NavToProfile"/>
