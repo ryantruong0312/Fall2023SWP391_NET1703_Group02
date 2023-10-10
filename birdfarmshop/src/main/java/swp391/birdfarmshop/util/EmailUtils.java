@@ -114,7 +114,7 @@ public class EmailUtils {
                 + "                <tbody>\n"
                 + "                    <tr>\n"
                 + "                        <td style=\"text-align:center;border-bottom-color:orange;border-bottom-style:solid;border-bottom-width:10px;border-top-width:0; padding-top: 15px; padding-bottom: 10px;\">\n"
-                + "                            <img src=\"../assets/images/logo.png\" alt=\"V.E.T\"/>\n"
+                + "                          <img src=\"" + Constants.C3_HOST + "logo.png\" alt=\"V.E.T\">    \n"
                 + "                        </td>\n"
                 + "                    </tr>\n"
                 + "                    <tr style=\"padding-top: 10px\">\n"

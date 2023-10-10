@@ -169,7 +169,7 @@
                                 <label>ID của phụ kiện (Bao gồm 2 chữ hoa và 3 chữ số)</label>
                                 <input style="color: blue;" type="text" name="txtAccessoryID" class="input form-control" pattern="[A-Z]{2}\d{3}" value="${a.accessory_id}" readonly=""/>
                             </div>
-                            
+
                             <div class="form-outline mt-2">
                                 <label>Tên</label>
                                 <input style="color: blue;" type="text" name="txtAccessoryName" class="input form-control" value="${a.accessory_name}" required/>
