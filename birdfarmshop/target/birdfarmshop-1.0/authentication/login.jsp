@@ -40,13 +40,13 @@
 
                             <div class="form-outline mb-3">
                                 <label class="form-label mb-1" for="account">Email/Tên đăng nhập</label>
-                                <input type="text" id="account" name="account" class="input form-control form-control-lg" required=""/>          
+                                <input type="text" id="account" name="account" class="input form-control form-control-lg" value="${param.account}" required=""/>          
                             </div>
 
                             <!-- Password input -->
                             <div class="form-outline mb-3">
                                 <label class="form-label mb-1" for="password">Mật khẩu</label>
-                                <input type="password" id="password" name="password" class="input form-control form-control-lg" required=""/>
+                                <input type="password" id="password" name="password" class="input form-control form-control-lg" value="${param.password}" required=""/>
                                 <div class="show-password">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </div>
@@ -62,7 +62,7 @@
 
                             <!-- Submit button -->
                             <button type="submit" class="btn btn-primary btn-lg btn-block">Đăng nhập</button>
-                            <div style="color: white" class="mt-2">Bạn mới biết đến BFS ?   <a href="MainController?action=NavToRegister">Đăng kí</a></div>
+                            <div style="color: white" class="mt-2">Bạn mới biết đến V.E.T ?   <a href="MainController?action=NavToRegister">Đăng kí</a></div>
                             <div class="divider d-flex align-items-center my-4">
                                 <p class="text-center fw-bold mx-3 mb-0 text-muted">Hoặc</p>
                             </div>
@@ -79,7 +79,7 @@
                                 <div class="col-md-12 col-lg-5 col-xl-5 p-0 offset-lg-2 offset-xl-2">
                                     <a class="btn btn-md btn-block border btn-custom"href="https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email
                                        &redirect_uri=http://localhost:8080/birdfarmshop/LoginGoogleController&response_type=code
-                                       &client_id=911997830678-hnnf8alt3ehncr0mdo75f4kc2ckkdm6q.apps.googleusercontent.com&approval_prompt=force"
+                                       &client_id=563213089252-rga4rc627cobtc25fjmjuom2168u1hrp.apps.googleusercontent.com&approval_prompt=force"
                                        role="button">
                                         <div class="d-flex align-items-center justify-content-center">
                                             <img src="assets/images/google.png" alt="facebook icon"/> 
