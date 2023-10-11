@@ -1,7 +1,7 @@
 <%-- 
-    Document   : shop-orders
-    Created on : Sep 25, 2023, 11:10:46 AM
-    Author     : tlminh
+    Document   : shop-orderItems
+    Created on : Oct 11, 2023, 2:08:55 PM
+    Author     : phong pc
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -84,7 +84,7 @@
             }
             .scrollable-list td {
                 width: auto;
-                padding: 20px;
+                padding: 10px;
             }
         </style>
         <style>
@@ -211,73 +211,48 @@
         
         
         <main>
-            <c:set value="${requestScope.ORDERLIST}" var="orderList"/>
-            <c:set value="${requestScope.ORDERITEMMAP}" var="orderItemMap"/>
+            <c:set value="${requestScope.ITEMLIST}" var="itemList"/>
             <div class="container">
                 <div class="col-lg-12">
-                    <h1 style="text-align: center;">Danh sách đơn hàng</h1>
-                    <ul>
-                        <li><button><a href="MainController?action=NavToShopOrders&txtDate=today"><span>Hôm qua</span></a></button></li>
-                        <li><button><a href="MainController?action=NavToShopOrders&txtDate=yesterday"><span>Hôm nay</span></a></button></li>
-                        <li><button><a href="MainController?action=NavToShopOrders&txtDate=thisWeek"><span>Tuần này</span></a></button></li>
-                        <li><button><a href="MainController?action=NavToShopOrders&txtDate=thisMonth"><span>Tháng này</span></a></button></li>
-                        <li><button><a href="MainController?action=NavToShopOrders&txtDate=thisYear"><span>Năm nay</span></a></button></li>
-                        <form style="float: right;" action="MainController">
-                            <label for="start-date">Ngày bắt đầu:</label>
-                            <input type="date" id="start-date" name="start-date" value="">
-
-                            <label for="end-date">Ngày kết thúc:</label>
-                            <input type="date" id="end-date" name="end-date" value="">
-                            <button type="submit" name="action" value="NavToShopOrders"><span>Chọn</span></button>
-                        </form>
-                    </ul>
+                    <h1 style="text-align: center;">Chi tiết đơn hàng</h1>
                 </div>
                 <div class="col-lg-12">
                     <div class="order-bar" style="background-color: #cccccc; text-align: center;">
-                        <span style="color: black; float: left; margin-left: 20px;">Đơn hàng</span><br>
-                        <div style="background-color: white; padding: 0; margin: 0;">
-                            <form style="padding: 10px 0;" action="MainController">
-                                <div class="search-bar">
-                                    <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                                    <input type="text" name="txtOrder" id="search" placeholder="Tìm kiếm" value="">
-                                    <input type="hidden" name="action" value="NavToShopOrders"/>
-                                    <input type="submit" value="Tìm kiếm">
-                                </div>
-                            </form>
-                        </div>
                         <div class="scrollable-container">
                             <table class="scrollable-list">
                                 <thead>
                                     <tr>
                                         <th>STT</th>
-                                        <th>Order Id</th>
-                                        <th>User ID</th>
-                                        <th>Ngày đặt hàng</th>
-                                        <th>Tình trạng đơn hàng</th>
-                                        <th>Tên người nhận</th>
-                                        <th>Sđt người nhận</th>
-                                        <th>Địa chỉ nhận hàng</th>
-                                        <th>Tình trạng thanh toán</th>
-                                        <th>Tổng đơn hàng</th>
-                                        <th>Điểm đã dùng</th>
-                                        <th>Chi tiết</th>
+                                        <th>Mã đơn hàng</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Mã sản phẩm</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Giá thành sản phẩm</th>
+                                        <th>Số lượng</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach items="${orderList}" var="order" varStatus="counter">
+                                    <c:forEach items="${itemList}" var="item" varStatus="counter">
                                         <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
                                             <td>${counter.count}</td>
-                                            <td>${order.order_id}</td>
-                                            <td>${order.customer}</td>
-                                            <td>${order.order_date}</td>
-                                            <td>${order.order_status}</td>
-                                            <td>${order.name_receiver}</td>
-                                            <td>${order.phone_receiver}</td>
-                                            <td>${order.address_receiver}</td>
-                                            <td>${order.payment_status}</td>
-                                            <td>${order.total_price}</td>
-                                            <td>${order.point}</td>
-                                            <td><a href="MainController?action=NavToOrderItems&order_id=${order.order_id}"><span>Chi tiết</span></a></td>
+                                            <td>${item.order_id}</td>
+                                            <td><img style="height: 100px; width: 80px;" src="${item.image_url}"/></td>
+                                            <c:choose>
+                                                <c:when test="${item.bird_id != null}">
+                                                    <td>${item.bird_id}</td>
+                                                    <td>${item.bird_name}</td>
+                                                </c:when>
+                                                <c:when test="${item.nest_id != null}">
+                                                    <td>${item.nest_id}</td>
+                                                    <td>${item.nest_name}</td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <td>${item.accessory_id}</td>
+                                                    <td>${item.accessory_name}</td>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <td>${item.unit_price}</td>
+                                            <td>${item.order_quantity}</td>
                                         </tr>
                                     </c:forEach>
                                 </tbody>
@@ -370,6 +345,6 @@
 
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
-        
+
     </body>
 </html>

@@ -102,8 +102,9 @@ public class MainController extends HttpServlet {
     private static final String ACT_NAV_UPDATE_PASSWORD = "NavToUpdatePassword";
     private static final String DEST_NAV_UPDATE_PASSWORD = "/profile/change-password.jsp";
     private static final String ACT_UPDATE_PASSWORD = "UpdatePassword";
-    private static final String DEST_UPDATE_PASSWORD = "UpdatePasswordController";    private static final String TEST = "/shop/checkout.jsp";
-
+    private static final String DEST_UPDATE_PASSWORD = "UpdatePasswordController";
+    private static final String ACT_NAV_ORDER_ITEMS = "NavToOrderItems";
+    private static final String DEST_NAV_ORDER_ITEMS = "RenderOrderItemsController";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
@@ -238,7 +239,11 @@ public class MainController extends HttpServlet {
                 break;
                 case ACT_UPDATE_PASSWORD:
                     url = DEST_UPDATE_PASSWORD;
-                break;                default:
+                break; 
+                case ACT_NAV_ORDER_ITEMS:
+                    url = DEST_NAV_ORDER_ITEMS;
+                break; 
+                default:
                     break;
             }
         } catch (Exception ex) {
