@@ -93,8 +93,12 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_CHECKOUT = "RenderCheckOutController";
     private static final String ACT_NAV_PAYMENT = "NavToPayment";
     private static final String DEST_NAV_PAYMENT = "AddOrderController";
+    private static final String ACT_NAV_ADD_BIRD_NEST = "NavToNewBirdNest";
+    private static final String DEST_NAV_ADD_BIRD_NEST = "RenderNewBirdNestController";
+    private static final String ACT_ADD_BIRD_NEST = "AddNewBirdNest";
+    private static final String DEST_ADD_BIRD_NEST = "AddNewBirdNestController";
     private static final String ACT_UPDATE_BIRD = "UpdateBird";
-    private static final String DEST_UPDATE_BIRD = "UpdateBirdController";   
+    private static final String DEST_UPDATE_BIRD = "UpdateBirdController";
     private static final String ACT_UPDATE_ACTIVITY = "UpdateActivity";
     private static final String DEST_UPDATE_ACTIVITY= "UpdateActivityController";
     private static final String ACT_NAV_BIRD_CUSTOMER = "NavToBirdCustomer";
@@ -103,7 +107,7 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_UPDATE_PASSWORD = "/profile/change-password.jsp";
     private static final String ACT_UPDATE_PASSWORD = "UpdatePassword";
     private static final String DEST_UPDATE_PASSWORD = "UpdatePasswordController";
-    private static final String ACT_NAV_ORDER_ITEMS = "NavToOrderItems";
+	private static final String ACT_NAV_ORDER_ITEMS = "NavToOrderItems";
     private static final String DEST_NAV_ORDER_ITEMS = "RenderOrderItemsController";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -225,26 +229,30 @@ public class MainController extends HttpServlet {
                 case ACT_NAV_PAYMENT:
                     url = DEST_NAV_PAYMENT;
                 break;
+                case ACT_NAV_ADD_BIRD_NEST:
+                    url = DEST_NAV_ADD_BIRD_NEST;
+                    break;
+                case ACT_ADD_BIRD_NEST:
+                    url = DEST_ADD_BIRD_NEST;
+                    break;
                 case ACT_UPDATE_BIRD:
                     url = DEST_UPDATE_BIRD;
                 break;
-               case ACT_UPDATE_ACTIVITY:
+                case ACT_UPDATE_ACTIVITY:
                     url = DEST_UPDATE_ACTIVITY;
-                break;
+                    break;
                 case ACT_NAV_BIRD_CUSTOMER:
                     url = DEST_NAV_BIRD_CUSTOMER;
-                break;
+                    break;
                 case ACT_NAV_UPDATE_PASSWORD:
                     url = DEST_NAV_UPDATE_PASSWORD;
-                break;
+                    break;
                 case ACT_UPDATE_PASSWORD:
                     url = DEST_UPDATE_PASSWORD;
-                break; 
-                case ACT_NAV_ORDER_ITEMS:
-                    url = DEST_NAV_ORDER_ITEMS;
-                break; 
-                default:
                     break;
+				case ACT_NAV_ORDER_ITEMS:
+                    url = DEST_NAV_ORDER_ITEMS;
+                break;
             }
         } catch (Exception ex) {
             log("Error at MainController: " + ex.toString());
