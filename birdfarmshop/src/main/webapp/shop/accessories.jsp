@@ -42,7 +42,7 @@ Author     : tlminh
                 border: 5px;
                 border-radius: 8px;
                 border: 1px solid rgb(221, 221, 227);
-                
+
             }
             .search-bar input {
                 border: 0;
@@ -96,7 +96,7 @@ Author     : tlminh
                 background-color: rgba(0, 0, 0, 0.5);
                 border-radius: 80%;
                 color: #fff;
-                padding: 30px;
+                padding: 20px;
                 font-size: 50px;
                 text-align: center;
                 margin-right: 1px;
@@ -227,9 +227,9 @@ Author     : tlminh
                     <div class="col-md-7">
                         <form id="selectAccessory" action="MainController" method="POST">
                             <input type="hidden" name="action" value="NavToAccessory"> 
-                            <div class="search-bar">
+                            <div class="search-bar" style="width: 400px;">
                                 <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                                <input type="text" name="txtAccessory" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                                <input style="width: 290px;" type="text" name="txtAccessory" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
                                 <input type="submit" value="Tìm kiếm">
                             </div>
                         </form>
@@ -280,9 +280,9 @@ Author     : tlminh
                                                             <li>
                                                                 <a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a>
                                                             </li>
-                                                            <c:if test="${accessory.stock_quantity > 0}">
+                                                            <c:if test="${accessory.stock_quantity > 0 && (sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER == null)}">
                                                                 <li><a style="cursor: pointer" class="accessory-cart" data-value="${accessory.accessory_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                                    </c:if>
+                                                            </c:if>
                                                         </ul>
                                                     </div>
                                                     <div class="overlay-container">
