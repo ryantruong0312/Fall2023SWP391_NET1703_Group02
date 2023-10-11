@@ -79,7 +79,7 @@ public class CreateBirdCustomer extends HttpServlet {
                             LocalTime currentTime = LocalTime.now();
                             String nameImage = currentTime.getNano() + file;
                             String img_url = Constants.C3_HOST + nameImage;
-//                            S3Utils.uploadFile(nameImage, part.getInputStream());
+                            S3Utils.uploadFile(nameImage, part.getInputStream());
                             int result = bcd.createNewBirdCustomer(birdId, nameBird, gender, 
                                 breedId,u.getUsername(), img_url, "Chưa ghép cặp");
                             if (result == 0){

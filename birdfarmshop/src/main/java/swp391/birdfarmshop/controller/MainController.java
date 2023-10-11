@@ -94,14 +94,18 @@ public class MainController extends HttpServlet {
     private static final String ACT_NAV_PAYMENT = "NavToPayment";
     private static final String DEST_NAV_PAYMENT = "AddOrderController";
     private static final String ACT_UPDATE_BIRD = "UpdateBird";
-    private static final String DEST_UPDATE_BIRD = "UpdateBirdController";   private static final String ACT_UPDATE_ACTIVITY = "UpdateActivity";
+    private static final String DEST_UPDATE_BIRD = "UpdateBirdController";   
+    private static final String ACT_UPDATE_ACTIVITY = "UpdateActivity";
     private static final String DEST_UPDATE_ACTIVITY= "UpdateActivityController";
     private static final String ACT_NAV_BIRD_CUSTOMER = "NavToBirdCustomer";
     private static final String DEST_NAV_BIRD_CUSTOMER = "RenderBirdCustomerController";
     private static final String ACT_NAV_UPDATE_PASSWORD = "NavToUpdatePassword";
     private static final String DEST_NAV_UPDATE_PASSWORD = "/profile/change-password.jsp";
     private static final String ACT_UPDATE_PASSWORD = "UpdatePassword";
-    private static final String DEST_UPDATE_PASSWORD = "UpdatePasswordController";    private static final String TEST = "/shop/checkout.jsp";
+    private static final String DEST_UPDATE_PASSWORD = "UpdatePasswordController";    
+    private static final String ACT_DELETE_CART = "DeleteCart";
+    private static final String DEST_DELETE_CART = "DeleteCartController"; 
+    private static final String TEST = "/shop/checkout.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -237,7 +241,11 @@ public class MainController extends HttpServlet {
                 break;
                 case ACT_UPDATE_PASSWORD:
                     url = DEST_UPDATE_PASSWORD;
-                break;                default:
+                break;   
+                case ACT_DELETE_CART:
+                    url = DEST_DELETE_CART;
+                break;   
+                default:
                     break;
             }
         } catch (Exception ex) {

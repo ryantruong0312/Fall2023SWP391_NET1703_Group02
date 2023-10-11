@@ -13,45 +13,39 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.dto.CartDTO;
-import swp391.birdfarmshop.model.Accessory;
 
 /**
  *
- * @author tlminh
+ * @author Admin
  */
-@WebServlet(name="RemoveAccessoryFromCartController", urlPatterns={"/RemoveAccessoryFromCartController"})
-public class RemoveAccessoryFromCartController extends HttpServlet {
-   
-    private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "shop/cart.jsp";
-
+@WebServlet(name="DeleteCartController", urlPatterns={"/DeleteCartController"})
+public class DeleteCartController extends HttpServlet {
+    private static final String DEST_NAV_CART = "RenderCartController";
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
-        try {
-            String accessory_id = request.getParameter("accessory_id");
-            AccessoryDAO aDao = new AccessoryDAO();
-            Accessory accessory = aDao.getAccessoryByID(accessory_id);
+        try (PrintWriter out = response.getWriter()) {
             HttpSession session = request.getSession();
-            if (session != null) {
-                CartDTO cart = (CartDTO) session.getAttribute("CART");
-                int order_quantity = cart.getAccessoryList().get(accessory_id).getOrder_quantity();
-                cart.removeAccessoryFromCart(accessory, order_quantity);
-                url = SUCCESS;
-                session.setAttribute("CART", cart);
-                session.setAttribute("SUCCESS", "Xóa sản phẩm thành công");
+            CartDTO cart = (CartDTO) session.getAttribute("CART");
+            if(cart != null){
+                session.removeAttribute("CART");
+                session.setAttribute("SUCCESS", "Xóa giỏ hàng thành công");
             }else{
-                session.setAttribute("ERROR", "Xóa sản phẩm thất bại");
+                session.setAttribute("ERROR", "Không có sản phẩm nào trong giỏ hàng của bạn");
             }
-        } catch (Exception e) {
-            log("Error at RemoveBirdFromCartController: " + e.toString());
-        } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+           response.sendRedirect(DEST_NAV_CART);
+        }catch(Exception e){
+            e.printStackTrace();
         }
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

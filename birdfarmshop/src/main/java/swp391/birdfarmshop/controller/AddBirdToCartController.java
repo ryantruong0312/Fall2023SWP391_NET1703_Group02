@@ -13,12 +13,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dto.CartDTO;
 import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
+import swp391.birdfarmshop.model.OrderedBirdItem;
 
 /**
  *
@@ -27,17 +29,59 @@ import swp391.birdfarmshop.model.Bird;
 @WebServlet(name = "AddBirdToCartController", urlPatterns = {"/AddBirdToCartController"})
 public class AddBirdToCartController extends HttpServlet {
 
-
+    private static final String DEST_NAV_CART = "RenderCartController";
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
         try {
             String bird_id = request.getParameter("bird_id");
+            String cage_id = request.getParameter("cage_id");
             BirdDAO birdDao = new BirdDAO();
+            AccessoryDAO adao = new AccessoryDAO();
             HttpSession session = request.getSession();
-            if (bird_id != null) {
+            if(bird_id != null && cage_id != null){
+                if (session != null) {
+                    CartDTO cart = (CartDTO) session.getAttribute("CART");
+                    if (cart == null) {
+                        session.setAttribute("ERROR", "Không có sản phẩm nào trong giỏ hàng của bạn");
+                    }else{
+                        List<Accessory> cageList = adao.getCageList();
+                        Accessory cheapestCage = cageList.get(0);
+                        int cheapestCagePrice = cheapestCage.getUnit_price() - cheapestCage.getUnit_price() * cheapestCage.getDiscount() / 100;
+                        for (Accessory cage : cageList) {
+                            if ((cage.getUnit_price() - cage.getUnit_price() * cage.getDiscount() / 100) < cheapestCagePrice) {
+                                cheapestCage = cage;
+                            }
+                        }
+                        Accessory a = adao.getAccessoryByID(cage_id);
+                        a.setDiscount(50);
+                        if(cheapestCage.getAccessory_id().equals(cage_id)){
+                                cheapestCage.setUnit_price(0);
+                                cheapestCage.setDiscount(0);
+                                a = cheapestCage;
+                        }
+                        HashMap<String , OrderedBirdItem> birdList = (HashMap<String , OrderedBirdItem>) cart.getBirdList();
+                        for (OrderedBirdItem ob : birdList.values()) {
+                            if(ob.getBird().getBird_id().equals(bird_id)){
+                                Accessory old = ob.getCage();
+                                cart.setCartTotalPrice(cart.getCartTotalPrice()-(old.getUnit_price()- (old.getUnit_price() * old.getDiscount() / 100)));
+                            }
+                            if(ob.getBird().getBird_id().equals(bird_id)){
+                                ob.setCage(a);
+                                break;
+                            }
+                        }
+                        cart.setBirdList(birdList);
+                        cart.setCartTotalPrice(cart.getCartTotalPrice()+ (a.getUnit_price()- (a.getUnit_price() * a.getDiscount() / 100)));
+                        session.setAttribute("CART", cart);
+                        session.setAttribute("SUCCESS", "Đổi lồng thành công");
+                    }
+                    response.sendRedirect(DEST_NAV_CART);
+                }
+            }
+            if (bird_id != null && cage_id == null) {
                 Bird bird = birdDao.getBirdById(bird_id);
-                AccessoryDAO adao = new AccessoryDAO();
                 List<Accessory> cageList = adao.getCageList();
                 Accessory cheapestCage = cageList.get(0);
                 int cheapestCagePrice = cheapestCage.getUnit_price() - cheapestCage.getUnit_price() * cheapestCage.getDiscount() / 100;
@@ -46,6 +90,8 @@ public class AddBirdToCartController extends HttpServlet {
                         cheapestCage = cage;
                     }
                 }
+                cheapestCage.setUnit_price(0);
+                cheapestCage.setDiscount(0);
                 if (session != null) {
                     CartDTO cart = (CartDTO) session.getAttribute("CART");
                     if (cart == null) {
@@ -68,6 +114,7 @@ public class AddBirdToCartController extends HttpServlet {
                      return;
                 }
             }
+            
         } catch (Exception e) {
             log("Error at AddBirdToCartController: " + e.toString());
         } 

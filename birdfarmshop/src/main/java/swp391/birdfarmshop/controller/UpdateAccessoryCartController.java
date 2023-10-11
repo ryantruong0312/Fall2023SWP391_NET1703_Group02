@@ -19,39 +19,58 @@ import swp391.birdfarmshop.model.Accessory;
 
 /**
  *
- * @author tlminh
+ * @author Admin
  */
-@WebServlet(name="RemoveAccessoryFromCartController", urlPatterns={"/RemoveAccessoryFromCartController"})
-public class RemoveAccessoryFromCartController extends HttpServlet {
+@WebServlet(name="UpdateAccessoryCartController", urlPatterns={"/UpdateAccessoryCartController"})
+public class UpdateAccessoryCartController extends HttpServlet {
    
-    private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "shop/cart.jsp";
-
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
-        try {
+        try (PrintWriter out = response.getWriter()) {
             String accessory_id = request.getParameter("accessory_id");
-            AccessoryDAO aDao = new AccessoryDAO();
-            Accessory accessory = aDao.getAccessoryByID(accessory_id);
+            String type = request.getParameter("type");
+            AccessoryDAO adao = new AccessoryDAO();
+            Accessory accessory = adao.getAccessoryByID(accessory_id);
             HttpSession session = request.getSession();
-            if (session != null) {
-                CartDTO cart = (CartDTO) session.getAttribute("CART");
-                int order_quantity = cart.getAccessoryList().get(accessory_id).getOrder_quantity();
-                cart.removeAccessoryFromCart(accessory, order_quantity);
-                url = SUCCESS;
-                session.setAttribute("CART", cart);
-                session.setAttribute("SUCCESS", "Xóa sản phẩm thành công");
-            }else{
-                session.setAttribute("ERROR", "Xóa sản phẩm thất bại");
+            if (type != null && type.equals("up")) {
+                if (session != null) {
+                    CartDTO cart = (CartDTO) session.getAttribute("CART");
+                    if (cart == null) {
+                        cart = new CartDTO();
+                    }
+                    boolean checkAdd = cart.addAccessoryToCart(accessory, 1);
+                    if (checkAdd) {
+                        out.println(cart.getCartTotalPrice());
+                        session.setAttribute("CART", cart);
+                    }
+                    return;
+                }
+            } else {
+               if (session != null) {
+                    CartDTO cart = (CartDTO) session.getAttribute("CART");
+                    if (cart == null) {
+                        cart = new CartDTO();
+                    }
+                    boolean checkAdd = cart.updateQuatityAccessory(accessory, 1);
+                    if (checkAdd) {
+                        out.println(cart.getCartTotalPrice());
+                        session.setAttribute("CART", cart);
+                    }
+                    return;
+                }
             }
-        } catch (Exception e) {
-            log("Error at RemoveBirdFromCartController: " + e.toString());
-        } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+        }catch (Exception e){
+            e.printStackTrace();
         }
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

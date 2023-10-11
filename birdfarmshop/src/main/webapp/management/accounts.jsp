@@ -157,9 +157,9 @@
                             <form class="d-flex w-100" action="RenderAccountsController" method="POST">
                                 <div class="input-group-prepend">
                                     <button class="input-group-text"><img src="assets/images/search-icon.png"></button>
-                                 
+
                                 </div>                  
-                                   <input type="text" class="form-control" id="searchInput" name="search" placeholder="Tìm kiếm..." value="${requestScope.SEARCH}">
+                                <input type="text" class="form-control" id="searchInput" name="search" placeholder="Tìm kiếm..." value="${param.search}">
                             </form>
                         </div>
                     </div>
@@ -222,19 +222,19 @@
                                     <c:if test="${user.role != 'admin'}">
                                         <c:choose>
                                             <c:when test="${user.status == 'active'}">
-                                                <form action="MainController" method="POST">
+                                                <form id="lock-${loop.index + 1}" action="MainController" method="POST">
                                                     <input type="hidden" name="action" value="UpdateActivity"/>
                                                     <input type="hidden" name="username" value="${user.username}"/>
                                                     <input type="hidden" name="type" value="lock"/>
-                                                    <button type="submit" class="btn btn-danger">Khóa</button>
+                                                    <button onclick="return checkUser(this)" type="submit" class="btn btn-danger">Khóa</button>
                                                 </form>
                                             </c:when>
                                             <c:when test="${user.status == 'lock'}">
-                                                <form action="MainController" method="POST">
+                                                <form id="op-${loop.index + 1}" action="MainController" method="POST">
                                                     <input type="hidden" name="action" value="UpdateActivity"/>
                                                     <input type="hidden" name="username" value="${user.username}"/>
                                                     <input type="hidden" name="type" value="open"/>
-                                                    <button type="submit" class="btn btn-danger">Mở Khóa</button>
+                                                    <button onclick="return checkUser(this)" type="submit" class="btn btn-danger">Mở Khóa</button>
                                                 </form>
                                             </c:when>
                                         </c:choose>
@@ -242,12 +242,12 @@
                                 </td>
                                 <td style="text-align: center;">
                                     <c:if test="${user.role != 'admin'}">
-                                        <form action="MainController" method="POST">
+                                        <form id="rs-${loop.index + 1}" action="MainController" method="POST">
                                             <input type="hidden" name="action" value="UpdateActivity"/>
                                             <input type="hidden" name="username" value="${user.username}"/>
                                             <input type="hidden" name="type" value="reset"/>
-                                            <button class="btn btn-primary">Cấp lại MK</button>
-                                        </form>
+                                            <button onclick="return checkUser(this)" class="btn btn-primary">Cấp lại MK</button>
+                                        </form>     
                                     </c:if>
                                 </td>
                             </tr>
@@ -283,21 +283,21 @@
                                     <c:choose>
                                         <c:when test="${userMG.status == 'active'}">
                                             <td style="text-align: center;">
-                                                <form action="MainController" method="POST">
+                                                <form id="lock-${count}" action="MainController" method="POST">
                                                     <input type="hidden" name="action" value="UpdateActivity"/>
                                                     <input type="hidden" name="username" value="${userMG.username}"/>
                                                     <input type="hidden" name="type" value="lock"/>
-                                                    <button type="submit" class="btn btn-danger">Khóa</button>
+                                                    <button onclick="return checkUser(this)" type="submit" class="btn btn-danger">Khóa</button>
                                                 </form>
                                             </td>
                                         </c:when>
                                         <c:when test="${userMG.status == 'lock'}">
                                             <td style="text-align: center;">
-                                                <form action="MainController" method="POST">
+                                                <form id="op-${count}"  action="MainController" method="POST">
                                                     <input type="hidden" name="action" value="UpdateActivity"/>
                                                     <input type="hidden" name="username" value="${userMG.username}"/>
                                                     <input type="hidden" name="type" value="open"/>
-                                                    <button type="submit" class="btn btn-danger">Mở Khóa</button>
+                                                    <button onclick="return checkUser(this)" type="submit" class="btn btn-danger">Mở Khóa</button>
                                                 </form>
                                             </td>
                                         </c:when>
@@ -306,11 +306,11 @@
                                         </c:otherwise>
                                     </c:choose>
                                     <td style="text-align: center;">
-                                        <form action="MainController" method="POST">
+                                        <form id="rs-${count}" action="MainController" method="POST">
                                             <input type="hidden" name="action" value="UpdateActivity"/>
                                             <input type="hidden" name="username" value="${userMG.username}"/>
                                             <input type="hidden" name="type" value="reset"/>
-                                            <button class="btn btn-primary">Cấp lại MK</button>
+                                            <button onclick="return checkUser(this)" class="btn btn-primary">Cấp lại MK</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -380,7 +380,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="username">Tên tài khoản:</label>
-                                <input type="text" class="form-control" id="username" name="username" value="${param.username}" required="">
+                                <input type="text" class="form-control" id="username" name="newusername" value="${param.newusername}" required="">
                             </div>
                             <!-- Radio Button Options -->
                             <div class="form-group">
@@ -413,7 +413,22 @@
                 </div>
             </div>
         </div>
-
+        <section id="confirm-remove" class="container-fluid">
+            <div class="vh-100 row">
+                <div class="h-100 m-auto d-flex align-items-center">
+                    <div class="box-remove bg-white p-4">
+                        <h4>Xác nhận</h4>
+                        <p class="mb-4 mt-4">
+                            Bạn có muốn thực hiện thao tác này không ?
+                        </p>
+                        <div class="float-right">
+                            <button id="btn-confirrm" data-value="" class="btn btn-group-sm btn-primary">Xác nhận</button>
+                            <button  onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>                    
         <!-- jQuery -->
         <%@include file="../layout/message.jsp" %>
         <script src="assets/js/jquery-3.7.1.min.js"></script>
@@ -443,10 +458,14 @@
                                     $("#createAccountModal").modal("show");
                                 });
                                 $('.reset').click(function () {
-                                $('input[name=fullname]').val("");
-                                        $('input[name=username]').val("");
+                                    $('input[name=fullname]').val("");
+                                    $('input[name=username]').val("");
                                 });
-       
+                                $('#btn-confirrm').click(function () {
+                                    let idForm = $(this).attr('data-value');
+                                    $('#' + idForm).submit();
+                                    return true;
+                                });
                                 function NavToNewPage(event) {
                                     let page = $(event).attr('data-value');
                                     if (page) {
@@ -470,6 +489,15 @@
                                     if (nextPage <= amountPage) {
                                         window.location.href = "MainController?action=NavToAccounts&page=" + amountPage;
                                     }
+                                }
+                                function checkUser(event) {
+                                    $('#confirm-remove').css('display', 'block');
+                                    let idForm = event.form.id;
+                                    $('#btn-confirrm').attr('data-value', idForm);
+                                    return false;
+                                }
+                                function cancelRemove() {
+                                    $('#confirm-remove').css('display', 'none');
                                 }
         </script>
     </body>
