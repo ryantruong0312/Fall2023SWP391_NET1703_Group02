@@ -50,6 +50,8 @@ public class UpdateAccessoryCartController extends HttpServlet {
                     if (checkAdd) {
                         out.println(cart.getCartTotalPrice());
                         session.setAttribute("CART", cart);
+                    }else{
+                        out.println(0);
                     }
                     return;
                 }

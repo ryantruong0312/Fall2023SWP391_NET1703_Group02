@@ -481,7 +481,7 @@
                                             success: function (data) {
                                                 let price = Number(data).toLocaleString('vi-VN');
                                                 $('#price-cart').html(price + ' ₫');
-                                                if (data) {
+                                                if (data != 0) {
                                                     $.ajax({
                                                         url: "AddBirdToCartController",
                                                         type: 'POST',
@@ -496,16 +496,16 @@
                                 }
                                 function UpQuantityAccessory(event, accessory_id) {
                                     let numberAccessory = event.parentNode.querySelector('input[type=number]');
-                                    if (numberAccessory) {
-                                        numberAccessory.stepUp();
+                                    if (numberAccessory) {     
                                         $.ajax({
                                             url: 'UpdateAccessoryCartController',
                                             type: 'POST',
                                             data: {accessory_id: accessory_id, type: 'up'},
                                             success: function (data) {
-                                                let price = Number(data).toLocaleString('vi-VN');
-                                                $('#price-cart').html(price + ' ₫');
-                                                if (data) {
+                                                if (data != 0) {
+                                                    numberAccessory.stepUp();
+                                                    let price = Number(data).toLocaleString('vi-VN');
+                                                    $('#price-cart').html(price + ' ₫');
                                                     $.ajax({
                                                         url: "AddBirdToCartController",
                                                         type: 'POST',
@@ -513,6 +513,8 @@
                                                             $('.cart-amount').html(data);
                                                         }
                                                     });
+                                                }else{
+                                                    toast({title:'Lỗi', message:'Sản phẩm không đủ số lượng', type: 'error', duration: 3000})
                                                 }
                                             }
                                         });

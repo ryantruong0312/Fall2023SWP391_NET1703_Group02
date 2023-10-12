@@ -448,7 +448,7 @@
                                                                         if (data == 0) {
                                                                             toast({
                                                                                 title: 'Lỗi',
-                                                                                message: 'Sản phẩm này đã có trong giỏ hàng',
+                                                                                message: 'Sản phẩm này đã hết hàng',
                                                                                 type: 'error',
                                                                                 duration: 3000
                                                                             });

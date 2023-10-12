@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Savepoint;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,6 +29,8 @@ import swp391.birdfarmshop.util.DBUtils;
  */
 public class OrderDAO {
 
+    public String error = null;
+
     public int createNewOrder(String order_id, String username, String status, String name_receiver, String phone_receiver,
             String address_receiver, String payment_status, CartDTO cart, CartDTO cartCheckout, int point) {
         int result = 0;
@@ -38,6 +41,7 @@ public class OrderDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 con.setAutoCommit(false);
+                Savepoint save = con.setSavepoint("createOrder");
                 String sql = "INSERT INTO [ORDER]\n"
                         + "VALUES(?,?,?,?,?,?,?,?,?,?)";
                 PreparedStatement pst = con.prepareStatement(sql);
@@ -70,6 +74,7 @@ public class OrderDAO {
                         OrderItem oldOrder = getOrderByBirdId(b.getBird_id());
                         if (oldOrder != null) {
                             checkBird = false;
+                            error = "Sản phẩm này đã bán";
                             break;
                         } else {
                             sql = "UPDATE [Bird]\n"
@@ -110,7 +115,12 @@ public class OrderDAO {
                         }
                         int numberAccessory = ad.getAccessoryByID(a.getAccessory_id()).getStock_quantity();
                         if (numberAccessory == 0) {
+                            error ="Sản phẩm này đã hết hàng";
                             checkAcessory = false;
+                            break;
+                        } else if (numberAccessory < oa.getOrder_quantity()) {
+                            checkAcessory = false;
+                            error ="Sản phẩm này không đủ số lượng trong kho";
                             break;
                         } else {
                             int newStock = numberAccessory - oa.getOrder_quantity();
@@ -118,7 +128,7 @@ public class OrderDAO {
                                     + "SET [stock_quantity] = ?\n"
                                     + "WHERE [accessory_id] = ?";
                             pst = con.prepareStatement(sql);
-                            pst.setInt(1, oa.getOrder_quantity());
+                            pst.setInt(1, newStock);
                             pst.setString(2, a.getAccessory_id());
                             result = pst.executeUpdate();
                             if (result == 0) {
@@ -136,7 +146,7 @@ public class OrderDAO {
                                 pst.setInt(5, realPrice);
                                 pst.setInt(6, oa.getOrder_quantity());
                                 result = pst.executeUpdate();
-                                if(result == 0){
+                                if (result == 0) {
                                     checkAcessory = false;
                                 }
                             }
@@ -150,8 +160,9 @@ public class OrderDAO {
                     con.commit();
                     result = 1;
                 } else {
-                    con.rollback();
                     result = 0;
+                    con.rollback(save);
+                    pst.close();
                 }
             }
         } catch (Exception e) {
@@ -236,13 +247,13 @@ public class OrderDAO {
                 pst.setString(1, bird_id);
                 ResultSet rs = pst.executeQuery();
                 if (rs != null && rs.next()) {
-                   int order_item_id = rs.getInt("order_item_id");
-                   String order_id = rs.getString("order_id");
-                   String nest_id = rs.getString("nest_id");
-                   String accessory_id = rs.getString("accessory_id");
-                   int unit_price = rs.getInt("unit_price");
-                   int order_quantity = rs.getInt("order_quantity");
-                   oi = new OrderItem(order_item_id, order_id, bird_id, nest_id, accessory_id, unit_price, order_quantity);
+                    int order_item_id = rs.getInt("order_item_id");
+                    String order_id = rs.getString("order_id");
+                    String nest_id = rs.getString("nest_id");
+                    String accessory_id = rs.getString("accessory_id");
+                    int unit_price = rs.getInt("unit_price");
+                    int order_quantity = rs.getInt("order_quantity");
+                    oi = new OrderItem(order_item_id, order_id, bird_id, nest_id, accessory_id, unit_price, order_quantity);
                 }
             }
         } catch (Exception e) {

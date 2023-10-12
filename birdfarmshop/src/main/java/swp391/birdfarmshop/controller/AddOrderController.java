@@ -81,9 +81,9 @@ public class AddOrderController extends HttpServlet {
                             session.setAttribute("CARTCHECKOUT", null);
                             session.setAttribute("SUCCESS", "Đặt hàng thành công");
                         }else{
-                            session.setAttribute("ERROR", "Đặt hàng thất bại");
+                            session.setAttribute("ERROR", od.error);
                         }
-
+                        
                     } else {
                         String number = String.format("%06d", 1);
                         String order_id = formattedDate + 'O' + number;
