@@ -10,11 +10,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.model.Order;
 import swp391.birdfarmshop.util.DBUtils;
 
@@ -112,18 +114,92 @@ public class OrderDAO {
         return o;
     }
     
-    public ArrayList<Order> getAllOfOrder() throws SQLException{
+    public ArrayList<Order> getAllOfOrder(  String date, String startDay, String endDay,
+                                            String status, String search, String page, int recordsPerPage) throws SQLException{
         ArrayList<Order> orderList = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        Order order = null;
+        Order order;
+        LocalDate today = LocalDate.now();
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement("SELECT [order_id],[customer],[order_date],[order_status],[name_receiver],\n" +
+                String query =  "SELECT [order_id],[customer],[order_date],[order_status],[name_receiver],\n" +
                                 "[phone_receiver],[address_receiver],[payment_status],[total_price],[applied_point]\n" +
-                                "FROM [BirdFarmShop].[dbo].[Order]");
+                                "FROM [BirdFarmShop].[dbo].[Order] WHERE 1 = 1 ";
+                if (date != null) {
+                    switch(date) {
+                        case "today":
+                            query += "AND [order_date] = '" + today + "'";
+                            break;
+                        case "yesterday":
+                            LocalDate yesterday = today.minus(1, ChronoUnit.DAYS);
+                            query += "AND [order_date] = '" + yesterday + "'";
+                            break;
+                        case "thisWeek":
+                            LocalDate firstDayOfWeek = today.minusDays(today.getDayOfWeek().getValue() - DayOfWeek.MONDAY.getValue());
+                            LocalDate lastDayOfWeek = firstDayOfWeek.plusDays(6);
+                            query += "AND ([order_date] >= '" + firstDayOfWeek + "' AND [order_date] <= '" + lastDayOfWeek + "')" ;
+                            break;
+                        case "thisMonth":
+                            LocalDate firstDayOfMonth = LocalDate.of(today.getYear(), today.getMonth(), 1);
+                            LocalDate lastDayOfMonth = YearMonth.from(today).atEndOfMonth();
+                            query += "AND ([order_date] >= '" + firstDayOfMonth + "' AND [order_date] <= '" + lastDayOfMonth + "')" ;
+                            break;
+                        case "thisYear":
+                            LocalDate firstDayOfYear = LocalDate.of(today.getYear(), 1, 1);
+                            LocalDate lastDayOfYear = LocalDate.of(today.getYear(), 12, 31);
+                            query += "AND ([order_date] >= '" + firstDayOfYear + "' AND [order_date] <= '" + lastDayOfYear + "')" ;
+                            break;
+                    }
+                }
+                if (startDay != null && endDay != null) {
+                    if(!startDay.isEmpty() && !endDay.isEmpty()){
+                        query += "AND ([order_date] >= '" + startDay + "' AND [order_date] <= '" + endDay + "')" ;
+                    } else {
+                        if (!startDay.isEmpty() && endDay.isBlank()) {
+                            query += "AND ([order_date] >= '" + startDay + "')";
+                        }
+                        if (!endDay.isEmpty() && startDay.isBlank()) {
+                            query += "AND ([order_date] <= '" + endDay + "')";
+                        }
+                    }
+                }
+                if(status != null && !status.isEmpty()) {
+                    switch(status) {
+                        case "wait":
+                            query += "AND [order_status] = N'Chờ xử lý'";
+                            break;
+                        case "inProgress":
+                            query += "AND [order_status] = N'Đang xử lý'";
+                            break;
+                        case "delivering":
+                            query += "AND [order_status] = N'Đang vận chuyển'";
+                            break;
+                        case "delivered":
+                            query += "AND [order_status] = N'Đã giao hàng'";
+                            break;
+                        case "notRated":
+                            query += "AND [order_status] = N'Chưa đánh giá'";
+                            break;    
+                        case "rated":
+                            query += "AND [order_status] = N'Đã đánh giá'";
+                            break;    
+                        case "cancel":
+                            query += "AND [order_status] = N'Đã hủy'";
+                            break;
+                    }
+                }
+                if(search != null && !search.isEmpty()) {
+                    query += "AND ([order_id] LIKE '%" + search + "%' OR [customer] LIKE '%" + search + "%')" ;
+                }
+                if (page != null) {
+                    int pageNumber = Integer.parseInt(page);
+                    int start = (pageNumber - 1) * recordsPerPage;
+                    query += "ORDER BY (SELECT NULL) OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
+                }
+                stm = con.prepareStatement(query);
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     String order_id = rs.getString("order_id");
@@ -158,7 +234,14 @@ public class OrderDAO {
     
 //    public static void main(String[] args) throws SQLException {
 //        OrderDAO dao = new OrderDAO();
-//        ArrayList<Order> list = dao.getAllOfOrder();
+//        String date = null;
+//        String startDay = "";
+//        String endDay = "";
+//        String status = "";
+//        String search = "customer";
+//        String page = "1";
+//        int recordsPerPage = 20;
+//        ArrayList<Order> list = dao.getAllOfOrder(date, startDay, endDay, status, search, page, recordsPerPage);
 //        for (Order order : list) {
 //            System.out.println(order.getOrder_id() + " " + order.getOrder_status());
 //        }

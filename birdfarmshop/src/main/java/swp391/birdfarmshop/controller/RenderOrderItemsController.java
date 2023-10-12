@@ -10,9 +10,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import swp391.birdfarmshop.dao.OrderItemDAO;
 import swp391.birdfarmshop.dto.OrderItemDTO;
+import swp391.birdfarmshop.model.User;
 
 /**
  *
@@ -22,6 +24,7 @@ public class RenderOrderItemsController extends HttpServlet {
    
     private static final String ERROR = "errorpages/error.jsp";
     private static final String SUCCESS = "management/shop-orderItems.jsp";
+    private static final String HOME = "MainController?action=NavToHome";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
@@ -29,13 +32,19 @@ public class RenderOrderItemsController extends HttpServlet {
         String url = ERROR;
         String orderId = request.getParameter("order_id");
         try {
-            OrderItemDAO orderItemDao = new OrderItemDAO();
-            ArrayList<OrderItemDTO> itemList = orderItemDao.getItemOrder(orderId);
-            for (OrderItemDTO orderItem : itemList) {
-                System.out.println(orderItem.getOrder_item_id());
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("LOGIN_USER");
+            if(user != null && user.getRole().equals("manager")) {
+                OrderItemDAO orderItemDao = new OrderItemDAO();
+                ArrayList<OrderItemDTO> itemList = orderItemDao.getItemOrder(orderId);
+                for (OrderItemDTO orderItem : itemList) {
+                    System.out.println(orderItem.getOrder_item_id());
+                }
+                request.setAttribute("ITEMLIST", itemList);
+                url = SUCCESS;
+            } else {
+                response.sendRedirect(HOME);
             }
-            request.setAttribute("ITEMLIST", itemList);
-            url = SUCCESS;
         } catch (Exception e) {
             log("Error at RenderShopOrdersController: " + e.toString());
         } finally {

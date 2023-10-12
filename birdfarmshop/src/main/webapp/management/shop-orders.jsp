@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -30,15 +30,27 @@
             .col-lg-12 span, label {
                 color: black;
             }
-            .col-lg-12 button {
-                height: 30px;
-                border-radius: 5px;
-            }
             .col-lg-12 li, form {
-                margin: 10px 0 10px 0;
+                margin: 10px 0;
                 display: inline-block;
                 padding: 0;
             }
+            .col-lg-12 ul {
+                display: inline-block;
+            }
+            
+            .bordered-link {
+                border: 1px solid #000;
+                border-radius: 5px;
+                height: 30px;
+                padding: 5px;
+                background-color: #E0E0E0;
+            }
+
+            .bordered-link:hover {
+                background-color: #f0f0f0;
+            }
+            
             .order-bar {
                 border: 1px solid #cccccc;
             }
@@ -86,14 +98,12 @@
                 width: auto;
                 padding: 20px;
             }
-        </style>
-        <style>
-        .odd {
-            background-color: #FFFFFF;
-        }
-        .even {
-            background-color: #E0E0E0;
-        }
+            .odd {
+                background-color: #FFFFFF;
+            }
+            .even {
+                background-color: #E0E0E0;
+            }
         </style>
     </head>
 
@@ -212,41 +222,74 @@
         
         <main>
             <c:set value="${requestScope.ORDERLIST}" var="orderList"/>
-            <c:set value="${requestScope.ORDERITEMMAP}" var="orderItemMap"/>
             <div class="container">
                 <div class="col-lg-12">
-                    <h1 style="text-align: center;">Danh sách đơn hàng</h1>
-                    <ul>
-                        <li><button><a href="MainController?action=NavToShopOrders&txtDate=today"><span>Hôm qua</span></a></button></li>
-                        <li><button><a href="MainController?action=NavToShopOrders&txtDate=yesterday"><span>Hôm nay</span></a></button></li>
-                        <li><button><a href="MainController?action=NavToShopOrders&txtDate=thisWeek"><span>Tuần này</span></a></button></li>
-                        <li><button><a href="MainController?action=NavToShopOrders&txtDate=thisMonth"><span>Tháng này</span></a></button></li>
-                        <li><button><a href="MainController?action=NavToShopOrders&txtDate=thisYear"><span>Năm nay</span></a></button></li>
-                        <form style="float: right;" action="MainController">
+                    <%
+                        String requestURL = "MainController";
+                        String queryString = request.getQueryString();
+                        String fullURL = requestURL + "?" + queryString + "&";
+                    %>
+                    <h1 style="text-align: center; margin-top: 20px 0;">Danh sách đơn hàng</h1>
+                    <div style="background-color: #cccccc;">
+                        
+                        <a href="MainController?action=NavToShopOrders"><span style="color: #009999;">** BỎ LỌC **</span></a>
+                        <h6>Lọc theo: 
+                            <c:if test="${requestScope.date != null}">| Thời gian |</c:if>
+                            <c:if test="${requestScope.startDay != null || requestScope.endDay != null}">| Khoảng thời gian |</c:if>
+                            <c:if test="${requestScope.search != null}">| Tìm kiếm |</c:if>
+                            <c:if test="${requestScope.status != null}">| Trạng thái |</c:if>
+                        </h6>
+                    </div>
+                    <h3 style="color: #006699; margin-top: 10px;">Theo thời gian</h3>
+                    <ul id="date">
+                        <li><a class="bordered-link" name="dateTime" href="<%= fullURL %>date=today"><span>Hôm nay</span></a></li>
+                        <li><a class="bordered-link" name="dateTime" href="<%= fullURL %>date=yesterday"><span>Hôm qua</span></a></li>
+                        <li><a class="bordered-link" name="dateTime" href="<%= fullURL %>date=thisWeek"><span>Tuần này</span></a></li>
+                        <li><a class="bordered-link" name="dateTime" href="<%= fullURL %>date=thisMonth"><span>Tháng này</span></a></li>
+                        <li><a class="bordered-link" name="dateTime" href="<%= fullURL %>date=thisYear"><span>Năm nay</span></a></li>
+                        <form style="float: right;" action="MainController" method="GET">
+                            <input type="hidden" name="action" value="NavToShopOrders"/>
+                            <input type="hidden" name="param" value="<%= fullURL.replace("MainController?action=NavToShopOrders&", "") %>" />
                             <label for="start-date">Ngày bắt đầu:</label>
-                            <input type="date" id="start-date" name="start-date" value="">
+                            <input type="date" name="startDay" value="${requestScope.startDay}">
 
                             <label for="end-date">Ngày kết thúc:</label>
-                            <input type="date" id="end-date" name="end-date" value="">
-                            <button type="submit" name="action" value="NavToShopOrders"><span>Chọn</span></button>
+                            <input type="date" name="endDay" value="${requestScope.endDay}">
+                            <button type="submit"><span>Chọn</span></button>
                         </form>
                     </ul>
+                    <h3 style="color: #006699;">Theo trạng thái</h3>
+                    <ul id="status">
+                        <li><a class="bordered-link" href="<%= fullURL %>status=wait"><span>Chờ xử lý</span></a></li>
+                        <li><a class="bordered-link" href="<%= fullURL %>status=inProgress"><span>Đang xử lý</span></a></li>
+                        <li><a class="bordered-link" href="<%= fullURL %>status=delivering"><span>Đang vận chuyển</span></a></li>
+                        <li><a class="bordered-link" href="<%= fullURL %>status=delivered"><span>Đã giao hàng</span></a></li>
+                        <li><a class="bordered-link" href="<%= fullURL %>status=notRated"><span>Chưa đánh giá</span></a></li>
+                        <li><a class="bordered-link" href="<%= fullURL %>status=rated"><span>Đã đánh giá</span></a></li>
+                        <li><a class="bordered-link" href="<%= fullURL %>status=cancel"><span>Đã hủy</span></a></li>
+                    </ul>
                 </div>
+                
                 <div class="col-lg-12">
                     <div class="order-bar" style="background-color: #cccccc; text-align: center;">
-                        <span style="color: black; float: left; margin-left: 20px;">Đơn hàng</span><br>
+                        <div style="background-color: #cccccc;">
+                        <img style="width: 15px; height: 15px; float: left; margin: 5px;" class="icon" src="assets/images/test.png" alt="Đơn hàng"/>
+                        <span style="color: black; float: left;">Đơn hàng</span>
+                        <br>
+                        </div>
                         <div style="background-color: white; padding: 0; margin: 0;">
-                            <form style="padding: 10px 0;" action="MainController">
+                            <form style="padding: 10px 0;" action="MainController" method="GET">
                                 <div class="search-bar">
-                                    <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                                    <input type="text" name="txtOrder" id="search" placeholder="Tìm kiếm" value="">
                                     <input type="hidden" name="action" value="NavToShopOrders"/>
+                                    <input type="hidden" name="param" value="<%= fullURL.replace("MainController?action=NavToShopOrders&", "") %>" />
+                                    <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                                    <input type="text" name="search" placeholder="Tìm kiếm" value="${requestScope.search}">
                                     <input type="submit" value="Tìm kiếm">
                                 </div>
                             </form>
                         </div>
                         <div class="scrollable-container">
-                            <table class="scrollable-list">
+                            <table id="order-list" class="scrollable-list">
                                 <thead>
                                     <tr>
                                         <th>STT</th>
@@ -284,7 +327,24 @@
                             </table>
                         </div>
                     </div>
-                </div>        
+                </div>
+                <div class="col-lg-12">
+                    <div class="pagination">
+                        <c:if test="${page > 1}">
+                            <ul>
+                                <li>
+                                    <a href="MainController?action=NavToOrderItems&page=1"><<</a>
+                                </li>
+                                <c:forEach begin="1" end="${page}" var="i">
+                                <li><a href="MainController?action=NavToOrderItems&page=${i}">${i}</a></li>
+                                </c:forEach>
+                                <li>
+                                    <a href="MainController?action=NavToOrderItems&page=${page}">>></a>
+                                </li>
+                            </ul>
+                        </c:if>
+                    </div>
+                </div>
             </div>
         </main>
         
@@ -370,6 +430,7 @@
 
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
-        
     </body>
+        <script>
+        </script>
 </html>

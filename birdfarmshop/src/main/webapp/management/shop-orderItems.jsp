@@ -39,7 +39,15 @@
                 display: inline-block;
                 padding: 0;
             }
+            .col-lg-12 #back {
+                border: 1px solid #000;
+                border-radius: 5px;
+                height: 30px;
+                padding: 5px;
+                background-color: #E0E0E0;
+            }
             .order-bar {
+                margin-top: 10px;
                 border: 1px solid #cccccc;
             }
             .order-bar form {
@@ -215,6 +223,7 @@
             <div class="container">
                 <div class="col-lg-12">
                     <h1 style="text-align: center;">Chi tiết đơn hàng</h1>
+                    <a id="back" href="MainController?action=NavToShopOrders"><span><= Back</span></a>
                 </div>
                 <div class="col-lg-12">
                     <div class="order-bar" style="background-color: #cccccc; text-align: center;">
