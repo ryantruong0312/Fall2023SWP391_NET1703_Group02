@@ -93,7 +93,7 @@
                         </tr>
                         <tr style="padding-top: 10px">
                             <td style="padding-top: 15px; padding-right:40px ;padding-left: 20px;">
-                                - <p style="display: inline-block"> 1 </p> <p style="display: inline-block"> lồng chim inox abc</p> 
+                                - <p style="display: inline-block"> 1 </p><p style="display: inline-block;margin-left: 3px;"> lồng chim inox abc</p> - <p style="display: inline-block"> 5,000,000đ </p>  
                             </td>
                         </tr>
                          <tr style="padding-top: 10px">

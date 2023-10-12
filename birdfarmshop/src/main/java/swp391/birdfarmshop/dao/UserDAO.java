@@ -207,9 +207,7 @@ public class UserDAO {
                 String sql = GET_ACCOUNT_LIST;
                 if(search != null){
                     sql += " WHERE username LIKE N'%"+search+"%' "
-                            + "OR full_name LIKE N'%"+search+"%' "
-                            + "OR role LIKE N'%" + search + "%' "
-                            + "OR status LIKE N'%" + search + "%' ";
+                            + "OR full_name LIKE N'%"+search+"%' \n";
                 }
                 if (page != null) {
                     int pageNumber = Integer.parseInt(page);

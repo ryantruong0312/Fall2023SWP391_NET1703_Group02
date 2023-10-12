@@ -149,7 +149,7 @@ public class AddNewBirdController extends HttpServlet {
             if(female==null && male == null){
                request.getRequestDispatcher(url).forward(request, response);
             }
-            if(btAction.equals("Add")) {
+            if(btAction != null && btAction.equals("Add")) {
                 request.getRequestDispatcher(url).forward(request, response);
             }
         }

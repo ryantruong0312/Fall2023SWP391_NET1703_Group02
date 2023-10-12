@@ -11,7 +11,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import swp391.birdfarmshop.dto.CartDTO;
+import swp391.birdfarmshop.model.OrderedBirdItem;
 import swp391.birdfarmshop.model.User;
 
 
@@ -30,11 +33,19 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
         String url = DEST_NAV_CART;
         try {
             HttpSession session = request.getSession();
-            User u  = (User) session.getAttribute("LOGIN_USER");
-            if(u != null){
+            User u = (User) session.getAttribute("LOGIN_USER");
+            if (u != null) {
                 CartDTO cart = (CartDTO) session.getAttribute("CART");
+                CartDTO cartCheckout = new CartDTO();
+                cartCheckout.setBirdList(new HashMap<>(cart.getBirdList()));
+                cartCheckout.setAccessoryList(new HashMap<>(cart.getAccessoryList()));
                 if(cart != null){
                     if(cart.getTotalItem() > 0){
+                        HashMap<String, OrderedBirdItem> bList = (HashMap<String, OrderedBirdItem>) cartCheckout.getBirdList();
+                        for (OrderedBirdItem ob : bList.values()) {
+                            cartCheckout.addCageToAccessory(ob.getCage(), 1);
+                        }
+                        session.setAttribute("CARTCHECKOUT", cartCheckout);
                         url = "shop/checkout.jsp";
                     }else{
                      session.setAttribute("ERROR", "Không có sản phẩm nào trong giỏ hàng của bạn");
