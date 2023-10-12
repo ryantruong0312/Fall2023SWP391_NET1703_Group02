@@ -215,7 +215,7 @@ public class OrderDAO {
                     String payment_status = rs.getString("payment_status");
                     int total_price = rs.getInt("total_price");
                     int point = rs.getInt("applied_point");
-                                  phone_receiver, address_receiver, payment_status, total_price, point);
+                    o = new Order(order_id, customer, order_date, order_status, name_receiver, phone_receiver, address_receiver, payment_status, total_price, point);
                 }
             }
         } catch (Exception e) {
@@ -272,9 +272,10 @@ public class OrderDAO {
         }
         return oi;
     }
-	public ArrayList<Order> getAllOfOrder(  String date, String startDay, String endDay,
+    
+    public ArrayList<Order> getAllOfOrder(  String date, String startDay, String endDay,
                                             String status, String search, String page, int recordsPerPage) throws SQLException{
-		ArrayList<Order> orderList = new ArrayList<>();
+        ArrayList<Order> orderList = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -316,10 +317,10 @@ public class OrderDAO {
                     if(!startDay.isEmpty() && !endDay.isEmpty()){
                         query += "AND ([order_date] >= '" + startDay + "' AND [order_date] <= '" + endDay + "')" ;
                     } else {
-                        if (!startDay.isEmpty() && endDay.isBlank()) {
+                        if (!startDay.isEmpty()) {
                             query += "AND ([order_date] >= '" + startDay + "')";
                         }
-                        if (!endDay.isEmpty() && startDay.isBlank()) {
+                        if (!endDay.isEmpty()) {
                             query += "AND ([order_date] <= '" + endDay + "')";
                         }
                     }
@@ -357,6 +358,7 @@ public class OrderDAO {
                     int start = (pageNumber - 1) * recordsPerPage;
                     query += "ORDER BY (SELECT NULL) OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
                 }
+                System.out.println(query);
                 stm = con.prepareStatement(query);
                 rs = stm.executeQuery();
                 while (rs.next()) {
@@ -389,5 +391,6 @@ public class OrderDAO {
         }
         return orderList;
     }
+
 }
-}
+
