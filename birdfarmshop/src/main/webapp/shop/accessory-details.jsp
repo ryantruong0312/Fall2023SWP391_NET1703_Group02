@@ -334,33 +334,33 @@
                         <h4>Kho: ${a.stock_quantity}</h4>
                     </div>
                     <c:if test="${sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER == null}">
-                        <div class="quantity-content">
-                            <div class="left-content">
-                                <h6>Số lượng</h6>
-                            </div>
-
-                            <div class="right-content">
-                                <div class="quantity buttons_added">
-                                    <div class="quantity buttons_added">
-                                        <input type="button" value="-" class="minus" onclick="decrementQuantity('quantityInput', ${a.unit_price}, ${a.discount})">
-                                        <c:choose>
-                                            <c:when test="${a.stock_quantity > 0}">
-                                                <input type="number" step="1" min="1" max="${a.stock_quantity}" name="order_quantity" id="quantityInput" value="1" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="number" step="1" min="0" max="${a.stock_quantity}" name="quantity" id="quantityInput" value="0" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
-                                            </c:otherwise>
-                                        </c:choose>
-                                        <input type="button" value="+" class="plus" onclick="incrementQuantity('quantityInput', ${a.stock_quantity}, ${a.unit_price}, ${a.discount})">
-                                    </div>
+                        <c:if test="${a.stock_quantity > 0}">
+                            <div class="quantity-content">
+                                <div class="left-content">
+                                    <h6>Số lượng</h6>
                                 </div>
-                                <div id="warning"></div>
-                            </div>                            
-                        </div>
-                    </div>
 
-                    <c:choose>
-                        <c:when test="${a.stock_quantity > 0}">
+                                <div class="right-content">
+                                    <div class="quantity buttons_added">
+                                        <div class="quantity buttons_added">
+                                            <input type="button" value="-" class="minus" onclick="decrementQuantity('quantityInput', ${a.unit_price}, ${a.discount})">
+                                            <c:choose>
+                                                <c:when test="${a.stock_quantity > 0}">
+                                                    <input type="number" step="1" min="1" max="${a.stock_quantity}" name="order_quantity" id="quantityInput" value="1" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <input type="number" step="1" min="0" max="${a.stock_quantity}" name="quantity" id="quantityInput" value="0" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <input type="button" value="+" class="plus" onclick="incrementQuantity('quantityInput', ${a.stock_quantity}, ${a.unit_price}, ${a.discount})">
+                                        </div>
+                                    </div>
+                                    <div id="warning"></div>
+                                </div>                            
+                            </div>
+                        </c:if>
+                    </div>
+                        <c:if test="${a.stock_quantity > 0}">
                             <div class="total">
                                 <c:choose>
                                     <c:when test="${a.discount == 0}">
@@ -370,27 +370,13 @@
                                         <h4 style="float: left;">Tổng cộng: <span id="total"><fmt:formatNumber value="${a.unit_price - a.unit_price * a.discount / 100}" pattern="#,###"/> ₫</span></h4>
                                     </c:otherwise>
                                 </c:choose>
-
-                                <div type="button" class="main-border-button" style="margin-left: 196px; margin-top: 20px; float: left;" id="buttonContainer">
-                                    <input type="hidden" name="accessory_id" value="${a.accessory_id}" />
-                                    <button type="submit" name="action" value="AddAccessoryToCart" id="Add" class="btn btn-primary">Thêm vào giỏ hàng</button>
-                                </div>
-                                <div style="clear: both;"></div>
-
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            <c:if test="${a.stock_quantity > 0}">
-                                <div class="total">
-                                    <h4 style="float: left;">Tổng cộng: <span id="total">0 ₫</span></h4>
-                                    <div type="button" class="main-border-button" style="margin-left: 185px; margin-top: 20px; float: left;" id="buttonContainer">
-                                        <div type="button" class="main-border-button" style="margin-left: 100px; float: left;"><a style="cursor: pointer" class="accessory-cart" data-value="${a.accessory_id}">Thêm vào giỏ hàng</a></div>
+                                    <div type="button" class="main-border-button" style="margin-left: 196px; margin-top: 20px; float: left;" id="buttonContainer">
+                                        <input type="hidden" name="accessory_id" value="${a.accessory_id}" />
+                                        <button type="submit" name="action" value="AddAccessoryToCart" id="Add" class="btn btn-primary">Thêm vào giỏ hàng</button>
                                     </div>
                                     <div style="clear: both;"></div>
-                                </div>
-                            </c:if>
-                        </c:otherwise>
-                    </c:choose>  
+                            </div>
+                        </c:if>
                 </c:if>
             </div>
         </div>
