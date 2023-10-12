@@ -1,6 +1,4 @@
 <%-- 
-    Document   : birds
-    Created on : Sep 13, 2023, 11:19:25 PM
     Author     : tlminh
 --%>
 
@@ -40,11 +38,27 @@
                 background-color: black;
                 color: white !important;
             }
-            .search-bar {
-                margin: 0 0 10px 120px;
-                border: 5px;
+
+            .section-heading form {
                 border-radius: 8px;
                 border: 1px solid rgb(221, 221, 227);
+                width: 28%;
+                min-width: 280px;
+                margin: 0 auto;
+                margin-top: 20px;
+            }
+            .section-heading input {
+                border: 0;
+                background: none;
+            }
+            .section-heading img {
+                margin: 5px;
+            }
+            .search-bar {
+                border-radius: 8px;
+                border: 1px solid rgb(221, 221, 227);
+                margin: 0 auto;
+                margin-bottom: 40px;
             }
             .search-bar input {
                 border: 0;
@@ -57,28 +71,41 @@
             .search-bar img {
                 margin-left: 5px;
             }
-
+            form {
+                margin: 0 auto;
+            }
+            .col-lg-12 a {
+                border-radius: 10px;
+                border: 1px solid rgb(221, 221, 227);
+                background-color: #f5c6cb;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0 auto;
+                width: 50%;
+                margin-bottom: 30px;
+                margin-top: 20px;
+            }
             .type {
                 cursor: pointer;
                 background-color: #cccccc;
                 padding: 0 0 0 5px; /*top right bot left*/
-                margin: 5px 0 5px 5px;
-            }
-            .type + ol {
-                display: none;
+                margin: 5px 0 5px 0px;
             }
             #typeList-1, #typeList-2, #typeList-3, #typeList-4 {
-                margin-left: 10px;
-            }
-
-            .position-sticky li {
                 margin-bottom: 5px;
+            }
+            li input[type="radio"] + label {
+                margin-left: 5px;
             }
             .bird-pg li{
                 cursor: pointer;
             }
             a {
                 color: black;
+            }
+            .bird-cart{
+                cursor: pointer;
             }
         </style>
     </head>
@@ -129,12 +156,12 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                                <c:if test="${sessionScope.CART_BIRD == null}">
-                                                <div class="cart-amount">0</div>
-                                            </c:if>
-                                            <c:if test="${sessionScope.CART_BIRD != null}">
-                                                <div class="cart-amount">${sessionScope.CART_BIRD.getSize()}</div>
-                                            </c:if>
+                                            <div class="cart-amount">
+                                                <c:choose>
+                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
+                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
+                                                </c:choose>
+                                            </div>
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
@@ -144,7 +171,7 @@
                                     <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
                                     <li class="submenu"><a href="" class="active">Sản phẩm</a>
                                         <ul>
-                                            <li><a href="#" class="active">Vẹt cảnh</a></li>
+                                            <li><a href="${pageScope.toBirds}" class="active">Vẹt cảnh</a></li>
                                             <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
                                             <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
@@ -195,16 +222,22 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="section-heading">
+                        <div style="border: 0px;" class="section-heading">
                             <h2>Sản phẩm của chúng tôi</h2>
                         </div>
                     </div>
                     <form id="selectBird" action="MainController" method="POST">
                         <input type="hidden" name="action" value="NavToBird"> 
-                        <div class="search-bar">
-                            <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                            <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
-                            <input type="submit" value="Tìm kiếm">
+                        <div class="col-lg-12">
+                            <div class="search-bar">
+                                <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                                <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                                <input type="hidden" name="page" value="1" />
+                                <input type="submit" value="Tìm kiếm">
+                            </div>
+                            <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
+                                <a href="MainController?action=AddNewBird"><span>Thêm mới chim</span></a>
+                            </c:if>
                         </div>
                 </div>
             </div>
@@ -225,9 +258,9 @@
                             <ol style="display: block;" id="typeList-2">
                                 <input type="hidden" name="action" value="NavToBird">    
                                 <li><input type="radio" ${requestScope.PRICE == null  ? "checked":""} id="type-65" name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
-                                <li><input type="radio" ${requestScope.PRICE == "price < 5000000" ? "checked":""} id="type-6" name="txtPrice" value="price < 5000000"><label for="type-6">dưới 5,000,000đ</label></li>
-                                <li><input type="radio" ${requestScope.PRICE == "price >= 5000000 AND price <= 20000000" ? "checked":""} id="type-7" name="txtPrice" value="price >= 5000000 AND price <= 20000000"><label for="type-7">5,000,000 - 20,000,000</label></li>
-                                <li><input type="radio" ${requestScope.PRICE == "price > 20000000" ? "checked":""} id="type-8" name="txtPrice" value="price > 20000000"><label for="type-8">Trên 20,000,000</label></li>
+                                <li><input type="radio" ${requestScope.PRICE == "price < 5000000" ? "checked":""} id="type-6" name="txtPrice" value="price < 5000000"><label for="type-6">Dưới 5,000,000₫</label></li>
+                                <li><input type="radio" ${requestScope.PRICE == "price >= 5000000 AND price <= 20000000" ? "checked":""} id="type-7" name="txtPrice" value="price >= 5000000 AND price <= 20000000"><label for="type-7">5,000,000₫ - 20,000,000₫</label></li>
+                                <li><input type="radio" ${requestScope.PRICE == "price > 20000000" ? "checked":""} id="type-8" name="txtPrice" value="price > 20000000"><label for="type-8">Trên 20,000,000₫</label></li>
                             </ol>
                             <div class="type" onclick="toggleList('typeList-3')">Giống</div>
                             <ol style="display: block;" id="typeList-3">
@@ -238,9 +271,9 @@
                             <div class="type" onclick="toggleList('typeList-4')">Tuổi</div>
                             <ol style="display: block;" id="typeList-4">
                                 <li><input type="radio" ${requestScope.AGE == null ? "checked":""}  id="type-115" name="txtAge" value="All"><label for="type-115">Tất cả</label></li>
-                                <li><input type="radio" ${requestScope.AGE == "age < 5" ? "checked":""} id="type-11" name="txtAge" value="age < 5"><label for="type-11">dưới 5 tháng</label></li>
-                                <li><input type="radio" ${requestScope.AGE == "age >= 5 AND age <= 18" ? "checked":""} id="type-12" name="txtAge" value="age >= 5 AND age <= 18"><label for="type-12">từ 5 - 18 tháng</label></li>
-                                <li><input type="radio" ${requestScope.AGE == "age > 18" ? "checked":""} id="type-13" name="txtAge" value="age > 18"><label for="type-13">trên 18 tháng</label></li>
+                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) < 5" ? "checked":""} id="type-11" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) < 5"><label for="type-11">Dưới 5 tháng</label></li>
+                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18" ? "checked":""} id="type-12" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18"><label for="type-12">Từ 5 - 18 tháng</label></li>
+                                <li><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) > 18" ? "checked":""} id="type-13" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) > 18"><label for="type-13">Trên 18 tháng</label></li>
                             </ol>
                         </div>
                     </nav>
@@ -248,43 +281,45 @@
                     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                         <div id="content" class="row">
                             <c:set var="BIRDLIST" value="${requestScope.BIRDLIST}"/>
-                                <div id="content" class="row">
-                                        <c:if test="${BIRDLIST != null}">
-                                            <c:if test="${not empty BIRDLIST}">
-                                                <c:forEach items="${BIRDLIST}" var="bird">
-                                                    <div class="bird col-lg-4">
-                                                        <div class="item">
-                                                            <div class="thumb">
-                                                                <div class="hover-content">
-                                                                    <ul>
-                                                                        <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                                        <li><a href="MainController?action=AddtoCart&bird_id=${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                                    </ul>
-                                                                </div>
-                                                                <img class="bird-thumbnail" src="${bird.image_url}" alt="${bird.bird_name}">
-                                                                </div>
-                                                                <div class="down-content">
-                                                                    <h4>${bird.bird_name}</h4>
-                                                                    <c:choose>
-                                                                        <c:when test="${bird.discount > 0}">
-                                                                            <span>
-                                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
-                                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
-                                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫<span>
-                                                                            </span>
-                                                                        </c:when>
-                                                                        <c:otherwise>
-                                                                            <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
-                                                                        </c:otherwise>
-                                                                    </c:choose> 
-                                                                </div>
-                                                      
+                            <div id="content" class="row">
+                                <c:if test="${BIRDLIST != null}">
+                                    <c:if test="${not empty BIRDLIST}">
+                                        <c:forEach items="${BIRDLIST}" var="bird">
+                                            <div class="bird col-sm-7 col-md-7 col-lg-5 col-xl-4">
+                                                <div class="item">
+                                                    <div class="thumb">
+                                                        <div class="hover-content">
+                                                            <ul>
+                                                                <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
+                                                                <c:if test="${(sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer') && bird.status != 'Đã bán'}">
+                                                                    <li><a class="bird-cart" data-value="${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                </c:if>
+                                                            </ul>
                                                         </div>
+                                                        <img class="bird-thumbnail" src="${bird.image_url}" alt="${bird.bird_name}">
                                                     </div>
-                                                </c:forEach>
-                                            </c:if>
-                                        </c:if>
-                                <div class="col-lg-12">
+                                                    <div class="down-content">
+                                                        <h4>${bird.bird_name}</h4>
+                                                        <c:if test="${bird.status == 'Đã bán'}">
+                                                            <h6 style="text-align: center; background-color: pink;">Sản phẩm đã bán</h6>
+                                                        </c:if>
+                                                        <c:choose>
+                                                            <c:when test="${bird.discount > 0}">
+                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
+                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.discount}%</span>
+                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫</span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                            </c:otherwise>
+                                                        </c:choose> 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </c:forEach>
+                                    </c:if>
+                                </c:if>
+                                <div class="col-lg-8">
                                     <div class="pagination bird-pg">
                                         <c:if test="${noOfPages > 1 && noOfPages <= 5}">
                                             <input type="hidden" name="page" value="${requestScope.currentPage}"/>
@@ -306,18 +341,18 @@
                                                 </c:if>
                                             </ul>
                                         </c:if>    
-                                       <c:if test="${noOfPages > 5}">
+                                        <c:if test="${noOfPages > 5}">
                                             <input name="page" value="${requestScope.currentPage}"/>
                                             <c:set var="numberOfPage" value="${requestScope.currentPage}"/>
                                             <ul>
                                                 <li id="page">
                                                     <a class="prev-page" ><<</a>
                                                 </li>
-                                                    <c:forEach begin="${numberOfPage - 2}" end="${numberOfPage + 2}" var="i">
+                                                <c:forEach begin="${numberOfPage - 2}" end="${numberOfPage + 2}" var="i">
                                                     <li id="page-number">
                                                         <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
                                                     </li>
-                                                    </c:forEach>
+                                                </c:forEach>
                                                 <li id="page">
                                                     <a class="next-page">>></a>
                                                 </li>
@@ -393,10 +428,9 @@
         </footer>
         <!-- ***** Footer Area Ends ***** -->
 
+        <script src="assets/js/jquery-2.1.0.min.js"></script>
         <!-- jQuery -->
         <%@include file="../layout/message.jsp" %>
-        <script src="assets/js/jquery-2.1.0.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
         <!-- Bootstrap -->
         <script src="assets/js/popper.js"></script>
@@ -415,69 +449,89 @@
         <script src="assets/js/isotope.js"></script> 
 
         <!-- Global Init -->
-        <script>
+                <script>
+                                                            $(function () {
+                                                                var selectedClass = "";
+                                                                $("p").click(function () {
+                                                                    selectedClass = $(this).attr("data-rel");
+                                                                    $("#portfolio").fadeTo(50, 0.1);
+                                                                    $("#portfolio div").not("." + selectedClass).fadeOut();
+                                                                    setTimeout(function () {
+                                                                        $("." + selectedClass).fadeIn();
+                                                                        $("#portfolio").fadeTo(50, 1);
+                                                                    }, 500);
 
-                                $(function () {
-                                    var selectedClass = "";
-                                    $("p").click(function () {
-                                        selectedClass = $(this).attr("data-rel");
-                                        $("#portfolio").fadeTo(50, 0.1);
-                                        $("#portfolio div").not("." + selectedClass).fadeOut();
-                                        setTimeout(function () {
-                                            $("." + selectedClass).fadeIn();
-                                            $("#portfolio").fadeTo(50, 1);
-                                        }, 500);
-
-                                    });
-                                    $("input[name=txtBreedId]").change(function () {
-                                        $("#selectBird").submit();
-                                    });
-                                    $("input[name=txtPrice]").change(function () {
-                                        $("#selectBird").submit();
-                                    });
-                                    $("input[name=txtGender]").change(function () {
-                                        $("#selectBird").submit();
-                                    });
-                                    $("input[name=txtAge]").change(function () {
-                                        $("#selectBird").submit();
-                                    });
-                                    $(".prev-page").click(function (){
-                                        let  page = $('input[name=page]').val();
-                                        let prevPage = Number(page) - 1;
-                                        $('input[name=page]').val(prevPage);
-                                        $("#selectBird").submit();
-                                    });
-                                     $(".next-page").click(function (){
-                                        let  page = $('input[name=page]').val();
-                                        let nextpage = Number(page) + 1;
-                                        $('input[name=page]').val(nextpage);
-                                        $("#selectBird").submit();
-                                    });
-                                });
-                                function takePage(event){
-                                    let value =  event.getAttribute('data-value');
-                                    $('input[name=page]').val(value);
-                                       $("#selectBird").submit();
-                                }
-                                function toggleList(listId) {
-                                    var list = document.getElementById(listId);
-                                    if (list.style.display === "none" || list.style.display === "") {
-                                        list.style.display = "block";
-                                    } else {
-                                        list.style.display = "none";
-                                    }
-                                }
-
-//            var listItems = document.querySelectorAll("#page-${i}");
-//            listItems.forEach(function (item) {
-//                item.addEventListener("click", function () {\
-//                    listItems.forEach(function (li) {
-//                        li.classList.remove("active");
-//                    });
-//                    item.classList.add("active");
-//                });
-//            });
-
+                                                                });
+                                                                $("input[name=txtBreedId]").change(function () {
+                                                                    $("#selectBird").submit();
+                                                                });
+                                                                $("input[name=txtPrice]").change(function () {
+                                                                    $("#selectBird").submit();
+                                                                });
+                                                                $("input[name=txtGender]").change(function () {
+                                                                    $("#selectBird").submit();
+                                                                });
+                                                                $("input[name=txtAge]").change(function () {
+                                                                    $("#selectBird").submit();
+                                                                });
+                                                                $(".prev-page").click(function () {
+                                                                    let  page = $('input[name=page]').val();
+                                                                    let prevPage = Number(page) - 1;
+                                                                    $('input[name=page]').val(prevPage);
+                                                                    $("#selectBird").submit();
+                                                                });
+                                                                $(".next-page").click(function () {
+                                                                    let  page = $('input[name=page]').val();
+                                                                    let nextpage = Number(page) + 1;
+                                                                    $('input[name=page]').val(nextpage);
+                                                                    $("#selectBird").submit();
+                                                                });
+                                                                $(".bird-cart").click(function () {
+                                                                    let birdId = $(this).attr('data-value');
+                                                                    $.ajax({
+                                                                        url: "AddBirdToCartController",
+                                                                        type: 'POST',
+                                                                        data: {bird_id: birdId},
+                                                                        success: function (data) {
+                                                                            if (data == 0) {
+                                                                                toast({
+                                                                                    title: 'Lỗi',
+                                                                                    message: 'Sản phẩm này đã có trong giỏ hàng',
+                                                                                    type: 'error',
+                                                                                    duration: 3000
+                                                                                });
+                                                                            } else {
+                                                                                toast({
+                                                                                    title: 'Thành công',
+                                                                                    message: 'Thêm sản phẩm vào giỏ hàng thành công',
+                                                                                    type: 'success',
+                                                                                    duration: 3000
+                                                                                });
+                                                                                $.ajax({
+                                                                                    url: "AddBirdToCartController",
+                                                                                    type: 'POST',
+                                                                                    success: function (data) {
+                                                                                         $('.cart-amount').html(data);
+                                                                                    }
+                                                                                });
+                                                                            }
+                                                                        }
+                                                                    });
+                                                                });
+                                                            });
+                                                            function takePage(event) {
+                                                                let value = event.getAttribute('data-value');
+                                                                $('input[name=page]').val(value);
+                                                                $("#selectBird").submit();
+                                                            }
+                                                            function toggleList(listId) {
+                                                                var list = document.getElementById(listId);
+                                                                if (list.style.display === "none" || list.style.display === "") {
+                                                                    list.style.display = "block";
+                                                                } else {
+                                                                    list.style.display = "none";
+                                                                }
+                                                            }
         </script>
 
     </body>

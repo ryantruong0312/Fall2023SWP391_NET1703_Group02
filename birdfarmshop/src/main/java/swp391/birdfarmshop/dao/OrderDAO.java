@@ -120,12 +120,12 @@ public class OrderDAO {
                         }
                         int numberAccessory = ad.getAccessoryByID(a.getAccessory_id()).getStock_quantity();
                         if (numberAccessory == 0) {
-                            error ="Sản phẩm này đã hết hàng";
+                            error = "Sản phẩm này đã hết hàng";
                             checkAcessory = false;
                             break;
                         } else if (numberAccessory < oa.getOrder_quantity()) {
                             checkAcessory = false;
-                            error ="Sản phẩm này không đủ số lượng trong kho";
+                            error = "Sản phẩm này không đủ số lượng trong kho";
                             break;
                         } else {
                             int newStock = numberAccessory - oa.getOrder_quantity();
@@ -231,7 +231,8 @@ public class OrderDAO {
         }
         return o;
     }
-	public OrderItem getOrderByBirdId(String bird_id) {
+
+    public OrderItem getOrderByBirdId(String bird_id) {
         OrderItem oi = null;
         Connection con = null;
         try {
@@ -272,9 +273,9 @@ public class OrderDAO {
         }
         return oi;
     }
-    
-    public ArrayList<Order> getAllOfOrder(  String date, String startDay, String endDay,
-                                            String status, String search, String page, int recordsPerPage) throws SQLException{
+
+    public ArrayList<Order> getAllOfOrder(String date, String startDay, String endDay,
+            String status, String search, String page, int recordsPerPage) throws SQLException {
         ArrayList<Order> orderList = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
@@ -284,11 +285,11 @@ public class OrderDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String query =  "SELECT [order_id],[customer],[order_date],[order_status],[name_receiver],\n" +
-                                "[phone_receiver],[address_receiver],[payment_status],[total_price],[applied_point]\n" +
-                                "FROM [BirdFarmShop].[dbo].[Order] WHERE 1 = 1 ";
+                String query = "SELECT [order_id],[customer],[order_date],[order_status],[name_receiver],\n"
+                        + "[phone_receiver],[address_receiver],[payment_status],[total_price],[applied_point]\n"
+                        + "FROM [BirdFarmShop].[dbo].[Order] WHERE 1 = 1 ";
                 if (date != null) {
-                    switch(date) {
+                    switch (date) {
                         case "today":
                             query += "AND [order_date] = '" + today + "'";
                             break;
@@ -299,23 +300,23 @@ public class OrderDAO {
                         case "thisWeek":
                             LocalDate firstDayOfWeek = today.minusDays(today.getDayOfWeek().getValue() - DayOfWeek.MONDAY.getValue());
                             LocalDate lastDayOfWeek = firstDayOfWeek.plusDays(6);
-                            query += "AND ([order_date] >= '" + firstDayOfWeek + "' AND [order_date] <= '" + lastDayOfWeek + "')" ;
+                            query += "AND ([order_date] >= '" + firstDayOfWeek + "' AND [order_date] <= '" + lastDayOfWeek + "')";
                             break;
                         case "thisMonth":
                             LocalDate firstDayOfMonth = LocalDate.of(today.getYear(), today.getMonth(), 1);
                             LocalDate lastDayOfMonth = YearMonth.from(today).atEndOfMonth();
-                            query += "AND ([order_date] >= '" + firstDayOfMonth + "' AND [order_date] <= '" + lastDayOfMonth + "')" ;
+                            query += "AND ([order_date] >= '" + firstDayOfMonth + "' AND [order_date] <= '" + lastDayOfMonth + "')";
                             break;
                         case "thisYear":
                             LocalDate firstDayOfYear = LocalDate.of(today.getYear(), 1, 1);
                             LocalDate lastDayOfYear = LocalDate.of(today.getYear(), 12, 31);
-                            query += "AND ([order_date] >= '" + firstDayOfYear + "' AND [order_date] <= '" + lastDayOfYear + "')" ;
+                            query += "AND ([order_date] >= '" + firstDayOfYear + "' AND [order_date] <= '" + lastDayOfYear + "')";
                             break;
                     }
                 }
                 if (startDay != null && endDay != null) {
-                    if(!startDay.isEmpty() && !endDay.isEmpty()){
-                        query += "AND ([order_date] >= '" + startDay + "' AND [order_date] <= '" + endDay + "')" ;
+                    if (!startDay.isEmpty() && !endDay.isEmpty()) {
+                        query += "AND ([order_date] >= '" + startDay + "' AND [order_date] <= '" + endDay + "')";
                     } else {
                         if (!startDay.isEmpty()) {
                             query += "AND ([order_date] >= '" + startDay + "')";
@@ -325,8 +326,8 @@ public class OrderDAO {
                         }
                     }
                 }
-                if(status != null && !status.isEmpty()) {
-                    switch(status) {
+                if (status != null && !status.isEmpty()) {
+                    switch (status) {
                         case "wait":
                             query += "AND [order_status] = N'Chờ xử lý'";
                             break;
@@ -341,17 +342,17 @@ public class OrderDAO {
                             break;
                         case "notRated":
                             query += "AND [order_status] = N'Chưa đánh giá'";
-                            break;    
+                            break;
                         case "rated":
                             query += "AND [order_status] = N'Đã đánh giá'";
-                            break;    
+                            break;
                         case "cancel":
                             query += "AND [order_status] = N'Đã hủy'";
                             break;
                     }
                 }
-                if(search != null && !search.isEmpty()) {
-                    query += "AND ([order_id] LIKE '%" + search + "%' OR [customer] LIKE '%" + search + "%')" ;
+                if (search != null && !search.isEmpty()) {
+                    query += "AND ([order_id] LIKE '%" + search + "%' OR [customer] LIKE '%" + search + "%')";
                 }
                 if (page != null) {
                     int pageNumber = Integer.parseInt(page);
@@ -372,8 +373,8 @@ public class OrderDAO {
                     String payment_status = rs.getString("payment_status");
                     int total_price = rs.getInt("total_price");
                     int point = rs.getInt("applied_point");
-                    order = new Order(order_id, customer, order_date, order_status, name_receiver, 
-                                  phone_receiver, address_receiver, payment_status, total_price, point);
+                    order = new Order(order_id, customer, order_date, order_status, name_receiver,
+                            phone_receiver, address_receiver, payment_status, total_price, point);
                     orderList.add(order);
                 }
             }
@@ -392,5 +393,107 @@ public class OrderDAO {
         return orderList;
     }
 
-}
+    public ArrayList<Order> getCustomerOrderByStatus(String customer, String status) throws SQLException {
+        ArrayList<Order> orderList = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        Order order;
+        LocalDate today = LocalDate.now();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String query = "SELECT [order_id],[order_date],[name_receiver],"
+                        + "[phone_receiver],[address_receiver],[payment_status],[total_price],[applied_point] "
+                        + "FROM [BirdFarmShop].[dbo].[Order] WHERE [customer] = '" + customer + "'";
 
+                switch (status) {
+                    case "wait":
+                        query += " AND [order_status] = N'Chờ xử lý'";
+                        break;
+                    case "inProgress":
+                        query += " AND [order_status] = N'Đang xử lý'";
+                        break;
+                    case "delivering":
+                        query += " AND [order_status] = N'Đang vận chuyển'";
+                        break;
+                    case "delivered":
+                        query += " AND [order_status] = N'Đã giao hàng'";
+                        break;
+                    case "cancel":
+                        query += " AND [order_status] = N'Đã hủy'";
+                        break;
+                    default:
+                        query += " AND [order_status] = N'Chờ xử lý'";
+
+                }
+                query += "ORDER BY [order_date] DESC";
+                stm = con.prepareStatement(query);
+
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String order_id = rs.getString("order_id");
+                    Date order_date = rs.getDate("order_date");
+                    String name_receiver = rs.getString("name_receiver");
+                    int phone_receiver = rs.getInt("phone_receiver");
+                    String address_receiver = rs.getString("address_receiver");
+                    String payment_status = rs.getString("payment_status");
+                    int total_price = rs.getInt("total_price");
+                    int point = rs.getInt("applied_point");
+                    order = new Order(order_id, customer, order_date, null, name_receiver,
+                            phone_receiver, address_receiver, payment_status, total_price, point);
+                    orderList.add(order);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return orderList;
+    }
+
+    public boolean isOrderExist(String customer, String order_id) throws SQLException {
+        boolean isExist = false;
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String query = "SELECT [order_id] "
+                        + "FROM [BirdFarmShop].[dbo].[Order] WHERE [customer] = ? AND [order_id] = ? ";
+                query += "ORDER BY [order_date] DESC";
+                stm = con.prepareStatement(query);
+                stm.setString(1, customer);
+                stm.setString(2, order_id);
+
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    isExist = true;
+                    
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return isExist;
+    }
+
+}

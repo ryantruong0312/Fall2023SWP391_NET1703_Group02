@@ -771,4 +771,3 @@ LEFT JOIN [Image] i
 ON b.bird_id = i.bird_id OR a.accessory_id = i.accessory_id
 WHERE i.is_thumbnail = 1
 GO
-

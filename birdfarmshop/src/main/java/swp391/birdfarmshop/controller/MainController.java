@@ -100,17 +100,22 @@ public class MainController extends HttpServlet {
     private static final String ACT_UPDATE_BIRD = "UpdateBird";
     private static final String DEST_UPDATE_BIRD = "UpdateBirdController";
     private static final String ACT_UPDATE_ACTIVITY = "UpdateActivity";
-    private static final String DEST_UPDATE_ACTIVITY= "UpdateActivityController";
+    private static final String DEST_UPDATE_ACTIVITY = "UpdateActivityController";
     private static final String ACT_NAV_BIRD_CUSTOMER = "NavToBirdCustomer";
     private static final String DEST_NAV_BIRD_CUSTOMER = "RenderBirdCustomerController";
     private static final String ACT_NAV_UPDATE_PASSWORD = "NavToUpdatePassword";
     private static final String DEST_NAV_UPDATE_PASSWORD = "/profile/change-password.jsp";
     private static final String ACT_UPDATE_PASSWORD = "UpdatePassword";
     private static final String DEST_UPDATE_PASSWORD = "UpdatePasswordController";
-	private static final String ACT_NAV_ORDER_ITEMS = "NavToOrderItems";
+    private static final String ACT_NAV_ORDER_ITEMS = "NavToOrderItems";
     private static final String DEST_NAV_ORDER_ITEMS = "RenderOrderItemsController";
-	private static final String ACT_DELETE_CART = "DeleteCart";
-    private static final String DEST_DELETE_CART = "DeleteCartController";     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    private static final String ACT_DELETE_CART = "DeleteCart";
+    private static final String DEST_DELETE_CART = "DeleteCartController";
+    private static final String ACT_NAV_CUSTOMER_ORDER_ITEM = "NavToCustomerOrderItem";
+    private static final String DEST_CUSTOMER_ORDER_ITEM = "RenderCustomerOrderItemController";
+    
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
         try {
@@ -229,7 +234,7 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_NAV_PAYMENT:
                     url = DEST_NAV_PAYMENT;
-                break;
+                    break;
                 case ACT_NAV_ADD_BIRD_NEST:
                     url = DEST_NAV_ADD_BIRD_NEST;
                     break;
@@ -238,7 +243,7 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_UPDATE_BIRD:
                     url = DEST_UPDATE_BIRD;
-                break;
+                    break;
                 case ACT_UPDATE_ACTIVITY:
                     url = DEST_UPDATE_ACTIVITY;
                     break;
@@ -250,13 +255,16 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_UPDATE_PASSWORD:
                     url = DEST_UPDATE_PASSWORD;
-                break;   
-    			case ACT_DELETE_CART:
+                    break;
+                case ACT_DELETE_CART:
                     url = DEST_DELETE_CART;
-                break;             
-				case ACT_NAV_ORDER_ITEMS:
+                    break;
+                case ACT_NAV_CUSTOMER_ORDER_ITEM:
+                    url = DEST_CUSTOMER_ORDER_ITEM;
+                    break;
+                case ACT_NAV_ORDER_ITEMS:
                     url = DEST_NAV_ORDER_ITEMS;
-                break;
+                    break;
                 default:
                     break;
             }
