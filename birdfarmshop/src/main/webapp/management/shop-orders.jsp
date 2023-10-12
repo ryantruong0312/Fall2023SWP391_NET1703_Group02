@@ -17,7 +17,7 @@
         <meta name="author" content="">
         <link rel="icon" type="image/png" href="assets/images/logo-title-bar.png"/>
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <title>V.E.T - Đơn hàng của shop</title>
 
         <!-- Additional CSS Files -->
@@ -26,7 +26,75 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-
+        <style>
+            .col-lg-12 span, label {
+                color: black;
+            }
+            .col-lg-12 button {
+                height: 30px;
+                border-radius: 5px;
+            }
+            .col-lg-12 li, form {
+                margin: 10px 0 10px 0;
+                display: inline-block;
+                padding: 0;
+            }
+            .order-bar {
+                border: 1px solid #cccccc;
+            }
+            .order-bar form {
+                width: 30%;
+            }
+            .order-bar ul {
+                border: 1px solid #cccccc;
+            }
+            .order-bar li {
+                display: inline-block;
+                color: black;
+                margin: 0 10px 0 10px;
+            }
+            
+            .search-bar {
+                border-radius: 8px;
+                border: 1px solid rgb(221, 221, 227);
+                margin: 0 auto;
+            }
+            .search-bar input {
+                border: 0;
+                background: none;
+                outline: none;
+            }
+            .search-bar input[type=submit] {
+                float: right;
+            }
+            .search-bar img {
+                margin-left: 5px;
+            }
+            
+            .scrollable-container {
+                overflow-x: scroll;
+            }
+            .scrollable-list {
+                white-space: nowrap;
+                display: inline-block;
+            }
+            .scrollable-list th {
+                width: auto;
+                padding: 20px;
+            }
+            .scrollable-list td {
+                width: auto;
+                padding: 20px;
+            }
+        </style>
+        <style>
+        .odd {
+            background-color: #FFFFFF;
+        }
+        .even {
+            background-color: #E0E0E0;
+        }
+        </style>
     </head>
 
     <body>
@@ -45,18 +113,6 @@
         <c:url var="toReports" value="MainController?action=NavToReports"/>
         <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
 
-        <style>
-        table {
-            margin-left: auto;
-            margin-right: auto;
-        }
-        th {
-            width: 300px;
-        }
-        td {
-            width: 100px;
-        }
-        </style>
         <!-- ***** Preloader Start ***** -->
         <div id="preloader">
             <div class="jumper">
@@ -155,51 +211,79 @@
         
         
         <main>
+            <c:set value="${requestScope.ORDERLIST}" var="orderList"/>
+            <c:set value="${requestScope.ORDERITEMMAP}" var="orderItemMap"/>
             <div class="container">
                 <div class="col-lg-12">
                     <h1 style="text-align: center;">Danh sách đơn hàng</h1>
-                    <c:set value="${requestScope.ORDERLIST}" var="orderList"/>
-                    <c:set value="${requestScope.ORDERITEMMAP}" var="orderItemMap"/>
-                    <c:forEach items="${orderList}" var="order">
-                        <div style="background-color: pink; display: flex; align-items: center; justify-content: space-around; margin-bottom: 20px;" onclick="toggleList('${order.order_id}')">
-                            <h4 style="float: left;">Order ID: ${order.order_id}</h4>
-                            <h5 style="float: right;">Create Date: ${order.order_date}</h5><br><br>
+                    <ul>
+                        <li><button><a href="MainController?action=NavToShopOrders&txtDate=today"><span>Hôm qua</span></a></button></li>
+                        <li><button><a href="MainController?action=NavToShopOrders&txtDate=yesterday"><span>Hôm nay</span></a></button></li>
+                        <li><button><a href="MainController?action=NavToShopOrders&txtDate=thisWeek"><span>Tuần này</span></a></button></li>
+                        <li><button><a href="MainController?action=NavToShopOrders&txtDate=thisMonth"><span>Tháng này</span></a></button></li>
+                        <li><button><a href="MainController?action=NavToShopOrders&txtDate=thisYear"><span>Năm nay</span></a></button></li>
+                        <form style="float: right;" action="MainController">
+                            <label for="start-date">Ngày bắt đầu:</label>
+                            <input type="date" id="start-date" name="start-date" value="">
+
+                            <label for="end-date">Ngày kết thúc:</label>
+                            <input type="date" id="end-date" name="end-date" value="">
+                            <button type="submit" name="action" value="NavToShopOrders"><span>Chọn</span></button>
+                        </form>
+                    </ul>
+                </div>
+                <div class="col-lg-12">
+                    <div class="order-bar" style="background-color: #cccccc; text-align: center;">
+                        <span style="color: black; float: left; margin-left: 20px;">Đơn hàng</span><br>
+                        <div style="background-color: white; padding: 0; margin: 0;">
+                            <form style="padding: 10px 0;" action="MainController">
+                                <div class="search-bar">
+                                    <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                                    <input type="text" name="txtOrder" id="search" placeholder="Tìm kiếm" value="">
+                                    <input type="hidden" name="action" value="NavToShopOrders"/>
+                                    <input type="submit" value="Tìm kiếm">
+                                </div>
+                            </form>
                         </div>
-                        <table id="${order.order_id}" style="display: none;">
-                            <thead style="justify-content: center;">
-                                <tr>
-                                    <th>STT</th>
-                                    <th>ID sản phẩm</th>
-                                    <th>Số lượng</th>
-                                    <th>Giá</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach items="${orderItemMap}" var="orderItemList">
-                                    <c:forEach items="${orderItemList.value}" var="orderItem" varStatus="counter">
-                                        <c:if test="${orderItem.order_id == order.order_id}">
-                                        <tr>
+                        <div class="scrollable-container">
+                            <table class="scrollable-list">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Order Id</th>
+                                        <th>User ID</th>
+                                        <th>Ngày đặt hàng</th>
+                                        <th>Tình trạng đơn hàng</th>
+                                        <th>Tên người nhận</th>
+                                        <th>Sđt người nhận</th>
+                                        <th>Địa chỉ nhận hàng</th>
+                                        <th>Tình trạng thanh toán</th>
+                                        <th>Tổng đơn hàng</th>
+                                        <th>Điểm đã dùng</th>
+                                        <th>Chi tiết</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${orderList}" var="order" varStatus="counter">
+                                        <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
                                             <td>${counter.count}</td>
-                                            <c:choose>
-                                                <c:when test="${orderItem.bird_id != null}">
-                                                    <td>${orderItem.bird_id}</td>
-                                                </c:when>
-                                                <c:when test="$${orderItem.nest_id != null}">
-                                                    <td>${orderItem.nest_id}</td>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <td>${orderItem.accessory_id}</td>
-                                                </c:otherwise>
-                                            </c:choose>
-                                            <td>${orderItem.order_quantity}</td>
-                                            <td>${orderItem.unit_price}</td>
+                                            <td>${order.order_id}</td>
+                                            <td>${order.customer}</td>
+                                            <td>${order.order_date}</td>
+                                            <td>${order.order_status}</td>
+                                            <td>${order.name_receiver}</td>
+                                            <td>${order.phone_receiver}</td>
+                                            <td>${order.address_receiver}</td>
+                                            <td>${order.payment_status}</td>
+                                            <td>${order.total_price}</td>
+                                            <td>${order.point}</td>
+                                            <td><a href="MainController?action=NavToOrderItems&order_id=${order.order_id}"><span>Chi tiết</span></a></td>
                                         </tr>
-                                        </c:if>
                                     </c:forEach>
-                                </c:forEach>
-                            </tbody>
-                        </table>
-                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>        
             </div>
         </main>
@@ -266,7 +350,8 @@
         
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
-
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <!-- Bootstrap -->
         <script src="assets/js/popper.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
@@ -286,15 +371,5 @@
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
         
-        <script>
-            function toggleList(listId) {
-                var list = document.getElementById(listId);
-                if (list.style.display === "none" || list.style.display === "") {
-                    list.style.display = "block";
-                } else {
-                    list.style.display = "none";
-                }
-            }
-        </script>
     </body>
 </html>

@@ -291,8 +291,8 @@
                                                         <div class="hover-content">
                                                             <ul>
                                                                 <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                                <c:if test="${bird.status != 'Đã bán' || LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
-                                                                <li><a class="bird-cart" data-value="${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                <c:if test="${(sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer') && bird.status != 'Đã bán'}">
+                                                                    <li><a class="bird-cart" data-value="${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
                                                                 </c:if>
                                                             </ul>
                                                         </div>

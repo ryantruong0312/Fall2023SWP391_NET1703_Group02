@@ -8,6 +8,7 @@ package swp391.birdfarmshop.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,6 +28,8 @@ import swp391.birdfarmshop.model.Bird;
  *
  * @author phong pc
  */
+
+@WebServlet(name = "UpdateBirdController", urlPatterns = {"/UpdateBirdController"})
 public class UpdateBirdController extends HttpServlet {
    
     private static final String ERROR = "errorpages/error.jsp";

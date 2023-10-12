@@ -160,7 +160,7 @@ public class OrderDAO {
 //        OrderDAO dao = new OrderDAO();
 //        ArrayList<Order> list = dao.getAllOfOrder();
 //        for (Order order : list) {
-//            System.out.println(order.getOrder_id());
+//            System.out.println(order.getOrder_id() + " " + order.getOrder_status());
 //        }
 //    }
 }

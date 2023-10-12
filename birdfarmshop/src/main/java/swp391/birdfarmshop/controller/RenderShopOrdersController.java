@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -33,21 +34,26 @@ public class RenderShopOrdersController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
+        String txtDate = request.getParameter("txtDate");
         try {
             OrderDAO orderDao = new OrderDAO();
             ArrayList<Order> orderList = orderDao.getAllOfOrder();
-            for (Order order : orderList) {
-                System.out.println(order.getOrder_id());
+            if(txtDate != null) {
+                switch(txtDate) {
+                    case "today":
+                        break;
+                    case "yesterday":
+                        break;
+                    case "thisWeek":
+                        break;
+                    case "thisMonth":
+                        break;
+                    case "thisYear":
+                        break;
+                }
+            }else {
+                request.setAttribute("ORDERLIST", orderList);
             }
-            OrderItemDAO orderItemDao = new OrderItemDAO();
-            ArrayList<OrderItem> orderItemList;
-            HashMap<String, ArrayList> orderItemMap = new HashMap<>();
-            for (Order order : orderList) {
-                orderItemList = orderItemDao.getItemOfOrder(order.getOrder_id());
-                orderItemMap.put(order.getOrder_id(), orderItemList);
-            }
-            request.setAttribute("ORDERLIST", orderList);
-            request.setAttribute("ORDERITEMMAP", orderItemMap);
             url = SUCCESS;
         } catch (Exception e) {
             log("Error at RenderShopOrdersController: " + e.toString());

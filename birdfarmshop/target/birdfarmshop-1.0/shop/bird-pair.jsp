@@ -64,15 +64,11 @@
                                         <li class="scroll-to-section"><a href="#" class="active">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">
-                                                <c:choose>
-                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
-                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
-                                                </c:choose>
-                                            </div>
+                                            <div class="cart-amount">${(sessionScope.CART_BIRD_NEST.getSize()!=null ? sessionScope.CART_BIRD_NEST.getSize():0)+(sessionScope.CART_BIRD.getSize()!=null ? sessionScope.CART_BIRD.getSize():0)}</div>
+
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
-                                            <li id="checkLogin" data-login="false" class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
+                                            <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
                                             </c:if>
                                         </c:if>
                                     </c:if>
@@ -173,7 +169,7 @@
                 <div class="comparison-column">
                     <div class="column-content">
                         <h2>Chọn một chú vẹt trống</h2>
-                    
+
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect1">
                             <option value = "">Chọn giống vẹt</option>
@@ -195,10 +191,13 @@
                         </div>
                     </div>
                 </div>
+                <!-- butotn pair start -->      
+                <!-- butotn pair end -->
                 <!-- Second Column -->
                 <div class="comparison-column">
                     <div class="column-content">
-                        <h2>Chọn một chú vẹt mái</h2>        
+                        <h2>Chọn một chú vẹt mái</h2>
+
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect2">
                             <option value = "">Chọn giống vẹt</option>
@@ -226,21 +225,15 @@
             </div>
         </main>
         <main class="my-5 bird-customer">
-            <c:set var="user" value="${sessionScope.LOGIN_USER}"/>
-            <input type="hidden" name="username" value="${not empty user ? user.username:''}">
             <div class="back-choose py-4">
                 <h5>Chọn phương pháp ghép cặp</h5>
             </div>
             <div class="comparison-container mx-3">
                 <!-- First Column -->
-                <div class="comparison-column customer-select--bird">
-                    <form action="MainController">
-                        <input type="hidden" name="action" value="NavToCreateBirdCustomer" />
-                        <button type="submit" class="button-create">Thêm vẹt mới</button>
-                    </form>
+                <div class="comparison-column">
                     <div class="column-content">
-                            <h2>Chọn một chú vẹt của khách</h2>
-                        
+                        <h2>Chọn một chú vẹt của khách</h2>
+
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect3">
                             <option value = "">Chọn giống vẹt</option>
@@ -252,6 +245,13 @@
                         <!-- EL to populate the bird name combo box -->
                         <select class="combo-box" id="birdSelect3"  >
                         </select>
+                        <div class="mt-4">
+                            <label>Giới tính: </label>
+                            <input id="gender-1" class="ml-4" type="radio" name="gender" value="1"/> Trống
+                            <p style="display: inline-block; width: 30px"></p>
+                            <input id="gender-2" class=""type="radio" name="gender" value="0"/> Mái
+                        </div>
+
                         <!-- Additional rows to display bird information -->
                         <div id="birdInformation3">         
                             <div class="bird-info-row">
@@ -261,9 +261,10 @@
                         </div>
                     </div>
                 </div>
-                
+                <!-- butotn pair start -->      
+                <!-- butotn pair end -->
                 <!-- Second Column -->
-                <div class="comparison-column second-box">
+                <div class="comparison-column">
                     <div class="column-content">
                         <h2>Chọn một chú vẹt của cửa hàng</h2>
 
@@ -277,7 +278,11 @@
 
                         <!-- EL to populate the bird name combo box -->
                         <select class="combo-box" id="birdSelect4">
-                        </select>  
+                        </select>
+
+                        <div style="height: 32px;" class="mt-4">
+
+                        </div>    
 
                         <!-- Additional rows to display bird information -->
                         <div id="birdInformation4"> 
@@ -293,6 +298,7 @@
                 <button class="button-pair">Tiến hành ghép</button>  
             </div>
         </main>
+        <div class="testajax"></div>
         <!-- ***** Footer Start ***** -->
         <footer>
             <div class="container">
@@ -352,25 +358,10 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
-        <%@include file="../layout/message.jsp" %>
         <script src="assets/js/jquery-3.7.1.min.js"></script>
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/jquery.validate.min.js" ></script>
         <script type="text/javascript" src="assets/js/birdshop.js"></script>
-        <script>
-            $(function () {
-                var selectedClass = "";
-                $("p").click(function () {
-                    selectedClass = $(this).attr("data-rel");
-                    $("#portfolio").fadeTo(50, 0.1);
-                    $("#portfolio div").not("." + selectedClass).fadeOut();
-                    setTimeout(function () {
-                        $("." + selectedClass).fadeIn();
-                        $("#portfolio").fadeTo(50, 1);
-                    }, 500);
 
-                });
-            });
-        </script>
     </body>
 </html>

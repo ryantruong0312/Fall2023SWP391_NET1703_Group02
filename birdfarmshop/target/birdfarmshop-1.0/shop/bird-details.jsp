@@ -49,21 +49,6 @@
                 height: 200px;
                 margin-top: 2px;
             }
-            
-            .col-lg-12 a {
-                border-radius: 10px;
-                border: 1px solid rgb(221, 221, 227);
-                background-color: #f5c6cb;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin: 0 auto;
-                width: 50%;
-                margin-bottom: 30px;
-                margin-top: 20px;
-                width: 150px;
-                float: right;
-            }
         </style>
         <script>
             function swapImages(clickedImage) {
@@ -133,12 +118,8 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">
-                                                <c:choose>
-                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
-                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
-                                                </c:choose>
-                                            </div>
+                                            <div class="cart-amount">${(sessionScope.CART_BIRD_NEST.getSize()!=null ? sessionScope.CART_BIRD_NEST.getSize():0)+(sessionScope.CART_BIRD.getSize()!=null ? sessionScope.CART_BIRD.getSize():0)}</div>
+
                                         </li>
 
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
@@ -199,13 +180,6 @@
         <c:set var="birdDetails" value="${requestScope.birdDetails}"/>
         <section class="section" id="product">
             <div class="container">
-                <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <a href="MainController?action=UpdateBird&bird_id=${birdDetails.bird_id}"><span>Cập nhật chim</span></a>
-                    </div>
-                </div>
-                </c:if>
                 <div class="row">
                     <div class="col-lg-8">
                         <c:if test="${birdDetails != null}">
@@ -236,40 +210,26 @@
                                             <span><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</span>
                                         </c:otherwise>
                                     </c:choose>
-                                    <div class="mt-2">
-                                        <h4>Mô tả sản phẩm: </h4>
-                                        <c:if test="${not empty birdDetails.description}">
-                                            <span>Thông tin: ${birdDetails.description}</span>
-                                        </c:if>
-                                        <c:if test="${not empty birdDetails.achievement}">
-                                            <span>Thành tựu: ${birdDetails.achievement}</span>
-                                        </c:if>
-                                        <span>Màu sắc: ${birdDetails.color}</span>
-                                        <span>Tháng tuổi: ${birdDetails.age}</span>
-                                        <span>Thời gian trưởng thành: ${birdDetails.grown_age} tháng</span>
-                                        <span>Số lần giao phối: ${birdDetails.reproduction_history}</span>
-                                        <div>
-                                            <div class="quote">
-                                                <c:if test="${not empty birdDetails.dad_bird_name && not empty birdDetails.mom_bird_name}">
-                                                    <i class="fa fa-quote-left"></i><p>${birdDetails.dad_bird_name} lai với ${birdDetails.mom_bird_name}</p>
-                                                </c:if>
-                                            </div>
-                                            <div class="quantity-content">
-                                                <div class="left-content">
-                                                    <h6>Chỉ duy nhất</h6>
-                                                </div>
-                                                <div class="right-content">
-                                                    <div class="quantity buttons_added">
-                                                        <input type="button" value="-" class="minus"><input type="button" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="" inputmode=""><input type="button" value="+" class="plus">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <c:if test="${birdDetails.status != 'Đã bán' || LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
-                                            <div class="total">
-                                                <div class="main-border-button"><a class="bird-cart" style="cursor: pointer" data-value="${birdDetails.bird_id}">Thêm vào giỏ hàng</a></div>
-                                            </div>
+                                    <span>${birdDetails.description}</span>
+                                    <div class="quote">
+                                        <c:if test="${not empty birdDetails.dad_bird_name && not empty birdDetails.mom_bird_name}">
+                                            <i class="fa fa-quote-left"></i><p>${birdDetails.dad_bird_name} lai với ${birdDetails.mom_bird_name}</p>
                                             </c:if>
+                                    </div>
+                                    <div class="quantity-content">
+                                        <div class="left-content">
+                                            <h6>Chỉ duy nhất</h6>
                                         </div>
+                                        <div class="right-content">
+                                            <div class="quantity buttons_added">
+                                                <input type="button" value="-" class="minus"><input type="button" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="" inputmode=""><input type="button" value="+" class="plus">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="total">
+                                        <div class="main-border-button"><a href="MainController?action=AddtoCart&type=bird&id=${birdDetails.bird_id}">Thêm vào giỏ hàng</a></div>
+                                    </div>
+                                    </div>
                                     </div>
                                     </div>
                                     </div>
@@ -337,7 +297,7 @@
                                         </div>
                                     </footer>
                                     <!-- ***** Footer Area Ends ***** -->
-                                    <%@include file="../layout/message.jsp" %>
+
                                     <!-- jQuery -->
                                     <script src="assets/js/jquery-2.1.0.min.js"></script>
 
@@ -373,38 +333,6 @@
                                                     $("#portfolio").fadeTo(50, 1);
                                                 }, 500);
 
-                                            });
-                                            $(".bird-cart").click(function () {
-                                                let birdId = $(this).attr('data-value');
-                                                $.ajax({
-                                                    url: "AddBirdToCartController",
-                                                    type: 'POST',
-                                                    data: {bird_id: birdId},
-                                                    success: function (data) {
-                                                        if (data == 0) {
-                                                            toast({
-                                                                title: 'Lỗi',
-                                                                message: 'Sản phẩm này đã có trong giỏ hàng',
-                                                                type: 'error',
-                                                                duration: 3000
-                                                            });
-                                                        } else {
-                                                            toast({
-                                                                title: 'Thành công',
-                                                                message: 'Thêm sản phẩm vào giỏ hàng thành công',
-                                                                type: 'success',
-                                                                duration: 3000
-                                                            });
-                                                            $.ajax({
-                                                                url: "AddBirdToCartController",
-                                                                type: 'POST',
-                                                                success: function (data) {
-                                                                    $('.cart-amount').html(data);
-                                                                }
-                                                            });
-                                                        }
-                                                    }
-                                                });
                                             });
                                         });
 

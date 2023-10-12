@@ -1,7 +1,7 @@
 <%-- 
-Document   : accessories
-Created on : Sep 13, 2023, 11:20:56 PM
-Author     : tlminh
+    Document   : accessories
+    Created on : Sep 13, 2023, 11:20:56 PM
+    Author     : tlminh
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -38,11 +38,10 @@ Author     : tlminh
                 color: white !important;
             }
             .search-bar {
-                margin: 7px 0 10px 75px;
+                margin: 0 0 10px 120px;
                 border: 5px;
                 border-radius: 8px;
                 border: 1px solid rgb(221, 221, 227);
-                
             }
             .search-bar input {
                 border: 0;
@@ -59,13 +58,14 @@ Author     : tlminh
             .type {
                 cursor: pointer;
                 background-color: #cccccc;
-                padding-left: 5px;
+                padding: 0 0 0 5px; /*top right bot left*/
+                margin: 5px 0 5px 5px;
             }
             .type + ol {
                 display: none;
             }
-            li input[type="radio"] + label {
-                margin-left: 5px;
+            #typeList-1, #typeList-2, #typeList-3, #typeList-4 {
+                margin-left: 10px;
             }
 
             .position-sticky li {
@@ -76,37 +76,6 @@ Author     : tlminh
             }
             a {
                 color: black;
-            }
-            #input-accessory{
-                display: block;
-                border-radius: 10px; /* Điều này làm cho góc bo tròn */
-                padding: 10px; /* Điều này làm cho nút trở nên lớn hơn và dễ đọc hơn */
-                background-color: #007bff; /* Màu nền */
-                color: #fff; /* Màu chữ */
-                cursor: pointer; /* Biến con trỏ thành bàn tay khi di chuột vào nút */
-                border: none;
-                font-size: 15px;
-                margin-left: 295px;
-            }
-            .overlay-text {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background-color: rgba(0, 0, 0, 0.5);
-                border-radius: 80%;
-                color: #fff;
-                padding: 30px;
-                font-size: 50px;
-                text-align: center;
-                margin-right: 1px;
-                margin-top: 0px;
-            }
-            .overlay-container {
-                position: relative;
-            }
-            #selectAccessory{
-                margin-top:  5px;
             }
         </style>
     </head>
@@ -126,7 +95,6 @@ Author     : tlminh
         <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
         <c:url var="toReports" value="MainController?action=NavToReports"/>
         <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
-        <c:url var="toAddAccessory" value="MainController?action=NavToAddAccessory"/>
 
         <!-- ***** Header Area Start ***** -->
         <header class="header-area header-sticky">
@@ -158,12 +126,8 @@ Author     : tlminh
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">
-                                                <c:choose>
-                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
-                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
-                                                </c:choose>
-                                            </div>
+                                            <div class="cart-amount">${(sessionScope.CART_BIRD_NEST.getSize()!=null ? sessionScope.CART_BIRD_NEST.getSize():0)+(sessionScope.CART_BIRD.getSize()!=null ? sessionScope.CART_BIRD.getSize():0)}</div>
+
                                         </li>
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
                                             <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
@@ -224,93 +188,76 @@ Author     : tlminh
         <section class="section" id="products">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-7">
-                        <form id="selectAccessory" action="MainController" method="POST">
-                            <input type="hidden" name="action" value="NavToAccessory"> 
-                            <div class="search-bar">
-                                <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                                <input type="text" name="txtAccessory" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
-                                <input type="submit" value="Tìm kiếm">
-                            </div>
-                        </form>
+                    <div class="col-lg-12">
+                        <div class="section-heading">
+                            <h2>Sản phẩm của chúng tôi</h2>
+                        </div>
                     </div>
-                    <div class="col-md-5" style="margin-bottom: 15px; ">
-                        <c:if test="${sessionScope.LOGIN_USER.role == 'admin' || sessionScope.LOGIN_USER.role == 'manager'}">
-                            <a href="${toAddAccessory}">
-                                <button id="input-accessory" type="button">Thêm mới phụ kiện</button>
-                            </a>
-                        </c:if>
-                    </div>
+                    <form id="selectAccessory" action="MainController" method="POST">
+                        <input type="hidden" name="action" value="NavToAccessory"> 
+                        <div class="search-bar">
+                            <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                            <input type="text" name="txtAccessory" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                            <input type="submit" value="Tìm kiếm">
+                        </div>
                 </div>
             </div>
-            <div class="container-fluid">
+            <div class="container">
                 <div class="row">
                     <!-- Sidebar -->
                     <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
                         <div class="position-sticky">
                             <h3>Phân loại theo</h3>
-                            <div class="type" onclick="toggleList('typeList-1')">Loại phụ kiện</div>
+                            <div class="type" onclick="toggleList('typeList-1')">Loài</div>
                             <ol style="display: block;" id="typeList-1">
                                 <li><input type="radio" id="type-0" ${requestScope.CATEGORY_ID == null ? "checked": ""} name="txtType" value="All"><label for="type-0">Tất cả</label></li>
                                 <li><input type="radio" id="type-1" ${requestScope.CATEGORY_ID == "cage" ? "checked": ""} name="txtType" value="cage"><label for="type-1">Lồng & cây đứng</label></li>
                                 <li><input type="radio" id="type-2" ${requestScope.CATEGORY_ID == "care" ? "checked": ""} name="txtType" value="care"><label for="type-2">Phụ kiện chăm sóc</label></li>
                                 <li><input type="radio" id="type-3" ${requestScope.CATEGORY_ID == "toy" ? "checked": ""} name="txtType" value="toy"><label for="type-3">Phụ kiện trang trí - Đồ chơi</label></li>
                             </ol>
-                            <div class="type" onclick="toggleList('typeList-2')">Giá bán</div>
+                            <div class="type" onclick="toggleList('typeList-2')">Giá cả</div>
                             <ol style="display: block;" id="typeList-2">
                                 <li><input type="radio" id="type-65" ${requestScope.PRICE == null ? "checked": ""} name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
-                                <li><input type="radio" id="type-6" ${requestScope.PRICE == "unit_price < 300000" ? "checked": ""}  name="txtPrice" value="unit_price < 300000"><label for="type-6">Dưới 300,000₫</label></li>
-                                <li><input type="radio" id="type-7" ${requestScope.PRICE == "unit_price >= 300000 AND unit_price <= 600000" ? "checked": ""} name="txtPrice" value="unit_price >= 300000 AND unit_price <= 600000"><label for="type-7">Từ 300,000₫ - 600,000₫</label></li>
-                                <li><input type="radio" id="type-8" ${requestScope.PRICE == "unit_price > 600000" ? "checked": ""} name="txtPrice" value="unit_price > 600000"><label for="type-8">Trên 600,000₫</label></li>
+                                <li><input type="radio" id="type-6" ${requestScope.PRICE == "unit_price < 300000" ? "checked": ""}  name="txtPrice" value="unit_price < 300000"><label for="type-6">dưới 300,000đ</label></li>
+                                <li><input type="radio" id="type-7" ${requestScope.PRICE == "unit_price >= 600000 AND unit_price <= 900000" ? "checked": ""} name="txtPrice" value="unit_price >= 600000 AND unit_price <= 900000"><label for="type-7">300,000 - 600,000</label></li>
+                                <li><input type="radio" id="type-8" ${requestScope.PRICE == "unit_price > 900000" ? "checked": ""} name="txtPrice" value="unit_price > 900000"><label for="type-8">trên 900,000</label></li>
                             </ol>
                         </div>
                     </nav>
                     <!-- Nội dung chính -->
                     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                        <div id="content" class="row justify-content-center">
+                        <div id="content" class="row">
+                            <c:if test="${requestScope.error != null}">
+                                <div>${error}</div>
+                            </c:if>
+                            <c:if test="${requestScope.error1 != null}">
+                                <div>${error1}</div>
+                            </c:if>
                             <c:if test="${requestScope.accessoryList != null}">
                                 <c:set var="accessoryList" value="${requestScope.accessoryList}"/>
                                 <c:if test="${not empty accessoryList}">
                                     <c:forEach items="${accessoryList}" var="accessory" varStatus="counter">
-                                        <div class="bird col-sm-7 col-md-7 col-lg-5 col-xl-4">
+                                        <div class="bird col-lg-4">
                                             <div class="item">
                                                 <div class="thumb">
                                                     <div class="hover-content">
                                                         <ul>
-                                                            <li>
-                                                                <a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a>
-                                                            </li>
-                                                            <c:if test="${accessory.stock_quantity > 0}">
-                                                                <li><a style="cursor: pointer" class="accessory-cart" data-value="${accessory.accessory_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                                    </c:if>
+                                                            <li><a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a></li>
+                                                            <li><a href="AddtoCartController?idAccessory=${accessory.accessory_id}&quantity=1"><i class="fa fa-shopping-cart"></i></a></li>
                                                         </ul>
                                                     </div>
-                                                    <div class="overlay-container">
-                                                        <img class="thumb" src="${accessory.image_url}" alt="">
-                                                        <c:if test="${accessory.stock_quantity == 0}">
-                                                            <div class="overlay-text">Hết hàng</div>
-                                                        </c:if>
-                                                    </div>
+                                                    <img class="thumb" src="${accessory.image_url}" alt="">
                                                 </div>
                                                 <div class="down-content">
                                                     <h4>${accessory.accessory_name}</h4>
-                                                    <c:choose>
-                                                        <c:when test="${accessory.discount > 0}">
-                                                            <span style="display: inline-block;"><del><fmt:formatNumber value="${accessory.unit_price}" pattern="#,###"/> ₫</del></span>
-                                                            <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${accessory.discount}%</span>
-                                                            <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${accessory.unit_price - accessory.unit_price * accessory.discount / 100}" pattern="#,###"/> ₫</span>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <span><fmt:formatNumber value="${accessory.unit_price}" pattern="#,###"/> ₫</span>
-                                                        </c:otherwise>
-                                                    </c:choose>
+                                                    <span><fmt:formatNumber value="${accessory.unit_price}" pattern="#,###"/> ₫</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </c:forEach>
                                 </c:if>
                             </c:if>
-                            <div class="col-lg-8">
+                            <div class="col-lg-12">
                                 <div class="pagination bird-pg">
                                     <c:if test="${noOfPages > 1 && noOfPages <= 5}">
                                         <input type="hidden" name="page" value="${requestScope.currentPage}"/>
@@ -415,7 +362,7 @@ Author     : tlminh
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
-        <%@include file="../layout/message.jsp" %>
+
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
 
@@ -469,39 +416,6 @@ Author     : tlminh
                                                                 let nextpage = Number(page) + 1;
                                                                 $('input[name=page]').val(nextpage);
                                                                 $("#selectAccessory").submit();
-                                                            });
-                                                            $(".accessory-cart").click(function () {
-                                                                let accessory_id = $(this).attr('data-value');
-                                                                $.ajax({
-                                                                    url: "AddAccessoryToCartController",
-                                                                    type: 'POST',
-                                                                    data: {accessory_id: accessory_id, order_quantity: 1},
-                                                                    success: function (data) {
-                                                                        if (data == 0) {
-                                                                            toast({
-                                                                                title: 'Lỗi',
-                                                                                message: 'Sản phẩm này đã có trong giỏ hàng',
-                                                                                type: 'error',
-                                                                                duration: 3000
-                                                                            });
-                                                                        } else {
-                                                                            toast({
-                                                                                title: 'Thành công',
-                                                                                message: 'Thêm sản phẩm vào giỏ hàng thành công',
-                                                                                type: 'success',
-                                                                                duration: 3000
-                                                                            });
-                                                                            $.ajax({
-                                                                                url: "AddAccessoryToCartController",
-                                                                                type: 'POST',
-                                                                                data: {order_quantity: 1},
-                                                                                success: function (data) {
-                                                                                    $('.cart-amount').html(data);
-                                                                                }
-                                                                            });
-                                                                        }
-                                                                    }
-                                                                });
                                                             });
                                                         });
                                                         function takePage(event) {

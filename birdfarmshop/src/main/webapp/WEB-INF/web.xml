@@ -24,11 +24,14 @@
         <servlet-name>AddNewBirdController</servlet-name>
         <servlet-class>swp391.birdfarmshop.controller.AddNewBirdController</servlet-class>
     </servlet>
-    <servlet>
+	<servlet>
         <servlet-name>RenderNewBirdNestController</servlet-name>
         <servlet-class>swp391.birdfarmshop.controller.RenderNewBirdNestController</servlet-class>
     </servlet>
-    <servlet-mapping>
+	<servlet>
+        <servlet-name>RenderOrderItemsController</servlet-name>
+        <servlet-class>swp391.birdfarmshop.controller.RenderOrderItemsController</servlet-class>
+    </servlet>    <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
     </servlet-mapping>
@@ -52,11 +55,14 @@
         <servlet-name>AddNewBirdController</servlet-name>
         <url-pattern>/AddNewBirdController</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
+	<servlet-mapping>
         <servlet-name>RenderNewBirdNestController</servlet-name>
         <url-pattern>/RenderNewBirdNestController</url-pattern>
     </servlet-mapping>
-    <session-config>
+	<servlet-mapping>
+        <servlet-name>RenderOrderItemsController</servlet-name>
+        <url-pattern>/RenderOrderItemsController</url-pattern>
+    </servlet-mapping>    <session-config>
         <session-timeout>
             30
         </session-timeout>
