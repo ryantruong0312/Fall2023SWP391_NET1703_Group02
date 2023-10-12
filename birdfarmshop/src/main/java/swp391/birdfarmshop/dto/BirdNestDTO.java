@@ -25,6 +25,8 @@ public class BirdNestDTO {
     private int price;
     private String description;
     private String image_url;
+    private String breed_id;
+    private int discount;
 
     public BirdNestDTO() {
     }
@@ -43,6 +45,19 @@ public class BirdNestDTO {
         this.price = price;
         this.description = description;
         this.image_url = image_url;
+    }
+
+    public BirdNestDTO(String nest_id, String nest_name, String dad_bird_id, String mom_bird_id, int baby_quantity, String status, int price, String description, String breed_id, int discount) {
+        this.nest_id = nest_id;
+        this.nest_name = nest_name;
+        this.dad_bird_id = dad_bird_id;
+        this.mom_bird_id = mom_bird_id;
+        this.baby_quantity = baby_quantity;
+        this.status = status;
+        this.price = price;
+        this.description = description;
+        this.breed_id = breed_id;
+        this.discount = discount;
     }
 
     public String getNest_id() {
@@ -149,5 +164,20 @@ public class BirdNestDTO {
         this.image_url = image_url;
     }
 
-   
+    public String getBreed_id() {
+        return breed_id;
+    }
+
+    public void setBreed_id(String breed_id) {
+        this.breed_id = breed_id;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
 }

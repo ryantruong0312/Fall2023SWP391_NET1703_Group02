@@ -1,12 +1,7 @@
-<%-- 
-    Document   : edit-accessory
-    Created on : Sep 13, 2023, 11:53:57 PM
-    Author     : tlminh
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,7 +13,7 @@
         <link rel="icon" type="image/png" href="assets/images/logo-title-bar.png"/>
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>V.E.T - Cập nhật thông tin phụ kiện</title>
+        <title>V.E.T - Cập nhật thông tin vẹt cảnh</title>
 
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -27,37 +22,20 @@
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
 
-        <style>
-            .col-lg-12 .product-part {
-                margin: 0 0 10px 10px;
-            }
-            .col-lg-12 input {
-                margin-bottom: 10px;
-                width: 50%;
-            }
-            .col-lg-12 span {
-                margin-top: 100px;
-            }
-            .form-left{
-                padding-top: 8px;
-            }
-            .button-submit{
-                margin-top: 15px;
-                width: 175px;
-                font-size: 25px;
-                height: 50px;
-                border-radius: 10px;
-                background-color: #0c5460;
-                color: white;
-            }
-            #id{
-                height: 100px;
-            }
-            .form-outline input{
-                width: 554px;
-            }
-        </style>
     </head>
+
+    <style>
+        .col-lg-12 .product-part {
+            margin: 0 0 10px 10px;
+        }
+        .col-lg-12 input {
+            margin-bottom: 10px;
+            width: 50%;
+        }
+        .col-lg-12 span {
+            margin-top: 100px;
+        }
+    </style>
 
     <body>
         <c:url var="toCompare" value="MainController?action=NavToCompare"/>
@@ -115,7 +93,12 @@
                                         <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
                                         <li id="show-cart" class="scroll-to-section">
                                             <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">8</div>
+                                            <div class="cart-amount">
+                                                <c:choose>
+                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
+                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
+                                                </c:choose>
+                                            </div>
                                         </li>
 
                                         <c:if test="${sessionScope.LOGIN_USER == null}">
@@ -155,87 +138,119 @@
             </div>
         </header>
         <!-- ***** Header Area End ***** -->
+
+        <!-- ***** Main Banner Area Start ***** -->
+        <div class="page-heading" id="top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="inner-content">
+                            <h2>Vẹt cảnh</h2>
+                            <span>Những chú vẹt thông minh và đáng yêu nhất đã có mặt tại V.E.T</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ***** Main Banner Area End ***** -->
+
+
+        <!-- ***** Products Area Starts ***** -->
+
         <section class="section" id="products">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-heading">
-                            <h2>Chỉnh sửa sản phẩm</h2>
+                            <h2>Thêm mới sản phẩm</h2>
                         </div>
                     </div>
-                    <form action="UpdateAccessoryController" method="GET">
-                        <div class="col-lg-12 form-left">
+                    <div class="col-lg-12 form-custom">
+                        <form action="MainController?action=AddNewBirdNest" class="" method="POST">
+                            <input type="hidden" name="action" value="AddNewBird">
                             <div class="form-outline">
-                                <label>ID của phụ kiện (Bao gồm 2 chữ hoa và 3 chữ số)</label>
-                                <input style="color: blue;" type="text" name="txtAccessoryID" class="input form-control" pattern="[A-Z]{2}\d{3}" value="${a.accessory_id}" readonly=""/>
+                                <label>ID của tổ chim (Bao gồm 2 chữ hoa và 3 chữ số)</label>
+                                <input type="text" name="id" class="input form-control form-control" pattern="[A-Z]{2}\d{3}" required="" value="${param.id}"/>
                             </div>
-
                             <div class="form-outline mt-2">
-                                <label>Tên</label>
-                                <input style="color: blue;" type="text" name="txtAccessoryName" class="input form-control" value="${a.accessory_name}" required/>
+                                <label>Tên tổ chim</label>
+                                <input type="text" name="name" class="input form-control" required=""/>                          
                             </div>
-
                             <div class="form-outline mt-2">
-                                <label>Loại phụ kiện</label>
-                                <select name="txtCategoryID">
-                                    <c:forEach items="${ac}" var="ac">
-                                        <option style="color: blue;" value="${ac.category_id}">${ac.category_name}</option>
+                                <label>Giống loài</label>
+                                <select name="breed-id">
+                                    <option value="-1">Chọn giống</option>
+                                    <c:forEach items="${requestScope.BREEDLIST}" var="breed">
+                                        <option value="${breed.breed_id}">${breed.breed_name}</option>
                                     </c:forEach>
                                 </select>
                             </div>
-
                             <div class="form-outline mt-2">
                                 <label>Giá</label>
-                                <input style="color: blue;" type="number" name="txtPrice" min="0" class="input form-control" value="${a.unit_price}" required/>
+                                <input type="number" name="price" class="input form-control" required="">
                             </div>
-
                             <div class="form-outline mt-2">
-                                <label>Số lượng</label>
-                                <input style="color: blue;" type="number" name="txtStockQuantity" min="0" class="input form-control" value="${a.stock_quantity}" required/>
+                                <label>Mô tả</label>
+                                <input type="text" name="description"  class="input form-control">
                             </div>
-
                             <div class="form-outline mt-2">
-                                <label for="txtDescribe">Mô tả</label><br>
-                                <textarea class="form-control" id="txtDescribe" name="txtDescribe" rows="5" cols="50" style="width: 554px; height: 125px; color: blue;">${a.description}</textarea>
+                                <select name="dad_bird_id" >
+                                    <option value="-1"> Chọn chim bố </option>
+                                    <c:forEach items="${requestScope.BIRDDADLIST}" var="bird">
+                                        <option value="${bird.bird_id}">${bird.bird_name}</option>
+                                    </c:forEach>
+                                </select>
                             </div>
-
                             <div class="form-outline mt-2">
-                                <label>Giảm giá (%)</label>
-                                <input style="color: blue;" type="number" name="txtDiscount" min="0" class="input form-control" value="${a.discount}"/>                            
+                                <select name="mom_bird_id">
+                                    <option value="-1"> Chọn chim mẹ </option>
+                                    <c:forEach items="${requestScope.BIRDMOMLIST}" var="bird">
+                                        <option value="${bird.bird_id}">${bird.bird_name}</option>
+                                    </c:forEach>
+                                </select>
                             </div>
-
                             <div class="form-outline mt-2">
-                                <label>Hình ảnh sản phẩm (Bắt buộc)</label>
-                                <input style="color: blue;" type="text" name="txtImage"  class="input form-control" value="${url_thumnail}" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" required/>
+                                <label>Số lượng chim trong tổ</label>
+                                <input type="number" name="baby_quantity"  class="input form-control" min="1" max="100" step="1" required="">
                             </div>
+                            <div class="form-outline mt-2">
+                                <label>Giảm giá</label>
+                                <input type="number" name="discount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" min="0" max="100" step="1" value="0"/>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Trạng thái</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" id="flexRadioDefault1" value="avaiable" checked>
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        còn hàng
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" id="flexRadioDefault2" value="non-avaiable" >
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                        hết hàng
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Hình ảnh sản phẩm 1 (Bắt buộc)</label>
+                                <input type="text" name="txtImage_1" class="input form-control" required="" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$"/>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Hình ảnh sản phẩm 2</label>
+                                <input type="text" name="txtImage_2" class="input form-control" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$"/>
+                            </div>
+                            <div class="form-outline mt-2">
+                                <label>Hình ảnh sản phẩm 3</label>
+                                <input type="text" name="txtImage_3" class="input form-control" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$"/>
 
-                            <c:if test="${requestScope.list != null}">
-                                <c:forEach var="image" items="${list}" varStatus="loop">
-                                    <div class="form-outline mt-2">
-                                        <label>Hình ảnh sản phẩm</label>
-                                        <input style="color: blue;" type="text" name="txtImage_${loop.index + 1}" class="input form-control" value="${image.image_url}" required/>
-                                        <input type="hidden" name="Image_id_${loop.index + 1}" value="${image.image_id}">
-                                    </div>
-                                </c:forEach>
-                            </c:if>
-
-                        </div>
-
-                        <c:if test="${requestScope.MESSAGE != null}">
-                            <div>${MESSAGE}</div>
-                        </c:if>
-                        <c:if test="${requestScope.Error != null}">
-                            <div>${error}</div>
-                        </c:if>
-
-                        <div class="col-lg-12">
-                            <button class="button-submit" type="submit">Hoàn tất</button>
-                        </div>
-                    </form>
+                                <button type="submit" class="btn btn-success"  name="action" value="AddNewBird">Tạo mới</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </section>
-
+        <!-- ***** Products Area Ends ***** -->
 
         <!-- ***** Footer Start ***** -->
         <footer>
@@ -296,6 +311,7 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
+        <%@include file="../layout/message.jsp" %>
 
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
@@ -320,4 +336,3 @@
         <script src="assets/js/custom.js"></script>
     </body>
 </html>
-

@@ -117,7 +117,7 @@
                             <!-- ***** Menu Start ***** -->
                             <ul class="nav">
                                 <li class="scroll-to-section"><a href="${pageScope.toHome}">Trang chủ</a></li>
-                                    <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
+                                <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
                                     <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
                                             <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
@@ -126,30 +126,30 @@
                                         </ul>
                                     </li>
                                     <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                        <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
+                                    <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
                                         <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                        </c:if>
-                                        <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
-                                        <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
-                                        <li id="show-cart" class="scroll-to-section">
-                                            <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                                    </c:if>
+                                    <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
+                                    <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
+                                    <li id="show-cart" class="scroll-to-section">
+                                        <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
                                             <div class="cart-amount">
                                                 <c:choose>
                                                     <c:when test="${sessionScope.CART == null}">0</c:when>
                                                     <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
                                                 </c:choose>
                                             </div>
-                                        </li>
+                                    </li>
 
-                                        <c:if test="${sessionScope.LOGIN_USER == null}">
-                                            <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
-                                            </c:if>
-                                        </c:if>
+                                    <c:if test="${sessionScope.LOGIN_USER == null}">
+                                        <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
                                     </c:if>
-                                    <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
                                     <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
-                                            <li><a href="${pageScope.toBirds}"></a>Vẹt cảnh</li>
+                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
                                             <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
                                             <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                         </ul>
@@ -158,8 +158,8 @@
                                     <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
                                     <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
                                     <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
-                                    </c:if>
-                                    <c:if test="${sessionScope.LOGIN_USER != null}">
+                                </c:if>
+                                <c:if test="${sessionScope.LOGIN_USER != null}">
                                     <li class="submenu"><a class="user-name text-right" href="#">${LOGIN_USER.fullName}</a>
                                         <ul>
                                             <li><a href="${pageScope.toProfile}&username=${sessionScope.LOGIN_USER.username}">Cá nhân</a></li>
@@ -264,9 +264,11 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <c:if test="${(sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer') && bird.status != 'Đã bán'}">
                                             <div class="total">
                                                 <div class="main-border-button"><a class="bird-cart" style="cursor: pointer" data-value="${birdDetails.bird_id}">Thêm vào giỏ hàng</a></div>
                                             </div>
+                                            </c:if>
                                         </div>
                                     </div>
                                     </div>

@@ -7,60 +7,41 @@ package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import swp391.birdfarmshop.dao.OrderDAO;
 import swp391.birdfarmshop.dao.OrderItemDAO;
-import swp391.birdfarmshop.model.Order;
-import swp391.birdfarmshop.model.OrderItem;
+import swp391.birdfarmshop.dto.OrderItemDTO;
 
 /**
  *
- * @author tlminh
+ * @author phong pc
  */
-@WebServlet(name="RenderShopOrdersController", urlPatterns={"/RenderShopOrdersController"})
-public class RenderShopOrdersController extends HttpServlet {
+public class RenderOrderItemsController extends HttpServlet {
    
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "management/shop-orders.jsp";
-
+    private static final String SUCCESS = "management/shop-orderItems.jsp";
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
-        String txtDate = request.getParameter("txtDate");
+        String orderId = request.getParameter("order_id");
         try {
-            OrderDAO orderDao = new OrderDAO();
-            ArrayList<Order> orderList = orderDao.getAllOfOrder();
-            if(txtDate != null) {
-                switch(txtDate) {
-                    case "today":
-                        break;
-                    case "yesterday":
-                        break;
-                    case "thisWeek":
-                        break;
-                    case "thisMonth":
-                        break;
-                    case "thisYear":
-                        break;
-                }
-            }else {
-                request.setAttribute("ORDERLIST", orderList);
+            OrderItemDAO orderItemDao = new OrderItemDAO();
+            ArrayList<OrderItemDTO> itemList = orderItemDao.getItemOrder(orderId);
+            for (OrderItemDTO orderItem : itemList) {
+                System.out.println(orderItem.getOrder_item_id());
             }
+            request.setAttribute("ITEMLIST", itemList);
             url = SUCCESS;
         } catch (Exception e) {
             log("Error at RenderShopOrdersController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 

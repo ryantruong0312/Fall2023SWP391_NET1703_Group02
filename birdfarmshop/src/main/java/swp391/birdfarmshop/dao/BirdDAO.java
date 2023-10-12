@@ -42,6 +42,7 @@ public class BirdDAO {
             + "      ,[discount],[status]\n"
             + "  FROM [BirdFarmShop].[dbo].[Bird]\n"
             + "  WHERE breed_id = ?";
+    private static final String GET_BIRDS_BY_GENDER = "SELECT [bird_id],[bird_name]  FROM [Bird] WHERE [gender] = ?";
 
     public List<Bird> getBirds() throws SQLException {
         List<Bird> birdList = new ArrayList<>();
@@ -317,10 +318,11 @@ public class BirdDAO {
                     int grown_age = rs.getInt("grown_age");
                     boolean sex = rs.getBoolean("gender");
                     String gender = "";
-                    if(sex)
+                    if (sex) {
                         gender = "Đực";
-                    else
+                    } else {
                         gender = "Cái";
+                    }
                     String breed_id = rs.getString("breed_id");
                     String breed_name = breedDao.getBreedNameById(breed_id);
                     String achievement = rs.getString("achievement");
@@ -462,7 +464,6 @@ public class BirdDAO {
         return birdList;
     }
 
-
     public Bird getBirdById(String birdId) throws SQLException {
         Bird b = null;
         Connection con = null;
@@ -512,9 +513,9 @@ public class BirdDAO {
         return b;
     }
 
-    public boolean addNewBird(String bird_id, String bird_name, String color, String birthday, String grown_age
-      , String gender, String breed_id, String achievement, String reproduction_history, String price, String description
-      , String dad_bird_id, String mom_bird_id, String discount, String status) throws SQLException, ParseException {
+    public boolean addNewBird(String bird_id, String bird_name, String color, String birthday, String grown_age,
+             String gender, String breed_id, String achievement, String reproduction_history, String price, String description,
+             String dad_bird_id, String mom_bird_id, String discount, String status) throws SQLException, ParseException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -526,17 +527,19 @@ public class BirdDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement("INSERT INTO [dbo].[Bird]\n"
-+ "             ([bird_id],[bird_name],[color],[birthday],[grown_age],[gender],[breed_id],[achievement],"
-+ "             [reproduction_history],[price],[description],[dad_bird_id],[mom_bird_id],[discount],[status])\n"
-+ "             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ");
+                        + "             ([bird_id],[bird_name],[color],[birthday],[grown_age],[gender],[breed_id],[achievement],"
+                        + "             [reproduction_history],[price],[description],[dad_bird_id],[mom_bird_id],[discount],[status])\n"
+                        + "             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ");
                 stm.setString(1, bird_id);
                 stm.setString(2, bird_name);
                 stm.setString(3, color);
-                if(birthday != null)
+                if (birthday != null) {
                     stm.setDate(4, sqlDate);
-                if(grown_age != null)
+                }
+                if (grown_age != null) {
                     stm.setInt(5, Integer.parseInt(grown_age));
-                if(gender.equals("Đực")) {
+                }
+                if (gender.equals("Đực")) {
                     sex = true;
                 } else {
                     sex = false;
@@ -544,19 +547,23 @@ public class BirdDAO {
                 stm.setBoolean(6, sex);
                 stm.setString(7, breed_id);
                 stm.setString(8, achievement);
-                if(reproduction_history != null)
+                if (reproduction_history != null) {
                     stm.setInt(9, Integer.parseInt(reproduction_history));
-                if(price != null)
+                }
+                if (price != null) {
                     stm.setInt(10, Integer.parseInt(price));
+                }
                 stm.setString(11, description);
                 stm.setString(12, dad_bird_id);
                 stm.setString(13, mom_bird_id);
-                if(discount != null)
+                if (discount != null) {
                     stm.setInt(14, Integer.parseInt(discount));
+                }
                 stm.setString(15, status);
                 int row = stm.executeUpdate();
-                if(row > 0) 
+                if (row > 0) {
                     return true;
+                }
             }
         } catch (ClassNotFoundException | SQLException e) {
         } finally {
@@ -572,7 +579,7 @@ public class BirdDAO {
         }
         return false;
     }
-    
+
     public List<BirdDTO> getAllBirds() throws SQLException {
         List<BirdDTO> birds = new ArrayList<>();
         BirdDTO bird = new BirdDTO();
@@ -583,12 +590,14 @@ public class BirdDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
+
                 stm = con.prepareStatement("SELECT [bird_id],[bird_name],[color],[birthday]," +
 "DATEDIFF(MONTH, birthday, GETDATE()) AS age,[grown_age],[gender],bird.[breed_id] AS breed_id,breed.[breed_name] AS breed_name,\n" +
 "[achievement],[reproduction_history],[price],[description],[dad_bird_id],[mom_bird_id],[discount],[status]\n" +
 "FROM [BirdFarmShop].[dbo].[Bird] AS bird\n" +
 "LEFT JOIN BirdBreed AS breed\n" +
 "ON bird.breed_id = breed.breed_id");
+
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     String bird_id = rs.getString("bird_id");
@@ -599,10 +608,11 @@ public class BirdDAO {
                     int grown_age = rs.getInt("grown_age");
                     boolean sex = rs.getBoolean("gender");
                     String gender = "";
-                    if(sex)
+                    if (sex) {
                         gender = "Đực";
-                    else
+                    } else {
                         gender = "Cái";
+                    }
                     String breed_id = rs.getString("breed_id");
                     String breed_name = rs.getString("breed_name");
                     String achievement = rs.getString("achievement");
@@ -634,6 +644,41 @@ public class BirdDAO {
             }
         }
         return birds;
+    }
+
+    public ArrayList<BirdDTO> getBirdsByGender(boolean gender) throws SQLException, ClassNotFoundException {
+        ArrayList<BirdDTO> arrlist_b = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(GET_BIRDS_BY_GENDER);
+                stm.setBoolean(1, gender);
+                rs = stm.executeQuery();
+                while (rs != null && rs.next()) {
+                    String bird_id = rs.getString("bird_id");
+                    String bird_name = rs.getString("bird_name");
+                    BirdDTO b = new BirdDTO();
+                    b.setBird_name(bird_name);
+                    b.setBird_id(bird_id);
+                    arrlist_b.add(b);
+                }
+                 }
+        } 
+         finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+                return arrlist_b;
     }
     
     public boolean updateBird(String bird_id, String bird_name, String color, String birthday, String grown_age
@@ -674,11 +719,11 @@ public class BirdDAO {
                 if(price != null)
                     stm.setInt(10, Integer.parseInt(price));
                 stm.setString(11, description);
-                if(dad_bird_id.isBlank()) {
+                if(dad_bird_id.isEmpty()) {
                     dad_bird_id = null;
                 }
                 stm.setString(12, dad_bird_id);
-                if(mom_bird_id.isBlank()) {
+                if(mom_bird_id.isEmpty()) {
                     mom_bird_id = null;
                 }
                 stm.setString(13, mom_bird_id);
@@ -690,7 +735,7 @@ public class BirdDAO {
                 int row = stm.executeUpdate();
                 if(row > 0) 
                     return true;
-            }
+           }
         } catch (ClassNotFoundException | SQLException e) {
         } finally {
             if (stm != null) {
@@ -703,6 +748,7 @@ public class BirdDAO {
                 rs.close();
             }
         }
+        
         return false;
     }
     

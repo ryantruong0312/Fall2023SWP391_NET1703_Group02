@@ -1,7 +1,7 @@
 <%-- 
-    Document   : accessories
-    Created on : Sep 13, 2023, 11:20:56 PM
-    Author     : tlminh
+   Document   : accessories
+   Created on : Sep 13, 2023, 11:20:56 PM
+   Author     : tlminh
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -29,7 +29,7 @@
         <link rel="stylesheet" href="assets/css/lightbox.css">
 
         <style>
-             .thumb{
+            .thumb{
                 width: 370px;
                 height: 350px;
             }
@@ -65,7 +65,7 @@
             }
             li input[type="radio"] + label {
                 margin-left: 5px;
-            }   
+            }
 
             .position-sticky li {
                 margin-bottom: 5px;
@@ -225,6 +225,11 @@
                                 <li><input type="radio" ${requestScope.PRICE == "price > 20000000" ? "checked":""} id="type-8" name="txtPrice" value="price > 20000000"><label for="type-8">Trên 20,000,000₫</label></li>
                             </ol>
                         </div>
+                        <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
+                                <a href="MainController?action=NavToNewBirdNest">
+                                     <button id="input-birdnest" type="button">Thêm mới tổ chim</button>
+                                </a>
+                            </c:if>
                     </nav>
                     <!-- Nội dung chính -->
                     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -375,43 +380,43 @@
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
         <script>
-            $(function () {
-                var selectedClass = "";
-                $("p").click(function () {
-                    selectedClass = $(this).attr("data-rel");
-                    $("#portfolio").fadeTo(50, 0.1);
-                    $("#portfolio div").not("." + selectedClass).fadeOut();
-                    setTimeout(function () {
-                        $("." + selectedClass).fadeIn();
-                        $("#portfolio").fadeTo(50, 1);
-                    }, 500);
+                                                            $(function () {
+                                                                var selectedClass = "";
+                                                                $("p").click(function () {
+                                                                    selectedClass = $(this).attr("data-rel");
+                                                                    $("#portfolio").fadeTo(50, 0.1);
+                                                                    $("#portfolio div").not("." + selectedClass).fadeOut();
+                                                                    setTimeout(function () {
+                                                                        $("." + selectedClass).fadeIn();
+                                                                        $("#portfolio").fadeTo(50, 1);
+                                                                    }, 500);
 
-                });
+                                                                });
 
-                $("input[name=txtBreedId]").change(function () {
-                    $("#selectNest").submit();
-                });
-                $("input[name=txtPrice]").change(function () {
-                    $("#selectNest").submit();
-                });
-                $(".prev-page").click(function () {
-                    let  page = $('input[name=page]').val();
-                    let prevPage = Number(page) - 1;
-                    $('input[name=page]').val(prevPage);
-                    $("#selectBird").submit();
-                });
-                $(".next-page").click(function () {
-                    let  page = $('input[name=page]').val();
-                    let nextpage = Number(page) + 1;
-                    $('input[name=page]').val(nextpage);
-                    $("#selectBird").submit();
-                });
-            });
-            function takePage(event) {
-                let value = event.getAttribute('data-value');
-                $('input[name=page]').val(value);
-                $("#selectBird").submit();
-            }
+                                                                $("input[name=txtBreedId]").change(function () {
+                                                                    $("#selectNest").submit();
+                                                                });
+                                                                $("input[name=txtPrice]").change(function () {
+                                                                    $("#selectNest").submit();
+                                                                });
+                                                                $(".prev-page").click(function () {
+                                                                    let  page = $('input[name=page]').val();
+                                                                    let prevPage = Number(page) - 1;
+                                                                    $('input[name=page]').val(prevPage);
+                                                                    $("#selectBird").submit();
+                                                                });
+                                                                $(".next-page").click(function () {
+                                                                    let  page = $('input[name=page]').val();
+                                                                    let nextpage = Number(page) + 1;
+                                                                    $('input[name=page]').val(nextpage);
+                                                                    $("#selectBird").submit();
+                                                                });
+                                                            });
+                                                            function takePage(event) {
+                                                                let value = event.getAttribute('data-value');
+                                                                $('input[name=page]').val(value);
+                                                                $("#selectBird").submit();
+                                                            }
         </script>
 
         <!-- Include Bootstrap JS (for modal) -->
@@ -419,13 +424,13 @@
 
         <!-- JavaScript for Add to Cart Popup -->
         <script>
-            function addToCart() {
-                var result = confirm("Do you want to add Mom and/or Dad bird to the cart?");
-                if (result) {
-                    // Add logic to add birds to the cart here
-                    alert("Bird(s) added to cart!");
-                }
-            }
+                                                            function addToCart() {
+                                                                var result = confirm("Do you want to add Mom and/or Dad bird to the cart?");
+                                                                if (result) {
+                                                                    // Add logic to add birds to the cart here
+                                                                    alert("Bird(s) added to cart!");
+                                                                }
+                                                            }
         </script>
 
 

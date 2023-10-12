@@ -1,7 +1,7 @@
 <%-- 
-    Document   : edit-accessory
-    Created on : Sep 13, 2023, 11:53:57 PM
-    Author     : tlminh
+    Document   : shop-orderItems
+    Created on : Oct 11, 2023, 2:08:55 PM
+    Author     : phong pc
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -17,8 +17,8 @@
         <meta name="author" content="">
         <link rel="icon" type="image/png" href="assets/images/logo-title-bar.png"/>
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
-
-        <title>V.E.T - Cập nhật thông tin phụ kiện</title>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <title>V.E.T - Đơn hàng của shop</title>
 
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -26,36 +26,74 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-
         <style>
-            .col-lg-12 .product-part {
-                margin: 0 0 10px 10px;
+            .col-lg-12 span, label {
+                color: black;
             }
-            .col-lg-12 input {
-                margin-bottom: 10px;
-                width: 50%;
+            .col-lg-12 button {
+                height: 30px;
+                border-radius: 5px;
             }
-            .col-lg-12 span {
-                margin-top: 100px;
+            .col-lg-12 li, form {
+                margin: 10px 0 10px 0;
+                display: inline-block;
+                padding: 0;
             }
-            .form-left{
-                padding-top: 8px;
+            .order-bar {
+                border: 1px solid #cccccc;
             }
-            .button-submit{
-                margin-top: 15px;
-                width: 175px;
-                font-size: 25px;
-                height: 50px;
-                border-radius: 10px;
-                background-color: #0c5460;
-                color: white;
+            .order-bar form {
+                width: 30%;
             }
-            #id{
-                height: 100px;
+            .order-bar ul {
+                border: 1px solid #cccccc;
             }
-            .form-outline input{
-                width: 554px;
+            .order-bar li {
+                display: inline-block;
+                color: black;
+                margin: 0 10px 0 10px;
             }
+            
+            .search-bar {
+                border-radius: 8px;
+                border: 1px solid rgb(221, 221, 227);
+                margin: 0 auto;
+            }
+            .search-bar input {
+                border: 0;
+                background: none;
+                outline: none;
+            }
+            .search-bar input[type=submit] {
+                float: right;
+            }
+            .search-bar img {
+                margin-left: 5px;
+            }
+            
+            .scrollable-container {
+                overflow-x: scroll;
+            }
+            .scrollable-list {
+                white-space: nowrap;
+                display: inline-block;
+            }
+            .scrollable-list th {
+                width: auto;
+                padding: 20px;
+            }
+            .scrollable-list td {
+                width: auto;
+                padding: 10px;
+            }
+        </style>
+        <style>
+        .odd {
+            background-color: #FFFFFF;
+        }
+        .even {
+            background-color: #E0E0E0;
+        }
         </style>
     </head>
 
@@ -132,7 +170,7 @@
                                         </ul>
                                     </li>
                                     <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
+                                    <li class="scroll-to-section"><a href="${pageScope.toShopOrders}" class="active">Đơn hàng</a></li>
                                     <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
                                     <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
                                     </c:if>
@@ -155,88 +193,76 @@
             </div>
         </header>
         <!-- ***** Header Area End ***** -->
-        <section class="section" id="products">
+        
+        <!-- ***** Main Banner Area Start ***** -->
+        <div class="page-heading" id="top">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="section-heading">
-                            <h2>Chỉnh sửa sản phẩm</h2>
+                        <div class="inner-content">
+                            <h2>Vẹt cảnh</h2>
+                            <span>Những chú vẹt thông minh và đáng yêu nhất đã có mặt tại V.E.T</span>
                         </div>
                     </div>
-                    <form action="UpdateAccessoryController" method="GET">
-                        <div class="col-lg-12 form-left">
-                            <div class="form-outline">
-                                <label>ID của phụ kiện (Bao gồm 2 chữ hoa và 3 chữ số)</label>
-                                <input style="color: blue;" type="text" name="txtAccessoryID" class="input form-control" pattern="[A-Z]{2}\d{3}" value="${a.accessory_id}" readonly=""/>
-                            </div>
-
-                            <div class="form-outline mt-2">
-                                <label>Tên</label>
-                                <input style="color: blue;" type="text" name="txtAccessoryName" class="input form-control" value="${a.accessory_name}" required/>
-                            </div>
-
-                            <div class="form-outline mt-2">
-                                <label>Loại phụ kiện</label>
-                                <select name="txtCategoryID">
-                                    <c:forEach items="${ac}" var="ac">
-                                        <option style="color: blue;" value="${ac.category_id}">${ac.category_name}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-
-                            <div class="form-outline mt-2">
-                                <label>Giá</label>
-                                <input style="color: blue;" type="number" name="txtPrice" min="0" class="input form-control" value="${a.unit_price}" required/>
-                            </div>
-
-                            <div class="form-outline mt-2">
-                                <label>Số lượng</label>
-                                <input style="color: blue;" type="number" name="txtStockQuantity" min="0" class="input form-control" value="${a.stock_quantity}" required/>
-                            </div>
-
-                            <div class="form-outline mt-2">
-                                <label for="txtDescribe">Mô tả</label><br>
-                                <textarea class="form-control" id="txtDescribe" name="txtDescribe" rows="5" cols="50" style="width: 554px; height: 125px; color: blue;">${a.description}</textarea>
-                            </div>
-
-                            <div class="form-outline mt-2">
-                                <label>Giảm giá (%)</label>
-                                <input style="color: blue;" type="number" name="txtDiscount" min="0" class="input form-control" value="${a.discount}"/>                            
-                            </div>
-
-                            <div class="form-outline mt-2">
-                                <label>Hình ảnh sản phẩm (Bắt buộc)</label>
-                                <input style="color: blue;" type="text" name="txtImage"  class="input form-control" value="${url_thumnail}" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" required/>
-                            </div>
-
-                            <c:if test="${requestScope.list != null}">
-                                <c:forEach var="image" items="${list}" varStatus="loop">
-                                    <div class="form-outline mt-2">
-                                        <label>Hình ảnh sản phẩm</label>
-                                        <input style="color: blue;" type="text" name="txtImage_${loop.index + 1}" class="input form-control" value="${image.image_url}" required/>
-                                        <input type="hidden" name="Image_id_${loop.index + 1}" value="${image.image_id}">
-                                    </div>
-                                </c:forEach>
-                            </c:if>
-
-                        </div>
-
-                        <c:if test="${requestScope.MESSAGE != null}">
-                            <div>${MESSAGE}</div>
-                        </c:if>
-                        <c:if test="${requestScope.Error != null}">
-                            <div>${error}</div>
-                        </c:if>
-
-                        <div class="col-lg-12">
-                            <button class="button-submit" type="submit">Hoàn tất</button>
-                        </div>
-                    </form>
                 </div>
             </div>
-        </section>
-
-
+        </div>
+        <!-- ***** Main Banner Area End ***** -->
+        
+        
+        <main>
+            <c:set value="${requestScope.ITEMLIST}" var="itemList"/>
+            <div class="container">
+                <div class="col-lg-12">
+                    <h1 style="text-align: center;">Chi tiết đơn hàng</h1>
+                </div>
+                <div class="col-lg-12">
+                    <div class="order-bar" style="background-color: #cccccc; text-align: center;">
+                        <div class="scrollable-container">
+                            <table class="scrollable-list">
+                                <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Mã đơn hàng</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Mã sản phẩm</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Giá thành sản phẩm</th>
+                                        <th>Số lượng</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${itemList}" var="item" varStatus="counter">
+                                        <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
+                                            <td>${counter.count}</td>
+                                            <td>${item.order_id}</td>
+                                            <td><img style="height: 100px; width: 80px;" src="${item.image_url}"/></td>
+                                            <c:choose>
+                                                <c:when test="${item.bird_id != null}">
+                                                    <td>${item.bird_id}</td>
+                                                    <td>${item.bird_name}</td>
+                                                </c:when>
+                                                <c:when test="${item.nest_id != null}">
+                                                    <td>${item.nest_id}</td>
+                                                    <td>${item.nest_name}</td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <td>${item.accessory_id}</td>
+                                                    <td>${item.accessory_name}</td>
+                                                </c:otherwise>
+                                            </c:choose>
+                                            <td>${item.unit_price}</td>
+                                            <td>${item.order_quantity}</td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>        
+            </div>
+        </main>
+        
         <!-- ***** Footer Start ***** -->
         <footer>
             <div class="container">
@@ -296,10 +322,11 @@
             </div>
         </footer>
         <!-- ***** Footer Area Ends ***** -->
-
+        
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
-
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <!-- Bootstrap -->
         <script src="assets/js/popper.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>
@@ -318,6 +345,6 @@
 
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
+
     </body>
 </html>
-

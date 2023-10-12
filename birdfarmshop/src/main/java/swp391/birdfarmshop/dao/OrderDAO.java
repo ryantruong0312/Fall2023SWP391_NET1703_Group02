@@ -74,11 +74,11 @@ public class OrderDAO {
                         OrderItem oldOrder = getOrderByBirdId(b.getBird_id());
                         if (oldOrder != null) {
                             checkBird = false;
-                            error = "Sản phẩm này đã bán";
+                            error = "S?n ph?m n�y d� b�n";
                             break;
                         } else {
                             sql = "UPDATE [Bird]\n"
-                                    + "SET [status] = 'Đã bán'\n"
+                                    + "SET [status] = '�� b�n'\n"
                                     + "WHERE [bird_id] = ?";
                             pst = con.prepareStatement(sql);
                             pst.setString(1, b.getBird_id());
@@ -115,12 +115,12 @@ public class OrderDAO {
                         }
                         int numberAccessory = ad.getAccessoryByID(a.getAccessory_id()).getStock_quantity();
                         if (numberAccessory == 0) {
-                            error ="Sản phẩm này đã hết hàng";
+                            error ="S?n ph?m n�y d� h?t h�ng";
                             checkAcessory = false;
                             break;
                         } else if (numberAccessory < oa.getOrder_quantity()) {
                             checkAcessory = false;
-                            error ="Sản phẩm này không đủ số lượng trong kho";
+                            error ="S?n ph?m n�y kh�ng d? s? lu?ng trong kho";
                             break;
                         } else {
                             int newStock = numberAccessory - oa.getOrder_quantity();

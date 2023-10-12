@@ -387,11 +387,11 @@ public class AccessoryDAO {
                 stm.setString(5, txtDescribe);
                 stm.setInt(6, Integer.parseInt(txtDiscount));
                 if (Integer.parseInt(txtStockQuantity) > 0) {
-                   stm.setString(7, "còn hàng");
+                    stm.setString(7, "còn hàng");
                 } else {
-                   stm.setString(7, "hết hàng");
+                    stm.setString(7, "hết hàng");
                 }
-                
+
                 stm.setString(8, txtAccessoryID);
                 rs = stm.executeUpdate();
                 if (rs > 0) {
@@ -410,4 +410,46 @@ public class AccessoryDAO {
         }
         return false;
     }
+
+    public boolean updateAccessoryQuantity(String txtAccessoryID, String txtStockQuantity) throws SQLException {
+        String status;
+        Connection con = null;
+        PreparedStatement stm = null;
+        int rs = 0;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("UPDATE [BirdFarmShop].[dbo].[Accessory] SET [stock_quantity] = ?, [status] = ? WHERE [accessory_id] = ?;");
+
+                stm.setInt(1, Integer.parseInt(txtStockQuantity));
+                if (Integer.parseInt(txtStockQuantity) > 0) {
+                    stm.setString(2, "còn hàng");
+                } else {
+                    stm.setString(2, "hết hàng");
+                }
+
+                stm.setString(3, txtAccessoryID);
+                rs = stm.executeUpdate();
+                if (rs > 0) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            // Handle exceptions here, e.g., log or throw
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+    
+    public static void main(String[] args) throws SQLException {
+        AccessoryDAO a = new AccessoryDAO();
+        System.out.println(a.updateAccessoryQuantity("BL001", "12"));
+    }
+
 }

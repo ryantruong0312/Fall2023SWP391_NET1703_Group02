@@ -291,13 +291,18 @@
                                                         <div class="hover-content">
                                                             <ul>
                                                                 <li><a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}"><i class="fa fa-eye"></i></a></li>
-                                                                <li><a class="bird-cart" data-value="${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                <c:if test="${(sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer') && bird.status != 'Đã bán'}">
+                                                                    <li><a class="bird-cart" data-value="${bird.bird_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                </c:if>
                                                             </ul>
                                                         </div>
                                                         <img class="bird-thumbnail" src="${bird.image_url}" alt="${bird.bird_name}">
                                                     </div>
                                                     <div class="down-content">
                                                         <h4>${bird.bird_name}</h4>
+                                                        <c:if test="${bird.status == 'Đã bán'}">
+                                                            <h6 style="text-align: center; background-color: pink;">Sản phẩm đã bán</h6>
+                                                        </c:if>
                                                         <c:choose>
                                                             <c:when test="${bird.discount > 0}">
                                                                 <span style="display: inline-block;"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
