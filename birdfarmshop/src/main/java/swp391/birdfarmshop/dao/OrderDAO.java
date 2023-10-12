@@ -8,12 +8,13 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import swp391.birdfarmshop.dto.CartDTO;
 import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
@@ -74,11 +75,11 @@ public class OrderDAO {
                         OrderItem oldOrder = getOrderByBirdId(b.getBird_id());
                         if (oldOrder != null) {
                             checkBird = false;
-                            error = "S?n ph?m n�y d� b�n";
+                            error = "Sản phẩm này đã bán";
                             break;
                         } else {
                             sql = "UPDATE [Bird]\n"
-                                    + "SET [status] = '�� b�n'\n"
+                                    + "SET [status] = 'Đã bán'\n"
                                     + "WHERE [bird_id] = ?";
                             pst = con.prepareStatement(sql);
                             pst.setString(1, b.getBird_id());
@@ -115,12 +116,12 @@ public class OrderDAO {
                         }
                         int numberAccessory = ad.getAccessoryByID(a.getAccessory_id()).getStock_quantity();
                         if (numberAccessory == 0) {
-                            error ="S?n ph?m n�y d� h?t h�ng";
+                            error ="Sản phẩm này đã hết hàng";
                             checkAcessory = false;
                             break;
                         } else if (numberAccessory < oa.getOrder_quantity()) {
                             checkAcessory = false;
-                            error ="S?n ph?m n�y kh�ng d? s? lu?ng trong kho";
+                            error ="Sản phẩm này không đủ số lượng trong kho";
                             break;
                         } else {
                             int newStock = numberAccessory - oa.getOrder_quantity();
@@ -268,5 +269,48 @@ public class OrderDAO {
             }
         }
         return oi;
+    }
+        public ArrayList<Order> getAllOfOrder() throws SQLException{
+        ArrayList<Order> orderList = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        Order order = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("SELECT [order_id],[customer],[order_date],[order_status],[name_receiver],\n" +
+                                "[phone_receiver],[address_receiver],[payment_status],[total_price],[applied_point]\n" +
+                                "FROM [BirdFarmShop].[dbo].[Order]");
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String order_id = rs.getString("order_id");
+                    String customer = rs.getString("customer");
+                    Date order_date = rs.getDate("order_date");
+                    String order_status = rs.getString("order_status");
+                    String name_receiver = rs.getString("name_receiver");
+                    int phone_receiver = rs.getInt("phone_receiver");
+                    String address_receiver = rs.getString("address_receiver");
+                    String payment_status = rs.getString("payment_status");
+                    int total_price = rs.getInt("total_price");
+                    int point = rs.getInt("applied_point");
+                    order = new Order(order_id, customer, order_date, order_status, name_receiver, 
+                                  phone_receiver, address_receiver, payment_status, total_price, point);
+                    orderList.add(order);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return orderList;
     }
 }
