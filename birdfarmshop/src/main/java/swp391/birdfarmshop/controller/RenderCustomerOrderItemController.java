@@ -4,61 +4,51 @@
  */
 package swp391.birdfarmshop.controller;
 
-import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import swp391.birdfarmshop.dao.OrderDAO;
-import swp391.birdfarmshop.dao.UserDAO;
-import swp391.birdfarmshop.model.Order;
+import swp391.birdfarmshop.dao.OrderItemDAO;
+import swp391.birdfarmshop.dto.OrderItemDTO;
 import swp391.birdfarmshop.model.User;
 
 /**
  *
- * @author tlminh
+ * @author ASUS
  */
-@WebServlet(name = "RenderProfileController", urlPatterns = {"/RenderProfileController"})
-public class RenderProfileController extends HttpServlet {
+@WebServlet(name = "RenderCustomerOrderItemController", urlPatterns = {"/RenderCustomerOrderItemController"})
+public class RenderCustomerOrderItemController extends HttpServlet {
 
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "profile/profile.jsp";
+    private static final String SUCCESS = "profile/order-customer-item.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-
+            String order_id = request.getParameter("order_id");
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
-            UserDAO userDao = new UserDAO();
-            user = userDao.getUserByUsername(user.getUsername());
-
-            if (user == null) {
-                session.setAttribute("ERROR", "Bạn chưa đăng nhập");
+            OrderDAO order = new OrderDAO();
+            boolean isExist = order.isOrderExist(user.getUsername(), order_id);
+            if (isExist) {
+                OrderItemDAO orderItemDao = new OrderItemDAO();
+                ArrayList<OrderItemDTO> itemList = orderItemDao.getItemOrder(order_id);
+                for (OrderItemDTO orderItem : itemList) {
+                    System.out.println(orderItem.getOrder_item_id());
+                }
+                request.setAttribute("ITEMLIST", itemList);
+                url = SUCCESS;
             }
-            OrderDAO orderDao = new OrderDAO();
-            ArrayList<Order> orderListPending = orderDao.getCustomerOrderByStatus(user.getUsername(), "wait");
-            ArrayList<Order> orderListProgress = orderDao.getCustomerOrderByStatus(user.getUsername(), "inProgress");
-            ArrayList<Order> orderListDelivering = orderDao.getCustomerOrderByStatus(user.getUsername(), "delivering");
-            ArrayList<Order> orderListDelivered = orderDao.getCustomerOrderByStatus(user.getUsername(), "delivered");
-            ArrayList<Order> orderListCancel = orderDao.getCustomerOrderByStatus(user.getUsername(), "cancel");
-
-            request.setAttribute("ORDERLIST_PENDING", orderListPending);
-            request.setAttribute("ORDERLIST_PROGRESS", orderListProgress);
-            request.setAttribute("ORDERLIST_DELIVERING", orderListDelivering);
-            request.setAttribute("ORDERLIST_DELIVERED", orderListDelivered);
-            request.setAttribute("ORDERLIST_CANCEL", orderListCancel);
-
-            request.setAttribute("USER", user);
-
-            url = SUCCESS;
         } catch (Exception e) {
-            log("Error at RenderProfileController: " + e.toString());
+            log("ERROR at RenderCustomerOrderItemController" + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

@@ -24,7 +24,7 @@ public class OrderItemDAO {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        OrderItemDTO orderItem = null;
+        OrderItemDTO orderItem;
         try {
             con = DBUtils.getConnection();
             if (con != null) {
