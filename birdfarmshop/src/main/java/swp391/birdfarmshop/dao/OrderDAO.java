@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Savepoint;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.DayOfWeek;
@@ -45,7 +46,7 @@ public class OrderDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                //con.setAutoCommit(false);
+                con.setAutoCommit(false);   
                 String insertOrder = "INSERT INTO [ORDER]\n"
                         + "VALUES(?,?,?,?,?,?,?,?,?,?)";
                 pst = con.prepareStatement(insertOrder);
@@ -109,7 +110,7 @@ public class OrderDAO {
                             }
                         }
 
-                    }
+                        }
                     HashMap<String, OrderedAccessoryItem> accessoryList = (HashMap<String, OrderedAccessoryItem>) cartCheckout.getAccessoryList();
                     for (OrderedAccessoryItem oa : accessoryList.values()) {
                         Accessory a = oa.getAccessory();
@@ -117,7 +118,7 @@ public class OrderDAO {
                         if (a.getDiscount() > 0) {
                             realPrice = a.getUnit_price() - a.getUnit_price() * a.getDiscount() / 100;
                         }
-                        Accessory item = ad.getAccessoryByID(a.getAccessory_id());
+                        Accessory item = ad.getAccessoryByID(a.getAccessory_id().substring(0, 5));
                         int numberAccessory = item != null ? item.getStock_quantity() : 0;
                         if (numberAccessory == 0) {
                             error = "Sản phẩm này đã hết hàng";
@@ -163,7 +164,6 @@ public class OrderDAO {
                 }
                 if (checkBird && checkAcessory) {
                     result = 1;
-                    con.commit();
                 } else {
                     result = 0;
                     con.rollback();
@@ -316,7 +316,7 @@ public class OrderDAO {
         }
         return oi;
     }
-        public ArrayList<Order> getAllOfOrder() throws SQLException{
+
     public ArrayList<Order> getAllOfOrder(String date, String startDay, String endDay,
             String status, String search, String page, int recordsPerPage) throws SQLException {
         ArrayList<Order> orderList = new ArrayList<>();
@@ -422,6 +422,7 @@ public class OrderDAO {
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
         } finally {
             if (stm != null) {
                 stm.close();
@@ -521,7 +522,7 @@ public class OrderDAO {
                 rs = stm.executeQuery();
                 if (rs.next()) {
                     isExist = true;
-                    
+
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {
