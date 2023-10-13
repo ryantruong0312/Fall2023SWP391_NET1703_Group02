@@ -41,13 +41,13 @@ public class ResetPasswordController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        String url = "MainController?action=NavToReset"; 
+        try {
             String email = request.getParameter("email");
             UserDAO user = new UserDAO();
             User u = user.findUser("", email);
             String token = JWTUtils.randomPasswordToken();
             HttpSession session = request.getSession();
-            String url = "MainController?action=NavToReset";
             if (u != null && "customer".equals(u.getRole())) {
                 String password = u.getPassword();
                 if (password.isEmpty()) {
@@ -69,9 +69,10 @@ public class ResetPasswordController extends HttpServlet {
             } else {
                 session.setAttribute("ERROR", "Email này không trùng khớp với email đăng kí");   
             }
-            response.sendRedirect(url);
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            response.sendRedirect(url);
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

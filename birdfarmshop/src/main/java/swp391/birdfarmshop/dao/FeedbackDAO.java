@@ -19,9 +19,11 @@ import swp391.birdfarmshop.util.DBUtils;
  */
 public class FeedbackDAO {
 
-    public ArrayList<FeedbackDTO> getFeedbackByIdProduct(String id,String page, int recordsPerPage) {
+    public ArrayList<FeedbackDTO> getFeedbackByIdProduct(String id, String page, int recordsPerPage) {
         ArrayList<FeedbackDTO> list = new ArrayList<>();
         Connection cnn = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
         try {
             cnn = DBUtils.getConnection();
             if (cnn != null) {
@@ -42,10 +44,10 @@ public class FeedbackDAO {
                     int start = (pageNumber - 1) * recordsPerPage;
                     sql += "ORDER BY feedback_date DESC OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
                 }
-                PreparedStatement pst = cnn.prepareStatement(sql);
+                pst = cnn.prepareStatement(sql);
                 pst.setString(1, id);
                 pst.setString(2, id);
-                ResultSet rs = pst.executeQuery();
+                rs = pst.executeQuery();
                 while (rs.next()) {
                     String name = rs.getString("full_name");
                     String email = rs.getString("email");
@@ -72,22 +74,39 @@ public class FeedbackDAO {
                     e.printStackTrace();
                 }
             }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return list;
     }
+
     public int totalFeedbackByIdProduct(String id) {
-        int number =0;
+        int number = 0;
         Connection cnn = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
         try {
             cnn = DBUtils.getConnection();
             if (cnn != null) {
                 String sql = "SELECT COUNT(feedback_date) AS Amount"
-                            + "  FROM [BirdFarmShop].[dbo].[View_Feedback]\n"
+                        + "  FROM [BirdFarmShop].[dbo].[View_Feedback]\n"
                         + "WHERE [bird_id] = ? OR [accessory_id] = ? \n";
-                PreparedStatement pst = cnn.prepareStatement(sql);
+                pst = cnn.prepareStatement(sql);
                 pst.setString(1, id);
                 pst.setString(2, id);
-                ResultSet rs = pst.executeQuery();
+                rs = pst.executeQuery();
                 if (rs != null && rs.next()) {
                     number = rs.getInt("Amount");
                 }
@@ -102,12 +121,29 @@ public class FeedbackDAO {
                     e.printStackTrace();
                 }
             }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return number;
     }
+
     public StarDTO getRatingByIdProduct(String id) {
         StarDTO s = null;
         Connection cnn = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
         try {
             cnn = DBUtils.getConnection();
             if (cnn != null) {
@@ -129,10 +165,10 @@ public class FeedbackDAO {
                         + "		SUM(rs.threeStar) AS [totalThreeStar],SUM(rs.fourStar) AS [totalFourStar],\n"
                         + "		SUM(rs.fiveStar) AS [totalFiveStar]\n"
                         + "FROM RankedStar rs";
-                PreparedStatement pst = cnn.prepareStatement(sql);
+                pst = cnn.prepareStatement(sql);
                 pst.setString(1, id);
                 pst.setString(2, id);
-                ResultSet rs = pst.executeQuery();
+                rs = pst.executeQuery();
                 if (rs != null && rs.next()) {
                     int oneStar = rs.getInt("totalOneStar");
                     int twoStar = rs.getInt("totalTwoStar");
@@ -141,7 +177,7 @@ public class FeedbackDAO {
                     int fiveStar = rs.getInt("totalFiveStar");
                     s = new StarDTO(oneStar, twoStar, threeStar, fourStar, fiveStar);
                 }
-                
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -153,8 +189,21 @@ public class FeedbackDAO {
                     e.printStackTrace();
                 }
             }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return s;
     }
 }
-

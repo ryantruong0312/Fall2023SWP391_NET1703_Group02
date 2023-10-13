@@ -48,7 +48,7 @@ public class AddOrderController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try {
             HttpSession session = request.getSession();
             User u = (User) session.getAttribute("LOGIN_USER");
             CartDTO cart = (CartDTO) session.getAttribute("CART");
@@ -63,7 +63,6 @@ public class AddOrderController extends HttpServlet {
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
                     String formattedDate = currentDate.format(formatter);
                     OrderDAO od = new OrderDAO();
-                    OrderItemDAO oid = new OrderItemDAO();
                     Order o = od.getOrderLatest();
                     if (o != null) {
                         String numberSTT = o.getOrder_id().substring(9);
@@ -74,8 +73,8 @@ public class AddOrderController extends HttpServlet {
                         int result = od.createNewOrder(order_id, u.getUsername(), "Chờ xử lý", name_receiver,
                                 phone_receiver, address_receiver, "Chưa thanh toán", cart,cartCheckout, (int) Math.ceil(cart.getCartTotalPrice() / 100000.0));
                         if (result != 0) {
-                            EmailService.sendEmail(u.getEmail(), "Đơn đặt hàng của bạn",
-                                    EmailUtils.sendOrderToCustomer(cart, cartCheckout, order_id, name_receiver, phone_receiver, address_receiver));
+                           // EmailService.sendEmail(u.getEmail(), "Đơn đặt hàng của bạn",
+                      //EmailUtils.sendOrderToCustomer(cart, cartCheckout, order_id, name_receiver, phone_receiver, address_receiver));
                             cart = null;
                             session.setAttribute("CART", null);
                             session.setAttribute("CARTCHECKOUT", null);

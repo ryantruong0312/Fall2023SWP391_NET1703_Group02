@@ -39,7 +39,8 @@ public class RegisterController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        String url = DEST_NAV_REGISTER;
+        try {
             String name = request.getParameter("name").trim();
             String email = request.getParameter("email");
             String mobile = request.getParameter("mobile");
@@ -48,7 +49,6 @@ public class RegisterController extends HttpServlet {
             UserDAO user = new UserDAO();
             User u = user.findUser("", email);
             HttpSession session = request.getSession();
-            String url = DEST_NAV_REGISTER;
             if (u != null) {
                 session.setAttribute("ERROR", "Email đã được sử dụng");
             } else {
@@ -71,10 +71,11 @@ public class RegisterController extends HttpServlet {
                 } else {
                     session.setAttribute("ERROR", "Tên đăng nhập đã được sử dụng");
                 }
-            }
-            request.getRequestDispatcher(url).forward(request, response);
+            }  
         } catch (Exception e) {
             log("Error at RegisterController: " + e.toString());
+        }finally {
+           request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

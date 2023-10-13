@@ -9,7 +9,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Savepoint;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -38,14 +37,14 @@ public class OrderDAO {
         Connection con = null;
         OrderItemDAO oid = new OrderItemDAO();
         AccessoryDAO ad = new AccessoryDAO();
+        PreparedStatement pst = null;
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                con.setAutoCommit(false);
-                Savepoint save = con.setSavepoint("createOrder");
-                String sql = "INSERT INTO [ORDER]\n"
+                //con.setAutoCommit(false);
+                String insertOrder = "INSERT INTO [ORDER]\n"
                         + "VALUES(?,?,?,?,?,?,?,?,?,?)";
-                PreparedStatement pst = con.prepareStatement(sql);
+                pst = con.prepareStatement(insertOrder);
                 pst.setString(1, order_id);
                 pst.setString(2, username);
                 LocalDateTime customDateTime = LocalDateTime.now();
@@ -78,20 +77,20 @@ public class OrderDAO {
                             error = "Sản phẩm này đã bán";
                             break;
                         } else {
-                            sql = "UPDATE [Bird]\n"
+                            String updateBird = "UPDATE [Bird]\n"
                                     + "SET [status] = 'Đã bán'\n"
                                     + "WHERE [bird_id] = ?";
-                            pst = con.prepareStatement(sql);
+                            pst = con.prepareStatement(updateBird);
                             pst.setString(1, b.getBird_id());
                             result = pst.executeUpdate();
                             if (result == 0) {
                                 checkBird = false;
                                 break;
                             } else {
-                                sql = "INSERT INTO [OrderItem]([order_id],[bird_id],[nest_id],\n"
+                                String insertBird = "INSERT INTO [OrderItem]([order_id],[bird_id],[nest_id],\n"
                                         + "		  [accessory_id],[unit_price],[order_quantity])\n"
                                         + "   VALUES(?,?,?,?,?,?)";
-                                pst = con.prepareStatement(sql);
+                                pst = con.prepareStatement(insertBird);
                                 pst.setString(1, order_id);
                                 pst.setString(2, b.getBird_id());
                                 pst.setString(3, null);
@@ -114,21 +113,22 @@ public class OrderDAO {
                         if (a.getDiscount() > 0) {
                             realPrice = a.getUnit_price() - a.getUnit_price() * a.getDiscount() / 100;
                         }
-                        int numberAccessory = ad.getAccessoryByID(a.getAccessory_id()).getStock_quantity();
+                        Accessory item = ad.getAccessoryByID(a.getAccessory_id());
+                        int numberAccessory = item != null ? item.getStock_quantity() : 0;
                         if (numberAccessory == 0) {
-                            error ="Sản phẩm này đã hết hàng";
+                            error = "Sản phẩm này đã hết hàng";
                             checkAcessory = false;
                             break;
                         } else if (numberAccessory < oa.getOrder_quantity()) {
                             checkAcessory = false;
-                            error ="Sản phẩm này không đủ số lượng trong kho";
+                            error = "Sản phẩm này không đủ số lượng trong kho";
                             break;
                         } else {
                             int newStock = numberAccessory - oa.getOrder_quantity();
-                            sql = "UPDATE [Accessory]\n"
+                            String updateQuantity = "UPDATE [Accessory]\n"
                                     + "SET [stock_quantity] = ?\n"
                                     + "WHERE [accessory_id] = ?";
-                            pst = con.prepareStatement(sql);
+                            pst = con.prepareStatement(updateQuantity);
                             pst.setInt(1, newStock);
                             pst.setString(2, a.getAccessory_id());
                             result = pst.executeUpdate();
@@ -136,10 +136,10 @@ public class OrderDAO {
                                 checkAcessory = false;
                                 break;
                             } else {
-                                sql = "INSERT INTO [OrderItem]([order_id],[bird_id],[nest_id],\n"
+                                String insertAccessory = "INSERT INTO [OrderItem]([order_id],[bird_id],[nest_id],\n"
                                         + "		  [accessory_id],[unit_price],[order_quantity])\n"
-                                        + "   VALUES(?,?,?,?,?,?)";
-                                pst = con.prepareStatement(sql);
+                                        + "               VALUES(?,?,?,?,?,?)";
+                                pst = con.prepareStatement(insertAccessory);
                                 pst.setString(1, order_id);
                                 pst.setString(2, null);
                                 pst.setString(3, null);
@@ -158,20 +158,31 @@ public class OrderDAO {
                     checkAcessory = true;
                 }
                 if (checkBird && checkAcessory) {
-                    con.commit();
                     result = 1;
+                    con.commit();
                 } else {
                     result = 0;
-                    con.rollback(save);
-                    pst.close();
+                    con.rollback();
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
+            try {
+                con.rollback();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
         } finally {
             if (con != null) {
                 try {
                     con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (pst != null) {
+                try {
+                    pst.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -183,6 +194,8 @@ public class OrderDAO {
     public Order getOrderLatest() {
         Order o = null;
         Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
         try {
             con = DBUtils.getConnection();
             if (con != null) {
@@ -198,8 +211,8 @@ public class OrderDAO {
                         + "      ,[applied_point]\n"
                         + "  FROM [BirdFarmShop].[dbo].[Order]\n"
                         + "  ORDER BY order_date DESC";
-                Statement st = con.createStatement();
-                ResultSet rs = st.executeQuery(sql);
+                st = con.createStatement();
+                rs = st.executeQuery(sql);
                 if (rs != null && rs.next()) {
                     String order_id = rs.getString("order_id");
                     String customer = rs.getString("customer");
@@ -225,6 +238,20 @@ public class OrderDAO {
                     e.printStackTrace();
                 }
             }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return o;
     }
@@ -232,6 +259,8 @@ public class OrderDAO {
     public OrderItem getOrderByBirdId(String bird_id) {
         OrderItem oi = null;
         Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
         try {
             con = DBUtils.getConnection();
             if (con != null) {
@@ -244,9 +273,9 @@ public class OrderDAO {
                         + "      ,[order_quantity]\n"
                         + "  FROM [BirdFarmShop].[dbo].[OrderItem]\n"
                         + "  WHERE [bird_id] = ?";
-                PreparedStatement pst = con.prepareStatement(sql);
+                pst = con.prepareStatement(sql);
                 pst.setString(1, bird_id);
-                ResultSet rs = pst.executeQuery();
+                rs = pst.executeQuery();
                 if (rs != null && rs.next()) {
                     int order_item_id = rs.getInt("order_item_id");
                     String order_id = rs.getString("order_id");
@@ -267,10 +296,25 @@ public class OrderDAO {
                     e.printStackTrace();
                 }
             }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return oi;
     }
-        public ArrayList<Order> getAllOfOrder() throws SQLException{
+
+    public ArrayList<Order> getAllOfOrder() throws SQLException {
         ArrayList<Order> orderList = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
@@ -279,9 +323,9 @@ public class OrderDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement("SELECT [order_id],[customer],[order_date],[order_status],[name_receiver],\n" +
-                                "[phone_receiver],[address_receiver],[payment_status],[total_price],[applied_point]\n" +
-                                "FROM [BirdFarmShop].[dbo].[Order]");
+                stm = con.prepareStatement("SELECT [order_id],[customer],[order_date],[order_status],[name_receiver],\n"
+                        + "[phone_receiver],[address_receiver],[payment_status],[total_price],[applied_point]\n"
+                        + "FROM [BirdFarmShop].[dbo].[Order]");
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     String order_id = rs.getString("order_id");
@@ -294,8 +338,8 @@ public class OrderDAO {
                     String payment_status = rs.getString("payment_status");
                     int total_price = rs.getInt("total_price");
                     int point = rs.getInt("applied_point");
-                    order = new Order(order_id, customer, order_date, order_status, name_receiver, 
-                                  phone_receiver, address_receiver, payment_status, total_price, point);
+                    order = new Order(order_id, customer, order_date, order_status, name_receiver,
+                            phone_receiver, address_receiver, payment_status, total_price, point);
                     orderList.add(order);
                 }
             }

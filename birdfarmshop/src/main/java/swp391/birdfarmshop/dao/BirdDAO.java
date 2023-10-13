@@ -74,7 +74,6 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
-                    // Calculate the age in months
                     Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id,
                             achievement, reproduction_history, price, description, dad_bird_id, mom_bird_id, discount, status, image_url);
                     birdList.add(bird);
@@ -752,9 +751,4 @@ public class BirdDAO {
         return false;
     }
     
-    public static void main(String[] args) throws SQLException, ClassNotFoundException, ParseException {
-        BirdDAO dao = new BirdDAO();
-        boolean check = dao.updateBird("Cl201", "Vẹt Cockatiel Lutin", "xám, vàng, cam", "2020-02-02", "24", "Đực", "australian", "Nhiều", "0", "2500000", "Hàng Việt Nam", "", "", "0", "Còn hàng");
-        System.out.println(check);
-    }
 }
