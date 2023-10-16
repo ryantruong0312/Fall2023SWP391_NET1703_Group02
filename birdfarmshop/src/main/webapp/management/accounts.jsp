@@ -428,7 +428,7 @@
                     </div>
                 </div>
             </div>
-        </section>                    
+        </section> 
         <!-- jQuery -->
         <%@include file="../layout/message.jsp" %>
         <script src="assets/js/jquery-3.7.1.min.js"></script>

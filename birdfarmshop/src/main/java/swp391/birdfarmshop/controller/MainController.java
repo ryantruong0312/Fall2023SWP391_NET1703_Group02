@@ -71,8 +71,8 @@ public class MainController extends HttpServlet {
     private static final String DEST_REMOVE_BIRD_FROM_CART = "RemoveBirdFromCartController";
     private static final String ACT_REMOVE_ACCESSORY_FROM_CART = "RemoveAccessoryFromCart";
     private static final String DEST_REMOVE_ACCESSORY_FROM_CART = "RemoveAccessoryFromCartController";
-    private static final String ACT_SEARCH_ACCESSORY = "RenderSearchAccessories";
-    private static final String DEST_SEARCH_ACCESSORY = "RenderSearchAccessoriesController";
+    private static final String ACT_REMOVE_BIRD_PAIR_FROM_CART = "RemoveBirdPairFromCart";
+    private static final String DEST_REMOVE_BIRD_PAIR_FROM_CART = "RemoveBirdPairFromCartController";
     private static final String ACT_CHECK_OUT = "CheckOut";
     private static final String DEST_CHECK_OUT = "RenderCheckOutController";
     private static final String ACT_RENDER_BIRD_BREED_ID = "RenderBirdByBreed_id";
@@ -200,8 +200,8 @@ public class MainController extends HttpServlet {
                 case ACT_NAV_BIRD_NESTS_DETAIL:
                     url = DEST_NAV_BIRD_NESTS_DETAIL;
                     break;
-                case ACT_SEARCH_ACCESSORY:
-                    url = DEST_SEARCH_ACCESSORY;
+                case ACT_REMOVE_BIRD_PAIR_FROM_CART:
+                    url = DEST_REMOVE_BIRD_PAIR_FROM_CART;
                     break;
                 case ACT_RENDER_BIRD_BREED_ID:
                     url = DEST_RENDER_BIRD_BREED_ID;

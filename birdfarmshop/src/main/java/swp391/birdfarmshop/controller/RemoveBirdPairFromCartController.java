@@ -19,9 +19,10 @@ import swp391.birdfarmshop.dto.CartDTO;
  *
  * @author Admin
  */
-@WebServlet(name="DeleteCartController", urlPatterns={"/DeleteCartController"})
-public class DeleteCartController extends HttpServlet {
-    private static final String DEST_NAV_CART = "RenderCartController";
+@WebServlet(name="RemoveBirdPairFromCartController", urlPatterns={"/RemoveBirdPairFromCartController"})
+public class RemoveBirdPairFromCartController extends HttpServlet {
+    private static final String ERROR = "errorpages/error.jsp";
+    private static final String SUCCESS = "shop/cart.jsp";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -32,22 +33,23 @@ public class DeleteCartController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+               String url = ERROR;
+        try {
+            String bird_pair_id = request.getParameter("bird_pair_id");
             HttpSession session = request.getSession();
-            CartDTO cart = (CartDTO) session.getAttribute("CART");
-            if(cart != null){
-                if(cart.getTotalItem() > 0 ){
-                    session.removeAttribute("CART");
-                    session.setAttribute("SUCCESS", "Xóa giỏ hàng thành công");
-                } else {
-                     session.setAttribute("ERROR", "Không có sản phẩm nào trong giỏ hàng của bạn");
-                }
+            if (session != null) {
+                CartDTO cart = (CartDTO) session.getAttribute("CART");   
+                cart.removeBirdPairFromCart(bird_pair_id);
+                url = SUCCESS;
+                session.setAttribute("CART", cart);
+                session.setAttribute("SUCCESS", "Xóa sản phẩm thành công");
             }else{
-                session.setAttribute("ERROR", "Không có sản phẩm nào trong giỏ hàng của bạn");
+                session.setAttribute("ERROR", "Xóa sản phẩm thất bại");
             }
-           response.sendRedirect(DEST_NAV_CART);
-        }catch(Exception e){
-            e.printStackTrace();
+        } catch (Exception e) {
+            log("Error at RemoveBirdFromCartController: " + e.toString());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
     } 
 

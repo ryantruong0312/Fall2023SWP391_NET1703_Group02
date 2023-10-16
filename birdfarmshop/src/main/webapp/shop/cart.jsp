@@ -138,7 +138,7 @@
             <div class="container-fluid h-100 py-5">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-10">
-                        <a onclick="return clearCart(this)" href="MainController?action=DeleteCart"><button type="submit" class="float-right btn btn-danger">Xóa giỏ hàng</button></a>
+                        <c:if test="${sessionScope.CART.totalItem > 0}" ><a onclick="return clearCart(this)" href="MainController?action=DeleteCart"><button type="submit" class="float-right btn btn-danger">Xóa giỏ hàng</button></a></c:if>
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h3 class="fw-normal mb-0 text-black">Vẹt cảnh</h3>
                         </div><hr>
@@ -258,6 +258,37 @@
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h3 class="fw-normal mb-0 text-black">Tổ chim non</h3>
                         </div><hr>
+                          <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="fw-normal mb-0 text-black">Nhân giống</h3>
+                        </div><hr>
+                        <c:forEach items="${sessionScope.CART.birdPairList}" var="birdPair">
+                            <c:set var="count" value="${count + 1}"/>
+                            <div class="card rounded-3 mb-4">
+                                <div class="card-body p-4">
+                                    <div class="row d-flex justify-content-between align-items-center">
+                                        <div class="pl-3 text-danger">
+                                            <h4><c:out value="${count}"/></h4>
+                                        </div>
+                                        <div class="col-md-2 col-lg-2 col-xl-2" style="text-align: center;">
+                                            <img src="assets/images/bird-pair-cart.jpg" class="img-fluid rounded-3" alt="Nhân giống" style="height: 150px; width: 120px;">
+                                        </div>
+                                        <div class="col-md-3 col-lg-3 col-xl-3">
+                                            <p class="lead fw-bold mb-2" style="font-size: 23px;">Phí ghép cặp nhân giống</p>
+                                        </div>
+                                        <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
+                                                <input id="form1" min="1" disabled="" name="quantity" value="1" type="number"
+                                                   class="form-control form-control-sm" style="text-align: center; height: 40px; border: 1px solid; font-size: 16px;"/>
+                                        </div>
+                                        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">                                         
+                                              <h5 class="mb-0" style="font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdPair.value.servicePrice}" pattern="#,###"/> ₫</h5>
+                                        </div>
+                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                            <a onclick="return checkRemove(this)" href="MainController?action=RemoveBirdPairFromCart&bird_pair_id=${birdPair.key}" class="text-danger"><img src="assets/images/remove-button.png"/></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
 
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h3 class="fw-normal mb-0 text-black">Phụ kiện</h3>
@@ -469,9 +500,8 @@
                                 function DownQuantityAccessory(event, accessory_id) {
                                     let numberAccessory = event.parentNode.querySelector('input[type=number]');
                                     let number = Number(numberAccessory.value);
-                                    if (number === 1) {
-                                        $('#confirm-remove').css('display', 'block');
-                                        $('#button-confirm').attr('href', 'MainController?action=RemoveAccessoryFromCart&accessory_id=' + accessory_id);
+                                    if (number == 1) {
+                                        return;
                                     } else {
                                         numberAccessory.stepDown();
                                         $.ajax({
