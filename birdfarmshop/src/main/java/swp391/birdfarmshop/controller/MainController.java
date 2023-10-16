@@ -113,7 +113,8 @@ public class MainController extends HttpServlet {
     private static final String DEST_DELETE_CART = "DeleteCartController";
     private static final String ACT_NAV_CUSTOMER_ORDER_ITEM = "NavToCustomerOrderItem";
     private static final String DEST_CUSTOMER_ORDER_ITEM = "RenderCustomerOrderItemController";
-    
+    private static final String ACT_NAV_UPDATE_ORDER = "NavToUpdateOrder";
+    private static final String DEST_NAV_UPDATE_ORDER = "UpdateOrderStatusController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -264,6 +265,9 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_NAV_ORDER_ITEMS:
                     url = DEST_NAV_ORDER_ITEMS;
+                    break;
+                case ACT_NAV_UPDATE_ORDER:
+                    url = DEST_NAV_UPDATE_ORDER;
                     break;
                 default:
                     break;
