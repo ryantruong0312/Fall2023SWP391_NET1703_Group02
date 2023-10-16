@@ -14,9 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dao.BirdBreedDAO;
@@ -42,6 +40,7 @@ import swp391.birdfarmshop.util.S3Utils;
 public class CreateBirdCustomer extends HttpServlet {
 
     private static final String DEST_NAV_CREATE_BIRD_CUSTOMER = "shop/add-customerBird.jsp";
+    private static final String DEST_NAV_BIRD_PAIR = "shop/bird-pair.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -85,7 +84,8 @@ public class CreateBirdCustomer extends HttpServlet {
                             if (result == 0){
                                 session.setAttribute("ERROR", "Thêm vẹt mới thất bại");
                             } else {
-                                session.setAttribute("SUCCESS", "Thêm vẹt mới thành công");              
+                                session.setAttribute("SUCCESS", "Thêm vẹt mới thành công");  
+                                url = DEST_NAV_BIRD_PAIR;
                             }
                         } else {
                             session.setAttribute("ERROR", "Ảnh có dung lượng quá 1mb");

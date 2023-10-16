@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import swp391.birdfarmshop.dao.AccessoryDAO;
-import swp391.birdfarmshop.dao.OrderItemDAO;
 import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
+import swp391.birdfarmshop.model.BirdCustomer;
 import swp391.birdfarmshop.model.BirdNest;
 import swp391.birdfarmshop.model.OrderedAccessoryItem;
 import swp391.birdfarmshop.model.OrderedBirdItem;
@@ -120,15 +120,28 @@ public class CartDTO {
     public void setBirdPairTotalPrice(int birdPairTotalPrice) {
         this.birdPairTotalPrice = birdPairTotalPrice;
     }
-    public boolean addBirdPairToCart(String key ,Bird birdMale, Bird BirdFemale) {
+
+    public boolean  addBirdPairCustomerToCart(Bird birdShop, BirdCustomer birdCustomer){
         boolean check = false;
-        if (!this.birdPairList.containsKey(key)) {
-            
-            this.totalItem += 2;
-            cartTotalPrice += 0;
+        if (!this.birdPairList.containsKey(birdShop.getBird_id() + birdCustomer.getBird_id())) {
+            this.birdPairList.put(birdShop.getBird_id() + birdCustomer.getBird_id(), new OrderedBirdPairItem(birdShop, birdCustomer, 2000000));
+            this.totalItem += 1;
+            cartTotalPrice += 2000000;
             check = true;
         }
         return check;
+
+    }
+    public boolean  addBirdPairShopToCart(Bird birdMale,Bird birdFemale){
+        boolean check = false;
+        if (!this.birdPairList.containsKey(birdMale.getBird_id()+ birdFemale.getBird_id())) {
+            this.birdPairList.put(birdMale.getBird_id()+ birdFemale.getBird_id(), new OrderedBirdPairItem(birdMale, birdFemale, 2000000));
+            this.totalItem += 1;
+            cartTotalPrice += 2000000;
+            check = true;
+        }
+        return check;
+
     }
     public boolean addBirdToCart(Bird bird, Accessory cage) {
         boolean check = false;
@@ -211,5 +224,10 @@ public class CartDTO {
         this.accessoryList.remove(accessory.getAccessory_id());
         this.totalItem -= order_quantity;
         this.cartTotalPrice -= ((accessory.getUnit_price() - (accessory.getUnit_price() * accessory.getDiscount() / 100)) * order_quantity);
+    }
+    public void removeBirdPairFromCart(String key) {
+        this.birdPairList.remove(key);
+        this.totalItem -= 1;
+        this.cartTotalPrice -= 2000000;
     }
 }

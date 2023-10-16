@@ -12,12 +12,18 @@ public class OrderedBirdPairItem {
     private Bird birdMale;
     private Bird birdFemale;
     private BirdCustomer birdCustomer;
+    private Bird birdShop;  
     private int servicePrice;
 
-    public OrderedBirdPairItem(Bird birdMale, Bird birdFemale, BirdCustomer birdCustomer, int servicePrice) {
+    public OrderedBirdPairItem(Bird birdShop,BirdCustomer birdCustomer,  int servicePrice) {
+        this.birdCustomer = birdCustomer;
+        this.birdShop = birdShop;
+        this.servicePrice = servicePrice;
+    }
+
+    public OrderedBirdPairItem(Bird birdMale, Bird birdFemale, int servicePrice) {
         this.birdMale = birdMale;
         this.birdFemale = birdFemale;
-        this.birdCustomer = birdCustomer;
         this.servicePrice = servicePrice;
     }
 
@@ -52,16 +58,13 @@ public class OrderedBirdPairItem {
     public void setServicePrice(int servicePrice) {
         this.servicePrice = servicePrice;
     }
-    public int totalPricePair(){
-        int priceMale = 0;
-        int priceFemale = 0;
-        int priceCustomer = 0;
-        if(this.birdMale != null){
-            priceMale = (int) Math.ceil((this.birdMale.getPrice()* (this.servicePrice/100.0)));
-        }
-        if(this.birdFemale != null){
-            priceFemale = (int) Math.ceil((this.birdFemale.getPrice()* (this.servicePrice/100.0)));
-        }
-        return priceMale + priceFemale + priceCustomer;
+
+    public Bird getBirdFemale() {
+        return birdFemale;
     }
+
+    public Bird getBirdShop() {
+        return birdShop;
+    }
+    
 }

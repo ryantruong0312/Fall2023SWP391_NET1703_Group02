@@ -265,7 +265,7 @@ public class UserDAO {
                 if (search != null) {
                     sql += " WHERE username LIKE N'%" + search + "%' "
                             + "OR full_name LIKE N'%" + search + "%' \n";
-                }
+                    }
                 if (page != null) {
                     int pageNumber = Integer.parseInt(page);
                     int start = (pageNumber - 1) * recordsPerPage;

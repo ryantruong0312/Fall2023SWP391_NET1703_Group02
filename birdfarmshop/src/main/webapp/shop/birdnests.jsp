@@ -27,56 +27,6 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-
-        <style>
-            .thumb{
-                width: 370px;
-                height: 350px;
-            }
-            .activeNav{
-                background-color: black;
-                color: white !important;
-            }
-            .search-bar {
-                margin: 0 0 15px 120px;
-                border: 5px;
-                border-radius: 8px;
-                border: 1px solid rgb(221, 221, 227);
-            }
-            .search-bar input {
-                border: 0;
-                background: none;
-                outline: none;
-            }
-            .search-bar input[type=submit] {
-                float: right;
-            }
-            .search-bar img {
-                margin-left: 5px;
-            }
-
-            .type {
-                cursor: pointer;
-                background-color: #cccccc;
-                padding-left: 5px;
-            }
-            .type + ol {
-                display: none;
-            }
-            li input[type="radio"] + label {
-                margin-left: 5px;
-            }
-
-            .position-sticky li {
-                margin-bottom: 5px;
-            }
-            .bird-pg li{
-                cursor: pointer;
-            }
-            a {
-                color: black;
-            }
-        </style>
     </head>
 
     <body>
@@ -185,136 +135,180 @@
         </div>
         <!-- ***** Main Banner Area End ***** -->
 
-
-        <!-- ***** Products Area Starts ***** -->
-        <section class="section" id="products">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div style="border: 0px;" class="section-heading">
-                            <h2>Sản phẩm của chúng tôi</h2>
-                        </div>
+        
+          <!-- ***** Products Area Starts ***** -->
+        <div class="py-5 px-2 layout-item" style="border-bottom: none" id="top">
+            <form id="selectNest" action="MainController" method="POST">
+                <input type="hidden" name="action" value="NavToBirdNests"> 
+                <div class="d-flex justify-content-center">
+                    <div class="search-bar">
+                        <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                        <input type="text" name="txtBirdNest" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                        <input type="hidden" name="page" value="1" />
+                        <input type="submit" value="Tìm kiếm">
                     </div>
-                    <form id="selectNest" action="MainController" method="POST">
-                        <input type="hidden" name="action" value="NavToBirdNests"> 
-                        <div class="search-bar">
-                            <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                            <input type="text" name="txtBirdNest" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
-                            <input type="submit" value="Tìm kiếm">
-                        </div>
                 </div>
-            </div>
-            <div class="container-fluid">
-                <div class="row">
-                    <!-- Sidebar -->
-                    <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
-                        <div class="position-sticky">
-                            <h3>Phân loại theo</h3>
-                            <div class="type" onclick="toggleList('typeList-1')">Giống vẹt</div>
-                            <ol style="display: block;" id="typeList-1">   
-                                <li><input type="radio" id="type-0" name="txtBreedId" ${requestScope.BREED_ID == null ? "checked":""} value="All"><label for="type-0">Tất cả</label></li>
-                                    <c:forEach var="breed" items="${requestScope.BREEDLIST}" varStatus="counter">
-                                    <li><input type="radio" id="type-${counter.count}" name="txtBreedId" value="${breed.breed_id}" ${requestScope.BREED_ID == breed.breed_id ? "checked":""}><label for="type-${counter.count}">${breed.breed_name}</label></li>
-                                    </c:forEach>
-                            </ol>
-                            <div class="type" onclick="toggleList('typeList-2')">Giá bán</div>
-                            <ol style="display: block;" id="typeList-2">
-                                <li><input type="radio" ${requestScope.PRICE == null  ? "checked":""} id="type-65" name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
-                                <li><input type="radio" ${requestScope.PRICE == "price < 5000000" ? "checked":""} id="type-6" name="txtPrice" value="price < 5000000"><label for="type-6">Dưới 5,000,000₫</label></li>
-                                <li><input type="radio" ${requestScope.PRICE == "price >= 5000000 AND price <= 20000000" ? "checked":""} id="type-7" name="txtPrice" value="price >= 5000000 AND price <= 20000000"><label for="type-7">5,000,000₫ - 20,000,000₫</label></li>
-                                <li><input type="radio" ${requestScope.PRICE == "price > 20000000" ? "checked":""} id="type-8" name="txtPrice" value="price > 20000000"><label for="type-8">Trên 20,000,000₫</label></li>
-                            </ol>
-                        </div>
-                        <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
-                                <a href="MainController?action=NavToNewBirdNest">
-                                     <button id="input-birdnest" type="button">Thêm mới tổ chim</button>
-                                </a>
-                            </c:if>
-                    </nav>
-                    <!-- Nội dung chính -->
-                    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                        <div id="content" class="row">
-                            <c:set var="NESTLIST" value="${requestScope.BIRD_NEST_LIST}"/>
-                            <div id="content" class="row">
-                                <c:if test="${NESTLIST != null}">
-                                    <c:if test="${not empty NESTLIST}">
-                                        <c:forEach items="${NESTLIST}" var="nest">
-                                            <div class="bird col-sm-7 col-md-7 col-lg-5 col-xl-">
-                                                <div class="item">
-                                                    <div class="thumb">
-                                                        <div class="hover-content">
-                                                            <ul>
-                                                                <li><a href="MainController?action=NavToBirdDetails&bird_id=${nest.nest_id}"><i class="fa fa-eye"></i></a></li>
-                                                                <li><a href="MainController?action=AddtoCart&bird_id=${nest.nest_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                            </ul>
+                <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
+                    <div class="new-item d-flex justify-content-center">
+                        <a href="MainController?action=NavToNewBirdNest"><span>Thêm mới tổ chim</span></a>
+                    </div>
+                </c:if>
+                <main class="my-5">
+                    <div class="container-fluid">
+                        <div class="row m-0">
+                            <div class="col-md-3 col-xs-12">
+                                <div class="d-flex justify-content-between">
+                                    <h4>Phân loại theo</h4>
+                                    <button name="clear" value="clear" class=" btn-sm btn-danger text-nowrap border-0">Bỏ lọc</button>
+                                </div>
+                                <div class="type">Giống vẹt</div>
+                                <ol class="d-block" id="typeList-1">   
+                                    <li class="ml-2"><input type="radio" id="type-0" name="txtBreedId" ${requestScope.BREED_ID == null ? "checked":""} value="All"><label for="type-0">Tất cả các loài vẹt</label></li>
+                                        <c:forEach var="breed" items="${requestScope.BREEDLIST}" varStatus="counter">
+                                        <li class="ml-2"><input type="radio" id="type-${counter.count}" name="txtBreedId" value="${breed.breed_id}" ${requestScope.BREED_ID == breed.breed_id ? "checked":""}><label for="type-${counter.count}">${breed.breed_name}</label></li>
+                                        </c:forEach>
+                                </ol>
+                                <div class="type">Giá bán</div>
+                                <ol class ="d-block" id="typeList-2">
+                                    <li><input type="radio" ${requestScope.PRICE == null  ? "checked":""} id="type-65" name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
+                                    <li><input type="radio" ${requestScope.PRICE == "price < 5000000" ? "checked":""} id="type-6" name="txtPrice" value="price < 5000000"><label for="type-6">Dưới 5,000,000₫</label></li>
+                                    <li><input type="radio" ${requestScope.PRICE == "price >= 5000000 AND price <= 20000000" ? "checked":""} id="type-7" name="txtPrice" value="price >= 5000000 AND price <= 20000000"><label for="type-7">5,000,000₫ - 20,000,000₫</label></li>
+                                    <li><input type="radio" ${requestScope.PRICE == "price > 20000000" ? "checked":""} id="type-8" name="txtPrice" value="price > 20000000"><label for="type-8">Trên 20,000,000₫</label></li>
+                                </ol>
+                            </div>
+                            <div class="col-md-9 col-xs-12" style="padding: 0 0 1px 0  ">
+                                <div class="row mx-1">
+                                    <c:choose>
+                                        <c:when test="${not empty requestScope.BIRD_NEST_LIST}">
+                                            <c:forEach items="${requestScope.BIRD_NEST_LIST}" var="nest">
+                                                <div class="col-xl-4 col-md-6 col-sm-6">
+                                                    <div class="card mt-1 mb-3 card-custom">
+                                                        <div class="thumb-img">
+                                                            <img src="${nest.image_url}" class="card-img-top" alt="${nest.nest_name}">
+                                                            <c:if test="${nest.discount > 0}">
+                                                                <span class="tag-discount"> -${nest.discount}%</span>
+                                                            </c:if>
+                                                            <div class="hover-card">
+                                                                <ul class="d-flex justify-content-center">
+                                                                    <li>
+                                                                        <a href="RenderAccessoryDetailsController?id=${nest.nest_id}">
+                                                                            <i class="fa fa-eye"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                    <c:if test="${(sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer')}">
+                                                                        <c:if test="${nest.status == 'Còn hàng'}">
+                                                                            <li><a style="cursor: pointer" class="accessory-cart" data-value="${nest.nest_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                         </c:if>
+                                                                    </c:if>
+                                                                </ul>
+                                                            </div>
+                                                            <c:if test="${nest.status == 'Đã bán'}">
+                                                                <div class="overlay-text">Đã bán</div>
+                                                            </c:if>
                                                         </div>
-                                                        <img class="birdnest-thumbnail" src="${nest.image_url}" alt="${nest.nest_name}">
-                                                    </div>
-                                                    <div class="down-content">
-                                                        <h4>${nest.nest_name}</h4>
-                                                        <c:choose>
-                                                            <c:when test="${nest.discount > 0}">
-                                                                <span style="display: inline-block;"><del><fmt:formatNumber value="${nest.price}" pattern="#,###"/> ₫</del></span>
-                                                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${nest.discount}%</span>
-                                                                <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${nest.price - nest.price * nest.discount / 100}" pattern="#,###"/> ₫</span>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <span><fmt:formatNumber value="${nest.price}" pattern="#,###"/> ₫</span>
-                                                            </c:otherwise>
-                                                        </c:choose> 
+                                                        <div class="card-body">
+                                                            <h5 class="card-title font-weight-bold text-center">${nest.nest_name}</h5>
+                                                            <div class="card-text text-center">
+                                                                <c:choose>
+                                                                    <c:when test="${nest.discount > 0}">
+                                                                        <span class="d-block"><del><fmt:formatNumber value="${nest.price}" pattern="#,###"/> ₫</del></span>
+                                                                        <span class="d-block" style="font-size: 1.2rem; color: red;">Giá: <fmt:formatNumber value="${nest.price - nest.price * nest.discount / 100}" pattern="#,###"/> ₫</span>
+                                                                    </c:when>                                                    
+                                                                    <c:otherwise>
+                                                                        <span style="font-size: 1.2rem;">Giá: <fmt:formatNumber value="${nest.price}" pattern="#,###"/> ₫</span>
+                                                                    </c:otherwise>
+                                                                </c:choose> 
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </c:forEach>
-                                    </c:if>
-                                </c:if>
-                                <div class="col-lg-8">
-                                    <div class="pagination bird-pg">
-                                        <c:if test="${noOfPages > 1 && noOfPages <= 5}">
-                                            <input type="hidden" name="page" value="${requestScope.currentPage}"/>
-                                            <ul>
-                                                <c:if test="${requestScope.currentPage > 1}">
-                                                    <li id="page">
-                                                        <a class="prev-page"><<</a>
-                                                    </li>
-                                                </c:if>
-                                                <c:forEach begin="1" end="${noOfPages}" var="i">
-                                                    <li id="page-number">
-                                                        <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
-                                                    </li>
-                                                </c:forEach>
-                                                <c:if test="${requestScope.currentPage < noOfPages}">
-                                                    <li id="page">
-                                                        <a class="next-page" >>></a>
-                                                    </li>
-                                                </c:if>
-                                            </ul>
-                                        </c:if>    
-                                        <c:if test="${noOfPages > 5}">
-                                            <input name="page" value="${requestScope.currentPage}"/>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <h4 class="m-auto">Không có sản phẩm nào</h4>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                                <div id="products" class="row justify-content-center">
+                                    <c:if test="${noOfPages != 1}">
+                                        <div class="d-flex float-right align-items-center pagination">
                                             <c:set var="numberOfPage" value="${requestScope.currentPage}"/>
-                                            <ul>
-                                                <li id="page">
-                                                    <a class="prev-page" ><<</a>
-                                                </li>
-                                                <c:forEach begin="${numberOfPage - 2}" end="${numberOfPage + 2}" var="i">
-                                                    <li id="page-number">
-                                                        <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
-                                                    </li>
-                                                </c:forEach>
-                                                <li id="page">
-                                                    <a class="next-page">>></a>
-                                                </li>
-                                            </ul>
-                                        </c:if>
-                                    </div>
+                                            <input type="hidden" name="numberOfPage" value="${requestScope.noOfPages}"/>
+                                            <input type="hidden" name="page" value="${numberOfPage}"/>
+                                            <c:if test="${noOfPages >= 1 && noOfPages <= 5}">  
+                                                <ul class="d-flex">
+                                                    <c:if test="${requestScope.currentPage > 1}">
+                                                        <li>
+                                                            <a class="start-page"><<</a>
+                                                        </li>
+                                                    </c:if>
+                                                    <c:forEach begin="1" end="${noOfPages}" var="i">
+                                                        <li class="${i == requestScope.currentPage ? "active":""}" >
+                                                            <a data-value="${i}" onclick="takePage(this)">${i}</a>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <c:if test="${requestScope.currentPage < noOfPages}">
+                                                        <li>
+                                                            <a class="end-page" >>></a>
+                                                        </li>
+                                                    </c:if>
+                                                </ul>
+                                            </c:if>    
+                                            <c:if test="${noOfPages > 5}">
+                                                <ul class="d-flex">
+                                                    <c:if test="${numberOfPage > 2}">
+                                                        <c:if test="${requestScope.currentPage > 1}">
+                                                            <li id="page">
+                                                                <a class="start-page"><<</a>
+                                                            </li>
+                                                        </c:if>
+                                                        <c:if test="${numberOfPage + 2 < noOfPages}">
+                                                            <c:set var="beginItem" value="${numberOfPage - 2 }"/>
+                                                            <c:set var="endItem" value="${numberOfPage + 2 }"/>
+                                                        </c:if>
+                                                        <c:if test="${numberOfPage + 2 >= noOfPages}">
+                                                            <c:set var="beginItem" value="${noOfPages - 4}"/>
+                                                            <c:set var="endItem" value="${noOfPages}"/>
+                                                        </c:if>
+                                                        <c:forEach begin="${beginItem}" end="${endItem}" var="i">
+                                                            <li class="${i == requestScope.currentPage ? "active":""}">
+                                                                <a data-value="${i}" onclick="takePage(this)">${i}</a>
+                                                            </li>
+                                                        </c:forEach>
+                                                        <c:if test="${requestScope.currentPage < noOfPages}">
+                                                            <li>
+                                                                <a class="end-page" >>></a>
+                                                            </li>
+                                                        </c:if>
+                                                    </c:if>
+                                                    <c:if test="${numberOfPage <= 2}">
+                                                        <c:if test="${requestScope.currentPage > 1}">
+                                                            <li>
+                                                                <a class="start-page"><<</a>
+                                                            </li>
+                                                        </c:if>
+                                                        <c:forEach var="i" begin="1" end="5">
+                                                            <li class="${i == requestScope.currentPage ? "active":""}">
+                                                                <a data-value="${i}" onclick="takePage(this)">${i}</a>
+                                                            </li>       
+                                                        </c:forEach>                   
+                                                        <c:if test="${requestScope.currentPage < noOfPages}">
+                                                            <li>
+                                                                <a class="end-page" >>></a>
+                                                            </li>
+                                                        </c:if>
+                                                    </c:if>   
+                                                </ul>
+                                            </c:if>
+                                        </div>
+                                    </c:if>
                                 </div>
                             </div>
-                    </main>            
-                </div>
-                </form>
-            </div>
-        </section>
+                        </div>
+                    </div>
+                </main>
+            </form>
+        </div>
         <!-- ***** Products Area Ends ***** -->
 
         <!-- ***** Footer Start ***** -->
