@@ -113,9 +113,10 @@ public class MainController extends HttpServlet {
     private static final String DEST_DELETE_CART = "DeleteCartController";
     private static final String ACT_NAV_CUSTOMER_ORDER_ITEM = "NavToCustomerOrderItem";
     private static final String DEST_CUSTOMER_ORDER_ITEM = "RenderCustomerOrderItemController";
+    private static final String ACT_NAV_UPDATE_ORDER = "NavToUpdateOrder";
+    private static final String DEST_NAV_UPDATE_ORDER = "UpdateOrderStatusController";
     private static final String ACT_NAV_BIRD_PAIR_CUSTOMER = "NavToBirdPairCustomer";
     private static final String DEST_BIRD_PAIR_CUSTOMER = "RenderBirdPairCustomerController";
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
@@ -266,10 +267,11 @@ public class MainController extends HttpServlet {
                 case ACT_NAV_ORDER_ITEMS:
                     url = DEST_NAV_ORDER_ITEMS;
                     break;
-                case ACT_NAV_BIRD_PAIR_CUSTOMER:
+                case ACT_NAV_UPDATE_ORDER:
+                    url = DEST_NAV_UPDATE_ORDER;
+                    break;                case ACT_NAV_BIRD_PAIR_CUSTOMER:
                     url = DEST_BIRD_PAIR_CUSTOMER;
-                break;
-                default:
+                break;                default:
                     break;
             }
         } catch (Exception ex) {

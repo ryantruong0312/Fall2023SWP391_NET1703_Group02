@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import swp391.birdfarmshop.dao.OrderDAO;
 import swp391.birdfarmshop.model.Order;
 import swp391.birdfarmshop.model.User;
@@ -34,84 +33,66 @@ public class RenderShopOrdersController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         String page = "1";
-        page = request.getParameter("page");
+        String[] pageArray = request.getParameterValues("page");
+        
         String date = null;
         String[] dateArray = request.getParameterValues("date");
-        System.out.println(dateArray);
+        
+        String startDay = null;
+        String[] startDayArray = request.getParameterValues("startDay");
+        
+        String endDay = null;
+        String[] endDayArray = request.getParameterValues("endDay");
+        
+        String status = null;
+        String[] statusArray = request.getParameterValues("status");
+        
+        String search = null;
+        String[] searchArray = request.getParameterValues("search");
         if (dateArray != null) {
             date = dateArray[dateArray.length - 1];
         }
-        String startDay = request.getParameter("startDay");
-        String endDay = request.getParameter("endDay");
-        String status = null;
-        String[] statusArray = request.getParameterValues("status");
-        System.out.println(Arrays.toString(statusArray));
+        if (startDayArray != null) {
+            startDay = startDayArray[startDayArray.length - 1];
+        }
+        if (endDayArray != null) {
+            endDay = endDayArray[endDayArray.length - 1];
+        }
         if (statusArray != null) {
             status = statusArray[statusArray.length - 1];
         }
-        String param = request.getParameter("param");
-        String search = null;
-        String[] searchArray = request.getParameterValues("search");
-        System.out.println(searchArray);
         if (searchArray != null) {
             search = searchArray[searchArray.length - 1];
         }
-        if (param != null) {
-            param = URLDecoder.decode(param, "UTF-8");
-            String[] parts = param.split("&");
-            if (param.contains("date")) {
-                for (String part : parts) {
-                    if (part.startsWith("date=")) {
-                        String[] keyValue = part.split("=");
-                        date = keyValue[keyValue.length - 1];
-                        break;
-                    }
-                }
-            }
-            if (param.contains("status")) {
-                for (String part : parts) {
-                    if (part.startsWith("status=")) {
-                        String[] keyValue = part.split("=");
-                        status = keyValue[keyValue.length - 1];
-                        break;
-                    }
-                }
-            }
-            if (param.contains("startDay")) {
-                for (String part : parts) {
-                    if (part.startsWith("startDay=")) {
-                        String[] keyValue = part.split("=");
-                        startDay = keyValue[keyValue.length - 1];
-                        break;
-                    }
-                }
-            }
-            if (param.contains("endDay")) {
-                for (String part : parts) {
-                    if (part.startsWith("endDay=")) {
-                        String[] keyValue = part.split("=");
-                        endDay = keyValue[keyValue.length - 1];
-                        break;
-                    }
-                }
-            }
-            if (param.contains("page")) {
-                for (String part : parts) {
-                    if (part.startsWith("page=")) {
-                        String[] keyValue = part.split("=");
-                        page = keyValue[keyValue.length - 1];
-                        break;
-                    }
-                }
+        if (pageArray != null) {
+            page = pageArray[pageArray.length - 1];
+        }
+        if(startDay != null && endDay != null && !startDay.isEmpty() && !endDay.isEmpty()) {
+            String[] startDayElement = startDay.split("-");
+            String[] endDayElement = endDay.split("-");
+            int day1 = Integer.parseInt(startDayElement[2]);
+            int day2 = Integer.parseInt(endDayElement[2]);
+            int month1 = Integer.parseInt(startDayElement[1]);
+            int month2 = Integer.parseInt(endDayElement[1]);
+            int year1 = Integer.parseInt(startDayElement[0]);
+            int year2 = Integer.parseInt(endDayElement[0]);
+            if(day1 > day2 || month1 > month2 || year1 > year2) {
+                request.setAttribute("MESSAGE", "Khoảng thời gian nhập vào không hợp lệ");
+                request.getRequestDispatcher(SUCCESS).forward(request, response);
             }
         }
+        System.out.println(date+" "+startDay+" "+endDay+" "+status+" "+search+" "+page);
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
             if (user != null && user.getRole().equals("manager")) {
                 OrderDAO orderDao = new OrderDAO();
-                int recordsPerPage = 20;
+                int recordsPerPage = 2;
+                int numberOfOrder = orderDao.numberOfOrder(date, startDay, endDay, status, search);
+                int noOfPages = (int) Math.ceil(numberOfOrder * 1.0 / recordsPerPage);
                 ArrayList<Order> orderList = orderDao.getAllOfOrder(date, startDay, endDay, status, search, page, recordsPerPage);
+                ArrayList<String> statuses = orderDao.getOrderStatus();
+                request.setAttribute("statuses", statuses);
                 request.setAttribute("ORDERLIST", orderList);
                 request.setAttribute("date", date);
                 request.setAttribute("startDay", startDay);
@@ -119,6 +100,7 @@ public class RenderShopOrdersController extends HttpServlet {
                 request.setAttribute("search", search);
                 request.setAttribute("status", status);
                 request.setAttribute("page", page);
+                request.setAttribute("noOfPages", noOfPages);
                 url = SUCCESS;
                 request.getRequestDispatcher(url).forward(request, response);
 

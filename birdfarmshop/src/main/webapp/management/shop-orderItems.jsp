@@ -223,16 +223,23 @@
             <div class="container">
                 <div class="col-lg-12">
                     <h1 style="text-align: center;">Chi tiết đơn hàng</h1>
-                    <a id="back" href="MainController?action=NavToShopOrders"><span><= Back</span></a>
+                    <a id="back" href="MainController?action=NavToShopOrders">
+                        <i style="color: white; font-size: 1rem; width: 30px;" class="fa fa-arrow-left"></i>
+                        <span>Quay lại</span>
+                    </a>
                 </div>
                 <div class="col-lg-12">
                     <div class="order-bar" style="background-color: #cccccc; text-align: center;">
+                        <div style="background-color: #cccccc; border-bottom: 3px solid #ffffff;">
+                            <img style="width: 15px; height: 15px; float: left; margin: 5px;" class="icon" src="assets/images/test.png" alt="Đơn hàng"/>
+                            <span style="color: black; float: left;">Đơn hàng: ${itemList.get(0).order_id}</span>
+                            <br/>
+                        </div>
                         <div class="scrollable-container">
                             <table class="scrollable-list">
                                 <thead>
                                     <tr>
                                         <th>STT</th>
-                                        <th>Mã đơn hàng</th>
                                         <th>Hình ảnh</th>
                                         <th>Mã sản phẩm</th>
                                         <th>Tên sản phẩm</th>
@@ -244,7 +251,6 @@
                                     <c:forEach items="${itemList}" var="item" varStatus="counter">
                                         <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
                                             <td>${counter.count}</td>
-                                            <td>${item.order_id}</td>
                                             <td><img style="height: 100px; width: 80px;" src="${item.image_url}"/></td>
                                             <c:choose>
                                                 <c:when test="${item.bird_id != null}">
