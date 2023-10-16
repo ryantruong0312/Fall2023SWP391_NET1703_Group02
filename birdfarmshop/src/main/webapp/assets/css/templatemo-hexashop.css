@@ -3022,3 +3022,21 @@ register*/
     margin-right: 1px;
     margin-top: 0px;
 }
+/*layout bird pair customer*/
+.card-pair .box-pair{
+    border: 1px solid #B9B9BC; 
+    border-radius: 15px;
+}
+.card-pair .pair-status{
+    line-height: 36px;
+    width: 150px;
+    border-radius: 20px;
+    border: none;
+    color: white;
+    background: rgb(254,96,84);
+    background: linear-gradient(90deg, rgba(254,96,84,1) 0%, rgba(239,50,162,1) 100%);
+}
+.card-pair .pair-img img {
+    height:120px;
+    width: 100px;
+}

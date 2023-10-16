@@ -202,13 +202,12 @@ public class OrderDAO {
                                     rs = pst.executeQuery();
                                     if (rs != null && rs.next()) {
                                         if (customer.isGender()) {
-                                            String insertBirdPair = "INSERT INTO [BirdPair]([order_id],[service_price],[bird_customer],[female_bird_id])\n"
-                                                    + "VALUES(?,?,?,?)";
+                                            String insertBirdPair = "INSERT INTO [BirdPair]([order_id],[bird_customer],[female_bird_id])\n"
+                                                    + "VALUES(?,?,?)";
                                             pst = con.prepareStatement(insertBirdPair);
                                             pst.setString(1, order_id);
-                                            pst.setInt(2, 2000000);
-                                            pst.setInt(3, customer.getBird_id());
-                                            pst.setString(4, birdShop.getBird_id());
+                                            pst.setInt(2, customer.getBird_id());
+                                            pst.setString(3, birdShop.getBird_id());
                                             result = pst.executeUpdate();
                                             if (result == 0) {
                                                 checkBirdPair = false;
@@ -234,13 +233,12 @@ public class OrderDAO {
                                                 }
                                             }
                                         } else {
-                                            String insertBirdPair = "INSERT INTO [BirdPair]([order_id],[service_price],[bird_customer],[male_bird_id])\n"
-                                                    + "VALUES(?,?,?,?)";
+                                            String insertBirdPair = "INSERT INTO [BirdPair]([order_id],[bird_customer],[male_bird_id])\n"
+                                                    + "VALUES(?,?,?)";
                                             pst = con.prepareStatement(insertBirdPair);
                                             pst.setString(1, order_id);
-                                            pst.setInt(2, 2000000);
-                                            pst.setInt(3, customer.getBird_id());
-                                            pst.setString(4, birdShop.getBird_id());
+                                            pst.setInt(2, customer.getBird_id());
+                                            pst.setString(3, birdShop.getBird_id());
                                             result = pst.executeUpdate();
                                             if (result == 0) {
                                                 checkBirdPair = false;
@@ -273,6 +271,18 @@ public class OrderDAO {
                                                 rs = pst.executeQuery();
                                                 if(rs != null && rs.next()){
                                                     int pair_id = rs.getInt("pair_id");
+                                                    String insertTracking = "INSERT INTO [PairTracking]([pair_id],[status],[content],[date_content])\n"
+                                                            + "VALUES(?,?,?,?)";
+                                                    pst = con.prepareStatement(insertTracking);
+                                                    pst.setInt(1, pair_id);
+                                                    pst.setString(2, "Chờ lấy chim");
+                                                    pst.setString(3, "Chờ khách hàng giao chim để ghép cặp");
+                                                    pst.setString(4, sqlDate);
+                                                    result = pst.executeUpdate();
+                                                    if (result == 0) {
+                                                        checkBirdPair = false;
+                                                        break;
+                                                    }
                                                     String insertBirdPairOrderItem = "INSERT INTO [OrderItem]([order_id],[pair_id],\n"
                                                             + "		  [unit_price],[order_quantity])\n"
                                                             + "   VALUES(?,?,?,?)";
@@ -283,12 +293,11 @@ public class OrderDAO {
                                                     pst.setInt(4, 1);
                                                     result = pst.executeUpdate();
                                                     if (result == 0) {
-                                                        checkBird = false;
+                                                        checkBirdPair = false;
                                                         break;
                                                     }
                                                 }else{
-                                                    checkBird = false;
-                                                    
+                                                    checkBirdPair = false;                                                   
                                                     break;
                                                 }
                                                 
@@ -318,13 +327,12 @@ public class OrderDAO {
                                     pst.setString(1, female.getBird_id());
                                     rs = pst.executeQuery();
                                     if (rs != null && rs.next()) {
-                                        String insertBirdPair = "INSERT INTO [BirdPair]([order_id],[service_price],[male_bird_id],[female_bird_id])\n"
-                                                + "VALUES(?,?,?,?)";
+                                        String insertBirdPair = "INSERT INTO [BirdPair]([order_id],[male_bird_id],[female_bird_id])\n"
+                                                + "VALUES(?,?,?)";
                                         pst = con.prepareStatement(insertBirdPair);
                                         pst.setString(1, order_id);
-                                        pst.setInt(2, 2000000);
-                                        pst.setString(3, male.getBird_id());
-                                        pst.setString(4, female.getBird_id());
+                                        pst.setString(2, male.getBird_id());
+                                        pst.setString(3, female.getBird_id());
                                         result = pst.executeUpdate();
                                         if (result == 0) {
                                             checkBirdPair = false;
@@ -356,8 +364,20 @@ public class OrderDAO {
                                             pst = con.prepareStatement(selectBirdPair);
                                             pst.setString(1, order_id);
                                             rs = pst.executeQuery();
-                                            if (rs != null && rs.next()) {
+                                            if (rs != null && rs.next()) {                                           
                                                 int pair_id = rs.getInt("pair_id");
+                                                String insertTracking = "INSERT INTO [PairTracking]([pair_id],[status],[content],[date_content])\n"
+                                                        + "VALUES(?,?,?,?)";
+                                                pst = con.prepareStatement(insertTracking);
+                                                pst.setInt(1, pair_id);
+                                                pst.setString (2, "Chờ lấy chim");
+                                                pst.setString(3, "Đang chuẩn bị chim để ghép cặp");
+                                                pst.setString(4, sqlDate);
+                                                result = pst.executeUpdate();
+                                                if (result == 0) {
+                                                    checkBirdPair = false;
+                                                    break;
+                                                }
                                                 String insertBirdPairOrderItem = "INSERT INTO [OrderItem]([order_id],[pair_id],\n"
                                                         + "		  [unit_price],[order_quantity])\n"
                                                         + "   VALUES(?,?,?,?)";
@@ -368,11 +388,11 @@ public class OrderDAO {
                                                 pst.setInt(4, 1);
                                                 result = pst.executeUpdate();
                                                 if (result == 0) {
-                                                    checkBird = false;
+                                                    checkBirdPair = false;
                                                     break;
                                                 }
                                             } else {
-                                                checkBird = false;
+                                                checkBirdPair = false;
                                                 break;
                                             }
                                         }

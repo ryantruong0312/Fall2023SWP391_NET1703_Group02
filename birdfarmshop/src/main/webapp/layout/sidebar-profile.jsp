@@ -37,6 +37,12 @@
                                 <span>Chim khách hàng</span>
                             </a>
                         </li>
+                        <li class="${param.action == "NavToBirdPairCustomer" ? "active-profile":""}">
+                            <a href="MainController?action=NavToBirdPairCustomer" class="order-link">
+                                <img class="icon" src="assets/images/bird-love-heart.png" alt="Chim của khách hàng"/>
+                                <span>Ghép cặp</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -146,10 +146,12 @@ CREATE TABLE [BirdPair]
 (
 	[pair_id] INT IDENTITY,
 	[order_id] VARCHAR(15),
-	[service_price] INT,
+	[young_bird_price] INT,
 	[bird_customer] INT,
 	[male_bird_id] VARCHAR(10),
 	[female_bird_id] VARCHAR(10),
+	[number_egg] INT,
+	[number_young_bird]INT,
 	CONSTRAINT PK_BirdPair PRIMARY KEY ([pair_id]),
 	CONSTRAINT FK_BirdPair_Bird_CustomerBird FOREIGN KEY ([bird_customer]) REFERENCES [CustomerBird]([bird_id]),
 	CONSTRAINT FK_BirdPair_Bird_MaleBird FOREIGN KEY ([male_bird_id]) REFERENCES [Bird]([bird_id]),
@@ -200,7 +202,7 @@ CREATE TABLE [PairTracking]
 	[pair_id] INT,
 	[status] NVARCHAR(20),
 	[content] NVARCHAR(100),
-	[date_content] date,
+	[date_content] DATETIME,
 	CONSTRAINT PK_PairTracking PRIMARY KEY ([tracking_id]),
 	CONSTRAINT FK_PairTracking_BirdPair FOREIGN KEY ([pair_id]) REFERENCES [BirdPair]([pair_id])
 )
