@@ -19,6 +19,7 @@ import swp391.birdfarmshop.util.DBUtils;
  * @author tlminh
  */
 public class BirdPairDAO {
+    
     public ArrayList<BirdPairDTO> getBirdPairByUser(String username,String status) {
         ArrayList<BirdPairDTO> bpList = new ArrayList<>();
         Connection con = null;
@@ -90,5 +91,67 @@ public class BirdPairDAO {
         }
 
         return bpList;
+    }
+       public BirdPairDTO getBirdPairById(String order_id) {
+        BirdPairDTO bp = null;
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        BirdCustomerDAO bsd = new BirdCustomerDAO();
+        BirdDAO bd = new BirdDAO();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String sql = "SELECT bp.pair_id, bp.order_id, bp.number_young_bird,\n"
+                        + "	   bp.bird_customer, bp.male_bird_id, bp.female_bird_id,\n"
+                        + "	   bp.number_egg, bp.number_young_bird, pt.[status]\n"
+                        + "FROM [BirdPair] bp\n"
+                        + "LEFT JOIN [Order] o\n"
+                        + "ON bp.order_id = o.order_id\n"
+                        + "LEFT JOIN [PairTracking] pt\n"
+                        + "ON bp.pair_id = pt.pair_id\n"
+                        + "WHERE o.order_id = ?";
+                pst = con.prepareStatement(sql);
+                pst.setString(1, order_id);
+                rs = pst.executeQuery();
+                while(rs.next()){ 
+                    int pair_id = rs.getInt("pair_id");
+                    int young_bird_price = rs.getInt("number_young_bird");
+                    BirdCustomer birdCustomer = bsd.findBirdCustomer(rs.getInt("bird_customer")+"");
+                    Bird male_bird = bd.getBirdById(rs.getString("male_bird_id"));
+                    Bird female_bird = bd.getBirdById(rs.getString("female_bird_id"));
+                    int number_egg = rs.getInt("number_egg");
+                    int number_young_bird = rs.getInt("number_young_bird");
+                    String status = rs.getString("status");
+                    bp = new BirdPairDTO(pair_id, order_id, young_bird_price, birdCustomer, male_bird, female_bird, number_egg, number_young_bird, status);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (pst != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return bp;
     }
 }

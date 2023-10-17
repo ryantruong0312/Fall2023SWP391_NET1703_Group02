@@ -130,11 +130,11 @@
                                 <div class="box-cart">
                                     <c:forEach items="${sessionScope.CART.birdList}" var="bird">
                                         <div class="item-cart pr-3 my-3">
-                                            <div class="d-flex align-items-center py-3 mx-3">
-                                                <div class="image-item">
+                                            <div class="row align-items-center py-3 pl-3">
+                                                <div class="image-item col-lg-2 col-md-2 col-sm-2 col-2">
                                                     <img src="${bird.value.bird.image_url}" alt="${bird.value.bird.bird_name}" />
                                                 </div>
-                                                <div class="infor-item px-5">
+                                                <div class="infor-item px-5 col-lg-7 col-md-6 col-sm-7 col-7">
                                                     <h5>${bird.value.bird.bird_name}</h5>
                                                     <div class="mt-2">
                                                         <p> 1
@@ -150,7 +150,7 @@
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <div class="price-item ml-4 px-3">
+                                                <div class="price-item ml-4 px-3 col-lg-2 col-md-3 col-sm-2 col-2">
                                                     <c:choose>
                                                         <c:when test="${bird.value.bird.discount > 0}">
                                                             <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${bird.value.bird.price - bird.value.bird.price * bird.value.bird.discount / 100}" pattern="#,###"/> ₫</p>
@@ -166,11 +166,11 @@
                                     </c:forEach>
                                     <c:forEach items="${sessionScope.CARTCHECKOUT.accessoryList}" var="accessory">
                                         <div class="item-cart pr-3 my-3">
-                                            <div class="d-flex align-items-center justify-content-between py-3 mx-3">
-                                                <div class="image-item">
+                                            <div class=" row align-items-center py-3 pl-3">
+                                                <div class="image-item col-lg-2 col-md-2 col-sm-2 col-2">
                                                     <img src="${accessory.value.accessory.image_url}" alt="${accessory.value.accessory.accessory_name}" />
                                                 </div>
-                                                <div class="infor-item px-5">
+                                                <div class="infor-item px-5 col-lg-7 col-md-6 col-sm-7 col-7">
                                                     <h5>${accessory.value.accessory.accessory_name}</h5>
                                                     <div class="mt-2">
                                                         <p>${accessory.value.order_quantity}
@@ -186,14 +186,14 @@
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <div class="price-item ml-4 px-3">
+                                                <div class="price-item ml-2 px-3 col-lg-2 col-md-3 col-sm-2 col-2">
                                                     <c:choose>
                                                         <c:when test="${accessory.value.accessory.discount > 0}">
                                                             <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${accessory.value.order_quantity * accessory.value.accessory.unit_price - accessory.value.accessory.unit_price * accessory.value.accessory.discount / 100}" pattern="#,###"/> ₫</p>
                                                             <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${accessory.value.accessory.discount}%</p>
                                                         </c:when>
                                                         <c:when test="${accessory.value.accessory.unit_price == 0}">
-                                                            <p style="font-size: 14px;"><h5 class="font-weight-bold">Tặng kèm</h5></p>
+                                                              <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"> Tặng kèm</p>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${accessory.value.accessory.unit_price}" pattern="#,###"/> ₫</p>

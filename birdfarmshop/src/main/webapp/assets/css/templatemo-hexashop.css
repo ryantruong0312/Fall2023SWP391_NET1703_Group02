@@ -3040,3 +3040,73 @@ register*/
     height:120px;
     width: 100px;
 }
+.card-pair .btn-detail-pair{
+    cursor:  pointer;
+    font-size: 1rem;
+}
+.card-pair .btn-detail-pair:hover{
+    color: blue;
+}
+.detail-bird-pair .box-pair{
+    border-radius: 0;
+    border: none;
+}
+.detail-bird-pair .pair-img img{
+    height:200px;
+    width: 170px;
+}
+.detail-bird-pair .pair-img p{
+    margin-top: 20px;    
+    font-size: 1.2rem;
+}
+.detail-bird-pair .content-birdpair > div:first-child{
+    border-top: 1px solid #B9B9BC;
+}
+.detail-bird-pair .content-birdpair > div p:first-child:not(.price-pair p:first-child),
+.detail-bird-pair .content-birdpair .price-pair{
+     border-right: 1px solid #B9B9BC; 
+     width: 500px;
+}
+.detail-bird-pair .content-birdpair > div:last-child{
+    border: none;
+}
+.detail-bird-pair .content-birdpair > div:last-child button{
+     background-color: #dc3545;
+     border: none; 
+     border-radius: 15px;
+}
+.detail-bird-pair .content-birdpair > div{
+     border-bottom: 1px solid #B9B9BC; 
+}
+.detail-bird-pair .content-birdpair p {
+    font-size: 1.2rem;
+    line-height: 40px;
+}
+.card-pair{
+    max-height: 700px;
+    overflow-y: scroll; 
+    padding-right: 20px!important;
+ }
+.card-pair::-webkit-scrollbar {
+    border-radius: 0;
+    width: 8px;
+}
+
+.card-pair::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(22, 24, 35, 0.06);
+}
+.card-pair::-webkit-scrollbar-track {
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+#confirm-payment{
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    background-color:  rgba(127, 127, 119,0.7);
+    display: none;
+}
+#confirm-payment .box-remove p{
+   font-size: 1.1rem;
+}

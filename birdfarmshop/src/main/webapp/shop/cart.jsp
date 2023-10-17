@@ -270,14 +270,35 @@
                                             <h4><c:out value="${count}"/></h4>
                                         </div>
                                         <div class="col-md-2 col-lg-2 col-xl-2" style="text-align: center;">
-                                            <img src="assets/images/bird-pair-cart.jpg" class="img-fluid rounded-3" alt="Nhân giống" style="height: 150px; width: 120px;">
+                                            <c:choose>
+                                                <c:when test="${not empty birdPair.value.birdCustomer}">
+                                                    <img src="${birdPair.value.birdCustomer.img_url}" class="img-fluid rounded-3 mb-3" alt="Nhân giống" style="height: 150px; width: 120px;">
+                                                    <img src="${not empty birdPair.value.birdMale ?  birdPair.value.birdMale.image_url : birdPair.value.birdFemale.image_url}" class="img-fluid rounded-3" alt="Nhân giống" style="height: 150px; width: 120px;">
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <img src="${birdPair.value.birdMale.image_url}" class="img-fluid rounded-3 mb-3" alt="Nhân giống" style="height: 150px; width: 120px;">
+                                                    <img src="${birdPair.value.birdFemale.image_url}" class="img-fluid rounded-3" alt="Nhân giống" style="height: 150px; width: 120px;">
+                                                </c:otherwise>
+                                            </c:choose>
                                         </div>
                                         <div class="col-md-3 col-lg-3 col-xl-3">
-                                            <p class="lead fw-bold mb-2" style="font-size: 23px;">Phí ghép cặp nhân giống</p>
+                                             
+                                                <c:choose>
+                                                    <c:when test="${not empty birdPair.value.birdCustomer}">
+                                                        <p class="lead fw-bold mb-5" style="font-size: 23px;">${birdPair.value.birdCustomer.name} </p>
+                                                        <p class="lead fw-bold mb-2" style="font-size: 23px;">Phí nhân giống:</p>
+                                                        <p class="lead fw-bold mt-5" style="font-size: 23px;">${not empty birdPair.value.birdMale ?  birdPair.value.birdMale.bird_name : birdPair.value.birdFemale.bird_name}</p>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <p class="lead fw-bold mb-5" style="font-size: 23px;">${birdPair.value.birdMale.bird_name}</p>
+                                                        <p class="lead fw-bold mb-2" style="font-size: 23px;">Phí nhân giống:</p>
+                                                        <p class="lead fw-bold mt-5" style="font-size: 23px;">${birdPair.value.birdFemale.bird_name}</p>               
+                                                    </c:otherwise>
+                                                </c:choose>               
                                         </div>
                                         <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
                                                 <input id="form1" min="1" disabled="" name="quantity" value="1" type="number"
-                                                   class="form-control form-control-sm" style="text-align: center; height: 40px; border: 1px solid; font-size: 16px;"/>
+                                                 class="form-control form-control-sm" style="text-align: center; height: 40px; border: 1px solid; font-size: 16px;"/>
                                         </div>
                                         <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">                                         
                                               <h5 class="mb-0" style="font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdPair.value.servicePrice}" pattern="#,###"/> ₫</h5>

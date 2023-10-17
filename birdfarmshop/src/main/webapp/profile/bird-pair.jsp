@@ -164,6 +164,15 @@
                 border-radius: 0;
                 background-color: rgba(0, 0, 0, 0);
             }
+            .nav-item:first-child{
+                width: 10%;
+            }
+            .nav-item{
+                width: 18%;
+            }
+            #orderTabs li:hover{
+                cursor: pointer;
+            }
         </style>
 
     </head>
@@ -284,19 +293,22 @@
                                     <input type="hidden" name="status" value="All">
                                     <ul class="nav nav-tabs" id="orderTabs">
                                         <li class="nav-item">
-                                            <a class="nav-link active">Tất cả</a>
+                                            <a onclick="changeStatus(this)" data-value="All" class="nav-link ${param.status == 'All' ? "active":"" || param.status == null ? "active":""}">Tất cả</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link">Đang ghép</a>
+                                            <a onclick="changeStatus(this)" data-value="Chờ lấy chim" class="nav-link ${param.status == 'Chờ lấy chim' ? "active":""}">Chờ lấy chim</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link">Đã sinh sản</a>
+                                            <a onclick="changeStatus(this)" data-value="Đang ghép" class="nav-link ${param.status == 'Đang ghép' ? "active":""}">Đang ghép</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link">Đã ấp nở</a>
+                                            <a onclick="changeStatus(this)" data-value="Đã sinh sản" class="nav-link ${param.status == 'Đã sinh sản' ? "active":""}">Đã sinh sản</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link">Thanh toán</a>
+                                            <a onclick="changeStatus(this)" data-value="Đã ấp nở" class="nav-link ${param.status == 'Đã ấp nở' ? "active":""}">Đã ấp nở</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a onclick="changeStatus(this)" data-value="Đã thanh toán" class="nav-link ${param.status == 'Đã thanh toán' ? "active":""}">Đã thanh toán</a>
                                         </li>
                                     </ul>
                                     <div class="tab-pane">
@@ -322,7 +334,7 @@
                                                                                         <div class="pair-status mb-4">
                                                                                             ${birdPair.status}
                                                                                         </div>
-                                                                                        <a>Xem chi tiết</a>
+                                                                                        <a href="MainController?action=NavToBirdPairDetail&order_id=${birdPair.order_id}&pair_id=${birdPair.pair_id}">Xem chi tiết</a>
                                                                                     </div>
                                                                                     <c:choose>
                                                                                         <c:when test="${not empty birdPair.male_bird}">
@@ -353,7 +365,7 @@
                                                                                         <div class="pair-status mb-4">
                                                                                             ${birdPair.status}
                                                                                         </div>
-                                                                                        <a>Xem chi tiết</a>
+                                                                                        <a href="MainController?action=NavToBirdPairDetail&order_id=${birdPair.order_id}&pair_id=${birdPair.pair_id}">Xem chi tiết</a>
                                                                                     </div>
                                                                                     <div class="pair-img pr-3 py-3 text-center">
                                                                                         <img src="${birdPair.female_bird.image_url}" alt="${birdPair.female_bird.bird_name}"/>
@@ -370,7 +382,7 @@
                                                                     <h4 class="text-center">Bạn chưa có ghép cặp chim</h4>
                                                                 </div>
                                                             </c:otherwise>
-                                                        </c:choose>
+                                                        </c:choose>   
                                                     </div>
                                                 </div>
                                             </div>
@@ -466,7 +478,11 @@
     <!-- Global Init -->
     <script src="assets/js/custom.js"></script>
     <script>
-
+        function changeStatus(event){
+            let status = event.getAttribute("data-value");
+            $('input[name=status]').val(status);
+            $('#birdPairCustomerOrder').submit();
+        }
     </script>
 </body>
 </html>
