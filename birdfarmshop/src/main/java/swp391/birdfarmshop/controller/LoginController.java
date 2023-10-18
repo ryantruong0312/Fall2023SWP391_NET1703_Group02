@@ -26,6 +26,7 @@ public class LoginController extends HttpServlet {
 
     private static final String DEST_NAV_HOME = "RenderHomeController";
     private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,6 +38,7 @@ public class LoginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String url = DEST_NAV_LOGIN;
         try {
             String username = request.getParameter("account");
             String password = request.getParameter("password");
@@ -45,7 +47,6 @@ public class LoginController extends HttpServlet {
             UserDAO user = new UserDAO();
             User u = user.findUser(username, username);
             HttpSession session = request.getSession(true);
-            String url = DEST_NAV_LOGIN;
             if (u != null) {
                 String decodePassword = JWTUtils.decodeJWT(u.getPassword());
                 if (password.equals(decodePassword)) {
@@ -72,9 +73,11 @@ public class LoginController extends HttpServlet {
             } else {
                 session.setAttribute("ERROR", "Email/tên đăng nhập hoặc mật khẩu không chính xác");
             }
-            request.getRequestDispatcher(url).forward(request, response);
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

@@ -24,6 +24,7 @@ import swp391.birdfarmshop.util.GoogleUtils;
 @WebServlet(name = "LoginGoogleController", urlPatterns = {"/LoginGoogleController"})
 public class LoginGoogleController extends HttpServlet {
     private static final String DEST_NAV_HOME = "RenderHomeController";
+    private static final String DEST_NAV_LOGIN = "MainController?action=NavToLogin";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,9 +48,14 @@ public class LoginGoogleController extends HttpServlet {
                 GooglePojo account = GoogleUtils.getUserInfo(accessToken);
                 User u = user.findUser(account.getId(), account.getEmail());
                 if (u != null) {
-                    session.setAttribute("LOGIN_USER", u);
-                    session.setAttribute("SUCCESS", "Đăng nhập thành công");
-                    response.sendRedirect(DEST_NAV_HOME); 
+                   if(u.getStatus().equals("active")){
+                        session.setAttribute("LOGIN_USER", u);
+                        session.setAttribute("SUCCESS", "Đăng nhập thành công");
+                        response.sendRedirect(DEST_NAV_HOME);
+                   } else {
+                        session.setAttribute("ERROR", "Tài khoản của bạn đã bị khóa, vui lòng liên hệ với cửa hàng");
+                        response.sendRedirect(DEST_NAV_LOGIN);
+                   }
                 } else {
                     int createUser = user.createUser(account.getId(), account.getEmail(), "", account.getName(), "", "customer", "google","active");
                     if (createUser == 0) {

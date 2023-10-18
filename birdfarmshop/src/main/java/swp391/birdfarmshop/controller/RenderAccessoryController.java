@@ -51,7 +51,12 @@ public class RenderAccessoryController extends HttpServlet {
             String search = request.getParameter("txtAccessory");
             String categoryID = request.getParameter("txtType");
             String price = request.getParameter("txtPrice");
-
+            String clear = request.getParameter("clear");
+            if(clear != null){
+                search = null;
+                categoryID = null;
+                price = null;
+            }
             if (price != null && price.equals("All")) {
                 price = null;
             }

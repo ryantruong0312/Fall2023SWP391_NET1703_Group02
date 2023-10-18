@@ -6,23 +6,27 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import swp391.birdfarmshop.dao.UserDAO;
+import java.util.ArrayList;
+import swp391.birdfarmshop.dao.BirdPairDAO;
+import swp391.birdfarmshop.dao.TrackingBirdPairDAO;
+import swp391.birdfarmshop.dto.BirdPairDTO;
+import swp391.birdfarmshop.dto.TrackingDTO;
 import swp391.birdfarmshop.model.User;
-import swp391.birdfarmshop.util.JWTUtils;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name="ActiveController", urlPatterns={"/ActiveController"})
-public class ActiveController extends HttpServlet {
+@WebServlet(name="RenderBirdPairDetailController", urlPatterns={"/RenderBirdPairDetailController"})
+public class RenderBirdPairDetailController extends HttpServlet {
+     private static final String ERROR = "RenderHomeController";
+     private static final String SUCCESS = "profile/bird-pair-detail.jsp";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -33,25 +37,27 @@ public class ActiveController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String url = SUCCESS;
         try {
-            String token = request.getParameter("token");
-            String email = JWTUtils.decodeJWT(token);
-            UserDAO user = new UserDAO();
-            User u = user.findUser("", email);
             HttpSession session = request.getSession();
-            if( u!= null){
-                int result = user.updateActive(u.getUsername(),"active");
-                if( result == 0){
-                    session.setAttribute("ERROR", "Kích hoạt tài khoản thất bại");
-                }else{
-                    session.setAttribute("SUCCESS", "Kích hoạt tài khoản thành công");
-                }
+            User u = (User) session.getAttribute("LOGIN_USER");
+            String order_id = request.getParameter("order_id");
+            int pair_id = Integer.parseInt(request.getParameter("pair_id"));
+            if(u != null && u.getRole().equals("customer")){
+               BirdPairDAO bpd = new BirdPairDAO();
+               TrackingBirdPairDAO trackingDao =  new TrackingBirdPairDAO();
+               BirdPairDTO birdPair = bpd.getBirdPairById(order_id);
+               ArrayList<TrackingDTO> trackingList = trackingDao.getTrackingBirdPair(0);
+               request.setAttribute("BIRDPAIR", birdPair);
+               request.setAttribute("TRACKINGLIST", trackingList);
             }else{
-                session.setAttribute("ERROR", "Kích hoạt tài khoản thất bại");
-            } 
-            response.sendRedirect("MainController?action=NavToLogin");
+                url=ERROR;
+                session.setAttribute("ERROR", "Bạn chưa đăng nhập"); 
+            }
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            request.getRequestDispatcher(url).forward(request, response);
         }
     } 
 

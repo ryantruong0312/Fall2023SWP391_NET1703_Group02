@@ -28,16 +28,18 @@ public class UserDAO {
     public User getUser(String username, String password) {
         User u = null;
         Connection cnn = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
         try {
             cnn = DBUtils.getConnection();
             if (cnn != null) {
                 String sql = "SELECT [username],[password], [full_name],[phone],[email],[role],[address],[point],[register_date],[login_by],[status] FROM [User] \n"
                         + "WHERE (username = ? OR email = ?)AND [password] = ? COLLATE Latin1_General_CS_AS";
-                PreparedStatement pst = cnn.prepareStatement(sql);
+                pst = cnn.prepareStatement(sql);
                 pst.setString(1, username);
                 pst.setString(2, username);
                 pst.setString(3, password);
-                ResultSet rs = pst.executeQuery();
+                rs = pst.executeQuery();
                 if (rs != null && rs.next()) {
                     String user = rs.getString("username");
                     String fullName = rs.getString("full_name");
@@ -62,6 +64,20 @@ public class UserDAO {
                     e.printStackTrace();
                 }
             }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return u;
     }
@@ -69,15 +85,17 @@ public class UserDAO {
     public User findUser(String username, String emailFind) {
         User u = null;
         Connection cnn = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
         try {
             cnn = DBUtils.getConnection();
             if (cnn != null) {
                 String sql = "SELECT [username],[password], [full_name],[phone],[email],[role],[address],[point],[register_date],[login_by],[status] FROM [User] \n"
                         + "WHERE username = ? OR email = ? ";
-                PreparedStatement pst = cnn.prepareStatement(sql);
+                pst = cnn.prepareStatement(sql);
                 pst.setString(1, username);
                 pst.setString(2, emailFind);
-                ResultSet rs = pst.executeQuery();
+                rs = pst.executeQuery();
                 if (rs != null && rs.next()) {
                     username = rs.getString("username");
                     String password = rs.getString("password");
@@ -103,6 +121,20 @@ public class UserDAO {
                     e.printStackTrace();
                 }
             }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return u;
     }
@@ -110,11 +142,12 @@ public class UserDAO {
     public int createUser(String user, String email, String password, String name, String mobile, String role, String loginBy, String status) {
         int result = 0;
         Connection cnn = null;
+        PreparedStatement pst = null;
         try {
             cnn = DBUtils.getConnection();
             String sql = "INSERT INTO [User](username,[password],full_name,phone,email,register_date,[role],[login_by],[status])\n"
                     + "VALUES(?,?,?,?,?,?,?,?,?)";
-            PreparedStatement pst = cnn.prepareStatement(sql);
+            pst = cnn.prepareStatement(sql);
             pst.setString(1, user);
             pst.setString(2, password);
             pst.setString(3, name);
@@ -136,6 +169,13 @@ public class UserDAO {
                     e.printStackTrace();
                 }
             }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return result;
     }
@@ -143,13 +183,14 @@ public class UserDAO {
     public int updatePassword(String user, String password) {
         int result = 0;
         Connection cnn = null;
+        PreparedStatement pst = null;
         try {
             cnn = DBUtils.getConnection();
             if (cnn != null) {
                 String sql = "UPDATE [User]\n"
                         + "SET [password] = ?\n"
                         + "WHERE [username] = ?";
-                PreparedStatement pst = cnn.prepareStatement(sql);
+                pst = cnn.prepareStatement(sql);
                 pst.setString(1, password);
                 pst.setString(2, user);
                 result = pst.executeUpdate();
@@ -164,6 +205,13 @@ public class UserDAO {
                     e.printStackTrace();
                 }
             }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return result;
     }
@@ -171,13 +219,14 @@ public class UserDAO {
     public int updateActive(String username, String active) {
         int result = 0;
         Connection cnn = null;
+        PreparedStatement pst = null;
         try {
             cnn = DBUtils.getConnection();
             if (cnn != null) {
                 String sql = "UPDATE [User]\n"
                         + "SET [status] = ?\n"
                         + "WHERE [username] = ?";
-                PreparedStatement pst = cnn.prepareStatement(sql);
+                pst = cnn.prepareStatement(sql);
                 pst.setString(1, active);
                 pst.setString(2, username);
                 result = pst.executeUpdate();
@@ -192,8 +241,16 @@ public class UserDAO {
                     e.printStackTrace();
                 }
             }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return result;
         }
-        return result;
+
     }
 
     public ArrayList<AccountDTO> getAccountList(String search, String page, int recordsPerPage) throws SQLException {
@@ -205,10 +262,10 @@ public class UserDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 String sql = GET_ACCOUNT_LIST;
-                if(search != null){
-                    sql += " WHERE username LIKE N'%"+search+"%' "
-                            + "OR full_name LIKE N'%"+search+"%' \n";
-                }
+                if (search != null) {
+                    sql += " WHERE username LIKE N'%" + search + "%' "
+                            + "OR full_name LIKE N'%" + search + "%' \n";
+                    }
                 if (page != null) {
                     int pageNumber = Integer.parseInt(page);
                     int start = (pageNumber - 1) * recordsPerPage;
@@ -238,7 +295,8 @@ public class UserDAO {
         }
         return accountList;
     }
-        public int totalAccount(String search) throws SQLException {
+
+    public int totalAccount(String search) throws SQLException {
         int result = 0;
         Connection con = null;
         PreparedStatement stm = null;
@@ -247,17 +305,15 @@ public class UserDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 String sql = "SELECT COUNT(username) AS [Amount] \n"
-                        +    "FROM [User]";
-                if(search != null){
-                    sql += " WHERE username LIKE N'%"+search+"%' "
-                            + "OR full_name LIKE N'%"+search+"%' "
-                            + "OR role LIKE N'%" + search + "%' "
-                            + "OR status LIKE N'%" + search + "%' ";
+                        + "FROM [User]";
+                if (search != null) {
+                    sql += " WHERE username LIKE N'%" + search + "%' "
+                            + "OR full_name LIKE N'%" + search + "%' \n";
                 }
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
                 if (rs != null && rs.next()) {
-                   result = rs.getInt("Amount");
+                    result = rs.getInt("Amount");
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {
@@ -275,6 +331,7 @@ public class UserDAO {
         }
         return result;
     }
+
     public boolean updateProfile(String fullName, String phone, String address, String username) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;

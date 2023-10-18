@@ -446,10 +446,5 @@ public class AccessoryDAO {
         }
         return false;
     }
-    
-    public static void main(String[] args) throws SQLException {
-        AccessoryDAO a = new AccessoryDAO();
-        System.out.println(a.updateAccessoryQuantity("BL001", "12"));
-    }
-
+   
 }

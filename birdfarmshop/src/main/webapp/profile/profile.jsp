@@ -135,6 +135,21 @@
                 width: 20%;
                 text-align: center;
             }
+            .scrollable-container {
+                overflow-x: scroll;
+            }
+            .scrollable-list {
+                white-space: nowrap;
+                display: inline-block;
+            }
+            .scrollable-list th {
+                width: auto;
+                padding: 20px;
+            }
+            .scrollable-list td {
+                width: auto;
+                padding: 20px;
+            }
         </style>
 
     </head>
@@ -243,6 +258,12 @@
         <!-- ***** Header Area End ***** -->
 
         <main>
+            <c:set value="${requestScope.ORDERLIST_PENDING}" var="orderListPending"/>
+            <c:set value="${requestScope.ORDERLIST_PROGRESS}" var="orderListProgress"/>
+            <c:set value="${requestScope.ORDERLIST_DELIVERING}" var="orderListDelivering"/>
+            <c:set value="${requestScope.ORDERLIST_DELIVERED}" var="orderListDelivered"/>
+            <c:set value="${requestScope.ORDERLIST_CANCEL}" var="orderListCancel"/>
+
             <div class="container">
                 <div class="row gutters">
                     <%@include file="../layout/sidebar-profile.jsp" %>
@@ -332,16 +353,15 @@
                                         <a class="nav-link" data-toggle="tab" href="#processedTab">Đang đóng hàng</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#inTransitTab">Đang giao</a>
+                                        <a class="nav-link" data-toggle="tab" href="#inTransitTab">Đang giao hàng</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#deliveredTab">Đã giao</a>
+                                        <a class="nav-link" data-toggle="tab" href="#deliveredTab">Đã giao hàng</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#deliveredTab">Đã hủy</a>
+                                        <a class="nav-link" data-toggle="tab" href="#cancelTab">Đã hủy</a>
                                     </li>
                                 </ul>
-
                                 <!-- Tab content -->
                                 <div class="tab-content">
                                     <!-- Pending Orders Tab -->
@@ -351,103 +371,292 @@
                                             <div class="col-12">
                                                 <div class="card w-100"> <!-- Add the w-100 class to make the card expand to full width -->
                                                     <div class="card-body">
-                                                        <!-- Order ID and Create Date -->
-                                                        <div class="d-flex justify-content-between align-items-start">
-                                                            <h5 class="card-title mb-0">Order ID: 1</h5>
-                                                            <p class="card-text text-right">Create Date: 2023-10-06</p>
-                                                        </div>
+
 
                                                         <!-- Table-like structure for order items -->
-                                                        <div class="table-responsive">
-                                                            <table class="table table-borderless">
+                                                        <div class="scrollable-container">
+                                                            <table id="order-list" class="scrollable-list">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>Index</th>
-                                                                        <th>Item Name</th>
-                                                                        <th>Quantity</th>
-                                                                        <th>Item Price</th>
+                                                                        <th>STT</th>
+                                                                        <th>Order Id</th>
+                                                                        <th>Ngày đặt hàng</th>
+                                                                        <th>Tên người nhận</th>
+                                                                        <th>Sđt người nhận</th>
+                                                                        <th>Địa chỉ nhận hàng</th>
+                                                                        <th>Tình trạng thanh toán</th>
+                                                                        <th>Tổng đơn hàng</th>
+                                                                        <th>Điểm đã dùng</th>
+                                                                        <th>Chi tiết</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <tr>
-                                                                        <td>1</td>
-                                                                        <td>Product 1</td>
-                                                                        <td>2</td>
-                                                                        <td>$50.00</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>2</td>
-                                                                        <td>Product 2</td>
-                                                                        <td>1</td>
-                                                                        <td>$50.00</td>
-                                                                    </tr>
-                                                                    <!-- Add more rows as needed -->
+
+                                                                    <c:if test="${orderListPending.size() > 0 && orderListPending != null}">
+                                                                        <c:forEach items="${orderListPending}" var="order" varStatus="counter">
+                                                                            <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
+                                                                                <td>${counter.count}</td>
+                                                                                <td>${order.order_id}</td>
+                                                                                <td>${order.order_date}</td>
+                                                                                <td>${order.name_receiver}</td>
+                                                                                <td>${order.phone_receiver}</td>
+                                                                                <td>${order.address_receiver}</td>
+                                                                                <td>${order.payment_status}</td>
+                                                                                <td>${order.total_price}</td>
+                                                                                <td>${order.point}</td>
+                                                                                <td><a href="MainController?action=NavToCustomerOrderItem&order_id=${order.order_id}"><span>Chi tiết</span></a></td>
+                                                                            </tr>
+                                                                        </c:forEach>
+                                                                    </c:if>
+                                                                    <c:if test="${orderListPending.size() == 0 || orderListPending == null}">
+                                                                        <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
+                                                                            <td colspan="10">Chưa có đơn hàng</td>
+                                                                        </tr>
+                                                                    </c:if>       
                                                                 </tbody>
                                                             </table>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- Card components for pending orders -->
-                                            <div class="col-12">
-                                                <div class="card w-100"> <!-- Add the w-100 class to make the card expand to full width -->
-                                                    <div class="card-body">
-                                                        <!-- Order ID and Create Date -->
-                                                        <div class="d-flex justify-content-between align-items-start">
-                                                            <h5 class="card-title mb-0">Order ID: 1</h5>
-                                                            <p class="card-text text-right">Create Date: 2023-10-06</p>
-                                                        </div>
-
-                                                        <!-- Table-like structure for order items -->
-                                                        <div class="table-responsive">
-                                                            <table class="table table-borderless">
-                                                                <!-- ... (table content as previously mentioned) ... -->
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Card components for pending orders -->
-                                            <div class="col-12">
-                                                <div class="card w-100"> <!-- Add the w-100 class to make the card expand to full width -->
-                                                    <div class="card-body">
-                                                        <!-- Order ID and Create Date -->
-                                                        <div class="d-flex justify-content-between align-items-start">
-                                                            <h5 class="card-title mb-0">Order ID: 1</h5>
-                                                            <p class="card-text text-right">Create Date: 2023-10-06</p>
-                                                        </div>
-
-                                                        <!-- Table-like structure for order items -->
-                                                        <div class="table-responsive">
-                                                            <table class="table table-borderless">
-                                                                <!-- ... (table content as previously mentioned) ... -->
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Add more card components as needed -->
                                         </div>
+
                                     </div>
 
                                     <!-- Processed Orders Tab -->
                                     <div class="tab-pane fade" id="processedTab">
                                         <!-- Similar structure as the Pending Orders Tab -->
+                                        <div class="row">
+                                            <!-- Card components for pending orders -->
+                                            <div class="col-12">
+                                                <div class="card w-100"> <!-- Add the w-100 class to make the card expand to full width -->
+                                                    <div class="card-body">
+
+
+                                                        <!-- Table-like structure for order items -->
+                                                        <div class="scrollable-container">
+                                                            <table id="order-list" class="scrollable-list">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>STT</th>
+                                                                        <th>Order Id</th>
+                                                                        <th>Ngày đặt hàng</th>
+                                                                        <th>Tên người nhận</th>
+                                                                        <th>Sđt người nhận</th>
+                                                                        <th>Địa chỉ nhận hàng</th>
+                                                                        <th>Tình trạng thanh toán</th>
+                                                                        <th>Tổng đơn hàng</th>
+                                                                        <th>Điểm đã dùng</th>
+                                                                        <th>Chi tiết</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                    <c:if test="${orderListProgress.size() > 0 && orderListProgress != null}">
+                                                                        <c:forEach items="${orderListProgress}" var="order" varStatus="counter">
+                                                                            <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
+                                                                                <td>${counter.count}</td>
+                                                                                <td>${order.order_id}</td>
+                                                                                <td>${order.order_date}</td>
+                                                                                <td>${order.name_receiver}</td>
+                                                                                <td>${order.phone_receiver}</td>
+                                                                                <td>${order.address_receiver}</td>
+                                                                                <td>${order.payment_status}</td>
+                                                                                <td>${order.total_price}</td>
+                                                                                <td>${order.point}</td>
+                                                                                <td><a href="MainController?action=NavToCustomerOrderItem&order_id=${order.order_id}"><span>Chi tiết</span></a></td>
+                                                                            </tr>
+                                                                        </c:forEach>
+                                                                    </c:if>
+                                                                    <c:if test="${orderListProgress.size() == 0 || orderListProgress == null}">
+                                                                        <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
+                                                                            <td colspan="10">Chưa có đơn hàng</td>
+                                                                        </tr>
+                                                                    </c:if>       
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <!-- In-transit Orders Tab -->
                                     <div class="tab-pane fade" id="inTransitTab">
                                         <!-- Similar structure as the Pending Orders Tab -->
+                                        <div class="row">
+                                            <!-- Card components for pending orders -->
+                                            <div class="col-12">
+                                                <div class="card w-100"> <!-- Add the w-100 class to make the card expand to full width -->
+                                                    <div class="card-body">
+
+
+                                                        <!-- Table-like structure for order items -->
+                                                        <div class="scrollable-container">
+                                                            <table id="order-list" class="scrollable-list">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>STT</th>
+                                                                        <th>Order Id</th>
+                                                                        <th>Ngày đặt hàng</th>
+                                                                        <th>Tên người nhận</th>
+                                                                        <th>Sđt người nhận</th>
+                                                                        <th>Địa chỉ nhận hàng</th>
+                                                                        <th>Tình trạng thanh toán</th>
+                                                                        <th>Tổng đơn hàng</th>
+                                                                        <th>Điểm đã dùng</th>
+                                                                        <th>Chi tiết</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                    <c:if test="${orderListDelivering.size() > 0 && orderListDelivering != null}">
+                                                                        <c:forEach items="${orderListDelivering}" var="order" varStatus="counter">
+                                                                            <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
+                                                                                <td>${counter.count}</td>
+                                                                                <td>${order.order_id}</td>
+                                                                                <td>${order.order_date}</td>
+                                                                                <td>${order.name_receiver}</td>
+                                                                                <td>${order.phone_receiver}</td>
+                                                                                <td>${order.address_receiver}</td>
+                                                                                <td>${order.payment_status}</td>
+                                                                                <td>${order.total_price}</td>
+                                                                                <td>${order.point}</td>
+                                                                                <td><a href="MainController?action=NavToCustomerOrderItem&order_id=${order.order_id}"><span>Chi tiết</span></a></td>
+                                                                            </tr>
+                                                                        </c:forEach>
+                                                                    </c:if>
+                                                                    <c:if test="${orderListDelivering.size() == 0 || orderListDelivering == null}">
+                                                                        <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
+                                                                            <td colspan="10">Chưa có đơn hàng</td>
+                                                                        </tr>
+                                                                    </c:if>       
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <!-- Delivered Orders Tab -->
                                     <div class="tab-pane fade" id="deliveredTab">
                                         <!-- Similar structure as the Pending Orders Tab -->
+                                        <div class="row">
+                                            <!-- Card components for pending orders -->
+                                            <div class="col-12">
+                                                <div class="card w-100"> <!-- Add the w-100 class to make the card expand to full width -->
+                                                    <div class="card-body">
+
+
+                                                        <!-- Table-like structure for order items -->
+                                                        <div class="scrollable-container">
+                                                            <table id="order-list" class="scrollable-list">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>STT</th>
+                                                                        <th>Order Id</th>
+                                                                        <th>Ngày đặt hàng</th>
+                                                                        <th>Tên người nhận</th>
+                                                                        <th>Sđt người nhận</th>
+                                                                        <th>Địa chỉ nhận hàng</th>
+                                                                        <th>Tình trạng thanh toán</th>
+                                                                        <th>Tổng đơn hàng</th>
+                                                                        <th>Điểm đã dùng</th>
+                                                                        <th>Chi tiết</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                    <c:if test="${orderListDelivered.size() > 0 && orderListDelivered != null}">
+                                                                        <c:forEach items="${orderListDelivered}" var="order" varStatus="counter">
+                                                                            <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
+                                                                                <td>${counter.count}</td>
+                                                                                <td>${order.order_id}</td>
+                                                                                <td>${order.order_date}</td>
+                                                                                <td>${order.name_receiver}</td>
+                                                                                <td>${order.phone_receiver}</td>
+                                                                                <td>${order.address_receiver}</td>
+                                                                                <td>${order.payment_status}</td>
+                                                                                <td>${order.total_price}</td>
+                                                                                <td>${order.point}</td>
+                                                                                <td><a href="MainController?action=NavToCustomerOrderItem&order_id=${order.order_id}"><span>Chi tiết</span></a></td>
+                                                                            </tr>
+                                                                        </c:forEach>
+                                                                    </c:if>
+                                                                    <c:if test="${orderListDelivered.size() == 0 || orderListDelivered == null}">
+                                                                        <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
+                                                                            <td colspan="10">Chưa có đơn hàng</td>
+                                                                        </tr>
+                                                                    </c:if>       
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <!-- Cancelled Orders Tab -->
-                                    <div class="tab-pane fade" id="deliveredTab">
+                                    <div class="tab-pane fade" id="cancelTab">
                                         <!-- Similar structure as the Pending Orders Tab -->
+                                        <div class="row">
+                                            <!-- Card components for pending orders -->
+                                            <div class="col-12">
+                                                <div class="card w-100"> <!-- Add the w-100 class to make the card expand to full width -->
+                                                    <div class="card-body">
+
+
+                                                        <!-- Table-like structure for order items -->
+                                                        <div class="scrollable-container">
+                                                            <table id="order-list" class="scrollable-list">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>STT</th>
+                                                                        <th>Order Id</th>
+                                                                        <th>Ngày đặt hàng</th>
+                                                                        <th>Tên người nhận</th>
+                                                                        <th>Sđt người nhận</th>
+                                                                        <th>Địa chỉ nhận hàng</th>
+                                                                        <th>Tình trạng thanh toán</th>
+                                                                        <th>Tổng đơn hàng</th>
+                                                                        <th>Điểm đã dùng</th>
+                                                                        <th>Chi tiết</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                    <c:if test="${orderListCancel.size() > 0 && orderListCancel != null}">
+                                                                        <c:forEach items="${orderListCancel}" var="order" varStatus="counter">
+                                                                            <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
+                                                                                <td>${counter.count}</td>
+                                                                                <td>${order.order_id}</td>
+                                                                                <td>${order.order_date}</td>
+                                                                                <td>${order.name_receiver}</td>
+                                                                                <td>${order.phone_receiver}</td>
+                                                                                <td>${order.address_receiver}</td>
+                                                                                <td>${order.payment_status}</td>
+                                                                                <td>${order.total_price}</td>
+                                                                                <td>${order.point}</td>
+                                                                                <td><a href="MainController?action=NavToCustomerOrderItem&order_id=${order.order_id}"><span>Chi tiết</span></a></td>
+                                                                            </tr>
+                                                                        </c:forEach>
+                                                                    </c:if>
+                                                                    <c:if test="${orderListCancel.size() == 0 || orderListCancel == null}">
+                                                                        <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
+                                                                            <td colspan="10">Chưa có đơn hàng</td>
+                                                                        </tr>
+                                                                    </c:if>       
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -542,7 +751,7 @@
 
         <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
-  
+
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
 

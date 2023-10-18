@@ -36,8 +36,12 @@ public class DeleteCartController extends HttpServlet {
             HttpSession session = request.getSession();
             CartDTO cart = (CartDTO) session.getAttribute("CART");
             if(cart != null){
-                session.removeAttribute("CART");
-                session.setAttribute("SUCCESS", "Xóa giỏ hàng thành công");
+                if(cart.getTotalItem() > 0 ){
+                    session.removeAttribute("CART");
+                    session.setAttribute("SUCCESS", "Xóa giỏ hàng thành công");
+                } else {
+                     session.setAttribute("ERROR", "Không có sản phẩm nào trong giỏ hàng của bạn");
+                }
             }else{
                 session.setAttribute("ERROR", "Không có sản phẩm nào trong giỏ hàng của bạn");
             }

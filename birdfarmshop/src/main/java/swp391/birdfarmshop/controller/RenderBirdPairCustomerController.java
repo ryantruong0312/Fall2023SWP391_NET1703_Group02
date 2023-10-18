@@ -13,16 +13,19 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import swp391.birdfarmshop.dao.UserDAO;
+import java.util.ArrayList;
+import swp391.birdfarmshop.dao.BirdPairDAO;
+import swp391.birdfarmshop.dto.BirdPairDTO;
 import swp391.birdfarmshop.model.User;
-import swp391.birdfarmshop.util.JWTUtils;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name="ActiveController", urlPatterns={"/ActiveController"})
-public class ActiveController extends HttpServlet {
+@WebServlet(name="RenderBirdPairCustomerController", urlPatterns={"/RenderBirdPairCustomerController"})
+public class RenderBirdPairCustomerController extends HttpServlet {
+   private static final String SUCCESS = "profile/bird-pair.jsp";
+   private static final String ERROR = "RenderHomeController";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -33,25 +36,23 @@ public class ActiveController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String url = SUCCESS;
         try {
-            String token = request.getParameter("token");
-            String email = JWTUtils.decodeJWT(token);
-            UserDAO user = new UserDAO();
-            User u = user.findUser("", email);
+            String status = request.getParameter("status");
             HttpSession session = request.getSession();
-            if( u!= null){
-                int result = user.updateActive(u.getUsername(),"active");
-                if( result == 0){
-                    session.setAttribute("ERROR", "Kích hoạt tài khoản thất bại");
-                }else{
-                    session.setAttribute("SUCCESS", "Kích hoạt tài khoản thành công");
-                }
+            User u = (User)session.getAttribute("LOGIN_USER");
+            if(u != null){
+                BirdPairDAO bpd = new BirdPairDAO();
+                ArrayList<BirdPairDTO> birdPairList = bpd.getBirdPairByUser(u.getUsername(),status);
+            request.setAttribute("BIRDPAIRLIST", birdPairList);
             }else{
-                session.setAttribute("ERROR", "Kích hoạt tài khoản thất bại");
-            } 
-            response.sendRedirect("MainController?action=NavToLogin");
+              url = ERROR;
+              session.setAttribute("ERROR", "Bạn chưa đăng nhập");
+            }
         }catch(Exception e){
             e.printStackTrace();
+        }finally{
+            request.getRequestDispatcher(url).forward(request, response);
         }
     } 
 

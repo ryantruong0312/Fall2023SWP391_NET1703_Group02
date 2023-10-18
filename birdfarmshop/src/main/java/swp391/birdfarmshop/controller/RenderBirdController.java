@@ -45,6 +45,15 @@ public class RenderBirdController extends HttpServlet {
             String price = request.getParameter("txtPrice");
             String gender = request.getParameter("txtGender");
             String age = request.getParameter("txtAge");
+            String clear = request.getParameter("clear");
+            if(clear != null){
+                search = null;
+                breedId= null;
+                price = null;
+                age = null;
+                clear = null;
+                page = "1";
+            }
             if (breedId != null && breedId.equals("All")) {
                 breedId = null;
             }

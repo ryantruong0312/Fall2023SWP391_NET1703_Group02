@@ -13,16 +13,16 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import swp391.birdfarmshop.dao.UserDAO;
-import swp391.birdfarmshop.model.User;
-import swp391.birdfarmshop.util.JWTUtils;
+import swp391.birdfarmshop.dto.CartDTO;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name="ActiveController", urlPatterns={"/ActiveController"})
-public class ActiveController extends HttpServlet {
+@WebServlet(name="RemoveBirdPairFromCartController", urlPatterns={"/RemoveBirdPairFromCartController"})
+public class RemoveBirdPairFromCartController extends HttpServlet {
+    private static final String ERROR = "errorpages/error.jsp";
+    private static final String SUCCESS = "shop/cart.jsp";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -33,25 +33,23 @@ public class ActiveController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+               String url = ERROR;
         try {
-            String token = request.getParameter("token");
-            String email = JWTUtils.decodeJWT(token);
-            UserDAO user = new UserDAO();
-            User u = user.findUser("", email);
+            String bird_pair_id = request.getParameter("bird_pair_id");
             HttpSession session = request.getSession();
-            if( u!= null){
-                int result = user.updateActive(u.getUsername(),"active");
-                if( result == 0){
-                    session.setAttribute("ERROR", "Kích hoạt tài khoản thất bại");
-                }else{
-                    session.setAttribute("SUCCESS", "Kích hoạt tài khoản thành công");
-                }
+            if (session != null) {
+                CartDTO cart = (CartDTO) session.getAttribute("CART");   
+                cart.removeBirdPairFromCart(bird_pair_id);
+                url = SUCCESS;
+                session.setAttribute("CART", cart);
+                session.setAttribute("SUCCESS", "Xóa sản phẩm thành công");
             }else{
-                session.setAttribute("ERROR", "Kích hoạt tài khoản thất bại");
-            } 
-            response.sendRedirect("MainController?action=NavToLogin");
-        }catch(Exception e){
-            e.printStackTrace();
+                session.setAttribute("ERROR", "Xóa sản phẩm thất bại");
+            }
+        } catch (Exception e) {
+            log("Error at RemoveBirdFromCartController: " + e.toString());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
     } 
 

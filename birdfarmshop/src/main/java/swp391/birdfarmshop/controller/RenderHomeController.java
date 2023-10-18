@@ -39,10 +39,12 @@ public class RenderHomeController extends HttpServlet {
             request.setAttribute("ACCESSORY_CATEGORIES", categories);
             request.setAttribute("BIRD_BREEDS", breeds);
             url = SUCCESS;
+            request.getRequestDispatcher(url).forward(request, response);
+
         } catch (Exception e) {
             log("Error at RenderHomeController: " + e.toString());
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+//            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

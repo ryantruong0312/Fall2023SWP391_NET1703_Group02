@@ -173,7 +173,7 @@
                 <div class="comparison-column">
                     <div class="column-content">
                         <h2>Chọn một chú vẹt trống</h2>
-                    
+
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect1">
                             <option value = "">Chọn giống vẹt</option>
@@ -222,7 +222,7 @@
                 </div>  
             </div>
             <div class="box-button-pair">
-                <button class="button-pair">Tiến hành ghép</button>  
+                <button id="pair-shop" class="button-pair">Tiến hành ghép</button>  
             </div>
         </main>
         <main class="my-5 bird-customer">
@@ -239,8 +239,8 @@
                         <button type="submit" class="button-create">Thêm vẹt mới</button>
                     </form>
                     <div class="column-content">
-                            <h2>Chọn một chú vẹt của khách</h2>
-                        
+                        <h2>Chọn một chú vẹt của khách</h2>
+
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect3">
                             <option value = "">Chọn giống vẹt</option>
@@ -261,7 +261,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Second Column -->
                 <div class="comparison-column second-box">
                     <div class="column-content">
@@ -290,9 +290,26 @@
                 </div>  
             </div>
             <div class="box-button-pair">
-                <button class="button-pair">Tiến hành ghép</button>  
+                <button id="pair-customer" class="button-pair">Tiến hành ghép</button>  
             </div>
         </main>
+        <section id="confirm-remove" class="container-fluid">
+            <div class="vh-100 row">
+                <div class="h-100 m-auto d-flex align-items-center">
+                    <div class="box-remove bg-white p-4">
+                        <h4>Xác nhận</h4>
+                        <p class="mb-4 mt-4">
+                            Vui lòng xác nhận vẹt đã đủ tuổi sinh sản (12 tháng tuổi)?
+                        </p>
+                        <div class="float-right">
+                            <button id="btn-confirrm" data-value="" class="btn btn-group-sm btn-primary">Có</button>
+                            <button  id="btn-cancel" class="btn btn-group-sm btn-secondary">Không</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- ***** Footer Start ***** -->
         <footer>
             <div class="container">
@@ -358,19 +375,132 @@
         <script src="assets/js/jquery.validate.min.js" ></script>
         <script type="text/javascript" src="assets/js/birdshop.js"></script>
         <script>
-            $(function () {
-                var selectedClass = "";
-                $("p").click(function () {
-                    selectedClass = $(this).attr("data-rel");
-                    $("#portfolio").fadeTo(50, 0.1);
-                    $("#portfolio div").not("." + selectedClass).fadeOut();
-                    setTimeout(function () {
-                        $("." + selectedClass).fadeIn();
-                        $("#portfolio").fadeTo(50, 1);
-                    }, 500);
+                                        $(function () {
+                                            var selectedClass = "";
+                                            $("p").click(function () {
+                                                selectedClass = $(this).attr("data-rel");
+                                                $("#portfolio").fadeTo(50, 0.1);
+                                                $("#portfolio div").not("." + selectedClass).fadeOut();
+                                                setTimeout(function () {
+                                                    $("." + selectedClass).fadeIn();
+                                                    $("#portfolio").fadeTo(50, 1);
+                                                }, 500);
 
-                });
-            });
+                                            });
+                                            $('#btn-confirrm').click(function () {
+                                                $('#confirm-remove').css('display', 'none');
+                                                let birdId = $(this).attr('data-value');
+                                                $.ajax({
+                                                    url: 'MainController?action=NavToPairBirds',
+                                                    type: 'POST',
+                                                    data: {birdCustomerId: birdId},
+                                                    success: function (data) {
+                                                        $('#birdInformation3').html(data);
+                                                        let gender = $('input[name=gender]').val();
+                                                        if (gender) {
+                                                            let breedId = $('main #breedSelect4').val();
+                                                            $.ajax({
+                                                                url: 'MainController?action=NavToPairBirds',
+                                                                type: 'POST',
+                                                                data: {breedId: breedId, gender: gender},
+                                                                success: function (data) {
+                                                                    $('#birdSelect4').html(data);
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+                                                });
+
+                                            });
+                                            $('#btn-cancel').click(function () {
+                                                $('#confirm-remove').css('display', 'none');
+                                                $('#birdSelect3').val("");
+                                            });
+                                            $('#pair-shop').click(function () {
+                                                let selectBirdMale = $('#birdSelect1').val();
+                                                let selectBirdFemale = $('#birdSelect2').val();
+                                                if (selectBirdMale) {
+                                                    if (selectBirdFemale) {
+                                                        $.ajax({
+                                                            url: 'AddBirdPairToCartController',
+                                                            type: 'POST',
+                                                            data: {bird_male_id: selectBirdMale, bird_female_id: selectBirdFemale},
+                                                            success: function (data) {
+                                                            console.log(data);
+                                                                if (data == 0) {
+                                                                    toast({
+                                                                        title: 'Lỗi',
+                                                                        message: 'Sản phẩm này đã có trong giỏ hàng',
+                                                                        type: 'error',
+                                                                        duration: 3000
+                                                                    });
+                                                                } else {
+                                                                    toast({
+                                                                        title: 'Thành công',
+                                                                        message: 'Thêm sản phẩm vào giỏ hàng thành công',
+                                                                        type: 'success',
+                                                                        duration: 3000
+                                                                    });
+                                                                    $.ajax({
+                                                                        url: "AddBirdToCartController",
+                                                                        type: 'POST',
+                                                                        success: function (data) {
+                                                                            $('.cart-amount').html(data);
+                                                                        }
+                                                                    });
+                                                                }
+                                                            }
+                                                        });
+                                                    } else {
+                                                        toast({title: 'Lỗi', message: 'Vui lòng chọn vẹt mái', type: 'error', duration: 3000});
+                                                    }
+                                                } else {
+                                                    toast({title: 'Lỗi', message: 'Vui lòng chọn vẹt trống', type: 'error', duration: 3000});
+                                                }
+                                            });
+                                            $('#pair-customer').click(function () {
+                                                let selectBirdCustomer = $('#birdSelect3').val();
+                                                let selectBirdShop = $('#birdSelect4').val();
+                                                if (selectBirdCustomer) {
+                                                    if (selectBirdShop) {
+                                                                $.ajax({
+                                                            url: 'AddBirdPairToCartController',
+                                                            type: 'POST',
+                                                            data: {bird_shop_id: selectBirdShop, bird_customer_id: selectBirdCustomer},
+                                                            success: function (data) {
+                                                            console.log(data);
+                                                                if (data == 0) {
+                                                                    toast({
+                                                                        title: 'Lỗi',
+                                                                        message: 'Sản phẩm này đã có trong giỏ hàng',
+                                                                        type: 'error',
+                                                                        duration: 3000
+                                                                    });
+                                                                } else {
+                                                                    toast({
+                                                                        title: 'Thành công',
+                                                                        message: 'Thêm sản phẩm vào giỏ hàng thành công',
+                                                                        type: 'success',
+                                                                        duration: 3000
+                                                                    });
+                                                                    $.ajax({
+                                                                        url: "AddBirdToCartController",
+                                                                        type: 'POST',
+                                                                        success: function (data) {
+                                                                            $('.cart-amount').html(data);
+                                                                        }
+                                                                    });
+                                                                }
+                                                            }
+                                                        });
+                                                    } else {
+                                                        toast({title: 'Lỗi', message: 'Vui lòng chọn vẹt của bạn', type: 'error', duration: 3000});
+                                                    }
+                                                } else {
+                                                    toast({title: 'Lỗi', message: 'Vui lòng chọn vẹt của cửa hàng', type: 'error', duration: 3000});
+                                                }
+                                            });
+                                        });
         </script>
     </body>
 </html>

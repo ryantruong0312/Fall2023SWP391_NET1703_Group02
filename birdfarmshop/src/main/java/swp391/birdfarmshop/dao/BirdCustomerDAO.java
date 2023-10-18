@@ -17,18 +17,19 @@ import swp391.birdfarmshop.util.DBUtils;
  * @author Admin
  */
 public class BirdCustomerDAO {
-    
-    public int createNewBirdCustomer (String bird_id, String name, String gender, String breed_id,
-                                       String username, String image_url, String status){
+
+    public int createNewBirdCustomer(String bird_id, String name, String gender, String breed_id,
+            String username, String image_url, String status) {
         int result = 0;
         Connection cnn = null;
+        PreparedStatement pst = null;
         try {
             cnn = DBUtils.getConnection();
             if (cnn != null) {
                 String sql = "INSERT INTO [CustomerBird]([customer_id],[bird_name],"
                         + "               [breed_id],[gender],[status],[image_url]) \n"
                         + "   VALUES (?,?,?,?,?,?)";
-                PreparedStatement pst = cnn.prepareStatement(sql);
+                pst = cnn.prepareStatement(sql);
                 pst.setString(1, username);
                 pst.setString(2, name);
                 pst.setString(3, breed_id);
@@ -47,21 +48,30 @@ public class BirdCustomerDAO {
                     e.printStackTrace();
                 }
             }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return result;
     }
-    
-    public ArrayList<BirdCustomer> getBirdCustomer  (String search, String page , int recordsPerPage){
+
+    public ArrayList<BirdCustomer> getBirdCustomer(String search, String page, int recordsPerPage) {
         ArrayList<BirdCustomer> birdCustomerList = new ArrayList<>();
         Connection cnn = null;
+        Statement st = null;
+        ResultSet rs = null;
         try {
             cnn = DBUtils.getConnection();
             if (cnn != null) {
                 String sql = "SELECT [bird_id],[bird_name],[gender],[breed_id],\n"
-                           + "	     [customer_id],[image_url],[status]\n"
-                           + "FROM CustomerBird\n";
-                if(search != null){
-                    sql += " WHERE bird_name LIKE N'%"+search+"%'\n";
+                        + "	     [customer_id],[image_url],[status]\n"
+                        + "FROM CustomerBird\n";
+                if (search != null) {
+                    sql += " WHERE bird_name LIKE N'%" + search + "%'\n";
                 }
                 if (page != null) {
                     if (page != null) {
@@ -70,9 +80,9 @@ public class BirdCustomerDAO {
                         sql += "ORDER BY (SELECT NULL) OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
                     }
                 }
-                Statement st = cnn.createStatement();
-                ResultSet rs = st.executeQuery(sql);
-                while(rs.next()){
+                st = cnn.createStatement();
+                rs = st.executeQuery(sql);
+                while (rs.next()) {
                     int bird_id = rs.getInt("bird_id");
                     String bird_name = rs.getString("bird_name");
                     boolean gender = rs.getBoolean("gender");
@@ -94,27 +104,43 @@ public class BirdCustomerDAO {
                     e.printStackTrace();
                 }
             }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return birdCustomerList;
     }
 
-    public ArrayList<BirdCustomer> getBirdCustomerByCustomer(String customer,String breedId, String page, int recordsPerPage) {
+    public ArrayList<BirdCustomer> getBirdCustomerByCustomer(String customer, String breedId, String page, int recordsPerPage) {
         ArrayList<BirdCustomer> birdCustomerList = new ArrayList<>();
         Connection cnn = null;
+        Statement st = null;
+        ResultSet rs = null;
         try {
             cnn = DBUtils.getConnection();
             if (cnn != null) {
                 String sql = "SELECT [bird_id],[bird_name],[gender],[breed_id],\n"
                         + "	     [customer_id],[image_url],[status]\n"
                         + "FROM CustomerBird\n";
-                if(customer != null){
-                    sql += " WHERE customer_id = '"+customer+"'\n";
-                    if(breedId != null){
-                        sql += " AND breed_id = '"+breedId+"'\n";
+                if (customer != null) {
+                    sql += " WHERE customer_id = '" + customer + "'\n";
+                    if (breedId != null) {
+                        sql += " AND breed_id = '" + breedId + "'\n";
                     }
                 }
-                if(customer == null && breedId != null){
-                    sql += " WHERE breed_id = '"+breedId+"'\n";
+                if (customer == null && breedId != null) {
+                    sql += " WHERE breed_id = '" + breedId + "'\n";
                 }
                 if (page != null) {
                     if (page != null) {
@@ -123,8 +149,8 @@ public class BirdCustomerDAO {
                         sql += "ORDER BY (SELECT NULL) OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
                     }
                 }
-                Statement st = cnn.createStatement();
-                ResultSet rs = st.executeQuery(sql);
+                st = cnn.createStatement();
+                rs = st.executeQuery(sql);
                 while (rs.next()) {
                     int bird_id = rs.getInt("bird_id");
                     String bird_name = rs.getString("bird_name");
@@ -146,24 +172,40 @@ public class BirdCustomerDAO {
                     e.printStackTrace();
                 }
             }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return birdCustomerList;
     }
 
-    public BirdCustomer findBirdCustomer(String birdId){
+    public BirdCustomer findBirdCustomer(String birdId) {
         Connection cnn = null;
         BirdCustomer b = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
         try {
             cnn = DBUtils.getConnection();
             if (cnn != null) {
                 String sql = "SELECT [bird_id],[bird_name],[gender],[breed_id],\n"
-                           + "	     [customer_id],[image_url],[status]\n"
-                           + "FROM CustomerBird\n"
-                           + "WHERE bird_id = ?";
-                PreparedStatement pst = cnn.prepareStatement(sql);
-                pst.setString(1,birdId );
-                ResultSet rs = pst.executeQuery();
-                if(rs != null && rs.next()) {
+                        + "	     [customer_id],[image_url],[status]\n"
+                        + "FROM CustomerBird\n"
+                        + "WHERE bird_id = ?";
+                pst = cnn.prepareStatement(sql);
+                pst.setString(1, birdId);
+                rs = pst.executeQuery();
+                if (rs != null && rs.next()) {
                     int bird_id = rs.getInt("bird_id");
                     String bird_name = rs.getString("bird_name");
                     boolean gender = rs.getBoolean("gender");
@@ -171,7 +213,7 @@ public class BirdCustomerDAO {
                     String username = rs.getString("customer_id");
                     String img_url = rs.getString("image_url");
                     String status = rs.getString("status");
-                     b = new BirdCustomer(bird_id, bird_name, gender, breed_id, username, img_url, status);
+                    b = new BirdCustomer(bird_id, bird_name, gender, breed_id, username, img_url, status);
                 }
             }
         } catch (Exception e) {
@@ -184,14 +226,22 @@ public class BirdCustomerDAO {
                     e.printStackTrace();
                 }
             }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return b;
     }
-    public static void main(String[] args) {
-        BirdCustomerDAO bcd = new BirdCustomerDAO();
-        ArrayList<BirdCustomer> list = bcd.getBirdCustomerByCustomer("customer", "amazon", null, 0);
-        for (BirdCustomer birdCustomer : list) {
-            System.out.println(list);
-        }
-    }
+
 }
