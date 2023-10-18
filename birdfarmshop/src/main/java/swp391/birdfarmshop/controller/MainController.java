@@ -109,7 +109,8 @@ public class MainController extends HttpServlet {
     private static final String DEST_UPDATE_PASSWORD = "UpdatePasswordController";
 	private static final String ACT_NAV_ORDER_ITEMS = "NavToOrderItems";
     private static final String DEST_NAV_ORDER_ITEMS = "RenderOrderItemsController";
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+	private static final String ACT_DELETE_CART = "DeleteCart";
+    private static final String DEST_DELETE_CART = "DeleteCartController";     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
         try {
@@ -249,10 +250,15 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_UPDATE_PASSWORD:
                     url = DEST_UPDATE_PASSWORD;
-                    break;
+                break;   
+    			case ACT_DELETE_CART:
+                    url = DEST_DELETE_CART;
+                break;             
 				case ACT_NAV_ORDER_ITEMS:
                     url = DEST_NAV_ORDER_ITEMS;
                 break;
+                default:
+                    break;
             }
         } catch (Exception ex) {
             log("Error at MainController: " + ex.toString());

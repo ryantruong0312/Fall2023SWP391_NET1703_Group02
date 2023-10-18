@@ -162,43 +162,9 @@
                                                     </c:choose> 
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="item-cart pr-3 my-3">
-                                            <div class="d-flex align-items-center py-3 mx-3">
-                                                <div class="image-item">
-                                                    <img src="${bird.value.cage.image_url}" alt="${bird.value.cage.accessory_name}" />
-                                                </div>
-                                                <div class="infor-item px-5">
-                                                    <h5>${bird.value.cage.accessory_name}</h5>
-                                                    <div class="mt-2">
-                                                        <p> 1
-                                                            <span style="font-size: 13px; margin-right: 5px">x</span>
-                                                            <c:choose>
-                                                                <c:when test="${bird.value.cage.discount > 0}">
-                                                                <p style="font-size: 14px;">  <fmt:formatNumber value="${bird.value.cage.unit_price - bird.value.cage.unit_price * bird.value.cage.discount / 100}" pattern="#,###"/> ₫</p>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${bird.value.cage.unit_price}" pattern="#,###"/> ₫</p>
-                                                            </c:otherwise>
-                                                        </c:choose> 
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div class="price-item ml-4 px-3">
-                                                    <c:choose>
-                                                        <c:when test="${bird.value.cage.discount > 0}">
-                                                            <p class="float-right"style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${bird.value.cage.unit_price - bird.value.cage.unit_price * bird.value.cage.discount / 100}" pattern="#,###"/> ₫</p>
-                                                            <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.value.cage.discount}%</p>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${bird.value.cage.unit_price}" pattern="#,###"/> ₫</p>
-                                                        </c:otherwise>
-                                                    </c:choose> 
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </div>                                 
                                     </c:forEach>
-                                    <c:forEach items="${sessionScope.CART.accessoryList}" var="accessory">
+                                    <c:forEach items="${sessionScope.CARTCHECKOUT.accessoryList}" var="accessory">
                                         <div class="item-cart pr-3 my-3">
                                             <div class="d-flex align-items-center justify-content-between py-3 mx-3">
                                                 <div class="image-item">
@@ -209,8 +175,8 @@
                                                     <div class="mt-2">
                                                         <p>${accessory.value.order_quantity}
                                                             <span style="font-size: 13px; margin-right: 5px">x</span>
-                                                            <c:choose>
-                                                                <c:when test="${accessory.value.accessory.discount > 0}">
+                                                        <c:choose>
+                                                            <c:when test="${accessory.value.accessory.discount > 0}">
                                                                 <p style="font-size: 14px;">  <fmt:formatNumber value="${accessory.value.accessory.unit_price - accessory.value.accessory.unit_price * accessory.value.accessory.discount / 100}" pattern="#,###"/> ₫</p>
                                                             </c:when>
                                                             <c:otherwise>
@@ -226,6 +192,9 @@
                                                             <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${accessory.value.order_quantity * accessory.value.accessory.unit_price - accessory.value.accessory.unit_price * accessory.value.accessory.discount / 100}" pattern="#,###"/> ₫</p>
                                                             <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${accessory.value.accessory.discount}%</p>
                                                         </c:when>
+                                                        <c:when test="${accessory.value.accessory.unit_price == 0}">
+                                                            <p style="font-size: 14px;"><h5 class="font-weight-bold">Tặng kèm</h5></p>
+                                                        </c:when>
                                                         <c:otherwise>
                                                             <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${accessory.value.accessory.unit_price}" pattern="#,###"/> ₫</p>
                                                         </c:otherwise>
@@ -240,15 +209,15 @@
                             <div class="col-lg-5 info-checkout mt-3">
                                 <div class="form-group mt-3">
                                     <label for="user-receiver">Tên người nhận hàng:</label>
-                                    <input id="user-receiver" class="input form-control" type="text" name="name" value="${sessionScope.LOGIN_USER.fullName || param.name}" required=""/>
+                                    <input id="user-receiver" class="input form-control" type="text" name="name" value="${sessionScope.LOGIN_USER.fullName}" required=""/>
                                 </div>
                                 <div class="form-group">
                                     <label for="mobile">Số điện thoại nhận hàng:</label>
-                                    <input id="mobile" class="input form-control" type="text" name="mobile" value="${sessionScope.LOGIN_USER.phone || param.mobile}" required=""/>
+                                    <input id="mobile" class="input form-control" type="text" name="mobile" value="${sessionScope.LOGIN_USER.phone}" required=""/>
                                 </div>
                                 <div class="form-group">
                                     <label for="address">Địa chỉ nhận hàng:</label>
-                                    <input id="address" class="input form-control" type="text" name="address" value="${sessionScope.LOGIN_USER.address || param.address}" required=""/>
+                                    <input id="address" class="input form-control" type="text" name="address" value="${sessionScope.LOGIN_USER.address}" required=""/>
                                 </div>
                                 <div class="overall-menoy">
                                     <h5 class="mt-3">Tổng tiền thanh toán</h5>

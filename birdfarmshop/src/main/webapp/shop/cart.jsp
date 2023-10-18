@@ -133,107 +133,126 @@
             </div>
         </div>
         <!-- ***** Main Banner Area End ***** -->
-
+        <c:set var="count" value="0" />
         <section class="h-100">
             <div class="container-fluid h-100 py-5">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-10">
-
+                        <a onclick="return clearCart(this)" href="MainController?action=DeleteCart"><button type="submit" class="float-right btn btn-danger">Xóa giỏ hàng</button></a>
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h3 class="fw-normal mb-0 text-black">Vẹt cảnh</h3>
                         </div><hr>
-                        <c:forEach items="${sessionScope.CART.birdList}" var="bird">
-                            <div class="card rounded-3 mb-4">
-                                <div class="card-body p-4">
-                                    <div class="row d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2" style="text-align: center;">
-                                            <img src="${bird.value.bird.image_url}" class="img-fluid rounded-3" alt="Vẹt cảnh" style="height: 150px; width: 120px;">
-                                        </div>
-                                        <div class="col-md-4 col-lg-4 col-xl-4">
-                                            <p class="lead fw-bold mb-2" style="font-size: 23px;">${bird.value.bird.bird_name}</p>
-                                            <c:forEach var="breed" items="${requestScope.BREED_LIST}">
-                                                <c:if test="${breed.breed_id == bird.value.bird.breed_id}">
-                                                    <p><span class="text-muted">Giống: </span>${breed.breed_name}
-                                                    </c:if>
-                                                </c:forEach>
-                                        </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
-                                            <button class="btn btn-link px-2" style="visibility: hidden"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                                <img src="assets/images/decrease-button.png"/>
-                                            </button>
-                                            <input id="form1" min="0" name="quantity" value="1" type="number" disabled=""
-                                                   class="form-control form-control-sm" style="text-align: center; height: 40px; border: 1px solid; font-size: 16px;"/>
-                                            <button class="btn btn-link px-2" style="visibility: hidden"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                                <img src="assets/images/increase-button.png"/>
-                                            </button>
-                                        </div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                            <c:choose>
-                                                <c:when test="${bird.value.bird.discount > 0}">
-                                                    <h5 class="mb-0" style="font-weight: bold; display: inline-block"><del><fmt:formatNumber value="${bird.value.bird.price}" pattern="#,###"/> ₫</del></h5>
-                                                    <h5 style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.value.bird.discount}%</h5>
-                                                    <h5 style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.value.bird.price - bird.value.bird.price * bird.value.bird.discount / 100}" pattern="#,###"/> ₫</h5>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <h5 class="mb-0" style="font-weight: bold; display: inline-block"><fmt:formatNumber value="${bird.value.bird.price}" pattern="#,###"/> ₫</h5>
-                                                </c:otherwise>
-                                            </c:choose> 
-                                        </div>
-                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <a href="MainController?action=RemoveBirdFromCart&bird_id=${bird.key}" class="text-danger"><img src="assets/images/remove-button.png"/></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Card for cage attached with bird -->          
-                            <div class="card rounded-3 mb-4">
-                                <div class="card-body p-4">
-                                    <div class="row d-flex justify-content-between align-items-center">
-                                        <div class="col-md-2 col-lg-2 col-xl-2" style="text-align: center;">
-                                            <img src="${bird.value.cage.image_url}" class="img-fluid rounded-3" alt="Phụ kiện" style="height: 150px; width: 120px;">
-                                        </div>
-                                        <div class="col-md-4 col-lg-4 col-xl-4">
-                                            <p class="lead fw-bold mb-2" style="font-size: 23px;">${bird.value.cage.accessory_name}</p>
-                                            <c:forEach var="category" items="${requestScope.CATEGORY_LIST}">
-                                                <c:if test="${bird.value.cage.category_id == category.category_id}">
-                                                    <p><span class="text-muted">Loại phụ kiện: </span>${category.category_name}
-                                                    </c:if>
-                                                </c:forEach>
-
-                                        </div>
-                                        <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
-                                            <button class="btn btn-link px-2" style="visibility: hidden"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                                <img src="assets/images/decrease-button.png"/>
-                                            </button>
-
-                                            <input id="form1" min="0" name="quantity" value="1" type="number" disabled=""
-                                                   class="form-control form-control-sm" style="text-align: center; height: 40px; border: 1px solid; font-size: 16px;"/>
-
-                                            <button class="btn btn-link px-2" style="visibility: hidden"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                                <img src="assets/images/increase-button.png"/>
-                                            </button>
-                                        </div>
-                                        <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                            <c:choose>
-                                                <c:when test="${bird.value.cage.discount > 0}">
-                                                    <h5 class="mb-0" style="font-weight: bold; display: inline-block"><del><fmt:formatNumber value="${bird.value.cage.unit_price}" pattern="#,###"/> ₫</del></h5>
-                                                    <h5 style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.value.cage.discount}%</h5>
-                                                    <h5 style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.value.cage.unit_price - bird.value.cage.unit_price * bird.value.cage.discount / 100}" pattern="#,###"/> ₫</h5>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <h5 class="mb-0" style="font-weight: bold; display: inline-block"><fmt:formatNumber value="${bird.value.cage.unit_price}" pattern="#,###"/> ₫</h5>
-                                                </c:otherwise>
-                                            </c:choose> 
-                                        </div>
-                                        <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                        <c:forEach items="${sessionScope.CART.birdList}" var="bird" varStatus="counter">
+                            <c:set var="count" value="${count + 1}" />
+                            <div class="card rounded-3 mb-5">
+                                <div class="card rounded-0">
+                                    <div class="card-body bg-light">
+                                        <div class="row d-flex justify-content-between align-items-center">
+                                            <div class="pl-3 bg-light text-danger">
+                                                <h4><c:out value="${count}"/></h4>
+                                            </div>
+                                            <div class="col-md-2 col-lg-2 col-xl-2" style="text-align: center;">
+                                                <img src="${bird.value.bird.image_url}" class="img-fluid rounded-3" alt="Vẹt cảnh" style="height: 150px; width: 120px;">
+                                            </div>
+                                            <div class="col-md-3 col-lg-3 col-xl-3">
+                                                <p class="lead fw-bold mb-2" style="font-size: 23px;">${bird.value.bird.bird_name}</p>
+                                                <c:forEach var="breed" items="${requestScope.BREED_LIST}">
+                                                    <c:if test="${breed.breed_id == bird.value.bird.breed_id}">
+                                                        <p><span class="text-muted">Giống: </span>${breed.breed_name}
+                                                        </c:if>
+                                                    </c:forEach>
+                                            </div>
+                                            <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
+                                                <button class="btn btn-link px-2" style="visibility: hidden"
+                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                                    <img src="assets/images/decrease-button.png"/>
+                                                </button>
+                                                <input id="form1" min="0" name="quantity" value="1" type="number" disabled=""
+                                                       class="form-control form-control-sm" style="text-align: center; height: 40px; border: 1px solid; font-size: 16px;"/>
+                                                <button class="btn btn-link px-2" style="visibility: hidden"
+                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                                    <img src="assets/images/increase-button.png"/>
+                                                </button>
+                                            </div>
+                                            <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                                <c:choose>
+                                                    <c:when test="${bird.value.bird.discount > 0}">
+                                                        <h5 class="mb-0" style="font-weight: bold; display: inline-block"><del><fmt:formatNumber value="${bird.value.bird.price}" pattern="#,###"/> ₫</del></h5>
+                                                        <h5 style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.value.bird.discount}%</h5>
+                                                        <h5 style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.value.bird.price - bird.value.bird.price * bird.value.bird.discount / 100}" pattern="#,###"/> ₫</h5>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <h5 class="mb-0" style="font-weight: bold; display: inline-block"><fmt:formatNumber value="${bird.value.bird.price}" pattern="#,###"/> ₫</h5>
+                                                    </c:otherwise>
+                                                </c:choose> 
+                                            </div>
+                                            <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                                <a onclick="return checkRemove(this)" href="MainController?action=RemoveBirdFromCart&bird_id=${bird.key}" class="text-danger"><img src="assets/images/remove-button.png"/></a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                                <!-- Card for cage attached with bird -->   
+                                <c:set var="count" value="${count + 1}"/>
+                                <div class="card rounded-0">
+                                    <div class="card-body bg-light">
+                                        <div class="row d-flex justify-content-between align-items-center">
+                                            <div class="pl-3 bg-light text-danger">
+                                                <h4><c:out value="${count}"/></h4>
+                                            </div>
+                                            <div class="col-md-2 col-lg-2 col-xl-2" style="text-align: center;">
+                                                <img src="${bird.value.cage.image_url}" class="img-fluid rounded-3" alt="Phụ kiện" style="height: 150px; width: 120px;">
+                                            </div>
+                                            <div class="col-md-3 col-lg-3 col-xl-3">
+                                                <p class="lead fw-bold mb-2 box-cage" style="font-size: 23px;">${bird.value.cage.accessory_name}</p>
+                                                <div class="chose-cage">
+                                                    <c:forEach var="accessory" items="${requestScope.ACCESSORY_LIST}">
+                                                        <c:if test="${accessory.category_id == 'cage' 
+                                                                      && accessory.stock_quantity > 0
+                                                                      && accessory.accessory_id != bird.value.cage.accessory_id}">
+                                                              <a href="MainController?action=AddBirdToCart&bird_id=${bird.value.bird.bird_id}&cage_id=${accessory.accessory_id}"><div class="p-2 cage-name">${accessory.accessory_name}</div></a>
+                                                              </c:if>
+                                                        </c:forEach>
+                                                </div>
+                                                <c:forEach var="category" items="${requestScope.CATEGORY_LIST}">
+                                                    <c:if test="${bird.value.cage.category_id == category.category_id}">
+                                                        <p><span class="text-muted">Loại phụ kiện: </span>${category.category_name}
+                                                        </c:if>
+                                                    </c:forEach>
+
+                                            </div>
+                                            <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
+                                                <button class="btn btn-link px-2" style="visibility: hidden"
+                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                                    <img src="assets/images/decrease-button.png"/>
+                                                </button>
+
+                                                <input id="form1" min="0" name="quantity" value="1" type="number" disabled=""
+                                                       class="form-control form-control-sm" style="text-align: center; height: 40px; border: 1px solid; font-size: 16px;"/>
+
+                                                <button class="btn btn-link px-2" style="visibility: hidden"
+                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                                    <img src="assets/images/increase-button.png"/>
+                                                </button>
+                                            </div>
+                                            <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                                <c:choose>
+                                                    <c:when test="${bird.value.cage.discount > 0}">
+                                                        <h5 class="mb-0" style="font-weight: bold; display: inline-block"><del><fmt:formatNumber value="${bird.value.cage.unit_price}" pattern="#,###"/> ₫</del></h5>
+                                                        <h5 style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.value.cage.discount}%</h5>
+                                                        <h5 style="font-size: 20px; color: red;"><fmt:formatNumber value="${bird.value.cage.unit_price - bird.value.cage.unit_price * bird.value.cage.discount / 100}" pattern="#,###"/> ₫</h5>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <h5 class="mb-0" style="font-weight: bold; display: inline-block">Tặng kèm</h5>
+                                                    </c:otherwise>
+                                                </c:choose> 
+                                            </div>
+                                            <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>      
                         </c:forEach>
 
                         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -244,13 +263,17 @@
                             <h3 class="fw-normal mb-0 text-black">Phụ kiện</h3>
                         </div><hr>
                         <c:forEach items="${sessionScope.CART.accessoryList}" var="accessory">
+                            <c:set var="count" value="${count + 1}"/>
                             <div class="card rounded-3 mb-4">
                                 <div class="card-body p-4">
                                     <div class="row d-flex justify-content-between align-items-center">
+                                        <div class="pl-3 text-danger">
+                                            <h4><c:out value="${count}"/></h4>
+                                        </div>
                                         <div class="col-md-2 col-lg-2 col-xl-2" style="text-align: center;">
                                             <img src="${accessory.value.accessory.image_url}" class="img-fluid rounded-3" alt="Phụ kiện" style="height: 150px; width: 120px;">
                                         </div>
-                                        <div class="col-md-4 col-lg-4 col-xl-4">
+                                        <div class="col-md-3 col-lg-3 col-xl-3">
                                             <p class="lead fw-bold mb-2" style="font-size: 23px;">${accessory.value.accessory.accessory_name}</p>
                                             <c:forEach var="category" items="${requestScope.CATEGORY_LIST}">
                                                 <c:if test="${accessory.value.accessory.category_id == category.category_id}">
@@ -261,15 +284,15 @@
                                         </div>
                                         <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
                                             <button class="btn btn-link px-2" 
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                                    onclick="DownQuantityAccessory(this, '${accessory.key}')">
                                                 <img src="assets/images/decrease-button.png"/>
                                             </button>
 
-                                            <input id="form1" min="0" name="quantity" value="${accessory.value.order_quantity}" type="number"
+                                                    <input id="form1" min="1" disabled="" name="quantity" value="${accessory.value.order_quantity}" type="number"
                                                    class="form-control form-control-sm" style="text-align: center; height: 40px; border: 1px solid; font-size: 16px;"/>
 
                                             <button class="btn btn-link px-2"
-                                                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                                    onclick="UpQuantityAccessory(this, '${accessory.key}')">
                                                 <img src="assets/images/increase-button.png"/>
                                             </button>
                                         </div>
@@ -286,7 +309,7 @@
                                             </c:choose> 
                                         </div>
                                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
-                                            <a href="MainController?action=RemoveAccessoryFromCart&accessory_id=${accessory.key}" class="text-danger"><img src="assets/images/remove-button.png"/></i></a>
+                                            <a onclick="return checkRemove(this)" href="MainController?action=RemoveAccessoryFromCart&accessory_id=${accessory.key}" class="text-danger"><img src="assets/images/remove-button.png"/></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -302,7 +325,7 @@
                             </div>
                         </div><hr>
                         <h3 style="text-align: right">Tổng cộng</h3>
-                        <h4 style="text-align: right"><fmt:formatNumber value="${sessionScope.CART.cartTotalPrice}" pattern="#,###"/> ₫</h4>
+                        <h4 id="price-cart" style="text-align: right"><fmt:formatNumber value="${sessionScope.CART.cartTotalPrice}" pattern="#,###"/> ₫</h4>
 
                         <div class="card">
                             <div class="card-body">
@@ -317,7 +340,22 @@
                 </div>
             </div>
         </section>
-
+        <section id="confirm-remove" class="container-fluid">
+            <div class="vh-100 row">
+                <div class="h-100 m-auto d-flex align-items-center">
+                    <div class="box-remove bg-white p-4">
+                        <h4>Xóa sản phẩm</h4>
+                        <p class="mb-4 mt-4">
+                            Bạn có muốn xóa sản phẩm đang chọn không ?
+                        </p>
+                        <div class="float-right">
+                            <a id="button-confirm" href="#"><button class="btn btn-group-sm btn-primary">Xác nhận</button></a>
+                            <button onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- ***** Footer Start ***** -->
         <footer>
@@ -392,8 +430,6 @@
         <script src="assets/js/accordions.js"></script>
         <script src="assets/js/datepicker.js"></script>
         <script src="assets/js/scrollreveal.min.js"></script>
-        <script src="assets/js/waypoints.min.js"></script>
-        <script src="assets/js/jquery.counterup.min.js"></script>
         <script src="assets/js/imgfix.min.js"></script> 
         <script src="assets/js/slick.js"></script> 
         <script src="assets/js/lightbox.js"></script> 
@@ -403,19 +439,87 @@
         <script src="assets/js/custom.js"></script>
         <script>
 
-                                                        $(function () {
-                                                            var selectedClass = "";
-                                                            $("p").click(function () {
-                                                                selectedClass = $(this).attr("data-rel");
-                                                                $("#portfolio").fadeTo(50, 0.1);
-                                                                $("#portfolio div").not("." + selectedClass).fadeOut();
-                                                                setTimeout(function () {
-                                                                    $("." + selectedClass).fadeIn();
-                                                                    $("#portfolio").fadeTo(50, 1);
-                                                                }, 500);
+                                $(function () {
+                                    var selectedClass = "";
+                                    $("p").click(function () {
+                                        selectedClass = $(this).attr("data-rel");
+                                        $("#portfolio").fadeTo(50, 0.1);
+                                        $("#portfolio div").not("." + selectedClass).fadeOut();
+                                        setTimeout(function () {
+                                            $("." + selectedClass).fadeIn();
+                                            $("#portfolio").fadeTo(50, 1);
+                                        }, 500);
 
-                                                            });
-                                                        });
+                                    });
+                                });
+                                function checkRemove(event) {
+                                    $('#confirm-remove').css('display', 'block');
+                                    $('#button-confirm').attr('href', event.href);
+                                    return false;
+                                }
+                                function cancelRemove() {
+                                    $('#confirm-remove').css('display', 'none');
+                                }
+                                function clearCart(event) {
+                                    $('#confirm-remove').css('display', 'block');
+                                    console.log(event.href);
+                                    $('#button-confirm').attr('href', event.href);
+                                    return false;
+                                }
+                                function DownQuantityAccessory(event, accessory_id) {
+                                    let numberAccessory = event.parentNode.querySelector('input[type=number]');
+                                    let number = Number(numberAccessory.value);
+                                    if (number === 1) {
+                                        $('#confirm-remove').css('display', 'block');
+                                        $('#button-confirm').attr('href', 'MainController?action=RemoveAccessoryFromCart&accessory_id=' + accessory_id);
+                                    } else {
+                                        numberAccessory.stepDown();
+                                        $.ajax({
+                                            url: 'UpdateAccessoryCartController',
+                                            type: 'POST',
+                                            data: {accessory_id: accessory_id, type: 'down'},
+                                            success: function (data) {
+                                                let price = Number(data).toLocaleString('vi-VN');
+                                                $('#price-cart').html(price + ' ₫');
+                                                if (data != 0) {
+                                                    $.ajax({
+                                                        url: "AddBirdToCartController",
+                                                        type: 'POST',
+                                                        success: function (data) {
+                                                            $('.cart-amount').html(data);
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                                function UpQuantityAccessory(event, accessory_id) {
+                                    let numberAccessory = event.parentNode.querySelector('input[type=number]');
+                                    if (numberAccessory) {     
+                                        $.ajax({
+                                            url: 'UpdateAccessoryCartController',
+                                            type: 'POST',
+                                            data: {accessory_id: accessory_id, type: 'up'},
+                                            success: function (data) {
+                                                if (data != 0) {
+                                                    numberAccessory.stepUp();
+                                                    let price = Number(data).toLocaleString('vi-VN');
+                                                    $('#price-cart').html(price + ' ₫');
+                                                    $.ajax({
+                                                        url: "AddBirdToCartController",
+                                                        type: 'POST',
+                                                        success: function (data) {
+                                                            $('.cart-amount').html(data);
+                                                        }
+                                                    });
+                                                }else{
+                                                    toast({title:'Lỗi', message:'Sản phẩm không đủ số lượng', type: 'error', duration: 3000})
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
         </script>
     </body>
 </html>

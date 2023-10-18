@@ -320,15 +320,15 @@
                         <c:when test="${a.discount > 0}">
                             <span style="display: inline-block;"><del><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</del></span>
                             <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${a.discount}%</span>
-                            <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${a.unit_price - a.unit_price * a.discount / 100}" pattern="#,###"/> ₫</span>
+                            <span style="font-size: 20px; color: red;" id="unit_price"><fmt:formatNumber value="${a.unit_price - a.unit_price * a.discount / 100}" pattern="#,###"/> ₫</span>
                         </c:when>
                         <c:otherwise>
-                            <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</span>
+                            <span style="font-size: 20px; color: red;" id="unit_price"><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</span>
                         </c:otherwise>
                     </c:choose>
                     <div class="descript">
                         <h4>Mô tả sản phẩm: </h4>
-                        <span>${a.description}</span>
+                        <span style="margin-top: 5px;">${a.description}</span>
                     </div>
                     <div class="stock_quantity">
                         <h4>Kho: ${a.stock_quantity}</h4>
@@ -344,14 +344,7 @@
                                     <div class="quantity buttons_added">
                                         <div class="quantity buttons_added">
                                             <input type="button" value="-" class="minus" onclick="decrementQuantity('quantityInput', ${a.unit_price}, ${a.discount})">
-                                            <c:choose>
-                                                <c:when test="${a.stock_quantity > 0}">
-                                                    <input type="number" step="1" min="1" max="${a.stock_quantity}" name="order_quantity" id="quantityInput" value="1" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <input type="number" step="1" min="0" max="${a.stock_quantity}" name="quantity" id="quantityInput" value="0" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <input type="number" step="1" min="1" max="${a.stock_quantity}" name="order_quantity" id="quantityInput" value="1" title="Qty" class="input-text qty text" size="4" onchange="updateTotal('quantityInput', ${a.stock_quantity}, ${a.unit_price}, ${a.discount})">
                                             <input type="button" value="+" class="plus" onclick="incrementQuantity('quantityInput', ${a.stock_quantity}, ${a.unit_price}, ${a.discount})">
                                         </div>
                                     </div>
@@ -360,23 +353,23 @@
                             </div>
                         </c:if>
                     </div>
-                        <c:if test="${a.stock_quantity > 0}">
-                            <div class="total">
-                                <c:choose>
-                                    <c:when test="${a.discount == 0}">
-                                        <h4 style="float: left;">Tổng cộng: <span id="total"><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</span></h4>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <h4 style="float: left;">Tổng cộng: <span id="total"><fmt:formatNumber value="${a.unit_price - a.unit_price * a.discount / 100}" pattern="#,###"/> ₫</span></h4>
-                                    </c:otherwise>
-                                </c:choose>
-                                    <div type="button" class="main-border-button" style="margin-left: 196px; margin-top: 20px; float: left;" id="buttonContainer">
-                                        <input type="hidden" name="accessory_id" value="${a.accessory_id}" />
-                                        <button type="submit" name="action" value="AddAccessoryToCart" id="Add" class="btn btn-primary">Thêm vào giỏ hàng</button>
-                                    </div>
-                                    <div style="clear: both;"></div>
+                    <c:if test="${a.stock_quantity > 0}">
+                        <div class="total">
+                            <c:choose>
+                                <c:when test="${a.discount == 0}">
+                                    <h4 style="float: left;">Tổng cộng: <span id="total"><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</span></h4>
+                                </c:when>
+                                <c:otherwise>
+                                    <h4 style="float: left;">Tổng cộng: <span id="total"><fmt:formatNumber value="${a.unit_price - a.unit_price * a.discount / 100}" pattern="#,###"/> ₫</span></h4>
+                                </c:otherwise>
+                            </c:choose>
+                            <div type="button" class="main-border-button" style="margin-left: 196px; margin-top: 20px; float: left;" id="buttonContainer">
+                                <input type="hidden" name="accessory_id" value="${a.accessory_id}" />
+                                <button type="submit" name="action" value="AddAccessoryToCart" id="Add" class="btn btn-primary">Thêm vào giỏ hàng</button>
                             </div>
-                        </c:if>
+                            <div style="clear: both;"></div>
+                        </div>
+                    </c:if>
                 </c:if>
             </div>
         </div>
@@ -500,11 +493,23 @@
     }
 
 
-    function updateTotal() {
-        var unitPrice = document.getElementById("unit_price");
-        var quantityInput = document.getElementById("quantityInput");
-        console.log(unitPrice);
-        console.log(quantityInput);
+    function updateTotal(inputId, maxQuantity, unitPrice, discount) {
+        var quantityInput = document.getElementById(inputId);
+        var total1 = document.getElementById("total");
+        var warning = document.getElementById("warning");
+        var total;
+        if (!isNaN(quantityInput.value) && quantityInput.value < maxQuantity) {
+            if (discount > 0) {
+                total = (unitPrice - (unitPrice * discount / 100)) * quantityInput.value + " ₫";
+            } else {
+                total = unitPrice * quantityInput.value + " ₫";
+            }
+            total1.innerHTML = formatNumber(total) + " ₫";
+            warning.innerHTML = "";
+        } else {
+            warning.innerHTML = "Số lượng không đủ!";
+        }
+
     }
 
 

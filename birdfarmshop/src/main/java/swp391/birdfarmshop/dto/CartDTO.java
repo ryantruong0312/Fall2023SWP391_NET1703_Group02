@@ -7,6 +7,8 @@ package swp391.birdfarmshop.dto;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import swp391.birdfarmshop.dao.AccessoryDAO;
+import swp391.birdfarmshop.dao.OrderItemDAO;
 import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.model.BirdNest;
@@ -30,7 +32,6 @@ public class CartDTO {
     private int accessoryTotalPrice;
     private int cartTotalPrice;
     private int totalItem;
-
     public CartDTO() {
         birdList = new HashMap<>();
         birdNestList = new HashMap<>();
@@ -153,21 +154,53 @@ public class CartDTO {
 
     public boolean addAccessoryToCart(Accessory accessory, int quantity) throws SQLException {
         boolean check = false;
-        if (this.accessoryList.containsKey(accessory.getAccessory_id())) {
-            int currentQuant = this.accessoryList.get(accessory.getAccessory_id()).getOrder_quantity();
-            this.accessoryList.get(accessory.getAccessory_id()).setOrder_quantity(currentQuant + quantity);
+        AccessoryDAO ad = new AccessoryDAO();
+        int numberAccessory = ad.getAccessoryByID(accessory.getAccessory_id()).getStock_quantity();
+        if(numberAccessory != 0 && numberAccessory >= quantity){
+            if (this.accessoryList.containsKey(accessory.getAccessory_id())) {
+                int currentQuant = this.accessoryList.get(accessory.getAccessory_id()).getOrder_quantity();
+                if(currentQuant + 1 <= numberAccessory){
+                    this.accessoryList.get(accessory.getAccessory_id()).setOrder_quantity(currentQuant + quantity);
+                    this.totalItem += quantity;
+                    this.cartTotalPrice += ((accessory.getUnit_price() - (accessory.getUnit_price() * accessory.getDiscount() / 100)) * quantity);
+                    check = true;
+                }
+            } else {
+                this.accessoryList.put(accessory.getAccessory_id(), new OrderedAccessoryItem(accessory, quantity));
+                this.totalItem += quantity;
+                this.cartTotalPrice += ((accessory.getUnit_price() - (accessory.getUnit_price() * accessory.getDiscount() / 100)) * quantity);
+                check = true;
+            }
+        }
+        return check;
+    }
+     public boolean addCageToAccessory(Accessory accessory, int quantity) throws SQLException {
+        boolean check = false;
+        if (this.accessoryList.containsKey(accessory.getAccessory_id() + accessory.getDiscount())) {
+            int currentQuant = this.accessoryList.get(accessory.getAccessory_id() + accessory.getDiscount()).getOrder_quantity();
+            this.accessoryList.get(accessory.getAccessory_id()+ accessory.getDiscount()).setOrder_quantity(currentQuant + quantity);
             this.totalItem += quantity;
             this.cartTotalPrice += ((accessory.getUnit_price() - (accessory.getUnit_price() * accessory.getDiscount() / 100)) * quantity);
             check = true;
         } else {
-            this.accessoryList.put(accessory.getAccessory_id(), new OrderedAccessoryItem(accessory, quantity));
+            this.accessoryList.put(accessory.getAccessory_id() + accessory.getDiscount(), new OrderedAccessoryItem(accessory, quantity));
             this.totalItem += quantity;
             this.cartTotalPrice += ((accessory.getUnit_price() - (accessory.getUnit_price() * accessory.getDiscount() / 100)) * quantity);
             check = true;
         }
         return check;
     }
-
+    public boolean updateQuatityAccessory(Accessory accessory, int quantity) throws SQLException {
+        boolean check = false;
+        if (this.accessoryList.containsKey(accessory.getAccessory_id())) {
+            int currentQuant = this.accessoryList.get(accessory.getAccessory_id()).getOrder_quantity();
+            this.accessoryList.get(accessory.getAccessory_id()).setOrder_quantity(currentQuant - quantity);
+            this.totalItem -= quantity;
+            this.cartTotalPrice -= ((accessory.getUnit_price() - (accessory.getUnit_price() * accessory.getDiscount() / 100)) * quantity);
+            check = true;
+        } 
+        return check;
+    }
     public void removeBirdFromCart(Bird bird) {
         OrderedBirdItem item = this.birdList.remove(bird.getBird_id());
         this.totalItem -= 2;

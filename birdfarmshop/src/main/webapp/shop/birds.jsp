@@ -332,7 +332,7 @@
                                                 <c:forEach begin="1" end="${noOfPages}" var="i">
                                                     <li id="page-number">
                                                         <a data-value="${i}" onclick="takePage(this)" class="${i == requestScope.currentPage ? "activeNav":""}">${i}</a>
-                                                    </li>
+                                                    </li>i
                                                 </c:forEach>
                                                 <c:if test="${requestScope.currentPage < noOfPages}">
                                                     <li id="page">

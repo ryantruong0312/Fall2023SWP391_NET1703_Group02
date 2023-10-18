@@ -40,6 +40,9 @@ public class RemoveBirdFromCartController extends HttpServlet {
                 cart.removeBirdFromCart(bird);
                 url = SUCCESS;
                 session.setAttribute("CART", cart);
+                session.setAttribute("SUCCESS", "Xóa sản phẩm thành công");
+            }else{
+                session.setAttribute("ERROR", "Xóa sản phẩm thất bại");
             }
         } catch (Exception e) {
             log("Error at RemoveBirdFromCartController: " + e.toString());

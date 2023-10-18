@@ -10,9 +10,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import swp391.birdfarmshop.dao.UserDAO;
 import swp391.birdfarmshop.dto.AccountDTO;
+import swp391.birdfarmshop.model.User;
 
 /**
  *
@@ -23,27 +25,38 @@ public class RenderAccountsController extends HttpServlet {
 
     private static final String ERROR = "errorpages/error.jsp";
     private static final String SUCCESS = "management/accounts.jsp";
-
+    private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
         try {
-            url = SUCCESS;
-            String page = "1";
-            int numberOfRecords = 10;
-            if(request.getParameter("page") != null){
-                page = request.getParameter("page");
+            HttpSession session = request.getSession();
+            User u = (User) session.getAttribute("LOGIN_USER");
+            if (u != null) {
+                if (u.getRole().equals("admin") || u.getRole().equals("manager")) {
+                    url = SUCCESS;
+                    String page = "1";
+                    int numberOfRecords = 10;
+                    if (request.getParameter("page") != null) {
+                        page = request.getParameter("page");
+                    }
+                    String search = request.getParameter("search");
+                    ArrayList<AccountDTO> accountList = new ArrayList<>();
+                    UserDAO userDao = new UserDAO();
+                    accountList = userDao.getAccountList(search, page, numberOfRecords);
+                    int numberOfAccount = userDao.totalAccount(search);
+                    int numberOfPage = (int) Math.ceil(numberOfAccount * 1.0 / numberOfRecords);
+                    request.setAttribute("noOfPages", numberOfPage);
+                    request.setAttribute("currentPage", page);
+                    request.setAttribute("ACCOUNT_LIST", accountList);
+                }else{
+                    session.setAttribute("ERROR", "Bạn không phải là quản lí hoặc quản trị viên");
+                    url = DEST_NAV_LOGIN;
+                }
+            } else {
+                session.setAttribute("ERROR", "Bạn chưa đăng nhập");
+                url = DEST_NAV_LOGIN;
             }
-            String search = request.getParameter("search");
-            ArrayList<AccountDTO> accountList = new ArrayList<>();
-            UserDAO userDao = new UserDAO();
-            accountList = userDao.getAccountList(search,page,numberOfRecords);
-            int numberOfAccount = userDao.totalAccount(search);
-            int numberOfPage = (int) Math.ceil(numberOfAccount * 1.0 / numberOfRecords);
-            request.setAttribute("SEARCH", search);
-            request.setAttribute("noOfPages", numberOfPage);
-            request.setAttribute("currentPage", page);
-            request.setAttribute("ACCOUNT_LIST", accountList);
         } catch (Exception e) {
             log("Error at RenderAccountsController: " + e.toString());
         } finally {

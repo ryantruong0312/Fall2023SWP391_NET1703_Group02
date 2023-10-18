@@ -98,7 +98,7 @@ public class EmailUtils {
         return message;
     }
 
-    public static String sendOrderToCustomer(CartDTO c, String order_id,
+    public static String sendOrderToCustomer(CartDTO c,CartDTO checkout, String order_id,
     String name_receiver, String phone , String address
 
     
@@ -106,7 +106,7 @@ public class EmailUtils {
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
         String totalMoney = numberFormat.format(c.getCartTotalPrice());
         Map<String, OrderedBirdItem> birdList =  c.getBirdList();
-        Map<String, OrderedAccessoryItem> accessoryList = c.getAccessoryList();
+        Map<String, OrderedAccessoryItem> accessoryList = checkout.getAccessoryList();
         String message = "<html>\n"
                 + "        <body>\n"
                 + "\n"
@@ -145,18 +145,12 @@ public class EmailUtils {
                 + "                    </tr>\n";
          for (OrderedBirdItem ob : birdList.values()) {
             Bird b = ob.getBird();
+            int realPrice = (b.getPrice() - (b.getPrice() * b.getDiscount() / 100));
+                String price = numberFormat.format(realPrice);
             if (b != null) {
                 message += "                    <tr style=\"padding-top: 10px\">\n"
                         + "                        <td style=\"padding-top: 15px; padding-right:40px ;padding-left: 20px;\">\n"
-                        + "                            - <p style=\"display: inline-block\"> 1 </p> <p style=\"display: inline-block\"> "+b.getBird_name()+"</p> \n"
-                        + "                        </td>\n"
-                        + "                    </tr>\n";
-            }
-            Accessory a = ob.getCage();
-            if (a != null) {
-                message += "                    <tr style=\"padding-top: 10px\">\n"
-                        + "                        <td style=\"padding-top: 15px; padding-right:40px ;padding-left: 20px;\">\n"
-                        + "                            - <p style=\"display: inline-block\"> 1 </p> <p style=\"display: inline-block\"> "+a.getAccessory_name()+"</p> \n"
+                          + "                           - <p style=\"display: inline-block\"> 1 </p><p style=\"display: inline-block;margin-left: 3px;\"> " + b.getBird_name() + "</p> - <p style=\"display: inline-block\"> " + price + " ₫</p>"
                         + "                        </td>\n"
                         + "                    </tr>\n";
             }
@@ -164,11 +158,27 @@ public class EmailUtils {
         for (OrderedAccessoryItem oa : accessoryList.values()) {
             Accessory a = oa.getAccessory();
             if (a != null) {
-                message += "                    <tr style=\"padding-top: 10px\">\n"
+                int realPrice = (a.getUnit_price() - (a.getUnit_price() * a.getDiscount() / 100)) * oa.getOrder_quantity();
+                String price = numberFormat.format(realPrice);
+                if(a.getUnit_price() == 0){
+                      message += "                    <tr style=\"padding-top: 10px\">\n"
                         + "                        <td style=\"padding-top: 15px; padding-right:40px ;padding-left: 20px;\">\n"
-                        + "                            - <p style=\"display: inline-block\"> "+oa.getOrder_quantity()+" </p> <p style=\"display: inline-block\"> " + a.getAccessory_name() + "</p> \n"
+                        + "                              - <p style=\"display: inline-block\"> "+oa.getOrder_quantity()+" </p><p style=\"display: inline-block;margin-left: 3px;\"> " + a.getAccessory_name() + " (Tặng kèm)"+ "</p> - <p style=\"display: inline-block\"> " + price + " ₫</p>"
                         + "                        </td>\n"
                         + "                    </tr>\n";
+                }else if(a.getDiscount()==50){
+                      message += "                    <tr style=\"padding-top: 10px\">\n"
+                        + "                        <td style=\"padding-top: 15px; padding-right:40px ;padding-left: 20px;\">\n"
+                        + "                           - <p style=\"display: inline-block\"> "+oa.getOrder_quantity()+" </p><p style=\"display: inline-block;margin-left: 3px;\"> " + a.getAccessory_name() + " (Giảm giá theo chim)"+ "</p> - <p style=\"display: inline-block\"> " + price + " ₫</p>"
+                        + "                        </td>\n"
+                        + "                    </tr>\n";
+                }else{
+                      message += "                    <tr style=\"padding-top: 10px\">\n"
+                        + "                        <td style=\"padding-top: 15px; padding-right:40px ;padding-left: 20px;\">\n"
+                        + "                           - <p style=\"display: inline-block\"> "+oa.getOrder_quantity()+" </p><p style=\"display: inline-block;margin-left: 3px;\"> " + a.getAccessory_name() + "</p> - <p style=\"display: inline-block\"> " + price + " ₫</p>"
+                        + "                        </td>\n"
+                        + "                    </tr>\n";
+                }
             }
         }
         message +=  "                    <tr style=\"padding-top: 10px\">\n"

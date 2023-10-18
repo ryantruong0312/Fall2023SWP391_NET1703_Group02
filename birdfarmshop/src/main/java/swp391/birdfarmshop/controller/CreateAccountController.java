@@ -24,30 +24,41 @@ public class CreateAccountController extends HttpServlet {
 
     private static final String ERROR = "/WEB-INF/errorpages/error.jsp";
     private static final String SUCCESS = "RenderAccountsController";
-
+    private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
         try {
-            HttpSession session = request.getSession();
-            String full_name = request.getParameter("fullname");
-            String username = request.getParameter("username");
-            String role = request.getParameter("role");
             UserDAO userDao = new UserDAO();
-            String token = "Thegioivetcanh123@";
-            String password = JWTUtils.encodeJWT(token);
-            User u = userDao.getUserByUsername(username);
-            if (u == null) {
-                int result = userDao.createUser(username, "", password, full_name, "", role, "form", "inactive");
-                if (result == 0) {
-                    session.setAttribute("ERROR", "Tạo tài khoản thất bại");
+            HttpSession session = request.getSession();
+            User u = (User) session.getAttribute("LOGIN_USER");
+            if(u != null){
+                if(u.getRole().equals("admin")||u.getRole().equals("manager") ){
+                    String full_name = request.getParameter("fullname");
+                    String username = request.getParameter("newusername");
+                    String role = request.getParameter("role");
+                    String token = "Thegioivetcanh123@";
+                    String password = JWTUtils.encodeJWT(token);
+                    u = userDao.getUserByUsername(username);
+                    if (u == null) {
+                        int result = userDao.createUser(username, "", password, full_name, "", role, "form", "inactive");
+                        if (result == 0) {
+                            session.setAttribute("ERROR", "Tạo tài khoản thất bại");
+                        } else {
+                            session.setAttribute("SUCCESS", "Tạo tài khoản thành công");
+                        }
+                    } else {
+                        session.setAttribute("ERROR", "Tài khoản này đã sử dụng");
+                    }
+                    url = SUCCESS;
                 } else {
-                    session.setAttribute("SUCCESS", "Tạo tài khoản thành công");
+                    session.setAttribute("ERROR", "Bạn không phải là quản lí hoặc quản trị viên");
+                    url = DEST_NAV_LOGIN;
                 }
             } else {
-                session.setAttribute("ERROR", "Tài khoản này đã sử dụng");
+                session.setAttribute("ERROR", "Bạn chưa đăng nhập");
+                url = DEST_NAV_LOGIN;
             }
-            url = SUCCESS;
         } catch (Exception ex) {
             log("Error at CreateAccountController: " + ex.toString());
         } finally {

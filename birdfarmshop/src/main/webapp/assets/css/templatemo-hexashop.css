@@ -2836,3 +2836,67 @@ register*/
     width: 150px;
     white-space: nowrap;
  }
+ .box-cage{
+     position: relative;
+     border-radius: 10px;
+     cursor: pointer;
+ }
+ .box-cage:hover ~ .chose-cage{
+     display: block;
+ }
+ .chose-cage{
+     display: none;
+     border-radius: 10px;
+     position: absolute;
+     top: 30px;
+     left: 5px;
+     background-color: white;
+     z-index: 2;
+ }
+ .chose-cage:hover{
+     display: block;
+ }
+ .chose-cage:after{
+     content: "";
+     position: absolute;
+     top: -15px;
+     left: 1px;
+     height: 20px;
+     width: 100%;
+     background-color: transparent;
+ }
+ .chose-cage .cage-name{
+    border-bottom: 1px solid #e9e9ed;
+    cursor: pointer;
+ }
+ .chose-cage .cage-name:hover{
+    background-color: #edeff6;
+ }
+ .chose-cage::-webkit-scrollbar {
+     border-radius: 0;
+     width: 8px;
+ }
+
+ .chose-cage::-webkit-scrollbar-thumb {
+     border-radius: 4px;
+     background-color: rgba(22, 24, 35, 0.06);
+ }
+
+ .chose-cage::-webkit-scrollbar-track {
+     border-radius: 0;
+     background-color: rgba(0, 0, 0, 0);
+}
+#confirm-remove{
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    background-color:  rgba(127, 127, 119,0.7);
+    display: none;
+}
+#confirm-remove .box-remove{
+    border-radius: 15px;  
+    width: 300px;
+}
+#confirm-remove .box-remove p{
+    font-size: 1.05rem;
+}

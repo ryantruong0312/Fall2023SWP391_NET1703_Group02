@@ -33,23 +33,7 @@
                 align-items: center;
             }
 
-            .left-image img {
-                width: 400px;
-                height: 404px;
-                margin-right: 10px;
-            }
 
-            .right-images {
-                display: flex;
-                flex-direction: column;
-            }
-
-            .right-images img {
-                width: 200px;
-                height: 200px;
-                margin-top: 2px;
-            }
-            
             .col-lg-12 a {
                 border-radius: 10px;
                 border: 1px solid rgb(221, 221, 227);
@@ -64,13 +48,47 @@
                 width: 150px;
                 float: right;
             }
+
+            .overlay-text {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: rgba(0, 0, 0, 0.5);
+                border-radius: 50%;
+                color: #fff;
+                padding: 30px;
+                font-size: 50px;
+                text-align: center;
+            }
+            .image-bottom {
+                display: inline-block;
+                margin: 10px 10px 0 0;
+            }
+
+            #mainImage {
+                width: 500px;
+                height: 400px;
+                border: 1px solid;
+                transition: transform 0.3s ease-in-out;
+            }
+
+            #mainImage:hover {
+                transform: scale(1.1);
+                cursor: pointer;
+                border: 0px;
+            }
+            .image-top {
+                position: relative;
+            }
+            .overlay-container {
+                position: relative;
+            }
         </style>
         <script>
             function swapImages(clickedImage) {
-                const leftImage = document.querySelector('.left-image img');
-                const rightImage1 = document.querySelectorAll('.right-images img')[0];
-                const rightImage2 = document.querySelectorAll('.right-images img')[1];
-
+                const leftImage = document.querySelector('.image-top img');
+                const rightImage1 = document.querySelectorAll('.image-bottom img')[0];
                 const tempSrc = leftImage.src;
                 leftImage.src = clickedImage.src;
                 clickedImage.src = tempSrc;
@@ -117,7 +135,7 @@
                             <!-- ***** Menu Start ***** -->
                             <ul class="nav">
                                 <li class="scroll-to-section"><a href="${pageScope.toHome}">Trang chủ</a></li>
-                                <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
+                                    <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
                                     <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
                                             <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
@@ -126,27 +144,27 @@
                                         </ul>
                                     </li>
                                     <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                    <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
+                                        <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
                                         <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                    </c:if>
-                                    <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
-                                    <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
-                                    <li id="show-cart" class="scroll-to-section">
-                                        <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+                                        </c:if>
+                                        <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
+                                        <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
+                                        <li id="show-cart" class="scroll-to-section">
+                                            <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
                                             <div class="cart-amount">
                                                 <c:choose>
                                                     <c:when test="${sessionScope.CART == null}">0</c:when>
                                                     <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
                                                 </c:choose>
                                             </div>
-                                    </li>
+                                        </li>
 
-                                    <c:if test="${sessionScope.LOGIN_USER == null}">
-                                        <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
+                                        <c:if test="${sessionScope.LOGIN_USER == null}">
+                                            <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
+                                            </c:if>
+                                        </c:if>
                                     </c:if>
-                                    </c:if>
-                                </c:if>
-                                <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
+                                    <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
                                     <li class="submenu"><a href="">Sản phẩm</a>
                                         <ul>
                                             <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
@@ -158,8 +176,8 @@
                                     <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
                                     <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
                                     <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
-                                </c:if>
-                                <c:if test="${sessionScope.LOGIN_USER != null}">
+                                    </c:if>
+                                    <c:if test="${sessionScope.LOGIN_USER != null}">
                                     <li class="submenu"><a class="user-name text-right" href="#">${LOGIN_USER.fullName}</a>
                                         <ul>
                                             <li><a href="${pageScope.toProfile}&username=${sessionScope.LOGIN_USER.username}">Cá nhân</a></li>
@@ -200,24 +218,37 @@
         <section class="section" id="product">
             <div class="container">
                 <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <a href="MainController?action=UpdateBird&bird_id=${birdDetails.bird_id}"><span>Cập nhật chim</span></a>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="MainController?action=UpdateBird&bird_id=${birdDetails.bird_id}"><span>Cập nhật chim</span></a>
+                        </div>
                     </div>
-                </div>
                 </c:if>
                 <div class="row">
                     <div class="col-lg-8">
                         <c:if test="${birdDetails != null}">
-                            <c:set var="image_urls" value="${birdDetails.image_urls}"/>
                             <div class="image-container">
-                                <div class="left-image">
-                                    <img src="${image_urls[0]}" alt="" onclick="swapImages(this)">
+                                <div class="image-top">
+                                    <div class="overlay-container">
+                                        <img id="mainImage" style="width: 500px; height: 400px;" src="${im}" alt="" onclick="swapImages(this)">
+                                        <c:if test="${birdDetails.status == 'Đã bán'}">
+                                            <div class="overlay-text">Đã bán</div>
+                                        </c:if>
+                                        <c:if test="${birdDetails.status == 'Đang sinh sản'}">
+                                            <div class="overlay-text">Đang sinh sản</div>
+                                        </c:if>
+                                        <c:if test="${birdDetails.status == 'Đang ghép cặp'}">
+                                            <div class="overlay-text">Đang ghép cặp</div>
+                                        </c:if>
+                                    </div>
                                 </div>
-                                <div class="right-images">
-                                    <img src="${image_urls[1]}" alt="" onclick="swapImages(this)">
-                                    <img src="${image_urls[2]}" alt="" onclick="swapImages(this)">
-                                </div>
+                            </div>
+                            <div class="image-bottom">
+                                <c:forEach items="${birdDetails.image_urls}" var="bird">
+                                    <c:if test="${bird ne im}">
+                                        <img style="width: 100px; height: 75px; border: 1px solid;" class="accessory-image" src="${bird}" alt="" onclick="swapImages(this)">
+                                    </c:if>
+                                </c:forEach>
                             </div>
                         </c:if>
                     </div>
@@ -233,7 +264,7 @@
                                             </span>
                                         </c:when>
                                         <c:otherwise>
-                                            <span><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</span>
+                                            <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</span>
                                         </c:otherwise>
                                     </c:choose>
                                     <div class="mt-2">
@@ -242,32 +273,40 @@
                                             <span>Thông tin: ${birdDetails.description}</span>
                                         </c:if>
                                         <c:if test="${not empty birdDetails.achievement}">
-                                            <span>Thành tựu: ${birdDetails.achievement}</span>
+                                            <div style="white-space: nowrap; margin-top: 10px;">
+                                                <h4 style="display: inline;">Thành tựu: </h4>
+                                                <span style="display: inline;">${birdDetails.achievement}</span>
+                                            </div>
                                         </c:if>
-                                        <span>Màu sắc: ${birdDetails.color}</span>
-                                        <span>Tháng tuổi: ${birdDetails.age}</span>
-                                        <span>Thời gian trưởng thành: ${birdDetails.grown_age} tháng</span>
-                                        <span>Số lần giao phối: ${birdDetails.reproduction_history}</span>
+                                        <div style="white-space: nowrap; margin-top: 10px;">
+                                            <h4 style="display: inline;">Màu sắc: </h4>
+                                            <span style="display: inline;">${birdDetails.color}</span>
+                                        </div>
+                                        
+                                        <div style="white-space: nowrap; margin-top: 10px;">
+                                            <h4 style="display: inline;">Tháng tuổi: </h4>
+                                            <span style="display: inline;">${birdDetails.age}</span>
+                                        </div>
+                                        
+                                        <div style="white-space: nowrap; margin-top: 10px;">
+                                            <h4 style="display: inline;">Thời gian trưởng thành: </h4>
+                                            <span style="display: inline;">${birdDetails.grown_age} tháng</span>
+                                        </div>
+                                        
+                                        <div style="white-space: nowrap; margin-top: 10px;">
+                                            <h4 style="display: inline;">Số lần giao phối: </h4>
+                                            <span style="display: inline;">${birdDetails.reproduction_history}</span>
+                                        </div>
                                         <div>
                                             <div class="quote">
                                                 <c:if test="${not empty birdDetails.dad_bird_name && not empty birdDetails.mom_bird_name}">
                                                     <i class="fa fa-quote-left"></i><p>${birdDetails.dad_bird_name} lai với ${birdDetails.mom_bird_name}</p>
-                                                </c:if>
-                                            </div>
-                                            <div class="quantity-content">
-                                                <div class="left-content">
-                                                    <h6>Chỉ duy nhất</h6>
-                                                </div>
-                                                <div class="right-content">
-                                                    <div class="quantity buttons_added">
-                                                        <input type="button" value="-" class="minus"><input type="button" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="" inputmode=""><input type="button" value="+" class="plus">
-                                                    </div>
-                                                </div>
+                                                    </c:if>
                                             </div>
                                             <c:if test="${(sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer') && bird.status != 'Đã bán'}">
-                                            <div class="total">
-                                                <div class="main-border-button"><a class="bird-cart" style="cursor: pointer" data-value="${birdDetails.bird_id}">Thêm vào giỏ hàng</a></div>
-                                            </div>
+                                                <div class="total">
+                                                    <div class="main-border-button"><a class="bird-cart" style="cursor: pointer" data-value="${birdDetails.bird_id}">Thêm vào giỏ hàng</a></div>
+                                                </div>
                                             </c:if>
                                         </div>
                                     </div>
@@ -362,51 +401,51 @@
 
                                     <script>
 
-                                        $(function () {
-                                            var selectedClass = "";
-                                            $("p").click(function () {
-                                                selectedClass = $(this).attr("data-rel");
-                                                $("#portfolio").fadeTo(50, 0.1);
-                                                $("#portfolio div").not("." + selectedClass).fadeOut();
-                                                setTimeout(function () {
-                                                    $("." + selectedClass).fadeIn();
-                                                    $("#portfolio").fadeTo(50, 1);
-                                                }, 500);
+                                            $(function () {
+                                                var selectedClass = "";
+                                                $("p").click(function () {
+                                                    selectedClass = $(this).attr("data-rel");
+                                                    $("#portfolio").fadeTo(50, 0.1);
+                                                    $("#portfolio div").not("." + selectedClass).fadeOut();
+                                                    setTimeout(function () {
+                                                        $("." + selectedClass).fadeIn();
+                                                        $("#portfolio").fadeTo(50, 1);
+                                                    }, 500);
 
-                                            });
-                                            $(".bird-cart").click(function () {
-                                                let birdId = $(this).attr('data-value');
-                                                $.ajax({
-                                                    url: "AddBirdToCartController",
-                                                    type: 'POST',
-                                                    data: {bird_id: birdId},
-                                                    success: function (data) {
-                                                        if (data == 0) {
-                                                            toast({
-                                                                title: 'Lỗi',
-                                                                message: 'Sản phẩm này đã có trong giỏ hàng',
-                                                                type: 'error',
-                                                                duration: 3000
-                                                            });
-                                                        } else {
-                                                            toast({
-                                                                title: 'Thành công',
-                                                                message: 'Thêm sản phẩm vào giỏ hàng thành công',
-                                                                type: 'success',
-                                                                duration: 3000
-                                                            });
-                                                            $.ajax({
-                                                                url: "AddBirdToCartController",
-                                                                type: 'POST',
-                                                                success: function (data) {
-                                                                    $('.cart-amount').html(data);
-                                                                }
-                                                            });
+                                                });
+                                                $(".bird-cart").click(function () {
+                                                    let birdId = $(this).attr('data-value');
+                                                    $.ajax({
+                                                        url: "AddBirdToCartController",
+                                                        type: 'POST',
+                                                        data: {bird_id: birdId},
+                                                        success: function (data) {
+                                                            if (data == 0) {
+                                                                toast({
+                                                                    title: 'Lỗi',
+                                                                    message: 'Sản phẩm này đã có trong giỏ hàng',
+                                                                    type: 'error',
+                                                                    duration: 3000
+                                                                });
+                                                            } else {
+                                                                toast({
+                                                                    title: 'Thành công',
+                                                                    message: 'Thêm sản phẩm vào giỏ hàng thành công',
+                                                                    type: 'success',
+                                                                    duration: 3000
+                                                                });
+                                                                $.ajax({
+                                                                    url: "AddBirdToCartController",
+                                                                    type: 'POST',
+                                                                    success: function (data) {
+                                                                        $('.cart-amount').html(data);
+                                                                    }
+                                                                });
+                                                            }
                                                         }
-                                                    }
+                                                    });
                                                 });
                                             });
-                                        });
 
                                     </script>
 
