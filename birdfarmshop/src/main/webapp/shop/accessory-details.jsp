@@ -40,7 +40,7 @@
                 border-radius: 50%;
                 color: #fff;
                 padding: 30px;
-                font-size: 50px;
+                font-size: 30px;
                 text-align: center;
             }
             .stock_quantity{
@@ -320,10 +320,10 @@
                         <c:when test="${a.discount > 0}">
                             <span style="display: inline-block;"><del><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</del></span>
                             <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${a.discount}%</span>
-                            <span style="font-size: 20px; color: red;" id="unit_price"><fmt:formatNumber value="${a.unit_price - a.unit_price * a.discount / 100}" pattern="#,###"/> ₫</span>
+                            <span style="font-size: 20px;" id="unit_price"><fmt:formatNumber value="${a.unit_price - a.unit_price * a.discount / 100}" pattern="#,###"/> ₫</span>
                         </c:when>
                         <c:otherwise>
-                            <span style="font-size: 20px; color: red;" id="unit_price"><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</span>
+                            <span style="font-size: 20px;" id="unit_price"><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</span>
                         </c:otherwise>
                     </c:choose>
                     <div class="descript">

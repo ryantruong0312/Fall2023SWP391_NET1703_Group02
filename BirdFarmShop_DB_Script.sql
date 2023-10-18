@@ -274,49 +274,49 @@ VALUES
 
 	('CP101', N'Vẹt xám CP101', N'Xám', '2022-10-01', 4, 0, 'african', N'Chưa có', 0, 
 	2500000, 
-	NULL, 
+	N'Vẹt Xám African, hoặc African Grey Parrot, là một loài vẹt thông minh và nổi tiếng với bộ lông màu xám, mỏ màu đen, và mắt vàng. Chúng có khả năng học nói và hiểu ngôn ngữ, thể hiện sự tò mò và thông minh cao. Tính cách cá nhân có thể biến đổi, nhưng chung quy là vui vẻ và thân thiện. Việc huấn luyện vẹt Xám African có thể đòi hỏi kiên nhẫn và thời gian do tính cách đôi khi cứng đầu.', 
 	NULL, NULL, 15, N'Còn hàng'),
 
     ('CP201', N'Vẹt Cape Parrot CP201', N'Xám, xanh', '2022-10-01', 4, 1, 'african', N'Chưa có', 0, 
-	3000000, NULL, 
+	3000000, N'Vẹt Cape Parrot African có bộ lông màu xanh lá cây và đỏ với mỏ màu xám. Tính cách thường thân thiện, nhưng có thể ngại ngùng và thận trọng. Việc huấn luyện có thể khá khó khăn do chúng có tính cách độc lập và đôi khi khó nắm bắt.', 
 	NULL, NULL, 0, N'Đang ghép cặp'),
 
     ('CP301', N'Vẹt Senegal CP301', N'Xanh lá, vàng', '2022-10-01', 6, 0, 'african', N'Chưa có', 2, 
 	8000000, 
-	NULL, 
+	N'Vẹt Senegal African có bộ lông màu xanh lá cây, đỏ và xám. Tính cách thông minh, thân thiện và tương đối dễ huấn luyện. Chúng là loài vẹt nhỏ tương đối dễ chăm sóc và phù hợp cho người mới nuôi vẹt.', 
 	NULL, NULL, 0, N'Còn hàng'),
 
     ('CP401', N'Vẹt cổ trắng CP401', N'Xanh lá, đỏ', '2022-06-01', 2, 0, 'african', N'Chưa có', 1, 
 	19000000, 
-	NULL, 
+	N'Vẹt Cổ Trắng African có bộ lông màu xanh biển động đậm và cổ trắng. Tính cách thông minh, tò mò, và thân thiện, giúp dễ huấn luyện. Chúng có khả năng học nói và thích hòa đồng với con người.', 
 	NULL, NULL, 0, N'Đang sinh sản'),
 
     ('CP501', N'Vẹt Lovebird CP501', N'Xanh, vàng, cam', '2022-01-01', 1, 1, 'african', N'Chưa có', 1, 2000000, 
-    NULL, 
+    N'Vẹt Lovebird African có lông màu rực rỡ, thường là xanh, đỏ và cam. Tính cách thường thân thiện, tò mò và dễ huấn luyện cho việc học các lệnh cơ bản. Tuy nhiên, tính cách có thể thay đổi tùy từng cá thể và đòi hỏi kiên nhẫn trong quá trình huấn luyện.', 
     NULL, NULL, 0, N'Đang sinh sản'),
 
 	('WA301', N'Vẹt Orange Winged Amazon WA301', N'xanh lá, vàng', '2022-02-01', 1, 0, 'amazon', 
 	N'Giải khuyến khích cuộc thi Phong trào vẹt kiểng Sài Gòn 2020', 0, 3000000, 
-	NULL, 
+	N'Vẹt Orange-winged Amazon có lông màu xanh với đốm da cam trên cánh. Tính cách thân thiện và hướng ngoại, chúng có khả năng học nói và huấn luyện dễ dàng hơn so với nhiều loài vẹt khác.', 
 	NULL, NULL, 0, N'Còn hàng'),
 
 	('BA602', N'Vẹt Blue-fronted Amazon BA602', N'xanh lá, xanh dương', '2022-10-01', 1, 0, 'amazon', 
 	N'Top 2 The Parrot Society UK Show 2021', 0, 3000000, 
-	NULL, 
+	N'Lông của Vẹt Blue-fronted Amazon dày, màu xanh lục và đỏ trên trán. Chúng thông minh, thân thiện và dễ huấn luyện, có khả năng học nói và thực hiện các lệnh đơn giản. Tính cách tùy từng cá thể, nhưng nói chung, chúng có khả năng làm thú cưng đáng yêu và thân thiện.', 
 	NULL, NULL, 0, N'Còn hàng'),
 
 	('FA303', N'Vẹt Red Faced Amazon FA303', N'xanh lá, đỏ', '2022-10-01', 1, 0, 'amazon', 
 	N'Tham gia World Parrot Trust Parrot Festival 2022', 0, 3000000,
-	NULL, 
+	N'Vẹt Red-faced Amazon (Amazona autumnalis) có lông xanh lá cây với khu vực trán đỏ. Tính cách thân thiện, thông minh, nhưng đôi khi có thể cứng đầu. Có khả năng học nói và học lệnh, tuy nhiên, việc huấn luyện có thể đòi hỏi kiên nhẫn và thời gian.', 
 	NULL, NULL, 0, N'Còn hàng'),
 
 	('HA104', N'Vẹt Double Yellow Headed Amazon HA104', N'xanh lá, vàng, đỏ', '2022-08-01', 1, 0, 'amazon', 
 	N'Giải 3 Nghị Lượng Chim Vẹt Việt Nam 2022-2023', 0, 4500000,
-	NULL, 
+	N'Vẹt Double Yellow Headed Amazon có lông nền màu xanh với đầu và một phần cổ màu vàng rực rỡ. Chúng thông minh, thân thiện, và dễ huấn luyện. Tính cách tương đối hoà đồng, làm cho chúng trở thành vẹt cảnh lý tưởng và có khả năng học nói rất tốt.', 
 	NULL, NULL, 0, N'Còn hàng'),
 
 	('NA505', N'Vẹt Yellow Naped Amazon NA505',N'xanh lá, vàng', '2022-12-01', 1, 0, 'amazon', N'Top 4 Giải thi đấu Chim Vẹt Cảnh Việt Nam 2020', 0, 9000000,
-	NULL, 
+	N'Vẹt Yellow Naped Amazon có lông màu xanh lá cây sáng với một vùng vàng ở gốc cổ và đỉnh đầu. Tính cách thông minh, tò mò, thân thiện và có khả năng học nói. Chúng có thể được huấn luyện tương đối dễ dàng, nhưng yêu cầu sự kiên nhẫn và tương tác đều đặn.', 
 	NULL, NULL, 0, N'Đã bán'),
 
 	('CL201', N'Vẹt Cockatiel Lutino CL201', N'xám, vàng, cam', '2022-12-01', 1, 1, 'australian', N'Chưa có', 0, 2500000,
@@ -331,11 +331,11 @@ VALUES
 	N'Lông nhiều màu sắc rực rỡ, mỏ cam, tính cách vui vẻ, tươi mới, yêu đời. Yêu thích tương tác và cần chế độ ăn uống đa dạng, hoạt động vui chơi để duy trì sức khỏe tốt và làm phong phú cuộc sống của người nuôi.',
 	NULL, NULL, 0, N'Đang sinh sản'),
 	
-	('RL409', N'Vẹt Red Lory RL409', N'đỏ', '2022-02-01', 1, 1, 'australian', NULL, 1, 15000000, 
+	('RL409', N'Vẹt Red Lory RL409', N'đỏ', '2022-02-01', 1, 1, 'australian', N'Chưa có', 1, 15000000, 
 	N'Lông đỏ tươi sáng, mỏ và mắt đen nổi bật, tính cách hòa đồng, thích hát hò và tương tác, yêu thích ăn uống đa dạng, làm phong phú cuộc sống gia đình bằng niềm vui vẹt.', 
 	NULL, NULL, 0, N'Đang sinh sản'),
 
-	('VE358', N'Vẹt Eclectus VE358', N'Xanh lá', '2022-12-01', 1, 1, 'australian', NULL, 1, 25000000, 
+	('VE358', N'Vẹt Eclectus VE358', N'Xanh lá', '2022-12-01', 1, 1, 'australian', N'Chưa có', 1, 25000000, 
 	N'Vẹt Eclectus là một loài vẹt đa dạng màu sắc, với đực thường có lông màu xanh smaragd và cái có lông màu đỏ tươi. Chúng có mỏ mạnh mẽ và đôi mắt nâu sáng. Eclectus thích tương tác, thông minh và thích học tiếng nói. Tính cách độc lập và thích khám phá, yêu thích chế độ ăn uống chứa nhiều rau quả tươi ngon.', 
 	NULL, NULL, 0, N'Còn hàng'),
 

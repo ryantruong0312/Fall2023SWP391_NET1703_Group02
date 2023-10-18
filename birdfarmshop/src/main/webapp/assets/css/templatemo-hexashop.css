@@ -1771,11 +1771,11 @@ Single Product Page
 }
 
 #product .right-content span {
-    font-size: 14px;
-    color: #aaaaaa;
+    font-size: 17px;
+    color: #0047AB;
     font-weight: 500;
     display: block;
-    margin-top: 25px;
+    margin-top: 10px;
 }
 
 #product .right-content .quote {
