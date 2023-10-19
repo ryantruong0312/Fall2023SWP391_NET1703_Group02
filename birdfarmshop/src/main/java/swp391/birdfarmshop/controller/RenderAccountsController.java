@@ -32,6 +32,7 @@ public class RenderAccountsController extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             User u = (User) session.getAttribute("LOGIN_USER");
+            String role = request.getParameter("role");
             if (u != null) {
                 if (u.getRole().equals("admin") || u.getRole().equals("manager")) {
                     url = SUCCESS;
@@ -43,7 +44,11 @@ public class RenderAccountsController extends HttpServlet {
                     String search = request.getParameter("search");
                     ArrayList<AccountDTO> accountList = new ArrayList<>();
                     UserDAO userDao = new UserDAO();
-                    accountList = userDao.getAccountList(search, page, numberOfRecords);
+                    if(role == null){
+                        accountList = userDao.getAccountList(search, page, numberOfRecords);
+                    }else{
+                        accountList = userDao.getAccountList(search, page, numberOfRecords, role);
+                    }
                     int numberOfAccount = userDao.totalAccount(search);
                     int numberOfPage = (int) Math.ceil(numberOfAccount * 1.0 / numberOfRecords);
                     request.setAttribute("noOfPages", numberOfPage);
