@@ -21,17 +21,13 @@ import swp391.birdfarmshop.util.DBUtils;
  * @author tlminh
  */
 public class OrderItemDAO {
-
+    public String error = null;
     public ArrayList<OrderItemDTO> getItemOrder(String order_id) throws SQLException{
         ArrayList<OrderItemDTO> orderItemList = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         OrderItemDTO orderItem = null;
-        BirdDAO birdDao = new BirdDAO();
-        BirdNestDAO bnDao = new BirdNestDAO();
-        AccessoryDAO accessoryDao = new AccessoryDAO();
-        BirdPairDAO bpDao = new BirdPairDAO();
         BirdDAO birdDao = new BirdDAO();
         BirdNestDAO bnDao = new BirdNestDAO();
         AccessoryDAO accessoryDao = new AccessoryDAO();
@@ -52,7 +48,7 @@ public class OrderItemDAO {
                     String accessory_id = rs.getString("accessory_id");
                     String pair_id = rs.getString("pair_id");
                     Bird bird = birdDao.getBirdById(bird_id);
-+                   BirdNest birdNest = bnDao.getBirdNestById(nest_id);
+                    BirdNest birdNest = bnDao.getBirdNestById(nest_id);
                     Accessory accessory = accessoryDao.getAccessoryByID(accessory_id);
                     BirdPairDTO birdPair = bpDao.getBirdPairById(pair_id);
                     int unit_price = rs.getInt("unit_price");
@@ -103,7 +99,7 @@ public class OrderItemDAO {
                         realPrice = realPrice - realPrice * discount / 100;
                     }
                     String updateBird = "UPDATE [Bird]\n"
-                            + "SET [status] = N'Ðã bán'\n"
+                            + "SET [status] = N'ï¿½ï¿½ bï¿½n'\n"
                             + "WHERE [bird_id] = ?";
                     pst = con.prepareStatement(updateBird);
                     pst.setString(1, birdId);
@@ -127,7 +123,7 @@ public class OrderItemDAO {
                     }
                 } else {
                     checkBird = false;
-                    error = "Không tìm th?y s?n ph?m";
+                    error = "KhÃ´ng tÃ¬m tháº¥y sáº£n pháº©m";
                 }
 
                 if (checkBird) {

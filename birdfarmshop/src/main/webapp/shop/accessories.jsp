@@ -132,21 +132,7 @@ Author     : tlminh
 
 
         <!-- ***** Products Area Starts ***** -->
-<<<<<<< .mine
 
-        <section class="section" id="products">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-7">
-                        <form id="selectAccessory" action="MainController" method="POST">
-                            <input type="hidden" name="action" value="NavToAccessory"> 
-                            <div class="search-bar" style="width: 400px;">
-                                <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                                <input style="width: 290px;" type="text" name="txtAccessory" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
-                                <input type="submit" value="Tìm kiếm">
-                            </div>
-                        </form>
-=======
         <div class="py-5 px-2 layout-item" style="border-bottom: none" id="top">
             <form id="selectAccessory" action="MainController" method="POST">
                 <input type="hidden" name="action" value="NavToAccessory"> 
@@ -156,67 +142,13 @@ Author     : tlminh
                         <input type="text" name="txtAccessory" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
                         <input type="hidden" name="page" value="1" />
                         <input type="submit" value="Tìm kiếm">
-
-
-
-
->>>>>>> .theirs
                     </div>
                 </div>
                 <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
                     <div class="new-item d-flex justify-content-center">
                         <a href="${toAddAccessory}"><span>Thêm mới phụ kiện</span></a>
                     </div>
-<<<<<<< .mine
-                </div>
-            </div>
-            <div class="container-fluid">
-                <div class="row">
-                    <!-- Sidebar -->
-                    <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
-                        <div class="position-sticky">
-                            <h3>Phân loại theo</h3>
-                            <div class="type" onclick="toggleList('typeList-1')">Loại phụ kiện</div>
-                            <ol style="display: block;" id="typeList-1">
-                                <li><input type="radio" id="type-0" ${requestScope.CATEGORY_ID == null ? "checked": ""} name="txtType" value="All"><label for="type-0">Tất cả</label></li>
-                                <li><input type="radio" id="type-1" ${requestScope.CATEGORY_ID == "cage" ? "checked": ""} name="txtType" value="cage"><label for="type-1">Lồng & cây đứng</label></li>
-                                <li><input type="radio" id="type-2" ${requestScope.CATEGORY_ID == "care" ? "checked": ""} name="txtType" value="care"><label for="type-2">Phụ kiện chăm sóc</label></li>
-                                <li><input type="radio" id="type-3" ${requestScope.CATEGORY_ID == "toy" ? "checked": ""} name="txtType" value="toy"><label for="type-3">Phụ kiện trang trí - Đồ chơi</label></li>
-                            </ol>
-                            <div class="type" onclick="toggleList('typeList-2')">Giá bán</div>
-                            <ol style="display: block;" id="typeList-2">
-                                <li><input type="radio" id="type-65" ${requestScope.PRICE == null ? "checked": ""} name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
-                                <li><input type="radio" id="type-6" ${requestScope.PRICE == "unit_price < 300000" ? "checked": ""}  name="txtPrice" value="unit_price < 300000"><label for="type-6">Dưới 300,000₫</label></li>
-                                <li><input type="radio" id="type-7" ${requestScope.PRICE == "unit_price >= 300000 AND unit_price <= 600000" ? "checked": ""} name="txtPrice" value="unit_price >= 300000 AND unit_price <= 600000"><label for="type-7">Từ 300,000₫ - 600,000₫</label></li>
-                                <li><input type="radio" id="type-8" ${requestScope.PRICE == "unit_price > 600000" ? "checked": ""} name="txtPrice" value="unit_price > 600000"><label for="type-8">Trên 600,000₫</label></li>
-                            </ol>
-                        </div>
-                    </nav>
-                    <!-- Nội dung chính -->
-                    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                        <div id="content" class="row justify-content-center">
-                            <c:if test="${requestScope.accessoryList != null}">
-                                <c:set var="accessoryList" value="${requestScope.accessoryList}"/>
-                                <c:if test="${not empty accessoryList}">
-                                    <c:forEach items="${accessoryList}" var="accessory" varStatus="counter">
-                                        <div class="bird col-sm-7 col-md-7 col-lg-5 col-xl-4">
-                                            <div class="item">
-                                                <div class="thumb">
-                                                    <div class="hover-content">
-                                                        <ul>
-                                                            <li>
-                                                                <a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a>
-                                                            </li>
-                                                            <c:if test="${accessory.stock_quantity > 0 && (sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER == null)}">
-                                                                <li><a style="cursor: pointer" class="accessory-cart" data-value="${accessory.accessory_id}"><i class="fa fa-shopping-cart"></i></a></li>
-
-
-
-
-
-
-=======
-                </c:if>
+                </c:if>     
                 <main class="my-5">
                     <div class="container-fluid">
                         <div class="row m-0">
@@ -225,14 +157,14 @@ Author     : tlminh
                                     <h4>Phân loại theo</h4>
                                     <button name="clear" value="clear" class=" btn-sm btn-danger text-nowrap border-0">Bỏ lọc</button>
                                 </div>
-                                <div class="type">Loại phụ kiện</div>
+                                <div>Loại phụ kiện</div>
                                 <ol class="d-block" id="typeList-1">   
                                     <li><input type="radio" id="type-0" ${requestScope.CATEGORY_ID == null ? "checked": ""} name="txtType" value="All"><label for="type-0">Tất cả</label></li>
                                     <li><input type="radio" id="type-1" ${requestScope.CATEGORY_ID == "cage" ? "checked": ""} name="txtType" value="cage"><label for="type-1">Lồng & cây đứng</label></li>
                                     <li><input type="radio" id="type-2" ${requestScope.CATEGORY_ID == "care" ? "checked": ""} name="txtType" value="care"><label for="type-2">Phụ kiện chăm sóc</label></li>
                                     <li><input type="radio" id="type-3" ${requestScope.CATEGORY_ID == "toy" ? "checked": ""} name="txtType" value="toy"><label for="type-3">Phụ kiện trang trí - Đồ chơi</label></li>
                                 </ol>
-                                <div class="type">Giá cả</div>
+                                <div>Giá cả</div>
                                 <ol class="d-block" id="typeList-2"> 
                                     <li><input type="radio" id="type-65" ${requestScope.PRICE == null ? "checked": ""} name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
                                     <li><input type="radio" id="type-6" ${requestScope.PRICE == "unit_price < 300000" ? "checked": ""}  name="txtPrice" value="unit_price < 300000"><label for="type-6">Dưới 300,000₫</label></li>
@@ -262,9 +194,8 @@ Author     : tlminh
                                                                     <c:if test="${(sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer')}">
                                                                         <c:if test="${accessory.stock_quantity > 0}">
                                                                             <li><a style="cursor: pointer" class="accessory-cart" data-value="${accessory.accessory_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                                         </c:if>
->>>>>>> .theirs
-                                                            </c:if>
+                                                                                </c:if>
+                                                                            </c:if>
                                                                 </ul>
                                                             </div>
                                                             <c:if test="${accessory.stock_quantity == 0}">
@@ -380,72 +311,72 @@ Author     : tlminh
         <!-- End Footer -->
         <script>
 
-                                                        $(function () {
-                                                            var selectedClass = "";
-                                                            $("p").click(function () {
-                                                                selectedClass = $(this).attr("data-rel");
-                                                                $("#portfolio").fadeTo(50, 0.1);
-                                                                $("#portfolio div").not("." + selectedClass).fadeOut();
-                                                                setTimeout(function () {
-                                                                    $("." + selectedClass).fadeIn();
-                                                                    $("#portfolio").fadeTo(50, 1);
-                                                                }, 500);
+            $(function () {
+                var selectedClass = "";
+                $("p").click(function () {
+                    selectedClass = $(this).attr("data-rel");
+                    $("#portfolio").fadeTo(50, 0.1);
+                    $("#portfolio div").not("." + selectedClass).fadeOut();
+                    setTimeout(function () {
+                        $("." + selectedClass).fadeIn();
+                        $("#portfolio").fadeTo(50, 1);
+                    }, 500);
 
-                                                            });
-                                                            $("input[name=txtType]").change(function () {
-                                                                $("#selectAccessory").submit();
-                                                            });
-                                                            $("input[name=txtPrice]").change(function () {
-                                                                $("#selectAccessory").submit();
-                                                            });
-                                                            $(".start-page").click(function () {
-                                                                $('input[name=page]').val(1);
-                                                                $("#selectAccessory").submit();
-                                                            });
-                                                            $(".end-page").click(function () {
-                                                                let  endPage = $('input[name=numberOfPage]').val();
-                                                                $('input[name=page]').val(endPage);
-                                                                $("#selectAccessory").submit();
-                                                            });
-                                                            $(".accessory-cart").click(function () {
-                                                                let accessory_id = $(this).attr('data-value');
-                                                                $.ajax({
-                                                                    url: "AddAccessoryToCartController",
-                                                                    type: 'POST',
-                                                                    data: {accessory_id: accessory_id, order_quantity: 1},
-                                                                    success: function (data) {
-                                                                        if (data == 0) {
-                                                                            toast({
-                                                                                title: 'Lỗi',
-                                                                                message: 'Sản phẩm này đã hết hàng',
-                                                                                type: 'error',
-                                                                                duration: 3000
-                                                                            });
-                                                                        } else {
-                                                                            toast({
-                                                                                title: 'Thành công',
-                                                                                message: 'Thêm sản phẩm vào giỏ hàng thành công',
-                                                                                type: 'success',
-                                                                                duration: 3000
-                                                                            });
-                                                                            $.ajax({
-                                                                                url: "AddAccessoryToCartController",
-                                                                                type: 'POST',
-                                                                                data: {order_quantity: 1},
-                                                                                success: function (data) {
-                                                                                    $('.cart-amount').html(data);
-                                                                                }
-                                                                            });
-                                                                        }
-                                                                    }
-                                                                });
-                                                            });
-                                                        });
-                                                        function takePage(event) {
-                                                            let value = event.getAttribute('data-value');
-                                                            $('input[name=page]').val(value);
-                                                            $("#selectAccessory").submit();
-                                                        }
+                });
+                $("input[name=txtType]").change(function () {
+                    $("#selectAccessory").submit();
+                });
+                $("input[name=txtPrice]").change(function () {
+                    $("#selectAccessory").submit();
+                });
+                $(".start-page").click(function () {
+                    $('input[name=page]').val(1);
+                    $("#selectAccessory").submit();
+                });
+                $(".end-page").click(function () {
+                    let  endPage = $('input[name=numberOfPage]').val();
+                    $('input[name=page]').val(endPage);
+                    $("#selectAccessory").submit();
+                });
+                $(".accessory-cart").click(function () {
+                    let accessory_id = $(this).attr('data-value');
+                    $.ajax({
+                        url: "AddAccessoryToCartController",
+                        type: 'POST',
+                        data: {accessory_id: accessory_id, order_quantity: 1},
+                        success: function (data) {
+                            if (data == 0) {
+                                toast({
+                                    title: 'Lỗi',
+                                    message: 'Sản phẩm này đã hết hàng',
+                                    type: 'error',
+                                    duration: 3000
+                                });
+                            } else {
+                                toast({
+                                    title: 'Thành công',
+                                    message: 'Thêm sản phẩm vào giỏ hàng thành công',
+                                    type: 'success',
+                                    duration: 3000
+                                });
+                                $.ajax({
+                                    url: "AddAccessoryToCartController",
+                                    type: 'POST',
+                                    data: {order_quantity: 1},
+                                    success: function (data) {
+                                        $('.cart-amount').html(data);
+                                    }
+                                });
+                            }
+                        }
+                    });
+                });
+            });
+            function takePage(event) {
+                let value = event.getAttribute('data-value');
+                $('input[name=page]').val(value);
+                $("#selectAccessory").submit();
+            }
 
         </script>
 

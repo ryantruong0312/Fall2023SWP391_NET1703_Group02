@@ -228,7 +228,7 @@ public class OrderDAO {
                                             pst.setInt(1, customer.getBird_id());
                                             result = pst.executeUpdate();
                                             if (result == 0) {
-                                                checkBirdPair = false;}
+                                                checkBirdPair = false;
                                             }
                                             String updateBirdShop = "UPDATE [Bird]\n"
                                                     + "SET [status] = N'Đang sinh sản'\n"
@@ -267,7 +267,7 @@ public class OrderDAO {
                                                 pst.setInt(4, 1);
                                                 result = pst.executeUpdate();
                                                 if (result == 0) {
-                                                    checkBirdPair = false;                                                   
+                                                    checkBirdPair = false;
                                                     break;
                                                 }
 
@@ -341,7 +341,7 @@ public class OrderDAO {
                                                     + "WHERE [order_id] = ?";
                                             pst = con.prepareStatement(selectBirdPair);
                                             pst.setString(1, order_id);
-                                            rs = pst.executeQuery();                                           
+                                            rs = pst.executeQuery();
                                             if (rs != null && rs.next()) {
                                                 int pair_id = rs.getInt("pair_id");
                                                 String insertTracking = "INSERT INTO [PairTracking]([pair_id],[content],[date_content])\n"
@@ -379,11 +379,9 @@ public class OrderDAO {
                                         break;
                                     }
                                 } else {
-
                                     checkBirdPair = false;
                                     error = male.getBird_name() + " không thể ghép cặp";
                                     break;
-
                                 }
                             }
                         }
@@ -683,8 +681,8 @@ public class OrderDAO {
                 }
                 if (startDay != null && endDay != null) {
                     if (!startDay.isEmpty() && !endDay.isEmpty()) {
-                        String dateFormatPattern = "\\d{4}-\\d{2}-\\d{2}";)){
-                        if (startDay.matches(dateFormatPattern) && endDay.matches(dateFormatPattern)) {
+                        String dateFormatPattern = "\\d{4}-\\d{2}-\\d{2}";
+                        if(startDay.matches(dateFormatPattern) && endDay.matches(dateFormatPattern)){
                             query += "AND ([order_date] >= '" + startDay + "' AND [order_date] <= '" + endDay + "')";
                         } else {
                             if (startDay.matches(dateFormatPattern)) {
@@ -773,7 +771,7 @@ public class OrderDAO {
         }
         return order;
     }
-    
+
     public ArrayList<String> getOrderStatus() throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -805,7 +803,7 @@ public class OrderDAO {
         }
         return statuses;
     }
-    
+
     public boolean updateOrderStatus(String order_id, String status) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;

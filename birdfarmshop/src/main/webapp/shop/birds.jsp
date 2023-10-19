@@ -248,76 +248,76 @@
         <%@include file="../layout/footer.jsp" %>
         <!-- End Footer -->
         <script>
-                                                                    $(function () {
-                                                                        var selectedClass = "";
-                                                                        $("p").click(function () {
-                                                                            selectedClass = $(this).attr("data-rel");
-                                                                            $("#portfolio").fadeTo(50, 0.1);
-                                                                            $("#portfolio div").not("." + selectedClass).fadeOut();
-                                                                            setTimeout(function () {
-                                                                                $("." + selectedClass).fadeIn();
-                                                                                $("#portfolio").fadeTo(50, 1);
-                                                                            }, 500);
-                                                                        });
-                                                                        $("input[name=txtBreedId]").change(function () {
-                                                                            $("#selectBird").submit();
-                                                                        });
-                                                                        $("input[name=txtPrice]").change(function () {
-                                                                            $("#selectBird").submit();
-                                                                        });
-                                                                        $("input[name=txtGender]").change(function () {
-                                                                            $("#selectBird").submit();
-                                                                        });
-                                                                        $("input[name=txtAge]").change(function () {
-                                                                            $("#selectBird").submit();
-                                                                        });
-                                                                        $(".start-page").click(function () {
-                                                                            $('input[name=page]').val(1);
-                                                                            $("#selectBird").submit();
-                                                                        });
-                                                                        $(".end-page").click(function () {
-                                                                            let endPage = $('input[name=numberOfPage]').val();
-                                                                            $('input[name=page]').val(endPage);
-                                                                            $("#selectBird").submit();
-                                                                        });
-                                                                        $(".bird-cart").click(function () {
-                                                                            let birdId = $(this).attr('data-value');
-                                                                            $.ajax({
-                                                                                url: "AddBirdToCartController",
-                                                                                type: 'POST',
-                                                                                data: {bird_id: birdId},
-                                                                                success: function (data) {
-                                                                                    if (data == 0) {
-                                                                                        toast({
-                                                                                            title: 'Lỗi',
-                                                                                            message: 'Sản phẩm này đã có trong giỏ hàng',
-                                                                                            type: 'error',
-                                                                                            duration: 3000
-                                                                                        });
-                                                                                    } else {
-                                                                                        toast({
-                                                                                            title: 'Thành công',
-                                                                                            message: 'Thêm sản phẩm vào giỏ hàng thành công',
-                                                                                            type: 'success',
-                                                                                            duration: 3000
-                                                                                        });
-                                                                                        $.ajax({
-                                                                                            url: "AddBirdToCartController",
-                                                                                            type: 'POST',
-                                                                                            success: function (data) {
-                                                                                                $('.cart-amount').html(data);
-                                                                                            }
-                                                                                        });
-                                                                                    }
-                                                                                }
-                                                                            });
-                                                                        });
-                                                                    });
-                                                                    function takePage(event) {
-                                                                        let value = event.getAttribute('data-value');
-                                                                        $('input[name=page]').val(value);
-                                                                        $("#selectBird").submit();
-                                                                    }
+            $(function () {
+                var selectedClass = "";
+                $("p").click(function () {
+                    selectedClass = $(this).attr("data-rel");
+                    $("#portfolio").fadeTo(50, 0.1);
+                    $("#portfolio div").not("." + selectedClass).fadeOut();
+                    setTimeout(function () {
+                        $("." + selectedClass).fadeIn();
+                        $("#portfolio").fadeTo(50, 1);
+                    }, 500);
+                });
+                $("input[name=txtBreedId]").change(function () {
+                    $("#selectBird").submit();
+                });
+                $("input[name=txtPrice]").change(function () {
+                    $("#selectBird").submit();
+                });
+                $("input[name=txtGender]").change(function () {
+                    $("#selectBird").submit();
+                });
+                $("input[name=txtAge]").change(function () {
+                    $("#selectBird").submit();
+                });
+                $(".start-page").click(function () {
+                    $('input[name=page]').val(1);
+                    $("#selectBird").submit();
+                });
+                $(".end-page").click(function () {
+                    let endPage = $('input[name=numberOfPage]').val();
+                    $('input[name=page]').val(endPage);
+                    $("#selectBird").submit();
+                });
+                $(".bird-cart").click(function () {
+                    let birdId = $(this).attr('data-value');
+                    $.ajax({
+                        url: "AddBirdToCartController",
+                        type: 'POST',
+                        data: {bird_id: birdId},
+                        success: function (data) {
+                            if (data == 0) {
+                                toast({
+                                    title: 'Lỗi',
+                                    message: 'Sản phẩm này đã có trong giỏ hàng',
+                                    type: 'error',
+                                    duration: 3000
+                                });
+                            } else {
+                                toast({
+                                    title: 'Thành công',
+                                    message: 'Thêm sản phẩm vào giỏ hàng thành công',
+                                    type: 'success',
+                                    duration: 3000
+                                });
+                                $.ajax({
+                                    url: "AddBirdToCartController",
+                                    type: 'POST',
+                                    success: function (data) {
+                                        $('.cart-amount').html(data);
+                                    }
+                                });
+                            }
+                        }
+                    });
+                });
+            });
+            function takePage(event) {
+                let value = event.getAttribute('data-value');
+                $('input[name=page]').val(value);
+                $("#selectBird").submit();
+            }
         </script>
 
     </body>

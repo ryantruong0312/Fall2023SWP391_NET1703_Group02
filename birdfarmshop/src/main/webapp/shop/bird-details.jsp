@@ -158,72 +158,64 @@
                             <h4>${birdDetails.bird_name}</h4>
                             <c:choose>
                                 <c:when test="${birdDetails.discount > 0}">
-                                    <span>
-                                        <span style="display: inline-block;"><del><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</del></span>
-                                        <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${birdDetails.discount}%</span>
-                                        <span style="font-size: 20px;"><fmt:formatNumber value="${birdDetails.price - birdDetails.price * birdDetails.discount / 100}" pattern="#,###"/> ₫<span>
-                                            </span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span style="font-size: 20px;"><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</span>
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <div class="mt-2">
-                                        <h4>Mô tả sản phẩm: </h4>
-                                        <div style="white-space: nowrap; margin-top: 10px;">
-                                            <h5 style="display: inline;">Màu sắc: </h5>
-                                            <span style="display: inline;">${birdDetails.color}</span>
-                                        </div>
+                                    <span style="display: inline-block;"><del><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</del></span>
+                                    <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${birdDetails.discount}%</span>
+                                    <span style="font-size: 20px;"><fmt:formatNumber value="${birdDetails.price - birdDetails.price * birdDetails.discount / 100}" pattern="#,###"/> ₫</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span style="font-size: 20px;"><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</span>
+                                </c:otherwise>
+                            </c:choose>
+                            <div class="mt-2">
+                                <h4>Mô tả sản phẩm: </h4>
+                                <div style="white-space: nowrap; margin-top: 10px;">
+                                    <h5 style="display: inline;">Màu sắc: </h5>
+                                    <span style="display: inline;">${birdDetails.color}</span>
+                                </div>
 
-                                        <div style="white-space: nowrap; margin-top: 10px;">
-                                            <h5 style="display: inline;">Tháng tuổi: </h5>
-                                            <span style="display: inline;">${birdDetails.age}</span>
-                                        </div>
+                                <div style="white-space: nowrap; margin-top: 10px;">
+                                    <h5 style="display: inline;">Tháng tuổi: </h5>
+                                    <span style="display: inline;">${birdDetails.age}</span>
+                                </div>
 
-                                        <div style="white-space: nowrap; margin-top: 10px;">
-                                            <h5 style="display: inline;">Thời gian trưởng thành: </h5>
-                                            <span style="display: inline;">${birdDetails.grown_age} tháng</span>
-                                        </div>
+                                <div style="white-space: nowrap; margin-top: 10px;">
+                                    <h5 style="display: inline;">Thời gian trưởng thành: </h5>
+                                    <span style="display: inline;">${birdDetails.grown_age} tháng</span>
+                                </div>
 
-                                        <div style="white-space: nowrap; margin-top: 10px;">
-                                            <h5 style="display: inline;">Số lần giao phối: </h5>
-                                            <span style="display: inline;">${birdDetails.reproduction_history}</span>
-                                        </div>
-                                        <c:if test="${not empty birdDetails.achievement}">
-                                            <div style="white-space: nowrap; margin-top: 10px;">
-                                                <h5 style="display: inline;">Thành tựu: </h5>
-                                                <span style="display: inline;">${birdDetails.achievement}</span>
-                                            </div>
-                                        </c:if>
-
-                                        <c:if test="${not empty birdDetails.description}">
-                                            <div style="margin-top: 10px;">
-                                                <h5>Thông tin: </h5>
-                                                <span style="margin-top: 10px;">${birdDetails.description}</span>
-                                            </div>
-                                        </c:if>
-
-                                        <div>
-                                            <div class="quote">
-                                                <c:if test="${not empty birdDetails.dad_bird_name && not empty birdDetails.mom_bird_name}">
-                                                    <i class="fa fa-quote-left"></i><p>${birdDetails.dad_bird_name} lai với ${birdDetails.mom_bird_name}</p>
-                                                    </c:if>
-                                            </div>
-                                            <c:if test="${empty sessionScope.LOGIN_USER || sessionScope.LOGIN_USER.role == 'customer'}">
-                                                <c:if test="${bird.status ne 'Đã bán' && birdDetails.status ne 'Đang sinh sản' && birdDetails.status ne 'Đang ghép cặp'}">
-                                                    <div class="total">
-                                                        <div class="main-border-button">
-                                                            <a class="bird-cart" style="cursor: pointer" data-value="${birdDetails.bird_id}">Thêm vào giỏ hàng</a>
-                                                        </div>
-                                                    </div>
-                                                </c:if>
-                                            </c:if>
-                                        </div>
+                                <div style="white-space: nowrap; margin-top: 10px;">
+                                    <h5 style="display: inline;">Số lần giao phối: </h5>
+                                    <span style="display: inline;">${birdDetails.reproduction_history}</span>
+                                </div>
+                                <c:if test="${not empty birdDetails.achievement}">
+                                    <div style="white-space: nowrap; margin-top: 10px;">
+                                        <h5 style="display: inline;">Thành tựu: </h5>
+                                        <span style="display: inline;">${birdDetails.achievement}</span>
                                     </div>
+                                </c:if>
+
+                                <c:if test="${not empty birdDetails.description}">
+                                    <div style="margin-top: 10px;">
+                                        <h5>Thông tin: </h5>
+                                        <span style="margin-top: 10px;">${birdDetails.description}</span>
+                                    </div>
+                                </c:if>
+                                <div>
+                                    <c:if test="${empty sessionScope.LOGIN_USER || sessionScope.LOGIN_USER.role == 'customer'}">
+                                        <c:if test="${bird.status ne 'Đã bán' && birdDetails.status ne 'Đang sinh sản' && birdDetails.status ne 'Đang ghép cặp'}">
+                                            <div class="total">
+                                                <div class="main-border-button">
+                                                    <a class="bird-cart" style="cursor: pointer" data-value="${birdDetails.bird_id}">Thêm vào giỏ hàng</a>
+                                                </div>
+                                            </div>
+                                        </c:if>
+                                    </c:if>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-             </div>
+            </div>
         </section>
         <!-- ***** Product Area Ends ***** -->
         <!-- Feedback start-->
@@ -279,7 +271,4 @@
             });
         </script>
     </body>
-
-                                                }, 500);
-
-
+</html>

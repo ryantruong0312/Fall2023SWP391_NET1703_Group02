@@ -52,9 +52,9 @@
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-10">
                         <c:if test="${sessionScope.CART.totalItem > 0}" ><a onclick="return clearCart(this)" href="MainController?action=DeleteCart"><button type="submit" class="float-right btn btn-danger">Xóa giỏ hàng</button></a></c:if>
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h3 class="fw-normal mb-0 text-black">Vẹt cảnh</h3>
-                        </div><hr>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h3 class="fw-normal mb-0 text-black">Vẹt cảnh</h3>
+                            </div><hr>
                         <c:forEach items="${sessionScope.CART.birdList}" var="bird" varStatus="counter">
                             <c:set var="count" value="${count + 1}" />
                             <div class="card rounded-3 mb-5">
@@ -171,7 +171,7 @@
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <h3 class="fw-normal mb-0 text-black">Tổ chim non</h3>
                         </div><hr>
-                          <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
                             <h3 class="fw-normal mb-0 text-black">Nhân giống</h3>
                         </div><hr>
                         <c:forEach items="${sessionScope.CART.birdPairList}" var="birdPair">
@@ -195,26 +195,26 @@
                                             </c:choose>
                                         </div>
                                         <div class="col-md-3 col-lg-3 col-xl-3">
-                                             
-                                                <c:choose>
-                                                    <c:when test="${not empty birdPair.value.birdCustomer}">
-                                                        <p class="lead fw-bold mb-5" style="font-size: 23px;">${birdPair.value.birdCustomer.name} </p>
-                                                        <p class="lead fw-bold mb-2" style="font-size: 23px;">Nhân giống</p>
-                                                        <p class="lead fw-bold mt-5" style="font-size: 23px;">${not empty birdPair.value.birdMale ?  birdPair.value.birdMale.bird_name : birdPair.value.birdFemale.bird_name}</p>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <p class="lead fw-bold mb-5" style="font-size: 23px;">${birdPair.value.birdMale.bird_name}</p>
-                                                        <p class="lead fw-bold mb-2" style="font-size: 23px;">Nhân giống</p>
-                                                        <p class="lead fw-bold mt-5" style="font-size: 23px;">${birdPair.value.birdFemale.bird_name}</p>               
-                                                    </c:otherwise>
-                                                </c:choose>               
+
+                                            <c:choose>
+                                                <c:when test="${not empty birdPair.value.birdCustomer}">
+                                                    <p class="lead fw-bold mb-5" style="font-size: 23px;">${birdPair.value.birdCustomer.name} </p>
+                                                    <p class="lead fw-bold mb-2" style="font-size: 23px;">Nhân giống</p>
+                                                    <p class="lead fw-bold mt-5" style="font-size: 23px;">${not empty birdPair.value.birdMale ?  birdPair.value.birdMale.bird_name : birdPair.value.birdFemale.bird_name}</p>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <p class="lead fw-bold mb-5" style="font-size: 23px;">${birdPair.value.birdMale.bird_name}</p>
+                                                    <p class="lead fw-bold mb-2" style="font-size: 23px;">Nhân giống</p>
+                                                    <p class="lead fw-bold mt-5" style="font-size: 23px;">${birdPair.value.birdFemale.bird_name}</p>               
+                                                </c:otherwise>
+                                            </c:choose>               
                                         </div>
                                         <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
-                                                <input id="form1" min="1" disabled="" name="quantity" value="1" type="number"
-                                                 class="form-control form-control-sm" style="text-align: center; height: 40px; border: 1px solid; font-size: 16px;"/>
+                                            <input id="form1" min="1" disabled="" name="quantity" value="1" type="number"
+                                                   class="form-control form-control-sm" style="text-align: center; height: 40px; border: 1px solid; font-size: 16px;"/>
                                         </div>
                                         <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">                                         
-                                              <h5 class="mb-0" style="font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdPair.value.servicePrice}" pattern="#,###"/> ₫</h5>
+                                            <h5 class="mb-0" style="font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdPair.value.servicePrice}" pattern="#,###"/> ₫</h5>
                                         </div>
                                         <div class="col-md-1 col-lg-1 col-xl-1 text-end">
                                             <a onclick="return checkRemove(this)" href="MainController?action=RemoveBirdPairFromCart&bird_pair_id=${birdPair.key}" class="text-danger"><img src="assets/images/remove-button.png"/></i></a>
@@ -253,7 +253,7 @@
                                                 <img src="assets/images/decrease-button.png"/>
                                             </button>
 
-                                                    <input id="form1" min="1" disabled="" name="quantity" value="${accessory.value.order_quantity}" type="number"
+                                            <input id="form1" min="1" disabled="" name="quantity" value="${accessory.value.order_quantity}" type="number"
                                                    class="form-control form-control-sm" style="text-align: center; height: 40px; border: 1px solid; font-size: 16px;"/>
 
                                             <button class="btn btn-link px-2"
@@ -326,86 +326,86 @@
         <!-- End Footer -->
         <script>
 
-                                $(function () {
-                                    var selectedClass = "";
-                                    $("p").click(function () {
-                                        selectedClass = $(this).attr("data-rel");
-                                        $("#portfolio").fadeTo(50, 0.1);
-                                        $("#portfolio div").not("." + selectedClass).fadeOut();
-                                        setTimeout(function () {
-                                            $("." + selectedClass).fadeIn();
-                                            $("#portfolio").fadeTo(50, 1);
-                                        }, 500);
+            $(function () {
+                var selectedClass = "";
+                $("p").click(function () {
+                    selectedClass = $(this).attr("data-rel");
+                    $("#portfolio").fadeTo(50, 0.1);
+                    $("#portfolio div").not("." + selectedClass).fadeOut();
+                    setTimeout(function () {
+                        $("." + selectedClass).fadeIn();
+                        $("#portfolio").fadeTo(50, 1);
+                    }, 500);
 
-                                    });
+                });
+            });
+            function checkRemove(event) {
+                $('#confirm-remove').css('display', 'block');
+                $('#button-confirm').attr('href', event.href);
+                return false;
+            }
+            function cancelRemove() {
+                $('#confirm-remove').css('display', 'none');
+            }
+            function clearCart(event) {
+                $('#confirm-remove').css('display', 'block');
+                console.log(event.href);
+                $('#button-confirm').attr('href', event.href);
+                return false;
+            }
+            function DownQuantityAccessory(event, accessory_id) {
+                let numberAccessory = event.parentNode.querySelector('input[type=number]');
+                let number = Number(numberAccessory.value);
+                if (number == 1) {
+                    return;
+                } else {
+                    numberAccessory.stepDown();
+                    $.ajax({
+                        url: 'UpdateAccessoryCartController',
+                        type: 'POST',
+                        data: {accessory_id: accessory_id, type: 'down'},
+                        success: function (data) {
+                            let price = Number(data).toLocaleString('vi-VN');
+                            $('#price-cart').html(price + ' ₫');
+                            if (data != 0) {
+                                $.ajax({
+                                    url: "AddBirdToCartController",
+                                    type: 'POST',
+                                    success: function (data) {
+                                        $('.cart-amount').html(data);
+                                    }
                                 });
-                                function checkRemove(event) {
-                                    $('#confirm-remove').css('display', 'block');
-                                    $('#button-confirm').attr('href', event.href);
-                                    return false;
-                                }
-                                function cancelRemove() {
-                                    $('#confirm-remove').css('display', 'none');
-                                }
-                                function clearCart(event) {
-                                    $('#confirm-remove').css('display', 'block');
-                                    console.log(event.href);
-                                    $('#button-confirm').attr('href', event.href);
-                                    return false;
-                                }
-                                function DownQuantityAccessory(event, accessory_id) {
-                                    let numberAccessory = event.parentNode.querySelector('input[type=number]');
-                                    let number = Number(numberAccessory.value);
-                                    if (number == 1) {
-                                        return;
-                                    } else {
-                                        numberAccessory.stepDown();
-                                        $.ajax({
-                                            url: 'UpdateAccessoryCartController',
-                                            type: 'POST',
-                                            data: {accessory_id: accessory_id, type: 'down'},
-                                            success: function (data) {
-                                                let price = Number(data).toLocaleString('vi-VN');
-                                                $('#price-cart').html(price + ' ₫');
-                                                if (data != 0) {
-                                                    $.ajax({
-                                                        url: "AddBirdToCartController",
-                                                        type: 'POST',
-                                                        success: function (data) {
-                                                            $('.cart-amount').html(data);
-                                                        }
-                                                    });
-                                                }
-                                            }
-                                        });
+                            }
+                        }
+                    });
+                }
+            }
+            function UpQuantityAccessory(event, accessory_id) {
+                let numberAccessory = event.parentNode.querySelector('input[type=number]');
+                if (numberAccessory) {
+                    $.ajax({
+                        url: 'UpdateAccessoryCartController',
+                        type: 'POST',
+                        data: {accessory_id: accessory_id, type: 'up'},
+                        success: function (data) {
+                            if (data != 0) {
+                                numberAccessory.stepUp();
+                                let price = Number(data).toLocaleString('vi-VN');
+                                $('#price-cart').html(price + ' ₫');
+                                $.ajax({
+                                    url: "AddBirdToCartController",
+                                    type: 'POST',
+                                    success: function (data) {
+                                        $('.cart-amount').html(data);
                                     }
-                                }
-                                function UpQuantityAccessory(event, accessory_id) {
-                                    let numberAccessory = event.parentNode.querySelector('input[type=number]');
-                                    if (numberAccessory) {     
-                                        $.ajax({
-                                            url: 'UpdateAccessoryCartController',
-                                            type: 'POST',
-                                            data: {accessory_id: accessory_id, type: 'up'},
-                                            success: function (data) {
-                                                if (data != 0) {
-                                                    numberAccessory.stepUp();
-                                                    let price = Number(data).toLocaleString('vi-VN');
-                                                    $('#price-cart').html(price + ' ₫');
-                                                    $.ajax({
-                                                        url: "AddBirdToCartController",
-                                                        type: 'POST',
-                                                        success: function (data) {
-                                                            $('.cart-amount').html(data);
-                                                        }
-                                                    });
-                                                }else{
-                                                    toast({title:'Lỗi', message:'Sản phẩm không đủ số lượng', type: 'error', duration: 3000})
-                                                }
-                                            }
-                                        });
-                                    }
-                                }
+                                });
+                            } else {
+                                toast({title: 'Lỗi', message: 'Sản phẩm không đủ số lượng', type: 'error', duration: 3000})
+                            }
+                        }
+                    });
+                }
+            }
         </script>
     </body>
 </html>
