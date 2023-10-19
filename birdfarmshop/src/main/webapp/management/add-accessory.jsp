@@ -166,65 +166,82 @@
                 </form>
             </div>
         </section>
-    <script>
-        $(document).ready(function () {
-            // Get a reference to the search input element
-            var searchInput = $("#searchInput");
-            // Add an event listener for input changes
-            searchInput.on("input", function () {
-                var keyword = searchInput.val().toLowerCase();
+        <%@include file="../layout/message.jsp" %>
+        <script src="assets/js/jquery-3.7.1.min.js"></script>
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/jquery.validate.min.js" ></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="assets/js/birdshop.js"></script>
+        <!-- Plugins -->
+        <script src="assets/js/owl-carousel.js"></script>
+        <script src="assets/js/accordions.js"></script>
+        <script src="assets/js/datepicker.js"></script>
+        <script src="assets/js/scrollreveal.min.js"></script>
+        <script src="assets/js/slick.js"></script> 
+        <script src="assets/js/lightbox.js"></script> 
+        <script src="assets/js/isotope.js"></script> 
+        <!-- Global Init -->
+        <script src="assets/js/custom.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Get a reference to the search input element
+                var searchInput = $("#searchInput");
+                // Add an event listener for input changes
+                searchInput.on("input", function () {
+                    var keyword = searchInput.val().toLowerCase();
 
-                // Loop through each row in the table
-                $("tbody tr").each(function () {
-                    var row = $(this);
-                    // Check if any cell in the row contains the keyword
-                    if (row.text().toLowerCase().includes(keyword)) {
-                        row.show(); // Show the row if keyword found
-                    } else {
-                        row.hide(); // Hide the row if keyword not found
-                    }
+                    // Loop through each row in the table
+                    $("tbody tr").each(function () {
+                        var row = $(this);
+                        // Check if any cell in the row contains the keyword
+                        if (row.text().toLowerCase().includes(keyword)) {
+                            row.show(); // Show the row if keyword found
+                        } else {
+                            row.hide(); // Hide the row if keyword not found
+                        }
+                    });
+                });
+
+                // Show the modal when the "Cấp mới tài khoản" button is clicked
+                $("#createAccountBtn").click(function () {
+                    $("#createAccountModal").modal("show");
+                });
+                // Handle form submission
+                $("#submitAccountBtn").click(function () {
+                    // Get the form data
+                    const fullname = $("#fullname").val();
+                    const username = $("#username").val();
+
+                    // You can perform validation here if needed
+
+                    // Close the modal
+                    $("#createAccountModal").modal("hide");
+
+                    // Send the form data to the server via AJAX or perform any desired action
                 });
             });
+        </script>
 
-            // Show the modal when the "Cấp mới tài khoản" button is clicked
-            $("#createAccountBtn").click(function () {
-                $("#createAccountModal").modal("show");
-            });
-            // Handle form submission
-            $("#submitAccountBtn").click(function () {
-                // Get the form data
-                const fullname = $("#fullname").val();
-                const username = $("#username").val();
+        <script>
+            function submitForm() {
+                // Get the form element by its ID
+                var form = document.getElementById("createAccountForm");
 
-                // You can perform validation here if needed
+                // Define the controller URL
+                var controllerUrl = "/birdfarmshop/MainController";
 
-                // Close the modal
-                $("#createAccountModal").modal("hide");
-
-                // Send the form data to the server via AJAX or perform any desired action
-            });
-        });
-    </script>
-
-    <script>
-        function submitForm() {
-            // Get the form element by its ID
-            var form = document.getElementById("createAccountForm");
-
-            // Define the controller URL
-            var controllerUrl = "/birdfarmshop/MainController";
-
-            // Set the form's action attribute to the controller URL
-            form.action = controllerUrl;
+                // Set the form's action attribute to the controller URL
+                form.action = controllerUrl;
 
 
-        document.querySelector('input[name=txtAccessoryName]').addEventListener('input', function () {
-            var input = this;
-            if (input.value.length > 50) {
-                input.setCustomValidity("Tên phụ kiện không được dài hơn 50 ký tự.");
-            } else {
-                input.setCustomValidity("");
-            }
-        });
-    </script>
+                document.querySelector('input[name=txtAccessoryName]').addEventListener('input', function () {
+                    var input = this;
+                    if (input.value.length > 50) {
+                        input.setCustomValidity("Tên phụ kiện không được dài hơn 50 ký tự.");
+                    } else {
+                        input.setCustomValidity("");
+                    }
+                }
+                );
+        </script>
 </html>

@@ -17,7 +17,8 @@
 <c:url var="toShopOrders" value="MainController?action=NavToShopOrders"/>
 <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
 <c:url var="toReports" value="MainController?action=NavToReports"/>
-<c:url var="toPair" value="MainController?action=NavToPairBirds"/>
+<c:url var="toPair" value="MainController?action=NavToPairBirds"/>\
+<c:url var="toAddAccessory" value="MainController?action=NavToAddAccessory"/>
 <c:url var="toEditProfile" value="MainController?action=NavToEditProfile"/>
 <c:url var="toUpdatePassword" value="MainController?action=NavToUpdatePassword"/>
 <!-- ***** Preloader Start ***** -->
