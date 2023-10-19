@@ -285,69 +285,6 @@
                                     </div>
                                 </form>
                             </div>
-
-                            <div class="card-body">
-                                <!-- Tab buttons -->
-                                <ul class="nav nav-tabs" id="orderTabs">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" data-toggle="tab" href="#pendingTab">Pending</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#processedTab">Processed</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#inTransitTab">In-transit</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#deliveredTab">Delivered</a>
-                                    </li>
-                                </ul>
-
-                                <!-- Tab content -->
-                                <div class="tab-content">
-                                    <!-- Pending Orders Tab -->
-                                    <div class="tab-pane fade show active" id="pendingTab">
-                                        <table class="table">
-                                            <!-- Add table headers here -->
-                                            <thead>
-                                                <tr>
-                                                    <th>Order ID</th>
-                                                    <th>Order Items</th>
-                                                    <th>Create Date</th>
-                                                    <th>Total Price</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <!-- Populate with pending order data -->
-                                                <!-- Example row:
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Product 1, Product 2</td>
-                                                    <td>2023-10-06</td>
-                                                    <td>$100.00</td>
-                                                </tr>
-                                                -->
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <!-- Processed Orders Tab -->
-                                    <div class="tab-pane fade" id="processedTab">
-                                        <!-- Similar structure as the Pending Orders Tab -->
-                                    </div>
-
-                                    <!-- In-transit Orders Tab -->
-                                    <div class="tab-pane fade" id="inTransitTab">
-                                        <!-- Similar structure as the Pending Orders Tab -->
-                                    </div>
-
-                                    <!-- Delivered Orders Tab -->
-                                    <div class="tab-pane fade" id="deliveredTab">
-                                        <!-- Similar structure as the Pending Orders Tab -->
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>

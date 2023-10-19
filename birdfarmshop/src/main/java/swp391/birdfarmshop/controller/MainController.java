@@ -111,8 +111,8 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_ORDER_ITEMS = "RenderOrderItemsController";
     private static final String ACT_DELETE_CART = "DeleteCart";
     private static final String DEST_DELETE_CART = "DeleteCartController";
-    private static final String ACT_NAV_CUSTOMER_ORDER_ITEM = "NavToCustomerOrderItem";
-    private static final String DEST_CUSTOMER_ORDER_ITEM = "RenderCustomerOrderItemController";
+    private static final String ACT_NAV_CUSTOMER_ORDER = "NavToCustomerOrder";
+    private static final String DEST_NAV_CUSTOMER_ORDER = "RenderCustomerOrderController";
     private static final String ACT_NAV_UPDATE_ORDER = "NavToUpdateOrder";
     private static final String DEST_NAV_UPDATE_ORDER = "UpdateOrderStatusController";
     private static final String ACT_NAV_BIRD_PAIR_CUSTOMER = "NavToBirdPairCustomer";
@@ -263,8 +263,8 @@ public class MainController extends HttpServlet {
                 case ACT_DELETE_CART:
                     url = DEST_DELETE_CART;
                     break;
-                case ACT_NAV_CUSTOMER_ORDER_ITEM:
-                    url = DEST_CUSTOMER_ORDER_ITEM;
+                case ACT_NAV_CUSTOMER_ORDER:
+                    url = DEST_NAV_CUSTOMER_ORDER;
                     break;
                 case ACT_NAV_ORDER_ITEMS:
                     url = DEST_NAV_ORDER_ITEMS;

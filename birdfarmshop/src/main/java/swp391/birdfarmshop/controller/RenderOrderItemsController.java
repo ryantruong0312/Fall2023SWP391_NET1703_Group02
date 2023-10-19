@@ -36,20 +36,15 @@ public class RenderOrderItemsController extends HttpServlet {
             if (user != null && user.getRole().equals("manager")) {
                 OrderItemDAO orderItemDao = new OrderItemDAO();
                 ArrayList<OrderItemDTO> itemList = orderItemDao.getItemOrder(orderId);
-                for (OrderItemDTO orderItem : itemList) {
-                    System.out.println(orderItem.getOrder_item_id());
-                }
                 request.setAttribute("ITEMLIST", itemList);
                 url = SUCCESS;
-                request.getRequestDispatcher(url).forward(request, response);
-
             } else {
                 response.sendRedirect(HOME);
             }
         } catch (Exception e) {
             log("Error at RenderShopOrdersController: " + e.toString());
         } finally {
-//            request.getRequestDispatcher(url).forward(request, response);
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

@@ -28,8 +28,8 @@
                             </a>
                         </li>
                         <c:if test="${sessionScope.LOGIN_USER.role == 'customer'}">
-                            <li class="${param.action == "NavToOrderCustomer" ? "active-profile":""}">
-                                <a href="#" class="order-link">
+                            <li class="${param.action == "NavToCustomerOrder" ? "active-profile":""}">
+                                <a href="MainController?action=NavToCustomerOrder" class="order-link">
                                     <img class="icon" src="assets/images/test.png" alt="Đơn hàng"/>
                                     <span>Đơn hàng</span>
                                 </a>

@@ -195,4 +195,46 @@ public class BirdNestDAO {
         return false;
     }
     
+    public BirdNest getBirdNestById(String id) throws SQLException, ClassNotFoundException {
+        BirdNest birdNest = null;
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ImageDAO imgDao = new ImageDAO();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("SELECT [nest_id],[nest_name],[breed_id],[dad_bird_id],[mom_bird_id],\n"
+                        + "       [baby_quantity],[status],[price],[discount],[description]\n"
+                        + "FROM [BirdFarmShop].[dbo].[BirdNest] WHERE [nest_id] = ? ");
+                stm.setString(1, id);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String nest_id = rs.getString("nest_id");
+                    String nest_name = rs.getString("nest_name");
+                    String breed_id = rs.getString("breed_id");
+                    int price = rs.getInt("price");
+                    int quantityEgg = rs.getInt("baby_quantity");
+                    String description = rs.getString("description");
+                    String dad_bird_id = rs.getString("dad_bird_id");
+                    String mom_bird_id = rs.getString("mom_bird_id");
+                    int discount = rs.getInt("discount");
+                    String status = rs.getString("status");
+                    String image_url = imgDao.getThumbnailUrlByBirdNestId(nest_id);
+                    birdNest = new BirdNest(nest_id, nest_name, breed_id, dad_bird_id, mom_bird_id, quantityEgg, status, price, discount, image_url, description);
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return birdNest;
+    }
 }
