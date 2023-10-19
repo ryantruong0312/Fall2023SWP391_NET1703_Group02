@@ -28,6 +28,87 @@ Author     : tlminh
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
 
+        <style>
+            .thumb{
+                width: 370px;
+                height: 350px;
+            }
+            .activeNav{
+                background-color: black;
+                color: white !important;
+            }
+            .search-bar {
+                margin: 7px 0 10px 75px;
+                border: 5px;
+                border-radius: 8px;
+                border: 1px solid rgb(221, 221, 227);
+
+            }
+            .search-bar input {
+                border: 0;
+                background: none;
+                outline: none;
+            }
+            .search-bar input[type=submit] {
+                float: right;
+            }
+            .search-bar img {
+                margin-left: 5px;
+            }
+
+            .type {
+                cursor: pointer;
+                background-color: #cccccc;
+                padding-left: 5px;
+            }
+            .type + ol {
+                display: none;
+            }
+            li input[type="radio"] + label {
+                margin-left: 5px;
+            }
+
+            .position-sticky li {
+                margin-bottom: 5px;
+            }
+            .bird-pg li{
+                cursor: pointer;
+            }
+            a {
+                color: black;
+            }
+            #input-accessory{
+                display: block;
+                border-radius: 10px; /* Điều này làm cho góc bo tròn */
+                padding: 10px; /* Điều này làm cho nút trở nên lớn hơn và dễ đọc hơn */
+                background-color: #007bff; /* Màu nền */
+                color: #fff; /* Màu chữ */
+                cursor: pointer; /* Biến con trỏ thành bàn tay khi di chuột vào nút */
+                border: none;
+                font-size: 15px;
+                margin-left: 295px;
+            }
+            .overlay-text {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: rgba(0, 0, 0, 0.5);
+                border-radius: 80%;
+                color: #fff;
+                padding: 20px;
+                font-size: 50px;
+                text-align: center;
+                margin-right: 1px;
+                margin-top: 0px;
+            }
+            .overlay-container {
+                position: relative;
+            }
+            #selectAccessory{
+                margin-top:  5px;
+            }
+        </style>
     </head>
 
     <body>
@@ -139,6 +220,21 @@ Author     : tlminh
 
 
         <!-- ***** Products Area Starts ***** -->
+<<<<<<< .mine
+
+        <section class="section" id="products">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7">
+                        <form id="selectAccessory" action="MainController" method="POST">
+                            <input type="hidden" name="action" value="NavToAccessory"> 
+                            <div class="search-bar" style="width: 400px;">
+                                <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                                <input style="width: 290px;" type="text" name="txtAccessory" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                                <input type="submit" value="Tìm kiếm">
+                            </div>
+                        </form>
+=======
         <div class="py-5 px-2 layout-item" style="border-bottom: none" id="top">
             <form id="selectAccessory" action="MainController" method="POST">
                 <input type="hidden" name="action" value="NavToAccessory"> 
@@ -148,12 +244,66 @@ Author     : tlminh
                         <input type="text" name="txtAccessory" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
                         <input type="hidden" name="page" value="1" />
                         <input type="submit" value="Tìm kiếm">
+
+
+
+
+>>>>>>> .theirs
                     </div>
                 </div>
                 <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
                     <div class="new-item d-flex justify-content-center">
                         <a href="${toAddAccessory}"><span>Thêm mới phụ kiện</span></a>
                     </div>
+<<<<<<< .mine
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Sidebar -->
+                    <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+                        <div class="position-sticky">
+                            <h3>Phân loại theo</h3>
+                            <div class="type" onclick="toggleList('typeList-1')">Loại phụ kiện</div>
+                            <ol style="display: block;" id="typeList-1">
+                                <li><input type="radio" id="type-0" ${requestScope.CATEGORY_ID == null ? "checked": ""} name="txtType" value="All"><label for="type-0">Tất cả</label></li>
+                                <li><input type="radio" id="type-1" ${requestScope.CATEGORY_ID == "cage" ? "checked": ""} name="txtType" value="cage"><label for="type-1">Lồng & cây đứng</label></li>
+                                <li><input type="radio" id="type-2" ${requestScope.CATEGORY_ID == "care" ? "checked": ""} name="txtType" value="care"><label for="type-2">Phụ kiện chăm sóc</label></li>
+                                <li><input type="radio" id="type-3" ${requestScope.CATEGORY_ID == "toy" ? "checked": ""} name="txtType" value="toy"><label for="type-3">Phụ kiện trang trí - Đồ chơi</label></li>
+                            </ol>
+                            <div class="type" onclick="toggleList('typeList-2')">Giá bán</div>
+                            <ol style="display: block;" id="typeList-2">
+                                <li><input type="radio" id="type-65" ${requestScope.PRICE == null ? "checked": ""} name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
+                                <li><input type="radio" id="type-6" ${requestScope.PRICE == "unit_price < 300000" ? "checked": ""}  name="txtPrice" value="unit_price < 300000"><label for="type-6">Dưới 300,000₫</label></li>
+                                <li><input type="radio" id="type-7" ${requestScope.PRICE == "unit_price >= 300000 AND unit_price <= 600000" ? "checked": ""} name="txtPrice" value="unit_price >= 300000 AND unit_price <= 600000"><label for="type-7">Từ 300,000₫ - 600,000₫</label></li>
+                                <li><input type="radio" id="type-8" ${requestScope.PRICE == "unit_price > 600000" ? "checked": ""} name="txtPrice" value="unit_price > 600000"><label for="type-8">Trên 600,000₫</label></li>
+                            </ol>
+                        </div>
+                    </nav>
+                    <!-- Nội dung chính -->
+                    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                        <div id="content" class="row justify-content-center">
+                            <c:if test="${requestScope.accessoryList != null}">
+                                <c:set var="accessoryList" value="${requestScope.accessoryList}"/>
+                                <c:if test="${not empty accessoryList}">
+                                    <c:forEach items="${accessoryList}" var="accessory" varStatus="counter">
+                                        <div class="bird col-sm-7 col-md-7 col-lg-5 col-xl-4">
+                                            <div class="item">
+                                                <div class="thumb">
+                                                    <div class="hover-content">
+                                                        <ul>
+                                                            <li>
+                                                                <a href="RenderAccessoryDetailsController?id=${accessory.accessory_id}"><i class="fa fa-eye"></i></a>
+                                                            </li>
+                                                            <c:if test="${accessory.stock_quantity > 0 && (sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER == null)}">
+                                                                <li><a style="cursor: pointer" class="accessory-cart" data-value="${accessory.accessory_id}"><i class="fa fa-shopping-cart"></i></a></li>
+
+
+
+
+
+
+=======
                 </c:if>
                 <main class="my-5">
                     <div class="container-fluid">
@@ -201,7 +351,8 @@ Author     : tlminh
                                                                         <c:if test="${accessory.stock_quantity > 0}">
                                                                             <li><a style="cursor: pointer" class="accessory-cart" data-value="${accessory.accessory_id}"><i class="fa fa-shopping-cart"></i></a></li>
                                                                          </c:if>
-                                                                    </c:if>
+>>>>>>> .theirs
+                                                            </c:if>
                                                                 </ul>
                                                             </div>
                                                             <c:if test="${accessory.stock_quantity == 0}">

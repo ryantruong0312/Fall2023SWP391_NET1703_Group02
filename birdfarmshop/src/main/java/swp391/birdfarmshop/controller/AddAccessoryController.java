@@ -52,7 +52,7 @@ public class AddAccessoryController extends HttpServlet {
 
             if (rs) {
                 String reminder = "Thêm phụ kiện thành công";
-                request.setAttribute("reminder", reminder);
+                request.setAttribute("MESSAGE", reminder);
                 url = SUCCESS;
             }
         } catch (Exception e) {

@@ -37,13 +37,11 @@
                 left: 35%;
                 transform: translate(-50%, -50%);
                 background-color: rgba(0, 0, 0, 0.5);
-                border-radius: 70%;
+                border-radius: 50%;
                 color: #fff;
                 padding: 30px;
-                font-size: 50px;
+                font-size: 30px;
                 text-align: center;
-                margin-right: 100px;
-                margin-top: 0px;
             }
             .stock_quantity{
                 margin-top: 20px;
@@ -63,24 +61,24 @@
                 width: 500px;
                 height: 400px;
                 border: 1px solid;
-                transition: transform 0.3s ease-in-out; /* Tạo hiệu ứng dịch chuyển mượt mà */
+                transition: transform 0.3s ease-in-out;
             }
 
             #mainImage:hover {
-                transform: scale(1.1); /* Phóng to 110% khi hover qua */
-                cursor: pointer; /* Biểu tượng con trỏ khi hover qua */
+                transform: scale(1.1);
+                cursor: pointer;
                 border: 0px;
             }
             .image-top {
-                position: relative; /* Đặt vị trí tương đối để xác định vị trí của overlay-text */
+                position: relative;
             }
             .overlay-container {
-                position: relative; /* Đặt vị trí tương đối để xác định vị trí của overlay-text */
+                position: relative;
             }
             .button-form{
                 margin-bottom: 5px;
                 background-color:rgba(0,0,255, 0.6);
-                margin-left: 964px;
+                /*margin-left: 775px;*/
                 display:block;
                 color: white;
                 padding: 10px;
@@ -88,6 +86,31 @@
                 font-size: 15px;
                 border-radius: 4px;
                 width: 160px;
+            }
+            .button-updateAccessory{
+                margin-bottom: 5px;
+                background-color:rgba(0,0,255, 0.6);
+                color: white;
+                padding: 10px;
+                border: 1px solid;
+                font-size: 15px;
+                border-radius: 4px;
+                width: 120px;
+            }
+            .popup {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+                cursor: move;
+            }
+            .popup.active {
+                display: block;
             }
 
         </style>
@@ -215,55 +238,103 @@
             <div class="container">
                 <div class="row">
                     <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager' || LOGIN_USER.role == 'staff'}">
-                        <form action="RenderUpdateAccessoryController" method="GET">
-                            <input type="hidden" value="${a.accessory_id}" name="accessory_id">
-                            <input type="hidden" value="${LOGIN_USER.role}" name="user_role">
-                            <button class="button-form" type="submit">Chỉnh sửa phụ kiện</button>
-                        </form>
-                    </c:if>
-                </div>                   
-                <div class="row">
-                    <div class="col-lg-8">
-                        <div class="image-container">
-                            <div class="image-top">
-                                <div class="overlay-container">
-                                    <input type="hidden" name="accessory_id" value="${a.accessory_id}"/>
-                                    <img id="mainImage" style="width: 500px; height: 400px; border: 1px solid;" src="${im}" alt="Image main" onclick="swapImages()">
-                                    <c:if test="${requestScope.MESSAGE != null}">
-                                        <div class="overlay-text">${MESSAGE}</div>
-                                    </c:if>
+                        <c:choose>
+                            <c:when test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
+                                <div class="col-lg-8">                               
                                 </div>
-                            </div> 
-                        </div>
-                        <div class="image-bottom">
-                            <c:forEach items="${a.image_url}" var="accessory">
-                                <c:if test="${im ne accessory}">
-                                    <img style="width: 100px; height: 75px; border: 1px solid;" class="accessory-image" src="${accessory}" alt="" onclick="swapImages(this)">
-                                </c:if>
-                            </c:forEach>
-                        </div>                         
-                    </div>
+                                <div class="button-all col-lg-4" style="display: inline-block; white-space: nowrap;">
+                                    <div class="UpdateAccessoryDetail" style="display: inline-block;">
+                                        <form action="RenderUpdateAccessoryController" method="GET">
+                                            <input type="hidden" value="${a.accessory_id}" name="accessory_id">
+                                            <button class="button-form" type="submit">Chỉnh sửa phụ kiện</button>
+                                        </form>
+                                    </div>
+                                    <div class="UpdateStockQuantity" style="display: inline-block;">
+                                        <button id="openPopup" class="button-updateAccessory">Cập nhật kho</button>
+                                        <div class="overlay" id="overlay"></div>
+                                        <form action="UpdateAccessoryController" method="GET">
+                                            <input type="hidden" value="${a.accessory_id}" name="txtAccessoryID">
+                                            <div class="popup" id="popup">
+                                                <h2>Cập nhật kho</h2>
+                                                <p>Số lượng hiện tại trong kho: <span id="currentStock">${a.stock_quantity}</span></p>
+                                                <label for="newStock">Số lượng mới:</label>
+                                                <input type="number" id="newStock" name="txtNewQuantity" value="">
+                                                <br>
+                                                <button id="updateButton">Chỉnh sửa</button>
+                                        </form>
+                                        <button id="cancelButton">Trở về</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="col-lg-8">
 
-                    <div class="col-lg-4">
-                        <div class="right-content">
-                            <h4 id="nameAccessory">${a.accessory_name}</h4>
-                            <c:choose>
-                                <c:when test="${a.discount > 0}">
-                                    <span style="display: inline-block;"><del><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</del></span>
-                                    <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${a.discount}%</span>
-                                    <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${a.unit_price - a.unit_price * a.discount / 100}" pattern="#,###"/> ₫</span>
-                                </c:when>
-                                <c:otherwise>
-                                    <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</span>
-                                </c:otherwise>
-                            </c:choose>
-                            <div class="descript">
-                                <h4>Mô tả sản phẩm: </h4>
-                                <span>${a.description}</span>
                             </div>
-                            <div class="stock_quantity">
-                                <h4>Kho: ${a.stock_quantity}</h4>
+                            <div class="col-lg-4">
+                                <button id="openPopup" class="button-form">Cập nhật kho</button>
+                                <div class="overlay" id="overlay"></div>
+                                <form action="UpdateAccessoryController" method="GET">
+                                    <input type="hidden" value="${a.accessory_id}" name="txtAccessoryID">
+                                    <div class="popup" id="popup">
+                                        <h2>Cập nhật kho</h2>
+                                        <p>Số lượng hiện tại trong kho: <span id="currentStock">${a.stock_quantity}</span></p>
+                                        <label for="newStock">Số lượng mới:</label>
+                                        <input type="number" id="newStock" name="txtNewQuantity" value="">
+                                        <br>
+                                        <button id="updateButton">Chỉnh sửa</button>
+                                </form>
+                                <button id="cancelButton">Trở về</button>
                             </div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </c:if>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="image-container">
+                    <div class="image-top">
+                        <div class="overlay-container">
+                            <input type="hidden" name="accessory_id" value="${a.accessory_id}"/>
+                            <img id="mainImage" style="width: 500px; height: 400px;" src="${im}" alt="Image main" onclick="swapImages()">
+                            <c:if test="${requestScope.MESSAGE != null}">
+                                <div class="overlay-text">${MESSAGE}</div>
+                            </c:if>
+                        </div>
+                    </div> 
+                </div>
+                <div class="image-bottom">
+                    <c:forEach items="${a.image_url}" var="accessory">
+                        <c:if test="${im ne accessory}">
+                            <img style="width: 100px; height: 75px; border: 1px solid;" class="accessory-image" src="${accessory}" alt="" onclick="swapImages(this)">
+                        </c:if>
+                    </c:forEach>
+                </div>                         
+            </div>
+
+            <div class="col-lg-4">
+                <div class="right-content">
+                    <h4 id="nameAccessory">${a.accessory_name}</h4>
+                    <c:choose>
+                        <c:when test="${a.discount > 0}">
+                            <span style="display: inline-block;"><del><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</del></span>
+                            <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${a.discount}%</span>
+                            <span style="font-size: 20px;" id="unit_price"><fmt:formatNumber value="${a.unit_price - a.unit_price * a.discount / 100}" pattern="#,###"/> ₫</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span style="font-size: 20px;" id="unit_price"><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</span>
+                        </c:otherwise>
+                    </c:choose>
+                    <div class="descript">
+                        <h4>Mô tả sản phẩm: </h4>
+                        <span style="margin-top: 5px;">${a.description}</span>
+                    </div>
+                    <div class="stock_quantity">
+                        <h4>Kho: ${a.stock_quantity}</h4>
+                    </div>
+                    <c:if test="${sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER == null}">
+                        <c:if test="${a.stock_quantity > 0}">
                             <div class="quantity-content">
                                 <div class="left-content">
                                     <h6>Số lượng</h6>
@@ -273,55 +344,37 @@
                                     <div class="quantity buttons_added">
                                         <div class="quantity buttons_added">
                                             <input type="button" value="-" class="minus" onclick="decrementQuantity('quantityInput', ${a.unit_price}, ${a.discount})">
-                                            <c:choose>
-                                                <c:when test="${a.stock_quantity > 0}">
-                                                    <input type="number" step="1" min="1" max="${a.stock_quantity}" name="order_quantity" id="quantityInput" value="1" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <input type="number" step="1" min="0" max="${a.stock_quantity}" name="quantity" id="quantityInput" value="0" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <input type="number" step="1" min="1" max="${a.stock_quantity}" name="order_quantity" id="quantityInput" value="1" title="Qty" class="input-text qty text" size="4" onchange="updateTotal('quantityInput', ${a.stock_quantity}, ${a.unit_price}, ${a.discount})">
                                             <input type="button" value="+" class="plus" onclick="incrementQuantity('quantityInput', ${a.stock_quantity}, ${a.unit_price}, ${a.discount})">
                                         </div>
                                     </div>
                                     <div id="warning"></div>
                                 </div>                            
                             </div>
-                        </div>
-                        <c:choose>
-                            <c:when test="${a.stock_quantity > 0}">
-                                <div class="total">
-                                    <c:choose>
-                                        <c:when test="${a.discount == 0}">
-                                            <h4 style="float: left;">Tổng cộng: <span id="total"><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</span></h4>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <h4 style="float: left;">Tổng cộng: <span id="total"><fmt:formatNumber value="${a.unit_price - a.unit_price * a.discount / 100}" pattern="#,###"/> ₫</span></h4>
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <div type="button" class="main-border-button" style="margin-left: 185px; margin-top: 20px; float: left;" id="buttonContainer">
-                                        <input type="hidden" name="accessory_id" value="${a.accessory_id}" />
-                                        <button type="submit" name="action" value="AddAccessoryToCart" id="Add" class="btn btn-primary">Thêm vào giỏ hàng</button>
-                                    </div>
-                                    <div style="clear: both;"></div>
-                                </div>
-
-                            </c:when>
-                            <c:otherwise>
-                                <div class="total">
-                                    <h4 style="float: left;">Tổng cộng: <span id="total">0 ₫</span></h4>
-                                    <div type="button" class="main-border-button" style="margin-left: 185px; margin-top: 20px; float: left;" id="buttonContainer">
-                                        <div type="button" class="main-border-button" style="margin-left: 100px; float: left;"><a style="cursor: pointer" class="accessory-cart" data-value="${a.accessory_id}">Thêm vào giỏ hàng</a></div>
-                                    </div>
-                                    <div style="clear: both;"></div>
-                                </div>
-                            </c:otherwise>
-                        </c:choose>   
+                        </c:if>
                     </div>
-                </div>
+                    <c:if test="${a.stock_quantity > 0}">
+                        <div class="total">
+                            <c:choose>
+                                <c:when test="${a.discount == 0}">
+                                    <h4 style="float: left;">Tổng cộng: <span id="total"><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</span></h4>
+                                </c:when>
+                                <c:otherwise>
+                                    <h4 style="float: left;">Tổng cộng: <span id="total"><fmt:formatNumber value="${a.unit_price - a.unit_price * a.discount / 100}" pattern="#,###"/> ₫</span></h4>
+                                </c:otherwise>
+                            </c:choose>
+                            <div type="button" class="main-border-button" style="margin-left: 196px; margin-top: 20px; float: left;" id="buttonContainer">
+                                <input type="hidden" name="accessory_id" value="${a.accessory_id}" />
+                                <button type="submit" name="action" value="AddAccessoryToCart" id="Add" class="btn btn-primary">Thêm vào giỏ hàng</button>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+                    </c:if>
+                </c:if>
             </div>
         </div>
     </div>
+</div>
 </section>     
 <%@include file="../layout/feedback.jsp" %>
 <!-- ***** Footer Start ***** -->
@@ -389,7 +442,6 @@
     {
         var quantityInput = document.getElementById(inputId);
         var currentValue = parseInt(quantityInput.value);
-
         var total1 = document.getElementById("total");
         var warning = document.getElementById("warning");
         var total;
@@ -441,12 +493,23 @@
     }
 
 
-    function updateTotal() {
-        var unitPrice = document.getElementById("unit_price");
-        var quantityInput = document.getElementById("quantityInput");
+    function updateTotal(inputId, maxQuantity, unitPrice, discount) {
+        var quantityInput = document.getElementById(inputId);
+        var total1 = document.getElementById("total");
+        var warning = document.getElementById("warning");
+        var total;
+        if (!isNaN(quantityInput.value) && quantityInput.value < maxQuantity) {
+            if (discount > 0) {
+                total = (unitPrice - (unitPrice * discount / 100)) * quantityInput.value + " ₫";
+            } else {
+                total = unitPrice * quantityInput.value + " ₫";
+            }
+            total1.innerHTML = formatNumber(total) + " ₫";
+            warning.innerHTML = "";
+        } else {
+            warning.innerHTML = "Số lượng không đủ!";
+        }
 
-        console.log(unitPrice);
-        console.log(quantityInput);
     }
 
 
@@ -457,13 +520,11 @@
         sessionStorage.setItem("name", JSON.stringify(name));
         sessionStorage.setItem("quantity", JSON.stringify(quantity));
         sessionStorage.setItem("total", JSON.stringify(total));
-
     }
 
     function swapImages(clickedImage) {
         const leftImage = document.querySelector('.image-top img');
         const rightImage1 = document.querySelectorAll('.image-bottom img')[0];
-
         const tempSrc = leftImage.src;
         leftImage.src = clickedImage.src;
         clickedImage.src = tempSrc;
@@ -520,19 +581,40 @@
         }
     }
 
-    document.getElementById("AddToCart").addEventListener("click", function (event) {
-        event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
-
-        // Lấy thẻ <div> bọc nút
-        var buttonContainer = document.getElementById("buttonContainer");
-
-        // Thêm thuộc tính "disabled" vào thẻ <div>
-        buttonContainer.classList.add("disabled");
-
-        // Ngăn chặn sự kiện click
-        this.style.pointerEvents = "none";
+    // Get references to HTML elements
+    const openPopupButton = document.getElementById('openPopup');
+    const overlay = document.getElementById('overlay');
+    const popup = document.getElementById('popup');
+    const currentStock = document.getElementById('currentStock');
+    const newStockInput = document.getElementById('newStock');
+    const updateButton = document.getElementById('updateButton');
+    const cancelButton = document.getElementById('cancelButton');
+    // Function to open the popup and display the current stock quantity
+    openPopupButton.addEventListener('click', () => {
+        const currentQuantity = document.getElementById('currentStock').textContent;
+        currentStock.textContent = currentQuantity;
+        newStockInput.value = currentQuantity;
+        overlay.style.display = 'block';
+        popup.style.display = 'block';
     });
+    // Function to close the popup
+    function closePopup() {
+        overlay.style.display = 'none';
+        popup.style.display = 'none';
+    }
 
+    // Close the popup when the Cancel button is clicked
+    cancelButton.addEventListener('click', function (event) {
+        event.preventDefault(); // Ngăn chặn hành vi mặc định của nút
+        closePopup(); // Gọi hàm để đóng popup
+    });
+    // You can handle the update functionality with the updateButton click event
+    updateButton.addEventListener('click', () => {
+        const newQuantity = parseInt(newStockInput.value, 10);
+        // You can perform an AJAX request here to update the stock quantity on the server
+        // After a successful update, you can close the popup// For example, you can use jQuery's $.ajax or fetch API for the AJAX request.
+        // Once the update is done, call closePopup();
+    });
 </script>
 <%@include file="../layout/message.jsp" %>
 <!-- jQuery -->
