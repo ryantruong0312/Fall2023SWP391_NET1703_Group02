@@ -42,24 +42,25 @@
                         <div class="row">
                             <div class="col-lg-7">
                                 <h5 class="font-weight-bold mb-3">Giỏ hàng của bạn</h5>
-                                <div class="box-cart">
-                                    <c:forEach items="${sessionScope.CART.birdList}" var="bird">
-                                        <div class="item-cart pr-3 my-3">
+                                <c:if test="${not empty requestScope.MALEBIRD}">
+                                    <c:set var="birdMale" value="${requestScope.MALEBIRD}"/>
+                                    <div class="box-cart pr-3">
+                                        <div class="item-cart my-3">
                                             <div class="row align-items-center py-3 pl-3">
                                                 <div class="image-item col-lg-2 col-md-2 col-sm-2 col-2">
-                                                    <img src="${bird.value.bird.image_url}" alt="${bird.value.bird.bird_name}" />
+                                                    <img src="${birdMale.image_url}" alt="${birdMale.bird_name}" />
                                                 </div>
                                                 <div class="infor-item px-5 col-lg-7 col-md-6 col-sm-7 col-7">
-                                                    <h5>${bird.value.bird.bird_name}</h5>
+                                                    <h5>${birdMale.bird_name}</h5>
                                                     <div class="mt-2">
                                                         <p> 1
                                                             <span style="font-size: 13px; margin-right: 5px">x</span>
                                                             <c:choose>
-                                                                <c:when test="${bird.value.bird.discount > 0}">
-                                                                <p style="font-size: 14px;">  <fmt:formatNumber value="${bird.value.bird.price - bird.value.bird.price * bird.value.bird.discount / 100}" pattern="#,###"/> ₫</p>
+                                                                <c:when test="${birdMale.discount > 0}">
+                                                                <p style="font-size: 14px;">  <fmt:formatNumber value="${birdMale.price - birdMale.price * birdMale.discount / 100}" pattern="#,###"/> ₫</p>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${bird.value.bird.price}" pattern="#,###"/> ₫</p>
+                                                                <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${birdMale.price}" pattern="#,###"/> ₫</p>
                                                             </c:otherwise>
                                                         </c:choose> 
                                                         </p>
@@ -67,35 +68,73 @@
                                                 </div>
                                                 <div class="price-item ml-4 px-3 col-lg-2 col-md-3 col-sm-2 col-2">
                                                     <c:choose>
-                                                        <c:when test="${bird.value.bird.discount > 0}">
-                                                            <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${bird.value.bird.price - bird.value.bird.price * bird.value.bird.discount / 100}" pattern="#,###"/> ₫</p>
-                                                            <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${bird.value.bird.discount}%</p>
+                                                        <c:when test="${birdMale.discount > 0}">
+                                                            <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${birdMale.price - birdMale.price * birdMale.discount / 100}" pattern="#,###"/> ₫</p>
+                                                            <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${birdMale.discount}%</p>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${bird.value.bird.price}" pattern="#,###"/> ₫</p>
+                                                            <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdMale.price}" pattern="#,###"/> ₫</p>
                                                         </c:otherwise>
                                                     </c:choose> 
                                                 </div>
                                             </div>
                                         </div>                                 
-                                    </c:forEach>
-                                    <c:forEach items="${sessionScope.CARTCHECKOUT.accessoryList}" var="accessory">
+                                    </c:if>
+                                    <c:if test="${not empty requestScope.FAMLEBIRD}">
+                                        <c:set var="birdFemale" value="${requestScope.FAMLEBIRD}"/>
+                                        <div class="item-cart my-3">
+                                            <div class="row align-items-center py-3 pl-3">
+                                                <div class="image-item col-lg-2 col-md-2 col-sm-2 col-2">
+                                                    <img src="${birdFemale.image_url}" alt="${birdFemale.bird_name}" />
+                                                </div>
+                                                <div class="infor-item px-5 col-lg-7 col-md-6 col-sm-7 col-7">
+                                                    <h5>${birdFemale.bird_name}</h5>
+                                                    <div class="mt-2">
+                                                        <p> 1
+                                                            <span style="font-size: 13px; margin-right: 5px">x</span>
+                                                            <c:choose>
+                                                                <c:when test="${birdFemale.discount > 0}">
+                                                                <p style="font-size: 14px;">  <fmt:formatNumber value="${birdFemale.price - birdFemale.price * birdFemale.discount / 100}" pattern="#,###"/> ₫</p>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${birdFemale.price}" pattern="#,###"/> ₫</p>
+                                                            </c:otherwise>
+                                                        </c:choose> 
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="price-item ml-4 px-3 col-lg-2 col-md-3 col-sm-2 col-2">
+                                                    <c:choose>
+                                                        <c:when test="${birdFemale.discount > 0}">
+                                                            <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${birdFemale.price - birdFemale.price * birdFemale.discount / 100}" pattern="#,###"/> ₫</p>
+                                                            <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${birdFemale.discount}%</p>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdFemale.price}" pattern="#,###"/> ₫</p>
+                                                        </c:otherwise>
+                                                    </c:choose> 
+                                                </div>
+                                            </div>
+                                        </div>                
+                                    </c:if>
+                                    <c:if test="${not empty requestScope.CHEAPESTCAGE}">
+                                        <c:set var="cage" value="${requestScope.CHEAPESTCAGE}" />
                                         <div class="item-cart pr-3 my-3">
                                             <div class="row align-items-center py-3 pl-3">
                                                 <div class="image-item col-lg-2 col-md-2 col-sm-2 col-2">
-                                                    <img src="${accessory.value.accessory.image_url}" alt="${accessory.value.accessory.accessory_name}" />
+                                                    <img src="${cage.image_url}" alt="${cage.accessory_name}" />
                                                 </div>
                                                 <div class="infor-item px-5 col-lg-7 col-md-6 col-sm-7 col-7">
-                                                    <h5>${accessory.value.accessory.accessory_name}</h5>
+                                                    <h5>${cage.accessory_name}</h5>
                                                     <div class="mt-2">
-                                                        <p>${accessory.value.order_quantity}
+                                                        <p>1
                                                             <span style="font-size: 13px; margin-right: 5px">x</span>
                                                             <c:choose>
-                                                                <c:when test="${accessory.value.accessory.discount > 0}">
-                                                                <p style="font-size: 14px;">  <fmt:formatNumber value="${accessory.value.accessory.unit_price - accessory.value.accessory.unit_price * accessory.value.accessory.discount / 100}" pattern="#,###"/> ₫</p>
+                                                                <c:when test="${cage.discount > 0}">
+                                                                <p style="font-size: 14px;">  <fmt:formatNumber value="${cage.unit_price - cage.unit_price * cage.discount / 100}" pattern="#,###"/> ₫</p>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${accessory.value.accessory.unit_price}" pattern="#,###"/> ₫</p>
+                                                                <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${cage.unit_price}" pattern="#,###"/> ₫</p>
                                                             </c:otherwise>
                                                         </c:choose> 
                                                         </p>
@@ -103,72 +142,60 @@
                                                 </div>
                                                 <div class="price-item ml-2 px-3 col-lg-2 col-md-3 col-sm-2 col-2">
                                                     <c:choose>
-                                                        <c:when test="${accessory.value.accessory.discount > 0}">
-                                                            <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${accessory.value.order_quantity * accessory.value.accessory.unit_price - accessory.value.accessory.unit_price * accessory.value.accessory.discount / 100}" pattern="#,###"/> ₫</p>
-                                                            <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${accessory.value.accessory.discount}%</p>
+                                                        <c:when test="${cage.discount > 0}">
+                                                            <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${cage.unit_price - cage.unit_price * cage.discount / 100}" pattern="#,###"/> ₫</p>
+                                                            <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${cage.discount}%</p>
                                                         </c:when>
-                                                        <c:when test="${accessory.value.accessory.unit_price == 0}">
+                                                        <c:when test="${cage.unit_price == 0}">
                                                             <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"> Tặng kèm</p>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${accessory.value.accessory.unit_price}" pattern="#,###"/> ₫</p>
+                                                            <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${cage.unit_price}" pattern="#,###"/> ₫</p>
                                                         </c:otherwise>
                                                     </c:choose> 
                                                 </div>
                                             </div>
                                         </div>
-                                    </c:forEach>
-                                    <c:forEach items="${sessionScope.CART.birdPairList}" var="birdPair">
+                                    </c:if>
+                                    <c:if test="${not empty birdPair}">
                                         <div class="item-cart pr-3 my-3">
                                             <div class="row align-items-center py-3 pl-3">
                                                 <div class="image-item col-lg-2 col-md-2 col-sm-2 col-2">
                                                     <c:choose>
-                                                        <c:when test="${not empty birdPair.value.birdCustomer}">
-                                                            <img class="mb-2" src="${birdPair.value.birdCustomer.img_url}" alt="${birdPair.value.birdCustomer.name}">
-                                                            <img class="mt-2" src="${birdPair.value.birdShop.image_url}" alt="${birdPair.value.birdShop.bird_name}" >
+                                                        <c:when test="${not empty birdPair.birdCustomer}">
+                                                            <img class="mb-2" src="${birdPair.birdCustomer.img_url}" alt="${birdPair.birdCustomer.name}">
+                                                            <img class="mt-2" src="${birdPair.birdShop.image_url}" alt="${birdPair.birdShop.bird_name}" >
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <img class="mb-2" src="${birdPair.value.birdMale.image_url}" alt="${birdPair.value.birdMale.bird_name}">
-                                                            <img class="mt-2" src="${birdPair.value.birdFemale.image_url}" alt="${birdPair.value.birdFemale.bird_name}">
+                                                            <img class="mb-2" src="${birdPair.birdMale.image_url}" alt="${birdPair.birdMale.bird_name}">
+                                                            <img class="mt-2" src="${birdPair.birdFemale.image_url}" alt="${birdPair.birdFemale.bird_name}">
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </div>
                                                 <div class="infor-item px-5 col-lg-7 col-md-6 col-sm-7 col-7 mt-4">
                                                     <c:choose>
-                                                        <c:when test="${not empty birdPair.value.birdCustomer}">
-                                                            <p class="lead fw-bold mb-3" style="font-size: 18px;">${birdPair.value.birdCustomer.name} </p>
+                                                        <c:when test="${not empty birdPair.birdCustomer}">
+                                                            <p class="lead fw-bold mb-3" style="font-size: 18px;">${birdPair.birdCustomer.name} </p>
                                                             <p class="lead fw-bold" style="font-size: 18px;">Nhân giống</p>
-                                                            <p class="lead fw-bold mt-3" style="font-size: 18px;">${not empty birdPair.value.birdMale ?  birdPair.value.birdMale.bird_name : birdPair.value.birdFemale.bird_name}</p>
+                                                            <p class="lead fw-bold mt-3" style="font-size: 18px;">${not empty birdPair.birdMale ?  birdPair.birdMale.bird_name : birdPair.birdFemale.bird_name}</p>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <p class="lead fw-bold mb-3" style="font-size: 18px;">${birdPair.value.birdMale.bird_name}</p>
+                                                            <p class="lead fw-bold mb-3" style="font-size: 18px;">${birdPair.birdMale.bird_name}</p>
                                                             <p class="lead fw-bold" style="font-size: 18px;">Nhân giống</p>
-                                                            <p class="lead fw-bold mt-3" style="font-size: 18px;">${birdPair.value.birdFemale.bird_name}</p>               
+                                                            <p class="lead fw-bold mt-3" style="font-size: 18px;">${birdPair.birdFemale.bird_name}</p>               
                                                         </c:otherwise>
                                                     </c:choose> 
                                                 </div>
                                                 <div class="price-item ml-2 px-3 col-lg-2 col-md-3 col-sm-2 col-2">
-                                                    <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdPair.value.servicePrice}" pattern="#,###"/> ₫</p>
+                                                    <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdPair.servicePrice}" pattern="#,###"/> ₫</p>
                                                 </div>
                                             </div>
                                         </div>                                 
-                                    </c:forEach>
+                                    </c:if>
                                 </div>
-                            </div>
-                            <div class="col-lg-5 info-checkout mt-3">
-                                <div class="form-group mt-3">
-                                    <label for="user-receiver">Tên người nhận hàng:</label>
-                                    <input id="user-receiver" class="input form-control" type="text" name="name" value="${sessionScope.LOGIN_USER.fullName}" required=""/>
-                                </div>
-                                <div class="form-group">
-                                    <label for="mobile">Số điện thoại nhận hàng:</label>
-                                    <input id="mobile" class="input form-control" type="text" name="mobile" value="${sessionScope.LOGIN_USER.phone}" required=""/>
-                                </div>
-                                <div class="form-group">
-                                    <label for="address">Địa chỉ nhận hàng:</label>
-                                    <input id="address" class="input form-control" type="text" name="address" value="${sessionScope.LOGIN_USER.address}" required=""/>
-                                </div>
-                                <div class="overall-menoy">
+                            </div>  
+                            <div class="col-lg-5 info-checkout mt-4">
+                                <div class="overall-menoy border-top-0">
                                     <h5 class="mt-3">Tổng tiền thanh toán</h5>
                                     <div class="d-flex mt-3 total-items">
                                         <div class="d-flex align-items-center">

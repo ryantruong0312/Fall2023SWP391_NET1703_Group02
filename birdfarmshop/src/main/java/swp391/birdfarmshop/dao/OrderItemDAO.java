@@ -9,7 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import swp391.birdfarmshop.dto.BirdPairDTO;
 import swp391.birdfarmshop.dto.OrderItemDTO;
+import swp391.birdfarmshop.model.Accessory;
+import swp391.birdfarmshop.model.Bird;
+import swp391.birdfarmshop.model.BirdNest;
 import swp391.birdfarmshop.util.DBUtils;
 
 /**
@@ -18,41 +22,40 @@ import swp391.birdfarmshop.util.DBUtils;
  */
 public class OrderItemDAO {
 
-    
-    public ArrayList<OrderItemDTO> getItemOrder(String order_id) throws SQLException{
+    public String error = null;
+
+    public ArrayList<OrderItemDTO> getItemOrder(String order_id) throws SQLException {
         ArrayList<OrderItemDTO> orderItemList = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        OrderItemDTO orderItem;
+        OrderItemDTO orderItem = null;
+        BirdDAO birdDao = new BirdDAO();
+        BirdNestDAO bnDao = new BirdNestDAO();
+        AccessoryDAO accessoryDao = new AccessoryDAO();
+        BirdPairDAO bpDao = new BirdPairDAO();
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement( "SELECT Item.[order_item_id], Item.[order_id], Image.[image_url] " +
-                                ",Item.[bird_id], Bird.[bird_name]\n" +
-                                ",Item.[nest_id], BirdNest.[nest_name]\n" +
-                                ",Item.[accessory_id], Accessory.[accessory_name]" +
-                                ",Item.[unit_price], Item.[order_quantity]\n" +
-                                "FROM [dbo].[OrderItem] AS Item\n" +
-                                "LEFT JOIN [dbo].[Bird] AS Bird ON Item.[bird_id] = Bird.[bird_id]\n" +
-                                "LEFT JOIN [dbo].[BirdNest] AS BirdNest ON Item.[nest_id] = BirdNest.[nest_id]\n" +
-                                "LEFT JOIN [dbo].[Accessory] AS Accessory ON Item.[accessory_id] = Accessory.[accessory_id]\n" +
-                                "LEFT JOIN [dbo].[Image] AS Image ON (Image.[bird_id] = Bird.[bird_id] OR Image.[accessory_id] = Accessory.[accessory_id] OR Image.[nest_id] = BirdNest.[nest_id])\n" +
-                                "WHERE Item.[order_id] = ? AND Image.[is_thumbnail] = 1");
+                stm = con.prepareStatement("SELECT Item.[order_item_id],Item.[order_id]\n"
+                        + "                            ,Item.[bird_id],Item.[nest_id],Item.[accessory_id],Item.[pair_id],Item.[unit_price],Item.[order_quantity]\n"
+                        + "                            FROM [dbo].[OrderItem] AS Item\n"
+                        + "                            WHERE Item.[order_id] = ?");
                 stm.setString(1, order_id);
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     int order_item_id = rs.getInt("order_item_id");
-                    String url = rs.getString("image_url");
                     String bird_id = rs.getString("bird_id");
-                    String bird_name = rs.getString("bird_name");
                     String nest_id = rs.getString("nest_id");
-                    String nest_name = rs.getString("nest_name");
                     String accessory_id = rs.getString("accessory_id");
-                    String accessory_name = rs.getString("accessory_name");
+                    String pair_id = rs.getString("pair_id");
                     int unit_price = rs.getInt("unit_price");
                     int order_quantity = rs.getInt("order_quantity");
-                    orderItem = new OrderItemDTO(order_item_id, order_id, url, bird_id, bird_name, nest_id, nest_name, accessory_id, accessory_name, unit_price, order_quantity);
+                    Bird bird = birdDao.getBirdById(bird_id);
+                    BirdNest birdNest = null;
+                    Accessory accessory = accessoryDao.getAccessoryByID(accessory_id);
+                    BirdPairDTO birdPair = bpDao.getBirdPairById(pair_id);
+                    orderItem = new OrderItemDTO(order_item_id, order_id, null, bird, accessory, birdNest, birdPair, unit_price, order_quantity);
                     orderItemList.add(orderItem);
                 }
             }
@@ -70,5 +73,92 @@ public class OrderItemDAO {
         }
         return orderItemList;
     }
-    
+
+    public int addNewBirdOrderItem(String birdId, String order_id) {
+        int result = 0;
+        Connection con = null;
+        OrderItemDAO oid = new OrderItemDAO();
+        BirdDAO bd = new BirdDAO();
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        boolean checkBird = false;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                checkBird = true;
+                con.setAutoCommit(false);
+                String checkOrderBird = "SELECT [price]\n"
+                        + "      ,[discount]\n"
+                        + "FROM [BirdFarmShop].[dbo].[Bird]\n"
+                        + "WHERE [bird_id]= ?";
+                pst = con.prepareStatement(checkOrderBird);
+                pst.setString(1, birdId);
+                rs = pst.executeQuery();
+                if (rs != null && rs.next()) {
+                    int realPrice = rs.getInt("price");
+                    int discount = rs.getInt("discount");
+                    if (discount > 0) {
+                        realPrice = realPrice - realPrice * discount / 100;
+                    }
+                    String updateBird = "UPDATE [Bird]\n"
+                            + "SET [status] = N'Đã bán'\n"
+                            + "WHERE [bird_id] = ?";
+                    pst = con.prepareStatement(updateBird);
+                    pst.setString(1, birdId);
+                    result = pst.executeUpdate();
+                    if (result == 0) {
+                        checkBird = false;
+
+                    } else {
+                        String insertBird = "INSERT INTO [OrderItem]([order_id],[bird_id],\n"
+                                + "		  [unit_price],[order_quantity])\n"
+                                + "   VALUES(?,?,?,?)";
+                        pst = con.prepareStatement(insertBird);
+                        pst.setString(1, order_id);
+                        pst.setString(2, birdId);
+                        pst.setInt(3, realPrice);
+                        pst.setInt(4, 1);
+                        result = pst.executeUpdate();
+                        if (result == 0) {
+                            checkBird = false;
+                        }
+                    }
+                } else {
+                    checkBird = false;
+                    error = "Không tìm thấy sản phẩm";
+                }
+
+                if (checkBird) {
+                    result = 1;
+                    con.commit();
+                } else {
+                    result = 0;
+                    con.rollback();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                con.rollback();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
+    }
 }

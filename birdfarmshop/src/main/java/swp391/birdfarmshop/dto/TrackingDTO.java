@@ -4,7 +4,7 @@
  */
 package swp391.birdfarmshop.dto;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
@@ -12,9 +12,9 @@ import java.sql.Date;
  */
 public class TrackingDTO {
     private String content;
-    private Date  date;
+    private Timestamp  date;
 
-    public TrackingDTO(String content, Date date) {
+    public TrackingDTO(String content, Timestamp date) {
         this.content = content;
         this.date = date;
     }
@@ -27,11 +27,11 @@ public class TrackingDTO {
         this.content = content;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
     

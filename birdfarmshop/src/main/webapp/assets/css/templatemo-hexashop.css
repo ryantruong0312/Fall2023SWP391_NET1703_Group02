@@ -2387,6 +2387,17 @@ responsive
     }
 }
 /*home*/
+.home .breed-img,
+.home .category-img
+{
+    width: 100%;
+    height: 370px;
+}
+.home .breed-name,
+.home .category-name
+{
+    text-align: center;
+}
 .user-name{
     width: 100px;
     overflow: hidden;
@@ -2437,6 +2448,34 @@ responsive
     display: block;
 }
 .form-outline #re-password:valid ~ .show-re-password{
+    display: block;
+}
+.form-outline  #password:focus ~ .show-password,
+.form-outline #re-password:focus ~ .show-re-password
+{
+    color: black;
+}
+/*form change password */
+.form-group{
+     position: relative
+}
+
+.form-group .old-password,
+.form-group .new-password
+{
+    display: none;
+    position: absolute;
+    right: 10px;
+    top: 40px;
+    cursor: pointer;
+    color: black;
+}
+.form-group #oldpassword:valid ~ .old-password,
+.form-group #newpassword:valid ~ .new-password{
+    display: block;
+}
+.form-group #oldpassword:focus ~ .old-password,
+.form-group #newpassword:focus ~ .new-password{
     display: block;
 }
 
@@ -2657,7 +2696,7 @@ register*/
     text-align: center; 
     margin: auto;
     line-height: 14px;
-    font-size: 0.7rem;
+    font-size: 11px;
     color: white;   
 }
 /*feedback*/
@@ -3023,7 +3062,25 @@ register*/
     margin-top: 0px;
 }
 /*layout bird pair customer*/
-.card-pair .box-pair{
+.detail-bird-pair .card-pair{
+    padding-right: 0!important;
+}
+
+.card-pair .line-status{
+    height: 300px;
+}
+.line-status .line-time{
+     border-left: 1px solid #B9B9BC;    
+}
+.line-status .line-time li:first-child{
+    color: green;
+    font-weight: bold;
+}
+.line-status .line-time li{
+    list-style: inside;
+    font-size: 15px;
+}
+ .box-pair{
     border: 1px solid #B9B9BC; 
     border-radius: 15px;
 }
@@ -3035,6 +3092,9 @@ register*/
     color: white;
     background: rgb(254,96,84);
     background: linear-gradient(90deg, rgba(254,96,84,1) 0%, rgba(239,50,162,1) 100%);
+}
+.card-pair .pair-img p {
+    width: 200px;
 }
 .card-pair .pair-img img {
     height:120px;
@@ -3066,9 +3126,6 @@ register*/
 .detail-bird-pair .content-birdpair .price-pair{
      border-right: 1px solid #B9B9BC; 
      width: 500px;
-}
-.detail-bird-pair .content-birdpair > div:last-child{
-    border: none;
 }
 .detail-bird-pair .content-birdpair > div:last-child button{
      background-color: #dc3545;

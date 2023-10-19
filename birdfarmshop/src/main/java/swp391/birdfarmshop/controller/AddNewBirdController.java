@@ -65,8 +65,6 @@ public class AddNewBirdController extends HttpServlet {
                     String txtBirdReproduction_history = request.getParameter("txtBirdReproduction_history");
                     String txtBirdPrice = request.getParameter("txtBirdPrice");
                     String txtBirdDescription = request.getParameter("txtBirdDescription");
-                    String txtBirdDad = request.getParameter("txtBirdDad");
-                    String txtBirdMom = request.getParameter("txtBirdMom");
                     String txtBirdDiscount = request.getParameter("txtBirdDiscount");
                     String txtBirdStatus = request.getParameter("txtBirdStatus");
                     String txtImage_1 = request.getParameter("txtImage_1");
@@ -75,7 +73,7 @@ public class AddNewBirdController extends HttpServlet {
                     boolean check = birdDao.addNewBird(txtBirdId, txtBirdName + " " + txtBirdId,txtBirdColor, 
                             txtBirdDate, txtBirdGrownAge, txtBirdGender, txtBirdBreed, 
                             txtBirdAchievement, txtBirdReproduction_history, txtBirdPrice, 
-                            txtBirdDescription, txtBirdDad, txtBirdMom, txtBirdDiscount, txtBirdStatus);
+                            txtBirdDescription, txtBirdDiscount, txtBirdStatus);
                     ImageDAO imageDao = new ImageDAO();
                     boolean check_image1 = imageDao.addNewImageBird(txtImage_1, "1", txtBirdId);
                     boolean check_image2 = imageDao.addNewImageBird(txtImage_2, "0", txtBirdId);

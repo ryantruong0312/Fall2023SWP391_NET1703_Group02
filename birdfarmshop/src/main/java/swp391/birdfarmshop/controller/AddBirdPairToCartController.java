@@ -50,8 +50,8 @@ public class AddBirdPairToCartController extends HttpServlet {
                     cart = new CartDTO();
                 }
                 Bird bird = birdDao.getBirdById(bird_shop_id);
-                BirdCustomer bc = bsd.findBirdCustomer(bird_customer_id);
-                boolean checkAdd = cart.addBirdPairCustomerToCart(bird, bc);
+                BirdCustomer birdCustomer = bsd.findBirdCustomer(bird_customer_id);
+                boolean checkAdd = cart.addBirdPairCustomerToCart(bird, birdCustomer);
                 if (checkAdd) {
                     out.println(1);
                     session.setAttribute("CART", cart);

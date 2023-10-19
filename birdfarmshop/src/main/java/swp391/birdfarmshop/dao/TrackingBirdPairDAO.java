@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import swp391.birdfarmshop.dto.TrackingDTO;
 import swp391.birdfarmshop.util.DBUtils;
@@ -35,8 +36,8 @@ public class TrackingBirdPairDAO {
                 rs = pst.executeQuery();
                 while (rs.next()) {
                     String content = rs.getString("content");
-                    Date date = rs.getDate("date_content");
-                    TrackingDTO t = new TrackingDTO(content, date);
+                    Timestamp dateTime = rs.getTimestamp("date_content");
+                    TrackingDTO t = new TrackingDTO(content, dateTime);
                     trackingList.add(t);
                 }
             }

@@ -21,13 +21,11 @@ public class Bird {
     private int reproduction_history;
     private int price;
     private String description;
-    private String dad_bird_id;
-    private String mom_bird_id;
     private int discount;
     private String status;
     private String image_url;
 
-    public Bird(String bird_id, String bird_name, String color, int age, int grown_age, boolean gender, String breed_id, String achievement, int reproduction_history, int price, String description, String dad_bird_id, String mom_bird_id, int discount, String status, String image_url) {
+    public Bird(String bird_id, String bird_name, String color, int age, int grown_age, boolean gender, String breed_id, String achievement, int reproduction_history, int price, String description, int discount, String status, String image_url) {
         this.bird_id = bird_id;
         this.bird_name = bird_name;
         this.color = color;
@@ -39,8 +37,6 @@ public class Bird {
         this.reproduction_history = reproduction_history;
         this.price = price;
         this.description = description;
-        this.dad_bird_id = dad_bird_id;
-        this.mom_bird_id = mom_bird_id;
         this.discount = discount;
         this.status = status;
         this.image_url = image_url;
@@ -140,22 +136,6 @@ public class Bird {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getDad_bird_id() {
-        return dad_bird_id;
-    }
-
-    public void setDad_bird_id(String dad_bird_id) {
-        this.dad_bird_id = dad_bird_id;
-    }
-
-    public String getMom_bird_id() {
-        return mom_bird_id;
-    }
-
-    public void setMom_bird_id(String mom_bird_id) {
-        this.mom_bird_id = mom_bird_id;
     }
 
     public int getDiscount() {

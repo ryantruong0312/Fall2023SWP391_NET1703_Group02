@@ -66,28 +66,16 @@
                             <div class="divider d-flex align-items-center my-4">
                                 <p class="text-center fw-bold mx-3 mb-0 text-muted">Hoặc</p>
                             </div>
-                            <div class="d-flex item-login">
-                                <div class="col-md-12 col-lg-5 col-xl-5 text-center p-0 mb-3">
-                                    <a class="btn btn-md  btn-block border btn-custom"href="https://www.facebook.com/v13.0/dialog/oauth?client_id=334333278988069&redirect_uri=http://localhost:8080/birdfarmshop/LoginFacebookController&scope=email"
-                                       role="button">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <img src="assets/images/facebook.png" alt="facebook icon"/>
-                                            <p style="color: white" class="ml-2">Facebook</p>
-                                        </div>
-                                    </a>    
-                                </div>  
-                                <div class="col-md-12 col-lg-5 col-xl-5 p-0 offset-lg-2 offset-xl-2">
-                                    <a class="btn btn-md btn-block border btn-custom"href="https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email
-                                       &redirect_uri=http://localhost:8080/birdfarmshop/LoginGoogleController&response_type=code
-                                       &client_id=563213089252-rga4rc627cobtc25fjmjuom2168u1hrp.apps.googleusercontent.com&approval_prompt=force"
-                                       role="button">
-                                        <div class="d-flex align-items-center justify-content-center">
-                                            <img src="assets/images/google.png" alt="facebook icon"/> 
-                                            <p style="color: white" class="ml-2">Google</p>
-                                        </div>
-                                    </a>
-                                </div>
-
+                            <div class="col-12 p-0">
+                                <a class="btn btn-md btn-block border btn-custom"href="https://accounts.google.com/o/oauth2/auth?scope=https://www.googleapis.com/auth/userinfo.profile+https://www.googleapis.com/auth/userinfo.email
+                                   &redirect_uri=http://localhost:8080/birdfarmshop/LoginGoogleController&response_type=code
+                                   &client_id=563213089252-rga4rc627cobtc25fjmjuom2168u1hrp.apps.googleusercontent.com&approval_prompt=force"
+                                   role="button">
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <img src="assets/images/google.png" alt="facebook icon"/> 
+                                        <p style="color: white" class="ml-2">Google</p>
+                                    </div>
+                                </a>
                             </div>
                         </form>
                     </div>
@@ -105,13 +93,9 @@
         <script src="assets/js/accordions.js"></script>
         <script src="assets/js/datepicker.js"></script>
         <script src="assets/js/scrollreveal.min.js"></script>
-        <script src="assets/js/waypoints.min.js"></script>
-        <script src="assets/js/jquery.counterup.min.js"></script>
-        <script src="assets/js/imgfix.min.js"></script> 
         <script src="assets/js/slick.js"></script> 
         <script src="assets/js/lightbox.js"></script> 
         <script src="assets/js/isotope.js"></script> 
-
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
 

@@ -260,6 +260,26 @@ $('.show-re-password').click(function () {
         $(this).html('<i class="fa fa-eye" aria-hidden="true"></i>');
     }
 });
+$('.new-password').click(function () {
+    const type = $('[name="newpassword"]').attr('type');
+    if (type === 'password') {
+        $('[name="newpassword"]').attr('type', 'text');
+        $(this).html('<i class="fa fa-eye-slash" aria-hidden="true"></i>');
+    } else {
+        $('[name="newpassword').attr('type', 'password');
+        $(this).html('<i class="fa fa-eye" aria-hidden="true"></i>');
+    }
+});
+$('.old-password').click(function () {
+    const type = $('[name="oldpassword"]').attr('type');
+    if (type === 'password') {
+        $('[name="oldpassword"]').attr('type', 'text');
+        $(this).html('<i class="fa fa-eye-slash" aria-hidden="true"></i>');
+    } else {
+        $('[name="oldpassword').attr('type', 'password');
+        $(this).html('<i class="fa fa-eye" aria-hidden="true"></i>');
+    }
+});
 $('.input').focus(function () {
     $('.error-notification').css('visibility', 'hidden');
 });
@@ -431,7 +451,7 @@ $("#form-updatePassword").validate({
     },
     messages: {
         oldpassword: {
-            required: 'Vui lòng điền tên mật khẩu cũ'
+            required: 'Vui lòng điền mật khẩu cũ'
         },
         newpassword: {
             required: 'Vui lòng nhập mật khẩu mới của bạn',

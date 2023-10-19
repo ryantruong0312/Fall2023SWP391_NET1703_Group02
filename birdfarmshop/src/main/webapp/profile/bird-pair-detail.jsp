@@ -169,108 +169,9 @@
     </head>
 
     <body>
-        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
-        <c:url var="toHome" value="MainController?action=NavToHome"/>
-        <c:url var="toLogin" value="MainController?action=NavToLogin"/>
-        <c:url var="logout" value="MainController?action=Logout"/>
-        <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
-        <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
-        <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
-        <c:url var="toCart" value="MainController?action=NavToCart"/>
-        <c:url var="toProfile" value="MainController?action=NavToProfile"/>
-        <c:url var="toEditProfile" value="MainController?action=NavToEditProfile"/>
-        <c:url var="toOrders" value="MainController?action=NavToOrders"/>
-        <c:url var="toShopOrders" value="MainController?action=NavToShopOrders"/>
-        <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
-        <c:url var="toReports" value="MainController?action=NavToReports"/>
-        <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
-
-        <!-- ***** Preloader Start ***** -->
-        <div id="preloader">
-            <div class="jumper">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>  
-        <!-- ***** Preloader End ***** -->
-
-        <!-- ***** Header Area Start ***** -->
-        <header class="header-area header-sticky">
-            <div class="container home-custom">
-                <div class="row">
-                    <div class="col-12">
-                        <nav class="main-nav">
-                            <!-- ***** Logo Start ***** -->
-                            <a href="#" class="logo scroll-to-section">
-                                <img src="assets/images/logo.png">
-                            </a>
-                            <!-- ***** Logo End ***** -->
-                            <!-- ***** Menu Start ***** -->
-                            <ul class="nav">
-                                <li class="scroll-to-section"><a href="${pageScope.toHome}" >Trang chủ</a></li>
-                                    <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
-                                    <li class="submenu"><a href="">Sản phẩm</a>
-                                        <ul>
-                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                        <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
-                                        <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                        </c:if>
-                                        <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
-                                        <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
-                                        <li id="show-cart" class="scroll-to-section">
-                                            <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">
-                                                <c:choose>
-                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
-                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
-                                                </c:choose>
-                                            </div>
-                                        </li>
-
-                                        <c:if test="${sessionScope.LOGIN_USER == null}">
-                                            <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
-                                            </c:if>
-                                        </c:if>
-                                    </c:if>
-                                    <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
-                                    <li class="submenu"><a href="">Sản phẩm</a>
-                                        <ul>
-                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
-                                    </c:if>
-                                    <c:if test="${sessionScope.LOGIN_USER != null}">
-                                    <li class="submenu"><a class="user-name text-right active" href="#">${LOGIN_USER.fullName}</a>
-                                        <ul>
-                                            <li><a href="${pageScope.toProfile}&username=${sessionScope.LOGIN_USER.username}">Cá nhân</a></li>
-                                            <li><a href="${pageScope.logout}">Đăng xuất</a></li>
-                                        </ul>
-                                    </li>
-                                </c:if>
-                            </ul>           
-                            <a class='menu-trigger'>
-                                <span>Menu</span>
-                            </a>
-                            <!-- ***** Menu End ***** -->
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!-- ***** Header Area End ***** -->
-
+        <!-- Header Start -->
+        <%@include file="../layout/header.jsp" %>
+        <!-- Header End -->
         <main class="detail-bird-pair">
             <div class="container">
                 <div class="row gutters">
@@ -308,7 +209,6 @@
                                                                             </div>
                                                                             <c:choose>
                                                                                 <c:when test="${not empty birdPair.male_bird}">
-                                                                                    <c:set var="birdPrice" value="${birdPair.male_bird.price}" />
                                                                                     <a href="MainController?action=NavToBirdDetails&bird_id=${birdPair.male_bird.bird_id}"> 
                                                                                         <div class="pair-img pl-3 py-3 text-center">
                                                                                             <img src="${birdPair.male_bird.image_url}" alt="${birdPair.male_bird.bird_name}"/>
@@ -339,21 +239,21 @@
                                                                         <div class="d-flex">
                                                                             <div class="price-pair">
                                                                                 <p>Giá tiền một con chim non</p>
-                                                                                <span class="text-muted">(Giá tiền chim con được tính trên % giá tiền chim ghép cặp)</span>
+                                                                                <span class="text-muted">(Giá tiền chim con được tính trên 20% giá gốc tiền chim ghép cặp)</span>
                                                                             </div>
-                                                                            <p class="ml-3"><fmt:formatNumber value="${birdPrice * 20 /100}" pattern="#,###"/> ₫</p>
+                                                                            <p class="ml-3"><fmt:formatNumber value="${birdPair.young_bird_price}" pattern="#,###"/> ₫</p>
                                                                         </div>
 
                                                                         <div class="d-flex">
                                                                             <p>Tổng tiền cần thanh toán</p>
-                                                                            <p class="ml-3 text-danger"><fmt:formatNumber value="${birdPair.number_young_bird * birdPrice* 20 /100}" pattern="#,###"/> ₫</p>
+                                                                            <p class="ml-3 text-danger"><fmt:formatNumber value="${birdPair.number_young_bird * birdPair.young_bird_price}" pattern="#,###"/> ₫</p>
                                                                         </div>
                                                                         <c:if test="${birdPair.status == 'Đã ấp nở'}">
                                                                             <div class="d-flex">
                                                                                 <p>Hình thức thanh toán</p>
                                                                                 <p class="ml-3">Chưa thanh toán</p>
                                                                             </div>
-                                                                            <div class="text-center">
+                                                                            <div class="text-center  border-0">
                                                                                 <button id="payment-youngBird" class="btn-danger mt-3 py-2 px-3">Xác nhận thanh toán</button>
                                                                             </div>
                                                                         </c:if>
@@ -381,6 +281,18 @@
                                                                             </a>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="line-status d-flex align-items-center py-5">
+                                                                        <div class="img-detail w-50 h-100">
+
+                                                                        </div>
+                                                                        <div class="line-time w-50 h-100">
+                                                                            <ul class="p-2 mt-3">
+                                                                                <c:forEach var="tracking" items="${requestScope.TRACKINGLIST}">
+                                                                                    <li class="mb-2"><fmt:formatDate value="${tracking.date}" pattern="dd-MM-yyyy HH:mm"/> <span class="ml-3">${tracking.content}</span></li>
+                                                                                    </c:forEach>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
                                                                     <div class="content-birdpair mx-3">
                                                                         <div class="d-flex">
                                                                             <p>Số lượng trứng</p>
@@ -393,22 +305,21 @@
                                                                         <div class="d-flex">
                                                                             <div class="price-pair">
                                                                                 <p>Giá tiền một con chim non</p>
-                                                                                <span class="text-muted">(Giá tiền chim con được tính trên 20% giá tiền chim của cửa hàng ghép cặp)</span>
+                                                                                <span class="text-muted">(Giá tiền chim con được tính trên 20% giá gốc tiền chim của cửa hàng ghép cặp)</span>
                                                                             </div>
-                                                                            <c:set var="priceShopBirds" value="${birdPair.female_bird.price * 20 /100 + birdPair.male_bird.price * 20 /100}" />
-                                                                            <p class="ml-3"><fmt:formatNumber value="${priceShopBirds}" pattern="#,###"/> ₫</p>
+                                                                            <p class="ml-3"><fmt:formatNumber value="${birdPair.young_bird_price}" pattern="#,###"/> ₫</p>
                                                                         </div>
                                                                         <c:if test="${birdPair.status == 'Đã ấp nở'}">
                                                                             <div class="d-flex">
                                                                                 <p>Tổng tiền cần thanh toán</p>
-                                                                                <p class="ml-3 text-danger"><fmt:formatNumber value="${birdPair.number_young_bird * priceShopBirds}" pattern="#,###"/> ₫</p>
+                                                                                <p class="ml-3 text-danger"><fmt:formatNumber value="${birdPair.number_young_bird * birdPair.young_bird_price}" pattern="#,###"/> ₫</p>
                                                                             </div>
                                                                             <c:if test="${birdPair.status == 'Đã ấp nở'}">
                                                                                 <div class="d-flex">
                                                                                     <p>Hình thức thanh toán</p>
                                                                                     <p class="ml-3">Chưa thanh toán</p>
                                                                                 </div>
-                                                                                <div class="text-center">
+                                                                                <div class="text-center border-bottom-0">
                                                                                     <button id="payment-youngBird" class="btn-danger mt-3 py-2 px-3">Xác nhận thanh toán</button>
                                                                                 </div>
                                                                             </c:if>
@@ -444,112 +355,205 @@
                         <p class="mb-4 mt-4">
                             Bạn có muốn mua chim của cửa hàng đã ghép cặp không ?
                         </p>
-                        <div class="float-right">
-                            <c:if test="${not empty birdPair.male_bird && not empty birdPair.female_bird}">
-                                <button id="btn-confirrm" data-value="" class="btn btn-group-sm btn-primary">Cả hai</button>  
+                        <c:choose>
+                            <c:when test="${not empty birdPair.male_bird && not empty birdPair.female_bird}">
+                                <div class="item-cart pr-3 my-3">
+                                    <h6 class="ml-3">Chim trống:</h6>
+                                    <div class="row align-items-center py-3 pl-3">
+                                        <div class="image-item col-2">
+                                            <img src="${birdPair.male_bird.image_url}" alt="${birdPair.male_bird.bird_name}" />
+                                        </div>
+                                        <div class="infor-item px-5  col-md-6  col-7">
+                                            <h5>${birdPair.male_bird.bird_name}</h5>
+                                            <div class="mt-2">
+                                                <p> 1
+                                                    <span style="font-size: 13px; margin-right: 5px">x</span>
+                                                    <c:choose>
+                                                        <c:when test="${birdPair.male_bird.discount > 0}">
+                                                        <p style="font-size: 14px;">  <fmt:formatNumber value="${birdPair.male_bird.price - birdPair.male_bird.bird.price * birdPair.male_bird.discount / 100}" pattern="#,###"/> ₫</p>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${birdPair.male_bird.price}" pattern="#,###"/> ₫</p>
+                                                    </c:otherwise>
+                                                </c:choose> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="price-item ml-4 px-3 col-md-3 col-2">
+                                            <c:choose>
+                                                <c:when test="${birdPair.male_bird.discount > 0}">
+                                                    <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${birdPair.male_bird.price - birdPair.male_bird.bird.price * birdPair.male_bird.discount / 100}" pattern="#,###"/> ₫</p>
+                                                    <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${birdPair.male_bird.discount}%</p>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdPair.male_bird.price}" pattern="#,###"/> ₫</p>
+                                                </c:otherwise>
+                                            </c:choose> 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-cart pr-3 my-3">
+                                    <h6 class="ml-3">Chim mái:</h6>
+                                    <div class="row align-items-center py-3 pl-3">
+                                        <div class="image-item  col-2">
+                                            <img src="${birdPair.female_bird.image_url}" alt="${birdPair.female_bird.bird_name}" />
+                                        </div>
+                                        <div class="infor-item px-5  col-md-6 col-7">
+                                            <h5>${birdPair.female_bird.bird_name}</h5>
+                                            <div class="mt-2">
+                                                <p> 1
+                                                    <span style="font-size: 13px; margin-right: 5px">x</span>
+                                                    <c:choose>
+                                                        <c:when test="${birdPair.female_bird.discount > 0}">
+                                                        <p style="font-size: 14px;">  <fmt:formatNumber value="${birdPair.female_bird.price - birdPair.female_bird.price * birdPair.female_bird.discount / 100}" pattern="#,###"/> ₫</p>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${birdPair.female_bird.price}" pattern="#,###"/> ₫</p>
+                                                    </c:otherwise>
+                                                </c:choose> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="price-item ml-4 px-3 col-md-3  col-2">
+                                            <c:choose>
+                                                <c:when test="${birdPair.female_bird.discount > 0}">
+                                                    <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${birdPair.female_bird.price - birdPair.female_bird.price * birdPair.female_bird.discount / 100}" pattern="#,###"/> ₫</p>
+                                                    <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${birdPair.female_bird.discount}%</p>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdPair.female_bird.price}" pattern="#,###"/> ₫</p>
+                                                </c:otherwise>
+                                            </c:choose> 
+                                        </div>
+                                    </div>
+                                </div>  
+                            </c:when>
+                            <c:when test="${not empty birdPair.male_bird}">
+                                <div class="item-cart pr-3 my-3">
+                                    <h6 class="ml-3">Chim trống:</h6>
+                                    <div class="row align-items-center py-3 pl-3">
+                                        <div class="image-item col-2">
+                                            <img src="${birdPair.male_bird.image_url}" alt="${birdPair.male_bird.bird_name}" />
+                                        </div>
+                                        <div class="infor-item px-5 col-md-6 col-7">
+                                            <h5>${birdPair.male_bird.bird_name}</h5>
+                                            <div class="mt-2">
+                                                <p> 1
+                                                    <span style="font-size: 13px; margin-right: 5px">x</span>
+                                                    <c:choose>
+                                                        <c:when test="${birdPair.male_bird.discount > 0}">
+                                                        <p style="font-size: 14px;">  <fmt:formatNumber value="${birdPair.male_bird.price - birdPair.male_bird.price * birdPair.male_bird.discount / 100}" pattern="#,###"/> ₫</p>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${birdPair.male_bird.price}" pattern="#,###"/> ₫</p>
+                                                    </c:otherwise>
+                                                </c:choose> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="price-item ml-4 px-3 col-md-3 col-2">
+                                            <c:choose>
+                                                <c:when test="${birdPair.male_bird.discount > 0}">
+                                                    <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${birdPair.male_bird.price - birdPair.male_bird.price * birdPair.male_bird.discount / 100}" pattern="#,###"/> ₫</p>
+                                                    <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${birdPair.male_bird.discount}%</p>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdPair.male_bird.price}" pattern="#,###"/> ₫</p>
+                                                </c:otherwise>
+                                            </c:choose> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:when>                                
+                            <c:when test="${not empty birdPair.female_bird}">
+                                <h6 class="ml-3">Chim mái:</h6>
+                                <div class="item-cart pr-3 my-3">
+                                    <div class="row align-items-center py-3 pl-3">
+                                        <div class="image-item col-2">
+                                            <img src="${birdPair.female_bird.image_url}" alt="${birdPair.female_bird.bird_name}" />
+                                        </div>
+                                        <div class="infor-item px-5 col-md-6 col-7">
+                                            <h5>${birdPair.female_bird.bird_name}</h5>
+                                            <div class="mt-2">
+                                                <p> 1
+                                                    <span style="font-size: 13px; margin-right: 5px">x</span>
+                                                    <c:choose>
+                                                        <c:when test="${birdPair.female_bird.discount > 0}">
+                                                        <p style="font-size: 14px;">  <fmt:formatNumber value="${birdPair.female_bird.price - birdPair.female_bird.price * birdPair.female_bird.discount / 100}" pattern="#,###"/> ₫</p>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${birdPair.female_bird.price}" pattern="#,###"/> ₫</p>
+                                                    </c:otherwise>
+                                                </c:choose> 
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="price-item ml-4 px-3 col-md-3 col-2">
+                                            <c:choose>
+                                                <c:when test="${birdPair.female_bird.discount > 0}">
+                                                    <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${birdPair.female_bird.price - birdPair.female_bird.price * birdPair.female_bird.discount / 100}" pattern="#,###"/> ₫</p>
+                                                    <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${birdPair.female_bird.discount}%</p>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdPair.female_bird.price}" pattern="#,###"/> ₫</p>
+                                                </c:otherwise>
+                                            </c:choose> 
+                                        </div>
+                                    </div>
+                                </div>   
+                            </c:when>
+                        </c:choose>
+                        <div class="d-flex float-right">
+                            <c:if test="${not empty birdPair.male_bird && not empty birdPair.female_bird}" >
+                                <form action="MainController" method="POST">
+                                    <input type="hidden" name="action" value="NavToCheckoutBirdPair"/>
+                                    <input type="hidden" name="order_id" value="${birdPair.order_id}"/>
+                                    <input type="hidden" name="pair_id" value="${birdPair.pair_id}"/>
+                                    <input type="hidden" name="male_bird" value="${birdPair.male_bird.bird_id}"/>
+                                    <input type="hidden" name="female_bird" value="${birdPair.female_bird.bird_id} "/>
+                                    <button id="btn-confirrm" class="btn btn-group-sm btn-primary mx-1">Cả hai</button>  
+                                </form>
                             </c:if>
                             <c:if test="${not empty birdPair.male_bird}">
-                                <button id="btn-confirrm" data-value="" class="btn btn-group-sm btn-primary">Chim trống</button>  
+                                <form action="MainController" method="POST">
+                                    <input type="hidden" name="action" value="NavToCheckoutBirdPair"/>
+                                    <input type="hidden" name="order_id" value="${birdPair.order_id}"/>
+                                    <input type="hidden" name="pair_id" value="${birdPair.pair_id}"/>
+                                    <input type="hidden" name="male_bird" value="${birdPair.male_bird.bird_id}"/>
+                                    <button id="btn-confirrm" class="btn btn-group-sm btn-primary mx-1">Chim trống</button>  
+                                </form> 
                             </c:if>
                             <c:if test="${not empty birdPair.female_bird}">
-                                <button id="btn-confirrm" data-value="" class="btn btn-group-sm btn-primary">Chim mái</button>  
+                                <form action="MainController" method="POST">
+                                    <input type="hidden" name="action" value="NavToCheckoutBirdPair"/>
+                                    <input type="hidden" name="order_id" value="${birdPair.order_id}"/>
+                                    <input type="hidden" name="pair_id" value="${birdPair.pair_id}"/>
+                                    <input type="hidden" name="female_bird" value="${birdPair.female_bird.bird_id}"/>
+                                    <button id="btn-confirrm" class="btn btn-group-sm btn-primary mx-1">Chim mái</button>  
+                                </form>
                             </c:if>
-                            <button id="btn-confirrm" data-value="" class="btn btn-group-sm btn-primary">Không</button>
-                            <button  onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</button>
+                            <form action="MainController" method="POST">
+                                <input type="hidden" name="action" value="NavToCheckoutBirdPair"/>
+                                <input type="hidden" name="order_id" value="${birdPair.order_id}"/>
+                                <input type="hidden" name="pair_id" value="${birdPair.pair_id}"/>
+                                <button id="btn-confirrm" class="btn btn-group-sm btn-primary mx-1">Không</button>
+                            </form>
+                            <button  onclick="cancelRemove()" class="btn btn-group-sm btn-secondary mx-1">Hủy</button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>             
-        <!-- ***** Footer Start ***** -->
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="first-item">
-                            <div class="logo">
-                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
-                            </div>
-                            <ul>
-                                <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
-                                <li><a href="#">0913-244-567</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Sản phẩm và dịch vụ</h4>
-                        <ul>
-                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                            <li><a href="${pageScope.toCompare}">So sánh</a></li>
-                            <li><a href="${pageScope.toPair}">Nhân giống</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Đường dẫn hữu ích</h4>
-                        <ul>
-                            <li><a href="${pageScope.toHome}">Trang chủ</a></li>
-                            <li><a href="#">Về chúng tôi</a></li>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Liên hệ</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Thông tin hỗ trợ</h4>
-                        <ul>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Câu hỏi thường gặp</a></li>
-                            <li><a href="#">Giao hàng</a></li>
-                            <li><a href="#">Theo dõi đơn hàng</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="under-footer">
-                            <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
-
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- ***** Footer Area Ends ***** -->
-
-    </script>
-    <!-- jQuery -->
-    <script src="assets/js/jquery-2.1.0.min.js"></script>
-
-    <!-- Bootstrap -->
-    <script src="assets/js/popper.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-
-    <!-- Plugins -->
-    <script src="assets/js/owl-carousel.js"></script>
-    <script src="assets/js/accordions.js"></script>
-    <script src="assets/js/datepicker.js"></script>
-    <script src="assets/js/scrollreveal.min.js"></script>
-    <script src="assets/js/waypoints.min.js"></script>
-    <script src="assets/js/jquery.counterup.min.js"></script>
-    <script src="assets/js/imgfix.min.js"></script> 
-    <script src="assets/js/slick.js"></script> 
-    <script src="assets/js/lightbox.js"></script> 
-    <script src="assets/js/isotope.js"></script> 
-
-    <!-- Global Init -->
-    <script src="assets/js/custom.js"></script>
-    <script>
-                                $('#payment-youngBird').click(function () {
-                                    $('#confirm-payment').css('display', 'block');
-                                });
-                                function cancelRemove() {
-                                    $('#confirm-payment').css('display', 'none');
-                                }
-    </script>
-</body>
+        <!-- Start Footer -->
+        <%@include file="../layout/footer.jsp" %>
+        <!-- End Footer -->
+        <script>
+            $('#payment-youngBird').click(function () {
+                $('#confirm-payment').css('display', 'block');
+            });
+            function cancelRemove() {
+                $('#confirm-payment').css('display', 'none');
+            }
+        </script>
+    </body>
 </html>

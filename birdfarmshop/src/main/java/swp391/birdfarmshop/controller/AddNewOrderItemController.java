@@ -13,20 +13,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
-import swp391.birdfarmshop.dao.BirdPairDAO;
-import swp391.birdfarmshop.dao.TrackingBirdPairDAO;
-import swp391.birdfarmshop.dto.BirdPairDTO;
-import swp391.birdfarmshop.dto.TrackingDTO;
-import swp391.birdfarmshop.model.User;
+import swp391.birdfarmshop.dao.BirdDAO;
+import swp391.birdfarmshop.dao.OrderItemDAO;
+import swp391.birdfarmshop.dto.OrderItemDTO;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name="RenderBirdPairDetailController", urlPatterns={"/RenderBirdPairDetailController"})
-public class RenderBirdPairDetailController extends HttpServlet {
-     private static final String ERROR = "RenderHomeController";
-     private static final String SUCCESS = "profile/bird-pair-detail.jsp";
+@WebServlet(name="AddNewOrderItemController", urlPatterns={"/AddNewOrderItemController"})
+public class AddNewOrderItemController extends HttpServlet {
+   private static final String DEST_BIRD_PAIR_DETAIL = "RenderBirdPairDetailController";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -37,24 +34,41 @@ public class RenderBirdPairDetailController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = SUCCESS;
-        try {
-            HttpSession session = request.getSession();
-            User u = (User) session.getAttribute("LOGIN_USER");
+        String url = DEST_BIRD_PAIR_DETAIL;
+        try{
+            String male_bird_id = request.getParameter("male_bird");
+            String female_bird_id = request.getParameter("female_bird");
             String order_id = request.getParameter("order_id");
-            int pair_id = Integer.parseInt(request.getParameter("pair_id"));
-            if(u != null && u.getRole().equals("customer")){
-               BirdPairDAO bpd = new BirdPairDAO();
-               TrackingBirdPairDAO trackingDao =  new TrackingBirdPairDAO();
-               BirdPairDTO birdPair = bpd.getBirdPairById(order_id);
-               ArrayList<TrackingDTO> trackingList = trackingDao.getTrackingBirdPair(birdPair.getPair_id());
-               request.setAttribute("BIRDPAIR", birdPair);
-               request.setAttribute("TRACKINGLIST", trackingList);
-            }else{
-                url=ERROR;
-                session.setAttribute("ERROR", "Bạn chưa đăng nhập"); 
+            OrderItemDAO oid = new OrderItemDAO();
+            HttpSession session = request.getSession();
+            ArrayList<OrderItemDTO> orderItemList = new ArrayList<>();
+            if (male_bird_id != null && female_bird_id != null) {
+                int result1 = oid.addNewBirdOrderItem(male_bird_id, order_id);
+                int result2 = oid.addNewBirdOrderItem(female_bird_id, order_id);
+                if (result1 > 0 && result2 > 0) {
+                    session.setAttribute("ERROR", "Thanh toán thành công");
+                } else {
+                    session.setAttribute("ERROR", oid.error);
+                }
+            } else if (male_bird_id != null) {
+                 int result1 = oid.addNewBirdOrderItem(male_bird_id, order_id);
+                 if (result1 > 0) {
+                     session.setAttribute("ERROR", "Thanh toán thành công");
+                } else {
+                    session.setAttribute("ERROR", oid.error);
+                }
+            } else if (female_bird_id != null) {
+                 int result1 = oid.addNewBirdOrderItem(female_bird_id, order_id);
+                 if (result1 > 0) {
+                     session.setAttribute("ERROR", "Thanh toán thành công");
+                } else {
+                    session.setAttribute("ERROR", "Thanh toán thành công");
+                }
+            } else {
+                 session.setAttribute("ERROR", "Thanh toán thành công");
             }
-        }catch(Exception e){
+            request.setAttribute("ITEMLIST", orderItemList);
+        }catch (Exception e){
             e.printStackTrace();
         }finally{
             request.getRequestDispatcher(url).forward(request, response);

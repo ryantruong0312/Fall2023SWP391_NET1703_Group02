@@ -39,6 +39,9 @@ public class RenderBirdPairCustomerController extends HttpServlet {
         String url = SUCCESS;
         try {
             String status = request.getParameter("status");
+            if(status != null && status.equals("All")){
+                status = null;
+            }
             HttpSession session = request.getSession();
             User u = (User)session.getAttribute("LOGIN_USER");
             if(u != null){

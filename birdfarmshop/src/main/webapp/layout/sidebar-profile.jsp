@@ -13,7 +13,7 @@
             <div class="account-settings">
                 <div class="user-profile">
                     <div class="user-avatar">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin">
+                        <img src="assets/images/avatar.jpg" alt="Maxwell Admin">
                     </div>
                     <h5>${sessionScope.LOGIN_USER.fullName}</h5>
                 </div>
@@ -23,14 +23,14 @@
                                      || param.action == "NavToUpdatePassword" ? "active-profile":""
                                      || param.action == "NavToEditProfile" ? "active-profile":""   }"> 
                             <a href="MainController?action=NavToProfile" class="profile-link">
-                                <img class="icon" src="assets/images/user.png" alt="avatar"/>
+                                <img class="icon" src="assets/images/profile.png" alt="avatar"/>
                                 <span>Thông tin người dùng</span>
                             </a>
                         </li>
                         <c:if test="${sessionScope.LOGIN_USER.role == 'customer'}">
                             <li class="${param.action == "NavToOrderCustomer" ? "active-profile":""}">
                                 <a href="#" class="order-link">
-                                    <img class="icon" src="assets/images/test.png" alt="Đơn hàng"/>
+                                    <img class="icon" src="assets/images/order.png" alt="Đơn hàng"/>
                                     <span>Đơn hàng</span>
                                 </a>
                             </li>

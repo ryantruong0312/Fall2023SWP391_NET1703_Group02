@@ -30,22 +30,20 @@ public class BirdPairDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String sql = "SELECT bp.pair_id, bp.order_id, bp.number_young_bird,\n"
+                String sql = "SELECT bp.pair_id, bp.order_id, bp.young_bird_price,\n"
                         + "	   bp.bird_customer, bp.male_bird_id, bp.female_bird_id,\n"
-                        + "	   bp.number_egg, bp.number_young_bird, pt.[status]\n"
+                        + "	   bp.number_egg, bp.number_young_bird, bp.[status]\n"
                         + "FROM [BirdPair] bp\n"
                         + "LEFT JOIN [Order] o\n"
-                        + "ON bp.order_id = o.order_id\n"
-                        + "LEFT JOIN [PairTracking] pt\n"
-                        + "ON bp.pair_id = pt.pair_id\n";
+                        + "ON bp.order_id = o.order_id\n";
                         if(username != null){
                             sql += "WHERE o.customer = '"+username+"'\n";
                             if(status != null){
-                                sql += " AND pt.[status] = N'"+status+"'\n";
+                                sql += " AND bp.[status] = N'"+status+"'\n";
                             }
                         }
                         if(username == null && status != null){
-                            sql += "WHERE pt.[status] = N'"+status+"'\n";
+                            sql += "WHERE bp.[status] = N'"+status+"'\n";
                         }
                         
                 st = con.createStatement();
@@ -53,7 +51,7 @@ public class BirdPairDAO {
                 while(rs.next()){ 
                     int pair_id = rs.getInt("pair_id");
                     String order_id = rs.getString("order_id");
-                    int young_bird_price = rs.getInt("number_young_bird");
+                    int young_bird_price = rs.getInt("young_bird_price");
                     BirdCustomer birdCustomer = bsd.findBirdCustomer(rs.getInt("bird_customer")+"");
                     Bird male_bird = bd.getBirdById(rs.getString("male_bird_id"));
                     Bird female_bird = bd.getBirdById(rs.getString("female_bird_id"));
@@ -102,21 +100,19 @@ public class BirdPairDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String sql = "SELECT bp.pair_id, bp.order_id, bp.number_young_bird,\n"
+                String sql = "SELECT bp.pair_id, bp.order_id, bp.young_bird_price,\n"
                         + "	   bp.bird_customer, bp.male_bird_id, bp.female_bird_id,\n"
-                        + "	   bp.number_egg, bp.number_young_bird, pt.[status]\n"
+                        + "	   bp.number_egg, bp.number_young_bird, bp.[status]\n"
                         + "FROM [BirdPair] bp\n"
                         + "LEFT JOIN [Order] o\n"
                         + "ON bp.order_id = o.order_id\n"
-                        + "LEFT JOIN [PairTracking] pt\n"
-                        + "ON bp.pair_id = pt.pair_id\n"
                         + "WHERE o.order_id = ?";
                 pst = con.prepareStatement(sql);
                 pst.setString(1, order_id);
                 rs = pst.executeQuery();
                 while(rs.next()){ 
                     int pair_id = rs.getInt("pair_id");
-                    int young_bird_price = rs.getInt("number_young_bird");
+                    int young_bird_price = rs.getInt("young_bird_price");
                     BirdCustomer birdCustomer = bsd.findBirdCustomer(rs.getInt("bird_customer")+"");
                     Bird male_bird = bd.getBirdById(rs.getString("male_bird_id"));
                     Bird female_bird = bd.getBirdById(rs.getString("female_bird_id"));

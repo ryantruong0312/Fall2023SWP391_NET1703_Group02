@@ -153,274 +153,84 @@
     </head>
 
     <body>
-    <c:url var="toCompare" value="MainController?action=NavToCompare"/>
-    <c:url var="toHome" value="MainController?action=NavToHome"/>
-    <c:url var="toLogin" value="MainController?action=NavToLogin"/>
-    <c:url var="logout" value="MainController?action=Logout"/>
-    <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
-    <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
-    <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
-    <c:url var="toCart" value="MainController?action=NavToCart"/>
-    <c:url var="toProfile" value="MainController?action=NavToProfile"/>
-    <c:url var="toEditProfile" value="MainController?action=NavToEditProfile"/>
-    <c:url var="toOrders" value="MainController?action=NavToOrders"/>
-    <c:url var="toShopOrders" value="MainController?action=NavToShopOrders"/>
-    <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
-    <c:url var="toReports" value="MainController?action=NavToReports"/>
-    <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
-    <c:url var="toUpdatePassword" value="MainController?action=NavToUpdatePassword"/>
-    <!-- ***** Preloader Start ***** -->
-    <div id="preloader">
-        <div class="jumper">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div>  
-    <!-- ***** Preloader End ***** -->
-
-    <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky">
-        <div class="container home-custom">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <a href="#" class="logo scroll-to-section">
-                            <img src="assets/images/logo.png">
-                        </a>
-                        <!-- ***** Logo End ***** -->
-                        <!-- ***** Menu Start ***** -->
-                        <ul class="nav">
-                            <li class="scroll-to-section"><a href="${pageScope.toHome}" >Trang chủ</a></li>
-                            <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
-                                <li class="submenu"><a href="">Sản phẩm</a>
-                                    <ul>
-                                        <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                                        <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                                        <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                                    </ul>
-                                </li>
-                                <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
-                                    <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                </c:if>
-                                <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
-                                    <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
-                                    <li id="show-cart" class="scroll-to-section">
-                                        <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                        <div class="cart-amount">
-                                            <c:choose>
-                                                <c:when test="${sessionScope.CART == null}">0</c:when>
-                                                <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
-                                            </c:choose>
-                                        </div>
-                                    </li>
-
-                                    <c:if test="${sessionScope.LOGIN_USER == null}">
-                                        <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
-                                    </c:if>
-                                </c:if>
-                            </c:if>
-                            <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
-                                <li class="submenu"><a href="">Sản phẩm</a>
-                                    <ul>
-                                        <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                                        <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                                        <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                                    </ul>
-                                </li>
-                                <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
-                                <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
-                            </c:if>
-                            <c:if test="${sessionScope.LOGIN_USER != null}">
-                                <li class="submenu"><a class="user-name text-right active" href="#">${LOGIN_USER.fullName}</a>
-                                    <ul>
-                                        <li><a href="${pageScope.toProfile}&username=${sessionScope.LOGIN_USER.username}">Cá nhân</a></li>
-                                        <li><a href="${pageScope.logout}">Đăng xuất</a></li>
-                                    </ul>
-                                </li>
-                            </c:if>
-                        </ul>           
-                        <a class='menu-trigger'>
-                            <span>Menu</span>
-                        </a>
-                        <!-- ***** Menu End ***** -->
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- ***** Header Area End ***** -->
-
-    <main>
-
-        <c:set value="${requestScope.ITEMLIST}" var="itemList"/>
-
-
-        <div class="container">
-            <div class="row gutters">
-                <%@include file="../layout/sidebar-profile.jsp" %>
-                <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-                    <div class="card h-100">
-                        <div class="scrollable-container">
-                            <table class="scrollable-list">
-                                <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Mã đơn hàng</th>
-                                        <th>Hình ảnh</th>
-                                        <th>Mã sản phẩm</th>
-                                        <th>Tên sản phẩm</th>
-                                        <th>Giá thành sản phẩm</th>
-                                        <th>Số lượng</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach items="${itemList}" var="item" varStatus="counter">
-                                    <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
-                                        <td>${counter.count}</td>
-                                        <td>${item.order_id}</td>
-                                        <td><img style="height: 100px; width: 80px;" src="${item.image_url}"/></td>
-                                    <c:choose>
-                                        <c:when test="${item.bird_id != null}">
-                                            <td>${item.bird_id}</td>
-                                            <td>${item.bird_name}</td>
-                                        </c:when>
-                                        <c:when test="${item.nest_id != null}">
-                                            <td>${item.nest_id}</td>
-                                            <td>${item.nest_name}</td>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <td>${item.accessory_id}</td>
-                                            <td>${item.accessory_name}</td>
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <td>${item.unit_price}</td>
-                                    <td>${item.order_quantity}</td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
+        <!-- Header Start -->
+        <%@include file="../layout/header.jsp" %>
+        <!-- Header End -->
+        <main>
+            <c:set value="${requestScope.ITEMLIST}" var="itemList"/>
+            <div class="container">
+                <div class="row gutters">
+                    <%@include file="../layout/sidebar-profile.jsp" %>
+                    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                        <div class="card h-100">
+                            <div class="scrollable-container">
+                                <table class="scrollable-list">
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Mã đơn hàng</th>
+                                            <th>Hình ảnh</th>
+                                            <th>Mã sản phẩm</th>
+                                            <th>Tên sản phẩm</th>
+                                            <th>Giá thành sản phẩm</th>
+                                            <th>Số lượng</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach items="${itemList}" var="item" varStatus="counter">
+                                            <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
+                                                <td>${counter.count}</td>
+                                                <td>${item.order_id}</td>
+                                                <td><img style="height: 100px; width: 80px;" src="${item.image_url}"/></td>
+                                                    <c:choose>
+                                                        <c:when test="${item.bird_id != null}">
+                                                        <td>${item.bird_id}</td>
+                                                        <td>${item.bird_name}</td>
+                                                    </c:when>
+                                                    <c:when test="${item.nest_id != null}">
+                                                        <td>${item.nest_id}</td>
+                                                        <td>${item.nest_name}</td>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <td>${item.accessory_id}</td>
+                                                        <td>${item.accessory_name}</td>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                                <td>${item.unit_price}</td>
+                                                <td>${item.order_quantity}</td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-
-
                     </div>
-                </div>
 
-            </div>
-        </div>
-
-
-    </main>
-
-
-    <!-- ***** Footer Start ***** -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="first-item">
-                        <div class="logo">
-                            <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
-                        </div>
-                        <ul>
-                            <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                            <li><a href="#">thegioivetcanh@petshop.com</a></li>
-                            <li><a href="#">0913-244-567</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <h4>Sản phẩm và dịch vụ</h4>
-                    <ul>
-                        <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                        <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                        <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                        <li><a href="${pageScope.toCompare}">So sánh</a></li>
-                        <li><a href="${pageScope.toPair}">Nhân giống</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h4>Đường dẫn hữu ích</h4>
-                    <ul>
-                        <li><a href="${pageScope.toHome}">Trang chủ</a></li>
-                        <li><a href="#">Về chúng tôi</a></li>
-                        <li><a href="#">Hỗ trợ</a></li>
-                        <li><a href="#">Liên hệ</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h4>Thông tin hỗ trợ</h4>
-                    <ul>
-                        <li><a href="#">Hỗ trợ</a></li>
-                        <li><a href="#">Câu hỏi thường gặp</a></li>
-                        <li><a href="#">Giao hàng</a></li>
-                        <li><a href="#">Theo dõi đơn hàng</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-12">
-                    <div class="under-footer">
-                        <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
-
-                        <ul>
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
-        </div>
-    </footer>
-    <!-- ***** Footer Area Ends ***** -->
-    <%@include file="../layout/message.jsp" %>
-    <script>
-        // Function to show the profile section and hide the order section
-        function showProfileSection() {
-            document.querySelector('.profile-section').style.display = 'block';
-            document.querySelector('.order-section').style.display = 'none';
-        }
+        </main>
+        <!-- Start Footer -->
+        <%@include file="../layout/footer.jsp" %>
+        <!-- End Footer -->
+        <script>
+            // Function to show the profile section and hide the order section
+            function showProfileSection() {
+                document.querySelector('.profile-section').style.display = 'block';
+                document.querySelector('.order-section').style.display = 'none';
+            }
 
-        // Function to show the order section and hide the profile section
-        function showOrderSection() {
-            document.querySelector('.profile-section').style.display = 'none';
-            document.querySelector('.order-section').style.display = 'block';
-        }
+            // Function to show the order section and hide the profile section
+            function showOrderSection() {
+                document.querySelector('.profile-section').style.display = 'none';
+                document.querySelector('.order-section').style.display = 'block';
+            }
 
-        // Initially, show the profile section (you can change this based on your default behavior)
-        showProfileSection();
+            // Initially, show the profile section (you can change this based on your default behavior)
+            showProfileSection();
 
-        // Add click event listeners to the links in the .about section
-        document.querySelector('.about .profile-link').addEventListener('click', showProfileSection);
-        document.querySelector('.about .order-link').addEventListener('click', showOrderSection);
-    </script>
-
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- jQuery -->
-    <script src="assets/js/jquery-2.1.0.min.js"></script>
-
-    <!-- Bootstrap -->
-    <script src="assets/js/popper.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-
-    <!-- Plugins -->
-    <script src="assets/js/owl-carousel.js"></script>
-    <script src="assets/js/accordions.js"></script>
-    <script src="assets/js/datepicker.js"></script>
-    <script src="assets/js/scrollreveal.min.js"></script>
-    <script src="assets/js/waypoints.min.js"></script>
-    <script src="assets/js/jquery.counterup.min.js"></script>
-    <script src="assets/js/imgfix.min.js"></script> 
-    <script src="assets/js/slick.js"></script> 
-    <script src="assets/js/lightbox.js"></script> 
-    <script src="assets/js/isotope.js"></script> 
-
-    <!-- Global Init -->
-    <script src="assets/js/custom.js"></script>
-</body>
+            // Add click event listeners to the links in the .about section
+            document.querySelector('.about .profile-link').addEventListener('click', showProfileSection);
+            document.querySelector('.about .order-link').addEventListener('click', showOrderSection);
+        </script>
+    </body>
 </html>
