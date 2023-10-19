@@ -71,76 +71,83 @@
                             <h2>Chỉnh sửa sản phẩm</h2>
                         </div>
                     </div>
-                    <form action="UpdateAccessoryController" method="GET">
-                        <div class="col-lg-12 form-left">
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <c:if test="${requestScope.MESSAGE != null}">
+                            <h4 style="text-align: center; color: red;"><c:out value="${requestScope.MESSAGE}"/></h4>
+                        </c:if>
+                        <c:if test="${requestScope.Error != null}">
+                            <h4 style="text-align: center; color: red;"><c:out value="${requestScope.Error}"/></h4>
+                        </c:if>
+                    </div>
+                </div>
+                <form action="UpdateAccessoryController" method="GET">
+                    <div class="row">
+                        <div class="col-lg-6" style="margin-top: 10px;">
                             <div class="form-outline">
-                                <label>ID của phụ kiện (Bao gồm 2 chữ hoa và 3 chữ số)</label>
-                                <input style="color: blue;" type="text" name="txtAccessoryID" class="input form-control" pattern="[A-Z]{2}\d{3}" value="${a.accessory_id}" readonly=""/>
+                                <label>ID của phụ kiện</label>
+                                <input style="color: #0c5460;" type="text" name="txtAccessoryID" class="input form-control" pattern="[A-Z]{2}\d{3}" value="${a.accessory_id}" readonly=""/>
                             </div>
 
                             <div class="form-outline mt-2">
                                 <label>Tên</label>
-                                <input style="color: blue;" type="text" name="txtAccessoryName" class="input form-control" value="${a.accessory_name}" required/>
+                                <input style="color: #0c5460;" type="text" name="txtAccessoryName" class="input form-control" value="${a.accessory_name}" required/>
                             </div>
 
                             <div class="form-outline mt-2">
                                 <label>Loại phụ kiện</label>
-                                <select name="txtCategoryID">
+                                <select name="txtCategoryID" class="input form-control" style="color: #0c5460;">
                                     <c:forEach items="${ac}" var="ac">
-                                        <option style="color: blue;" value="${ac.category_id}">${ac.category_name}</option>
+                                        <option value="${ac.category_id}">${ac.category_name}</option>
                                     </c:forEach>
                                 </select>
                             </div>
 
                             <div class="form-outline mt-2">
                                 <label>Giá</label>
-                                <input style="color: blue;" type="number" name="txtPrice" min="0" class="input form-control" value="${a.unit_price}" required/>
+                                <input style="color: #0c5460;" type="number" name="txtPrice" min="0" class="input form-control" value="${a.unit_price}" required/>
                             </div>
 
                             <div class="form-outline mt-2">
                                 <label>Số lượng</label>
-                                <input style="color: blue;" type="number" name="txtStockQuantity" min="0" class="input form-control" value="${a.stock_quantity}" required/>
-                            </div>
-
-                            <div class="form-outline mt-2">
-                                <label for="txtDescribe">Mô tả</label><br>
-                                <textarea class="form-control" id="txtDescribe" name="txtDescribe" rows="5" cols="50" style="width: 554px; height: 125px; color: blue;">${a.description}</textarea>
+                                <input style="color: #0c5460;" type="number" name="txtStockQuantity" min="0" class="input form-control" value="${a.stock_quantity}" required/>
                             </div>
 
                             <div class="form-outline mt-2">
                                 <label>Giảm giá (%)</label>
-                                <input style="color: blue;" type="number" name="txtDiscount" min="0" class="input form-control" value="${a.discount}"/>                            
+                                <input style="color: #0c5460;" type="number" name="txtDiscount" min="0" class="input form-control" value="${a.discount}"/>                            
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-outline mt-2">
+                                <label for="txtDescribe">Mô tả</label><br>
+                                <textarea class="form-control" id="txtDescribe" name="txtDescribe" rows="5" cols="50" style="width: 100%px; height: 232px; color: #0c5460;">${a.description}</textarea>
                             </div>
 
                             <div class="form-outline mt-2">
                                 <label>Hình ảnh sản phẩm (Bắt buộc)</label>
-                                <input style="color: blue;" type="text" name="txtImage"  class="input form-control" value="${url_thumnail}" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" required/>
+                                <input style="color: #0c5460;" type="text" name="txtImage"  class="input form-control" value="${url_thumnail}" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" required/>
                             </div>
 
                             <c:if test="${requestScope.list != null}">
                                 <c:forEach var="image" items="${list}" varStatus="loop">
                                     <div class="form-outline mt-2">
                                         <label>Hình ảnh sản phẩm</label>
-                                        <input style="color: blue;" type="text" name="txtImage_${loop.index + 1}" class="input form-control" value="${image.image_url}" required/>
+                                        <input style="color: #0c5460;" type="text" name="txtImage_${loop.index + 1}" class="input form-control" value="${image.image_url}" required/>
                                         <input type="hidden" name="Image_id_${loop.index + 1}" value="${image.image_id}">
                                     </div>
                                 </c:forEach>
                             </c:if>
-
                         </div>
+                    </div>
 
-                        <c:if test="${requestScope.MESSAGE != null}">
-                            <div>${MESSAGE}</div>
-                        </c:if>
-                        <c:if test="${requestScope.Error != null}">
-                            <div>${error}</div>
-                        </c:if>
-
-                        <div class="col-lg-12">
-                            <button class="button-submit" type="submit">Hoàn tất</button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="col-lg-12 text-center">
+                        <button class="button-submit" type="submit">Hoàn tất</button>
+                    </div>
+                </form>
             </div>
         </section>
         <%@include file="../layout/message.jsp" %>

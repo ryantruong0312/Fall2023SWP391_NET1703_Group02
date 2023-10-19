@@ -158,11 +158,6 @@
                                 alert("${requestScope.MESSAGE}");
                             </script>
                         </c:if>
-                        <c:if test="${requestScope.UPDATED != null}">
-                            <script>
-                                alert("${requestScope.UPDATED}");
-                            </script>
-                        </c:if>
                         <%
                             String requestURL = "MainController";
                             String queryString = request.getQueryString();
@@ -217,6 +212,7 @@
                                     <button id="submit" name="action" value="NavToUpdateOrder"><span>Đồng ý</span></button>
                                     <a class="bordered-link" onclick="hide('update');"><span>Hủy bỏ</span></a>
                                 </ul>
+                                    
                                 <div class="scrollable-container">
                                     <table id="order-list" class="scrollable-list">
                                         <thead>
@@ -238,31 +234,33 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:if test="${not empty orderList}">
-                                                <c:forEach items="${orderList}" var="order" varStatus="counter">
-                                                    <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
-                                                        <td>${counter.count}</td>
-                                                        <td>${order.order_id}</td>
-                                                        <td><a href="MainController?action=NavToProfile?user_id=${order.customer}">${order.customer}</a></td>
-                                                        <td>${order.order_date}</td>
-                                                        <td>${order.order_status}</td>
-                                                        <td><a href="MainController?action=NavToOrderItems&order_id=${order.order_id}">Chi tiết</a></td>
-                                                        <td onclick="show('update', '${order.order_id}')"><span style="color: #007BFF;">Cập nhật</span></td>
-                                                        <td>
-                                                            <a href="MainController?action=NavToUpdateOrder&order_id=${order.order_id}&status=cancel">Hủy đơn</a>
-                                                        </td>
-                                                        <td>${order.name_receiver}</td>
-                                                        <td>${order.phone_receiver}</td>
-                                                        <td>${order.address_receiver}</td>
-                                                        <td>${order.payment_status}</td>
-                                                        <td>${order.total_price}</td>
-                                                        <td>${order.point}</td>
-                                                    </tr>
-                                                </c:forEach>
+                                           <c:if test="${not empty orderList}">
+                                            <c:forEach items="${orderList}" var="order" varStatus="counter">
+                                                <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
+                                                    <td>${counter.count}</td>
+                                                    <td>${order.order_id}</td>
+                                                    <td><a href="MainController?action=NavToProfile?user_id=${order.customer}">${order.customer}</a></td>
+                                                    <td>${order.order_date}</td>
+                                                    <td>${order.order_status}</td>
+                                                    <td><a href="MainController?action=NavToOrderItems&order_id=${order.order_id}">Chi tiết</a></td>
+                                                    <td onclick="show('update', '${order.order_id}')"><span style="color: #007BFF;">Cập nhật</span></td>
+                                                    <td>
+                                                        <c:if test="${order.order_status == 'Đang xử lý'}">
+                                                        <a href="MainController?action=NavToUpdateOrder&order_id=${order.order_id}&status=cancel">Hủy đơn</a>
+                                                        </c:if>
+                                                    </td>
+                                                    <td>${order.name_receiver}</td>
+                                                    <td>${order.phone_receiver}</td>
+                                                    <td>${order.address_receiver}</td>
+                                                    <td>${order.payment_status}</td>
+                                                    <td>${order.total_price}</td>
+                                                    <td>${order.point}</td>
+                                                </tr>
+                                            </c:forEach>
                                             </c:if>
                                             <c:if test="${empty orderList}">
                                                 <tr>
-                                                    <td colspan="10">Không tìm thấy đơn hàng    </td>
+                                                    <td colspan="5">Không tìm thấy đơn hàng</td>
                                                 </tr>
                                             </c:if>
                                         </tbody>
@@ -270,14 +268,16 @@
                                 </div>
                             </div>
                             <div class="pagination">
-                                <c:if test="${requestScope.noOfPages > 1}">
+                                <c:if test="${requestScope.noOfPages >= 1}">
                                     <ul>
                                         <li>
                                             <a href="<%= fullURL %>page=1"><<</a>
                                         </li>
                                         <c:forEach begin="1" end="${requestScope.noOfPages}" var="i">
-                                            <li><a href="<%= fullURL %>page=${i}">${i}</a></li>
-                                            </c:forEach>
+                                        <li class="${i == requestScope.page ? "active":""}">
+                                            <a href="<%= fullURL %>page=${i}">${i}</a>
+                                        </li>
+                                        </c:forEach>
                                         <li>
                                             <a href="<%= fullURL %>page=${noOfPages}">>></a>
                                         </li>

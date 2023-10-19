@@ -61,7 +61,6 @@
                 color: black;
                 margin: 0 10px 0 10px;
             }
-
             .search-bar {
                 border-radius: 8px;
                 border: 1px solid rgb(221, 221, 227);
@@ -78,7 +77,6 @@
             .search-bar img {
                 margin-left: 5px;
             }
-
             .scrollable-container {
                 overflow-x: scroll;
             }
@@ -125,8 +123,8 @@
         <!-- ***** Main Banner Area End ***** -->
 
 
+        <c:set value="${requestScope.ITEMLIST}" var="itemList"/>
         <main>
-            <c:set value="${requestScope.ITEMLIST}" var="itemList"/>
             <div class="container">
                 <div class="col-lg-12">
                     <h1 style="text-align: center;">Chi tiết đơn hàng</h1>
@@ -155,22 +153,29 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach items="${itemList}" var="item" varStatus="counter">
+                                                            <c:forEach items="${itemList}" var="item" varStatus="counter">
                                         <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
                                             <td>${counter.count}</td>
-                                            <td><img style="height: 100px; width: 80px;" src="${item.image_url}"/></td>
-                                                <c:choose>
-                                                    <c:when test="${item.bird_id != null}">
-                                                    <td>${item.bird_id}</td>
-                                                    <td>${item.bird_name}</td>
+                                            <c:choose>
+                                                <c:when test="${item.bird != null}">
+                                                    <td><img style="height: 100px; width: 80px;" src="${item.bird.image_url}"/></td>
+                                                    <td>${item.bird.bird_id}</td>
+                                                    <td>${item.bird.bird_name}</td>
                                                 </c:when>
-                                                <c:when test="${item.nest_id != null}">
-                                                    <td>${item.nest_id}</td>
-                                                    <td>${item.nest_name}</td>
+                                                <c:when test="${item.accessory != null}">
+                                                    <td><img style="height: 100px; width: 80px;" src="${item.accessory.image_url}"/></td>
+                                                    <td>${item.accessory.accessory_id}</td>
+                                                    <td>${item.accessory.accessory_name}</td>
+                                                </c:when>
+                                                <c:when test="${item.birdNest != null}">
+                                                    <td><img style="height: 100px; width: 80px;" src="${item.birdNest.image_url}"/></td>
+                                                    <td>${item.birdNest.nest_id}</td>
+                                                    <td>${item.birdNest.nest_name}</td>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <td>${item.accessory_id}</td>
-                                                    <td>${item.accessory_name}</td>
+                                                    <td></td>
+                                                    <td>${item.birdPair.birdPair_id}</td>
+                                                    <td></td>
                                                 </c:otherwise>
                                             </c:choose>
                                             <td>${item.unit_price}</td>

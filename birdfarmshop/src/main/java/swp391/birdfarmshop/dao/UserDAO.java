@@ -265,7 +265,63 @@ public class UserDAO {
                 if (search != null) {
                     sql += " WHERE username LIKE N'%" + search + "%' "
                             + "OR full_name LIKE N'%" + search + "%' \n";
+                }
+                if (page != null) {
+                    int pageNumber = Integer.parseInt(page);
+                    int start = (pageNumber - 1) * recordsPerPage;
+                    sql += "ORDER BY (SELECT NULL) OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
+                }
+                stm = con.prepareStatement(sql);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String username = rs.getString("username");
+                    String fullName = rs.getString("full_name");
+                    String role = rs.getString("role");
+                    String status = rs.getString("status");
+                    accountList.add(new AccountDTO(username, fullName, role, status));
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return accountList;
+    }
+
+    public ArrayList<AccountDTO> getAccountList(String search, String page, int recordsPerPage, String roles) throws SQLException {
+        ArrayList<AccountDTO> accountList = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String sql = GET_ACCOUNT_LIST;
+                if (search != null) {
+                    if (roles.equals("all")) {
+                        sql += " WHERE username LIKE N'%" + search + "%' "
+                                + "OR full_name LIKE N'%" + search + "%' \n";
+                    } else {
+                        sql += " WHERE username LIKE N'%" + search + "%' "
+                                + "OR full_name LIKE N'%" + search + "%' \n"
+                                + "AND role LIKE N'%" + roles + "%'";
                     }
+                }
+                if (search == null) {
+                    if(roles.equals("all")){
+                        sql = GET_ACCOUNT_LIST;
+                    }else{
+                        sql += " WHERE role LIKE N'%" + roles + "%' ";
+                    }
+                }
                 if (page != null) {
                     int pageNumber = Integer.parseInt(page);
                     int start = (pageNumber - 1) * recordsPerPage;

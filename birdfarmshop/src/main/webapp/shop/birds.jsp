@@ -60,11 +60,11 @@
                         <input type="submit" value="Tìm kiếm">
                     </div>
                 </div> 
-                        <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
-                            <div class="new-item d-flex justify-content-center">
-                                <a href="MainController?action=AddNewBird"><span>Thêm mới chim</span></a>
-                            </div>
-                        </c:if>
+                <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
+                    <div class="new-item d-flex justify-content-center">
+                        <a href="MainController?action=AddNewBird"><span>Thêm mới chim</span></a>
+                    </div>
+                </c:if>
                 <main class="my-5">
                     <div class="container-fluid">
                         <div class="row m-0">
@@ -111,7 +111,7 @@
                                                         <div class="thumb-img">
                                                             <img src="${bird.image_url}" class="card-img-top" alt="${bird.bird_name}">
                                                             <c:if test="${bird.discount > 0}">
-                                                            <span class="tag-discount"> -${bird.discount}%</span>
+                                                                <span class="tag-discount"> -${bird.discount}%</span>
                                                             </c:if>
                                                             <div class="hover-card">
                                                                 <ul class="d-flex justify-content-center">
@@ -135,7 +135,7 @@
                                                             <c:if test="${bird.status == 'Đang sinh sản'}">
                                                                 <div class="overlay-text">Đang sinh sản</div>
                                                             </c:if>
-                                                             <c:if test="${bird.status == 'Đang ghép cặp'}">
+                                                            <c:if test="${bird.status == 'Đang ghép cặp'}">
                                                                 <div class="overlay-text">Đang ghép cặp</div>
                                                             </c:if>
                                                         </div>
@@ -157,26 +157,54 @@
                                                 </div>
                                             </c:forEach>
                                         </c:when>
-                                            <c:otherwise>
-                                                <h4 class="m-auto">Không có sản phẩm nào</h4>
-                                            </c:otherwise>
+                                        <c:otherwise>
+                                            <h4 class="m-auto">Không có sản phẩm nào</h4>
+                                        </c:otherwise>
                                     </c:choose>
                                 </div>
                                 <div id="products" class="row justify-content-center">
-                                        <c:if test="${noOfPages != 1}">
-                                            <div class="d-flex float-right align-items-center pagination">
-                                                <c:set var="numberOfPage" value="${requestScope.currentPage}"/>
-                                                <input type="hidden" name="numberOfPage" value="${requestScope.noOfPages}"/>
-                                                <input type="hidden" name="page" value="${numberOfPage}"/>
-                                                <c:if test="${noOfPages >= 1 && noOfPages <= 5}">  
-                                                    <ul class="d-flex">
+                                    <c:if test="${noOfPages != 1}">
+                                        <div class="d-flex float-right align-items-center pagination">
+                                            <c:set var="numberOfPage" value="${requestScope.currentPage}"/>
+                                            <input type="hidden" name="numberOfPage" value="${requestScope.noOfPages}"/>
+                                            <input type="hidden" name="page" value="${numberOfPage}"/>
+                                            <c:if test="${noOfPages >= 1 && noOfPages <= 5}">  
+                                                <ul class="d-flex">
+                                                    <c:if test="${requestScope.currentPage > 1}">
+                                                        <li>
+                                                            <a class="start-page"><<</a>
+                                                        </li>
+                                                    </c:if>
+                                                    <c:forEach begin="1" end="${noOfPages}" var="i">
+                                                        <li class="${i == requestScope.currentPage ? "active":""}" >
+                                                            <a data-value="${i}" onclick="takePage(this)">${i}</a>
+                                                        </li>
+                                                    </c:forEach>
+                                                    <c:if test="${requestScope.currentPage < noOfPages}">
+                                                        <li>
+                                                            <a class="end-page" >>></a>
+                                                        </li>
+                                                    </c:if>
+                                                </ul>
+                                            </c:if>    
+                                            <c:if test="${noOfPages > 5}">
+                                                <ul class="d-flex">
+                                                    <c:if test="${numberOfPage > 2}">
                                                         <c:if test="${requestScope.currentPage > 1}">
-                                                            <li>
+                                                            <li id="page">
                                                                 <a class="start-page"><<</a>
                                                             </li>
                                                         </c:if>
-                                                        <c:forEach begin="1" end="${noOfPages}" var="i">
-                                                            <li class="${i == requestScope.currentPage ? "active":""}" >
+                                                        <c:if test="${numberOfPage + 2 < noOfPages}">
+                                                            <c:set var="beginItem" value="${numberOfPage - 2 }"/>
+                                                            <c:set var="endItem" value="${numberOfPage + 2 }"/>
+                                                        </c:if>
+                                                        <c:if test="${numberOfPage + 2 >= noOfPages}">
+                                                            <c:set var="beginItem" value="${noOfPages - 4}"/>
+                                                            <c:set var="endItem" value="${noOfPages}"/>
+                                                        </c:if>
+                                                        <c:forEach begin="${beginItem}" end="${endItem}" var="i">
+                                                            <li class="${i == requestScope.currentPage ? "active":""}">
                                                                 <a data-value="${i}" onclick="takePage(this)">${i}</a>
                                                             </li>
                                                         </c:forEach>
@@ -185,59 +213,32 @@
                                                                 <a class="end-page" >>></a>
                                                             </li>
                                                         </c:if>
-                                                    </ul>
-                                                </c:if>    
-                                                <c:if test="${noOfPages > 5}">
-                                                    <ul class="d-flex">
-                                                        <c:if test="${numberOfPage > 2}">
-                                                            <c:if test="${requestScope.currentPage > 1}">
-                                                                <li id="page">
-                                                                    <a class="start-page"><<</a>
-                                                                </li>
-                                                            </c:if>
-                                                            <c:if test="${numberOfPage + 2 < noOfPages}">
-                                                                <c:set var="beginItem" value="${numberOfPage - 2 }"/>
-                                                                <c:set var="endItem" value="${numberOfPage + 2 }"/>
-                                                            </c:if>
-                                                            <c:if test="${numberOfPage + 2 >= noOfPages}">
-                                                                <c:set var="beginItem" value="${noOfPages - 4}"/>
-                                                                <c:set var="endItem" value="${noOfPages}"/>
-                                                            </c:if>
-                                                            <c:forEach begin="${beginItem}" end="${endItem}" var="i">
-                                                                <li class="${i == requestScope.currentPage ? "active":""}">
-                                                                    <a data-value="${i}" onclick="takePage(this)">${i}</a>
-                                                                </li>
-                                                            </c:forEach>
-                                                            <c:if test="${requestScope.currentPage < noOfPages}">
-                                                                <li>
-                                                                    <a class="end-page" >>></a>
-                                                                </li>
-                                                            </c:if>
+                                                    </c:if>
+                                                    <c:if test="${numberOfPage <= 2}">
+                                                        <c:if test="${requestScope.currentPage > 1}">
+                                                            <li>
+                                                                <a class="start-page"><<</a>
+                                                            </li>
                                                         </c:if>
-                                                        <c:if test="${numberOfPage <= 2}">
-                                                            <c:if test="${requestScope.currentPage > 1}">
-                                                                <li>
-                                                                    <a class="start-page"><<</a>
-                                                                </li>
-                                                            </c:if>
-                                                            <c:forEach var="i" begin="1" end="5">
-                                                                <li class="${i == requestScope.currentPage ? "active":""}">
-                                                                    <a data-value="${i}" onclick="takePage(this)">${i}</a>
-                                                                </li>       
-                                                            </c:forEach>                   
-                                                             <c:if test="${requestScope.currentPage < noOfPages}">
-                                                                <li>
-                                                                    <a class="end-page" >>></a>
-                                                                </li>
-                                                            </c:if>
-                                                        </c:if>   
-                                                    </ul>
-                                                </c:if>
-                                            </div>
-                                        </c:if>
+                                                        <c:forEach var="i" begin="1" end="5">
+                                                            <li class="${i == requestScope.currentPage ? "active":""}">
+                                                                <a data-value="${i}" onclick="takePage(this)">${i}</a>
+                                                            </li>       
+                                                        </c:forEach>                   
+                                                        <c:if test="${requestScope.currentPage < noOfPages}">
+                                                            <li>
+                                                                <a class="end-page" >>></a>
+                                                            </li>
+                                                        </c:if>
+                                                    </c:if>   
+                                                </ul>
+                                            </c:if>
+                                        </div>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </main>
             </form>
@@ -247,77 +248,76 @@
         <%@include file="../layout/footer.jsp" %>
         <!-- End Footer -->
         <script>
-                                                            $(function () {
-                                                                var selectedClass = "";
-                                                                $("p").click(function () {
-                                                                    selectedClass = $(this).attr("data-rel");
-                                                                    $("#portfolio").fadeTo(50, 0.1);
-                                                                    $("#portfolio div").not("." + selectedClass).fadeOut();
-                                                                    setTimeout(function () {
-                                                                        $("." + selectedClass).fadeIn();
-                                                                        $("#portfolio").fadeTo(50, 1);
-                                                                    }, 500);
-
-                                                                });
-                                                                $("input[name=txtBreedId]").change(function () {
-                                                                    $("#selectBird").submit();
-                                                                });
-                                                                $("input[name=txtPrice]").change(function () {
-                                                                    $("#selectBird").submit();
-                                                                });
-                                                                $("input[name=txtGender]").change(function () {
-                                                                    $("#selectBird").submit();
-                                                                });
-                                                                $("input[name=txtAge]").change(function () {
-                                                                    $("#selectBird").submit();
-                                                                });
-                                                                $(".start-page").click(function () {
-                                                                    $('input[name=page]').val(1);
-                                                                    $("#selectBird").submit();
-                                                                });
-                                                                $(".end-page").click(function () {
-                                                                    let endPage = $('input[name=numberOfPage]').val();
-                                                                    $('input[name=page]').val(endPage);
-                                                                    $("#selectBird").submit();
-                                                                });
-                                                                $(".bird-cart").click(function () {
-                                                                    let birdId = $(this).attr('data-value');
-                                                                    $.ajax({
-                                                                        url: "AddBirdToCartController",
-                                                                        type: 'POST',
-                                                                        data: {bird_id: birdId},
-                                                                        success: function (data) {
-                                                                            if (data == 0) {
-                                                                                toast({
-                                                                                    title: 'Lỗi',
-                                                                                    message: 'Sản phẩm này đã có trong giỏ hàng',
-                                                                                    type: 'error',
-                                                                                    duration: 3000
-                                                                                });
-                                                                            } else {
-                                                                                toast({
-                                                                                    title: 'Thành công',
-                                                                                    message: 'Thêm sản phẩm vào giỏ hàng thành công',
-                                                                                    type: 'success',
-                                                                                    duration: 3000
-                                                                                });
-                                                                                $.ajax({
-                                                                                    url: "AddBirdToCartController",
-                                                                                    type: 'POST',
-                                                                                    success: function (data) {
-                                                                                        $('.cart-amount').html(data);
+                                                                    $(function () {
+                                                                        var selectedClass = "";
+                                                                        $("p").click(function () {
+                                                                            selectedClass = $(this).attr("data-rel");
+                                                                            $("#portfolio").fadeTo(50, 0.1);
+                                                                            $("#portfolio div").not("." + selectedClass).fadeOut();
+                                                                            setTimeout(function () {
+                                                                                $("." + selectedClass).fadeIn();
+                                                                                $("#portfolio").fadeTo(50, 1);
+                                                                            }, 500);
+                                                                        });
+                                                                        $("input[name=txtBreedId]").change(function () {
+                                                                            $("#selectBird").submit();
+                                                                        });
+                                                                        $("input[name=txtPrice]").change(function () {
+                                                                            $("#selectBird").submit();
+                                                                        });
+                                                                        $("input[name=txtGender]").change(function () {
+                                                                            $("#selectBird").submit();
+                                                                        });
+                                                                        $("input[name=txtAge]").change(function () {
+                                                                            $("#selectBird").submit();
+                                                                        });
+                                                                        $(".start-page").click(function () {
+                                                                            $('input[name=page]').val(1);
+                                                                            $("#selectBird").submit();
+                                                                        });
+                                                                        $(".end-page").click(function () {
+                                                                            let endPage = $('input[name=numberOfPage]').val();
+                                                                            $('input[name=page]').val(endPage);
+                                                                            $("#selectBird").submit();
+                                                                        });
+                                                                        $(".bird-cart").click(function () {
+                                                                            let birdId = $(this).attr('data-value');
+                                                                            $.ajax({
+                                                                                url: "AddBirdToCartController",
+                                                                                type: 'POST',
+                                                                                data: {bird_id: birdId},
+                                                                                success: function (data) {
+                                                                                    if (data == 0) {
+                                                                                        toast({
+                                                                                            title: 'Lỗi',
+                                                                                            message: 'Sản phẩm này đã có trong giỏ hàng',
+                                                                                            type: 'error',
+                                                                                            duration: 3000
+                                                                                        });
+                                                                                    } else {
+                                                                                        toast({
+                                                                                            title: 'Thành công',
+                                                                                            message: 'Thêm sản phẩm vào giỏ hàng thành công',
+                                                                                            type: 'success',
+                                                                                            duration: 3000
+                                                                                        });
+                                                                                        $.ajax({
+                                                                                            url: "AddBirdToCartController",
+                                                                                            type: 'POST',
+                                                                                            success: function (data) {
+                                                                                                $('.cart-amount').html(data);
+                                                                                            }
+                                                                                        });
                                                                                     }
-                                                                                });
-                                                                            }
-                                                                        }
+                                                                                }
+                                                                            });
+                                                                        });
                                                                     });
-                                                                });
-                                                            });
-                                                            function takePage(event) {
-                                                                let value = event.getAttribute('data-value');
-                                                                $('input[name=page]').val(value);
-                                                                $("#selectBird").submit();
-                                                            }
+                                                                    function takePage(event) {
+                                                                        let value = event.getAttribute('data-value');
+                                                                        $('input[name=page]').val(value);
+                                                                        $("#selectBird").submit();
+                                                                    }
         </script>
 
     </body>

@@ -47,10 +47,6 @@ public class OrderItemDTO {
         return order_status;
     }
 
-    public void setOrder_status(String order_status) {
-        this.order_status = order_status;
-    }
-    
     public Bird getBird() {
         return bird;
     }
@@ -74,5 +70,5 @@ public class OrderItemDTO {
     public int getOrder_quantity() {
         return order_quantity;
     }
-    
+}
 }

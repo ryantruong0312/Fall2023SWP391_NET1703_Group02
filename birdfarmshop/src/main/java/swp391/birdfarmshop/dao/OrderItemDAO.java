@@ -22,14 +22,16 @@ import swp391.birdfarmshop.util.DBUtils;
  */
 public class OrderItemDAO {
 
-    public String error = null;
-
-    public ArrayList<OrderItemDTO> getItemOrder(String order_id) throws SQLException {
+    public ArrayList<OrderItemDTO> getItemOrder(String order_id) throws SQLException{
         ArrayList<OrderItemDTO> orderItemList = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         OrderItemDTO orderItem = null;
+        BirdDAO birdDao = new BirdDAO();
+        BirdNestDAO bnDao = new BirdNestDAO();
+        AccessoryDAO accessoryDao = new AccessoryDAO();
+        BirdPairDAO bpDao = new BirdPairDAO();
         BirdDAO birdDao = new BirdDAO();
         BirdNestDAO bnDao = new BirdNestDAO();
         AccessoryDAO accessoryDao = new AccessoryDAO();
@@ -49,12 +51,12 @@ public class OrderItemDAO {
                     String nest_id = rs.getString("nest_id");
                     String accessory_id = rs.getString("accessory_id");
                     String pair_id = rs.getString("pair_id");
-                    int unit_price = rs.getInt("unit_price");
-                    int order_quantity = rs.getInt("order_quantity");
                     Bird bird = birdDao.getBirdById(bird_id);
-                    BirdNest birdNest = null;
++                   BirdNest birdNest = bnDao.getBirdNestById(nest_id);
                     Accessory accessory = accessoryDao.getAccessoryByID(accessory_id);
                     BirdPairDTO birdPair = bpDao.getBirdPairById(pair_id);
+                    int unit_price = rs.getInt("unit_price");
+                    int order_quantity = rs.getInt("order_quantity");
                     orderItem = new OrderItemDTO(order_item_id, order_id, null, bird, accessory, birdNest, birdPair, unit_price, order_quantity);
                     orderItemList.add(orderItem);
                 }
@@ -101,7 +103,7 @@ public class OrderItemDAO {
                         realPrice = realPrice - realPrice * discount / 100;
                     }
                     String updateBird = "UPDATE [Bird]\n"
-                            + "SET [status] = N'ƒê√£ b√°n'\n"
+                            + "SET [status] = N'–„ b·n'\n"
                             + "WHERE [bird_id] = ?";
                     pst = con.prepareStatement(updateBird);
                     pst.setString(1, birdId);
@@ -125,7 +127,7 @@ public class OrderItemDAO {
                     }
                 } else {
                     checkBird = false;
-                    error = "Kh√¥ng t√¨m th·∫•y s·∫£n ph·∫©m";
+                    error = "KhÙng tÏm th?y s?n ph?m";
                 }
 
                 if (checkBird) {
@@ -160,5 +162,56 @@ public class OrderItemDAO {
             }
         }
         return result;
+    }
+    public ArrayList<OrderItemDTO> getItemByOrderId(String order_id) throws SQLException {
+        ArrayList<OrderItemDTO> orderItemList = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        OrderItemDTO orderItem;
+        BirdDAO birdDao = new BirdDAO();
+        BirdNestDAO bnDao = new BirdNestDAO();
+        AccessoryDAO accessoryDao = new AccessoryDAO();
+        BirdPairDAO bpDao = new BirdPairDAO();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement( "SELECT Item.[order_item_id],Item.[order_id],[Order].[order_status]\n" +
+"                            ,Item.[bird_id],Item.[nest_id],Item.[accessory_id],Item.[pair_id],Item.[unit_price],Item.[order_quantity]\n" +
+"                            FROM [dbo].[OrderItem] AS Item\n" +
+"                            LEFT JOIN [dbo].[Order] ON Item.[order_id] = [Order].[order_id]\n" +
+"                            WHERE Item.[order_id] = ?");
+                stm.setString(1, order_id);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int order_item_id = rs.getInt("order_item_id");
+                    String order_status = rs.getString("order_status");
+                    String bird_id = rs.getString("bird_id");
+                    String nest_id = rs.getString("nest_id");
+                    String accessory_id = rs.getString("accessory_id");
+                    String pair_id = rs.getString("pair_id");
+                    int unit_price = rs.getInt("unit_price");
+                    int order_quantity = rs.getInt("order_quantity");
+                    Bird bird = birdDao.getBirdById(bird_id);
+                    BirdNest birdNest = bnDao.getBirdNestById(nest_id);
+                    Accessory accessory = accessoryDao.getAccessoryByID(accessory_id);
+                    //BirdPairDTO birdPair = bpDao.getBirdPairById(pair_id);
+                    orderItem = new OrderItemDTO(order_item_id, order_id, order_status, bird, accessory, birdNest, null, unit_price, order_quantity);
+                    orderItemList.add(orderItem);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return orderItemList;
     }
 }

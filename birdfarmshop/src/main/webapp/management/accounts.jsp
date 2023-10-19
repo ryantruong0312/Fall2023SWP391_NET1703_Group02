@@ -27,6 +27,18 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
+        <style>
+            .col-md-4 button{
+                font-size: 15px;
+                border-radius: 4px;
+                background-color: green;
+                padding: 5px;
+                margin-left: 5px;
+            }
+            .col-md-4 a{
+                color: white;
+            }
+        </style>
     </head>
 
     <body>
@@ -57,8 +69,13 @@
         <main class="py-5 mb-5" style="width: 80%; margin: 0 auto;">
             <div class="mt-3">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-4" style="margin-top: 10px;">
+                        <button><a href="MainController?action=NavToAccounts&role=all">Người dùng</a></button>
+                        <button><a href="MainController?action=NavToAccounts&role=manager">Quản lý</a></button>
+                        <button><a href="MainController?action=NavToAccounts&role=staff">Nhân viên</a></button>
+                        <button><a href="MainController?action=NavToAccounts&role=customer">Khách hàng</a></button>
                     </div>
+
                     <div class="col-md-6 my-2">
                         <div class="input-group">
                             <form class="d-flex w-100" action="RenderAccountsController" method="POST">

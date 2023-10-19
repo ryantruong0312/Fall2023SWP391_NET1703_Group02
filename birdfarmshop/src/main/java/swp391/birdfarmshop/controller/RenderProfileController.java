@@ -41,19 +41,6 @@ public class RenderProfileController extends HttpServlet {
             if (user == null) {
                 session.setAttribute("ERROR", "Bạn chưa đăng nhập");
             }
-            OrderDAO orderDao = new OrderDAO();
-            ArrayList<Order> orderListPending = orderDao.getCustomerOrderByStatus(user.getUsername(), "wait");
-            ArrayList<Order> orderListProgress = orderDao.getCustomerOrderByStatus(user.getUsername(), "inProgress");
-            ArrayList<Order> orderListDelivering = orderDao.getCustomerOrderByStatus(user.getUsername(), "delivering");
-            ArrayList<Order> orderListDelivered = orderDao.getCustomerOrderByStatus(user.getUsername(), "delivered");
-            ArrayList<Order> orderListCancel = orderDao.getCustomerOrderByStatus(user.getUsername(), "cancel");
-
-            request.setAttribute("ORDERLIST_PENDING", orderListPending);
-            request.setAttribute("ORDERLIST_PROGRESS", orderListProgress);
-            request.setAttribute("ORDERLIST_DELIVERING", orderListDelivering);
-            request.setAttribute("ORDERLIST_DELIVERED", orderListDelivered);
-            request.setAttribute("ORDERLIST_CANCEL", orderListCancel);
-
             request.setAttribute("USER", user);
 
             url = SUCCESS;

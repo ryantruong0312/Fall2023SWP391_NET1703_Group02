@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dao.FeedbackDAO;
+import swp391.birdfarmshop.dao.ImageDAO;
 import swp391.birdfarmshop.dto.BirdDTO;
 import swp391.birdfarmshop.dto.FeedbackDTO;
 import swp391.birdfarmshop.dto.StarDTO;
@@ -47,6 +48,8 @@ public class RenderBirdDetailsController extends HttpServlet {
             ArrayList<FeedbackDTO> feedbackList = f.getFeedbackByIdProduct(bird_id, page, numberOfRecords);
             int numberOfFeebacks = f.totalFeedbackByIdProduct(bird_id);
             int numberOfPage = (int) Math.ceil(numberOfFeebacks * 1.0 / numberOfRecords);
+            ImageDAO image = new ImageDAO();
+            String im = image.getThumbnailUrlByBirdId(bird_id);
 
             StarDTO starCustomer = f.getRatingByIdProduct(bird_id);
             BirdDTO birdDetails = birdDao.getBirdDetailsById(bird_id);
@@ -55,6 +58,7 @@ public class RenderBirdDetailsController extends HttpServlet {
             request.setAttribute("feedbackList", feedbackList);
             request.setAttribute("starCustomer", starCustomer);
             request.setAttribute("birdDetails", birdDetails);
+            request.setAttribute("im", im);
             url = SUCCESS;
         } catch (SQLException e) {
             log("Error at RenderHomeController: " + e.toString());
