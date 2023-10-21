@@ -17,20 +17,28 @@
         <servlet-class>swp391.birdfarmshop.controller.RenderBirdDetailsController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddtoCartController</servlet-name>
-        <servlet-class>swp391.birdfarmshop.controller.AddtoCartController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SearchBirdController</servlet-name>
-        <servlet-class>swp391.birdfarmshop.controller.SearchBirdController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>RenderBirdByBreed_idController</servlet-name>
-        <servlet-class>swp391.birdfarmshop.controller.RenderBirdByBreed_idController</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>UpdateInformationController</servlet-name>
         <servlet-class>swp391.birdfarmshop.controller.UpdateInformationController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddNewBirdController</servlet-name>
+        <servlet-class>swp391.birdfarmshop.controller.AddNewBirdController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RenderNewBirdNestController</servlet-name>
+        <servlet-class>swp391.birdfarmshop.controller.RenderNewBirdNestController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RenderOrderItemsController</servlet-name>
+        <servlet-class>swp391.birdfarmshop.controller.RenderOrderItemsController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateOrderStatusController</servlet-name>
+        <servlet-class>swp391.birdfarmshop.controller.UpdateOrderStatusController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RenderCustomerOrderController</servlet-name>
+        <servlet-class>swp391.birdfarmshop.controller.RenderCustomerOrderController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
@@ -49,20 +57,28 @@
         <url-pattern>/RenderBirdDetailsController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AddtoCartController</servlet-name>
-        <url-pattern>/AddtoCartController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SearchBirdController</servlet-name>
-        <url-pattern>/SearchBirdController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>RenderBirdByBreed_idController</servlet-name>
-        <url-pattern>/RenderBirdByBreed_idController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>UpdateInformationController</servlet-name>
         <url-pattern>/UpdateInformationController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddNewBirdController</servlet-name>
+        <url-pattern>/AddNewBirdController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RenderNewBirdNestController</servlet-name>
+        <url-pattern>/RenderNewBirdNestController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RenderOrderItemsController</servlet-name>
+        <url-pattern>/RenderOrderItemsController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateOrderStatusController</servlet-name>
+        <url-pattern>/UpdateOrderStatusController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RenderCustomerOrderController</servlet-name>
+        <url-pattern>/RenderCustomerOrderController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -490,4 +490,33 @@ public class ImageDAO {
         }        
         return false;
     }
+    
+     public boolean updateImageBirdNest(String url, String nest_id) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("UPDATE [dbo].[Image]\n"
+                        + "                 SET [image_url] = ?\n"
+                        + "                 WHERE [nest_id] = ?");
+                stm.setString(1, url);
+                stm.setString(2, nest_id);
+
+                int rs = stm.executeUpdate();
+                if (rs > 0) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }        
+        return false;
+    }
 }

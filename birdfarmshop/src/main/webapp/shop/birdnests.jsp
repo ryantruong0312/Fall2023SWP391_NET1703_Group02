@@ -104,7 +104,7 @@
                                                             <div class="hover-card">
                                                                 <ul class="d-flex justify-content-center">
                                                                     <li>
-                                                                        <a href="RenderAccessoryDetailsController?id=${nest.nest_id}">
+                                                                        <a href="RenderBirdNestDetailsController?id=${nest.nest_id}">
                                                                             <i class="fa fa-eye"></i>
                                                                         </a>
                                                                     </li>

@@ -121,6 +121,11 @@ public class MainController extends HttpServlet {
     private static final String DEST_BIRD_PAIR_DETAIL = "RenderBirdPairDetailController";
     private static final String ACT_ADD_ORDER_ITEMS = "NavToCheckoutBirdPair";
     private static final String DEST_ADD_ORDER_ITEMS = "RenderCheckoutBirdPairController";
+    private static final String ACT_NAV_UPDATE_BIRD_NEST = "NavToUpdateBirdNest";
+    private static final String DEST_NAV_UPDATE_BIRD_NEST = "RenderUpdateBirdNestController";
+    private static final String ACT_UPDATE_BIRD_NEST = "UpdateBirdNest";
+    private static final String DEST_UPDATE_BIRD_NEST = "UpdateBirdNestController";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
@@ -217,6 +222,13 @@ public class MainController extends HttpServlet {
                 case ACT_CREATE_ACCOUNT:
                     url = DEST_CREATE_ACCOUNT;
                     break;
+                case ACT_NAV_UPDATE_BIRD_NEST:
+                    url = DEST_NAV_UPDATE_BIRD_NEST;
+                    break;
+
+                case ACT_UPDATE_BIRD_NEST:
+                    url = DEST_UPDATE_BIRD_NEST;
+                    break;
                 case ACT_REMOVE_ACCESSORY_FROM_CART:
                     url = DEST_REMOVE_ACCESSORY_FROM_CART;
                     break;
@@ -273,16 +285,16 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_NAV_UPDATE_ORDER:
                     url = DEST_NAV_UPDATE_ORDER;
-                    break;               
+                    break;
                 case ACT_NAV_BIRD_PAIR_CUSTOMER:
                     url = DEST_BIRD_PAIR_CUSTOMER;
-                break;    
+                    break;
                 case ACT_NAV_BIRD_PAIR_DETAIL:
                     url = DEST_BIRD_PAIR_DETAIL;
-                break;   
+                    break;
                 case ACT_ADD_ORDER_ITEMS:
                     url = DEST_ADD_ORDER_ITEMS;
-                break;  
+                    break;
                 default:
                     break;
             }

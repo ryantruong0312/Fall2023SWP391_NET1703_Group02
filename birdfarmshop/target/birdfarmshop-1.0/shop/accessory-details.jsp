@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="a" value="${a}" />
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,107 +30,96 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
+        <style>
+            .overlay-text {
+                position: absolute;
+                top: 50%;
+                left: 35%;
+                transform: translate(-50%, -50%);
+                background-color: rgba(0, 0, 0, 0.5);
+                border-radius: 50%;
+                color: #fff;
+                padding: 30px;
+                font-size: 30px;
+                text-align: center;
+            }
+            .stock_quantity{
+                margin-top: 20px;
+            }
+            .descript h4{
+                margin-top: 15px;
+            }
+            .descript span{
+                margin-top: 0px;
+            }
+            .image-bottom {
+                display: inline-block;
+                margin: 10px 10px 0 0;
+            }
 
+            #mainImage {
+                width: 500px;
+                height: 400px;
+                border: 1px solid;
+                transition: transform 0.3s ease-in-out;
+            }
+
+            #mainImage:hover {
+                transform: scale(1.1);
+                cursor: pointer;
+                border: 0px;
+            }
+            .image-top {
+                position: relative;
+            }
+            .overlay-container {
+                position: relative;
+            }
+            .button-form{
+                margin-bottom: 5px;
+                background-color:rgba(0,0,255, 0.6);
+                /*margin-left: 775px;*/
+                display:block;
+                color: white;
+                padding: 10px;
+                border: 1px solid;
+                font-size: 15px;
+                border-radius: 4px;
+                width: 160px;
+            }
+            .button-updateAccessory{
+                margin-bottom: 5px;
+                background-color:rgba(0,0,255, 0.6);
+                color: white;
+                padding: 10px;
+                border: 1px solid;
+                font-size: 15px;
+                border-radius: 4px;
+                width: 120px;
+            }
+            .popup {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+                cursor: move;
+            }
+            .popup.active {
+                display: block;
+            }
+
+        </style>
     </head>
 
     <body>
-        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
-        <c:url var="toHome" value="MainController?action=NavToHome"/>
-        <c:url var="toLogin" value="MainController?action=NavToLogin"/>
-        <c:url var="logout" value="MainController?action=Logout"/>
-        <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
-        <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
-        <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
-        <c:url var="toCart" value="MainController?action=NavToCart"/>
-        <c:url var="toProfile" value="MainController?action=NavToProfile"/>
-        <c:url var="toOrders" value="MainController?action=NavToOrders"/>
-        <c:url var="toShopOrders" value="MainController?action=NavToShopOrders"/>
-        <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
-        <c:url var="toReports" value="MainController?action=NavToReports"/>
-        <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
-
-        <!-- ***** Preloader Start ***** -->
-        <div id="preloader">
-            <div class="jumper">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>  
-        <!-- ***** Preloader End ***** -->
-
-        <!-- ***** Header Area Start ***** -->
-        <header class="header-area header-sticky">
-            <div class="container home-custom">
-                <div class="row">
-                    <div class="col-12">
-                        <nav class="main-nav">
-                            <!-- ***** Logo Start ***** -->
-                            <a href="#" class="logo scroll-to-section">
-                                <img src="assets/images/logo.png">
-                            </a>
-                            <!-- ***** Logo End ***** -->
-                            <!-- ***** Menu Start ***** -->
-                            <ul class="nav">
-                                <li class="scroll-to-section"><a href="${pageScope.toHome}" class="active">Trang chủ</a></li>
-                                    <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
-                                    <li class="submenu"><a href="">Sản phẩm</a>
-                                        <ul>
-                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                        <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
-                                        <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                        </c:if>
-                                        <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
-                                        <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
-                                        <li id="show-cart" class="scroll-to-section">
-                                            <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">${(sessionScope.CART_BIRD_NEST.getSize()!=null ? sessionScope.CART_BIRD_NEST.getSize():0)+(sessionScope.CART_BIRD.getSize()!=null ? sessionScope.CART_BIRD.getSize():0)}</div>
-
-                                        </li>
-
-                                        <c:if test="${sessionScope.LOGIN_USER == null}">
-                                            <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
-                                            </c:if>
-                                        </c:if>
-                                    </c:if>
-                                    <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
-                                    <li class="submenu"><a href="">Sản phẩm</a>
-                                        <ul>
-                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
-                                    </c:if>
-                                    <c:if test="${sessionScope.LOGIN_USER != null}">
-                                    <li class="submenu"><a class="user-name text-right" href="#">${LOGIN_USER.fullName}</a>
-                                        <ul>
-                                            <li><a href="${pageScope.toProfile}&username=${sessionScope.LOGIN_USER.username}">Cá nhân</a></li>
-                                            <li><a href="${pageScope.logout}">Đăng xuất</a></li>
-                                        </ul>
-                                    </li>
-                                </c:if>
-                            </ul>           
-                            <a class='menu-trigger'>
-                                <span>Menu</span>
-                            </a>
-                            <!-- ***** Menu End ***** -->
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!-- ***** Header Area End ***** -->
-
+        <!-- Header Start -->
+        <%@include file="../layout/header.jsp" %>
+        <!-- Header End -->
         <!-- ***** Main Banner Area Start ***** -->
         <div class="page-heading" id="top">
             <div class="container">
@@ -144,277 +134,369 @@
             </div>
         </div>
         <!-- ***** Main Banner Area End ***** -->
-
-
         <!-- ***** Product Area Starts ***** -->
         <section class="section" id="product">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-8">                    
-                        <c:if test="${a != null}">
-                            <c:set var="image_url" value="${a.image_url}" />
-                            <div class="image-container">
-                                <div class="left-image">
-                                    <img id="image_main" src="${image_url[0]}" alt="Image 1" onclick="swapImages(this)">
+                    <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager' || LOGIN_USER.role == 'staff'}">
+                        <c:choose>
+                            <c:when test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
+                                <div class="col-lg-8">                               
                                 </div>
+                                <div class="button-all col-lg-4" style="display: inline-block; white-space: nowrap;">
+                                    <div class="UpdateAccessoryDetail" style="display: inline-block;">
+                                        <form action="RenderUpdateAccessoryController" method="GET">
+                                            <input type="hidden" value="${a.accessory_id}" name="accessory_id">
+                                            <button class="button-form" type="submit">Chỉnh sửa phụ kiện</button>
+                                        </form>
+                                    </div>
+                                    <div class="UpdateStockQuantity" style="display: inline-block;">
+                                        <button id="openPopup" class="button-updateAccessory">Cập nhật kho</button>
+                                        <div class="overlay" id="overlay"></div>
+                                        <form action="UpdateAccessoryController" method="GET">
+                                            <input type="hidden" value="${a.accessory_id}" name="txtAccessoryID">
+                                            <div class="popup" id="popup">
+                                                <h2>Cập nhật kho</h2>
+                                                <p>Số lượng hiện tại trong kho: <span id="currentStock">${a.stock_quantity}</span></p>
+                                                <label for="newStock">Số lượng mới:</label>
+                                                <input type="number" id="newStock" name="txtNewQuantity" value="">
+                                                <br>
+                                                <button id="updateButton">Chỉnh sửa</button>
+                                        </form>
+                                        <button id="cancelButton">Trở về</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="col-lg-8">
+                                <div class="col-lg-4">
+                                    <button id="openPopup" class="button-form">Cập nhật kho</button>
+                                    <div class="overlay" id="overlay"></div>
+                                    <form action="UpdateAccessoryController" method="GET">
+                                        <input type="hidden" value="${a.accessory_id}" name="txtAccessoryID">
+                                        <div class="popup" id="popup">
+                                            <h2>Cập nhật kho</h2>
+                                            <p>Số lượng hiện tại trong kho: <span id="currentStock">${a.stock_quantity}</span></p>
+                                            <label for="newStock">Số lượng mới:</label>
+                                            <input type="number" id="newStock" name="txtNewQuantity" value="">
+                                            <br>
+                                            <button id="updateButton">Chỉnh sửa</button>
+                                    </form>
+                                    <button id="cancelButton">Trở về</button>
+                                </div>
+                            </div>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </c:if>
 
-                                <div class="right-image">
-                                    <img src="${image_url[1]}" alt="Image 2" onclick="swapImages(this)">
-                                    <img src="${image_url[2]}" alt="Image 3" onclick="swapImages(this)">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="image-container">
+                        <div class="image-top">
+                            <div class="overlay-container">
+                                <input type="hidden" name="accessory_id" value="${a.accessory_id}"/>
+                                <img id="mainImage" style="width: 500px; height: 400px;" src="${im}" alt="Image main" onclick="swapImages()">
+                                <c:if test="${requestScope.MESSAGE != null}">
+                                    <div class="overlay-text">${MESSAGE}</div>
+                                </c:if>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="image-bottom">
+                        <c:forEach items="${a.image_url}" var="accessory">
+                            <c:if test="${im ne accessory}">
+                                <img style="width: 100px; height: 75px; border: 1px solid;" class="accessory-image" src="${accessory}" alt="" onclick="swapImages(this)">
+                            </c:if>
+                        </c:forEach>
+                    </div>                         
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="right-content">
+                        <h4 id="nameAccessory">${a.accessory_name}</h4>
+                        <c:choose>
+                            <c:when test="${a.discount > 0}">
+                                <span style="display: inline-block;"><del><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</del></span>
+                                <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${a.discount}%</span>
+                                <span style="font-size: 20px;" id="unit_price"><fmt:formatNumber value="${a.unit_price - a.unit_price * a.discount / 100}" pattern="#,###"/> ₫</span>
+                            </c:when>
+                            <c:otherwise>
+                                <span style="font-size: 20px;" id="unit_price"><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</span>
+                            </c:otherwise>
+                        </c:choose>
+                        <div class="descript">
+                            <h4>Mô tả sản phẩm: </h4>
+                            <span style="margin-top: 5px;">${a.description}</span>
+                        </div>
+                        <div class="stock_quantity">
+                            <h4>Kho: ${a.stock_quantity}</h4>
+                        </div>
+                        <c:if test="${sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER == null}">
+                            <c:if test="${a.stock_quantity > 0}">
+                                <div class="quantity-content">
+                                    <div class="left-content">
+                                        <h6>Số lượng</h6>
+                                    </div>
+
+                                    <div class="right-content">
+                                        <div class="quantity buttons_added">
+                                            <div class="quantity buttons_added">
+                                                <input type="button" value="-" class="minus" onclick="decrementQuantity('quantityInput', ${a.unit_price}, ${a.discount})">
+                                                <input type="number" step="1" min="1" max="${a.stock_quantity}" name="order_quantity" id="quantityInput" value="1" title="Qty" class="input-text qty text" size="4" onchange="updateTotal('quantityInput', ${a.stock_quantity}, ${a.unit_price}, ${a.discount})">
+                                                <input type="button" value="+" class="plus" onclick="incrementQuantity('quantityInput', ${a.stock_quantity}, ${a.unit_price}, ${a.discount})">
+                                            </div>
+                                        </div>
+                                        <div id="warning"></div>
+                                    </div>                            
                                 </div>
+                            </c:if>
+                        </div>
+                        <c:if test="${a.stock_quantity > 0}">
+                            <div class="total">
+                                <c:choose>
+                                    <c:when test="${a.discount == 0}">
+                                        <h4 style="float: left;">Tổng cộng: <span id="total"><fmt:formatNumber value="${a.unit_price}" pattern="#,###"/> ₫</span></h4>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <h4 style="float: left;">Tổng cộng: <span id="total"><fmt:formatNumber value="${a.unit_price - a.unit_price * a.discount / 100}" pattern="#,###"/> ₫</span></h4>
+                                    </c:otherwise>
+                                </c:choose>
+                                <div type="button" class="main-border-button" style="margin-left: 196px; margin-top: 20px; float: left;" id="buttonContainer">
+                                    <input type="hidden" name="accessory_id" value="${a.accessory_id}" />
+                                    <button type="submit" name="action" value="AddAccessoryToCart" id="Add" class="btn btn-primary">Thêm vào giỏ hàng</button>
+                                </div>
+                                <div style="clear: both;"></div>
                             </div>
                         </c:if>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="right-content">
-                            <h4 id="nameAccessory">${a.accessory_name}</h4>
-                            <span id="unit_price" class="price">${a.unit_price} ₫</span>
-                            <!--                        <ul class="stars">
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                    </ul>-->
-                            <div class="descript">
-                                <h4>Mô tả sản phẩm: </h4>
-                                <span>${a.description}</span>
-                            </div>
-                            <div class="stock_quantity">
-                                <h4>Kho: ${a.stock_quantity}</h4>
-                            </div>
-                            <div class="quantity-content">
-                                <div class="left-content">
-                                    <h6>Số lượng</h6>
-                                </div>
-                                <div class="right-content">
-                                    <div class="quantity buttons_added">
-                                        <div class="quantity buttons_added">
-                                            <input type="button" value="-" class="minus" onclick="decrementQuantity('quantityInput', ${a.unit_price})">
-                                            <input type="number" step="1" min="1" max="${a.stock_quantity}" name="quantity" id="quantityInput" value="1" title="Qty" class="input-text qty text" size="4" onchange="updateTotal()">
-                                            <input type="button" value="+" class="plus" onclick="incrementQuantity('quantityInput', ${a.stock_quantity}, ${a.unit_price})">
-                                        </div>
-                                    </div>
-                                    <div id="warning"></div>
-                                </div>                            
-                            </div>
-                        </div>
-                        <div class="total">
-                            <h4 style="float: left;">Tổng cộng: <span id="total">${a.unit_price} ₫</span></h4>
-                            <div type="button" class="main-border-button" style="margin-left: 100px; float: left;"><a href="#" id="AddToCart">Thêm vào giỏ hàng</a></div>
-                            <div style="clear: both;"></div>
-                        </div>
-
-                    </div>
+                    </c:if>
                 </div>
             </div>
-        </div>
-    </div>
-</section>     
-<%@include file="../layout/feedback.jsp" %>
-<!-- ***** Footer Start ***** -->
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="first-item">
-                    <div class="logo">
-                        <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
-                    </div>
-                    <ul>
-                        <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                        <li><a href="#">thegioivetcanh@gmail.com</a></li>
-                        <li><a href="#">0913-244-567</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <h4>Sản phẩm và dịch vụ</h4>
-                <ul>
-                    <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                    <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                    <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                    <li><a href="${pageScope.toCompare}">So sánh</a></li>
-                    <li><a href="${pageScope.toPair}">Nhân giống</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-3">
-                <h4>Đường dẫn hữu ích</h4>
-                <ul>
-                    <li><a href="${pageScope.toHome}">Trang chủ</a></li>
-                    <li><a href="#">Về chúng tôi</a></li>
-                    <li><a href="#">Hỗ trợ</a></li>
-                    <li><a href="#">Liên hệ</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-3">
-                <h4>Thông tin hỗ trợ</h4>
-                <ul>
-                    <li><a href="#">Hỗ trợ</a></li>
-                    <li><a href="#">Câu hỏi thường gặp</a></li>
-                    <li><a href="#">Giao hàng</a></li>
-                    <li><a href="#">Theo dõi đơn hàng</a></li>
-                </ul>
-            </div>
-            <div class="col-lg-12">
-                <div class="under-footer">
-                    <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
-
-                    <ul>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
-<!-- ***** Footer Area Ends ***** -->
-
-<!-- jQuery -->
-<script src="assets/js/jquery-2.1.0.min.js"></script>
-
-<!-- Bootstrap -->
-<script src="assets/js/popper.js"></script>
-<script src="assets/js/bootstrap.min.js"></script>
-
-<!-- Plugins -->
-<script src="assets/js/owl-carousel.js"></script>
-<script src="assets/js/accordions.js"></script>
-<script src="assets/js/datepicker.js"></script>
-<script src="assets/js/scrollreveal.min.js"></script>
-<script src="assets/js/waypoints.min.js"></script>
-<script src="assets/js/jquery.counterup.min.js"></script>
-<script src="assets/js/imgfix.min.js"></script> 
-<script src="assets/js/slick.js"></script> 
-<script src="assets/js/lightbox.js"></script> 
-<script src="assets/js/isotope.js"></script> 
-
-<!-- Global Init -->
-<script src="assets/js/custom.js"></script>
-
-<script>
-                                                $(function () {
-                                                    var selectedClass = "";
-                                                    $("p").click(function () {
-                                                        selectedClass = $(this).attr("data-rel");
-                                                        $("#portfolio").fadeTo(50, 0.1);
-                                                        $("#portfolio div").not("." + selectedClass).fadeOut();
-                                                        setTimeout(function () {
-                                                            $("." + selectedClass).fadeIn();
-                                                            $("#portfolio").fadeTo(50, 1);
-                                                        }, 500);
-
-                                                    });
-                                                });
-
-                                                function incrementQuantity(inputId, maxQuantity, unitPrice)
-                                                {
-                                                    var quantityInput = document.getElementById(inputId);
-                                                    var currentValue = parseInt(quantityInput.value);
-
-                                                    var total1 = document.getElementById("total");
-                                                    var warning = document.getElementById("warning");
-                                                    if (!isNaN(currentValue) && currentValue < maxQuantity) {
-                                                        quantityInput.value = currentValue + 1;
-                                                        total1.innerHTML = unitPrice * quantityInput.value + " ₫";
-
-                                                        warning.innerHTML = "";
-                                                    } else {
-                                                        //alert("Số lượng không đủ!");
-                                                        warning.innerHTML = "Số lượng không đủ!";
-                                                    }
-                                                }
+        </section>   
 
 
-                                                function decrementQuantity(inputId, unitPrice) {
-                                                    var quantityInput = document.getElementById(inputId);
-                                                    var currentValue = parseInt(quantityInput.value);
-                                                    var total = document.getElementById("total");
-                                                    var warning = document.getElementById("warning");
-                                                    if (!isNaN(currentValue) && currentValue > 0) {
-                                                        quantityInput.value = currentValue - 1;
-                                                        total.innerHTML = unitPrice * quantityInput.value + " ₫";
-                                                        warning.innerHTML = "";
-                                                    }
-                                                }
-
-                                                function formatNumber(n) {
-                                                    // format number 1000000 to 1.234.567
-                                                    return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                                                }
-
-                                                function ConvertToNumber(priceStr) {
-                                                    var priceParts = priceStr.split(".");
-                                                    var price = "";
-                                                    for (var i = 0; i < priceParts.length; i++) {
-                                                        price += priceParts[i];
-                                                    }
-                                                    return Number.parseInt(price);
-                                                }
-
-
-                                                function updateTotal() {
-                                                    var unitPrice = document.getElementById("unit_price");
-                                                    var quantityInput = document.getElementById("quantityInput"); // Lấy phần tử input số lượng
-
-                                                    console.log(unitPrice);
-                                                    console.log(quantityInput);
-                                                }
+        <%@include file="../layout/feedback.jsp" %>
+        <!-- Start Footer -->
+        <%@include file="../layout/footer.jsp" %>
+        <!-- End Footer -->
+        <script>
+            function incrementQuantity(inputId, maxQuantity, unitPrice, discount)
+            {
+                var quantityInput = document.getElementById(inputId);
+                var currentValue = parseInt(quantityInput.value);
+                var total1 = document.getElementById("total");
+                var warning = document.getElementById("warning");
+                var total;
+                if (!isNaN(currentValue) && currentValue < maxQuantity) {
+                    quantityInput.value = currentValue + 1;
+                    if (discount > 0) {
+                        total = (unitPrice - (unitPrice * discount / 100)) * quantityInput.value + " ₫";
+                    } else {
+                        total = unitPrice * quantityInput.value + " ₫";
+                    }
+                    total1.innerHTML = formatNumber(total) + " ₫";
+                    warning.innerHTML = "";
+                } else {
+                    warning.innerHTML = "Số lượng không đủ!";
+                }
+            }
 
 
-                                                function addToCart() {
-                                                    var name = document.getElementById("nameAccessory");
-                                                    var quantity = document.getElementById("quantityInput");
-                                                    var total = document.getElementById("total");
-                                                    sessionStorage.setItem("name", JSON.stringify(name));
-                                                    sessionStorage.setItem("quantity", JSON.stringify(quantity));
-                                                    sessionStorage.setItem("total", JSON.stringify(total));
-
-                                                }
-
-                                                function swapImages(clickedImage) {
-                                                    const leftImage = document.querySelector('.left-image img');
-                                                    const rightImage1 = document.querySelectorAll('.right-images img')[0];
-                                                    const rightImage2 = document.querySelectorAll('.right-images img')[1];
-
-                                                    const tempSrc = leftImage.src;
-                                                    leftImage.src = clickedImage.src;
-                                                    clickedImage.src = tempSrc;
-                                                }
-
-</script>
+            function decrementQuantity(inputId, unitPrice, discount) {
+                var quantityInput = document.getElementById(inputId);
+                var currentValue = parseInt(quantityInput.value);
+                var total1 = document.getElementById("total");
+                var warning = document.getElementById("warning");
+                var total;
+                if (!isNaN(currentValue) && currentValue > 1) {
+                    quantityInput.value = currentValue - 1;
+                    if (discount > 0) {
+                        total = (unitPrice - (unitPrice * discount / 100)) * quantityInput.value + " ₫";
+                    } else {
+                        total = unitPrice * quantityInput.value + " ₫";
+                    }
+                    total1.innerHTML = formatNumber(total) + " ₫";
+                    warning.innerHTML = "";
+                }
+            }
 
 
+            function formatNumber(n) {
+                return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
 
-<style>
-    .image-container {
-        display: flex;
-        align-items: center;
-    }
-
-    .right-image {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .left-image img{
-        width: 400px;
-        height: 400px;
-        margin-right: 10px;
-    }
-
-    .right-image img{
-        width: 200px;
-        height: 200px;
-        margin-right: 2px;
-    }
-</style>
+            function ConvertToNumber(priceStr) {
+                var priceParts = priceStr.split(".");
+                var price = "";
+                for (var i = 0; i < priceParts.length; i++) {
+                    price += priceParts[i];
+                }
+                return Number.parseInt(price);
+            }
 
 
-</body>
+            function updateTotal(inputId, maxQuantity, unitPrice, discount) {
+                var quantityInput = document.getElementById(inputId);
+                var total1 = document.getElementById("total");
+                var warning = document.getElementById("warning");
+                var total;
+                if (!isNaN(quantityInput.value) && quantityInput.value < maxQuantity) {
+                    if (discount > 0) {
+                        total = (unitPrice - (unitPrice * discount / 100)) * quantityInput.value + " ₫";
+                    } else {
+                        total = unitPrice * quantityInput.value + " ₫";
+                    }
+                    total1.innerHTML = formatNumber(total) + " ₫";
+                    warning.innerHTML = "";
+                } else {
+                    warning.innerHTML = "Số lượng không đủ!";
+                }
+
+            }
 
 
+            function addToCart() {
+                var name = document.getElementById("nameAccessory");
+                var quantity = document.getElementById("quantityInput");
+                var total = document.getElementById("total");
+                sessionStorage.setItem("name", JSON.stringify(name));
+                sessionStorage.setItem("quantity", JSON.stringify(quantity));
+                sessionStorage.setItem("total", JSON.stringify(total));
+            }
+
+            function swapImages(clickedImage) {
+                const leftImage = document.querySelector('.image-top img');
+                const rightImage1 = document.querySelectorAll('.image-bottom img')[0];
+                const tempSrc = leftImage.src;
+                leftImage.src = clickedImage.src;
+                clickedImage.src = tempSrc;
+            }
+            function NavToNewPage(event) {
+                let page = $(event).attr('data-value');
+                let accessory_id = $('input[name=accessory_id]').val();
+                if (accessory_id) {
+                    $.ajax({
+                        url: 'RenderAccessoryDetailsController',
+                        type: 'POST',
+                        data: {page: page, id: accessory_id},
+                        success: function (data) {
+                            $('.comment-list').html(data);
+                            window.scrollTo(0, 800);
+                        }
+                    });
+                }
+            }
+
+            function PrevPage() {
+                let page = $('input[name=page]').val();
+                let prevPage = Number(page) - 1;
+                let accessory_id = $('input[name=accessory_id]').val();
+                if (accessory_id && prevPage > 0) {
+                    $.ajax({
+                        url: 'RenderAccessoryDetailsController',
+                        type: 'POST',
+                        data: {page: prevPage, id: accessory_id},
+                        success: function (data) {
+                            $('.comment-list').html(data);
+                            window.scrollTo(0, 800);
+                        }
+                    });
+                }
+            }
+
+            function NextPage() {
+                let page = $('input[name=page]').val();
+                let limitPage = $('input[name=numberOfPage]').val();
+                let amountPage = Number(limitPage);
+                let nextPage = Number(page) + 1;
+                let accessory_id = $('input[name=accessory_id]').val();
+                if (accessory_id && nextPage < amountPage) {
+                    $.ajax({
+                        url: 'RenderAccessoryDetailsController',
+                        type: 'POST',
+                        data: {page: nextPage, id: accessory_id},
+                        success: function (data) {
+                            $('.comment-list').html(data);
+                            window.scrollTo(0, 800);
+                        }
+                    });
+                }
+            }
+
+            // Get references to HTML elements
+            const openPopupButton = document.getElementById('openPopup');
+            const overlay = document.getElementById('overlay');
+            const popup = document.getElementById('popup');
+            const currentStock = document.getElementById('currentStock');
+            const newStockInput = document.getElementById('newStock');
+            const updateButton = document.getElementById('updateButton');
+            const cancelButton = document.getElementById('cancelButton');
+            // Function to open the popup and display the current stock quantity
+            openPopupButton.addEventListener('click', () => {
+                const currentQuantity = document.getElementById('currentStock').textContent;
+                currentStock.textContent = currentQuantity;
+                newStockInput.value = currentQuantity;
+                overlay.style.display = 'block';
+                popup.style.display = 'block';
+            });
+            // Function to close the popup
+            function closePopup() {
+                overlay.style.display = 'none';
+                popup.style.display = 'none';
+            }
+
+            // Close the popup when the Cancel button is clicked
+            cancelButton.addEventListener('click', function (event) {
+                event.preventDefault(); // Ngăn chặn hành vi mặc định của nút
+                closePopup(); // Gọi hàm để đóng popup
+            });
+            // You can handle the update functionality with the updateButton click event
+            updateButton.addEventListener('click', () => {
+                const newQuantity = parseInt(newStockInput.value, 10);
+                // You can perform an AJAX request here to update the stock quantity on the server
+                // After a successful update, you can close the popup// For example, you can use jQuery's $.ajax or fetch API for the AJAX request.
+                // Once the update is done, call closePopup();
+            });
+        </script>
+        <script>
+            $(function () {
+                $(".accessory-cart").click(function () {
+                    let accessory_id = $(this).attr('data-value');
+                    let quantity = $('input[name=quantity]').val();
+                    $.ajax({
+                        url: "AddAccessoryToCartController",
+                        type: 'POST',
+                        data: {accessory_id: accessory_id, order_quantity: quantity},
+                        success: function (data) {
+                            if (data == 0) {
+                                toast({
+                                    title: 'Lỗi',
+                                    message: 'Sản phẩm này đã có trong giỏ hàng',
+                                    type: 'error',
+                                    duration: 3000
+                                });
+                            } else {
+                                toast({
+                                    title: 'Thành công',
+                                    message: 'Thêm sản phẩm vào giỏ hàng thành công',
+                                    type: 'success',
+                                    duration: 3000
+                                });
+                                $.ajax({
+                                    url: "AddAccessoryToCartController",
+                                    type: 'POST',
+                                    data: {order_quantity: 1},
+                                    success: function (data) {
+                                        $('.cart-amount').html(data);
+                                    }
+                                });
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
 </html>
 

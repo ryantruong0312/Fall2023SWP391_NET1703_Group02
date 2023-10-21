@@ -154,6 +154,53 @@ public class BirdNestDAO {
         }
         return number;
     }
+    
+    public BirdNest getBirdsNestById(String nest_id) throws SQLException, ClassNotFoundException {
+        BirdNest birdNest = null;
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        ImageDAO imgDao = new ImageDAO();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String sql = "SELECT [nest_name],[breed_id],[dad_bird_id],[mom_bird_id],\n"
+                        + "[baby_quantity],[status],[price],[discount],[description]\n"
+                        + "FROM [BirdFarmShop].[dbo].[BirdNest]\n"
+                        + "WHERE [nest_id] = ?";
+
+                stm = con.prepareStatement(sql);
+                stm.setString(1, nest_id);
+
+                rs = stm.executeQuery();
+                if (rs.next()) {
+                    String nest_name = rs.getString("nest_name");
+                    String breed_id = rs.getString("breed_id");
+                    String dad_bird_id = rs.getString("dad_bird_id");
+                    String mom_bird_id = rs.getString("mom_bird_id");
+                    int quantityEgg = rs.getInt("baby_quantity");
+                    String status = rs.getString("status");
+                    int price = rs.getInt("price");
+                    String description = rs.getString("description");
+                    int discount = rs.getInt("discount");
+                    String image_url = imgDao.getThumbnailUrlByBirdNestId(nest_id);
+                    birdNest = new BirdNest(nest_id, nest_name, breed_id, dad_bird_id, mom_bird_id, quantityEgg, status, price, discount, image_url, description);
+
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return birdNest;
+    }
 
     public boolean addNewBirdNest(BirdNestDTO dto) throws SQLException, ParseException, ClassNotFoundException {
         Connection con = null;
@@ -236,5 +283,69 @@ public class BirdNestDAO {
             }
         }
         return birdNest;
+    }
+    
+    public boolean updateBirdNest(BirdNestDTO dto) throws SQLException, ClassNotFoundException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String sql = "  UPDATE [BirdFarmShop].[dbo].[BirdNest] "
+                        + "    SET  "
+                        + "    [nest_name] = ?, "
+                        + "    [description] = ?, "
+                        + "    [breed_id] = ?, "
+                        + "    [dad_bird_id] = ?, "
+                        + "    [mom_bird_id] = ?, "
+                        + "    [baby_quantity] = ?, "
+                        + "    [status] = ?, "
+                        + "    [price] = ?, "
+                        + "    [discount] = ? "
+                        + "    WHERE [nest_id] = ?; ";
+                stm = con.prepareStatement(sql);
+//                stm = con.prepareStatement("  UPDATE [BirdFarmShop].[dbo].[BirdNest]\n"
+//                        + "    SET  "
+//                        + "    [nest_name] = ?,\n"
+//                        + "    [description] = ?,\n"
+//                        + "    [breed_id] = ?,\n"
+//                        + "    [dad_bird_id] = ?,\n"
+//                        + "    [mom_bird_id] = ?,\n"
+//                        + "    [baby_quantity] = ?,\n"
+//                        + "    [status] = ?,\n"
+//                        + "    [price] = ?,\n"
+//                        + "    [discount] = ?\n"
+//                        + "    WHERE [nest_id] = ?; ");
+
+                stm.setString(1, dto.getNest_name());
+                stm.setString(2, dto.getDescription());
+                stm.setString(3, dto.getBreed_id());
+                stm.setString(4, dto.getDad_bird_id());
+                stm.setString(5, dto.getMom_bird_id());
+                stm.setInt(6, dto.getBaby_quantity());
+                stm.setString(7, dto.getStatus());
+                stm.setInt(8, dto.getPrice());
+                stm.setInt(9, dto.getDiscount());
+                stm.setString(10, dto.getNest_id());
+                int row = stm.executeUpdate();
+                System.out.println(dto.toString());
+                System.out.println(row);
+                if (row > 0) {
+                    System.out.println("123");
+                    return true;
+                    
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            
+        }
+        return false;
     }
 }

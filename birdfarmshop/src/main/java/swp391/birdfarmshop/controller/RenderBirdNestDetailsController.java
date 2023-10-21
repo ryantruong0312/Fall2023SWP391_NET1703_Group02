@@ -9,7 +9,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import swp391.birdfarmshop.dao.BirdNestDAO;
+import swp391.birdfarmshop.model.BirdNest;
 
 /**
  *
@@ -24,9 +27,19 @@ public class RenderBirdNestDetailsController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
+         String url = ERROR;
         try {
-            url = SUCCESS;
+            String nest_id = request.getParameter("id");
+            BirdNestDAO birdnest = new BirdNestDAO();
+            BirdNest nest = birdnest.getBirdsNestById(nest_id);
+            if (nest == null) {
+                HttpSession session = request.getSession();
+                session.setAttribute("ERROR", "không tìm thấy tổ chim");
+            } else {
+                request.setAttribute("NEST", nest);
+                url = SUCCESS;
+            }
+
         } catch (Exception e) {
             log("Error at RenderBirdNestDetailsController: " + e.toString());
         } finally {
