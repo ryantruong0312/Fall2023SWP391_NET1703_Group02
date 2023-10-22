@@ -11,37 +11,55 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import swp391.birdfarmshop.dao.BirdBreedDAO;
+import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dao.BirdNestDAO;
+import swp391.birdfarmshop.dto.BirdDTO;
+import swp391.birdfarmshop.model.BirdBreed;
 import swp391.birdfarmshop.model.BirdNest;
+
 
 /**
  *
  * @author ASUS
  */
-@WebServlet(name = "RenderBirdNestDetailsController", urlPatterns = {"/RenderBirdNestDetailsController"})
-public class RenderBirdNestDetailsController extends HttpServlet {
+@WebServlet(name = "RenderUpdateBirdNestController", urlPatterns = {"/RenderUpdateBirdNestController"})
+public class RenderUpdateBirdNestController extends HttpServlet {
 
-    private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "shop/birdnest-details.jsp";
-
+       private static final String ERROR = "MainController?action=NavToBirdNests";
+    private static final String SUCCESS = "management/edit-birdnest.jsp";
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-         String url = ERROR;
+        String url = ERROR;
         try {
+            BirdBreedDAO breed = new BirdBreedDAO();
+            List<BirdBreed> listBreeds = breed.getBirdBreeds();
+            BirdDAO birddao = new BirdDAO();
+            ArrayList<BirdDTO> listDadBird = birddao.getBirdsByGender(true);
+            ArrayList<BirdDTO> listMomBird = birddao.getBirdsByGender(false);
+
             String nest_id = request.getParameter("id");
-            BirdNestDAO birdnest = new BirdNestDAO();
-            BirdNest nest = birdnest.getBirdsNestById(nest_id);
+            BirdNestDAO bnDao = new BirdNestDAO();
+            BirdNest nest = bnDao.getBirdsNestById(nest_id);
+
             if (nest == null) {
                 HttpSession session = request.getSession();
-                session.setAttribute("ERROR", "không tìm thấy tổ chim");
+                session.setAttribute("ERROR", "không có tổ chim");
             } else {
-                request.setAttribute("NEST", nest);
+                request.setAttribute("BIRDNEST", nest);
+                request.setAttribute("BREEDLIST", listBreeds);
+                request.setAttribute("BIRDDADLIST", listDadBird);
+                request.setAttribute("BIRDMOMLIST", listMomBird);
                 url = SUCCESS;
-            }
 
+            }
         } catch (Exception e) {
-            log("Error at RenderBirdNestDetailsController: " + e.toString());
+            log("Error at RenderAddAccessoryController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

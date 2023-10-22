@@ -32,6 +32,20 @@
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
         <style>
+            .col-lg-12 a {
+                border-radius: 10px;
+                border: 1px solid rgb(221, 221, 227);
+                background-color: #f5c6cb;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0 auto;
+                width: 50%;
+                margin-bottom: 30px;
+                margin-top: 20px;
+                width: 150px;
+                float: right;
+            }
             .image-container {
                 display: flex;
                 align-items: center;
@@ -66,7 +80,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="inner-content">
-                            <h2>Chi tiết phụ kiện</h2>
+                            <h2>Chi tiết tổ chim non</h2>
                             <span>Tìm hiểu về sản phẩm và sắm ngay cho chú vẹt cưng của bạn!</span>
                         </div>
                     </div>
@@ -77,35 +91,49 @@
 
 
         <!-- ***** Product Area Starts ***** -->
+        <c:set var="birdNest" value="${NEST}" />
+
+
         <section class="section" id="product">
             <div class="container">
+                <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="button-form">
+                            <a class="btn-update" href="MainController?action=NavToUpdateBirdNest&id=${birdNest.nest_id}"><span>Cập nhật tổ chim</span></a>
+                        </div>
+                    </div>
+                </div>
+            </c:if>
                 <div class="row">
                     <div class="col-lg-8">                    
                         <c:if test="${birdNest != null}">
-                            <c:set var="image_url_arr" value="${birdNest.image_url_arr}" />
+                            <c:set var="image_url_arr" value="${birdNest.image_url}" />
                             <div class="image-container">
                                 <div class="left-image">
-                                    <img id="image_main" src="${image_url_arr[0]}" alt="Image 1" onclick="swapImages(this)">
+                                    <img id="image_main" src="${image_url_arr}" alt="Image 1" onclick="swapImages(this)">
                                 </div>
 
                                 <div class="right-image">
-                                    <img src="${image_url_arr[1]}" alt="Image 2" onclick="swapImages(this)">
-                                    <img src="${image_url_arr[2]}" alt="Image 3" onclick="swapImages(this)">
+                                    <img src="${image_url_arr}" alt="Image 2" onclick="swapImages(this)">
+                                    <img src="${image_url_arr}" alt="Image 3" onclick="swapImages(this)">
                                 </div>
                             </div>
                         </c:if>
                     </div>
                     <div class="col-lg-4">
                         <div class="right-content">
-                            <h4 id="nameAccessory">${birdNest.nest_id}</h4>
+                            <h4 id="nameAccessory">${birdNest.nest_name}</h4>
                             <span id="unit_price" class="price">${birdNest.price} ₫</span>
-                            <!--                        <ul class="stars">
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                        <li><i class="fa fa-star"></i></li>
-                                                    </ul>-->
+
+                            <div class="descript">
+                                <h4>Chim bố: </h4>
+                                <span>${birdNest.dad_bird_id}</span>
+                            </div>
+                            <div class="descript">
+                                <h4>Chim mẹ: </h4>
+                                <span>${birdNest.mom_bird_id}</span>
+                            </div>
                             <div class="descript">
                                 <h4>Mô tả sản phẩm: </h4>
                                 <span>${birdNest.description}</span>
@@ -116,111 +144,115 @@
                         </div>
                         <div class="total">
                             <h4 style="float: left;">Tổng cộng: <span id="total">${birdNest.price} ₫</span></h4>
-                            <div type="button" class="main-border-button" style="margin-left: 100px; float: left;"><a href="MainController?action=AddtoCart&type=nest&id=${birdNest.nest_id}" id="AddToCart">Thêm vào giỏ hàng</a></div>
+                            <c:if test="${(sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer') && bird.status != 'Đã bán'}">
+                                <div type="button" class="main-border-button" style="margin-left: 100px; float: left;"><a href="MainController?action=AddtoCart&type=nest&id=${birdNest.nest_id}" id="AddToCart">Thêm vào giỏ hàng</a></div>
+                            </c:if>
                             <div style="clear: both;"></div>
                         </div>
 
                     </div>
                 </div>
             </div>
-        </section>     
-        <%@include file="../layout/feedback.jsp" %>
-        <!-- Start Footer -->
-        <%@include file="../layout/footer.jsp" %>
-        <!-- End Footer -->
-        <script>
-            $(function () {
-                var selectedClass = "";
-                $("p").click(function () {
-                    selectedClass = $(this).attr("data-rel");
-                    $("#portfolio").fadeTo(50, 0.1);
-                    $("#portfolio div").not("." + selectedClass).fadeOut();
-                    setTimeout(function () {
-                        $("." + selectedClass).fadeIn();
-                        $("#portfolio").fadeTo(50, 1);
-                    }, 500);
+        </div>
+    </div>
+</section> 
+<%@include file="../layout/feedback.jsp" %>
+<!-- Start Footer -->
+<%@include file="../layout/footer.jsp" %>
+<!-- End Footer -->
+<script>
+    $(function () {
+        var selectedClass = "";
+        $("p").click(function () {
+            selectedClass = $(this).attr("data-rel");
+            $("#portfolio").fadeTo(50, 0.1);
+            $("#portfolio div").not("." + selectedClass).fadeOut();
+            setTimeout(function () {
+                $("." + selectedClass).fadeIn();
+                $("#portfolio").fadeTo(50, 1);
+            }, 500);
 
-                });
-            });
+        });
+    });
 
-            function incrementQuantity(inputId, maxQuantity, unitPrice)
-            {
-                var quantityInput = document.getElementById(inputId);
-                var currentValue = parseInt(quantityInput.value);
+    function incrementQuantity(inputId, maxQuantity, unitPrice)
+    {
+        var quantityInput = document.getElementById(inputId);
+        var currentValue = parseInt(quantityInput.value);
 
-                var total1 = document.getElementById("total");
-                var warning = document.getElementById("warning");
-                if (!isNaN(currentValue) && currentValue < maxQuantity) {
-                    quantityInput.value = currentValue + 1;
-                    total1.innerHTML = unitPrice * quantityInput.value + " ₫";
+        var total1 = document.getElementById("total");
+        var warning = document.getElementById("warning");
+        if (!isNaN(currentValue) && currentValue < maxQuantity) {
+            quantityInput.value = currentValue + 1;
+            total1.innerHTML = unitPrice * quantityInput.value + " ₫";
 
-                    warning.innerHTML = "";
-                } else {
-                    //alert("Số lượng không đủ!");
-                    warning.innerHTML = "Số lượng không đủ!";
-                }
-            }
-
-
-            function decrementQuantity(inputId, unitPrice) {
-                var quantityInput = document.getElementById(inputId);
-                var currentValue = parseInt(quantityInput.value);
-                var total = document.getElementById("total");
-                var warning = document.getElementById("warning");
-                if (!isNaN(currentValue) && currentValue > 0) {
-                    quantityInput.value = currentValue - 1;
-                    total.innerHTML = unitPrice * quantityInput.value + " ₫";
-                    warning.innerHTML = "";
-                }
-            }
-
-            function formatNumber(n) {
-                // format number 1000000 to 1.234.567
-                return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            }
-
-            function ConvertToNumber(priceStr) {
-                var priceParts = priceStr.split(".");
-                var price = "";
-                for (var i = 0; i < priceParts.length; i++) {
-                    price += priceParts[i];
-                }
-                return Number.parseInt(price);
-            }
+            warning.innerHTML = "";
+        } else {
+            //alert("Số lượng không đủ!");
+            warning.innerHTML = "Số lượng không đủ!";
+        }
+    }
 
 
-            function updateTotal() {
-                var unitPrice = document.getElementById("unit_price");
-                var quantityInput = document.getElementById("quantityInput"); // Lấy phần tử input số lượng
+    function decrementQuantity(inputId, unitPrice) {
+        var quantityInput = document.getElementById(inputId);
+        var currentValue = parseInt(quantityInput.value);
+        var total = document.getElementById("total");
+        var warning = document.getElementById("warning");
+        if (!isNaN(currentValue) && currentValue > 0) {
+            quantityInput.value = currentValue - 1;
+            total.innerHTML = unitPrice * quantityInput.value + " ₫";
+            warning.innerHTML = "";
+        }
+    }
 
-                console.log(unitPrice);
-                console.log(quantityInput);
-            }
+    function formatNumber(n) {
+        // format number 1000000 to 1.234.567
+        return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    function ConvertToNumber(priceStr) {
+        var priceParts = priceStr.split(".");
+        var price = "";
+        for (var i = 0; i < priceParts.length; i++) {
+            price += priceParts[i];
+        }
+        return Number.parseInt(price);
+    }
 
 
-            function addToCart() {
-                var name = document.getElementById("nameAccessory");
-                var quantity = document.getElementById("quantityInput");
-                var total = document.getElementById("total");
-                sessionStorage.setItem("name", JSON.stringify(name));
-                sessionStorage.setItem("quantity", JSON.stringify(quantity));
-                sessionStorage.setItem("total", JSON.stringify(total));
+    function updateTotal() {
+        var unitPrice = document.getElementById("unit_price");
+        var quantityInput = document.getElementById("quantityInput"); // Lấy phần tử input số lượng
 
-            }
+        console.log(unitPrice);
+        console.log(quantityInput);
+    }
 
-            function swapImages(clickedImage) {
-                const leftImage = document.querySelector('.left-image img');
-                const rightImage1 = document.querySelectorAll('.right-images img')[0];
-                const rightImage2 = document.querySelectorAll('.right-images img')[1];
 
-                const tempSrc = leftImage.src;
-                leftImage.src = clickedImage.src;
-                clickedImage.src = tempSrc;
-            }
+    function addToCart() {
+        var name = document.getElementById("nameAccessory");
+        var quantity = document.getElementById("quantityInput");
+        var total = document.getElementById("total");
+        sessionStorage.setItem("name", JSON.stringify(name));
+        sessionStorage.setItem("quantity", JSON.stringify(quantity));
+        sessionStorage.setItem("total", JSON.stringify(total));
 
-        </script>
+    }
 
-    </body>
+    function swapImages(clickedImage) {
+        const leftImage = document.querySelector('.left-image img');
+        const rightImage1 = document.querySelectorAll('.right-images img')[0];
+        const rightImage2 = document.querySelectorAll('.right-images img')[1];
+
+        const tempSrc = leftImage.src;
+        leftImage.src = clickedImage.src;
+        clickedImage.src = tempSrc;
+    }
+
+</script>
+
+</body>
 
 
 </html>

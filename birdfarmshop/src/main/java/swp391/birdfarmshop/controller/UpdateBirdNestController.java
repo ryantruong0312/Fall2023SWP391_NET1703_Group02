@@ -9,39 +9,60 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import swp391.birdfarmshop.dao.BirdNestDAO;
-import swp391.birdfarmshop.model.BirdNest;
+import swp391.birdfarmshop.dao.ImageDAO;
+import swp391.birdfarmshop.dto.BirdNestDTO;
 
 /**
  *
  * @author ASUS
  */
-@WebServlet(name = "RenderBirdNestDetailsController", urlPatterns = {"/RenderBirdNestDetailsController"})
-public class RenderBirdNestDetailsController extends HttpServlet {
+@WebServlet(name = "UpdateBirdNestController", urlPatterns = {"/UpdateBirdNestController"})
+public class UpdateBirdNestController extends HttpServlet {
 
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "shop/birdnest-details.jsp";
+    private static final String SUCCESS = "MainController?action=NavToUpdateBirdNest&id=";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-         String url = ERROR;
+        String url = ERROR;
         try {
-            String nest_id = request.getParameter("id");
-            BirdNestDAO birdnest = new BirdNestDAO();
-            BirdNest nest = birdnest.getBirdsNestById(nest_id);
-            if (nest == null) {
-                HttpSession session = request.getSession();
-                session.setAttribute("ERROR", "không tìm thấy tổ chim");
-            } else {
-                request.setAttribute("NEST", nest);
-                url = SUCCESS;
-            }
+            System.out.println("123");
+            String nest_id = request.getParameter("nest_id");
+            String nest_name = request.getParameter("name");
+            String breed_id = request.getParameter("breed-id");
+            String dad_bird_id = request.getParameter("dad_bird_id");
+            String mom_bird_id = request.getParameter("mom_bird_id");
+            String txtbaby_quantity = request.getParameter("baby_quantity");
+            int baby_quantity = Integer.parseInt(txtbaby_quantity);
+            String status = request.getParameter("status");
+            String txtprice = request.getParameter("price");
+            int price = Integer.parseInt(txtprice);
+            String txtdiscount = request.getParameter("discount");
+            int discount = Integer.parseInt(txtdiscount);
+            String description = request.getParameter("description");
+            BirdNestDTO dto = new BirdNestDTO(nest_id, nest_name, dad_bird_id, mom_bird_id, baby_quantity, status, price, description, breed_id, discount);
+            String txtImage_1 = request.getParameter("txtImage_1");
+            String txtImage_2 = request.getParameter("txtImage_2");
+            String txtImage_3 = request.getParameter("txtImage_3");
+            BirdNestDAO birdNestDao = new BirdNestDAO();
+            ImageDAO img = new ImageDAO();
+            boolean check = birdNestDao.updateBirdNest(dto);
+            System.out.println(check);
+            boolean check_image1 = img.updateImageBirdNest(txtImage_1, nest_id);
+            boolean check_image2 = img.updateImageBirdNest(txtImage_2, nest_id);
+            boolean check_image3 = img.updateImageBirdNest(txtImage_3, nest_id);
 
+            if (check && check_image1) {
+                request.setAttribute("MESSAGE", "Cập nhật thành công");
+                url = SUCCESS + nest_id;
+
+            }
         } catch (Exception e) {
-            log("Error at RenderBirdNestDetailsController: " + e.toString());
+            e.printStackTrace();
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
