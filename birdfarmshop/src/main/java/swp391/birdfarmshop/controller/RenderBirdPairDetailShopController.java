@@ -6,6 +6,7 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -23,10 +24,10 @@ import swp391.birdfarmshop.model.User;
  *
  * @author Admin
  */
-@WebServlet(name="RenderBirdPairDetailController", urlPatterns={"/RenderBirdPairDetailController"})
-public class RenderBirdPairDetailController extends HttpServlet {
+@WebServlet(name="RenderBirdPairDetailShopController", urlPatterns={"/RenderBirdPairDetailShopController"})
+public class RenderBirdPairDetailShopController extends HttpServlet {
      private static final String ERROR = "RenderHomeController";
-     private static final String SUCCESS = "profile/bird-pair-detail.jsp";
+     private static final String SUCCESS = "management/bird-pair-detail-shop.jsp";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -42,15 +43,19 @@ public class RenderBirdPairDetailController extends HttpServlet {
             HttpSession session = request.getSession();
             User u = (User) session.getAttribute("LOGIN_USER");
             String order_id = request.getParameter("order_id");
-            if(u != null && u.getRole().equals("customer")){
-               BirdPairDAO bpd = new BirdPairDAO();
-               TrackingBirdPairDAO trackingDao =  new TrackingBirdPairDAO();
-               BirdPairDTO birdPair = bpd.getBirdPairByOrderId(order_id);
-               ArrayList<TrackingDTO> trackingList = trackingDao.getTrackingBirdPair(birdPair.getPair_id());
-               trackingList.size();
-               request.setAttribute("BIRDPAIR", birdPair);
-               request.setAttribute("TRACKINGLIST", trackingList);
-               request.setAttribute("SIZE", trackingList.size());
+            if(u != null){
+               if(!u.getRole().equals("customer")){
+                   BirdPairDAO bpd = new BirdPairDAO();
+                   TrackingBirdPairDAO trackingDao = new TrackingBirdPairDAO();
+                   BirdPairDTO birdPair = bpd.getBirdPairByOrderId(order_id);
+                   ArrayList<TrackingDTO> trackingList = trackingDao.getTrackingBirdPair(birdPair.getPair_id());
+                   trackingList.size();
+                   request.setAttribute("BIRDPAIR", birdPair);
+                   request.setAttribute("TRACKINGLIST", trackingList);
+                   request.setAttribute("SIZE", trackingList.size());
+               }else{
+                   session.setAttribute("ERROR", "Bạn không có quyền truy cấp");
+               }
             }else{
                 url=ERROR;
                 session.setAttribute("ERROR", "Bạn chưa đăng nhập"); 

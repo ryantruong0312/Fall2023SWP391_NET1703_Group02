@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
+import swp391.birdfarmshop.dao.BirdPairDAO;
+import swp391.birdfarmshop.dto.BirdPairDTO;
 import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
 
@@ -43,8 +45,11 @@ public class RenderCheckoutBirdPairController extends HttpServlet {
             String male_bird_id = request.getParameter("male_bird");
             String female_bird_id = request.getParameter("female_bird");
             String order_id = request.getParameter("order_id");
+            String pair_id = request.getParameter("pari_id");
             BirdDAO bDao = new BirdDAO();
             AccessoryDAO adao = new AccessoryDAO();
+            BirdPairDAO bpDao = new BirdPairDAO();
+            BirdPairDTO bp = bpDao.getBirdPairByOrderId(order_id);
             List<Accessory> cageList = adao.getCageList();
             Accessory cheapestCage = cageList.get(0);
             int cheapestCagePrice = cheapestCage.getUnit_price() - cheapestCage.getUnit_price() * cheapestCage.getDiscount() / 100;
@@ -57,12 +62,25 @@ public class RenderCheckoutBirdPairController extends HttpServlet {
             cheapestCage.setDiscount(0);
             Bird male_bird = bDao.getBirdById(male_bird_id);
             Bird female_bird = bDao.getBirdById(female_bird_id);
-            if(male_bird_id != null && female_bird_id != null){
+            int totalPrice = bp.getYoung_bird_price() * bp.getNumber_young_bird();
+            if(male_bird != null && male_bird.getDiscount() > 0){
+                totalPrice += male_bird.getPrice() - male_bird.getPrice() * male_bird.getDiscount() /100;
+            }else if (male_bird != null){
+                totalPrice += male_bird.getPrice();
+            }
+            if(female_bird != null && female_bird.getDiscount() > 0){
+                totalPrice += female_bird.getPrice() - female_bird.getPrice() * female_bird.getDiscount() /100;
+            }else if (female_bird != null){
+                totalPrice += female_bird.getPrice();
+            }
+            if(male_bird_id != null || female_bird_id != null){
                 request.setAttribute("LISTCAGE", cageList);
                 request.setAttribute("CHEAPESTCAGE", cheapestCage);
             }
+            request.setAttribute("TOTALPRICE", totalPrice);
+            request.setAttribute("BIRDPAIR", bp);
             request.setAttribute("MALEBIRD", male_bird);
-            request.setAttribute("FAMLEBIRD", female_bird);
+            request.setAttribute("FEMALEBIRD", female_bird);
             request.setAttribute("ORDERID", order_id);
         } catch (Exception e) {
             e.printStackTrace();

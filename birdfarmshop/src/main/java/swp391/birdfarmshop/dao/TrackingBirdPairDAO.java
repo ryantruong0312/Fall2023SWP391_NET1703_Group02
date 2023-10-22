@@ -27,17 +27,19 @@ public class TrackingBirdPairDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String sql = "SELECT [content]\n"
+                String sql = "SELECT [content],[create_user]\n"
                         + "      ,[date_content]\n"
                         + "FROM [BirdFarmShop].[dbo].[PairTracking]\n"
-                        + "WHERE [pair_id] = ?";
+                        + "WHERE [pair_id] = ?\n"
+                        + "ORDER BY tracking_id DESC";
                 pst = con.prepareStatement(sql);
                 pst.setInt(1, pair_id);
                 rs = pst.executeQuery();
                 while (rs.next()) {
                     String content = rs.getString("content");
+                    String username = rs.getString("create_user");
                     Timestamp dateTime = rs.getTimestamp("date_content");
-                    TrackingDTO t = new TrackingDTO(content, dateTime);
+                    TrackingDTO t = new TrackingDTO(content, dateTime, username);
                     trackingList.add(t);
                 }
             }
@@ -68,5 +70,83 @@ public class TrackingBirdPairDAO {
         }
 
         return trackingList;
+    }
+
+    public int getTrackingBirdPair(String url, int pair_id, String content, String username, String status,
+            int quanitty_young_bird, int quantity_egg) {
+        int result = 0;
+        Connection con = null;
+        PreparedStatement pst = null;
+        boolean check = false;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                con.setAutoCommit(false);
+                String sql;
+                if (url != null) {
+                    sql = "INSERT INTO [Image]([image_url],[pair_id])\n"
+                            + "VALUES(?,?)";
+                    pst = con.prepareStatement(sql);
+                    pst.setString(1, url);
+                    pst.setInt(2, pair_id);
+                    result = pst.executeUpdate();
+                } else {
+                    result = 1;
+                }
+                if (result > 0) {
+                    sql = "INSERT INTO [PairTracking]([pair_id],[create_user],[content],[date_content])\n"
+                            + "VALUES(?,?,?,?)";
+                    pst = con.prepareStatement(sql);
+                    pst.setInt(1, pair_id);
+                    pst.setString(2, username);
+                    pst.setString(3, content);
+                    Timestamp date = new Timestamp(System.currentTimeMillis());
+                    pst.setTimestamp(4, date);
+                    result = pst.executeUpdate();
+                    if (result > 0) {
+                        sql = "UPDATE [BirdPair]\n"
+                                + "SET [number_egg] = ?,\n"
+                                + "[number_young_bird] = ?,\n"
+                                + "[status] = ?\n"
+                                + "WHERE [pair_id] = ?";
+                        pst = con.prepareStatement(sql);
+                        pst.setInt(1, quantity_egg);
+                        pst.setInt(2, quanitty_young_bird);
+                        pst.setString(3, status);
+                        pst.setInt(4, pair_id);
+                        result = pst.executeUpdate();
+                        if (result > 0) {
+                            check = true;
+                        }
+                    }
+                }
+                if (check) {
+                    result = 1;
+                    con.commit();
+                } else {
+                    result = 0;
+                    con.rollback();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return result;
     }
 }

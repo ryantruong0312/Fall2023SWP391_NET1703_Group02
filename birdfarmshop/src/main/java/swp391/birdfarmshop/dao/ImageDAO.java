@@ -23,6 +23,7 @@ public class ImageDAO {
 
     private static final String GET_THUMBNAIL_BY_BIRD_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [bird_id] = ? AND [is_thumbnail] = 1";
     private static final String GET_IMAGES_BY_BIRD_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [bird_id] = ?";
+    private static final String GET_IMAGES_BY_PAIR_ID = "SELECT [image_id],[image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [pair_id] = ? ORDER BY image_id DESC";
     private static final String GET_THUMBNAIL_BY_ACCESSORY_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [accessory_id] = ? AND [is_thumbnail] = 1";
     private static final String GET_IMAGES_BY_ACCESSORY_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [accessory_id] = ?";
     private static final String GET_THUMBNAIL_BY_BIRDNEST_ID = "SELECT [image_url] FROM [BirdFarmShop].[dbo].[Image] WHERE [nest_id] = ? AND [is_thumbnail] = 1";
@@ -88,11 +89,6 @@ public class ImageDAO {
         }
         return urls;
     }
-//    public static void main(String[] args) throws SQLException {
-//        ImageDAO dao = new ImageDAO();
-//        ArrayList<String> url = dao.getImagesByBirdId("CP101");
-//        System.out.println(url);
-//    }
 
     public ArrayList<String> getImagesByAccessoryId(String accessoryId) throws SQLException {
         ArrayList<String> urls = new ArrayList<>();
@@ -487,7 +483,38 @@ public class ImageDAO {
             if (con != null) {
                 con.close();
             }
-        }        
+        }
         return false;
+    }
+
+    public ArrayList<String> getImagesByPairId(int pairId) throws SQLException {
+        ArrayList<String> urls = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement(GET_IMAGES_BY_PAIR_ID);
+                stm.setInt(1, pairId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String url = rs.getString("image_url");
+                    urls.add(url);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return urls;
     }
 }

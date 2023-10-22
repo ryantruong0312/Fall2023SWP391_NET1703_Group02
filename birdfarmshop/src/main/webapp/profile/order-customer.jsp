@@ -168,6 +168,15 @@
                 border-radius: 0;
                 background-color: rgba(0, 0, 0, 0);
             }
+            .nav-item:first-child{
+                width: 10%;
+            }
+            .nav-item{
+                width: 18%;
+            }
+            #orderTabs li:hover{
+                cursor: pointer;
+            }
         </style>
 
     </head>
@@ -277,7 +286,7 @@
 
         <c:set value="${requestScope.ITEMMAP}" var="itemMap"/>
         <main>
-            <div class="container">
+            <div class="container container-custome">
                 <div class="row gutters">
                     <%@include file="../layout/sidebar-profile.jsp" %>
                     <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">

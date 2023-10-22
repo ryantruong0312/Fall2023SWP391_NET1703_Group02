@@ -4,6 +4,8 @@
  */
 package swp391.birdfarmshop.dto;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.model.BirdCustomer;
 
@@ -21,8 +23,11 @@ public class BirdPairDTO {
     private int number_egg;
     private int number_young_bird;
     private String status;
+    private String username;
+    private Timestamp create_date;
+    ArrayList<String> pList;
 
-    public BirdPairDTO(int pair_id, String order_id, int young_bird_price, BirdCustomer birdCustomer, Bird male_bird, Bird female_bird, int number_egg, int number_young_bird, String status) {
+    public BirdPairDTO(int pair_id, String order_id, int young_bird_price, BirdCustomer birdCustomer, Bird male_bird, Bird female_bird, int number_egg, int number_young_bird, String status, ArrayList<String> pList) {
         this.pair_id = pair_id;
         this.order_id = order_id;
         this.young_bird_price = young_bird_price;
@@ -32,16 +37,26 @@ public class BirdPairDTO {
         this.number_egg = number_egg;
         this.number_young_bird = number_young_bird;
         this.status = status;
+        this.pList = pList;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
+    public BirdPairDTO(int pair_id, String order_id, int young_bird_price, BirdCustomer birdCustomer, Bird male_bird, Bird female_bird, int number_egg, int number_young_bird, String status, String username, Timestamp create_date, ArrayList<String> pList) {
+        this.pair_id = pair_id;
+        this.order_id = order_id;
+        this.young_bird_price = young_bird_price;
+        this.birdCustomer = birdCustomer;
+        this.male_bird = male_bird;
+        this.female_bird = female_bird;
+        this.number_egg = number_egg;
+        this.number_young_bird = number_young_bird;
         this.status = status;
+        this.username = username;
+        this.create_date = create_date;
+        this.pList = pList;
     }
 
+
+    
     public int getPair_id() {
         return pair_id;
     }
@@ -105,6 +120,36 @@ public class BirdPairDTO {
     public void setNumber_young_bird(int number_young_bird) {
         this.number_young_bird = number_young_bird;
     }
-    
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public ArrayList<String> getpList() {
+        return pList;
+    }
+
+    public void setpList(ArrayList<String> pList) {
+        this.pList = pList;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Timestamp getCreate_date() {
+        return create_date;
+    }
+
+    public void setCreate_date(Timestamp create_date) {
+        this.create_date = create_date;
+    }
 }

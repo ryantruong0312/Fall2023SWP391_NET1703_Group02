@@ -174,8 +174,7 @@
         <!-- Header End -->
         <main class="detail-bird-pair">
             <div class="container container-custome">
-                <div class="row gutters">
-                    <%@include file="../layout/sidebar-profile.jsp" %>
+                <div class="row gutters justify-content-center">   
                     <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
                         <div class="card h-100">
                             <div class="card-body order-section">
@@ -190,7 +189,7 @@
                                                     <c:choose>
                                                         <c:when test="${not empty requestScope.BIRDPAIR}">
                                                             <c:set var="birdPair" value="${requestScope.BIRDPAIR}"/>
-                                                            <a style="color: black;" class="ml-3"href="MainController?action=NavToBirdPairCustomer">
+                                                            <a style="color: black;" class="ml-3"href="MainController?action=NavToBirdPairShop">
                                                                 <i style="color: black; font-size: 1rem; width: 20px;" class="fa fa-arrow-left" aria-hidden="true"></i>
                                                                 Quay lại
                                                             </a>
@@ -227,6 +226,41 @@
                                                                             </c:choose>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="line-status d-flex align-items-center py-5">
+                                                                        <div class="img-status col-6 h-100">
+                                                                            <c:choose>
+                                                                                <c:when test="${not empty birdPair.pList}">
+                                                                                    <div class="d-flex justify-content-around align-items-center">
+                                                                                        <div class="img-button">
+                                                                                            <img onclick="nextImage()" src="assets/images/decrease-button.png"  alt="nút quay lại" />
+                                                                                        </div>
+                                                                                        <img id="main-ImgPair" src="${birdPair.pList.get(0)}"  alt="ảnh chính giống" />
+                                                                                        <div class="img-button">
+                                                                                            <img onclick="prevImage()" src="assets/images/increase-button.png"  alt="nút tiếp" />
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <h5 class="text-center">Chưa có ảnh</h5>
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                            <div class="img-more d-flex mt-4 justify-content-center">
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="line-time col-6 h-100">
+                                                                            <ul class="p-2 mt-3">
+                                                                                <c:forEach var="tracking" items="${requestScope.TRACKINGLIST}">
+                                                                                    <li class="mb-2"><fmt:formatDate value="${tracking.date}" pattern="dd-MM-yyyy HH:mm"/> <span class="ml-3">${tracking.content}
+                                                                                            <c:if test="${not empty tracking.username}">
+                                                                                                <p class="text-danger d-inline">( ${tracking.username} )</p>
+                                                                                            </c:if>
+                                                                                        </span></li>
+                                                                                    </c:forEach>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
                                                                     <div class="content-birdpair mx-3">
                                                                         <div class="d-flex">
                                                                             <p>Số lượng trứng</p>
@@ -248,15 +282,11 @@
                                                                             <p>Tổng tiền cần thanh toán</p>
                                                                             <p class="ml-3 text-danger"><fmt:formatNumber value="${birdPair.number_young_bird * birdPair.young_bird_price}" pattern="#,###"/> ₫</p>
                                                                         </div>
-                                                                        <c:if test="${birdPair.status == 'Đã ấp nở'}">
-                                                                            <div class="d-flex">
-                                                                                <p>Hình thức thanh toán</p>
-                                                                                <p class="ml-3">Chưa thanh toán</p>
-                                                                            </div>
-                                                                            <div class="text-center  border-0">
-                                                                                <button id="payment-youngBird" class="btn-danger mt-3 py-2 px-3">Xác nhận thanh toán</button>
-                                                                            </div>
-                                                                        </c:if>
+
+                                                                        <div class="text-center  border-0">
+                                                                            <button id="payment-youngBird" style="background-color: #007bff; color: white;" class="btn-danger mt-3 py-2 px-3">Cập nhật theo dõi nhân giống</button>
+                                                                        </div>
+
                                                                     </div>
                                                                 </c:when>
                                                                 <c:otherwise>
@@ -284,29 +314,34 @@
                                                                     <div class="line-status d-flex align-items-center py-5">
                                                                         <div class="img-status col-6 h-100">
                                                                             <c:choose>
-                                                                            <c:when test="${not empty birdPair.pList}">
-                                                                                <div class="d-flex justify-content-around align-items-center">
-                                                                                    <div class="img-button">
-                                                                                        <img onclick="nextImage()"  src="assets/images/decrease-button.png"  alt="nút quay lại" />
+                                                                                <c:when test="${not empty birdPair.pList}">
+                                                                                    <div class="d-flex justify-content-around align-items-center">
+                                                                                        <div class="img-button">
+                                                                                            <img onclick="nextImage()" src="assets/images/decrease-button.png"  alt="nút quay lại" />
+                                                                                        </div>
+                                                                                        <img id="main-ImgPair" src="${birdPair.pList.get(0)}"  alt="ảnh chính giống" />
+                                                                                        <div class="img-button">
+                                                                                            <img onclick="prevImage()" src="assets/images/increase-button.png"  alt="nút tiếp" />
+                                                                                        </div>
                                                                                     </div>
-                                                                                    <img id="main-ImgPair" src="${birdPair.pList.get(0)}"  alt="ảnh chính giống" />
-                                                                                    <div class="img-button">
-                                                                                        <img onclick="prevImage()"  src="assets/images/increase-button.png"  alt="nút tiếp" />
-                                                                                    </div>
-                                                                                </div>
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                <h5 class="text-center">Chưa có ảnh</h5>
-                                                                            </c:otherwise>
+
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <h5 class="text-center">Chưa có ảnh</h5>
+                                                                                </c:otherwise>
                                                                             </c:choose>
                                                                             <div class="img-more d-flex mt-4 justify-content-center">
-                                                                                
+
                                                                             </div>
                                                                         </div>
                                                                         <div class="line-time col-6 h-100">
                                                                             <ul class="p-2 mt-3">
                                                                                 <c:forEach var="tracking" items="${requestScope.TRACKINGLIST}">
-                                                                                    <li class="mb-2"><fmt:formatDate value="${tracking.date}" pattern="dd-MM-yyyy HH:mm"/> <span class="ml-3">${tracking.content}</span></li>
+                                                                                    <li class="mb-2"><fmt:formatDate value="${tracking.date}" pattern="dd-MM-yyyy HH:mm"/> <span class="ml-3">${tracking.content}
+                                                                                            <c:if test="${not empty tracking.username}">
+                                                                                                <p class="text-danger d-inline">( ${tracking.username} )</p>
+                                                                                            </c:if>
+                                                                                        </span></li>
                                                                                     </c:forEach>
                                                                             </ul>
                                                                         </div>
@@ -327,28 +362,23 @@
                                                                             </div>
                                                                             <p class="ml-3"><fmt:formatNumber value="${birdPair.young_bird_price}" pattern="#,###"/> ₫</p>
                                                                         </div>
-                                                                        <c:if test="${birdPair.status == 'Đã ấp nở'}">
-                                                                            <div class="d-flex">
-                                                                                <p>Tổng tiền cần thanh toán</p>
-                                                                                <p class="ml-3 text-danger"><fmt:formatNumber value="${birdPair.number_young_bird * birdPair.young_bird_price}" pattern="#,###"/> ₫</p>
-                                                                            </div>
-                                                                            <c:if test="${birdPair.status == 'Đã ấp nở'}">
-                                                                                <div class="d-flex">
-                                                                                    <p>Hình thức thanh toán</p>
-                                                                                    <p class="ml-3">Chưa thanh toán</p>
-                                                                                </div>
-                                                                                <div class="text-center border-bottom-0">
-                                                                                    <button id="payment-youngBird" class="btn-danger mt-3 py-2 px-3">Xác nhận thanh toán</button>
-                                                                                </div>
-                                                                            </c:if>
-
-                                                                        </c:if>
+                                                                        <div class="d-flex">
+                                                                            <p>Tổng tiền cần thanh toán</p>
+                                                                            <p class="ml-3 text-danger"><fmt:formatNumber value="${birdPair.number_young_bird * birdPair.young_bird_price}" pattern="#,###"/> ₫</p>
+                                                                        </div>
+                                                                        <div class="d-flex">
+                                                                            <p>Hình thức thanh toán</p>
+                                                                            <p class="ml-3">Chưa thanh toán</p>
+                                                                        </div>
+                                                                        <div class="text-center border-bottom-0">
+                                                                            <button style="background-color: #007bff; color: white;" id="payment-youngBird" class="mt-3 py-2 px-3">Cập nhật theo dõi nhân giống</button>
+                                                                        </div>
                                                                     </div>        
                                                                 </c:otherwise>
                                                             </c:choose>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <div class="mt-5">
+                                                            <div class="my-5">
                                                                 <h4 class="text-center">Bạn chưa có ghép cặp chim</h4>
                                                             </div>
                                                         </c:otherwise>
@@ -369,193 +399,46 @@
             <div class="vh-100 row">
                 <div class="h-100 m-auto d-flex align-items-center">
                     <div class="box-remove bg-white p-4">
-                        <h4>Xác nhận</h4>
-                        <p class="mb-4 mt-4">
-                            Bạn có muốn mua chim của cửa hàng đã ghép cặp không ?
-                        </p>
-                        <c:choose>
-                            <c:when test="${not empty birdPair.male_bird && not empty birdPair.female_bird}">
-                                <div class="item-cart pr-3 my-3">
-                                    <h6 class="ml-3">Chim trống:</h6>
-                                    <div class="row align-items-center py-3 pl-3">
-                                        <div class="image-item col-2">
-                                            <img src="${birdPair.male_bird.image_url}" alt="${birdPair.male_bird.bird_name}" />
+                        <h4>Cập nhật trạng thái nhân giống</h4>
+                        <form id="update-tracking" action="UpdateStatusTrackingController" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="pair_id" value="${requestScope.BIRDPAIR.pair_id}"/>
+                            <input type="hidden" name="order_id" value="${requestScope.BIRDPAIR.order_id}" />
+                            <div class="row mt-5">
+                                <div style="width: 350px" class="col-12 col-md-6">
+                                     <label for="status">Chọn trạng thái: </label>
+                                     <select id="status" class="input w-100 pl-2" name="status" >
+                                         <option class="p-2" value="">Chọn trạng thái</option>
+                                        <option class="p-2" ${requestScope.BIRDPAIR.status == 'Chờ lấy chim' ? 'selected':''} value="Chờ lấy chim">Chờ lấy chim</option>
+                                        <option class="p-2" ${requestScope.BIRDPAIR.status == 'Đang ghép cặp' ? 'selected':''} value="Đang ghép cặp">Đang ghép cặp</option>
+                                        <option class="p-2" ${requestScope.BIRDPAIR.status == 'Đang sinh sản' ? 'selected':''} value="Đang sinh sản">Đang sinh sản</option>
+                                        <option class="p-2" ${requestScope.BIRDPAIR.status == 'Đã ấp nở' ? 'selected':''} value="Đã ấp nở">Đã ấp nở</option>
+                                    </select>
+                                    <div class="d-flex">
+                                        <div class="mt-3 mr-3 w-50">
+                                            <label for="egg">Số lượng trứng: </label>
+                                            <input type="number" class="input w-100 pl-2" id="egg" min="0" name="quantity_egg" value="${requestScope.BIRDPAIR.number_egg }"/>
                                         </div>
-                                        <div class="infor-item px-5  col-md-6  col-7">
-                                            <h5>${birdPair.male_bird.bird_name}</h5>
-                                            <div class="mt-2">
-                                                <p> 1
-                                                    <span style="font-size: 13px; margin-right: 5px">x</span>
-                                                    <c:choose>
-                                                        <c:when test="${birdPair.male_bird.discount > 0}">
-                                                        <p style="font-size: 14px;">  <fmt:formatNumber value="${birdPair.male_bird.price - birdPair.male_bird.bird.price * birdPair.male_bird.discount / 100}" pattern="#,###"/> ₫</p>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${birdPair.male_bird.price}" pattern="#,###"/> ₫</p>
-                                                    </c:otherwise>
-                                                </c:choose> 
-                                                </p>
-                                            </div>
+                                        <div class="mt-3 ml-3 w-50">
+                                            <label for="birdYoung">Số lượng chim con: </label>
+                                            <input type="number" class="input w-100 pl-2" id="birdYoung" min="0" max="${requestScope.BIRDPAIR.number_egg}" name="quantity_young_bird" value="${requestScope.BIRDPAIR.number_young_bird}"/>
                                         </div>
-                                        <div class="price-item ml-4 px-3 col-md-3 col-2">
-                                            <c:choose>
-                                                <c:when test="${birdPair.male_bird.discount > 0}">
-                                                    <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${birdPair.male_bird.price - birdPair.male_bird.bird.price * birdPair.male_bird.discount / 100}" pattern="#,###"/> ₫</p>
-                                                    <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${birdPair.male_bird.discount}%</p>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdPair.male_bird.price}" pattern="#,###"/> ₫</p>
-                                                </c:otherwise>
-                                            </c:choose> 
-                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label for="content">Nội dung theo dõi: </label>
+                                        <textarea id="content" name="content" rows="5" class="w-100 pl-2" placeholder="Nhập nội dung theo dõi">${param.content}</textarea>
                                     </div>
                                 </div>
-                                <div class="item-cart pr-3 my-3">
-                                    <h6 class="ml-3">Chim mái:</h6>
-                                    <div class="row align-items-center py-3 pl-3">
-                                        <div class="image-item  col-2">
-                                            <img src="${birdPair.female_bird.image_url}" alt="${birdPair.female_bird.bird_name}" />
-                                        </div>
-                                        <div class="infor-item px-5  col-md-6 col-7">
-                                            <h5>${birdPair.female_bird.bird_name}</h5>
-                                            <div class="mt-2">
-                                                <p> 1
-                                                    <span style="font-size: 13px; margin-right: 5px">x</span>
-                                                    <c:choose>
-                                                        <c:when test="${birdPair.female_bird.discount > 0}">
-                                                        <p style="font-size: 14px;">  <fmt:formatNumber value="${birdPair.female_bird.price - birdPair.female_bird.price * birdPair.female_bird.discount / 100}" pattern="#,###"/> ₫</p>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${birdPair.female_bird.price}" pattern="#,###"/> ₫</p>
-                                                    </c:otherwise>
-                                                </c:choose> 
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="price-item ml-4 px-3 col-md-3  col-2">
-                                            <c:choose>
-                                                <c:when test="${birdPair.female_bird.discount > 0}">
-                                                    <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${birdPair.female_bird.price - birdPair.female_bird.price * birdPair.female_bird.discount / 100}" pattern="#,###"/> ₫</p>
-                                                    <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${birdPair.female_bird.discount}%</p>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdPair.female_bird.price}" pattern="#,###"/> ₫</p>
-                                                </c:otherwise>
-                                            </c:choose> 
-                                        </div>
-                                    </div>
-                                </div>  
-                            </c:when>
-                            <c:when test="${not empty birdPair.male_bird}">
-                                <div class="item-cart pr-3 my-3">
-                                    <h6 class="ml-3">Chim trống:</h6>
-                                    <div class="row align-items-center py-3 pl-3">
-                                        <div class="image-item col-2">
-                                            <img src="${birdPair.male_bird.image_url}" alt="${birdPair.male_bird.bird_name}" />
-                                        </div>
-                                        <div class="infor-item px-5 col-md-6 col-7">
-                                            <h5>${birdPair.male_bird.bird_name}</h5>
-                                            <div class="mt-2">
-                                                <p> 1
-                                                    <span style="font-size: 13px; margin-right: 5px">x</span>
-                                                    <c:choose>
-                                                        <c:when test="${birdPair.male_bird.discount > 0}">
-                                                        <p style="font-size: 14px;">  <fmt:formatNumber value="${birdPair.male_bird.price - birdPair.male_bird.price * birdPair.male_bird.discount / 100}" pattern="#,###"/> ₫</p>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${birdPair.male_bird.price}" pattern="#,###"/> ₫</p>
-                                                    </c:otherwise>
-                                                </c:choose> 
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="price-item ml-4 px-3 col-md-3 col-2">
-                                            <c:choose>
-                                                <c:when test="${birdPair.male_bird.discount > 0}">
-                                                    <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${birdPair.male_bird.price - birdPair.male_bird.price * birdPair.male_bird.discount / 100}" pattern="#,###"/> ₫</p>
-                                                    <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${birdPair.male_bird.discount}%</p>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdPair.male_bird.price}" pattern="#,###"/> ₫</p>
-                                                </c:otherwise>
-                                            </c:choose> 
-                                        </div>
+                                <div class="col-12 col-md-6">
+                                    <label for="image">Chọn ảnh: </label>
+                                    <input id="image" type="file" name="file"  accept="image/jpeg, image/png, image/gif"/>
+                                    <div class="img-upload my-3">
+
                                     </div>
                                 </div>
-                            </c:when>                                
-                            <c:when test="${not empty birdPair.female_bird}">
-                                <h6 class="ml-3">Chim mái:</h6>
-                                <div class="item-cart pr-3 my-3">
-                                    <div class="row align-items-center py-3 pl-3">
-                                        <div class="image-item col-2">
-                                            <img src="${birdPair.female_bird.image_url}" alt="${birdPair.female_bird.bird_name}" />
-                                        </div>
-                                        <div class="infor-item px-5 col-md-6 col-7">
-                                            <h5>${birdPair.female_bird.bird_name}</h5>
-                                            <div class="mt-2">
-                                                <p> 1
-                                                    <span style="font-size: 13px; margin-right: 5px">x</span>
-                                                    <c:choose>
-                                                        <c:when test="${birdPair.female_bird.discount > 0}">
-                                                        <p style="font-size: 14px;">  <fmt:formatNumber value="${birdPair.female_bird.price - birdPair.female_bird.price * birdPair.female_bird.discount / 100}" pattern="#,###"/> ₫</p>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${birdPair.female_bird.price}" pattern="#,###"/> ₫</p>
-                                                    </c:otherwise>
-                                                </c:choose> 
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="price-item ml-4 px-3 col-md-3 col-2">
-                                            <c:choose>
-                                                <c:when test="${birdPair.female_bird.discount > 0}">
-                                                    <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${birdPair.female_bird.price - birdPair.female_bird.price * birdPair.female_bird.discount / 100}" pattern="#,###"/> ₫</p>
-                                                    <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${birdPair.female_bird.discount}%</p>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdPair.female_bird.price}" pattern="#,###"/> ₫</p>
-                                                </c:otherwise>
-                                            </c:choose> 
-                                        </div>
-                                    </div>
-                                </div>   
-                            </c:when>
-                        </c:choose>
+                            </div>
+                        </form>
                         <div class="d-flex float-right">
-                            <c:if test="${not empty birdPair.male_bird && not empty birdPair.female_bird}" >
-                                <form action="MainController" method="POST">
-                                    <input type="hidden" name="action" value="NavToCheckoutBirdPair"/>
-                                    <input type="hidden" name="order_id" value="${birdPair.order_id}"/>
-                                    <input type="hidden" name="pair_id" value="${birdPair.pair_id}"/>
-                                    <input type="hidden" name="male_bird" value="${birdPair.male_bird.bird_id}"/>
-                                    <input type="hidden" name="female_bird" value="${birdPair.female_bird.bird_id} "/>
-                                    <button id="btn-confirrm" class="btn btn-group-sm btn-primary mx-1">Cả hai</button>  
-                                </form>
-                            </c:if>
-                            <c:if test="${not empty birdPair.male_bird}">
-                                <form action="MainController" method="POST">
-                                    <input type="hidden" name="action" value="NavToCheckoutBirdPair"/>
-                                    <input type="hidden" name="order_id" value="${birdPair.order_id}"/>
-                                    <input type="hidden" name="pair_id" value="${birdPair.pair_id}"/>
-                                    <input type="hidden" name="male_bird" value="${birdPair.male_bird.bird_id}"/>
-                                    <button id="btn-confirrm" class="btn btn-group-sm btn-primary mx-1">Chim trống</button>  
-                                </form> 
-                            </c:if>
-                            <c:if test="${not empty birdPair.female_bird}">
-                                <form action="MainController" method="POST">
-                                    <input type="hidden" name="action" value="NavToCheckoutBirdPair"/>
-                                    <input type="hidden" name="order_id" value="${birdPair.order_id}"/>
-                                    <input type="hidden" name="pair_id" value="${birdPair.pair_id}"/>
-                                    <input type="hidden" name="female_bird" value="${birdPair.female_bird.bird_id}"/>
-                                    <button id="btn-confirrm" class="btn btn-group-sm btn-primary mx-1">Chim mái</button>  
-                                </form>
-                            </c:if>
-                            <form action="MainController" method="POST">
-                                <input type="hidden" name="action" value="NavToCheckoutBirdPair"/>
-                                <input type="hidden" name="order_id" value="${birdPair.order_id}"/>
-                                <input type="hidden" name="pair_id" value="${birdPair.pair_id}"/>
-                                <button id="btn-confirrm" class="btn btn-group-sm btn-primary mx-1">Không</button>
-                            </form>
+                            <button onclick="submitForm()" class="btn btn-group-sm btn-primary mx-1">Cập nhật</button>
                             <button  onclick="cancelRemove()" class="btn btn-group-sm btn-secondary mx-1">Hủy</button>
                         </div>
                     </div>
@@ -571,6 +454,7 @@
             });
             function cancelRemove() {
                 $('#confirm-payment').css('display', 'none');
+                $('.img-upload').html('');
             }
             const mainImage = document.querySelector("#main-ImgPair");
             const secondaryImages = document.querySelector(".img-more");
@@ -630,17 +514,39 @@
             const nextButton = document.querySelector(".img-button img[alt='nút tiếp']");
             const prevButton = document.querySelector(".img-button img[alt='nút quay lại']");
 
-              function nextImage() {
+            function nextImage() {
                 changeImages("next");
-            };
+            }
 
-           function prevImage() {
+            function prevImage() {
                 changeImages("prev");
+            }
+            function submitForm() {
+                $('#update-tracking').submit();
             }
             function choseImage(event) {
                 currentImageIndex = event;
                 changeImages();
             }
+            $('input[type=file]').change(function (e) {
+                let file = e.target.files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        const imgNode = document.createElement('img');
+                        imgNode.src = e.target.result;
+                        imgNode.style = "height: 230px; width: 280px";
+                        imgNode.alt = "ảnh theo dõi";
+                        $('.img-upload').html(imgNode);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            $('input[name=quantity_egg]').change(function (){
+                const numberBirdNode = $('input[name=quantity_young_bird]');
+                numberBirdNode.val(0);
+                numberBirdNode.attr('max',$(this).val());
+            });
         </script>
     </body>
 </html>

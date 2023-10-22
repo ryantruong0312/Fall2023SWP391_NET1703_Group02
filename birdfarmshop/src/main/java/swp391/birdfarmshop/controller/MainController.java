@@ -88,7 +88,7 @@ public class MainController extends HttpServlet {
     private static final String ACT_NAV_UPDATE_ACCESSORY = "NavToUpdateAccessory";
     private static final String DEST_NAV_UPDATE_ACCESSORY = "RenderUpdateAccessoryController";
     private static final String ACT_CREATE_BIRDS_CUSTOMER = "NavToCreateBirdCustomer";
-    private static final String DEST_CREATE_BIRDS_CUSTOMER = "CreateBirdCustomer";
+    private static final String DEST_CREATE_BIRDS_CUSTOMER = "CreateBirdCustomerController";
     private static final String ACT_NAV_CHECKOUT = "NavToCheckout";
     private static final String DEST_NAV_CHECKOUT = "RenderCheckOutController";
     private static final String ACT_NAV_PAYMENT = "NavToPayment";
@@ -121,6 +121,14 @@ public class MainController extends HttpServlet {
     private static final String DEST_BIRD_PAIR_DETAIL = "RenderBirdPairDetailController";
     private static final String ACT_ADD_ORDER_ITEMS = "NavToCheckoutBirdPair";
     private static final String DEST_ADD_ORDER_ITEMS = "RenderCheckoutBirdPairController";
+    private static final String ACT_PAYMENT_BIRD_PAIR = "NavToPaymentBirdPair";
+    private static final String DEST_PAYMENT_BIRD_PAIR = "AddNewOrderItemBirdPairController";
+    private static final String ACT_NAV_BIRD_PAIR_SHOP = "NavToBirdPairShop";
+    private static final String DEST_NAV_BIRD_PAIR_SHOP = "RenderBirdPairShopController";
+    private static final String ACT_NAV_BIRD_PAIR_DETAIL_SHOP = "NavToBirdPairDetailShop";
+    private static final String DEST_NAV_BIRD_PAIR_DETAIL_SHOP = "RenderBirdPairDetailShopController";
+    private static final String ACT_UPDATE_STATUS_TRACKING = "UpdateStatusTracking";
+    private static final String DEST_UPDATE_STATUS_TRACKING  = "UpdateStatusTrackingController";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
@@ -282,6 +290,18 @@ public class MainController extends HttpServlet {
                 break;   
                 case ACT_ADD_ORDER_ITEMS:
                     url = DEST_ADD_ORDER_ITEMS;
+                break;
+                case ACT_PAYMENT_BIRD_PAIR:
+                    url = DEST_PAYMENT_BIRD_PAIR;
+                break; 
+                case ACT_NAV_BIRD_PAIR_SHOP:
+                    url = DEST_NAV_BIRD_PAIR_SHOP;
+                break;  
+                case ACT_NAV_BIRD_PAIR_DETAIL_SHOP:
+                    url = DEST_NAV_BIRD_PAIR_DETAIL_SHOP;
+                break;  
+                case ACT_UPDATE_STATUS_TRACKING:
+                    url = DEST_UPDATE_STATUS_TRACKING;
                 break;  
                 default:
                     break;

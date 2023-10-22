@@ -43,7 +43,7 @@
                 <a href="MainController?action=NavToPairBirds"><button id="button-back" class="button-create px-4">Quay lại</button></a>
                 <div class="column-content">
                     <h2>Thêm một chú vẹt mới</h2>
-                    <form id="form-createBird" action="CreateBirdCustomer" method="POST" enctype="multipart/form-data"> 
+                    <form id="form-createBird" action="CreateBirdCustomerController" method="POST" enctype="multipart/form-data"> 
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" name="txtBreedId" id="breedSelect3">
                             <option value = "">Chọn giống vẹt</option>
@@ -64,7 +64,7 @@
                         </div>
                         <div class="mt-3">
                             <label style="color: black; width: 150px"  for="imageBird">Ảnh con vẹt: </label>
-                            <input style="background: none; border: none" type="file" id="imageBird" class="form-control mt-2" name="filePicture" required="">          
+                            <input style="background: none; border: none" type="file" id="imageBird" class="form-control mt-2" name="filePicture" accept="image/jpeg, image/png, image/gif" required="">          
                         </div>  
 
                         <!-- Additional rows to display bird information -->

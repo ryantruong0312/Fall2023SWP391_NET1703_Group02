@@ -28,7 +28,7 @@ import swp391.birdfarmshop.util.EmailUtils;
 public class AddOrderController extends HttpServlet {
 
     private static final String DEST_NAV_HOME = "RenderHomeController";
-     private static final String DEST_NAV_CHECKOUT = "RenderCheckOutController";
+    private static final String DEST_NAV_CHECKOUT = "RenderCheckOutController";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -66,9 +66,10 @@ public class AddOrderController extends HttpServlet {
                         int result = od.createNewOrder(order_id, u.getUsername(), "Chờ xử lý", name_receiver,
                                 phone_receiver, address_receiver, "Chưa thanh toán", cart,cartCheckout, 0);
                         if (result != 0) {
-                           // EmailService.sendEmail(u.getEmail(), "Đơn đặt hàng của bạn",
-                     // EmailUtils.sendOrderToCustomer(cart, cartCheckout, order_id, name_receiver, phone_receiver, address_receiver));
+                            EmailService.sendEmail(u.getEmail(), "Đơn đặt hàng của bạn",
+                      EmailUtils.sendOrderToCustomer(u.getFullName(),cart, cartCheckout, order_id, name_receiver, phone_receiver, address_receiver));
                             cart = null;
+                            url = DEST_NAV_HOME;
                             session.setAttribute("CART", null);
                             session.setAttribute("CARTCHECKOUT", null);
                             session.setAttribute("SUCCESS", "Đặt hàng thành công");
@@ -83,7 +84,7 @@ public class AddOrderController extends HttpServlet {
                                 phone_receiver, address_receiver, formattedDate, cart, cartCheckout,0);
                         if (result != 0) {
                             EmailService.sendEmail(u.getEmail(), "Đơn đặt hàng của bạn",
-                                    EmailUtils.sendOrderToCustomer(cart, cartCheckout, order_id, name_receiver, phone_receiver, address_receiver));
+                                    EmailUtils.sendOrderToCustomer(u.getFullName(),cart, cartCheckout, order_id, name_receiver, phone_receiver, address_receiver));
                             cart = null;
                             session.setAttribute("CART", cart);
                             session.setAttribute("SUCCESS", "Đặt hàng thành công");

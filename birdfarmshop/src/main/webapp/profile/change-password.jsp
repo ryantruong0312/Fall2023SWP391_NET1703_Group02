@@ -139,7 +139,7 @@
         <%@include file="../layout/header.jsp" %>
         <!-- Header End -->
         <main>
-            <div class="container">
+            <div class="container container-custome">
                 <div class="row gutters">
                     <%@include file="../layout/sidebar-profile.jsp" %>
                     <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">

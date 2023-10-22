@@ -66,13 +66,9 @@ public class OrderDAO {
                 pst.setInt(9, cart.getCartTotalPrice());
                 pst.setInt(10, point);
                 result = pst.executeUpdate();
-                boolean checkBird = false;
-                boolean checkAcessory = false;
-                boolean checkBirdPair = false;
+                boolean check = false;
                 if (result > 0) {
-                    checkBird = true;
-                    checkAcessory = true;
-                    checkBirdPair = true;
+                    check = true;
                     HashMap<String, OrderedBirdItem> birdList = (HashMap<String, OrderedBirdItem>) cart.getBirdList();
                     for (OrderedBirdItem ob : birdList.values()) {
                         Bird b = ob.getBird();
@@ -93,8 +89,8 @@ public class OrderDAO {
                         pst.setString(1, b.getBird_id());
                         rs = pst.executeQuery();
                         if (rs != null && rs.next()) {
-                            checkBird = false;
-                            error = "Sản phẩm này đã bán";
+                            check = false;
+                            error = b.getBird_name() + " đã bán";
                             break;
                         } else {
                             String updateBird = "UPDATE [Bird]\n"
@@ -104,7 +100,7 @@ public class OrderDAO {
                             pst.setString(1, b.getBird_id());
                             result = pst.executeUpdate();
                             if (result == 0) {
-                                checkBird = false;
+                                check = false;
                                 break;
                             } else {
                                 String insertBird = "INSERT INTO [OrderItem]([order_id],[bird_id],\n"
@@ -117,7 +113,7 @@ public class OrderDAO {
                                 pst.setInt(4, 1);
                                 result = pst.executeUpdate();
                                 if (result == 0) {
-                                    checkBird = false;
+                                    check = false;
                                     break;
                                 }
                             }
@@ -139,12 +135,12 @@ public class OrderDAO {
                         if (rs != null && rs.next()) {
                             int numberAccessory = rs.getInt("stock_quantity");
                             if (numberAccessory == 0) {
-                                error = "Sản phẩm này đã hết hàng";
-                                checkAcessory = false;
+                                error = a.getAccessory_name() + " đã hết hàng";
+                                check = false;
                                 break;
                             } else if (numberAccessory < oa.getOrder_quantity()) {
-                                checkAcessory = false;
-                                error = "Sản phẩm này không đủ số lượng trong kho";
+                                check = false;
+                                error = a.getAccessory_name() + " không đủ số lượng trong kho";
                                 break;
                             } else {
                                 int newStock = numberAccessory - oa.getOrder_quantity();
@@ -156,7 +152,7 @@ public class OrderDAO {
                                 pst.setString(2, a.getAccessory_id().substring(0, 5));
                                 result = pst.executeUpdate();
                                 if (result == 0) {
-                                    checkAcessory = false;
+                                    check = false;
                                     break;
                                 } else {
                                     String insertAccessory = "INSERT INTO [OrderItem]([order_id],\n"
@@ -169,13 +165,13 @@ public class OrderDAO {
                                     pst.setInt(4, oa.getOrder_quantity());
                                     result = pst.executeUpdate();
                                     if (result == 0) {
-                                        checkAcessory = false;
+                                        check = false;
                                     }
                                 }
                             }
                         } else {
                             error = "Không tìm thấy sản phẩm";
-                            checkAcessory = false;
+                            check = false;
                             break;
                         }
                     }
@@ -206,6 +202,7 @@ public class OrderDAO {
                                         pst = con.prepareStatement(insertBirdPair);
                                         pst.setString(1, order_id);
                                         int realPrice = birdShop.getPrice() * 20 / 100;
+                                        System.out.println(realPrice);
                                         pst.setInt(2, realPrice);
                                         pst.setInt(3, customer.getBird_id());
                                         if (birdShop.isGender()) {
@@ -218,7 +215,7 @@ public class OrderDAO {
                                         pst.setString(6, "Chờ lấy chim");
                                         result = pst.executeUpdate();
                                         if (result == 0) {
-                                            checkBirdPair = false;
+                                            check = false;
                                             error = "Sản phẩm này không thể ghép cặp";
                                         } else {
                                             String updateBirdCustomer = "UPDATE [CustomerBird]\n"
@@ -228,7 +225,7 @@ public class OrderDAO {
                                             pst.setInt(1, customer.getBird_id());
                                             result = pst.executeUpdate();
                                             if (result == 0) {
-                                                checkBirdPair = false;
+                                                check = false;
                                             }
                                             String updateBirdShop = "UPDATE [Bird]\n"
                                                     + "SET [status] = N'Đang sinh sản'\n"
@@ -237,7 +234,7 @@ public class OrderDAO {
                                             pst.setString(1, birdShop.getBird_id());
                                             result = pst.executeUpdate();
                                             if (result == 0) {
-                                                checkBirdPair = false;
+                                                check = false;
                                             }
                                             String selectBirdPair = "SELECT TOP 1 [pair_id]\n"
                                                     + "FROM [BirdFarmShop].[dbo].[BirdPair]\n"
@@ -254,7 +251,7 @@ public class OrderDAO {
                                                 pst.setString(2, "Chờ khách hàng giao chim để ghép cặp");
                                                 pst.setString(3, sqlDate);
                                                 if (result == 0) {
-                                                    checkBirdPair = false;
+                                                    check = false;
                                                     break;
                                                 }
                                                 String insertBirdPairOrderItem = "INSERT INTO [OrderItem]([order_id],[pair_id],\n"
@@ -267,22 +264,22 @@ public class OrderDAO {
                                                 pst.setInt(4, 1);
                                                 result = pst.executeUpdate();
                                                 if (result == 0) {
-                                                    checkBirdPair = false;
+                                                    check = false;
                                                     break;
                                                 }
 
                                             } else {
-                                                checkBirdPair = false;
+                                                check = false;
                                                 break;
                                             }
                                         }
                                     } else {
-                                        checkBirdPair = false;
+                                        check = false;
                                         error = customer.getName() + " không thể ghép cặp";
                                         break;
                                     }
                                 } else {
-                                    checkBirdPair = false;
+                                    check = false;
                                     error = birdShop.getBird_name() + " không thể ghép cặp";
                                     break;
                                 }
@@ -306,15 +303,15 @@ public class OrderDAO {
                                                 + "VALUES(?,?,?,?,?)";
                                         pst = con.prepareStatement(insertBirdPair);
                                         pst.setString(1, order_id);
-                                        int realPrice = male.getPrice() * 20 / 100 + female.getPrice() * 20 / 100;
-                                        pst.setInt(2, realPrice);
+                                        long malePrice = (long) male.getPrice() * 20 / 100;
+                                        long femalePrice = (long) female.getPrice() * 20 / 100;
+                                        pst.setInt(2,  Math.round((int)(malePrice + femalePrice) / 100000) * 100000);
                                         pst.setString(3, male.getBird_id());
                                         pst.setString(4, female.getBird_id());
                                         pst.setString(5, "Chờ lấy chim");
                                         result = pst.executeUpdate();
                                         if (result == 0) {
-                                            checkBirdPair = false;
-                                            error = "Sản phẩm này không thể ghép cặp";
+                                            check = false;
                                         } else {
                                             String updateBirdMale = "UPDATE [Bird]\n"
                                                     + "SET [status] = N'Đang sinh sản'\n"
@@ -323,7 +320,7 @@ public class OrderDAO {
                                             pst.setString(1, male.getBird_id());
                                             result = pst.executeUpdate();
                                             if (result == 0) {
-                                                checkBirdPair = false;
+                                                check = false;
                                                 error = "Sản phẩm này không thể ghép cặp";
                                             }
                                             String updateBirdFemale = "UPDATE [Bird]\n"
@@ -333,8 +330,7 @@ public class OrderDAO {
                                             pst.setString(1, female.getBird_id());
                                             result = pst.executeUpdate();
                                             if (result == 0) {
-                                                checkBirdPair = false;
-                                                error = "Sản phẩm này không thể ghép cặp";
+                                                check = false;
                                             }
                                             String selectBirdPair = "SELECT TOP 1 [pair_id]\n"
                                                     + "FROM [BirdFarmShop].[dbo].[BirdPair]\n"
@@ -352,7 +348,7 @@ public class OrderDAO {
                                                 pst.setString(3, sqlDate);
                                                 result = pst.executeUpdate();
                                                 if (result == 0) {
-                                                    checkBirdPair = false;
+                                                    check = false;
                                                     break;
                                                 }
                                                 String insertBirdPairOrderItem = "INSERT INTO [OrderItem]([order_id],[pair_id],\n"
@@ -365,21 +361,21 @@ public class OrderDAO {
                                                 pst.setInt(4, 1);
                                                 result = pst.executeUpdate();
                                                 if (result == 0) {
-                                                    checkBirdPair = false;
+                                                    check = false;
                                                     break;
                                                 }
                                             } else {
-                                                checkBirdPair = false;
+                                                check = false;
                                                 break;
                                             }
                                         }
                                     } else {
-                                        checkBirdPair = false;
+                                        check = false;
                                         error = female.getBird_name() + " không thể ghép cặp";
                                         break;
                                     }
                                 } else {
-                                    checkBirdPair = false;
+                                    check = false;
                                     error = male.getBird_name() + " không thể ghép cặp";
                                     break;
                                 }
@@ -387,7 +383,7 @@ public class OrderDAO {
                         }
                     }
                 }
-                if (checkBird && checkAcessory && checkBirdPair) {
+                if (check) {
                     result = 1;
                     con.commit();
                 } else {
@@ -682,7 +678,7 @@ public class OrderDAO {
                 if (startDay != null && endDay != null) {
                     if (!startDay.isEmpty() && !endDay.isEmpty()) {
                         String dateFormatPattern = "\\d{4}-\\d{2}-\\d{2}";
-                        if(startDay.matches(dateFormatPattern) && endDay.matches(dateFormatPattern)){
+                        if (startDay.matches(dateFormatPattern) && endDay.matches(dateFormatPattern)) {
                             query += "AND ([order_date] >= '" + startDay + "' AND [order_date] <= '" + endDay + "')";
                         } else {
                             if (startDay.matches(dateFormatPattern)) {
@@ -876,4 +872,44 @@ public class OrderDAO {
         }
         return orderList;
     }
+
+    public int updateOrder(String order_id, int totalPrice) {
+        int result = 0;
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+               
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (stm != null) {
+                try {
+                    stm.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return result;
+    }
+
 }

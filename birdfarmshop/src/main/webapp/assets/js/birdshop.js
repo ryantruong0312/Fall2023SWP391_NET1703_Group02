@@ -303,6 +303,40 @@ $(".form-login").validate({
         }
     }
 });
+$("#update-tracking").validate({
+    rules: {
+        status: {
+            required: true
+        },
+        quantity_egg: {
+            required: true,
+             min: 0
+        },
+        quantity_young_bird: {
+            required: true,
+             min: 0
+        },
+        content: {
+            required: true
+        }
+    },
+    messages: {
+        status: {
+            required: 'Vui lòng chọn trạng thái'
+        },
+        quantity_egg: {
+            required: 'Vui lòng nhập số trứng',
+            min: 'Vui lòng nhập số trứng lớn hơn hoặc bằng 0'
+        },
+        quantity_young_bird: {
+            required: 'Vui lòng nhập số chim con',
+            min: 'Vui lòng nhập số chim non lớn hơn hoặc bằng 0'
+        },
+        content: {
+            required: 'Vui lòng nhập nội dung theo dõi'
+        }
+    }
+});
 $(".form-register").validate({
     rules: {
         name: {
@@ -363,16 +397,24 @@ $(".form-register").validate({
 });
 $('#form-createBird').validate({
     rules: {
-        nameBird: {
+        txtBreedId: {
             required: true
+        },
+        nameBird: {
+            required: true,
+            regex: /^(?!\s)[\s\S]*$/
         },
         filePicture: {
             required: true
         }
     },
     messages: {
+         txtBreedId: {
+            required: 'Vui lòng chọn giống vẹt'
+        },
         nameBird: {
-            required: 'Vui lòng nhập tên vẹt của bạn'
+            required: 'Vui lòng nhập tên vẹt của bạn',
+            regex: "Không nhập kí tự trắng đầu tiên"
         },
         filePicture: {
             required: 'Vui lòng chọn ảnh'

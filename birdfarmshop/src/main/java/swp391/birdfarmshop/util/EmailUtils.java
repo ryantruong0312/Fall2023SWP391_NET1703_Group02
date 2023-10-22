@@ -13,6 +13,7 @@ import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.model.OrderedAccessoryItem;
 import swp391.birdfarmshop.model.OrderedBirdItem;
+import swp391.birdfarmshop.model.OrderedBirdPairItem;
 import swp391.birdfarmshop.util.Constants;
 /**
  *
@@ -98,7 +99,7 @@ public class EmailUtils {
         return message;
     }
 
-    public static String sendOrderToCustomer(CartDTO c,CartDTO checkout, String order_id,
+    public static String sendOrderToCustomer(String name,CartDTO c,CartDTO checkout, String order_id,
     String name_receiver, String phone , String address
 
     
@@ -107,6 +108,7 @@ public class EmailUtils {
         String totalMoney = numberFormat.format(c.getCartTotalPrice());
         Map<String, OrderedBirdItem> birdList =  c.getBirdList();
         Map<String, OrderedAccessoryItem> accessoryList = checkout.getAccessoryList();
+        Map<String, OrderedBirdPairItem>  birdPair = c.getBirdPairList();
         String message = "<html>\n"
                 + "        <body>\n"
                 + "\n"
@@ -119,7 +121,7 @@ public class EmailUtils {
                 + "                    </tr>\n"
                 + "                    <tr style=\"padding-top: 10px\">\n"
                 + "                        <td style=\"padding-top: 30px;padding-left: 20px; font-weight: bold;font-size: 15px\">\n"
-                + "                            Xin chào Gia Phong,  \n"
+                + "                            Xin chào " + name + ",  \n"
                 + "                        </td>\n"
                 + "                    </tr>\n"
                 + "                    <tr style=\"padding-top: 10px\">\n"
@@ -181,6 +183,22 @@ public class EmailUtils {
                 }
             }
         }
+        for (OrderedBirdPairItem pb : birdPair.values()) {
+             String price = numberFormat.format(2000000);
+            if(pb.getBirdCustomer() != null){
+                  message += "                    <tr style=\"padding-top: 10px\">\n"
+                        + "                        <td style=\"padding-top: 15px; padding-right:40px ;padding-left: 20px;\">\n"
+                        + "                           - <p style=\"display: inline-block\"> "+1+" </p><p style=\"display: inline-block;margin-left: 3px;\"> " + pb.getBirdCustomer().getName() + ", "+pb.getBirdShop().getBird_name() +" phí nhân giống" +"</p> - <p style=\"display: inline-block\"> " + price + " ₫</p>"
+                        + "                        </td>\n"
+                        + "                    </tr>\n";
+            }else{
+                  message += "                    <tr style=\"padding-top: 10px\">\n"
+                        + "                        <td style=\"padding-top: 15px; padding-right:40px ;padding-left: 20px;\">\n"
+                        + "                           - <p style=\"display: inline-block\"> "+1+" </p><p style=\"display: inline-block;margin-left: 3px;\"> " + pb.getBirdMale().getBird_name()+ ", "+pb.getBirdFemale().getBird_name()  +" phí nhân giống" + "</p> - <p style=\"display: inline-block\"> " + price + " ₫</p>"
+                        + "                        </td>\n"
+                        + "                    </tr>\n";
+            }
+        }
         message +=  "                    <tr style=\"padding-top: 10px\">\n"
                 + "                        <td style=\"padding-top: 15px; padding-right: 40px ;padding-left: 20px;\">\n"
                 + "                            <p style=\"display: inline-block; font-weight: bold;font-size: 15px;\"> Tổng giá trị đơn hàng: </p> \n"
@@ -224,7 +242,7 @@ public class EmailUtils {
                 + "                    </tr>        \n"
                 + "                    <tr style=\"padding-top: 10px\">\n"
                 + "                        <td style=\"padding-top: 50px; padding-right: 40px ;padding-left: 20px; text-align: center; padding-bottom: 20px\">\n"
-                + "                            <a href=\"MainController?action=active&token=\"><button style=\"background-color: orange; border:none; line-height: 40px; color: white; font-weight: bold; padding: 0 10px; cursor: pointer\">Xem đơn hàng</button></a>\n"
+                + "                            <a href=\"MainController?action=NavToOrderItem&order_id="+order_id+"\"><button style=\"background-color: orange; border:none; line-height: 40px; color: white; font-weight: bold; padding: 0 10px; cursor: pointer\">Xem đơn hàng</button></a>\n"
                 + "                        </td>\n"
                 + "                    </tr>\n"
                 + "\n"

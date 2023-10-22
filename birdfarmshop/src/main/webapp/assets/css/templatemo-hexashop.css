@@ -2938,6 +2938,11 @@ register*/
     border-radius: 15px;  
     width: 300px;
 }
+.box-remove .input{
+    height: 35px!important; 
+    border: 1px solid grey!important;
+}
+
 #confirm-remove .box-remove p{
     font-size: 1.05rem;
 }
@@ -3067,7 +3072,7 @@ register*/
 }
 
 .card-pair .line-status{
-    height: 300px;
+    max-height: 550px;
 }
 .line-status .line-time{
      border-left: 1px solid #B9B9BC;    
@@ -3079,6 +3084,27 @@ register*/
 .line-status .line-time li{
     list-style: inside;
     font-size: 15px;
+}
+.line-status .img-status img{
+    width: 350px;
+    height: 350px;
+    transition: opacity 0.3s;
+}
+.line-status .img-button img{
+    width: 25px;
+    height: 25px;
+}
+.line-status .img-button img:hover{
+   cursor: pointer;
+}
+.line-status .img-more img{
+    width: 80px;
+    height: 80px;
+    margin: 0 10px;
+    transition: opacity 0.3s;
+}
+.img-status .slide-right{
+    transition: transform 0.3s ease;
 }
  .box-pair{
     border: 1px solid #B9B9BC; 
@@ -3166,4 +3192,8 @@ register*/
 }
 #confirm-payment .box-remove p{
    font-size: 1.1rem;
+}
+/*containter custom profile*/
+.container-custome{
+    max-width: 1300px!important;
 }

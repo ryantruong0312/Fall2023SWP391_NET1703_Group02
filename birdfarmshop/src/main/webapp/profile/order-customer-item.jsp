@@ -158,7 +158,7 @@
         <!-- Header End -->
         <main>
             <c:set value="${requestScope.ITEMLIST}" var="itemList"/>
-            <div class="container">
+            <div class="container container-custome">
                 <div class="row gutters">
                     <%@include file="../layout/sidebar-profile.jsp" %>
                     <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">

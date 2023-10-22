@@ -85,7 +85,7 @@ public class RenderShopOrdersController extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
-            if (user != null && user.getRole().equals("manager")) {
+            if (user != null && !user.getRole().equals("customer")) {
                 OrderDAO orderDao = new OrderDAO();
                 int recordsPerPage = 2;
                 int numberOfOrder = orderDao.numberOfOrder(date, startDay, endDay, status, search);

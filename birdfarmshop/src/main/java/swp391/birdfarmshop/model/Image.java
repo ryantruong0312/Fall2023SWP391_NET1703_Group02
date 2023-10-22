@@ -15,7 +15,7 @@ public class Image {
     private String bird_id;
     private String nest_id;
     private String accessory_id;
-
+    
     public Image() {
     }
 
@@ -75,6 +75,6 @@ public class Image {
     public void setAccessory_id(String accessory_id) {
         this.accessory_id = accessory_id;
     }
-    
-    
-}
+
+
+    }

@@ -21,8 +21,10 @@ import swp391.birdfarmshop.util.DBUtils;
  * @author tlminh
  */
 public class OrderItemDAO {
+
     public String error = null;
-    public ArrayList<OrderItemDTO> getItemOrder(String order_id) throws SQLException{
+
+    public ArrayList<OrderItemDTO> getItemOrder(String order_id) throws SQLException {
         ArrayList<OrderItemDTO> orderItemList = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
@@ -50,7 +52,7 @@ public class OrderItemDAO {
                     Bird bird = birdDao.getBirdById(bird_id);
                     BirdNest birdNest = bnDao.getBirdNestById(nest_id);
                     Accessory accessory = accessoryDao.getAccessoryByID(accessory_id);
-                    BirdPairDTO birdPair = bpDao.getBirdPairById(pair_id);
+                    BirdPairDTO birdPair = bpDao.getBirdPairByOrderId(order_id);
                     int unit_price = rs.getInt("unit_price");
                     int order_quantity = rs.getInt("order_quantity");
                     orderItem = new OrderItemDTO(order_item_id, order_id, null, bird, accessory, birdNest, birdPair, unit_price, order_quantity);
@@ -72,61 +74,246 @@ public class OrderItemDAO {
         return orderItemList;
     }
 
-    public int addNewBirdOrderItem(String birdId, String order_id) {
+    public int addNewPairOrderItem(String order_id, String male_bird_id, String female_bird_id, String accessory_id, int totalPrice, int pair_id) {
         int result = 0;
         Connection con = null;
         OrderItemDAO oid = new OrderItemDAO();
         BirdDAO bd = new BirdDAO();
         PreparedStatement pst = null;
         ResultSet rs = null;
-        boolean checkBird = false;
+        boolean check = false;
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                checkBird = true;
                 con.setAutoCommit(false);
-                String checkOrderBird = "SELECT [price]\n"
-                        + "      ,[discount]\n"
-                        + "FROM [BirdFarmShop].[dbo].[Bird]\n"
-                        + "WHERE [bird_id]= ?";
-                pst = con.prepareStatement(checkOrderBird);
-                pst.setString(1, birdId);
-                rs = pst.executeQuery();
-                if (rs != null && rs.next()) {
-                    int realPrice = rs.getInt("price");
-                    int discount = rs.getInt("discount");
-                    if (discount > 0) {
-                        realPrice = realPrice - realPrice * discount / 100;
-                    }
-                    String updateBird = "UPDATE [Bird]\n"
-                            + "SET [status] = N'�� b�n'\n"
-                            + "WHERE [bird_id] = ?";
-                    pst = con.prepareStatement(updateBird);
-                    pst.setString(1, birdId);
-                    result = pst.executeUpdate();
-                    if (result == 0) {
-                        checkBird = false;
-
-                    } else {
-                        String insertBird = "INSERT INTO [OrderItem]([order_id],[bird_id],\n"
-                                + "		  [unit_price],[order_quantity])\n"
-                                + "   VALUES(?,?,?,?)";
-                        pst = con.prepareStatement(insertBird);
-                        pst.setString(1, order_id);
-                        pst.setString(2, birdId);
-                        pst.setInt(3, realPrice);
-                        pst.setInt(4, 1);
+                if (male_bird_id != null) {
+                    check = true;
+                    String maleBird = "SELECT [price]\n"
+                            + "      ,[discount]\n"
+                            + "FROM [BirdFarmShop].[dbo].[Bird]\n"
+                            + "WHERE [bird_id]= ? AND [status]= ?";
+                    pst = con.prepareStatement(maleBird);
+                    pst.setString(1, male_bird_id);
+                    pst.setString(2, "Đang sinh sản");
+                    rs = pst.executeQuery();
+                    if (rs != null && rs.next()) {
+                        int realPrice = rs.getInt("price");
+                        int discount = rs.getInt("discount");
+                        if (discount > 0) {
+                            realPrice = realPrice - realPrice * discount / 100;
+                        }
+                        String updateMaleBird = "UPDATE [Bird]\n"
+                                + "SET [status] = N'Đã bán'\n"
+                                + "WHERE [bird_id] = ?";
+                        pst = con.prepareStatement(updateMaleBird);
+                        pst.setString(1, male_bird_id);
                         result = pst.executeUpdate();
                         if (result == 0) {
-                            checkBird = false;
+                            check = false;
+                        } else {
+                            String insertBird = "INSERT INTO [OrderItem]([order_id],[bird_id],\n"
+                                    + "		  [unit_price],[order_quantity])\n"
+                                    + "   VALUES(?,?,?,?)";
+                            pst = con.prepareStatement(insertBird);
+                            pst.setString(1, order_id);
+                            pst.setString(2, male_bird_id);
+                            pst.setInt(3, realPrice);
+                            pst.setInt(4, 1);
+                            result = pst.executeUpdate();
+                            if (result == 0) {
+                                check = false;
+                            }
+                        }
+                    } else {
+                        error = "Không tìm thấy sản phẩm";
+                        check = false;
+                    }
+                }
+                if (female_bird_id != null) {
+                    String checkFemaleBird = "SELECT [price]\n"
+                            + "      ,[discount]\n"
+                            + "FROM [BirdFarmShop].[dbo].[Bird]\n"
+                            + "WHERE [bird_id]= ? AND [status] = ?";
+                    pst = con.prepareStatement(checkFemaleBird);
+                    pst.setString(1, female_bird_id);
+                    pst.setString(2, "Đang sinh sản");
+                    rs = pst.executeQuery();
+                    if (rs != null && rs.next()) {
+                        int realPrice = rs.getInt("price");
+                        int discount = rs.getInt("discount");
+                        if (discount > 0) {
+                            realPrice = realPrice - realPrice * discount / 100;
+                        }
+                        String updateBird = "UPDATE [Bird]\n"
+                                + "SET [status] = N'Đã bán'\n"
+                                + "WHERE [bird_id] = ?";
+                        pst = con.prepareStatement(updateBird);
+                        pst.setString(1, female_bird_id);
+                        result = pst.executeUpdate();
+                        if (result == 0) {
+                            check = false;
+
+                        } else {
+                            String insertBird = "INSERT INTO [OrderItem]([order_id],[bird_id],\n"
+                                    + "		  [unit_price],[order_quantity])\n"
+                                    + "   VALUES(?,?,?,?)";
+                            pst = con.prepareStatement(insertBird);
+                            pst.setString(1, order_id);
+                            pst.setString(2, female_bird_id);
+                            pst.setInt(3, realPrice);
+                            pst.setInt(4, 1);
+                            result = pst.executeUpdate();
+                            if (result == 0) {
+                                check = false;
+                            }
+                        }
+                    } else {
+                        error = "Không tìm thấy sản phẩm";
+                        check = false;
+                    }
+                }
+                if (accessory_id != null) {
+                    check = true;
+                    String getAccessoryOrder = "SELECT [order_quantity]\n"
+                            + "FROM [BirdFarmShop].[dbo].[OrderItem]\n"
+                            + "WHERE [accessory_id]= ? AND [unit_price] = ? AND order_id = ?";
+
+                    pst = con.prepareStatement(getAccessoryOrder);
+                    pst.setString(1, accessory_id);
+                    pst.setInt(2, 0);
+                    pst.setString(3, order_id);
+                    rs = pst.executeQuery();
+                    if (rs != null && rs.next()) {
+                        int quantity = rs.getInt("order_quantity");
+                        String getStockAccessory = "SELECT [stock_quantity]\n"
+                                + "FROM [BirdFarmShop].[dbo].[Accessory]\n"
+                                + "WHERE [accessory_id] = ?";
+                        pst = con.prepareStatement(getStockAccessory);
+                        pst.setString(1, accessory_id);
+                        rs = pst.executeQuery();
+                        if (rs != null && rs.next()) {
+                            int numberAccessory = rs.getInt("stock_quantity");
+                            if (numberAccessory == 0) {
+                                error = "Sản phẩm này đã hết hàng";
+                                check = false;
+                            } else if (numberAccessory < 1) {
+                                check = false;
+                                error = "Sản phẩm này không đủ số lượng trong kho";
+                            } else {
+                                int newStock = numberAccessory - 1;
+                                String updateQuantity = "UPDATE [Accessory]\n"
+                                        + "SET [stock_quantity] = ?\n"
+                                        + "WHERE [accessory_id] = ?";
+                                pst = con.prepareStatement(updateQuantity);
+                                pst.setInt(1, newStock);
+                                pst.setString(2, accessory_id);
+                                result = pst.executeUpdate();
+                                if (result == 0) {
+                                    check = false;
+                                } else {
+                                    String updateOrder = "UPDATE [OrderItem]\n"
+                                            + "SET [order_quantity] = ?\n"
+                                            + "WHERE [order_id] = ? \n"
+                                            + "AND [accessory_id] = ?;";
+                                    pst = con.prepareStatement(updateOrder);
+                                    pst.setInt(1, quantity + 1);
+                                    pst.setString(2, order_id);
+                                    pst.setString(3, accessory_id);
+
+                                    result = pst.executeUpdate();
+                                    if (result == 0) {
+                                        check = false;
+                                    }
+                                }
+                            }
+                        } else {
+                            error = "Không tìm thấy sản phẩm";
+                            check = false;
+                        }
+                    } else {
+                        String getStockAccessory = "SELECT [stock_quantity]\n"
+                                + "FROM [BirdFarmShop].[dbo].[Accessory]\n"
+                                + "WHERE [accessory_id] = ?";
+                        pst = con.prepareStatement(getStockAccessory);
+                        pst.setString(1, accessory_id);
+                        rs = pst.executeQuery();
+                        if (rs != null && rs.next()) {
+                            int numberAccessory = rs.getInt("stock_quantity");
+                            if (numberAccessory == 0) {
+                                error = "Sản phẩm này đã hết hàng";
+                                check = false;
+                            } else if (numberAccessory < 1) {
+                                check = false;
+                                error = "Sản phẩm này không đủ số lượng trong kho";
+                            } else {
+                                int newStock = numberAccessory - 1;
+                                String updateQuantity = "UPDATE [Accessory]\n"
+                                        + "SET [stock_quantity] = ?\n"
+                                        + "WHERE [accessory_id] = ?";
+                                pst = con.prepareStatement(updateQuantity);
+                                pst.setInt(1, newStock);
+                                pst.setString(2, accessory_id);
+                                result = pst.executeUpdate();
+                                if (result == 0) {
+                                    check = false;
+                                } else {
+                                    String insertAccessory = "INSERT INTO [OrderItem]([order_id],\n"
+                                            + "		  [accessory_id],[unit_price],[order_quantity])\n"
+                                            + "               VALUES(?,?,?,?)";
+                                    pst = con.prepareStatement(insertAccessory);
+                                    pst.setString(1, order_id);
+                                    pst.setString(2, accessory_id);
+                                    pst.setInt(3, 0);
+                                    pst.setInt(4, 1);
+                                    result = pst.executeUpdate();
+                                    if (result == 0) {
+                                        check = false;
+                                    }
+                                }
+                            }
+                        } else {
+                            error = "Không tìm thấy sản phẩm";
+                            check = false;
                         }
                     }
-                } else {
-                    checkBird = false;
-                    error = "Không tìm thấy sản phẩm";
                 }
-
-                if (checkBird) {
+                if (totalPrice > 0) {
+                    String query = "SELECT [total_price]\n"
+                            + "FROM [BirdFarmShop].[dbo].[Order] WHERE [order_id] = ?";
+                    pst = con.prepareStatement(query);
+                    pst.setString(1, order_id);
+                    rs = pst.executeQuery();
+                    if (rs != null && rs.next()) {
+                        int oldPrice = rs.getInt("total_price");
+                        totalPrice += oldPrice;
+                        String update = "UPDATE [ORDER]\n"
+                                + "SET [total_price] = ?\n"
+                                + "WHERE [order_id] = ?";
+                        pst = con.prepareStatement(update);
+                        pst.setInt(1, totalPrice);
+                        pst.setString(2, order_id);
+                        result = pst.executeUpdate();
+                        if (result == 0) {
+                            check = false;
+                        }
+                    } else {
+                        check = false;
+                    }
+                }
+                if (pair_id > 0) {
+                    check = true;
+                    String updateStatusBirdPair = "UPDATE [BirdPair]\n"
+                            + "SET [status] = ?\n"
+                            + "WHERE [pair_id] = ?";
+                    pst = con.prepareStatement(updateStatusBirdPair);
+                    pst.setString(1, "Đã thanh toán");
+                    pst.setInt(2, pair_id);
+                    result = pst.executeUpdate();
+                    if (result == 0) {
+                        check = false;
+                    }
+                }
+                if (check) {
                     result = 1;
                     con.commit();
                 } else {
@@ -159,6 +346,7 @@ public class OrderItemDAO {
         }
         return result;
     }
+
     public ArrayList<OrderItemDTO> getItemByOrderId(String order_id) throws SQLException {
         ArrayList<OrderItemDTO> orderItemList = new ArrayList<>();
         Connection con = null;
@@ -172,11 +360,11 @@ public class OrderItemDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement( "SELECT Item.[order_item_id],Item.[order_id],[Order].[order_status]\n" +
-"                            ,Item.[bird_id],Item.[nest_id],Item.[accessory_id],Item.[pair_id],Item.[unit_price],Item.[order_quantity]\n" +
-"                            FROM [dbo].[OrderItem] AS Item\n" +
-"                            LEFT JOIN [dbo].[Order] ON Item.[order_id] = [Order].[order_id]\n" +
-"                            WHERE Item.[order_id] = ?");
+                stm = con.prepareStatement("SELECT Item.[order_item_id],Item.[order_id],[Order].[order_status]\n"
+                        + "                            ,Item.[bird_id],Item.[nest_id],Item.[accessory_id],Item.[pair_id],Item.[unit_price],Item.[order_quantity]\n"
+                        + "                            FROM [dbo].[OrderItem] AS Item\n"
+                        + "                            LEFT JOIN [dbo].[Order] ON Item.[order_id] = [Order].[order_id]\n"
+                        + "                            WHERE Item.[order_id] = ?");
                 stm.setString(1, order_id);
                 rs = stm.executeQuery();
                 while (rs.next()) {
