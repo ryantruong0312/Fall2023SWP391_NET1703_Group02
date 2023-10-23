@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import static java.sql.Types.NULL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -467,7 +468,7 @@ public class BirdDAO {
 
     public boolean addNewBird(String bird_id, String bird_name, String color, String birthday, String grown_age,
             String gender, String breed_id, String achievement, String reproduction_history, String price, String description,
-            String discount, String status) throws SQLException, ParseException {
+            String discount, String status, String image_url) throws SQLException, NumberFormatException, ParseException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -475,43 +476,51 @@ public class BirdDAO {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date utilDate = dateFormat.parse(birthday);
         Date sqlDate = new Date(utilDate.getTime());
+        ImageDAO imgDao = new ImageDAO();
         try {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement("INSERT INTO [dbo].[Bird]\n"
                         + "             ([bird_id],[bird_name],[color],[birthday],[grown_age],[gender],[breed_id],[achievement],"
-                        + "             [reproduction_history],[price],[description],[dad_bird_id],[mom_bird_id],[discount],[status])\n"
+                        + "             [reproduction_history],[price],[description],[discount],[status])\n"
                         + "             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) ");
                 stm.setString(1, bird_id);
                 stm.setString(2, bird_name);
-                stm.setString(3, color);
-                if (birthday != null) {
-                    stm.setDate(4, sqlDate);
-                }
-                if (grown_age != null) {
-                    stm.setInt(5, Integer.parseInt(grown_age));
-                }
-                if (gender.equals("Đực")) {
-                    sex = true;
+                if (color != null && !color.isBlank()) {
+                    stm.setString(3, color);
                 } else {
-                    sex = false;
+                    stm.setString(3, null);
                 }
+                stm.setDate(4, sqlDate);
+                stm.setInt(5, Integer.parseInt(grown_age));
+                sex = gender.equals("Đực");
                 stm.setBoolean(6, sex);
                 stm.setString(7, breed_id);
-                stm.setString(8, achievement);
-                if (reproduction_history != null) {
+                if(achievement != null && !achievement.isBlank()) {
+                    stm.setString(8, achievement);
+                } else {
+                    stm.setString(8, null);
+                }
+                if (reproduction_history != null && !reproduction_history.isEmpty()) {
                     stm.setInt(9, Integer.parseInt(reproduction_history));
+                } else {
+                    stm.setInt(9, 0);
                 }
-                if (price != null) {
-                    stm.setInt(10, Integer.parseInt(price));
+                stm.setInt(10, Integer.parseInt(price));
+                if(description != null && !description.isBlank()) {
+                    stm.setString(11, description);
+                } else {
+                    stm.setString(11, null);
                 }
-                stm.setString(11, description);
-                if (discount != null) {
+                if (discount != null && !discount.isEmpty()) {
                     stm.setInt(12, Integer.parseInt(discount));
+                } else {
+                    stm.setInt(12, 0);
                 }
                 stm.setString(13, status);
                 int row = stm.executeUpdate();
-                if (row > 0) {
+                boolean isAdd = imgDao.addNewImageBird(image_url, "1", bird_id);
+                if (row > 0 && isAdd) {
                     return true;
                 }
             }
@@ -532,7 +541,7 @@ public class BirdDAO {
 
     public List<BirdDTO> getAllBirds() throws SQLException {
         List<BirdDTO> birds = new ArrayList<>();
-        BirdDTO bird = new BirdDTO();
+        BirdDTO bird;
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -557,7 +566,7 @@ public class BirdDAO {
                     int age = rs.getInt("age");
                     int grown_age = rs.getInt("grown_age");
                     boolean sex = rs.getBoolean("gender");
-                    String gender = "";
+                    String gender;
                     if (sex) {
                         gender = "Đực";
                     } else {
@@ -693,5 +702,8 @@ public class BirdDAO {
 
         return false;
     }
-
+    public static void main(String[] args) throws SQLException, ParseException {
+        BirdDAO dao = new BirdDAO();
+        ArrayList<BirdDTO> birds = (ArrayList<BirdDTO>) dao.getAllBirds();
+    }
 }

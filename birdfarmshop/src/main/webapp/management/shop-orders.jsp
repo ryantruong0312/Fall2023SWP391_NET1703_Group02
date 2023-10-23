@@ -271,15 +271,15 @@
                                 <c:if test="${requestScope.noOfPages >= 1}">
                                     <ul>
                                         <li>
-                                            <a href="<%= fullURL %>page=1"><<</a>
+                                            <a href="<%= fullURL.replace(("&page="+request.getAttribute("page")),"") %>page=1"><<</a>
                                         </li>
                                         <c:forEach begin="1" end="${requestScope.noOfPages}" var="i">
                                         <li class="${i == requestScope.page ? "active":""}">
-                                            <a href="<%= fullURL %>page=${i}">${i}</a>
+                                            <a href="<%= fullURL.replace(("&page="+request.getAttribute("page")),"") %>page=${i}">${i}</a>
                                         </li>
                                         </c:forEach>
                                         <li>
-                                            <a href="<%= fullURL %>page=${noOfPages}">>></a>
+                                            <a href="<%= fullURL.replace(("&page="+request.getAttribute("page")),"") %>page=${noOfPages}">>></a>
                                         </li>
                                     </ul>
                                 </c:if>

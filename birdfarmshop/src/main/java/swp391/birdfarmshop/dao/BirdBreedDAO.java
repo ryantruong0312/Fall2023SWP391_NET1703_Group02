@@ -81,4 +81,32 @@ public class BirdBreedDAO {
         }
         return breed_name;
     }
+    
+    public String createNewBreed(String breed_name) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        String breed_id = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement( "INSERT INTO [dbo].[BirdBreed] ([breed_id],[breed_name],[breed_thumbnail])\n" +
+                                            "VALUES(?,?,?)");
+                breed_id = ("other" + breed_name.charAt(0) + breed_name.charAt(breed_name.length() - 1)).toLowerCase();
+                stm.setString(1, breed_id);
+                stm.setString(2, breed_name);
+                stm.setString(3, "https://hieutre.com/images/2021/12/vet-do-1.png");
+            }
+            rs = stm.executeQuery();
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return breed_id;
+    }
 }
