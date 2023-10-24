@@ -80,4 +80,42 @@ public class AccessoryCategoryDAO {
         }
         return category_name;
     }
+
+    public boolean createCategory(String txtCategoryid) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        int rs;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("INSERT INTO [BirdFarmShop].[dbo].[AccessoryCategory]\n"
+                        + "                             ([category_id]\n"
+                        + "                             ,[category_name]\n"
+                        + "                             ,[category_thumbnail])\n"
+                        + "                 VALUES (?, ?, ?)");
+                stm.setString(1, txtCategoryid);
+                stm.setString(2, "Khác");
+                stm.setString(3, "https://lzd-img-global.slatic.net/g/p/2860326d7ccced8d9803f392b9929ad2.jpg");
+                rs = stm.executeUpdate();
+                if (rs > 0) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+    
+    public static void main(String[] args) throws SQLException {
+        AccessoryCategoryDAO d = new AccessoryCategoryDAO();
+        System.out.println(d.createCategory("other"));
+    }
 }

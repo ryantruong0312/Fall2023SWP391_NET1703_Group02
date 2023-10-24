@@ -9,9 +9,11 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import static java.sql.Types.NULL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dto.BirdDTO;
@@ -467,7 +469,7 @@ public class BirdDAO {
 
     public boolean addNewBird(String bird_id, String bird_name, String color, String birthday, String grown_age,
             String gender, String breed_id, String achievement, String reproduction_history, String price, String description,
-            String discount, String status) throws SQLException, ParseException {
+            String discount, String status, String image_url) throws SQLException, NumberFormatException, ParseException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -475,43 +477,51 @@ public class BirdDAO {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date utilDate = dateFormat.parse(birthday);
         Date sqlDate = new Date(utilDate.getTime());
+        ImageDAO imgDao = new ImageDAO();
         try {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement("INSERT INTO [dbo].[Bird]\n"
                         + "             ([bird_id],[bird_name],[color],[birthday],[grown_age],[gender],[breed_id],[achievement],"
-                        + "             [reproduction_history],[price],[description],[dad_bird_id],[mom_bird_id],[discount],[status])\n"
+                        + "             [reproduction_history],[price],[description],[discount],[status])\n"
                         + "             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) ");
                 stm.setString(1, bird_id);
                 stm.setString(2, bird_name);
-                stm.setString(3, color);
-                if (birthday != null) {
-                    stm.setDate(4, sqlDate);
-                }
-                if (grown_age != null) {
-                    stm.setInt(5, Integer.parseInt(grown_age));
-                }
-                if (gender.equals("Đực")) {
-                    sex = true;
+                if (color != null && !color.isEmpty()) {
+                    stm.setString(3, color);
                 } else {
-                    sex = false;
+                    stm.setString(3, null);
                 }
+                stm.setDate(4, sqlDate);
+                stm.setInt(5, Integer.parseInt(grown_age));
+                sex = gender.equals("Đực");
                 stm.setBoolean(6, sex);
                 stm.setString(7, breed_id);
-                stm.setString(8, achievement);
-                if (reproduction_history != null) {
+                if(achievement != null && !achievement.isEmpty()) {
+                    stm.setString(8, achievement);
+                } else {
+                    stm.setString(8, null);
+                }
+                if (reproduction_history != null && !reproduction_history.isEmpty()) {
                     stm.setInt(9, Integer.parseInt(reproduction_history));
+                } else {
+                    stm.setInt(9, 0);
                 }
-                if (price != null) {
-                    stm.setInt(10, Integer.parseInt(price));
+                stm.setInt(10, Integer.parseInt(price));
+                if(description != null && !description.isEmpty()) {
+                    stm.setString(11, description);
+                } else {
+                    stm.setString(11, null);
                 }
-                stm.setString(11, description);
-                if (discount != null) {
+                if (discount != null && !discount.isEmpty()) {
                     stm.setInt(12, Integer.parseInt(discount));
+                } else {
+                    stm.setInt(12, 0);
                 }
                 stm.setString(13, status);
                 int row = stm.executeUpdate();
-                if (row > 0) {
+                boolean isAdd = imgDao.addNewImageBird(image_url, "1", bird_id);
+                if (row > 0 && isAdd) {
                     return true;
                 }
             }
@@ -532,7 +542,7 @@ public class BirdDAO {
 
     public List<BirdDTO> getAllBirds() throws SQLException {
         List<BirdDTO> birds = new ArrayList<>();
-        BirdDTO bird = new BirdDTO();
+        BirdDTO bird;
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -557,7 +567,7 @@ public class BirdDAO {
                     int age = rs.getInt("age");
                     int grown_age = rs.getInt("grown_age");
                     boolean sex = rs.getBoolean("gender");
-                    String gender = "";
+                    String gender;
                     if (sex) {
                         gender = "Đực";
                     } else {
@@ -639,40 +649,43 @@ public class BirdDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement("UPDATE [dbo].[Bird]\n"
-                        + "             SET [bird_id] = ?,[bird_name] = ?,[color] = ?,[birthday] = ?,[grown_age] = ?,[gender] = ?,[breed_id] = ?,"
-                        + "             [achievement] = ?, [reproduction_history] = ?,[price] = ?,[description] = ?,"
-                        + "             [discount] = ?,[status] = ?\n"
-                        + "             WHERE [bird_id] = ?");
-                stm.setString(1, bird_id);
-                stm.setString(2, bird_name);
-                stm.setString(3, color);
-                if (birthday != null) {
-                    stm.setDate(4, sqlDate);
-                }
-                if (grown_age != null) {
-                    stm.setInt(5, Integer.parseInt(grown_age));
-                }
-                if (gender.equals("Đực")) {
-                    sex = true;
-                } else {
-                    sex = false;
-                }
-                stm.setBoolean(6, sex);
-                stm.setString(7, breed_id);
-                stm.setString(8, achievement);
+                String query =          "UPDATE [dbo].[Bird]\n"
+                        + "             SET [bird_name] = ?,[color] = ?,[birthday] = ?,[grown_age] = ?,[gender] = ?,[breed_id] = ?,\n"
+                        + "             [price] = ?,[status] = ?,[reproduction_history] = ?,[discount] = ?,[achievement] = ?, "
+                        + "             [description] = ?\n"
+                        + "             WHERE [bird_id] = ?";
+                stm = con.prepareStatement(query);
+                bird_name = bird_name + " " + bird_id;
+                stm.setString(1, bird_name.trim());
+                stm.setString(2, color);
+                stm.setDate(3, sqlDate);
+                stm.setInt(4, Integer.parseInt(grown_age));
+                sex = gender.equals("Đực");
+                stm.setBoolean(5, sex);
+                stm.setString(6, breed_id);
+                stm.setInt(7, Integer.parseInt(price));
+                stm.setString(8, status);
                 if (reproduction_history != null) {
                     stm.setInt(9, Integer.parseInt(reproduction_history));
+                } else {
+                    stm.setInt(9, 0);
                 }
-                if (price != null) {
-                    stm.setInt(10, Integer.parseInt(price));
-                }
-                stm.setString(11, description);
                 if (discount != null) {
-                    stm.setInt(12, Integer.parseInt(discount));
+                    stm.setInt(10, Integer.parseInt(discount));
+                } else {
+                    stm.setInt(10, 0);
                 }
-                stm.setString(13, status);
-                stm.setString(14, bird_id);
+                if(achievement != null) {
+                    stm.setString(11, achievement);
+                } else {
+                    stm.setString(11, "");
+                }
+                if(description != null) {
+                    stm.setString(12, description);
+                } else {
+                    stm.setString(12, "");
+                }
+                stm.setString(13, bird_id);
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;
@@ -693,5 +706,9 @@ public class BirdDAO {
 
         return false;
     }
-
+    public static void main(String[] args) throws SQLException, ParseException {
+        BirdDAO dao = new BirdDAO();
+        boolean check = dao.updateBird("CL201", "Vẹt Cockatiel Lutino CL201", "xám, vàng, cam", "2023-10-23", "1", "Đực", "australian", null, "0", "2500000", null, "0", "Còn hàng");
+        System.out.println(check);
+    }
 }

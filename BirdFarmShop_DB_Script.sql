@@ -231,7 +231,8 @@ VALUES
 	('asian', N'Vẹt Châu Á', 'https://bizweb.dktcdn.net/100/326/708/files/top-8-loai-vet-mau-xanh-lam-5.jpg?v=1613884133577'),
 	('african', N'Vẹt Châu Phi', 'https://petmeshop.com/wp-content/uploads/2020/09/Vet-African-Grey-2.jpg'),
 	('amazon', N'Vẹt Nam Mỹ/Amazon', 'https://bizweb.dktcdn.net/100/326/708/files/blue-fronted-amazon-1-6bde88b3-11f7-49c7-8afb-4535ab69af5e.jpg?v=1614651669559'),
-	('macaw', N'Vẹt Nam Mỹ/Macaw', 'https://dustyshutt.files.wordpress.com/2011/06/hyacinth-macaw-0483a.jpg')
+	('macaw', N'Vẹt Nam Mỹ/Macaw', 'https://dustyshutt.files.wordpress.com/2011/06/hyacinth-macaw-0483a.jpg'),
+	('other', N'Khác', 'https://photo-cms-viettimes.zadn.vn/w800/Uploaded/2023/aohuooh/2019_01_02/27575948_131535550997960_413989668573413376_n_ylgi.jpg')
 GO
 
 INSERT INTO [AccessoryCategory] ([category_id],[category_name],[category_thumbnail])

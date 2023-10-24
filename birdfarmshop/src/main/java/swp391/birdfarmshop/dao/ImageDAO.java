@@ -332,7 +332,7 @@ public class ImageDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement("INSERT INTO [BirdFarmShop].[dbo].[Image] ([image_url], [is_thumbnail], [bird_id], [nest_id], [accessory_id])\n"
-                        + "VALUES(?, ?, ?, ?, ?)");
+                        + " VALUES(?, ?, ?, ?, ?)");
                 stm.setString(1, url);
                 stm.setBoolean(2, type);
                 stm.setString(3, null);
@@ -458,18 +458,18 @@ public class ImageDAO {
         return list;
     }
 
-    public boolean updateImageBird(String url, String bird_id) throws SQLException {
+    public boolean updateImageBird(String url, String bird_id, int image_id) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement("UPDATE [dbo].[Image]\n"
-                        + "                 SET [image_url] = ?\n"
-                        + "                 WHERE [bird_id] = ?");
+                stm = con.prepareStatement( "UPDATE [dbo].[Image]\n" +
+                                            "SET [image_url] = ?\n" +
+                                            "WHERE [bird_id] = ? AND [image_id] = ?");
                 stm.setString(1, url);
                 stm.setString(2, bird_id);
-
+                stm.setInt(3, image_id);
                 int rs = stm.executeUpdate();
                 if (rs > 0) {
                     return true;
@@ -515,6 +515,44 @@ public class ImageDAO {
         }        
         return false;
     }
+     public ArrayList<Image> getImagesFollowBirdId(String birdId) throws SQLException {
+        ArrayList<Image> images = new ArrayList<>();
+        Image img;
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement( "SELECT [image_id],[image_url],[is_thumbnail],[bird_id],[nest_id],[accessory_id]\n" +
+                                            "FROM [BirdFarmShop].[dbo].[Image]\n" +
+                                            "WHERE [bird_id] = ? ORDER BY [image_id] ASC");
+                stm.setString(1, birdId);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    int image_id = rs.getInt("image_id");
+                    String image_url = rs.getString("image_url");
+                    boolean is_thumbnail = rs.getBoolean("is_thumbnail");
+                    String nest_id = rs.getString("nest_id");
+                    String accessory_id = rs.getString("accessory_id");
+                    img = new Image(image_id, image_url, is_thumbnail, birdId, nest_id, accessory_id);
+                    images.add(img);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return images;
+    }
 
     public ArrayList<String> getImagesByPairId(int pairId) throws SQLException {
         ArrayList<String> urls = new ArrayList<>();
@@ -546,4 +584,5 @@ public class ImageDAO {
         }
         return urls;
     }
+
 }
