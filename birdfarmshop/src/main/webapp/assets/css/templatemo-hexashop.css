@@ -3197,3 +3197,9 @@ register*/
 .container-custome{
     max-width: 1300px!important;
 }
+/*report shop*/
+#report{
+    padding-top: 130px;
+    padding-left: 100px;
+    padding-right: 100px;
+}

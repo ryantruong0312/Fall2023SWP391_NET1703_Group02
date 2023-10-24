@@ -410,7 +410,7 @@
                                          <option class="p-2" value="">Chọn trạng thái</option>
                                         <option class="p-2" ${requestScope.BIRDPAIR.status == 'Chờ lấy chim' ? 'selected':''} value="Chờ lấy chim">Chờ lấy chim</option>
                                         <option class="p-2" ${requestScope.BIRDPAIR.status == 'Đang ghép cặp' ? 'selected':''} value="Đang ghép cặp">Đang ghép cặp</option>
-                                        <option class="p-2" ${requestScope.BIRDPAIR.status == 'Đang sinh sản' ? 'selected':''} value="Đang sinh sản">Đang sinh sản</option>
+                                        <option class="p-2" ${requestScope.BIRDPAIR.status == 'Đã sinh sản' ? 'selected':''} value="Đã sinh sản">Đã sinh sản</option>
                                         <option class="p-2" ${requestScope.BIRDPAIR.status == 'Đã ấp nở' ? 'selected':''} value="Đã ấp nở">Đã ấp nở</option>
                                     </select>
                                     <div class="d-flex">
