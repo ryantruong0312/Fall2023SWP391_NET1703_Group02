@@ -336,7 +336,7 @@ public class ImageDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement("INSERT INTO [BirdFarmShop].[dbo].[Image] ([image_url], [is_thumbnail], [bird_id], [nest_id], [accessory_id])\n"
-                        + "VALUES(?, ?, ?, ?, ?)");
+                        + " VALUES(?, ?, ?, ?, ?)");
                 stm.setString(1, url);
                 stm.setBoolean(2, type);
                 stm.setString(3, null);

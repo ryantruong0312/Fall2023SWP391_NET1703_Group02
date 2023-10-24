@@ -14,6 +14,7 @@ public class AccessoryDTO {
 
     private String accessory_id;
     private String accessory_name;
+    private String category_id;
     private int unit_price;
     private int stock_quantity;
     private String description;
@@ -24,9 +25,10 @@ public class AccessoryDTO {
     public AccessoryDTO() {
     }
 
-    public AccessoryDTO(String accessory_id, String accessory_name, int unit_price, int stock_quantity, String description, int discount, String status, ArrayList<String> image_url) {
+    public AccessoryDTO(String accessory_id, String accessory_name, String category_id, int unit_price, int stock_quantity, String description, int discount, String status, ArrayList<String> image_url) {
         this.accessory_id = accessory_id;
         this.accessory_name = accessory_name;
+        this.category_id = category_id;
         this.unit_price = unit_price;
         this.stock_quantity = stock_quantity;
         this.description = description;
@@ -98,7 +100,13 @@ public class AccessoryDTO {
     public void setImage_url(ArrayList<String> image_url) {
         this.image_url = image_url;
     }
-    
-    
+
+    public String getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(String category_id) {
+        this.category_id = category_id;
+    }
     
 }

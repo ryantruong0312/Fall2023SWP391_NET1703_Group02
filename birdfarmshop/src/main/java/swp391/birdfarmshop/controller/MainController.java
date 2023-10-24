@@ -83,8 +83,6 @@ public class MainController extends HttpServlet {
     private static final String DEST_CREATE_ACCOUNT = "CreateAccountController";
     private static final String ACT_ADD_BIRD = "AddNewBird";
     private static final String DEST_ADD_BIRD = "AddNewBirdController";
-    private static final String ACT_NAV_ADD_ACCESSORY = "NavToAddAccessory";
-    private static final String DEST_NAV_ADD_ACCESSORY = "RenderAddAccessoryController";
     private static final String ACT_NAV_UPDATE_ACCESSORY = "NavToUpdateAccessory";
     private static final String DEST_NAV_UPDATE_ACCESSORY = "RenderUpdateAccessoryController";
     private static final String ACT_CREATE_BIRDS_CUSTOMER = "NavToCreateBirdCustomer";
@@ -240,9 +238,6 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_CREATE_BIRDS_CUSTOMER:
                     url = DEST_CREATE_BIRDS_CUSTOMER;
-                    break;
-                case ACT_NAV_ADD_ACCESSORY:
-                    url = DEST_NAV_ADD_ACCESSORY;
                     break;
                 case ACT_NAV_UPDATE_ACCESSORY:
                     url = DEST_NAV_UPDATE_ACCESSORY;

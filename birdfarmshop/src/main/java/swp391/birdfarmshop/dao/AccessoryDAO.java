@@ -202,13 +202,14 @@ public class AccessoryDAO {
                 while (rs.next()) {
                     String id = rs.getString("accessory_id");
                     String accessory_name = rs.getString("accessory_name");
+                    String category_id = rs.getString("category_id");
                     int unit_price = rs.getInt("unit_price");
                     int stock_quantity = rs.getInt("stock_quantity");
                     String description = rs.getString("description");
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     ArrayList<String> image_url = ID.getImagesByAccessoryId(accessory_id);
-                    a = new AccessoryDTO(id, accessory_name, unit_price, stock_quantity, description, discount, status, image_url);
+                    a = new AccessoryDTO(id, accessory_name, category_id, unit_price, stock_quantity, description, discount, status, image_url);
                 }
             }
         } catch (ClassNotFoundException e) {
