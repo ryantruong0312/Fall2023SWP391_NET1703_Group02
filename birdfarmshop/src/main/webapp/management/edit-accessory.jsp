@@ -59,102 +59,9 @@
     </head>
 
     <body>
-        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
-        <c:url var="toHome" value="MainController?action=NavToHome"/>
-        <c:url var="toLogin" value="MainController?action=NavToLogin"/>
-        <c:url var="logout" value="MainController?action=Logout"/>
-        <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
-        <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
-        <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
-        <c:url var="toCart" value="MainController?action=NavToCart"/>
-        <c:url var="toProfile" value="MainController?action=NavToProfile"/>
-        <c:url var="toOrders" value="MainController?action=NavToOrders"/>
-        <c:url var="toShopOrders" value="MainController?action=NavToShopOrders"/>
-        <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
-        <c:url var="toReports" value="MainController?action=NavToReports"/>
-        <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
-
-        <!-- ***** Preloader Start ***** -->
-        <div id="preloader">
-            <div class="jumper">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>  
-        <!-- ***** Preloader End ***** -->
-
-        <!-- ***** Header Area Start ***** -->
-        <header class="header-area header-sticky">
-            <div class="container home-custom">
-                <div class="row">
-                    <div class="col-12">
-                        <nav class="main-nav">
-                            <!-- ***** Logo Start ***** -->
-                            <a href="#" class="logo scroll-to-section">
-                                <img src="assets/images/logo.png">
-                            </a>
-                            <!-- ***** Logo End ***** -->
-                            <!-- ***** Menu Start ***** -->
-                            <ul class="nav">
-                                <li class="scroll-to-section"><a href="${pageScope.toHome}" >Trang chủ</a></li>
-                                    <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
-                                    <li class="submenu"><a href="">Sản phẩm</a>
-                                        <ul>
-                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                        <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
-                                        <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                        </c:if>
-                                        <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
-                                        <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
-                                        <li id="show-cart" class="scroll-to-section">
-                                            <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">8</div>
-                                        </li>
-
-                                        <c:if test="${sessionScope.LOGIN_USER == null}">
-                                            <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
-                                            </c:if>
-                                        </c:if>
-                                    </c:if>
-                                    <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
-                                    <li class="submenu"><a href="">Sản phẩm</a>
-                                        <ul>
-                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
-                                    </c:if>
-                                    <c:if test="${sessionScope.LOGIN_USER != null}">
-                                    <li class="submenu"><a class="user-name text-right" href="#">${LOGIN_USER.fullName}</a>
-                                        <ul>
-                                            <li><a href="${pageScope.toProfile}&username=${sessionScope.LOGIN_USER.username}">Cá nhân</a></li>
-                                            <li><a href="${pageScope.logout}">Đăng xuất</a></li>
-                                        </ul>
-                                    </li>
-                                </c:if>
-                            </ul>           
-                            <a class='menu-trigger'>
-                                <span>Menu</span>
-                            </a>
-                            <!-- ***** Menu End ***** -->
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!-- ***** Header Area End ***** -->
-
+        <!-- Header Start -->
+        <%@include file="../layout/header.jsp" %>
+        <!-- Header End -->
         <!-- ***** Main Banner Area Start ***** -->
         <div class="page-heading" id="top">
             <div class="container">
@@ -182,7 +89,7 @@
                         </c:if>
                     </div>
                 </div>
-                <form action="MainController" method="GET">
+                <form action="MainController" method="POST" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-outline mt-2">
@@ -242,20 +149,21 @@
                                 <textarea class="form-control" id="txtDescribe" name="txtDescribe" rows="5" cols="50" style="width: 100%px; height: 142px; color: #0c5460;">${a.description}</textarea>
                             </div>
 
-<!--                            <div class="form-outline mt-2">
+                            <div class="form-outline mt-2">
                                 <label>Hình ảnh sản phẩm (Bắt buộc)</label>
-                                <input style="color: #0c5460;" type="text" name="txtImage"  class="input form-control" value="${url_thumnail}" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" required/>
-                            </div>-->
+                                <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage"  class="input form-control" value="${url_thumnail}" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" required/>
+                            </div>
 
-                           <!-- <c:if test="${requestScope.list != null}">
+                            <c:if test="${requestScope.list != null}">
                                 <c:forEach var="image" items="${list}" varStatus="loop">
                                     <div class="form-outline mt-2">
                                         <label>Hình ảnh sản phẩm</label>
-                                        <input style="color: #0c5460;" type="text" name="txtImage_${loop.index + 1}" class="input form-control" value="${image.image_url}" required/>
+                                        <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage_${loop.index + 1}" class="input form-control" value="${image.image_url}" required/>
                                         <input type="hidden" name="Image_id_${loop.index + 1}" value="${image.image_id}">
                                     </div>
                                 </c:forEach>
-                            </c:if>-->
+                            </c:if>
+                            
                         </div>
                     </div>
                     <input type="hidden" name="btAction" value="Update">

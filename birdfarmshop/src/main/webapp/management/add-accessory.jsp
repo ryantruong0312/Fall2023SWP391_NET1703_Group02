@@ -60,107 +60,9 @@
     </style>
 
     <body>
-        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
-        <c:url var="toHome" value="MainController?action=NavToHome"/>
-        <c:url var="toLogin" value="MainController?action=NavToLogin"/>
-        <c:url var="logout" value="MainController?action=Logout"/>
-        <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
-        <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
-        <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
-        <c:url var="toCart" value="MainController?action=NavToCart"/>
-        <c:url var="toProfile" value="MainController?action=NavToProfile"/>
-        <c:url var="toOrders" value="MainController?action=NavToOrders"/>
-        <c:url var="toShopOrders" value="MainController?action=NavToShopOrders"/>
-        <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
-        <c:url var="toReports" value="MainController?action=NavToReports"/>
-        <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
-
-        <!-- ***** Preloader Start ***** -->
-        <div id="preloader">
-            <div class="jumper">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>  
-        <!-- ***** Preloader End ***** -->
-
-        <!-- ***** Header Area Start ***** -->
-        <header class="header-area header-sticky">
-            <div class="container home-custom">
-                <div class="row">
-                    <div class="col-12">
-                        <nav class="main-nav">
-                            <!-- ***** Logo Start ***** -->
-                            <a href="#" class="logo scroll-to-section">
-                                <img src="assets/images/logo.png">
-                            </a>
-                            <!-- ***** Logo End ***** -->
-                            <!-- ***** Menu Start ***** -->
-                            <ul class="nav">
-                                <li class="scroll-to-section"><a href="${pageScope.toHome}" >Trang chủ</a></li>
-                                    <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
-                                    <li class="submenu"><a href="">Sản phẩm</a>
-                                        <ul>
-                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                        <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
-                                        <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                        </c:if>
-                                        <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
-                                        <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
-                                        <li id="show-cart" class="scroll-to-section">
-                                            <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">
-                                                <c:choose>
-                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
-                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
-                                                </c:choose>
-                                            </div>
-                                        </li>
-
-                                        <c:if test="${sessionScope.LOGIN_USER == null}">
-                                            <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
-                                            </c:if>
-                                        </c:if>
-                                    </c:if>
-                                    <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
-                                    <li class="submenu"><a href="">Sản phẩm</a>
-                                        <ul>
-                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
-                                    </c:if>
-                                    <c:if test="${sessionScope.LOGIN_USER != null}">
-                                    <li class="submenu"><a class="user-name text-right" href="#">${LOGIN_USER.fullName}</a>
-                                        <ul>
-                                            <li><a href="${pageScope.toProfile}&username=${sessionScope.LOGIN_USER.username}">Cá nhân</a></li>
-                                            <li><a href="${pageScope.logout}">Đăng xuất</a></li>
-                                        </ul>
-                                    </li>
-                                </c:if>
-                            </ul>           
-                            <a class='menu-trigger'>
-                                <span>Menu</span>
-                            </a>
-                            <!-- ***** Menu End ***** -->
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!-- ***** Header Area End ***** -->
-
+        <!-- Header Start -->
+        <%@include file="../layout/header.jsp" %>
+        <!-- Header End -->
         <!-- ***** Main Banner Area Start ***** -->
         <div class="page-heading" id="top">
             <div class="container">
@@ -187,18 +89,6 @@
                                 <input style="color: #0c5460;;" type="text" name="txtAccessoryID" class="input form-control" pattern="[A-Z]{2}\d{3}" placeholder="Nhập ID của phụ kiện" value="" required/>
                             </div>
 
-                            <c:if test="${requestScope.MESSAGEERROR != null}">
-                                <script>
-                                    alert("${requestScope.MESSAGEERROR}");
-                                </script>
-                            </c:if>
-
-                            <c:if test="${requestScope.MESSAGE != null}">
-                                <script>
-                                    alert("${requestScope.MESSAGE}");
-                                </script>
-                            </c:if>
-
                             <div class="form-outline mt-2">
                                 <label>Tên</label>
                                 <input style="color: #0c5460;;" type="text" id="createAccountForm" name="txtAccessoryName" class="input form-control" placeholder="Nhập tên phụ kiện" required/>
@@ -209,8 +99,11 @@
                                 <select name="txtCategoryID" class="input form-control" style="color: #0c5460;">
                                     <option value="" disabled selected>Chọn phụ kiện</option>
                                     <c:forEach items="${ac}" var="a">
-                                        <option value="${a.category_id}">${a.category_name}</option>
+                                        <c:if test="${a.category_id ne 'other'}">
+                                            <option value="${a.category_id}">${a.category_name}</option>
+                                        </c:if>
                                     </c:forEach>
+                                    <option value="other">Khác</option>
                                 </select>
                             </div>
 
@@ -363,43 +256,43 @@
     </body>
 
     <script>
-                                    $(document).ready(function () {
-                                        // Get a reference to the search input element
-                                        var searchInput = $("#searchInput");
-                                        // Add an event listener for input changes
-                                        searchInput.on("input", function () {
-                                            var keyword = searchInput.val().toLowerCase();
+        $(document).ready(function () {
+            // Get a reference to the search input element
+            var searchInput = $("#searchInput");
+            // Add an event listener for input changes
+            searchInput.on("input", function () {
+                var keyword = searchInput.val().toLowerCase();
 
-                                            // Loop through each row in the table
-                                            $("tbody tr").each(function () {
-                                                var row = $(this);
-                                                // Check if any cell in the row contains the keyword
-                                                if (row.text().toLowerCase().includes(keyword)) {
-                                                    row.show(); // Show the row if keyword found
-                                                } else {
-                                                    row.hide(); // Hide the row if keyword not found
-                                                }
-                                            });
-                                        });
+                // Loop through each row in the table
+                $("tbody tr").each(function () {
+                    var row = $(this);
+                    // Check if any cell in the row contains the keyword
+                    if (row.text().toLowerCase().includes(keyword)) {
+                        row.show(); // Show the row if keyword found
+                    } else {
+                        row.hide(); // Hide the row if keyword not found
+                    }
+                });
+            });
 
-                                        // Show the modal when the "Cấp mới tài khoản" button is clicked
-                                        $("#createAccountBtn").click(function () {
-                                            $("#createAccountModal").modal("show");
-                                        });
-                                        // Handle form submission
-                                        $("#submitAccountBtn").click(function () {
-                                            // Get the form data
-                                            const fullname = $("#fullname").val();
-                                            const username = $("#username").val();
+            // Show the modal when the "Cấp mới tài khoản" button is clicked
+            $("#createAccountBtn").click(function () {
+                $("#createAccountModal").modal("show");
+            });
+            // Handle form submission
+            $("#submitAccountBtn").click(function () {
+                // Get the form data
+                const fullname = $("#fullname").val();
+                const username = $("#username").val();
 
-                                            // You can perform validation here if needed
+                // You can perform validation here if needed
 
-                                            // Close the modal
-                                            $("#createAccountModal").modal("hide");
+                // Close the modal
+                $("#createAccountModal").modal("hide");
 
-                                            // Send the form data to the server via AJAX or perform any desired action
-                                        });
-                                    });
+                // Send the form data to the server via AJAX or perform any desired action
+            });
+        });
     </script>
 
     <script>

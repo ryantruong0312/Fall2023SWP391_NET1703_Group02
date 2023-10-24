@@ -5,7 +5,6 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dao.AccessoryCategoryDAO;
 import swp391.birdfarmshop.dao.AccessoryDAO;
-import swp391.birdfarmshop.dao.ImageDAO;
 import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.AccessoryCategory;
 import swp391.birdfarmshop.model.User;
@@ -65,7 +63,7 @@ public class AddAccessoryController extends HttpServlet {
                         ArrayList<Accessory> a = d.getAccessories();
                         for (Accessory id : a) {
                             if (id.getAccessory_id().equalsIgnoreCase(txtAccessoryID)) {
-                                request.setAttribute("MESSAGEERROR", "Mã sản phẩm đã tồn tại");
+                                request.setAttribute("ERROR", "Mã sản phẩm đã tồn tại");
                                 request.getRequestDispatcher("management/add-accessory.jsp").forward(request, response);
                             }
                         }
@@ -79,43 +77,24 @@ public class AddAccessoryController extends HttpServlet {
                         Part txtImage_1 = request.getPart("txtImage_1");
                         Part txtImage_2 = request.getPart("txtImage_2");
                         Part txtImage_3 = request.getPart("txtImage_3");
-
-                        ImageDAO i = new ImageDAO();
-                        boolean rs = d.insertAccessory(txtAccessoryID, txtAccessoryName, txtCategoryID, txtPrice, txtStockQuantity, txtDescribe, txtDiscount);
-//
-                        if (txtImage_1.getSize() < 1048576) {
-                            String file = ImageUtils.getFileName(txtImage_1);
-                            LocalTime currentTime = LocalTime.now();
-                            String nameImage = currentTime.getNano() + file;
-                            String img_url = Constants.C3_HOST + nameImage;
-                            S3Utils.uploadFile(nameImage, txtImage_1.getInputStream());
-                            boolean checkImage = i.addNewAccessoryImage(img_url, true, txtAccessoryID);
+                        
+                        String imageURL_1 = null;
+                        String imageURL_2 = null;
+                        String imageURL_3 = null;
+                        
+                        if (txtImage_1.getSize() < 1048576 && txtImage_2.getSize() < 1048576 && txtImage_3.getSize() < 1048576) {
+                            imageURL_1 = returnUrl(txtImage_1);
+                            imageURL_2 = returnUrl(txtImage_2);
+                            imageURL_3 = returnUrl(txtImage_3);
                         }
+                        
+                        boolean rs = d.insertAccessory(txtAccessoryID, txtAccessoryName, txtCategoryID, txtPrice, txtStockQuantity, txtDescribe, txtDiscount, imageURL_1, imageURL_2, imageURL_3);
 
-                        if (txtImage_2.getSize() < 1048576) {
-                            String file = ImageUtils.getFileName(txtImage_2);
-                            LocalTime currentTime = LocalTime.now();
-                            String nameImage = currentTime.getNano() + file;
-                            String img_url = Constants.C3_HOST + nameImage;
-                            S3Utils.uploadFile(nameImage, txtImage_2.getInputStream());
-                            boolean checkImage = i.addNewAccessoryImage(img_url, false, txtAccessoryID);
-                        }
-
-                        if (txtImage_3.getSize() < 1048576) {
-                            String file = ImageUtils.getFileName(txtImage_3);
-                            LocalTime currentTime = LocalTime.now();
-                            String nameImage = currentTime.getNano() + file;
-                            String img_url = Constants.C3_HOST + nameImage;
-                            S3Utils.uploadFile(nameImage, txtImage_3.getInputStream());
-                            boolean checkImage = i.addNewAccessoryImage(img_url, false, txtAccessoryID);
-                        }
-                      
-                        if (rs) {
-                            String reminder = "Thêm phụ kiện thành công";
-                            request.setAttribute("MESSAGE", reminder);
-                            if (type.equals("continue")) {
+                        if(rs){
+                            session.setAttribute("SUCCESS", "Thêm mới sản phẩm thành công");
+                            if(type.equals("continue")){
                                 url = SUCCESS;
-                            } else if (type.equals("close")) {
+                            }else if(type.equals("close")){
                                 url = "RenderAccessoryController";
                             }
                         }
@@ -169,5 +148,14 @@ public class AddAccessoryController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    public String returnUrl(Part txtImage) throws IOException {
+        String file = ImageUtils.getFileName(txtImage);
+        LocalTime currentTime = LocalTime.now();
+        String nameImage = currentTime.getNano() + file;
+        String img_url = Constants.C3_HOST + nameImage;
+        S3Utils.uploadFile(nameImage, txtImage.getInputStream());
+        return img_url;
+    }
 
 }

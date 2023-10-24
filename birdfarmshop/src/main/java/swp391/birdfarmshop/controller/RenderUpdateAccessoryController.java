@@ -7,11 +7,14 @@ package swp391.birdfarmshop.controller;
 import java.io.IOException;
 //import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.time.LocalTime;
 import java.util.List;
 import swp391.birdfarmshop.dao.AccessoryCategoryDAO;
 import swp391.birdfarmshop.dao.AccessoryDAO;
@@ -21,12 +24,20 @@ import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.AccessoryCategory;
 import swp391.birdfarmshop.model.Image;
 import swp391.birdfarmshop.model.User;
+import swp391.birdfarmshop.util.Constants;
+import swp391.birdfarmshop.util.ImageUtils;
+import swp391.birdfarmshop.util.S3Utils;
 
 /**
  *
  * @author Admin
  */
 @WebServlet(name = "RenderUpdateAccessoryController", urlPatterns = {"/RenderUpdateAccessoryController"})
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024,//1mb
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 11
+)
 public class RenderUpdateAccessoryController extends HttpServlet {
 
     private static final String ERROR = "errorpages/error.jsp";
@@ -83,12 +94,25 @@ public class RenderUpdateAccessoryController extends HttpServlet {
                         String txtStockQuantity = request.getParameter("txtStockQuantity");
                         String txtDescribe = request.getParameter("txtDescribe");
                         String txtDiscount = request.getParameter("txtDiscount");
-                        String txtImage = request.getParameter("txtImage");
+                        
+                        Part txtImage = request.getPart("txtImage");
+                        Part txtImage_1 = request.getPart("txtImage_1");
+                        Part txtImage_2 = request.getPart("txtImage_2");
+                        
+                        String imageURL_1 = null;
+                        String imageURL_2 = null;
+                        String imageURL_3 = null;
+                        
+                        if (txtImage.getSize() < 1048576 && txtImage_1.getSize() < 1048576 && txtImage_2.getSize() < 1048576) {
+                            imageURL_1 = returnUrl(txtImage);
+                            imageURL_2 = returnUrl(txtImage_1);
+                            imageURL_3 = returnUrl(txtImage_2);
+                        }
 
 //                        String txtImage_1 = request.getParameter("txtImage_1");
 //                        String txtImage_2 = request.getParameter("txtImage_2");
-//                        String Image_id_1 = request.getParameter("Image_id_1");
-//                        String Image_id_2 = request.getParameter("Image_id_2");
+                        String Image_id_1 = request.getParameter("Image_id_1");
+                        String Image_id_2 = request.getParameter("Image_id_2");
 //
                         boolean rs = d.updateAccessory(txtAccessoryID, txtAccessoryName, txtCategoryID, txtPrice, txtStockQuantity, txtDescribe, txtDiscount);
 //                        request.setAttribute("im", txtImage);
@@ -175,5 +199,14 @@ public class RenderUpdateAccessoryController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    public String returnUrl(Part txtImage_1) throws IOException {
+        String file = ImageUtils.getFileName(txtImage_1);
+        LocalTime currentTime = LocalTime.now();
+        String nameImage = currentTime.getNano() + file;
+        String img_url = Constants.C3_HOST + nameImage;
+        S3Utils.uploadFile(nameImage, txtImage_1.getInputStream());
+        return img_url;
+    }
 
 }
