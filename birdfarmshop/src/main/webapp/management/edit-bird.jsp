@@ -26,7 +26,22 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-
+        <style>
+            .column-container {
+                display: inline-block;
+                flex-direction: row;
+                width: 49.5%;
+            }
+            .column-container input {
+                width: 100%;
+            }
+            .form-add img {
+                float: right; 
+                width: 100px; 
+                height: 75px; 
+                border: 1px solid;
+            }
+        </style>
     </head>
 
     <body>
@@ -39,7 +54,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="inner-content">
-                            <h2>Vẹt cảnh</h2>
+                            <h2>Cập nhật sản phẩm</h2>
                             <span>Những chú vẹt thông minh và đáng yêu nhất đã có mặt tại V.E.T</span>
                         </div>
                     </div>
@@ -54,117 +69,131 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-heading">
-                            <h2>Cập nhật sản phẩm</h2>
+                            <h2></h2>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h4 style="text-align: center; color: red;"><c:out value="${requestScope.MESSAGE}"/></h4>
-                    </div>
-                </div>
                 <c:set var="birdDetails" value="${requestScope.BIRD}"/>
-                <form action="MainController" method="GET" enctype="multipart/form-data">
+                <form action="UpdateBirdController" method="POST" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-6 form-custom">
                             <div class="form-add mb-3">
-                                <label>Giống loài</label>
-                                <ol class="custom-columns">
-                                    <c:forEach var="breed" items="${requestScope.BREED}" varStatus="counter">
-                                        <li><input type="radio" id="${breed.key}" ${birdDetails.breed_id == breed.key ? "checked":""} name="txtBirdBreed" value="${breed.key}" onclick="hideInput()"/><label for="${breed.key}">${breed.value}</label></li>
+                                <input type="hidden" name="bird_id" value="${birdDetails.bird_id}"/>
+                                <div class="form-add mb-3">
+                                    <label>Giống loài</label>
+                                    <select name="txtBirdBreed" class="input form-control" style="color: #0c5460;" required>
+                                        <c:forEach var="breed" items="${requestScope.BREED}" varStatus="counter">
+                                        <option value="${breed.key}" ${birdDetails.breed_id == breed.key ? "selected":""}>${breed.value}</option>
                                         </c:forEach>
-                                    <li><input type="radio" id="other" onclick="showInput()" name="txtBirdBreed"/><label for="other">Khác</label></li>
-                                </ol>
-                                <div id="otherInput" style="display: none;">    
-                                    <input type="text" id="otherBreed" class="input form-control"  name="txtOtherBirdBreed" pattern="[A-Za-z]+" value="" placeholder="Nhập giống loài khác" />
+                                        <option value="other">Khác</option>
+                                    </select>
                                 </div>
                             </div>
-
                             <div class="form-add mb-3">
                                 <label>Giới tính</label>
-                                <ol class="custom-columns">
-                                    <li><input type="radio" id="gender-1" ${birdDetails.gender == "Đực" ? "checked":""} name="txtBirdGender" value="Đực"/><label for="gender-1">Trống</label></li>
-                                    <li><input type="radio" id="gender-0" ${birdDetails.gender == "Cái" ? "checked":""} name="txtBirdGender" value="Cái"/><label for="gender-0">Mái</label></li>
-                                </ol>
+                                <select name="txtBirdGender" class="input form-control" style="color: #0c5460;" required>
+                                    <option value="" disabled selected>Chọn giới tính</option>
+                                    <option value="Đực" ${birdDetails.gender == "Đực" ? "selected":""} name="txtBirdGender" value="Đực">Trống</option>
+                                    <option value="Cái" ${birdDetails.gender == "Cái" ? "selected":""} name="txtBirdGender" value="Cái">Mái</option>
+                                </select>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Trạng thái</label>
-                                <ol class="custom-columns">
-                                    <c:forEach var="status" items="${requestScope.STATUS}" varStatus="counter">
-                                        <li><input type="radio" id="status-${counter.count}" ${birdDetails.status == status ? "checked":""} name="txtBirdStatus" value="${status}"/><label for="status-${counter.count}">${status}</label></li>
-                                        </c:forEach>
-                                </ol>
+                                <select name="txtBirdStatus" class="input form-control" style="color: #0c5460;" required>
+                                    <c:forEach var="st" items="${requestScope.STATUS}" >
+                                        <option ${birdDetails.status == st ? "selected":""} value="${st}">${st}</li>
+                                    </c:forEach>
+                                </select>
                             </div>
-                            <input type="hidden" name="txtBirdId" value="${birdDetails.bird_id}"/>
+                            <div class="form-add mb-3">
+                                <label>Ngày Sinh</label>
+                                <input style="float: right; width: 50%;" type="date" name="txtBirdDate" value="${birdDetails.birthday}" required/>
+                            </div>
                             <div class="form-add mb-3">
                                 <label>Tên</label>
                                 <input type="text" name="txtBirdName" class="input form-control" value="${birdDetails.bird_name}"/>                          
                             </div>
                             <div class="form-add mb-3">
-                                <label>Màu Sắc</label>
+                                <label>Màu sắc</label>
                                 <input type="text" name="txtBirdColor" class="input form-control" value="${birdDetails.color}"/>      
-                            </div>
-                            <div class="form-add mb-3">
-                                <label>Ngày Sinh (20yy-mm-dd)</label>
-                                <input type="text" name="txtBirdDate" class="input form-control" pattern="^20([0-2][0-9])-([0][1-9]|1[0-2])-([0-2][0-9]|3[01])$" value="${birdDetails.birthday}"/>
-                            </div>
-                            <div class="form-add mb-3">
-                                <label>Thành tựu</label>
-                                <textarea name="txtBirdAchievement" class="input form-control" value="${birdDetails.achievement}"></textarea>
                             </div>
                         </div>
                         <div class="col-lg-6 form-custom">
                             <div class="form-add mb-3">
-                                <label>Mô tả</label>
-                                <textarea name="txtBirdDescription" class="input form-control" value="${birdDetails.description}"></textarea>
+                                <label>Thành tích thi đấu</label>
+                                <textarea rows="5" name="txtBirdAchievement" class="input form-control" value="">${birdDetails.achievement}</textarea>
                             </div>
                             <div class="form-add mb-3">
-                                <label>ID của chim bố</label>
-                                <select id="birdMaleList" name="txtBirdDad" class="input form-control">
-
-                                </select>
-                            </div>
-                            <div class="form-add mb-3">
-                                <label>ID của chim mẹ</label>
-                                <select id="birdFemaleList" name="txtBirdMom" class="input form-control">
-
-                                </select>
+                                <label>Mô tả chi tiết</label>
+                                <textarea rows="5" name="txtBirdDescription" class="input form-control" value="">${birdDetails.description}</textarea>
                             </div>
                             <div class="form-add mb-3 column-container">
-                                <label>Tuổi trưởng thành</label>
-                                <input type="number" name="txtBirdGrownAge" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.grown_age}"/>
-                                <label>Lịch sử sinh sản</label>
-                                <input type="number" name="txtBirdReproduction_history" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.reproduction_history}"/>
+                                <label>Giá bán</label>
+                                <div style="width: 100%; position: relative;">
+                                    <input style="width: 80%;" type="number" min="0" name="txtBirdPrice" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.price}" required />
+                                    <span style="position: absolute; right: 37px; top: 50%; transform: translateY(-50%);">₫</span>
+                                </div>
+                                <div style="margin-top: 15px;">
+                                    <label>Tuổi trưởng thành</label>
+                                    <div style="width: 100%; position: relative;">
+                                        <input style="width: 80%;" type="number" name="txtBirdGrownAge" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.grown_age}" required/>
+                                        <span style="position: absolute; right: 7px; top: 50%; transform: translateY(-50%);">tháng</span>
+                                    </div>
+                                </div>
                             </div>
+
                             <div class="form-add mb-3 column-container">
-                                <label>Giá</label>
-                                <input type="number" name="txtBirdPrice" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.price}"/>
                                 <label>Giảm giá</label>
-                                <input type="number" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.discount}"/>
+                                <div style="width: 100%; position: relative;">
+                                    <input style="width: 80%;" type="number" min="0" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.discount}" />
+                                    <span style="position: absolute; right: 37px; top: 50%; transform: translateY(-50%);">%</span>
+                                </div>
+                                <div style="margin-top: 15px;">
+                                    <label>Lịch sử sinh sản</label>
+                                    <div style="width: 100%; position: relative;">
+                                        <input style="width: 80%;" type="number" min="0" name="txtBirdReproduction_history" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.reproduction_history}"/>
+                                        <span style="position: absolute; right: 27px; top: 50%; transform: translateY(-50%);">lứa</span>
+                                    </div>
+                                </div>
                             </div>
                             <c:set var="image_urls" value="${requestScope.BIRDIMAGES}"/>
                             <div class="form-add mb-3">
-                                <label>Hình ảnh sản phẩm 1 (Bắt buộc)</label>
-                                <input type="text" name="txtImage_1" class="input form-control" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" required="" value="${image_urls[0]}"/>
+                                <label>Hình ảnh sản phẩm 1</label>
+                                <c:if test="${image_urls.size() >= 1}">
+                                <img class="accessory-image" src="${image_urls.get(0).image_url}"/>
+                                </c:if>
+                                <img style="display: none;" id="image-preview-1" src=""/>
+                                <input type="file" name="txtImage_1" accept="image/jpeg, image/png, image/gif" onchange="previewImage(1)"/>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Hình ảnh sản phẩm 2</label>
-                                <input type="text" name="txtImage_2" class="input form-control" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" value="${image_urls[1]}"/>
+                                <c:if test="${image_urls.size() >= 2}">
+                                <img class="accessory-image" src="${image_urls.get(1).image_url}"/>
+                                </c:if>
+                                <img style="display: none;" id="image-preview-2" src=""/>
+                                <input type="file" name="txtImage_2" accept="image/jpeg, image/png, image/gif" onchange="previewImage(2)"/>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Hình ảnh sản phẩm 3</label>
-                                <input type="text" name="txtImage_3" class="input form-control" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" value="${image_urls[2]}"/>
+                                <c:if test="${image_urls.size() >= 3}">
+                                <img class="accessory-image" src="${image_urls.get(2).image_url}"/>
+                                </c:if>
+                                <img style="display: none;" id="image-preview-3" src=""/>
+                                <input type="file" name="txtImage_3" accept="image/jpeg, image/png, image/gif" onchange="previewImage(3)"/>
                             </div>
-                            <input type="hidden" name="btAction" value="Update"/>
-                            <button style="float: right;" type="submit" name="action" value="UpdateBird">Cập nhật</button>
+                            <button style="float: right; margin-top: 20px;" type="submit" name="btAction" value="Update"><span>Cập nhật và trở về</span></button>
+                            <div style="background-color:#ff6666; border: 1.6px solid #333333; float: right; margin: 20px 20px 0 0; padding: 1px 6px;">
+                                    <a href="MainController?action=NavToBird"><span style="color: black; ">Hủy bỏ</span></a>
+                            </div>
                         </div>
                     </div>
                 </form>
             </div>
         </section>
         <!-- ***** Products Area Ends ***** -->
+        <%@include file="../layout/footer.jsp" %>
         <%@include file="../layout/message.jsp" %>
         <script src="assets/js/jquery-3.7.1.min.js"></script>
         <script src="assets/js/popper.min.js"></script>
@@ -182,38 +211,21 @@
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
         <script>
-                                        function showInput() {
-                                            var otherInput = document.getElementById('otherInput');
-                                            otherInput.style.display = 'block';
-                                        }
+            function previewImage(imageNumber) {
+                var input = document.querySelector('input[name="txtImage_' + imageNumber + '"]');
+                var imagePreview = document.getElementById('image-preview-' + imageNumber);
 
-                                        function hideInput() {
-                                            var otherInput = document.getElementById('otherInput');
-                                            otherInput.style.display = 'none';
-                                        }
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
 
-                                        $('input[name=txtBirdBreed]').change(function () {
-                                            let selectedRadioId = $(this).val();
-                                            $.ajax({
-                                                url: 'MainController?action=UpdateBird',
-                                                type: 'POST',
-                                                data: {maleBird: selectedRadioId},
-                                                success: function (data) {
-                                                    console.log(data);
-                                                    $('#birdMaleList').html(data)
-                                                }
-                                            });
-                                            $.ajax({
-                                                url: 'MainController?action=UpdateBird',
-                                                type: 'POST',
-                                                data: {femaleBird: selectedRadioId},
-                                                success: function (data) {
-                                                    console.log(data);
-                                                    $('#birdFemaleList').html(data)
-                                                }
-                                            });
-                                        });
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                    };
 
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
         </script>
     </body>
 </html>

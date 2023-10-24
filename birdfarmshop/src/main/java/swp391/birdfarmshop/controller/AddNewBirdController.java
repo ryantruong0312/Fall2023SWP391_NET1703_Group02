@@ -13,16 +13,19 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import swp391.birdfarmshop.dao.BirdBreedDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dao.ImageDAO;
 import swp391.birdfarmshop.dto.BirdDTO;
@@ -45,12 +48,12 @@ public class AddNewBirdController extends HttpServlet {
     private static final String ERROR = "errorpages/error.jsp";
     private static final String HOME = "shop/home.jsp";
     private static final String SUCCESS = "management/add-bird.jsp";
-    private static final String DETAIL = "MainController?action=NavToBirdDetails&";
+    private static final String DETAIL = "MainController?action=NavToBirdDetails&bird_id=";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = SUCCESS;
+        String url = ERROR;
         LocalTime currentTime;
         try {
             HttpSession session = request.getSession();
@@ -67,10 +70,10 @@ public class AddNewBirdController extends HttpServlet {
                 request.setAttribute("BREED", breed);
                 String btAction = request.getParameter("btAction");
                 String txtBirdId = request.getParameter("txtBirdId");
-                if (btAction != null && btAction.equals("Add")) {
+                if (btAction != null) {
                     for (BirdDTO bird : birds) {
                         if (bird.getBird_id().equals(txtBirdId)) {
-                            request.setAttribute("MESSAGE", "ID ĐÃ TỒN TẠI. NHẬP ID MỚI");
+                            session.setAttribute("ERROR", "ID ĐÃ TỒN TẠI. NHẬP ID MỚI");
                             request.getRequestDispatcher(SUCCESS).forward(request, response);
                             break;
                         }
@@ -87,14 +90,6 @@ public class AddNewBirdController extends HttpServlet {
                     String txtBirdDescription = request.getParameter("txtBirdDescription");
                     String txtBirdDiscount = request.getParameter("txtBirdDiscount");
                     String txtBirdStatus = "Còn hàng";
-                    if (txtBirdBreed.equals("other")) {
-                        String txtOtherBreed_name = request.getParameter("txtOtherBreed_name");
-                        if (txtOtherBreed_name != null) {
-                            BirdBreedDAO breedDao = new BirdBreedDAO();
-                            String otherBreed_id = breedDao.createNewBreed(txtOtherBreed_name);
-                            txtBirdBreed = otherBreed_id;
-                        }
-                    }
                     Collection<Part> parts = request.getParts();
                     ArrayList<String> images = new ArrayList<>();
                     int imageCount = 0;
@@ -107,7 +102,7 @@ public class AddNewBirdController extends HttpServlet {
                             String file = ImageUtils.getFileName(part);
                             currentTime = LocalTime.now();
                             String nameImage = currentTime.getNano() + file;
-                            //S3Utils.uploadFile(nameImage, part.getInputStream());
+                            S3Utils.uploadFile(nameImage, part.getInputStream());
                             String img_url = Constants.C3_HOST + nameImage;
                             images.add(img_url);
                         }
@@ -132,11 +127,11 @@ public class AddNewBirdController extends HttpServlet {
                     } else {
                         session.setAttribute("ERROR", "Tạo mới thất bại");
                     }
-                }
-                
-                String noMore = request.getParameter("noMore");
-                if (noMore != null) {
-                    url = DETAIL + "bird_id=" + txtBirdId;
+                    if(btAction.equals("Add&Return")) {
+                        url = DETAIL + txtBirdId;
+                    }else {
+                        url = SUCCESS;
+                    }
                 } else {
                     url = SUCCESS;
                 }

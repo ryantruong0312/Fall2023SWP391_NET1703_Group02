@@ -13,6 +13,7 @@ import static java.sql.Types.NULL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dto.BirdDTO;
@@ -648,40 +649,43 @@ public class BirdDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement("UPDATE [dbo].[Bird]\n"
-                        + "             SET [bird_id] = ?,[bird_name] = ?,[color] = ?,[birthday] = ?,[grown_age] = ?,[gender] = ?,[breed_id] = ?,"
-                        + "             [achievement] = ?, [reproduction_history] = ?,[price] = ?,[description] = ?,"
-                        + "             [discount] = ?,[status] = ?\n"
-                        + "             WHERE [bird_id] = ?");
-                stm.setString(1, bird_id);
-                stm.setString(2, bird_name);
-                stm.setString(3, color);
-                if (birthday != null) {
-                    stm.setDate(4, sqlDate);
-                }
-                if (grown_age != null) {
-                    stm.setInt(5, Integer.parseInt(grown_age));
-                }
-                if (gender.equals("Đực")) {
-                    sex = true;
-                } else {
-                    sex = false;
-                }
-                stm.setBoolean(6, sex);
-                stm.setString(7, breed_id);
-                stm.setString(8, achievement);
+                String query =          "UPDATE [dbo].[Bird]\n"
+                        + "             SET [bird_name] = ?,[color] = ?,[birthday] = ?,[grown_age] = ?,[gender] = ?,[breed_id] = ?,\n"
+                        + "             [price] = ?,[status] = ?,[reproduction_history] = ?,[discount] = ?,[achievement] = ?, "
+                        + "             [description] = ?\n"
+                        + "             WHERE [bird_id] = ?";
+                stm = con.prepareStatement(query);
+                bird_name = bird_name + " " + bird_id;
+                stm.setString(1, bird_name.trim());
+                stm.setString(2, color);
+                stm.setDate(3, sqlDate);
+                stm.setInt(4, Integer.parseInt(grown_age));
+                sex = gender.equals("Đực");
+                stm.setBoolean(5, sex);
+                stm.setString(6, breed_id);
+                stm.setInt(7, Integer.parseInt(price));
+                stm.setString(8, status);
                 if (reproduction_history != null) {
                     stm.setInt(9, Integer.parseInt(reproduction_history));
+                } else {
+                    stm.setInt(9, 0);
                 }
-                if (price != null) {
-                    stm.setInt(10, Integer.parseInt(price));
-                }
-                stm.setString(11, description);
                 if (discount != null) {
-                    stm.setInt(12, Integer.parseInt(discount));
+                    stm.setInt(10, Integer.parseInt(discount));
+                } else {
+                    stm.setInt(10, 0);
                 }
-                stm.setString(13, status);
-                stm.setString(14, bird_id);
+                if(achievement != null) {
+                    stm.setString(11, achievement);
+                } else {
+                    stm.setString(11, "");
+                }
+                if(description != null) {
+                    stm.setString(12, description);
+                } else {
+                    stm.setString(12, "");
+                }
+                stm.setString(13, bird_id);
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;
@@ -704,6 +708,7 @@ public class BirdDAO {
     }
     public static void main(String[] args) throws SQLException, ParseException {
         BirdDAO dao = new BirdDAO();
-        ArrayList<BirdDTO> birds = (ArrayList<BirdDTO>) dao.getAllBirds();
+        boolean check = dao.updateBird("CL201", "Vẹt Cockatiel Lutino CL201", "xám, vàng, cam", "2023-10-23", "1", "Đực", "australian", null, "0", "2500000", null, "0", "Còn hàng");
+        System.out.println(check);
     }
 }
