@@ -487,7 +487,7 @@ public class BirdDAO {
                         + "             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) ");
                 stm.setString(1, bird_id);
                 stm.setString(2, bird_name);
-                if (color != null && !color.isBlank()) {
+                if (color != null && !color.isEmpty()) {
                     stm.setString(3, color);
                 } else {
                     stm.setString(3, null);
@@ -497,7 +497,7 @@ public class BirdDAO {
                 sex = gender.equals("Đực");
                 stm.setBoolean(6, sex);
                 stm.setString(7, breed_id);
-                if(achievement != null && !achievement.isBlank()) {
+                if(achievement != null && !achievement.isEmpty()) {
                     stm.setString(8, achievement);
                 } else {
                     stm.setString(8, null);
@@ -508,7 +508,7 @@ public class BirdDAO {
                     stm.setInt(9, 0);
                 }
                 stm.setInt(10, Integer.parseInt(price));
-                if(description != null && !description.isBlank()) {
+                if(description != null && !description.isEmpty()) {
                     stm.setString(11, description);
                 } else {
                     stm.setString(11, null);

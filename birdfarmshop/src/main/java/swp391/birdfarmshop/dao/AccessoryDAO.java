@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dto.AccessoryDTO;
 import swp391.birdfarmshop.model.Accessory;
+import swp391.birdfarmshop.model.AccessoryCategory;
 //import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.util.DBUtils;
 
@@ -202,13 +203,14 @@ public class AccessoryDAO {
                 while (rs.next()) {
                     String id = rs.getString("accessory_id");
                     String accessory_name = rs.getString("accessory_name");
+                    String category_id = rs.getString("category_id");
                     int unit_price = rs.getInt("unit_price");
                     int stock_quantity = rs.getInt("stock_quantity");
                     String description = rs.getString("description");
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     ArrayList<String> image_url = ID.getImagesByAccessoryId(accessory_id);
-                    a = new AccessoryDTO(id, accessory_name, unit_price, stock_quantity, description, discount, status, image_url);
+                    a = new AccessoryDTO(id, accessory_name, category_id, unit_price, stock_quantity, description, discount, status, image_url);
                 }
             }
         } catch (ClassNotFoundException e) {
@@ -268,6 +270,7 @@ public class AccessoryDAO {
         }
         return accessory;
     }
+
     public List<Accessory> getCageList() throws SQLException {
         List<Accessory> cages = new ArrayList<>();
         Connection con = null;
@@ -311,11 +314,12 @@ public class AccessoryDAO {
         return cages;
     }
 
-    public boolean insertAccessory(String txtAccessoryID, String txtAccessoryName, String txtCategoryID, String txtPrice, String txtStockQuantity, String txtDescribe, String txtDiscount) throws SQLException {
+    public boolean insertAccessory(String txtAccessoryID, String txtAccessoryName, String txtCategoryID, String txtPrice, String txtStockQuantity, String txtDescribe, String txtDiscount, String imageURL_1, String imageURL_2, String imageURL_3) throws SQLException {
         String status;
         Connection con = null;
         PreparedStatement stm = null;
         int rs;
+        ImageDAO im = new ImageDAO();
         try {
             con = DBUtils.getConnection();
             if (con != null) {
@@ -333,6 +337,21 @@ public class AccessoryDAO {
                 stm.setString(1, txtAccessoryID);
                 stm.setString(2, txtAccessoryName);
                 stm.setString(3, txtCategoryID);
+                if (txtCategoryID.equals("other")) {
+                    AccessoryCategoryDAO dao = new AccessoryCategoryDAO();
+                    List<AccessoryCategory> list = dao.getAccessoryCategories();
+                    boolean check = false;
+
+                    for (AccessoryCategory a : list) {
+                        if (a.getCategory_id().equalsIgnoreCase(txtCategoryID)) {
+                            check = true;
+                        }
+                    }
+
+                    if (!check) {
+                        boolean createCategory = dao.createCategory(txtCategoryID);
+                    }
+                }
                 stm.setInt(4, Integer.parseInt(txtPrice));
                 stm.setInt(5, Integer.parseInt(txtStockQuantity));
                 stm.setString(6, txtDescribe);
@@ -343,10 +362,16 @@ public class AccessoryDAO {
                     status = "hết hàng";
                 }
                 stm.setString(8, status);
+                
                 rs = stm.executeUpdate();
+                
+                boolean checkImage_1 = im.addNewAccessoryImage(imageURL_1, true, txtAccessoryID);
+                boolean checkImage_2 = im.addNewAccessoryImage(imageURL_2, false, txtAccessoryID);
+                boolean checkImage_3 = im.addNewAccessoryImage(imageURL_3, false, txtAccessoryID);
                 if (rs > 0) {
                     return true;
                 }
+
             }
         } catch (ClassNotFoundException | SQLException e) {
             // Handle exceptions here, e.g., log or throw
@@ -446,5 +471,5 @@ public class AccessoryDAO {
         }
         return false;
     }
-   
+
 }
