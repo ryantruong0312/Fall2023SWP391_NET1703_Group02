@@ -2,54 +2,74 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import swp391.birdfarmshop.dao.BirdBreedDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dao.ImageDAO;
 import swp391.birdfarmshop.dto.BirdDTO;
-import swp391.birdfarmshop.model.Bird;
+import swp391.birdfarmshop.model.User;
+import swp391.birdfarmshop.util.Constants;
+import swp391.birdfarmshop.util.ImageUtils;
+import swp391.birdfarmshop.util.S3Utils;
 
 /**
  *
  * @author phong pc
  */
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024,//1mb
+        maxFileSize = 1024 * 1024 * 10,
+        maxRequestSize = 1024 * 1024 * 11
+)
 public class AddNewBirdController extends HttpServlet {
-   
+
     private static final String ERROR = "errorpages/error.jsp";
+    private static final String HOME = "shop/home.jsp";
     private static final String SUCCESS = "management/add-bird.jsp";
-    
+    private static final String DETAIL = "MainController?action=NavToBirdDetails&";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException, SQLException {
+            throws ServletException, IOException, SQLException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
-        PrintWriter out = response.getWriter();
-        String female = request.getParameter("femaleBird");
-        String male = request.getParameter("maleBird");
-        String btAction = request.getParameter("btAction");
-        BirdDAO birdDao = new BirdDAO();
-        List<BirdDTO> birds = birdDao.getAllBirds();
-        try {    
-            if(btAction != null) {
-                if(btAction.equals("Add")) {
-                    String txtBirdId = request.getParameter("txtBirdId");
+        String url = SUCCESS;
+        LocalTime currentTime;
+        try {
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("LOGIN_USER");
+            if (user != null && !user.getRole().equals("customer")) {
+                BirdDAO birdDao = new BirdDAO();
+                List<BirdDTO> birds = birdDao.getAllBirds();
+                HashMap<String, String> breed = new HashMap<>();
+                for (BirdDTO bird : birds) {
+                    if (!breed.containsKey(bird.getBreed_id())) {
+                        breed.put(bird.getBreed_id(), bird.getBreed_name());
+                    }
+                }
+                request.setAttribute("BREED", breed);
+                String btAction = request.getParameter("btAction");
+                String txtBirdId = request.getParameter("txtBirdId");
+                if (btAction != null && btAction.equals("Add")) {
                     for (BirdDTO bird : birds) {
-                        if(bird.getBird_id().equals(txtBirdId)) {
+                        if (bird.getBird_id().equals(txtBirdId)) {
                             request.setAttribute("MESSAGE", "ID ĐÃ TỒN TẠI. NHẬP ID MỚI");
                             request.getRequestDispatcher(SUCCESS).forward(request, response);
                             break;
@@ -66,96 +86,73 @@ public class AddNewBirdController extends HttpServlet {
                     String txtBirdPrice = request.getParameter("txtBirdPrice");
                     String txtBirdDescription = request.getParameter("txtBirdDescription");
                     String txtBirdDiscount = request.getParameter("txtBirdDiscount");
-                    String txtBirdStatus = request.getParameter("txtBirdStatus");
-                    String txtImage_1 = request.getParameter("txtImage_1");
-                    String txtImage_2 = request.getParameter("txtImage_2");
-                    String txtImage_3 = request.getParameter("txtImage_3");
-                    boolean check = birdDao.addNewBird(txtBirdId, txtBirdName + " " + txtBirdId,txtBirdColor, 
-                            txtBirdDate, txtBirdGrownAge, txtBirdGender, txtBirdBreed, 
-                            txtBirdAchievement, txtBirdReproduction_history, txtBirdPrice, 
-                            txtBirdDescription, txtBirdDiscount, txtBirdStatus);
-                    ImageDAO imageDao = new ImageDAO();
-                    boolean check_image1 = imageDao.addNewImageBird(txtImage_1, "1", txtBirdId);
-                    boolean check_image2 = imageDao.addNewImageBird(txtImage_2, "0", txtBirdId);
-                    boolean check_image3 = imageDao.addNewImageBird(txtImage_3, "0", txtBirdId);
-                    if(check && check_image1) {
-                        request.setAttribute("MESSAGE", "Đăng kí thành công");
+                    String txtBirdStatus = "Còn hàng";
+                    if (txtBirdBreed.equals("other")) {
+                        String txtOtherBreed_name = request.getParameter("txtOtherBreed_name");
+                        if (txtOtherBreed_name != null) {
+                            BirdBreedDAO breedDao = new BirdBreedDAO();
+                            String otherBreed_id = breedDao.createNewBreed(txtOtherBreed_name);
+                            txtBirdBreed = otherBreed_id;
+                        }
                     }
+                    Collection<Part> parts = request.getParts();
+                    ArrayList<String> images = new ArrayList<>();
+                    int imageCount = 0;
+                    for (Part part : parts) {
+                        if (imageCount >= 2) {
+                            break;
+                        }
+                        if (part.getName().equals("filePicture")) {
+                            imageCount++;
+                            String file = ImageUtils.getFileName(part);
+                            currentTime = LocalTime.now();
+                            String nameImage = currentTime.getNano() + file;
+                            //S3Utils.uploadFile(nameImage, part.getInputStream());
+                            String img_url = Constants.C3_HOST + nameImage;
+                            images.add(img_url);
+                        }
+                    }
+                    boolean check = false;
+                    if (images.size() == 1) {
+                        check = birdDao.addNewBird(txtBirdId, txtBirdName + " " + txtBirdId, txtBirdColor,
+                                txtBirdDate, txtBirdGrownAge, txtBirdGender, txtBirdBreed,
+                                txtBirdAchievement, txtBirdReproduction_history, txtBirdPrice,
+                                txtBirdDescription, txtBirdDiscount, txtBirdStatus, images.get(0));
+                    }
+                    ImageDAO imgDao = new ImageDAO();
+
+                    if (images.size() == 2) {
+                        imgDao.addNewImageBird(images.get(1), "0", txtBirdId);
+                    }
+                    if (images.size() == 3) {
+                        imgDao.addNewImageBird(images.get(2), "0", txtBirdId);
+                    }
+                    if (check) {
+                        session.setAttribute("SUCCESS", "Tạo mới thành công");
+                    } else {
+                        session.setAttribute("ERROR", "Tạo mới thất bại");
+                    }
+                }
+                
+                String noMore = request.getParameter("noMore");
+                if (noMore != null) {
+                    url = DETAIL + "bird_id=" + txtBirdId;
+                } else {
                     url = SUCCESS;
-                }          
-            }else {
-                HashMap<String,String> breed = new HashMap<>();
-                List<String> listStatus = new ArrayList<>();
-                List<Bird> maleBirds = new ArrayList<>();
-                List<Bird> femaleBirds = new ArrayList<>();
-                if(female != null){
-                    femaleBirds = birdDao.getBirdsByBreedId(female);
-                    for (Bird bird :femaleBirds) {
-                        if(!bird.isGender()){
-                            out.println(" <option value=\""+bird.getBird_id()+"\">"+bird.getBird_name()+"</option>");
-                        }
-                    }
                 }
-                if(male != null){
-                    maleBirds = birdDao.getBirdsByBreedId(male);
-                    for (Bird bird :maleBirds) {
-                        if(bird.isGender()){
-                            out.println(" <option value=\""+bird.getBird_id()+"\">"+bird.getBird_name()+"</option>");
-                        }
-                    }
-                }
-                for (BirdDTO bird : birds) {
-                    if(!breed.containsKey(bird.getBreed_id())){
-                        breed.put(bird.getBreed_id(), bird.getBreed_name());
-                    }
-                    if(!listStatus.contains(bird.getStatus())) {
-                        listStatus.add(bird.getStatus());
-                    }
-//                    if(bird.getGender().equals("Đực") && (bird.getAge() > bird.getGrown_age())) {
-//                        maleBirds.add(bird);
-//                    }
-//                    if(bird.getGender().equals("Cái") && (bird.getAge() > bird.getGrown_age())) {
-//                        femaleBirds.add(bird);
-//                    }
-                }
-//                request.setAttribute("selectedRadioId", selectedRadioId);
-                request.setAttribute("BREED", breed);
-                request.setAttribute("STATUS", listStatus);
-//                request.setAttribute("MALEBIRDS", maleBirds);
-//                request.setAttribute("FEMALEBIRDS", femaleBirds);
-                url = SUCCESS;
+            } else {
+                url = HOME;
             }
-//            Collection<Part> parts = request.getParts();
-//            int imageCount = 0; // Biến đếm số lượng tệp hình ảnh
-//            for (Part part : parts) {
-//                if (isImageFile(part)) {
-//                    imageCount++; // Tăng biến đếm nếu phát hiện tệp hình ảnh
-//
-//                    if (imageCount > 3) {
-//                        // Nếu đã nhận được 3 tệp hình ảnh, từ chối tệp hình ảnh thứ 4
-//                        response.getWriter().write("Chỉ cho phép tải lên tối đa 3 tệp hình ảnh.");
-//                        return;
-//                    }
-//
-//                    String fileName = getFileName(part); // Lấy tên tệp
-//                    // Xử lý tệp hình ảnh ở đây
-//                    // Lưu vào cơ sở dữ liệu hoặc thư mục trên máy chủ
-//                }
-//            }
-        }catch (ClassNotFoundException | SQLException | ParseException e) {
-        }finally {
-            if(female==null && male == null){
-               request.getRequestDispatcher(url).forward(request, response);
-            }
-            if(btAction != null && btAction.equals("Add")) {
-                request.getRequestDispatcher(url).forward(request, response);
-            }
+        } catch (SQLException e) {
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -163,16 +160,19 @@ public class AddNewBirdController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(AddNewBirdController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(AddNewBirdController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -180,37 +180,23 @@ public class AddNewBirdController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(AddNewBirdController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(AddNewBirdController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    private boolean isImageFile(Part part) {
-        // Kiểm tra xem phần này có phải là phần tệp hình ảnh (ví dụ: jpg, png, gif) hay không
-        String contentType = part.getContentType();
-        return contentType != null && contentType.startsWith("image");
-    }
-
-    private String getFileName(Part part) {
-        // Hàm để lấy tên tệp từ Part
-        String contentDisp = part.getHeader("content-disposition");
-        String[] tokens = contentDisp.split(";");
-        for (String token : tokens) {
-            return token.substring(token.indexOf('=') + 1).trim().replace("\"", "");
-        }
-        return "";
-    }
-
 }
