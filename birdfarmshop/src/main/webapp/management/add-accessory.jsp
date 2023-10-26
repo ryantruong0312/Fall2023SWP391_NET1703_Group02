@@ -70,7 +70,17 @@
             text-align: center;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: center;.button-submit{
+            border-radius: 10px;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            float: right;
+        }
         }
         .button-updateAccessory{
             margin-bottom: 5px;
@@ -206,49 +216,8 @@
                             </div>
                         </div>
                         <div class="col-lg-12" style="margin-top: 15px;">
-                            <div style="float: right; margin-left: 10px;">
-                                <a href="#" id="openPopup" class="btn-danger button-submit">Hủy bỏ</a>
-                                <div class="overlay" id="overlay"></div>
-                                <div class="popup" id="popup">
-                                    <h2>Bạn có muốn hủy không?</h2>
-                                    <div class="centered-button">
-                                        <div class="row">
-                                            <div class="col-lg-6" style="display: flex; justify-content: center; margin-top: 30px;">
-                                                <a type="button" class="btn-primary buttonConfirm" href="RenderAccessoryController" id="updateButton">Xác Nhận</a>
-                                            </div>
-                                            <div class="col-lg-6" style="display: flex; justify-content: center;margin-top: 30px;">
-                                                <button class="btn-danger buttonConfirm" id="cancelButton">Trở về</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <script>
-                                document.addEventListener("DOMContentLoaded", function () {
-                                    const openPopupButton = document.getElementById('openPopup');
-                                    const popup = document.getElementById('popup');
-                                    const overlay = document.getElementById('overlay');
-                                    const cancelButton = document.getElementById('cancelButton');
 
-                                    openPopupButton.addEventListener('click', function (event) {
-                                        event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
-
-                                        // Hiển thị popup và overlay
-                                        popup.style.display = 'block';
-                                        overlay.style.display = 'block';
-                                    });
-
-                                    cancelButton.addEventListener('click', function (event) {
-                                        event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
-
-                                        // Ẩn popup và overlay
-                                        popup.style.display = 'none';
-                                        overlay.style.display = 'none';
-                                    });
-                                }
-                                );
-                            </script>
-
+                            <button style="float: right; margin-left: 10px;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit" formnovalidate>Hủy bỏ</button>
                             <input type="hidden" name="btAction" value="add">
                             <button class="btn-primary button-submit" style="margin-left: 10px;" type="submit" name="type" value="continue">Lưu và tiếp tục</button>
                             <button class="btn-success button-submit" type="submit" name="type" value="close">Lưu và đóng</button>
@@ -256,8 +225,36 @@
                         </div>
                     </div>
                 </form>
+
             </div>
         </section>
+        <section id="confirm-remove" class="container-fluid">
+            <div class="vh-100 row">
+                <div class="h-100 m-auto d-flex align-items-center">
+                    <div class="box-remove bg-white p-4">
+                        <h4>Xác nhận</h4>
+                        <p class="mb-4 mt-4">
+                            Bạn có muốn thực hiện thao tác này không ?
+                        </p>
+                        <div class="float-right">
+                            <a type="button" id="btn-confirrm" href="RenderAccessoryController" class="btn btn-group-sm btn-primary">Xác nhận</a>
+                            <button  onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script>
+            function checkUser(event) {
+                $('#confirm-remove').css('display', 'block');
+                let idForm = event.form.id;
+                $('#btn-confirrm').attr('data-value', idForm);
+                return false;
+            }
+            function cancelRemove() {
+                $('#confirm-remove').css('display', 'none');
+            }
+        </script>
 
         <!-- ***** Products Area Ends ***** -->
 
@@ -346,59 +343,59 @@
 
     <script>
 
-                                $(document).ready(function () {
-                                    // Get a reference to the search input element
-                                    var searchInput = $("#searchInput");
-                                    // Add an event listener for input changes
-                                    searchInput.on("input", function () {
-                                        var keyword = searchInput.val().toLowerCase();
+            $(document).ready(function () {
+                // Get a reference to the search input element
+                var searchInput = $("#searchInput");
+                // Add an event listener for input changes
+                searchInput.on("input", function () {
+                    var keyword = searchInput.val().toLowerCase();
 
-                                        // Loop through each row in the table
-                                        $("tbody tr").each(function () {
-                                            var row = $(this);
-                                            // Check if any cell in the row contains the keyword
-                                            if (row.text().toLowerCase().includes(keyword)) {
-                                                row.show(); // Show the row if keyword found
-                                            } else {
-                                                row.hide(); // Hide the row if keyword not found
-                                            }
-                                        });
-                                    });
+                    // Loop through each row in the table
+                    $("tbody tr").each(function () {
+                        var row = $(this);
+                        // Check if any cell in the row contains the keyword
+                        if (row.text().toLowerCase().includes(keyword)) {
+                            row.show(); // Show the row if keyword found
+                        } else {
+                            row.hide(); // Hide the row if keyword not found
+                        }
+                    });
+                });
 
-                                    // Show the modal when the "Cấp mới tài khoản" button is clicked
-                                    $("#createAccountBtn").click(function () {
-                                        $("#createAccountModal").modal("show");
-                                    });
-                                    // Handle form submission
-                                    $("#submitAccountBtn").click(function () {
-                                        // Get the form data
-                                        const fullname = $("#fullname").val();
-                                        const username = $("#username").val();
+                // Show the modal when the "Cấp mới tài khoản" button is clicked
+                $("#createAccountBtn").click(function () {
+                    $("#createAccountModal").modal("show");
+                });
+                // Handle form submission
+                $("#submitAccountBtn").click(function () {
+                    // Get the form data
+                    const fullname = $("#fullname").val();
+                    const username = $("#username").val();
 
-                                        // You can perform validation here if needed
+                    // You can perform validation here if needed
 
-                                        // Close the modal
-                                        $("#createAccountModal").modal("hide");
+                    // Close the modal
+                    $("#createAccountModal").modal("hide");
 
-                                        // Send the form data to the server via AJAX or perform any desired action
-                                    });
-                                });
-                                function submitForm() {
-                                    // Get the form element by its ID
-                                    var form = document.getElementById("createAccountForm");
-                                    // Define the controller URL
-                                    var controllerUrl = "/birdfarmshop/MainController";
-                                    // Set the form's action attribute to the controller URL
-                                    form.action = controllerUrl;
-                                    document.querySelector('input[name=txtAccessoryName]').addEventListener('input', function () {
-                                        var input = this;
-                                        if (input.value.length > 50) {
-                                            input.setCustomValidity("Tên phụ kiện không được dài hơn 50 ký tự.");
-                                        } else {
-                                            input.setCustomValidity("");
-                                        }
-                                    }
-                                    );
+                    // Send the form data to the server via AJAX or perform any desired action
+                });
+            });
+            function submitForm() {
+                // Get the form element by its ID
+                var form = document.getElementById("createAccountForm");
+                // Define the controller URL
+                var controllerUrl = "/birdfarmshop/MainController";
+                // Set the form's action attribute to the controller URL
+                form.action = controllerUrl;
+                document.querySelector('input[name=txtAccessoryName]').addEventListener('input', function () {
+                    var input = this;
+                    if (input.value.length > 50) {
+                        input.setCustomValidity("Tên phụ kiện không được dài hơn 50 ký tự.");
+                    } else {
+                        input.setCustomValidity("");
+                    }
+                }
+                );
 
     </script>
 </html>

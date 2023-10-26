@@ -103,13 +103,13 @@ public class RenderUpdateAccessoryController extends HttpServlet {
                             String imageURL = returnUrl(txtImage);
                             boolean checkImage = i.updateImageAccessory(txtAccessoryID, true, imageURL, null);
                         }
-                        
+
                         if (txtImage_1.getSize() < 1048576) {
                             String imageURL = returnUrl(txtImage_1);
                             String Image_id = request.getParameter("Image_id_1");
                             boolean checkImage = i.updateImageAccessory(txtAccessoryID, false, imageURL, Image_id);
                         }
-                        
+
                         if (txtImage_1.getSize() < 1048576) {
                             String imageURL = returnUrl(txtImage_2);
                             String Image_id = request.getParameter("Image_id_2");
@@ -117,6 +117,11 @@ public class RenderUpdateAccessoryController extends HttpServlet {
                         }
 
                         boolean rs = d.updateAccessory(txtAccessoryID, txtAccessoryName, txtCategoryID, txtPrice, txtStockQuantity, txtDescribe, txtDiscount);
+                        if (rs) {
+                            session.setAttribute("SUCCESS", "Chỉnh sửa phụ kiện thành công");
+                        } else {
+                            session.setAttribute("ERROR", "Chỉnh sửa phụ kiện thất bại");
+                        }
 
                         AccessoryDAO aDAO = new AccessoryDAO();
                         AccessoryDTO acDTO = aDAO.getAccessoryDetailsByID(txtAccessoryID);
@@ -134,6 +139,11 @@ public class RenderUpdateAccessoryController extends HttpServlet {
                         String txtAccessoryID = request.getParameter("txtAccessoryID");
                         String txtNewQuantity = request.getParameter("txtNewQuantity");
                         boolean rs = d.updateAccessoryQuantity(txtAccessoryID, txtNewQuantity);
+                        if (rs) {
+                            session.setAttribute("SUCCESS", "Chỉnh sửa sản phẩm thành công");
+                        } else {
+                            session.setAttribute("ERROR", "Chỉnh sửa phụ kiện thất bại");
+                        }   
                         String isThumbnail = i.getThumbnailUrlByAccessoryId(txtAccessoryID);
                         request.setAttribute("im", isThumbnail);
                         AccessoryDAO aDAO = new AccessoryDAO();

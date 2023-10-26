@@ -59,33 +59,6 @@
                 width: 100px;
                 height: 100px;
             }
-            .popup {
-                display: none;
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background-color: white;
-                /*padding: 15px;*/
-                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-                z-index: 9999;
-                cursor: move;
-                border-radius: 10px;
-                display: none;
-            }
-            .popup.active {
-                display: block;
-            }
-            .overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.3); /* Màu nền mờ với độ trong suốt */
-                z-index: 9998; /* Đảm bảo lớp mờ nằm dưới phần tử popup */
-                display: none;
-            }
         </style>
     </head>
 
@@ -213,62 +186,26 @@
                     </div>
 
                     <div class="col-lg-12">
-                        <div class="row">
-                            <div class="col-lg-12" style="margin-top: 10px;">                       
-                                <div class="button">
-                                    <div style="float: right; margin-left: 10px;">
-                                        <a href="#" id="openPopup" class="btn-danger button-submit">Hủy bỏ</a>
-                                        <div class="overlay" id="overlay"></div>
-                                        <div class="popup" id="popup">
-                                            <div class="box-remove bg-white p-4">
-                                                <h4>Xác nhận</h4>
-                                                <p class="mb-4 mt-4" style="font-size: 15px;">
-                                                    Bạn có muốn thực hiện thao tác này không ?
-                                                </p>
-                                                <div class="centered-button">
-                                                    <div class="row">
-                                                        <div class="col-lg-6" style="display: flex; justify-content: center; margin-top: 15px;">
-                                                            <a type="button" class="btn-primary buttonConfirm" href="RenderAccessoryDetailsController?id=${a.accessory_id}" id="updateButton">Xác Nhận</a>
-                                                        </div>
-                                                        <div class="col-lg-6" style="display: flex; justify-content: center; margin-top: 15px;">
-                                                            <button class="btn-danger buttonConfirm" id="cancelButton">Trở về</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <script>
-                                        document.addEventListener("DOMContentLoaded", function () {
-                                            const openPopupButton = document.getElementById('openPopup');
-                                            const popup = document.getElementById('popup');
-                                            const overlay = document.getElementById('overlay');
-                                            const cancelButton = document.getElementById('cancelButton');
-
-                                            openPopupButton.addEventListener('click', function (event) {
-                                                event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
-
-                                                // Hiển thị popup và overlay
-                                                popup.style.display = 'block';
-                                                overlay.style.display = 'block';
-                                            });
-
-                                            cancelButton.addEventListener('click', function (event) {
-                                                event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
-
-                                                // Ẩn popup và overlay
-                                                popup.style.display = 'none';
-                                                overlay.style.display = 'none';
-                                            });
-                                        }
-                                        );
-                                    </script>
-                                    <button style="margin-right: 10px;" class="button-submit btn-primary" type="submit">Hoàn tất</button>
-                                </div>
-                            </div>
-                        </div>
+                        <button style="float: right;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit">Hủy bỏ</button>
+                        <button style="margin-right: 10px; float: right;" class="button-submit btn-primary" type="submit">Hoàn tất</button>
                     </div>
                 </form>
+            </div>
+        </section>
+        <section id="confirm-remove" class="container-fluid">
+            <div class="vh-100 row">
+                <div class="h-100 m-auto d-flex align-items-center">
+                    <div class="box-remove bg-white p-4">
+                        <h4>Xác nhận</h4>
+                        <p class="mb-4 mt-4">
+                            Bạn có muốn thực hiện thao tác này không ?
+                        </p>
+                        <div class="float-right">
+                            <a type="button" id="btn-confirrm" href="RenderAccessoryDetailsController?id=${a.accessory_id}" class="btn btn-group-sm btn-primary">Xác nhận</a>
+                            <button onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -354,6 +291,17 @@
 
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
+        <script>
+                                function checkUser(event) {
+                                    $('#confirm-remove').css('display', 'block');
+                                    let idForm = event.form.id;
+                                    $('#btn-confirrm').attr('data-value', idForm);
+                                    return false;
+                                }
+                                function cancelRemove() {
+                                    $('#confirm-remove').css('display', 'none');
+                                }
+        </script>
     </body>
 </html>
 
