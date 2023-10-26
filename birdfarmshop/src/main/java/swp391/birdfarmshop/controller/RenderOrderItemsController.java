@@ -33,7 +33,7 @@ public class RenderOrderItemsController extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
-            if (user != null && user.getRole().equals("manager")) {
+            if (user != null && !user.getRole().equals("customer")) {
                 OrderItemDAO orderItemDao = new OrderItemDAO();
                 ArrayList<OrderItemDTO> itemList = orderItemDao.getItemOrder(orderId);
                 request.setAttribute("ITEMLIST", itemList);

@@ -160,6 +160,14 @@
         <!-- Header End -->
         <main>
             <div class="container-sm container-custome">
+                <c:if test="${USER != null && USER.role != 'customer'}">
+                <div style="margin-bottom: 10px;" class="col-lg-12">
+                    <a style="background-color: #cbcbcb; padding: 5px; border-radius: 5px;" id="back" href="MainController?action=NavToShopOrders">
+                        <i style="color: white; font-size: 1rem; width: 30px;" class="fa fa-arrow-left"></i>
+                        <span style="color: black;">Quay lại</span>
+                    </a>
+                </div>
+                </c:if>
                 <div class="row gutters">
                     <%@include file="../layout/sidebar-profile.jsp" %>
                     <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">

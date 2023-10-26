@@ -110,6 +110,7 @@
                             <div class="form-add mb-3">
                                 <label>Ngày Sinh</label>
                                 <input style="float: right; width: 50%;" type="date" name="txtBirdDate" value="${birdDetails.birthday}" required/>
+                                <input type="hidden" name="oldBirdDate" value="${birdDetails.birthday}" />
                             </div>
                             <div class="form-add mb-3">
                                 <label>Tên</label>

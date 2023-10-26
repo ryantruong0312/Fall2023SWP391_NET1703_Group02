@@ -11,8 +11,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.net.URLDecoder;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import swp391.birdfarmshop.dao.OrderDAO;
 import swp391.birdfarmshop.model.Order;
 import swp391.birdfarmshop.model.User;
@@ -32,67 +35,80 @@ public class RenderShopOrdersController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
-        String page = "1";
-        String[] pageArray = request.getParameterValues("page");
-        
-        String date = null;
-        String[] dateArray = request.getParameterValues("date");
-        
-        String startDay = null;
-        String[] startDayArray = request.getParameterValues("startDay");
-        
-        String endDay = null;
-        String[] endDayArray = request.getParameterValues("endDay");
-        
-        String status = null;
-        String[] statusArray = request.getParameterValues("status");
-        
-        String search = null;
-        String[] searchArray = request.getParameterValues("search");
-        if (dateArray != null) {
-            date = dateArray[dateArray.length - 1];
-        }
-        if (startDayArray != null) {
-            startDay = startDayArray[startDayArray.length - 1];
-        }
-        if (endDayArray != null) {
-            endDay = endDayArray[endDayArray.length - 1];
-        }
-        if (statusArray != null) {
-            status = statusArray[statusArray.length - 1];
-        }
-        if (searchArray != null) {
-            search = searchArray[searchArray.length - 1];
-        }
-        if (pageArray != null) {
-            page = pageArray[pageArray.length - 1];
-        }
-        if(startDay != null && endDay != null && !startDay.isEmpty() && !endDay.isEmpty()) {
-            String[] startDayElement = startDay.split("-");
-            String[] endDayElement = endDay.split("-");
-            int day1 = Integer.parseInt(startDayElement[2]);
-            int day2 = Integer.parseInt(endDayElement[2]);
-            int month1 = Integer.parseInt(startDayElement[1]);
-            int month2 = Integer.parseInt(endDayElement[1]);
-            int year1 = Integer.parseInt(startDayElement[0]);
-            int year2 = Integer.parseInt(endDayElement[0]);
-            if(day1 > day2 || month1 > month2 || year1 > year2) {
-                request.setAttribute("MESSAGE", "Khoảng thời gian nhập vào không hợp lệ");
-                request.getRequestDispatcher(SUCCESS).forward(request, response);
-            }
-        }
-        System.out.println(date+" "+startDay+" "+endDay+" "+status+" "+search+" "+page);
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
+            OrderDAO orderDao = new OrderDAO();
+            ArrayList<Order> orderList;
+            int recordsPerPage = 20;
+            int numberOfOrder;
+            int noOfPages;
             if (user != null && !user.getRole().equals("customer")) {
-                OrderDAO orderDao = new OrderDAO();
-                int recordsPerPage = 2;
-                int numberOfOrder = orderDao.numberOfOrder(date, startDay, endDay, status, search);
-                int noOfPages = (int) Math.ceil(numberOfOrder * 1.0 / recordsPerPage);
-                ArrayList<Order> orderList = orderDao.getAllOfOrder(date, startDay, endDay, status, search, page, recordsPerPage);
-                ArrayList<String> statuses = orderDao.getOrderStatus();
-                request.setAttribute("statuses", statuses);
+                String page = "1";
+//                String[] pageArray = request.getParameterValues("page");
+//                if (pageArray != null) {
+//                    page = pageArray[pageArray.length - 1];
+//                }
+//                String date = null;
+//                String[] dateArray = request.getParameterValues("date");
+//                if (dateArray != null) {
+//                    date = dateArray[dateArray.length - 1];
+//                }
+//                String status = null;
+//                String[] statusArray = request.getParameterValues("status");
+//                if (statusArray != null) {
+//                    status = statusArray[statusArray.length - 1];
+//                }
+//                String search = null;
+//                String[] searchArray = request.getParameterValues("search");
+//                if (searchArray != null) {
+//                    search = searchArray[searchArray.length - 1];
+//                }
+//                String startDay = null;
+//                String[] startDayArray = request.getParameterValues("startDay");
+//                if (startDayArray != null) {
+//                    startDay = startDayArray[startDayArray.length - 1];
+//                }
+//                String endDay = null;
+//                String[] endDayArray = request.getParameterValues("endDay");
+//                if (endDayArray != null) {
+//                    endDay = endDayArray[endDayArray.length - 1];
+//                }
+                if(request.getParameter("page") != null) {
+                    page = request.getParameter("page");
+                }
+                String date = request.getParameter("date");
+                String startDay = request.getParameter("startDay");
+                String endDay = request.getParameter("endDay");
+                String search = request.getParameter("search");
+                String status = request.getParameter("status");
+                System.out.println(date + " " + startDay + " " + endDay + " " + status + " " + search + " " + page);
+                if (startDay != null && endDay != null && !startDay.isEmpty() && !endDay.isEmpty()) {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date from = dateFormat.parse(startDay);
+                    Date to = dateFormat.parse(endDay);
+                    if(from.after(to)) {
+                        orderList = orderDao.getAllOfOrder(date, null, null, status, search, page, recordsPerPage);
+                        numberOfOrder = orderDao.numberOfOrder(date, null, null, status, search);
+                        noOfPages = (int) Math.ceil(numberOfOrder * 1.0 / recordsPerPage);
+                        request.setAttribute("ORDERLIST", orderList);
+                        request.setAttribute("date", date);
+                        request.setAttribute("startDay", null);
+                        request.setAttribute("endDay", null);
+                        request.setAttribute("search", search);
+                        request.setAttribute("status", status);
+                        request.setAttribute("page", page);
+                        request.setAttribute("noOfPages", noOfPages);
+                        session.setAttribute("ERROR", "Khoảng thời gian không hợp lệ");
+                        request.getRequestDispatcher(SUCCESS).forward(request, response);
+                        return;
+                    }
+                }
+                numberOfOrder = orderDao.numberOfOrder(date, startDay, endDay, status, search);
+                noOfPages = (int) Math.ceil(numberOfOrder * 1.0 / recordsPerPage);
+                orderList = orderDao.getAllOfOrder(date, startDay, endDay, status, search, page, recordsPerPage);
+//                ArrayList<String> statuses = orderDao.getOrderStatus();
+//                request.setAttribute("statuses", statuses);
                 request.setAttribute("ORDERLIST", orderList);
                 request.setAttribute("date", date);
                 request.setAttribute("startDay", startDay);
@@ -102,15 +118,13 @@ public class RenderShopOrdersController extends HttpServlet {
                 request.setAttribute("page", page);
                 request.setAttribute("noOfPages", noOfPages);
                 url = SUCCESS;
-                request.getRequestDispatcher(url).forward(request, response);
-
             } else {
                 response.sendRedirect(HOME);
             }
-        } catch (Exception e) {
+        } catch (ServletException | IOException | SQLException | ParseException e) {
             log("Error at RenderShopOrdersController: " + e.toString());
         } finally {
-//            request.getRequestDispatcher(url).forward(request, response);
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

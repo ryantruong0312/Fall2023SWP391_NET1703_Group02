@@ -62,8 +62,8 @@
                                 <li class="submenu"><a class="${param.action == 'NavToShopOrders' ? "active":"" 
                                                                 || param.action == 'NavToBirdPairShop' ? "active":""}">Đơn hàng</a>
                                     <ul>
-                                        <li  class="scroll-to-section"><a class="${param.action == 'NavToShopOrders' ? "active":""}" href="${pageScope.toShopOrders}">Chim và phụ kiện</a></li>
-                                        <li class="scroll-to-section"><a class="${param.action == 'NavToBirdPairShop' ? "active":""}" href="${pageScope.toBirdPairShop}">Nhân giống</a></li>
+                                        <li><a href="${pageScope.toShopOrders}">Chim và phụ kiện</a></li>
+                                        <li><a href="${pageScope.toBirdPairShop}">Nhân giống</a></li>
                                     </ul>
                                 </li>
                                 </c:if>
@@ -94,8 +94,8 @@
                                     <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                 </ul>
                             </li>
-                            <li class="submenu"><a class="${param.action == 'NavToBird' ? "active":""
-                                                ||param.action == 'NavToShopOrders' ? "active":""}">Đơn hàng</a>
+                            <li class="submenu"><a class="${param.action == 'NavToShopOrders' ? "active":""
+                                                ||param.action == 'NavToBirdPairShop' ? "active":""}">Đơn hàng</a>
                                 <ul>
                                    <li  class="scroll-to-section"><a class="${param.action == 'NavToShopOrders' ? "active":""}" href="${pageScope.toShopOrders}">Chim và phụ kiện</a></li>
                                    <li class="scroll-to-section"><a class="${param.action == 'NavToBirdPairShop' ? "active":""}" href="${pageScope.toBirdPairShop}">Nhân giống</a></li>
@@ -105,7 +105,7 @@
                             <li class="scroll-to-section"><a class="${param.action == 'NavToReports' ? "active":""}" href="${pageScope.toReports}">Thống kê</a></li>
                             </c:if>
                             <c:if test="${sessionScope.LOGIN_USER != null}">
-                            <li class="submenu"><a class="user-name text-right ${param.action == 'NavToProfile' ? "active":""}"">${LOGIN_USER.fullName}</a>
+                            <li class="submenu"><a class="user-name text-right ${param.action == 'NavToProfile' ? "active":""}">${LOGIN_USER.fullName}</a>
                                 <ul>
                                     <li><a href="${pageScope.toProfile}">Cá nhân</a></li>
                                     <li><a href="${pageScope.logout}">Đăng xuất</a></li>

@@ -113,7 +113,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="inner-content">
-                            <h2>Vẹt cảnh</h2>
+                            <h2>Chi tiết đơn hàng</h2>
                             <span>Những chú vẹt thông minh và đáng yêu nhất đã có mặt tại V.E.T</span>
                         </div>
                     </div>
@@ -127,7 +127,6 @@
         <main>
             <div class="container">
                 <div class="col-lg-12">
-                    <h1 style="text-align: center;">Chi tiết đơn hàng</h1>
                     <a id="back" href="MainController?action=NavToShopOrders">
                         <i style="color: white; font-size: 1rem; width: 30px;" class="fa fa-arrow-left"></i>
                         <span>Quay lại</span>
@@ -141,7 +140,93 @@
                             <br/>
                         </div>
                         <div class="scrollable-container">
-                            <table class="scrollable-list">
+                            <div class="card mb-3" style="max-width: 100%;">
+                                <div class="row no-gutters">
+                                    <c:forEach items="${itemList}" var="item" varStatus="counter">
+                                    <c:choose>    
+                                        <c:when test="${item.bird != null}">
+                                    <div class="col-md-3">
+                                        <img src="${item.bird.image_url}" class="card-img" alt="${item.bird.bird_id}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${item.bird.bird_id}</h5>
+                                            <p class="card-text">${item.bird.bird_name}</p>
+                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Card title</h5>
+                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                        </div>
+                                    </div>
+                                        </c:when>
+                                        <c:when test="${item.accessory != null}">
+                                    <div class="col-md-3">
+                                        <img src="${item.accessory.image_url}" class="card-img" alt="${item.accessory.accessory_id}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${item.bird.accessory_id}</h5>
+                                            <p class="card-text">${item.bird.accessory_name}</p>
+                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Card title</h5>
+                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                        </div>
+                                    </div>
+                                        </c:when>
+                                        <c:when test="${item.birdNest != null}">
+                                    <div class="col-md-3">
+                                        <img src="${item.birdNest.image_url}" class="card-img" alt="${item.birdNest.nest_id}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${item.birdNest.nest_id}</h5>
+                                            <p class="card-text">${item.birdNest.nest_name}</p>
+                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Card title</h5>
+                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                        </div>
+                                    </div>
+                                        </c:when>
+                                        <c:otherwise>
+                                    <div class="col-md-3">
+                                        <img src="" class="card-img" alt="">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card-body">
+                                            <h5 class="card-title"></h5>
+                                            <p class="card-text"></p>
+                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Card title</h5>
+                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                        </div>
+                                    </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                            
+
+                            <%--                            <table class="scrollable-list">                                
                                 <thead>
                                     <tr>
                                         <th>STT</th>
@@ -153,7 +238,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                                            <c:forEach items="${itemList}" var="item" varStatus="counter">
+                                    <c:forEach items="${itemList}" var="item" varStatus="counter">
                                         <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
                                             <td>${counter.count}</td>
                                             <c:choose>
@@ -184,12 +269,14 @@
                                     </c:forEach>
                                 </tbody>
                             </table>
+                            --%>
                         </div>
                     </div>
                 </div>        
             </div>
         </main>
         <!-- Start Footer -->
+        <%@include file="../layout/footer.jsp" %>
         <%@include file="../layout/message.jsp" %>
         <script src="assets/js/jquery-3.7.1.min.js"></script>
         <script src="assets/js/popper.min.js"></script>
