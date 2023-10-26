@@ -25,7 +25,26 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
+        <style>
+            #counter-box {
+                position: fixed;
+                bottom: 20px; /* Adjust the distance from the bottom as needed */
+                right: 20px; /* Adjust the distance from the right as needed */
+                background-color: #6ac8b6; /* Background color of the counter box */
+                color: #fff; /* Text color */
+                border-radius: 5px; /* Makes the box circular */
+                width: 200px; /* Set the width of the box */
+                height: 50px; /* Set the height of the box */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 3;
+            }
 
+            #compare-counter {
+                font-size: 1.2rem;
+            }
+        </style>
     </head>
 
     <body>
@@ -105,6 +124,9 @@
                                 <div class="row mx-1">
                                     <c:choose>
                                         <c:when test="${not empty requestScope.BIRDLIST}">
+                                            <div id="counter-box">
+                                                <div id="compare-counter">So sánh (0)</div>
+                                            </div>
                                             <c:forEach var="bird" items="${requestScope.BIRDLIST}">
                                                 <div class="col-xl-4 col-md-6 col-sm-6">
                                                     <div class="card mt-1 mb-3 card-custom">
@@ -118,6 +140,11 @@
                                                                     <li>
                                                                         <a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}">
                                                                             <i class="fa fa-eye"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a class="bird-compare" data-bird-id="${bird.bird_id}">
+                                                                            <img src="assets/images/compare.png" style="width: 16px; height: 16px;"/>
                                                                         </a>
                                                                     </li>
                                                                     <c:if test="${(sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer') && bird.status == 'Còn hàng'}">
@@ -247,6 +274,64 @@
         <!-- Start Footer -->
         <%@include file="../layout/footer.jsp" %>
         <!-- End Footer -->
+        <script>
+            var selectedBirds = [];
+            // Add an event handler for the counter-box
+            $("#counter-box").on("click", function () {
+                var counter = $("#compare-counter");
+                var countText = counter.text();
+                var count = parseInt(countText.match(/\d+/));
+
+                if (count > 1) {
+                    // Create a form and submit it to the CompareBirdController
+                    var form = $("<form>")
+                            .attr("method", "post")
+                            .attr("action", "MainController?action=NavToCompare");
+
+                    for (var i = 0; i < selectedBirds.length; i++) {
+                        form.append($("<input>")
+                                .attr("type", "hidden")
+                                .attr("name", "birdIds")
+                                .attr("value", selectedBirds[i]));
+                    }
+
+                    form.appendTo("body").submit();
+                }
+            });
+
+            // Add a click event handler to the bird-compare icon
+            $(".bird-compare").on("click", function () {
+                var birdId = $(this).data("bird-id");
+                var counter = $("#compare-counter");
+                var countText = counter.text();
+                var count = parseInt(countText.match(/\d+/));
+
+                // Check if the icon is active (toggled on)
+                var isActive = $(this).hasClass("active");
+
+                if (isActive) {
+                    // Decrease the counter and remove the active class
+                    counter.text("So sánh (" + (count - 1) + ")");
+                    $(this).css("background-color", ""); // Remove background color
+                    $(this).removeClass("active");
+                    // Remove the bird ID from the selectedBirds array
+                    var index = selectedBirds.indexOf(birdId);
+                    if (index > -1) {
+                        selectedBirds.splice(index, 1);
+                    }
+                } else {
+                    if (count < 5) {
+                        // Increase the counter and add the active class
+                        counter.text("So sánh (" + (count + 1) + ")");
+                        $(this).css("background-color", "#63b885"); // Set background color
+                        $(this).addClass("active");
+                        // Add the bird ID to the selectedBirds array
+                        selectedBirds.push(birdId);
+                    }
+                }
+
+            });
+        </script>
         <script>
             $(function () {
                 var selectedClass = "";
