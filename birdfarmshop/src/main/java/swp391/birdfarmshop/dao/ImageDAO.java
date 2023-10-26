@@ -363,13 +363,21 @@ public class ImageDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement(" UPDATE [BirdFarmShop].[dbo].[Image]\n"
+                if (ImageID != null) {
+                    stm = con.prepareStatement(" UPDATE [BirdFarmShop].[dbo].[Image]\n"
+                            + "  SET [image_url] = ? \n"
+                            + "  WHERE [accessory_id] = ? AND is_thumbnail = ? AND [image_id] = ?");
+                }else{
+                    stm = con.prepareStatement(" UPDATE [BirdFarmShop].[dbo].[Image]\n"
                         + "  SET [image_url] = ? \n"
-                        + "  WHERE [accessory_id] = ? AND is_thumbnail = ? AND [image_id] = ?");
+                        + "  WHERE [accessory_id] = ? AND is_thumbnail = ?");
+                }
                 stm.setString(1, urlImage);
                 stm.setString(2, txtAccessoryID);
                 stm.setBoolean(3, type);
-                stm.setInt(4, Integer.parseInt(ImageID));
+                if(ImageID != null){
+                    stm.setInt(4, Integer.parseInt(ImageID));
+                }
                 rs = stm.executeUpdate();
                 if (rs > 0) {
                     return true;
@@ -386,6 +394,11 @@ public class ImageDAO {
             }
         }
         return false;
+    }
+    
+    public static void main(String[] args) throws SQLException {
+        ImageDAO d = new ImageDAO();
+        System.out.println(d.updateImageAccessory("CT001", true, "http", null));
     }
 
     public boolean updateThumbnailImageAccessory(String txtAccessoryID, boolean type, String urlImage) throws SQLException {
@@ -464,9 +477,9 @@ public class ImageDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement( "UPDATE [dbo].[Image]\n" +
-                                            "SET [image_url] = ?\n" +
-                                            "WHERE [bird_id] = ? AND [image_id] = ?");
+                stm = con.prepareStatement("UPDATE [dbo].[Image]\n"
+                        + "SET [image_url] = ?\n"
+                        + "WHERE [bird_id] = ? AND [image_id] = ?");
                 stm.setString(1, url);
                 stm.setString(2, bird_id);
                 stm.setInt(3, image_id);
@@ -487,7 +500,7 @@ public class ImageDAO {
         return false;
     }
 
-     public boolean updateImageBirdNest(String url, String nest_id) throws SQLException {
+    public boolean updateImageBirdNest(String url, String nest_id) throws SQLException {
         Connection con = null;
         PreparedStatement stm = null;
         try {
@@ -512,10 +525,11 @@ public class ImageDAO {
             if (con != null) {
                 con.close();
             }
-        }        
+        }
         return false;
     }
-     public ArrayList<Image> getImagesFollowBirdId(String birdId) throws SQLException {
+
+    public ArrayList<Image> getImagesFollowBirdId(String birdId) throws SQLException {
         ArrayList<Image> images = new ArrayList<>();
         Image img;
         Connection con = null;
@@ -524,9 +538,9 @@ public class ImageDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement( "SELECT [image_id],[image_url],[is_thumbnail],[bird_id],[nest_id],[accessory_id]\n" +
-                                            "FROM [BirdFarmShop].[dbo].[Image]\n" +
-                                            "WHERE [bird_id] = ? ORDER BY [image_id] ASC");
+                stm = con.prepareStatement("SELECT [image_id],[image_url],[is_thumbnail],[bird_id],[nest_id],[accessory_id]\n"
+                        + "FROM [BirdFarmShop].[dbo].[Image]\n"
+                        + "WHERE [bird_id] = ? ORDER BY [image_id] ASC");
                 stm.setString(1, birdId);
                 rs = stm.executeQuery();
                 while (rs.next()) {

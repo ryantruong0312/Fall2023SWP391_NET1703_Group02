@@ -55,6 +55,58 @@
             #id{
                 height: 100px;
             }
+            .accessory-image{
+                width: 100px;
+                height: 100px;
+            }
+            .overlay-text {
+                position: absolute;
+                top: 50%;
+                left: 35%;
+                transform: translate(-50%, -50%);
+                background-color: rgba(0, 0, 0, 0.5);
+                border-radius: 50%;
+                color: #fff;
+                padding: 30px;
+                font-size: 30px;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .button-updateAccessory{
+                margin-bottom: 5px;
+                color: white;
+                padding: 10px;
+                border: 1px solid;
+                font-size: 15px;
+                border-radius: 4px;
+                width: 120px;
+                background-color: red;
+            }
+            .popup {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: white;
+                padding: 50px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+                cursor: move;
+                border-radius: 10px;
+
+            }
+            .popup.active {
+                display: block;
+            }
+
+            .buttonConfirm{
+                border: 2px #000 solid;
+                border-radius: 5px;
+                padding: 10px;
+            }
         </style>
     </head>
 
@@ -89,7 +141,7 @@
                         </c:if>
                     </div>
                 </div>
-                <form action="MainController" method="POST" enctype="multipart/form-data">
+                <form action="RenderUpdateAccessoryController" method="POST" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-outline mt-2">
@@ -150,26 +202,87 @@
                             </div>
 
                             <div class="form-outline mt-2">
-                                <label>Hình ảnh sản phẩm (Bắt buộc)</label>
-                                <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage"  class="input form-control" value="${url_thumnail}" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" required/>
+                                <div class="row"  style="margin-top: 15px;">
+                                    <div class="col-lg-9">
+                                        <label>Hình ảnh sản phẩm (Bắt buộc)</label>
+                                        <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage"  class="input form-control" value="${url_thumnail}" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$"/>                                           
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <img style="float: right;" class="accessory-image" src="${url_thumnail}"/>
+                                    </div>
+                                </div>
                             </div>
 
                             <c:if test="${requestScope.list != null}">
                                 <c:forEach var="image" items="${list}" varStatus="loop">
                                     <div class="form-outline mt-2">
-                                        <label>Hình ảnh sản phẩm</label>
-                                        <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage_${loop.index + 1}" class="input form-control" value="${image.image_url}" required/>
-                                        <input type="hidden" name="Image_id_${loop.index + 1}" value="${image.image_id}">
-                                    </div>
-                                </c:forEach>
-                            </c:if>
-                            
+                                        <div class="row" style="margin-top: 15px;">
+                                            <div class="col-lg-9">
+                                                <label>Hình ảnh sản phẩm</label>
+                                                <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage_${loop.index + 1}" class="input form-control" value="${image.image_url}"/>
+                                                <input type="hidden" name="Image_id_${loop.index + 1}" value="${image.image_id}">                                                
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <img style="float: right;" class="accessory-image" src="${image.image_url}"/>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </c:if>
+                            </div>
                         </div>
+                        <input type="hidden" name="btAction" value="Update">
                     </div>
-                    <input type="hidden" name="btAction" value="Update">
-                    <div class="col-lg-12" style="margin-top: 10px;">                       
-                        <a type="button" class="btn-danger button-submit" href="RenderAccessoryDetailsController?id=${a.accessory_id}">Hủy bỏ</a>
-                        <button style="margin-right: 10px;" class="button-submit btn-primary" type="submit" name="action" value="NavToUpdateAccessory">Hoàn tất</button>
+
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-12" style="margin-top: 10px;">                       
+                                <div class="button">
+                                    <div style="float: right; margin-left: 10px;">
+                                        <a href="#" id="openPopup" class="btn-danger button-submit">Hủy bỏ</a>
+                                        <div class="overlay" id="overlay"></div>
+                                        <div class="popup" id="popup">
+                                            <h2>Bạn có muốn hủy không?</h2>
+                                            <div class="centered-button">
+                                                <div class="row">
+                                                    <div class="col-lg-6" style="display: flex; justify-content: center; margin-top: 30px;">
+                                                        <a type="button" class="btn-primary buttonConfirm" href="RenderAccessoryDetailsController?id=${a.accessory_id}" id="updateButton">Xác Nhận</a>
+                                                    </div>
+                                                    <div class="col-lg-6" style="display: flex; justify-content: center; margin-top: 30px;">
+                                                        <button class="btn-danger buttonConfirm" id="cancelButton">Trở về</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            const openPopupButton = document.getElementById('openPopup');
+                                            const popup = document.getElementById('popup');
+                                            const overlay = document.getElementById('overlay');
+                                            const cancelButton = document.getElementById('cancelButton');
+
+                                            openPopupButton.addEventListener('click', function (event) {
+                                                event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+
+                                                // Hiển thị popup và overlay
+                                                popup.style.display = 'block';
+                                                overlay.style.display = 'block';
+                                            });
+
+                                            cancelButton.addEventListener('click', function (event) {
+                                                event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+
+                                                // Ẩn popup và overlay
+                                                popup.style.display = 'none';
+                                                overlay.style.display = 'none';
+                                            });
+                                        }
+                                        );
+                                    </script>
+                                    <button style="margin-right: 10px;" class="button-submit btn-primary" type="submit">Hoàn tất</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
