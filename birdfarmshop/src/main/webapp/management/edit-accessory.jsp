@@ -59,31 +59,6 @@
                 width: 100px;
                 height: 100px;
             }
-            .overlay-text {
-                position: absolute;
-                top: 50%;
-                left: 35%;
-                transform: translate(-50%, -50%);
-                background-color: rgba(0, 0, 0, 0.5);
-                border-radius: 50%;
-                color: #fff;
-                padding: 30px;
-                font-size: 30px;
-                text-align: center;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-            .button-updateAccessory{
-                margin-bottom: 5px;
-                color: white;
-                padding: 10px;
-                border: 1px solid;
-                font-size: 15px;
-                border-radius: 4px;
-                width: 120px;
-                background-color: red;
-            }
             .popup {
                 display: none;
                 position: fixed;
@@ -91,21 +66,25 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
                 background-color: white;
-                padding: 50px;
+                /*padding: 15px;*/
                 box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
                 z-index: 9999;
                 cursor: move;
                 border-radius: 10px;
-
+                display: none;
             }
             .popup.active {
                 display: block;
             }
-
-            .buttonConfirm{
-                border: 2px #000 solid;
-                border-radius: 5px;
-                padding: 10px;
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.3); /* Màu nền mờ với độ trong suốt */
+                z-index: 9998; /* Đảm bảo lớp mờ nằm dưới phần tử popup */
+                display: none;
             }
         </style>
     </head>
@@ -241,14 +220,19 @@
                                         <a href="#" id="openPopup" class="btn-danger button-submit">Hủy bỏ</a>
                                         <div class="overlay" id="overlay"></div>
                                         <div class="popup" id="popup">
-                                            <h2>Bạn có muốn hủy không?</h2>
-                                            <div class="centered-button">
-                                                <div class="row">
-                                                    <div class="col-lg-6" style="display: flex; justify-content: center; margin-top: 30px;">
-                                                        <a type="button" class="btn-primary buttonConfirm" href="RenderAccessoryDetailsController?id=${a.accessory_id}" id="updateButton">Xác Nhận</a>
-                                                    </div>
-                                                    <div class="col-lg-6" style="display: flex; justify-content: center; margin-top: 30px;">
-                                                        <button class="btn-danger buttonConfirm" id="cancelButton">Trở về</button>
+                                            <div class="box-remove bg-white p-4">
+                                                <h4>Xác nhận</h4>
+                                                <p class="mb-4 mt-4" style="font-size: 15px;">
+                                                    Bạn có muốn thực hiện thao tác này không ?
+                                                </p>
+                                                <div class="centered-button">
+                                                    <div class="row">
+                                                        <div class="col-lg-6" style="display: flex; justify-content: center; margin-top: 15px;">
+                                                            <a type="button" class="btn-primary buttonConfirm" href="RenderAccessoryDetailsController?id=${a.accessory_id}" id="updateButton">Xác Nhận</a>
+                                                        </div>
+                                                        <div class="col-lg-6" style="display: flex; justify-content: center; margin-top: 15px;">
+                                                            <button class="btn-danger buttonConfirm" id="cancelButton">Trở về</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
