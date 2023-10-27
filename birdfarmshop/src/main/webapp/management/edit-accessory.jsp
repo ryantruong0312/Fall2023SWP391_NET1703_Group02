@@ -167,14 +167,15 @@
                                     </div>
                                 </c:forEach>
                             </c:if>
-                            
+
+                        </div>
+                        <input type="hidden" name="btAction" value="Update">
+                        <div class="col-lg-12" style="margin-top: 10px;">
+                            <button style="float: right;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit">Hủy bỏ</button>
+                            <button style="margin-right: 10px; float: right;" class="button-submit btn-primary" type="submit">Hoàn tất</button>
                         </div>
                     </div>
-                    <input type="hidden" name="btAction" value="Update">
-                    <div class="col-lg-12">
-                        <button style="float: right;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit">Hủy bỏ</button>
-                        <button style="margin-right: 10px; float: right;" class="button-submit btn-primary" type="submit">Hoàn tất</button>
-                    </div>
+
                 </form>
             </div>
         </section>

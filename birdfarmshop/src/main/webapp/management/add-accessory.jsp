@@ -215,7 +215,6 @@
                         <div class="col-lg-12" style="margin-top: 15px;">
                             <button style="float: right; margin-left: 10px;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit" formnovalidate>Hủy bỏ</button>
                             <input type="hidden" name="btAction" value="add">
-                            <a type="button" class="btn-danger button-submit" style="margin-left: 10px; color: white;" href="MainController?action=NavToAccessory">Hủy bỏ</a>
                             <button class="btn-primary button-submit" style="margin-left: 10px;" type="submit" name="type" value="continue">Lưu và tiếp tục</button>
                             <button class="btn-success button-submit" type="submit" name="type" value="close">Lưu và đóng</button>
 

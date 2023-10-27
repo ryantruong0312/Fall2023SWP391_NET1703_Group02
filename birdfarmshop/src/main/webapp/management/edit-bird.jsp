@@ -36,9 +36,9 @@
                 width: 100%;
             }
             .form-add img {
-                float: right; 
-                width: 100px; 
-                height: 75px; 
+                float: right;
+                width: 100px;
+                height: 75px;
                 border: 1px solid;
             }
             .button-submit{
@@ -96,7 +96,7 @@
                                     <label>Giống loài</label>
                                     <select name="txtBirdBreed" class="input form-control" style="color: #0c5460;" required>
                                         <c:forEach var="breed" items="${requestScope.BREED}" varStatus="counter">
-                                        <option value="${breed.key}" ${birdDetails.breed_id == breed.key ? "selected":""}>${breed.value}</option>
+                                            <option value="${breed.key}" ${birdDetails.breed_id == breed.key ? "selected":""}>${breed.value}</option>
                                         </c:forEach>
                                         <option value="other">Khác</option>
                                     </select>
@@ -115,7 +115,7 @@
                                 <select name="txtBirdStatus" class="input form-control" style="color: #0c5460;" required>
                                     <c:forEach var="st" items="${requestScope.STATUS}" >
                                         <option ${birdDetails.status == st ? "selected":""} value="${st}">${st}</li>
-                                    </c:forEach>
+                                        </c:forEach>
                                 </select>
                             </div>
                             <div class="form-add mb-3">
@@ -174,7 +174,7 @@
                             <div class="form-add mb-3">
                                 <label>Hình ảnh sản phẩm 1</label>
                                 <c:if test="${image_urls.size() >= 1}">
-                                <img class="accessory-image" src="${image_urls.get(0).image_url}"/>
+                                    <img class="accessory-image" src="${image_urls.get(0).image_url}"/>
                                 </c:if>
                                 <img style="display: none;" id="image-preview-1" src=""/>
                                 <input type="file" name="txtImage_1" accept="image/jpeg, image/png, image/gif" onchange="previewImage(1)"/>
@@ -182,7 +182,7 @@
                             <div class="form-add mb-3">
                                 <label>Hình ảnh sản phẩm 2</label>
                                 <c:if test="${image_urls.size() >= 2}">
-                                <img class="accessory-image" src="${image_urls.get(1).image_url}"/>
+                                    <img class="accessory-image" src="${image_urls.get(1).image_url}"/>
                                 </c:if>
                                 <img style="display: none;" id="image-preview-2" src=""/>
                                 <input type="file" name="txtImage_2" accept="image/jpeg, image/png, image/gif" onchange="previewImage(2)"/>
@@ -190,20 +190,36 @@
                             <div class="form-add mb-3">
                                 <label>Hình ảnh sản phẩm 3</label>
                                 <c:if test="${image_urls.size() >= 3}">
-                                <img class="accessory-image" src="${image_urls.get(2).image_url}"/>
+                                    <img class="accessory-image" src="${image_urls.get(2).image_url}"/>
                                 </c:if>
                                 <img style="display: none;" id="image-preview-3" src=""/>
                                 <input type="file" name="txtImage_3" accept="image/jpeg, image/png, image/gif" onchange="previewImage(3)"/>
                             </div>
-                            <div class="col-lg-12" style="margin-top: 15px;">
-                                <button style="float: right;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit">Hủy bỏ</button>
-                                <button style="margin-right: 10px; float: right;" class="button-submit btn-primary" type="submit" name="btAction" value="Update"><span>Cập nhật</span></button>
-                            </div>
+                        </div>
+                        <div class="col-lg-12" style="margin-top: 15px;">
+                            <button style="float: right;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit">Hủy bỏ</button>
+                            <button style="margin-right: 10px; float: right;" class="button-submit btn-primary" type="submit" name="btAction" value="Update"><span>Cập nhật</span></button>
                         </div>
                     </div>
                 </form>
             </div>
         </section>
+        <section id="confirm-remove" class="container-fluid">
+            <div class="vh-100 row">
+                <div class="h-100 m-auto d-flex align-items-center">
+                    <div class="box-remove bg-white p-4">
+                        <h4>Xác nhận</h4>
+                        <p class="mb-4 mt-4">
+                            Bạn có muốn thực hiện thao tác này không ?
+                        </p>
+                        <div class="float-right">
+                            <a type="button" id="btn-confirrm" href="MainController?action=NavToBird" class="btn btn-group-sm btn-primary">Xác nhận</a>
+                            <button  onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> 
         <!-- ***** Products Area Ends ***** -->
         <%@include file="../layout/footer.jsp" %>
         <%@include file="../layout/message.jsp" %>
@@ -223,30 +239,30 @@
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
         <script>
-            function previewImage(imageNumber) {
-                var input = document.querySelector('input[name="txtImage_' + imageNumber + '"]');
-                var imagePreview = document.getElementById('image-preview-' + imageNumber);
+                                function previewImage(imageNumber) {
+                                    var input = document.querySelector('input[name="txtImage_' + imageNumber + '"]');
+                                    var imagePreview = document.getElementById('image-preview-' + imageNumber);
 
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
+                                    if (input.files && input.files[0]) {
+                                        var reader = new FileReader();
 
-                    reader.onload = function(e) {
-                        imagePreview.src = e.target.result;
-                        imagePreview.style.display = 'block';
-                    };
+                                        reader.onload = function (e) {
+                                            imagePreview.src = e.target.result;
+                                            imagePreview.style.display = 'block';
+                                        };
 
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
-            function checkUser(event) {
-                $('#confirm-remove').css('display', 'block');
-                let idForm = event.form.id;
-                $('#btn-confirrm').attr('data-value', idForm);
-                    return false;
-                }
-                function cancelRemove() {
-                    $('#confirm-remove').css('display', 'none');
-            }
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
+                                }
+                                function checkUser(event) {
+                                    $('#confirm-remove').css('display', 'block');
+                                    let idForm = event.form.id;
+                                    $('#btn-confirrm').attr('data-value', idForm);
+                                    return false;
+                                }
+                                function cancelRemove() {
+                                    $('#confirm-remove').css('display', 'none');
+                                }
         </script>
     </body>
 </html>
