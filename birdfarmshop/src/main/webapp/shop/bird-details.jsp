@@ -139,6 +139,11 @@
                         <div class="inner-content">
                             <h2>Thông tin chi tiết</h2>
                             <span>Tất tần tật thông tin và mô tả về chú vẹt sẽ được tìm thấy tại đây!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- ***** Main Banner Area End ***** -->
         <!-- ***** Product Area Starts ***** -->
         <c:set var="birdDetails" value="${requestScope.birdDetails}"/>
@@ -164,6 +169,23 @@
                                         <c:if test="${birdDetails.status == 'Đã bán'}">
                                             <div class="overlay-text">Đã bán</div>
                                         </c:if>
+                                        <c:if test="${birdDetails.status == 'Đang sinh sản'}">
+                                            <div class="overlay-text">Đang sinh sản</div>
+                                        </c:if>
+                                        <c:if test="${birdDetails.status == 'Đang ghép cặp'}">
+                                            <div class="overlay-text">Đang ghép cặp</div>
+                                        </c:if>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="image-bottom">
+                                <c:forEach items="${birdDetails.image_urls}" var="bird">
+                                    <c:if test="${bird ne im}">
+                                        <img style="width: 100px; height: 75px; border: 1px solid;" class="accessory-image" src="${bird}" alt="" onclick="swapImages(this)">
+                                    </c:if>
+                                </c:forEach>
+                            </div>
+                        </c:if>
                     </div>
                     <div class="col-lg-5">
                         <div class="right-content">
