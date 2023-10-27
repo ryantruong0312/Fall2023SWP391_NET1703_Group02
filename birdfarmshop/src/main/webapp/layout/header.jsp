@@ -46,27 +46,28 @@
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                         <li class="scroll-to-section"><a href="MainController?action=NavToHome" class="${param.action == null ? "active":"" 
-                                                                                                         || param.action == 'NavToHome' ? "active":""}">Trang chủ</a></li>
+                                                                                                        || param.action == 'NavToHome' ? "active":""}">Trang chủ</a></li>
                             <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
                             <li class="submenu"><a class="${param.action == 'NavToBird' ? "active":""
-                                                            ||param.action == 'NavToBirdNests' ? "active":""
-                                                            ||param.action == 'NavToAccessory' ? "active":""}">Sản phẩm</a>
+                                                ||param.action == 'NavToBirdNests' ? "active":""
+                                                ||param.action == 'NavToAccessory' ? "active":""}">Sản phẩm</a>
                                 <ul>
                                     <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
                                     <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
                                     <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                 </ul>
                             </li>
-                            <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
+                            <li class="scroll-to-section}"><a class="${param.action == 'NavToCompare' ? "active":""}" href="${pageScope.toCompare}">So sánh</a></li>
+                                <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
                                 <li class="submenu"><a class="${param.action == 'NavToShopOrders' ? "active":"" 
                                                                 || param.action == 'NavToBirdPairShop' ? "active":""}">Đơn hàng</a>
                                     <ul>
-                                        <li  class="scroll-to-section"><a class="${param.action == 'NavToShopOrders' ? "active":""}" href="${pageScope.toShopOrders}">Chim và phụ kiện</a></li>
-                                        <li class="scroll-to-section"><a class="${param.action == 'NavToBirdPairShop' ? "active":""}" href="${pageScope.toBirdPairShop}">Nhân giống</a></li>
+                                        <li><a href="${pageScope.toShopOrders}">Chim và phụ kiện</a></li>
+                                        <li><a href="${pageScope.toBirdPairShop}">Nhân giống</a></li>
                                     </ul>
                                 </li>
-                            </c:if>
-                            <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
+                                </c:if>
+                                <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
                                 <li class="scroll-to-section"><a class="${param.action == 'NavToPairBirds' ? "active":""}" href="${pageScope.toPair}">Nhân giống</a></li>
                                 <li id="show-cart" class="scroll-to-section">
                                     <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
@@ -85,26 +86,26 @@
                             </c:if>
                             <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
                             <li class="submenu"><a class="${param.action == 'NavToBird' ? "active":""
-                                                            ||param.action == 'NavToBirdNests' ? "active":""
-                                                            ||param.action == 'NavToAccessory' ? "active":""}">Sản phẩm</a>
+                                                ||param.action == 'NavToBirdNests' ? "active":""
+                                                ||param.action == 'NavToAccessory' ? "active":""}">Sản phẩm</a>
                                 <ul>
                                     <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
                                     <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
                                     <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                 </ul>
                             </li>
-                            <li class="submenu"><a class="${param.action == 'NavToBird' ? "active":""
-                                                            ||param.action == 'NavToShopOrders' ? "active":""}">Đơn hàng</a>
+                            <li class="submenu"><a class="${param.action == 'NavToShopOrders' ? "active":""
+                                                ||param.action == 'NavToBirdPairShop' ? "active":""}">Đơn hàng</a>
                                 <ul>
-                                    <li  class="scroll-to-section"><a class="${param.action == 'NavToShopOrders' ? "active":""}" href="${pageScope.toShopOrders}">Chim và phụ kiện</a></li>
-                                    <li class="scroll-to-section"><a class="${param.action == 'NavToBirdPairShop' ? "active":""}" href="${pageScope.toBirdPairShop}">Nhân giống</a></li>
+                                   <li  class="scroll-to-section"><a class="${param.action == 'NavToShopOrders' ? "active":""}" href="${pageScope.toShopOrders}">Chim và phụ kiện</a></li>
+                                   <li class="scroll-to-section"><a class="${param.action == 'NavToBirdPairShop' ? "active":""}" href="${pageScope.toBirdPairShop}">Nhân giống</a></li>
                                 </ul>
                             </li>
                             <li class="scroll-to-section"><a class="${param.action == 'NavToAccounts' ? "active":""}" href="${pageScope.toAccounts}">Tài khoản</a></li>
                             <li class="scroll-to-section"><a class="${param.action == 'NavToReports' ? "active":""}" href="${pageScope.toReports}">Thống kê</a></li>
                             </c:if>
                             <c:if test="${sessionScope.LOGIN_USER != null}">
-                            <li class="submenu"><a class="user-name text-right ${param.action == 'NavToProfile' ? "active":""}"">${LOGIN_USER.fullName}</a>
+                            <li class="submenu"><a class="user-name text-right ${param.action == 'NavToProfile' ? "active":""}">${LOGIN_USER.fullName}</a>
                                 <ul>
                                     <li><a href="${pageScope.toProfile}">Cá nhân</a></li>
                                     <li><a href="${pageScope.logout}">Đăng xuất</a></li>

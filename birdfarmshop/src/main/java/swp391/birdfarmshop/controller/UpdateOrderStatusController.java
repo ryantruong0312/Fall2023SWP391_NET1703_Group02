@@ -36,10 +36,15 @@ public class UpdateOrderStatusController extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
-            if (user != null && (user.getRole().equals("manager") || user.getRole().equals("staff") 
-                    ||  user.getRole().equals("admin"))) {
+            if (user != null && !user.getRole().equals("customer")) {
                 String[] statusArray = request.getParameterValues("status");
                 String status = statusArray[statusArray.length - 1];
+                if("Giao hàng thành công".equals(status)) {
+                    status = "Đã giao hàng";
+                }
+                if("Giao hàng thất bại".equals(status)) {
+                    status = "Đã hủy";
+                }
                 String order_id = request.getParameter("order_id");
                 OrderDAO orderDao = new OrderDAO();
                 boolean isUpdated = orderDao.updateOrderStatus(order_id, status);

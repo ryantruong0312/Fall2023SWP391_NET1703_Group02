@@ -362,9 +362,9 @@ public class AccessoryDAO {
                     status = "hết hàng";
                 }
                 stm.setString(8, status);
-
+                
                 rs = stm.executeUpdate();
-
+                
                 boolean checkImage_1 = im.addNewAccessoryImage(imageURL_1, true, txtAccessoryID);
                 boolean checkImage_2 = im.addNewAccessoryImage(imageURL_2, false, txtAccessoryID);
                 boolean checkImage_3 = im.addNewAccessoryImage(imageURL_3, false, txtAccessoryID);
@@ -387,6 +387,7 @@ public class AccessoryDAO {
     }
 
     public boolean updateAccessory(String txtAccessoryID, String txtAccessoryName, String txtCategoryID, String txtPrice, String txtStockQuantity, String txtDescribe, String txtDiscount) throws SQLException {
+        String status;
         Connection con = null;
         PreparedStatement stm = null;
         int rs = 0;

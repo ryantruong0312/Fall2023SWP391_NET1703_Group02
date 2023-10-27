@@ -592,7 +592,26 @@ public class OrderDAO {
                     }
                 }
                 if (status != null && !status.isEmpty()) {
-                    query += "AND ([order_status] = N'" + status + "')";
+                    switch (status) {
+                        case "wait":
+                            query += "AND ([order_status] = N'Chờ xử lý')";
+                            break;
+                        case "inProgress":
+                            query += "AND ([order_status] = N'Đang xử lý')";
+                            break;
+                        case "delivering":
+                            query += "AND ([order_status] = N'Đang giao hàng')";
+                            break;
+                        case "delivered":
+                            query += "AND ([order_status] = N'Đã giao hàng')";
+                            break;
+                        case "rated":
+                            query += "AND ([order_status] = N'Đã đánh giá')";
+                            break;
+                        case "cancel":
+                            query += "AND ([order_status] = N'Đã hủy')";
+                            break;
+                    }
                 }
                 if (search != null && !search.isEmpty()) {
                     query += "AND ([order_id] LIKE '%" + search + "%' OR [customer] LIKE '%" + search + "%')";
@@ -622,7 +641,6 @@ public class OrderDAO {
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
         } finally {
             if (stm != null) {
                 stm.close();
@@ -807,6 +825,26 @@ public class OrderDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
+                switch(status) {
+                    case "wait":
+                        status = "Chờ xử lý";
+                        break;
+                    case "inProgress":
+                        status = "Đang xử lý";
+                        break;
+                    case "delivering":
+                        status = "Đang giao hàng";
+                        break;
+                    case "delivered":
+                        status = "Đã giao hàng";
+                        break;
+                    case "rated":
+                        status = "Đã đánh giá";
+                        break;
+                    case "cancel":
+                        status = "Đã hủy";
+                        break;
+                }
                 String query = "UPDATE [dbo].[Order] SET [order_status] = ? WHERE [order_id] = ?";
                 stm = con.prepareStatement(query);
                 stm.setString(1, status);

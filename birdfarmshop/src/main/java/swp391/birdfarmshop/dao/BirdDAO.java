@@ -655,7 +655,9 @@ public class BirdDAO {
                         + "             [description] = ?\n"
                         + "             WHERE [bird_id] = ?";
                 stm = con.prepareStatement(query);
-                bird_name = bird_name + " " + bird_id;
+                if(!bird_name.contains(bird_id)) {
+                    bird_name = bird_name + " " + bird_id;
+                }
                 stm.setString(1, bird_name.trim());
                 stm.setString(2, color);
                 stm.setDate(3, sqlDate);

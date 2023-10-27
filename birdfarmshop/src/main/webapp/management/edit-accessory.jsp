@@ -55,10 +55,6 @@
             #id{
                 height: 100px;
             }
-            .accessory-image{
-                width: 100px;
-                height: 100px;
-            }
         </style>
     </head>
 
@@ -93,7 +89,7 @@
                         </c:if>
                     </div>
                 </div>
-                <form action="RenderUpdateAccessoryController" method="POST" enctype="multipart/form-data">
+                <form action="MainController" method="POST" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-outline mt-2">
@@ -154,58 +150,28 @@
                             </div>
 
                             <div class="form-outline mt-2">
-                                <div class="row"  style="margin-top: 15px;">
-                                    <div class="col-lg-9">
-                                        <label>Hình ảnh sản phẩm (Bắt buộc)</label>
-                                        <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage"  class="input form-control" value="${url_thumnail}" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$"/>                                           
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <img style="float: right;" class="accessory-image" src="${url_thumnail}"/>
-                                    </div>
-                                </div>
+                                <label>Hình ảnh sản phẩm (Bắt buộc)</label>
+                                <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage"  class="input form-control" value="${url_thumnail}" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" required/>
                             </div>
 
                             <c:if test="${requestScope.list != null}">
                                 <c:forEach var="image" items="${list}" varStatus="loop">
                                     <div class="form-outline mt-2">
-                                        <div class="row" style="margin-top: 15px;">
-                                            <div class="col-lg-9">
-                                                <label>Hình ảnh sản phẩm</label>
-                                                <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage_${loop.index + 1}" class="input form-control" value="${image.image_url}"/>
-                                                <input type="hidden" name="Image_id_${loop.index + 1}" value="${image.image_id}">                                                
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <img style="float: right;" class="accessory-image" src="${image.image_url}"/>
-                                            </div>
-                                        </div>
-                                    </c:forEach>
-                                </c:if>
-                            </div>
+                                        <label>Hình ảnh sản phẩm</label>
+                                        <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage_${loop.index + 1}" class="input form-control" value="${image.image_url}" required/>
+                                        <input type="hidden" name="Image_id_${loop.index + 1}" value="${image.image_id}">
+                                    </div>
+                                </c:forEach>
+                            </c:if>
+                            
                         </div>
-                        <input type="hidden" name="btAction" value="Update">
                     </div>
-
-                    <div class="col-lg-12">
-                        <button style="float: right;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit">Hủy bỏ</button>
-                        <button style="margin-right: 10px; float: right;" class="button-submit btn-primary" type="submit">Hoàn tất</button>
+                    <input type="hidden" name="btAction" value="Update">
+                    <div class="col-lg-12" style="margin-top: 10px;">                       
+                        <a type="button" class="btn-danger button-submit" href="RenderAccessoryDetailsController?id=${a.accessory_id}">Hủy bỏ</a>
+                        <button style="margin-right: 10px;" class="button-submit btn-primary" type="submit" name="action" value="NavToUpdateAccessory">Hoàn tất</button>
                     </div>
                 </form>
-            </div>
-        </section>
-        <section id="confirm-remove" class="container-fluid">
-            <div class="vh-100 row">
-                <div class="h-100 m-auto d-flex align-items-center">
-                    <div class="box-remove bg-white p-4">
-                        <h4>Xác nhận</h4>
-                        <p class="mb-4 mt-4">
-                            Bạn có muốn thực hiện thao tác này không ?
-                        </p>
-                        <div class="float-right">
-                            <a type="button" id="btn-confirrm" href="RenderAccessoryDetailsController?id=${a.accessory_id}" class="btn btn-group-sm btn-primary">Xác nhận</a>
-                            <button onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -291,17 +257,6 @@
 
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
-        <script>
-                                function checkUser(event) {
-                                    $('#confirm-remove').css('display', 'block');
-                                    let idForm = event.form.id;
-                                    $('#btn-confirrm').attr('data-value', idForm);
-                                    return false;
-                                }
-                                function cancelRemove() {
-                                    $('#confirm-remove').css('display', 'none');
-                                }
-        </script>
     </body>
 </html>
 

@@ -57,64 +57,6 @@
         #id{
             height: 100px;
         }
-        .overlay-text {
-            position: absolute;
-            top: 50%;
-            left: 35%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            border-radius: 50%;
-            color: #fff;
-            padding: 30px;
-            font-size: 30px;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;.button-submit{
-            border-radius: 10px;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            float: right;
-        }
-        }
-        .button-updateAccessory{
-            margin-bottom: 5px;
-            color: white;
-            padding: 10px;
-            border: 1px solid;
-            font-size: 15px;
-            border-radius: 4px;
-            width: 120px;
-            background-color: red;
-        }
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 50px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-            z-index: 9999;
-            cursor: move;
-            border-radius: 10px;
-
-        }
-        .popup.active {
-            display: block;
-        }
-
-        .buttonConfirm{
-            border: 2px #000 solid;
-            border-radius: 5px;
-            padding: 10px;
-        }
     </style>
 
     <body>
@@ -139,7 +81,7 @@
         <!-- ***** Products Area Starts ***** -->
         <section class="section" id="products">           
             <div class="container">
-                <form action="AddAccessoryController" method="POST" enctype="multipart/form-data" id="myForm">
+                <form action="AddAccessoryController" method="POST" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-6" style="margin-top: 10px;">
                             <div class="form-outline">
@@ -217,44 +159,16 @@
                         </div>
                         <div class="col-lg-12" style="margin-top: 15px;">
 
-                            <button style="float: right; margin-left: 10px;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit" formnovalidate>Hủy bỏ</button>
                             <input type="hidden" name="btAction" value="add">
+                            <a type="button" class="btn-danger button-submit" style="margin-left: 10px; color: white;" href="MainController?action=NavToAccessory">Hủy bỏ</a>
                             <button class="btn-primary button-submit" style="margin-left: 10px;" type="submit" name="type" value="continue">Lưu và tiếp tục</button>
                             <button class="btn-success button-submit" type="submit" name="type" value="close">Lưu và đóng</button>
 
                         </div>
                     </div>
                 </form>
-
             </div>
         </section>
-        <section id="confirm-remove" class="container-fluid">
-            <div class="vh-100 row">
-                <div class="h-100 m-auto d-flex align-items-center">
-                    <div class="box-remove bg-white p-4">
-                        <h4>Xác nhận</h4>
-                        <p class="mb-4 mt-4">
-                            Bạn có muốn thực hiện thao tác này không ?
-                        </p>
-                        <div class="float-right">
-                            <a type="button" id="btn-confirrm" href="RenderAccessoryController" class="btn btn-group-sm btn-primary">Xác nhận</a>
-                            <button  onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <script>
-            function checkUser(event) {
-                $('#confirm-remove').css('display', 'block');
-                let idForm = event.form.id;
-                $('#btn-confirrm').attr('data-value', idForm);
-                return false;
-            }
-            function cancelRemove() {
-                $('#confirm-remove').css('display', 'none');
-            }
-        </script>
 
         <!-- ***** Products Area Ends ***** -->
 
@@ -342,60 +256,65 @@
     </body>
 
     <script>
+        $(document).ready(function () {
+            // Get a reference to the search input element
+            var searchInput = $("#searchInput");
+            // Add an event listener for input changes
+            searchInput.on("input", function () {
+                var keyword = searchInput.val().toLowerCase();
 
-            $(document).ready(function () {
-                // Get a reference to the search input element
-                var searchInput = $("#searchInput");
-                // Add an event listener for input changes
-                searchInput.on("input", function () {
-                    var keyword = searchInput.val().toLowerCase();
-
-                    // Loop through each row in the table
-                    $("tbody tr").each(function () {
-                        var row = $(this);
-                        // Check if any cell in the row contains the keyword
-                        if (row.text().toLowerCase().includes(keyword)) {
-                            row.show(); // Show the row if keyword found
-                        } else {
-                            row.hide(); // Hide the row if keyword not found
-                        }
-                    });
-                });
-
-                // Show the modal when the "Cấp mới tài khoản" button is clicked
-                $("#createAccountBtn").click(function () {
-                    $("#createAccountModal").modal("show");
-                });
-                // Handle form submission
-                $("#submitAccountBtn").click(function () {
-                    // Get the form data
-                    const fullname = $("#fullname").val();
-                    const username = $("#username").val();
-
-                    // You can perform validation here if needed
-
-                    // Close the modal
-                    $("#createAccountModal").modal("hide");
-
-                    // Send the form data to the server via AJAX or perform any desired action
+                // Loop through each row in the table
+                $("tbody tr").each(function () {
+                    var row = $(this);
+                    // Check if any cell in the row contains the keyword
+                    if (row.text().toLowerCase().includes(keyword)) {
+                        row.show(); // Show the row if keyword found
+                    } else {
+                        row.hide(); // Hide the row if keyword not found
+                    }
                 });
             });
-            function submitForm() {
-                // Get the form element by its ID
-                var form = document.getElementById("createAccountForm");
-                // Define the controller URL
-                var controllerUrl = "/birdfarmshop/MainController";
-                // Set the form's action attribute to the controller URL
-                form.action = controllerUrl;
-                document.querySelector('input[name=txtAccessoryName]').addEventListener('input', function () {
-                    var input = this;
-                    if (input.value.length > 50) {
-                        input.setCustomValidity("Tên phụ kiện không được dài hơn 50 ký tự.");
-                    } else {
-                        input.setCustomValidity("");
-                    }
-                }
-                );
 
+            // Show the modal when the "Cấp mới tài khoản" button is clicked
+            $("#createAccountBtn").click(function () {
+                $("#createAccountModal").modal("show");
+            });
+            // Handle form submission
+            $("#submitAccountBtn").click(function () {
+                // Get the form data
+                const fullname = $("#fullname").val();
+                const username = $("#username").val();
+
+                // You can perform validation here if needed
+
+                // Close the modal
+                $("#createAccountModal").modal("hide");
+
+                // Send the form data to the server via AJAX or perform any desired action
+            });
+        });
+    </script>
+
+    <script>
+        function submitForm() {
+            // Get the form element by its ID
+            var form = document.getElementById("createAccountForm");
+
+            // Define the controller URL
+            var controllerUrl = "/birdfarmshop/MainController";
+
+            // Set the form's action attribute to the controller URL
+            form.action = controllerUrl;
+
+
+            document.querySelector('input[name=txtAccessoryName]').addEventListener('input', function () {
+                var input = this;
+                if (input.value.length > 50) {
+                    input.setCustomValidity("Tên phụ kiện không được dài hơn 50 ký tự.");
+                } else {
+                    input.setCustomValidity("");
+                }
+            }
+            );
     </script>
 </html>

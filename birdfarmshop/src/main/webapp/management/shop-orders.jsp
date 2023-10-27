@@ -153,50 +153,131 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <c:if test="${requestScope.MESSAGE != null}">
-                            <script>
-                                alert("${requestScope.MESSAGE}");
-                            </script>
-                        </c:if>
                         <%
                             String requestURL = "MainController";
                             String queryString = request.getQueryString();
-                            String fullURL = requestURL + "?" + queryString + "&";
+                            String fullURL = requestURL + "?" + queryString;
+                            if(fullURL.contains("startDay=&")) {
+                                fullURL = fullURL.replace("startDay=&", "");
+                            }
+                            if(fullURL.contains("endDay=&")) {
+                                fullURL = fullURL.replace("endDay=&", "");
+                            }
+                            if(fullURL.contains("search=&")) {
+                                fullURL = fullURL.replace("search=&", "");
+                            }
+                            String dateReq = "date=" + (String) request.getAttribute("date");
+                            if(fullURL.contains("&"+dateReq)) {
+                                dateReq = "&"+dateReq;
+                            }
+                            String statusReq = "&status=" + (String) request.getAttribute("status");
+                            String startDayReq = "&startDay=" + (String) request.getAttribute("startDay");
+                            String endDayReq = "&endDay=" + (String) request.getAttribute("endDay");
+                            String searchReq = "&search=" + (String) request.getAttribute("search");
+                            String pageReq = "&page=" + (String) request.getAttribute("page");
                         %>
                         <form style="float: right;" action="MainController" method="GET">
                             <h3 style="color: #006699;">Theo thời gian</h3>
+                            <c:if test="${requestScope.date != null}">
                             <input type="hidden" name="date" value="${requestScope.date}"/>
+                            </c:if>
                             <ul>
-                                <li><a class="bordered-link" href="<%= fullURL %>date=today"><span>Hôm nay</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL %>date=yesterday"><span>Hôm qua</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL %>date=thisWeek"><span>Tuần này</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL %>date=thisMonth"><span>Tháng này</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL %>date=thisYear"><span>Năm nay</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=today"><span>Hôm nay</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=yesterday"><span>Hôm qua</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisWeek"><span>Tuần này</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisMonth"><span>Tháng này</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisYear"><span>Năm nay</span></a></li>
                                 <label for="start-date">Từ ngày:</label>
-                                <input type="date" name="startDay" value="${requestScope.startDay}">
+                                <input type="date" name="startDay" value="${requestScope.startDay}"/>
                                 <label for="end-date">Đến ngày:</label>
-                                <input type="date" name="endDay" value="${requestScope.endDay}">
+                                <input type="date" name="endDay" value="${requestScope.endDay}"/>
                                 <button type="submit" name="action" value="NavToShopOrders"><span>Chọn</span></button>
                             </ul>
                             <h3 style="color: #006699;">Theo trạng thái</h3>
+                            <c:if test="${requestScope.status != null}">
                             <input type="hidden" name="status" value="${requestScope.status}"/>
+                            </c:if>
                             <ul>
-                                <c:forEach items="${requestScope.statuses}" var="status_choosing">
-                                    <li><a class="bordered-link" href="<%= fullURL %>status=${status_choosing}"><span>${status_choosing}</span></a></li>
-                                            </c:forEach>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&status=wait"><span>Chờ xử lý</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&status=inProgress"><span>Đang xử lý</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&status=delivering"><span>Đang giao hàng</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&status=delivered"><span>Đã giao hàng</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&status=rated"><span>Đã đánh giá</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&status=cancel"><span>Đã hủy</span></a></li>
                             </ul>
                             <div style="background-color: #cccccc;">
-                                <a href="MainController?action=NavToShopOrders"><span style="color: #009999; margin-left: 10px;">** BỎ LỌC **</span></a>
-                                <h6 style="margin-left: 10px;">Lọc theo: 
-                                    <c:if test="${requestScope.date != null}">| Thời gian: ${requestScope.date} |</c:if>
-                                    <c:if test="${requestScope.startDay != null || requestScope.endDay != null}">| Khoảng thời gian: Từ ${requestScope.startDay} đến ${requestScope.endDay} |</c:if>
-                                    <c:if test="${requestScope.search != null}">| Tìm kiếm: ${requestScope.search} |</c:if>
-                                    <c:if test="${requestScope.status != null}">| Trạng thái: ${requestScope.status} |</c:if>
-                                    </h6>
+                                <a href="MainController?action=NavToShopOrders"><span style="color: #b9130f; margin-left: 10px;">BỎ LỌC</span></a>
+                                <br/>
+                                <h6 style="margin-left: 10px;">Lọc theo: <br/>
+                                <c:if test="${not empty requestScope.date}">
+                                    <a href="<%= fullURL.replace(dateReq, "") %>">
+                                        <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
+                                        <c:choose>
+                                            <c:when test="${requestScope.date eq 'today'}">
+                                                <span>Thời gian: Hôm nay</span>
+                                            </c:when>
+                                            <c:when test="${requestScope.date eq 'yesterday'}">
+                                                <span>Thời gian: Hôm qua</span>
+                                            </c:when>
+                                            <c:when test="${requestScope.date eq 'thisWeek'}">
+                                                <span>Thời gian: Tuần này</span>
+                                            </c:when>
+                                            <c:when test="${requestScope.date eq 'thisMonth'}">
+                                                <span>Thời gian: Tháng này</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span>Thời gian: Năm nay</span>
+                                            </c:otherwise>    
+                                        </c:choose>
+                                    </a>
+                                    <br/>
+                                </c:if>
+                                <c:set var="dateFormat" value="\\d{4}-\\d{2}-\\d{2}" />
+                                <c:if test="${not empty requestScope.startDay || not empty requestScope.endDay}">
+                                    <a href="<%= fullURL.replace(startDayReq, "").replace(endDayReq, "") %>">
+                                        <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
+                                        <span>Khoảng thời gian: Từ ${requestScope.startDay} đến ${requestScope.endDay}</span>
+                                    </a>
+                                    <br/>
+                                </c:if>
+                                <c:if test="${not empty requestScope.search}">
+                                    <a href="<%= fullURL.replace(searchReq, "") %>">
+                                        <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
+                                        <span>Tìm kiếm: ${requestScope.search}</span>
+                                    </a>
+                                    <br/>
+                                </c:if>
+                                <c:if test="${not empty requestScope.status}">
+                                    <a href="<%= fullURL.replace(statusReq, "") %>">
+                                        <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
+                                        <c:choose>
+                                            <c:when test="${requestScope.status eq 'wait'}">
+                                                <span>Trạng thái: Chờ xử lý</span>
+                                            </c:when>
+                                            <c:when test="${requestScope.status eq 'inProgress'}">
+                                                <span>Trạng thái: Đang xử lý</span>
+                                            </c:when>
+                                            <c:when test="${requestScope.status eq 'delivering'}">
+                                                <span>Trạng thái: Đang giao hàng</span>
+                                            </c:when>
+                                            <c:when test="${requestScope.status eq 'delivered'}">
+                                                <span>Trạng thái: Đã giao hàng</span>
+                                            </c:when>
+                                            <c:when test="${requestScope.status eq 'rated'}">
+                                                <span>Trạng thái: Đã đánh giá</span>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span>Trạng thái: Đã hủy</span>
+                                            </c:otherwise>    
+                                        </c:choose>
+                                    </a>
+                                    <br/>
+                                </c:if>
+                                </h6>
                                 </div>
                                 <div class="order-bar" style="background-color: #cccccc; margin: 10px 0;">
                                     <div style="padding-bottom: 15px;">
-                                        <img style="width: 15px; height: 15px; float: left; margin: 5px;" class="icon" src="assets/images/test.png" alt="Đơn hàng"/>
+                                        <img style="width: 15px; height: 15px; float: left; margin: 5px;" class="icon" src="assets/images/order.png" alt="Đơn hàng"/>
                                         <span style="color: black; float: left;">Đơn hàng</span>
                                     </div>
                                     <div style="" class="search-bar">
@@ -205,12 +286,16 @@
                                     <button type="submit" name="action" value="NavToShopOrders"><span>Tìm kiếm</span></button>
                                 </div>
 
-                                <ul style="display: none; padding: 5px 0;" id="update">
-                                    <c:forEach items="${requestScope.statuses}" var="status_choosing">
+                                <ul style="display: none; padding: 5px 0; white-space: nowrap;" id="update">
+                                    <%--<c:forEach items="${requestScope.statuses}" var="status_choosing">
                                         <li><input type="radio" name="status" value="${status_choosing}" id="${status_choosing}"><label for="${status_choosing}">${status_choosing}</label></li>
-                                        </c:forEach>
-                                    <button id="submit" name="action" value="NavToUpdateOrder"><span>Đồng ý</span></button>
-                                    <a class="bordered-link" onclick="hide('update');"><span>Hủy bỏ</span></a>
+                                    </c:forEach>--%>
+                                    <div id="choosing" style="display: none; white-space: nowrap;">
+                                    <li id="status1"><input type="radio" name="status" value="Giao hàng thành công" id="option1"><label for="option1">Giao hàng thành công</label></li>
+                                    <li id="status2"><input type="radio" name="status" value="Giao hàng thất bại" id="option2"><label for="option2">Giao hàng thất bại</label></li>
+                                    </div>
+                                    <button style="white-space: nowrap;" id="submit" type="submit" name="action" value="NavToUpdateOrder"><span>Xác nhận</span></button>
+                                    <a style="white-space: nowrap;" class="bordered-link" onclick="hide('update');"><span>Hủy bỏ</span></a>
                                 </ul>
                                     
                                 <div class="scrollable-container">
@@ -222,7 +307,6 @@
                                                 <th>User ID</th>
                                                 <th>Ngày đặt hàng</th>
                                                 <th>Tình trạng đơn hàng</th>
-                                                <th>Chi tiết</th>
                                                 <th>Cập nhật</th>
                                                 <th>Hủy bỏ</th>
                                                 <th>Tên người nhận</th>
@@ -234,18 +318,21 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                           <c:if test="${not empty orderList}">
+                                            <c:if test="${not empty orderList}">
                                             <c:forEach items="${orderList}" var="order" varStatus="counter">
-                                                <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
+                                                <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}" onclick="window.location.href = 'MainController?action=NavToOrderItems&order_id=${order.order_id}'">
                                                     <td>${counter.count}</td>
                                                     <td>${order.order_id}</td>
-                                                    <td><a href="MainController?action=NavToProfile?user_id=${order.customer}">${order.customer}</a></td>
+                                                    <td><a href="MainController?action=NavToProfile&username=${order.customer}">${order.customer}</a></td>
                                                     <td>${order.order_date}</td>
                                                     <td>${order.order_status}</td>
-                                                    <td><a href="MainController?action=NavToOrderItems&order_id=${order.order_id}">Chi tiết</a></td>
-                                                    <td onclick="show('update', '${order.order_id}')"><span style="color: #007BFF;">Cập nhật</span></td>
                                                     <td>
-                                                        <c:if test="${order.order_status == 'Đang xử lý'}">
+                                                    <c:if test="${order.order_status ne 'Đã hủy' && order.order_status ne 'Đã giao hàng' && order.order_status ne 'Đã đánh giá'}">
+                                                    <a onclick="show('update', '${order.order_id}', '${order.order_status}'); event.stopPropagation();" style="color: #007BFF;">Cập nhật</a>
+                                                    </c:if>
+                                                    </td>
+                                                    <td>
+                                                        <c:if test="${order.order_status eq 'Chờ xử lý'}">
                                                         <a href="MainController?action=NavToUpdateOrder&order_id=${order.order_id}&status=cancel">Hủy đơn</a>
                                                         </c:if>
                                                     </td>
@@ -271,15 +358,42 @@
                                 <c:if test="${requestScope.noOfPages >= 1}">
                                     <ul>
                                         <li>
-                                            <a href="<%= fullURL.replace(("&page="+request.getAttribute("page")),"") %>page=1"><<</a>
+                                            <a href="<%= fullURL.replace(pageReq, "") %>&page=1"><<</a>
                                         </li>
-                                        <c:forEach begin="1" end="${requestScope.noOfPages}" var="i">
-                                        <li class="${i == requestScope.page ? "active":""}">
-                                            <a href="<%= fullURL.replace(("&page="+request.getAttribute("page")),"") %>page=${i}">${i}</a>
-                                        </li>
-                                        </c:forEach>
+                                        <c:set var="start" value="${requestScope.page - 2}" />
+                                        <c:set var="end" value="${requestScope.page + 2}" />
+                                        <c:choose>
+                                            <c:when test="${requestScope.noOfPages <= 5}">
+                                                <c:forEach begin="1" end="${requestScope.noOfPages}" var="i">
+                                                    <li class="${i == requestScope.page ? "active":""}">
+                                                        <a href="<%= fullURL.replace(pageReq, "") %>&page=${i}">${i}</a>
+                                                    </li>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:when test="${requestScope.page <= 3}">
+                                                <c:forEach begin="1" end="5" var="i">
+                                                    <li class="${i == requestScope.page ? "active":""}">
+                                                        <a href="<%= fullURL.replace(pageReq, "") %>&page=${i}">${i}</a>
+                                                    </li>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:when test="${requestScope.page >= requestScope.noOfPages - 2}">
+                                                <c:forEach begin="${requestScope.noOfPages - 4}" end="${requestScope.noOfPages}" var="i">
+                                                    <li class="${i == requestScope.page ? "active":""}">
+                                                        <a href="<%= fullURL.replace(pageReq, "") %>&page=${i}">${i}</a>
+                                                    </li>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:forEach begin="${start}" end="${end}" var="i">
+                                                    <li class="${i == requestScope.page ? "active":""}">
+                                                        <a href="<%= fullURL.replace(pageReq, "") %>&page=${i}">${i}</a>
+                                                    </li>
+                                                </c:forEach>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <li>
-                                            <a href="<%= fullURL.replace(("&page="+request.getAttribute("page")),"") %>page=${noOfPages}">>></a>
+                                            <a href="<%= fullURL.replace(pageReq, "") %>&page=${noOfPages}">>></a>
                                         </li>
                                     </ul>
                                 </c:if>
@@ -308,10 +422,28 @@
         <script src="assets/js/custom.js"></script>
         <!-- End Footer -->
         <script>
-                                                            function show(id, orderId) {
+                                                            function show(id, orderId, orderStatus) {
                                                                 var list = document.getElementById(id);
                                                                 list.style.display = "block";
-
+                                                                
+                                                                if(orderStatus === 'Chờ xử lý') {
+                                                                    const hiddenStatus1 = document.createElement('input');
+                                                                    hiddenStatus1.type = 'hidden';
+                                                                    hiddenStatus1.name = 'status';
+                                                                    hiddenStatus1.value = 'Đang xử lý';
+                                                                    list.appendChild(hiddenStatus1);
+                                                                }
+                                                                if(orderStatus === 'Đang xử lý') {
+                                                                    const hiddenStatus2 = document.createElement('input');
+                                                                    hiddenStatus2.type = 'hidden';
+                                                                    hiddenStatus2.name = 'status';
+                                                                    hiddenStatus2.value = 'Đang giao hàng';
+                                                                    list.appendChild(hiddenStatus2);
+                                                                }
+                                                                if(orderStatus === 'Đang giao hàng') {
+                                                                    var liStatuses = document.getElementById('choosing');
+                                                                    liStatuses.style.display = "block";
+                                                                }
                                                                 const inputHidden = document.createElement('input');
                                                                 inputHidden.type = 'hidden';
                                                                 inputHidden.name = 'order_id';
