@@ -469,7 +469,7 @@ public class BirdDAO {
 
     public boolean addNewBird(String bird_id, String bird_name, String color, String birthday, String grown_age,
             String gender, String breed_id, String achievement, String reproduction_history, String price, String description,
-            String discount, String status, String image_url) throws SQLException, NumberFormatException, ParseException {
+            String discount, String status) throws SQLException, NumberFormatException, ParseException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -520,8 +520,7 @@ public class BirdDAO {
                 }
                 stm.setString(13, status);
                 int row = stm.executeUpdate();
-                boolean isAdd = imgDao.addNewImageBird(image_url, "1", bird_id);
-                if (row > 0 && isAdd) {
+                if (row > 0) {
                     return true;
                 }
             }
@@ -641,7 +640,6 @@ public class BirdDAO {
              String discount, String status) throws SQLException, ParseException {
         Connection con = null;
         PreparedStatement stm = null;
-        ResultSet rs = null;
         boolean sex;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date utilDate = dateFormat.parse(birthday);
@@ -701,11 +699,36 @@ public class BirdDAO {
             if (con != null) {
                 con.close();
             }
-            if (rs != null) {
-                rs.close();
+        }
+        return false;
+    }
+    
+    public boolean updateBirdStatus(String status, String bird_id) throws SQLException, ParseException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String query =          "UPDATE [dbo].[Bird]\n"
+                        + "             SET [status] = ?\n"
+                        + "             WHERE [bird_id] = ?";
+                stm = con.prepareStatement(query);
+                stm.setString(1, status);
+                stm.setString(2, bird_id);
+                int row = stm.executeUpdate();
+                if (row > 0) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
             }
         }
-
         return false;
     }
     public static void main(String[] args) throws SQLException, ParseException {

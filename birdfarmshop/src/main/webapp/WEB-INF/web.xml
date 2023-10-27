@@ -40,6 +40,10 @@
         <servlet-name>RenderCustomerOrderController</servlet-name>
         <servlet-class>swp391.birdfarmshop.controller.RenderCustomerOrderController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RenderCustomerOrderItemController</servlet-name>
+        <servlet-class>swp391.birdfarmshop.controller.RenderCustomerOrderItemController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>RenderCustomerOrderController</servlet-name>
         <url-pattern>/RenderCustomerOrderController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RenderCustomerOrderItemController</servlet-name>
+        <url-pattern>/RenderCustomerOrderItemController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

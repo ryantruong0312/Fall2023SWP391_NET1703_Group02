@@ -10,9 +10,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import swp391.birdfarmshop.dao.BirdBreedDAO;
+import swp391.birdfarmshop.dao.FeedbackDAO;
 import swp391.birdfarmshop.dao.OrderItemDAO;
 import swp391.birdfarmshop.dto.OrderItemDTO;
+import swp391.birdfarmshop.dto.StarDTO;
+import swp391.birdfarmshop.model.BirdBreed;
 import swp391.birdfarmshop.model.User;
 
 /**
@@ -36,12 +42,15 @@ public class RenderOrderItemsController extends HttpServlet {
             if (user != null && !user.getRole().equals("customer")) {
                 OrderItemDAO orderItemDao = new OrderItemDAO();
                 ArrayList<OrderItemDTO> itemList = orderItemDao.getItemOrder(orderId);
+                BirdBreedDAO breedDao = new BirdBreedDAO();
+                List<BirdBreed> breeds = breedDao.getBirdBreeds();
+                request.setAttribute("BREEDS", breeds);
                 request.setAttribute("ITEMLIST", itemList);
                 url = SUCCESS;
             } else {
                 response.sendRedirect(HOME);
             }
-        } catch (Exception e) {
+        } catch (IOException | SQLException e) {
             log("Error at RenderShopOrdersController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);

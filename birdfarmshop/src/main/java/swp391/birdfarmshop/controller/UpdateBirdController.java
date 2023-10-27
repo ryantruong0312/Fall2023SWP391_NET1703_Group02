@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -58,6 +59,7 @@ public class UpdateBirdController extends HttpServlet {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
             if (user != null && !user.getRole().equals("customer")) {
+                url = SUCCESS;
                 String bird_id = request.getParameter("bird_id");
                 BirdDAO birdDao = new BirdDAO();
                 List<BirdDTO> birds = birdDao.getAllBirds();
@@ -81,16 +83,16 @@ public class UpdateBirdController extends HttpServlet {
                 String btAction = request.getParameter("btAction");
                 if (btAction != null) {
                     if (btAction.equals("Update")) {
-                        String txtBirdName = request.getParameter("txtBirdName");
-                        String txtBirdColor = request.getParameter("txtBirdColor");
                         String birdDate = request.getParameter("txtBirdDate");
                         String oldBirdDate = request.getParameter("oldBirdDate");
-                        java.util.Date birthday = dateFormat.parse(birdDate);
-                        java.util.Date today = Calendar.getInstance().getTime();
+                        Date birthday = dateFormat.parse(birdDate);
+                        Date today = new Date();
                         if (birthday.after(today)) {
                             session.setAttribute("ERROR", "Ngày sinh không hợp lệ");
-                            birdDate = oldBirdDate;
+                            return;
                         }
+                        String txtBirdName = request.getParameter("txtBirdName");
+                        String txtBirdColor = request.getParameter("txtBirdColor");
                         String txtBirdGrownAge = request.getParameter("txtBirdGrownAge");
                         String txtBirdGender = request.getParameter("txtBirdGender");
                         String txtBirdBreed = request.getParameter("txtBirdBreed");
@@ -103,17 +105,17 @@ public class UpdateBirdController extends HttpServlet {
                         Part image_1 = request.getPart("txtImage_1");
                         Part image_2 = request.getPart("txtImage_2");
                         Part image_3 = request.getPart("txtImage_3");
-                        if (image_1 != null && images.size() == 1) {
+                        if (image_1 != null && image_1.getSize() > 0 && images.size() >= 1) {
                             updateImage(image_3, bird_id, images.get(0).getImage_id());
                         }
-                        if (image_2 != null && images.size() == 2) {
+                        if (image_2 != null && image_2.getSize() > 0 && images.size() >= 2) {
                             updateImage(image_2, bird_id, images.get(1).getImage_id());
-                        } else if(image_2 != null && images.size() == 1) {
+                        } else if(image_2 != null && image_2.getSize() > 0 && images.size() == 1) {
                             addNewImage(image_2, bird_id);
                         }
-                        if (image_3 != null && images.size() == 3) {
+                        if (image_3 != null && image_3.getSize() > 0 && images.size() == 3) {
                             updateImage(image_3, bird_id, images.get(2).getImage_id());
-                        } else if (image_3 != null && images.size() == 2) {
+                        } else if (image_3 != null && image_3.getSize() > 0 && images.size() == 2) {
                             addNewImage(image_3, bird_id);
                         }
                         boolean check = birdDao.updateBird(bird_id, txtBirdName, txtBirdColor, birdDate, 
@@ -125,16 +127,11 @@ public class UpdateBirdController extends HttpServlet {
                             url = DETAIL + bird_id;
                         } else {
                             session.setAttribute("ERROR", "Cập nhật thất bại");
-                            url = SUCCESS;
                         }
-                    } else {
-                        url = SUCCESS;
                     }
-                } else {
-                    url = SUCCESS;
                 }
             } else {
-                url = HOME;
+                response.sendRedirect(HOME);
             }
         } catch (SQLException | ParseException e) {
         } finally {

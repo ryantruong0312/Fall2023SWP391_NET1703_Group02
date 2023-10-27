@@ -215,9 +215,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-outline mt-2">
-                                <label>Chọn hình ảnh của vẹt (Có thể chọn nhiều ảnh)</label>
-                                <input type="file" name="filePicture" multiple accept="image/jpeg, image/png, image/gif" required/>
+                            <div class="form-add mb-3">
+                                <label>Hình ảnh sản phẩm 1(Bắt buộc)</label>
+                                <img style="display: none;" id="image-preview-1" src=""/>
+                                <input type="file" name="txtImage_1" accept="image/jpeg, image/png, image/gif" onchange="previewImage(1)" required/>
+                            </div>
+                            <div class="form-add mb-3">
+                                <label>Hình ảnh sản phẩm 2</label>
+                                <img style="display: none;" id="image-preview-2" src=""/>
+                                <input type="file" name="txtImage_2" accept="image/jpeg, image/png, image/gif" onchange="previewImage(2)"/>
+                            </div>
+                            <div class="form-add mb-3">
+                                <label>Hình ảnh sản phẩm 3</label>
+                                <img style="display: none;" id="image-preview-3" src=""/>
+                                <input type="file" name="txtImage_3" accept="image/jpeg, image/png, image/gif" onchange="previewImage(3)"/>
                             </div>
                         </div>
                         <div class="col-lg-12" style="margin-top: 15px;">
@@ -267,6 +278,21 @@
         <script src="assets/js/custom.js"></script>
     </body>
     <script>
+            function previewImage(imageNumber) {
+                var input = document.querySelector('input[name="txtImage_' + imageNumber + '"]');
+                var imagePreview = document.getElementById('image-preview-' + imageNumber);
+
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                    };
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
             function checkUser(event) {
                 $('#confirm-remove').css('display', 'block');
                 let idForm = event.form.id;
