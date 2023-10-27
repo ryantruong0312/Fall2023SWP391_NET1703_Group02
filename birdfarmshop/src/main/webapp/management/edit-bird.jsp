@@ -213,7 +213,7 @@
                             Bạn có muốn thực hiện thao tác này không ?
                         </p>
                         <div class="float-right">
-                            <a type="button" id="btn-confirrm" href="MainController?action=NavToBird" class="btn btn-group-sm btn-primary">Xác nhận</a>
+                            <a type="button" id="btn-confirrm" href="MainController?action=NavToBirdDetails&bird_id=${birdDetails.bird_id}" class="btn btn-group-sm btn-primary">Xác nhận</a>
                             <button  onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</button>
                         </div>
                     </div>
