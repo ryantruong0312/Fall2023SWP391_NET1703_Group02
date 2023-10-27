@@ -136,19 +136,26 @@ Author     : tlminh
         <div class="py-5 px-2 layout-item" style="border-bottom: none" id="top">
             <form id="selectAccessory" action="MainController" method="POST">
                 <input type="hidden" name="action" value="NavToAccessory"> 
-                <div class="d-flex justify-content-center">
-                    <div class="search-bar">
-                        <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                        <input type="text" name="txtAccessory" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
-                        <input type="hidden" name="page" value="1" />
-                        <input type="submit" value="Tìm kiếm">
-                    </div>
-                </div>
-                <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
-                    <div class="new-item d-flex justify-content-center">
-                        <a href="${toAddAccessory}"><span>Thêm mới phụ kiện</span></a>
-                    </div>
-                </c:if>     
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <div class="d-flex justify-content-center">
+                            <div class="search-bar" style="margin-bottom: 5px;">
+                                <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                                <input type="text" name="txtAccessory" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                                <input type="hidden" name="page" value="1" />
+                                <input type="submit" value="Tìm kiếm">
+                            </div>
+                        </div>                      
+                    </div>             
+                    <div class="col-md-4">
+                        <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
+                            <div>
+                                <a href="${toAddAccessory}"><span class="btn-success">Thêm mới phụ kiện</span></a>
+                            </div>
+                        </c:if>
+                    </div> 
+                </div>           
                 <main class="my-5">
                     <div class="container-fluid">
                         <div class="row m-0">

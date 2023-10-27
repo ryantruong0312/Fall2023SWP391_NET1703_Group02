@@ -92,6 +92,17 @@
             padding: 5px;
             background-color: #E0E0E0;
         }
+        .button-submit{
+            border-radius: 10px;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            float: right;
+        }
     </style>
 
     <body>
@@ -208,18 +219,34 @@
                                 <label>Chọn hình ảnh của vẹt (Có thể chọn nhiều ảnh)</label>
                                 <input type="file" name="filePicture" multiple accept="image/jpeg, image/png, image/gif" required/>
                             </div>
-                            <button style="float: right; margin-top: 20px;" type="submit" name="btAction" value="Add"><span>Lưu và tiếp tục</span></button>
-                            <button style="float: right; margin: 20px 20px 0 0;" type="submit" name="btAction" value="Add&Return">
-                                <span>Lưu và đóng</span>    
+                        </div>
+                        <div class="col-lg-12" style="margin-top: 15px;">
+                            <button style="float: right; margin-left: 10px;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit" formnovalidate>Hủy bỏ</button>
+                            <button class="btn-primary button-submit" style="margin-left: 10px;" type="submit" name="btAction" value="Add"><span style="color:white;">Lưu và tiếp tục</span></button>
+                            <button class="btn-success button-submit" type="submit" name="btAction" value="Add&Return">
+                                <span style="color:white;">Lưu và đóng</span>    
                             </button>
-                            <div style="background-color:#ff6666; border: 1.6px solid #333333; float: right; margin: 20px 20px 0 0; padding: 1px 6px;">
-                                    <a href="MainController?action=NavToBird"><span style="color: black; ">Hủy bỏ</span></a>
-                            </div>
                         </div>
                     </div>
                 </form>
             </div>
         </section>
+        <section id="confirm-remove" class="container-fluid">
+            <div class="vh-100 row">
+                <div class="h-100 m-auto d-flex align-items-center">
+                    <div class="box-remove bg-white p-4">
+                        <h4>Xác nhận</h4>
+                        <p class="mb-4 mt-4">
+                            Bạn có muốn thực hiện thao tác này không ?
+                        </p>
+                        <div class="float-right">
+                            <a type="button" id="btn-confirrm" href="MainController?action=NavToBird" class="btn btn-group-sm btn-primary">Xác nhận</a>
+                            <button  onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>                                
         <!-- ***** Products Area Ends ***** -->
         <%@include file="../layout/footer.jsp" %>
         <%@include file="../layout/message.jsp" %>
@@ -239,4 +266,15 @@
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
     </body>
+    <script>
+            function checkUser(event) {
+                $('#confirm-remove').css('display', 'block');
+                let idForm = event.form.id;
+                $('#btn-confirrm').attr('data-value', idForm);
+                return false;
+            }
+            function cancelRemove() {
+                $('#confirm-remove').css('display', 'none');
+            }
+    </script>
 </html>

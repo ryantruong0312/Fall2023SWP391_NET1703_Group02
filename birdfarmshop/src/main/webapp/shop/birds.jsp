@@ -25,7 +25,30 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
+        <style>
+            #counter-box {
+                position: fixed;
+                bottom: 20px; /* Adjust the distance from the bottom as needed */
+                right: 20px; /* Adjust the distance from the right as needed */
+                background-color: #6ac8b6; /* Background color of the counter box */
+                color: #fff; /* Text color */
+                border-radius: 5px; /* Makes the box circular */
+                width: 200px; /* Set the width of the box */
+                height: 50px; /* Set the height of the box */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 3;
+            }
 
+            #compare-counter {
+                font-size: 1.2rem;
+            }
+            .btn-success{
+                padding: 15px;
+                border-radius: 5px;
+            }
+        </style>
     </head>
 
     <body>
@@ -52,19 +75,27 @@
         <div class="py-5 px-2 layout-item" style="border-bottom: none" id="top">
             <form id="selectBird" action="MainController" method="POST">
                 <input type="hidden" name="action" value="NavToBird"> 
-                <div class="d-flex justify-content-center">
-                    <div class="search-bar">
-                        <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                        <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
-                        <input type="hidden" name="page" value="1" />
-                        <input type="submit" value="Tìm kiếm">
+                <div class="row">
+                    <div class="col-md-4">
                     </div>
-                </div> 
-                <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
-                    <div class="new-item d-flex justify-content-center">
-                        <a href="MainController?action=AddNewBird"><span>Thêm mới chim</span></a>
+                    <div class="d-flex justify-content-center col-md-4">
+                        <div class="search-bar">
+                            <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                            <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                            <input type="hidden" name="page" value="1" />
+                            <input type="submit" value="Tìm kiếm">
+                        </div>
+
                     </div>
-                </c:if>
+                    <div class="col-md-4">
+                        <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
+                            <div>
+                                <a href="MainController?action=AddNewBird"><span class="btn-success">Thêm mới chim</span></a>
+                            </div>
+                        </c:if>
+                    </div>
+
+                </div>
                 <main class="my-5">
                     <div class="container-fluid">
                         <div class="row m-0">
@@ -75,36 +106,39 @@
                                 </div>
                                 <div class="type">Loài</div>
                                 <ol class="d-block" id="typeList-1">   
-                                    <li class="ml-2"><input type="radio" id="type-0" name="txtBreedId" ${requestScope.BREED_ID == null ? "checked":""} value="All"><label for="type-0">Tất cả</label></li>
+                                    <li class="ml-2"><input type="radio" id="type-0" name="txtBreedId" ${requestScope.BREED_ID == null ? "checked":""} value="All"><label style="margin-left: 5px;" for="type-0">Tất cả</label></li>
                                         <c:forEach var="breed" items="${requestScope.BREEDLIST}" varStatus="counter">
-                                        <li class="ml-2"><input type="radio" id="type-${counter.count}" name="txtBreedId" value="${breed.breed_id}" ${requestScope.BREED_ID == breed.breed_id ? "checked":""}><label for="type-${counter.count}">${breed.breed_name}</label></li>
+                                        <li class="ml-2"><input style="padding:15px;" type="radio" id="type-${counter.count}" name="txtBreedId" value="${breed.breed_id}" ${requestScope.BREED_ID == breed.breed_id ? "checked":""}><label style="margin-left: 5px;" for="type-${counter.count}">${breed.breed_name}</label></li>
                                         </c:forEach>
                                 </ol>
                                 <div class="type">Giá cả</div>
                                 <ol class="d-block" id="typeList-2">   
-                                    <li class="ml-2"><input type="radio" ${requestScope.PRICE == null  ? "checked":""} id="type-65" name="txtPrice" value="All"><label for="type-65">Tất cả</label></li>
-                                    <li class="ml-2"><input type="radio" ${requestScope.PRICE == "price < 5000000" ? "checked":""} id="type-6" name="txtPrice" value="price < 5000000"><label for="type-6">Dưới 5,000,000₫</label></li>
-                                    <li class="ml-2"><input type="radio" ${requestScope.PRICE == "price >= 5000000 AND price <= 20000000" ? "checked":""} id="type-7" name="txtPrice" value="price >= 5000000 AND price <= 20000000"><label for="type-7">5,000,000₫ - 20,000,000₫</label></li>
-                                    <li class="ml-2"><input type="radio" ${requestScope.PRICE == "price > 20000000" ? "checked":""} id="type-8" name="txtPrice" value="price > 20000000"><label for="type-8">Trên 20,000,000₫</label></li>
+                                    <li class="ml-2"><input type="radio" ${requestScope.PRICE == null  ? "checked":""} id="type-65" name="txtPrice" value="All"><label style="margin-left: 5px;" for="type-65">Tất cả</label></li>
+                                    <li class="ml-2"><input type="radio" ${requestScope.PRICE == "price < 5000000" ? "checked":""} id="type-6" name="txtPrice" value="price < 5000000"><label style="margin-left: 5px;" for="type-6">Dưới 5,000,000₫</label></li>
+                                    <li class="ml-2"><input type="radio" ${requestScope.PRICE == "price >= 5000000 AND price <= 20000000" ? "checked":""} id="type-7" name="txtPrice" value="price >= 5000000 AND price <= 20000000"><label style="margin-left: 5px;" for="type-7">5,000,000₫ - 20,000,000₫</label></li>
+                                    <li class="ml-2"><input type="radio" ${requestScope.PRICE == "price > 20000000" ? "checked":""} id="type-8" name="txtPrice" value="price > 20000000"><label style="margin-left: 5px;" for="type-8">Trên 20,000,000₫</label></li>
                                 </ol>
                                 <div class="type">Giống</div>
                                 <ol class="d-block" id="typeList-3">
-                                    <li class="ml-2"><input type="radio" ${requestScope.GENDER == null ? "checked":""} id="type-95" name="txtGender" value="All"><label for="type-95">Tất cả</label></li>
-                                    <li class="ml-2"><input type="radio" ${requestScope.GENDER == "1" ? "checked":""} id="type-9" name="txtGender" value="1"><label for="type-9">Trống</label></li>
-                                    <li class="ml-2"><input type="radio" ${requestScope.GENDER == "0" ? "checked":""} id="type-10" name="txtGender" value="0"><label for="type-10">Mái</label></li>
+                                    <li class="ml-2"><input type="radio" ${requestScope.GENDER == null ? "checked":""} id="type-95" name="txtGender" value="All"><label style="margin-left: 5px;" for="type-95">Tất cả</label></li>
+                                    <li class="ml-2"><input type="radio" ${requestScope.GENDER == "1" ? "checked":""} id="type-9" name="txtGender" value="1"><label style="margin-left: 5px;" for="type-9">Trống</label></li>
+                                    <li class="ml-2"><input type="radio" ${requestScope.GENDER == "0" ? "checked":""} id="type-10" name="txtGender" value="0"><label style="margin-left: 5px;" for="type-10">Mái</label></li>
                                 </ol>
                                 <div class="type">Tuổi</div>
                                 <ol class="d-block" id="typeList-4">
-                                    <li class="ml-2"><input type="radio" ${requestScope.AGE == null ? "checked":""}  id="type-115" name="txtAge" value="All"><label for="type-115">Tất cả</label></li>
-                                    <li class="ml-2"><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) < 5" ? "checked":""} id="type-11" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) < 5"><label for="type-11">Dưới 5 tháng</label></li>
-                                    <li class="ml-2"><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18" ? "checked":""} id="type-12" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18"><label for="type-12">Từ 5 - 18 tháng</label></li>
-                                    <li class="ml-2"><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) > 18" ? "checked":""} id="type-13" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) > 18"><label for="type-13">Trên 18 tháng</label></li>
+                                    <li class="ml-2"><input type="radio" ${requestScope.AGE == null ? "checked":""}  id="type-115" name="txtAge" value="All"><label style="margin-left: 5px;" for="type-115">Tất cả</label></li>
+                                    <li class="ml-2"><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) < 5" ? "checked":""} id="type-11" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) < 5"><label style="margin-left: 5px;" for="type-11">Dưới 5 tháng</label></li>
+                                    <li class="ml-2"><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18" ? "checked":""} id="type-12" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) >= 5 AND DATEDIFF(MONTH, birthday, GETDATE()) <= 18"><label style="margin-left: 5px;" for="type-12">Từ 5 - 18 tháng</label></li>
+                                    <li class="ml-2"><input type="radio" ${requestScope.AGE == "DATEDIFF(MONTH, birthday, GETDATE()) > 18" ? "checked":""} id="type-13" name="txtAge" value="DATEDIFF(MONTH, birthday, GETDATE()) > 18"><label style="margin-left: 5px;" for="type-13">Trên 18 tháng</label></li>
                                 </ol>
                             </div>
                             <div class="col-md-9 col-xs-12" style="padding: 0 0 1px 0  ">
                                 <div class="row mx-1">
                                     <c:choose>
                                         <c:when test="${not empty requestScope.BIRDLIST}">
+                                            <div id="counter-box">
+                                                <div id="compare-counter">So sánh (0)</div>
+                                            </div>
                                             <c:forEach var="bird" items="${requestScope.BIRDLIST}">
                                                 <div class="col-xl-4 col-md-6 col-sm-6">
                                                     <div class="card mt-1 mb-3 card-custom">
@@ -118,6 +152,11 @@
                                                                     <li>
                                                                         <a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}">
                                                                             <i class="fa fa-eye"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a class="bird-compare" data-bird-id="${bird.bird_id}">
+                                                                            <img src="assets/images/compare.png" style="width: 16px; height: 16px;"/>
                                                                         </a>
                                                                     </li>
                                                                     <c:if test="${(sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer') && bird.status == 'Còn hàng'}">
@@ -247,6 +286,62 @@
         <%@include file="../layout/footer.jsp" %>
         <!-- End Footer -->
         <script>
+            var selectedBirds = [];
+            // Add an event handler for the counter-box
+            $("#counter-box").on("click", function () {
+                var counter = $("#compare-counter");
+                var countText = counter.text();
+                var count = parseInt(countText.match(/\d+/));
+
+                if (count > 1) {
+                    // Create a form and submit it to the CompareBirdController
+                    var form = $("<form>")
+                            .attr("method", "post")
+                            .attr("action", "MainController?action=NavToCompare");
+
+                    for (var i = 0; i < selectedBirds.length; i++) {
+                        form.append($("<input>")
+                                .attr("type", "hidden")
+                                .attr("name", "birdIds")
+                                .attr("value", selectedBirds[i]));
+                    }
+
+                    form.appendTo("body").submit();
+                }
+            });
+
+            // Add a click event handler to the bird-compare icon
+            $(".bird-compare").on("click", function () {
+                var birdId = $(this).data("bird-id");
+                var counter = $("#compare-counter");
+                var countText = counter.text();
+                var count = parseInt(countText.match(/\d+/));
+
+                // Check if the icon is active (toggled on)
+                var isActive = $(this).hasClass("active");
+
+                if (isActive) {
+                    // Decrease the counter and remove the active class
+                    counter.text("So sánh (" + (count - 1) + ")");
+                    $(this).css("background-color", ""); // Remove background color
+                    $(this).removeClass("active");
+                    // Remove the bird ID from the selectedBirds array
+                    var index = selectedBirds.indexOf(birdId);
+                    if (index > -1) {
+                        selectedBirds.splice(index, 1);
+                    }
+                } else {
+                    if (count < 5) {
+                        // Increase the counter and add the active class
+                        counter.text("So sánh (" + (count + 1) + ")");
+                        $(this).css("background-color", "#63b885"); // Set background color
+                        $(this).addClass("active");
+                        // Add the bird ID to the selectedBirds array
+                        selectedBirds.push(birdId);
+                    }
+                }
+
+            });
             $(function () {
                 var selectedClass = "";
                 $("p").click(function () {
@@ -318,7 +413,5 @@
                 $("#selectBird").submit();
             }
         </script>
-
     </body>
-
 </html>

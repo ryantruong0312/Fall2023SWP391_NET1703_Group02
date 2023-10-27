@@ -55,6 +55,10 @@
             #id{
                 height: 100px;
             }
+            .accessory-image{
+                width: 100px;
+                height: 100px;
+            }
         </style>
     </head>
 
@@ -167,14 +171,29 @@
                         </div>
                     </div>
                     <input type="hidden" name="btAction" value="Update">
-                    <div class="col-lg-12" style="margin-top: 10px;">                       
-                        <a type="button" class="btn-danger button-submit" href="RenderAccessoryDetailsController?id=${a.accessory_id}">Hủy bỏ</a>
-                        <button style="margin-right: 10px;" class="button-submit btn-primary" type="submit" name="action" value="NavToUpdateAccessory">Hoàn tất</button>
+                    <div class="col-lg-12">
+                        <button style="float: right;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit">Hủy bỏ</button>
+                        <button style="margin-right: 10px; float: right;" class="button-submit btn-primary" type="submit">Hoàn tất</button>
                     </div>
                 </form>
             </div>
         </section>
-
+        <section id="confirm-remove" class="container-fluid">
+            <div class="vh-100 row">
+                <div class="h-100 m-auto d-flex align-items-center">
+                    <div class="box-remove bg-white p-4">
+                        <h4>Xác nhận</h4>
+                        <p class="mb-4 mt-4">
+                            Bạn có muốn thực hiện thao tác này không ?
+                        </p>
+                        <div class="float-right">
+                            <a type="button" id="btn-confirrm" href="RenderAccessoryDetailsController?id=${a.accessory_id}" class="btn btn-group-sm btn-primary">Xác nhận</a>
+                            <button onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- ***** Footer Start ***** -->
         <footer>
@@ -258,5 +277,16 @@
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
     </body>
+    <script>
+                                function checkUser(event) {
+                                    $('#confirm-remove').css('display', 'block');
+                                    let idForm = event.form.id;
+                                    $('#btn-confirrm').attr('data-value', idForm);
+                                    return false;
+                                }
+                                function cancelRemove() {
+                                    $('#confirm-remove').css('display', 'none');
+                                }
+    </script>
 </html>
 

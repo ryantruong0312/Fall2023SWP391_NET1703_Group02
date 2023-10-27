@@ -51,7 +51,7 @@ public class RenderUpdateAccessoryController extends HttpServlet {
             HttpSession session = request.getSession();
             User u = (User) session.getAttribute("LOGIN_USER");
             String btAction = request.getParameter("btAction");
-            String id = request.getParameter("accessory_id");
+            String id = request.getParameter("txtAccessoryID");
             AccessoryDAO d = new AccessoryDAO();
             ImageDAO i = new ImageDAO();
             Accessory a = d.getAccessoryByID(id);
@@ -94,33 +94,35 @@ public class RenderUpdateAccessoryController extends HttpServlet {
                         String txtStockQuantity = request.getParameter("txtStockQuantity");
                         String txtDescribe = request.getParameter("txtDescribe");
                         String txtDiscount = request.getParameter("txtDiscount");
-                        
+
                         Part txtImage = request.getPart("txtImage");
                         Part txtImage_1 = request.getPart("txtImage_1");
                         Part txtImage_2 = request.getPart("txtImage_2");
-                        
-                        String imageURL_1 = null;
-                        String imageURL_2 = null;
-                        String imageURL_3 = null;
-                        
-                        if (txtImage.getSize() < 1048576 && txtImage_1.getSize() < 1048576 && txtImage_2.getSize() < 1048576) {
-                            imageURL_1 = returnUrl(txtImage);
-                            imageURL_2 = returnUrl(txtImage_1);
-                            imageURL_3 = returnUrl(txtImage_2);
+
+                        if (txtImage.getSize() < 1048576) {
+                            String imageURL = returnUrl(txtImage);
+                            boolean checkImage = i.updateImageAccessory(txtAccessoryID, true, imageURL, null);
                         }
 
-//                        String txtImage_1 = request.getParameter("txtImage_1");
-//                        String txtImage_2 = request.getParameter("txtImage_2");
-                        String Image_id_1 = request.getParameter("Image_id_1");
-                        String Image_id_2 = request.getParameter("Image_id_2");
-//
+                        if (txtImage_1.getSize() < 1048576) {
+                            String imageURL = returnUrl(txtImage_1);
+                            String Image_id = request.getParameter("Image_id_1");
+                            boolean checkImage = i.updateImageAccessory(txtAccessoryID, false, imageURL, Image_id);
+                        }
+
+                        if (txtImage_1.getSize() < 1048576) {
+                            String imageURL = returnUrl(txtImage_2);
+                            String Image_id = request.getParameter("Image_id_2");
+                            boolean checkImage = i.updateImageAccessory(txtAccessoryID, false, imageURL, Image_id);
+                        }
+
                         boolean rs = d.updateAccessory(txtAccessoryID, txtAccessoryName, txtCategoryID, txtPrice, txtStockQuantity, txtDescribe, txtDiscount);
-//                        request.setAttribute("im", txtImage);
-//                        boolean checkImage = i.updateImageAccessory(txtAccessoryID, true, txtImage, null);
-//                        boolean checkImage_1 = i.updateImageAccessory(txtAccessoryID, false, txtImage_1, Image_id_1);
-//                        if (Image_id_2 != null) {
-//                            boolean checkImage_2 = i.updateImageAccessory(txtAccessoryID, false, txtImage_2, Image_id_2);
-//                        }
+                        if (rs) {
+                            session.setAttribute("SUCCESS", "Chỉnh sửa phụ kiện thành công");
+                        } else {
+                            session.setAttribute("ERROR", "Chỉnh sửa phụ kiện thất bại");
+                        }
+
                         AccessoryDAO aDAO = new AccessoryDAO();
                         AccessoryDTO acDTO = aDAO.getAccessoryDetailsByID(txtAccessoryID);
                         if (acDTO.getStatus().equalsIgnoreCase("hết hàng")) {
@@ -137,6 +139,11 @@ public class RenderUpdateAccessoryController extends HttpServlet {
                         String txtAccessoryID = request.getParameter("txtAccessoryID");
                         String txtNewQuantity = request.getParameter("txtNewQuantity");
                         boolean rs = d.updateAccessoryQuantity(txtAccessoryID, txtNewQuantity);
+                        if (rs) {
+                            session.setAttribute("SUCCESS", "Chỉnh sửa số lượng thành công");
+                        } else {
+                            session.setAttribute("ERROR", "Chỉnh sửa phụ kiện thất bại");
+                        }   
                         String isThumbnail = i.getThumbnailUrlByAccessoryId(txtAccessoryID);
                         request.setAttribute("im", isThumbnail);
                         AccessoryDAO aDAO = new AccessoryDAO();
@@ -199,13 +206,13 @@ public class RenderUpdateAccessoryController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
-    public String returnUrl(Part txtImage_1) throws IOException {
-        String file = ImageUtils.getFileName(txtImage_1);
+
+    public String returnUrl(Part txtImage) throws IOException {
+        String file = ImageUtils.getFileName(txtImage);
         LocalTime currentTime = LocalTime.now();
         String nameImage = currentTime.getNano() + file;
         String img_url = Constants.C3_HOST + nameImage;
-        S3Utils.uploadFile(nameImage, txtImage_1.getInputStream());
+        S3Utils.uploadFile(nameImage, txtImage.getInputStream());
         return img_url;
     }
 

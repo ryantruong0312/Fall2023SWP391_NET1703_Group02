@@ -41,6 +41,17 @@
                 height: 75px; 
                 border: 1px solid;
             }
+            .button-submit{
+                border-radius: 10px;
+                border: none;
+                color: white;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                float: right;
+            }
         </style>
     </head>
 
@@ -184,9 +195,9 @@
                                 <img style="display: none;" id="image-preview-3" src=""/>
                                 <input type="file" name="txtImage_3" accept="image/jpeg, image/png, image/gif" onchange="previewImage(3)"/>
                             </div>
-                            <button style="float: right; margin-top: 20px;" type="submit" name="btAction" value="Update"><span>Cập nhật và trở về</span></button>
-                            <div style="background-color:#ff6666; border: 1.6px solid #333333; float: right; margin: 20px 20px 0 0; padding: 1px 6px;">
-                                    <a href="MainController?action=NavToBird"><span style="color: black; ">Hủy bỏ</span></a>
+                            <div class="col-lg-12" style="margin-top: 15px;">
+                                <button style="float: right;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit">Hủy bỏ</button>
+                                <button style="margin-right: 10px; float: right;" class="button-submit btn-primary" type="submit" name="btAction" value="Update"><span>Cập nhật</span></button>
                             </div>
                         </div>
                     </div>
@@ -226,6 +237,15 @@
 
                     reader.readAsDataURL(input.files[0]);
                 }
+            }
+            function checkUser(event) {
+                $('#confirm-remove').css('display', 'block');
+                let idForm = event.form.id;
+                $('#btn-confirrm').attr('data-value', idForm);
+                    return false;
+                }
+                function cancelRemove() {
+                    $('#confirm-remove').css('display', 'none');
             }
         </script>
     </body>
