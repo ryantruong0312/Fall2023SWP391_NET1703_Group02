@@ -253,26 +253,21 @@
                         <form action="RenderUpdateAccessoryController" method="GET">
                             <input type="hidden" value="${a.accessory_id}" name="txtAccessoryID">
                             <input type="hidden" name="btAction" value="UpdateQuantity">
-                            <h3>Xác nhận</h4>
-                                <p style="margin-top: 10px;" class="mb-4 mt-4">
-                                <h4 >Cập nhật kho</h4>
+                            <h3>Cập nhật kho</h3>
+                                <p style="margin-top: 10px;" class="mb-4 mt-4">                                
                                 <p>Số lượng hiện tại trong kho: <span id="currentStock">${a.stock_quantity}</span></p>
                                 <label for="newStock">Số lượng mới:</label>
                                 <input style="width: 50%" type="number" id="newStock" name="txtNewQuantity" value="${a.stock_quantity}">
                                 </p>
-                                <div class="float-right" style="margin-top: 15px;">
-                                    
+                                <div class="float-right" style="margin-top: 15px;">                                  
                                     <button id="btn-confirrm" class="btn btn-group-sm btn-primary">Xác nhận</button>
                                     <a type="button" class="btn-secondary btn btn-group-sm" onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</a>
                                 </div>
-                        </form>
-                        
+                        </form>                       
                     </div>
                 </div>
             </div>
         </section>
-
-
 
         <%@include file="../layout/feedback.jsp" %>
         <!-- Start Footer -->

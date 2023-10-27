@@ -140,7 +140,7 @@ public class RenderUpdateAccessoryController extends HttpServlet {
                         String txtNewQuantity = request.getParameter("txtNewQuantity");
                         boolean rs = d.updateAccessoryQuantity(txtAccessoryID, txtNewQuantity);
                         if (rs) {
-                            session.setAttribute("SUCCESS", "Chỉnh sửa sản phẩm thành công");
+                            session.setAttribute("SUCCESS", "Chỉnh sửa số lượng thành công");
                         } else {
                             session.setAttribute("ERROR", "Chỉnh sửa phụ kiện thất bại");
                         }   

@@ -405,7 +405,7 @@ public class AccessoryDAO {
                         + "    WHERE [accessory_id] = ?; ");
 
                 stm.setString(1, txtAccessoryName);
-                stm.setString(2, txtCategoryID);    
+                stm.setString(2, txtCategoryID);
                 stm.setInt(3, Integer.parseInt(txtPrice));
                 stm.setInt(4, Integer.parseInt(txtStockQuantity));
                 stm.setString(5, txtDescribe);
@@ -471,4 +471,44 @@ public class AccessoryDAO {
         return false;
     }
 
+    public int[] getQuantityByStatus() throws SQLException {
+        int[] listStatus = new int[2];
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("SELECT\n"
+                        + "  (SELECT COUNT(status) FROM Accessory WHERE status = 'còn hàng') AS Available,\n"
+                        + "  (SELECT COUNT(status) FROM Accessory WHERE status = N'hết hàng') AS OutOfStock;");
+            }
+            rs = stm.executeQuery();
+            while(rs.next()){
+                listStatus[0] = rs.getInt("Available");
+                listStatus[1] = rs.getInt("OutOfStock");
+            }
+        } catch (ClassNotFoundException e ) {
+
+        }finally {
+            if(rs != null){
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return listStatus;
+    }
+    
+    public static void main(String[] args) throws SQLException {
+        AccessoryDAO a = new AccessoryDAO();
+        int [] list = a.getQuantityByStatus();
+        for(int i = 0; i < list.length; i++){
+            System.out.println(list[i]);
+        }
+    }
 }
