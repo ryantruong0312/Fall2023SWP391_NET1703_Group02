@@ -504,4 +504,12 @@ public class AccessoryDAO {
         }
         return listStatus;
     }
+    
+    public static void main(String[] args) throws SQLException {
+        AccessoryDAO a = new AccessoryDAO();
+        int[] list  = a.getQuantityByStatus();
+        for(int i = 0; i < list.length; i++){
+            System.out.println(list[i]);
+        }
+    }
 }

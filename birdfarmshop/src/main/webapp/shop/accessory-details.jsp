@@ -34,7 +34,7 @@
             .overlay-text {
                 position: absolute;
                 top: 50%;
-                left: 35%;
+                left: 40%;
                 transform: translate(-50%, -50%);
                 background-color: rgba(0, 0, 0, 0.5);
                 border-radius: 50%;
@@ -250,17 +250,17 @@
             <div class="vh-100 row">
                 <div class="h-100 m-auto d-flex align-items-center">
                     <div class="box-remove bg-white p-4">
-                        <form action="RenderUpdateAccessoryController" method="GET">
+                        <form action="MainController" method="GET">
                             <input type="hidden" value="${a.accessory_id}" name="txtAccessoryID">
                             <input type="hidden" name="btAction" value="UpdateQuantity">
                             <h3>Cập nhật kho</h3>
                                 <p style="margin-top: 10px;" class="mb-4 mt-4">                                
                                 <p>Số lượng hiện tại trong kho: <span id="currentStock">${a.stock_quantity}</span></p>
                                 <label for="newStock">Số lượng mới:</label>
-                                <input style="width: 50%" type="number" id="newStock" name="txtNewQuantity" value="${a.stock_quantity}">
+                                <input style="width: 50%" type="number" id="newStock" name="txtNewQuantity" min="0" value="${a.stock_quantity}">
                                 </p>
                                 <div class="float-right" style="margin-top: 15px;">                                  
-                                    <button id="btn-confirrm" class="btn btn-group-sm btn-primary">Xác nhận</button>
+                                    <button id="btn-confirrm" class="btn btn-group-sm btn-primary" name="action" value="NavToUpdateAccessory">Xác nhận</button>
                                     <a type="button" class="btn-secondary btn btn-group-sm" onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</a>
                                 </div>
                         </form>                       

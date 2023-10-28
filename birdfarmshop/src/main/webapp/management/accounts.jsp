@@ -38,6 +38,10 @@
             .col-md-4 a{
                 color: white;
             }
+            .button-action:active{
+                background-color: black;
+            }
+            
         </style>
     </head>
 
@@ -70,10 +74,12 @@
             <div class="mt-3">
                 <div class="row">
                     <div class="col-md-4" style="margin-top: 10px;">
-                        <button><a href="MainController?action=NavToAccounts&role=all">Người dùng</a></button>
-                        <button><a href="MainController?action=NavToAccounts&role=manager">Quản lý</a></button>
-                        <button><a href="MainController?action=NavToAccounts&role=staff">Nhân viên</a></button>
-                        <button><a href="MainController?action=NavToAccounts&role=customer">Khách hàng</a></button>
+                        <c:if test="${sessionScope.LOGIN_USER.role == 'admin'}">
+                            <button class="button-action"><a href="MainController?action=NavToAccounts&role=all">Tất cả</a></button>
+                            <button class="button-action"><a href="MainController?action=NavToAccounts&role=manager">Quản lý</a></button>
+                            <button class="button-action"><a href="MainController?action=NavToAccounts&role=staff">Nhân viên</a></button>
+                            <button class="button-action"><a href="MainController?action=NavToAccounts&role=customer">Khách hàng</a></button>
+                        </c:if>
                     </div>
 
                     <div class="col-md-6 my-2">

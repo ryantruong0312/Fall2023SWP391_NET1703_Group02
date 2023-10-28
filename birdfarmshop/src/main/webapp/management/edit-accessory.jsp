@@ -93,11 +93,11 @@
                         </c:if>
                     </div>
                 </div>
-                <form action="MainController" method="POST" enctype="multipart/form-data">
+                <form action="RenderUpdateAccessoryController" method="POST" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-outline mt-2">
-                                <label>ID của phụ kiện</label>
+                                <label>Mã phụ kiện</label>
                                 <input style="color: #0c5460;" type="text" name="txtAccessoryID" class="input form-control" pattern="[A-Z]{2}\d{3}" value="${a.accessory_id}" readonly=""/>
                             </div>
 
@@ -154,25 +154,38 @@
                             </div>
 
                             <div class="form-outline mt-2">
-                                <label>Hình ảnh sản phẩm (Bắt buộc)</label>
-                                <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage"  class="input form-control" value="${url_thumnail}" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$" required/>
+                                <div class="row"  style="margin-top: 15px;">
+                                    <div class="col-lg-9">
+                                        <label>Hình ảnh sản phẩm (Bắt buộc)</label>
+                                        <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage"  class="input form-control" value="${url_thumnail}"/>                                           
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <img style="float: right;" class="accessory-image" src="${url_thumnail}"/>
+                                    </div>
+                                </div>
                             </div>
 
                             <c:if test="${requestScope.list != null}">
                                 <c:forEach var="image" items="${list}" varStatus="loop">
                                     <div class="form-outline mt-2">
-                                        <label>Hình ảnh sản phẩm</label>
-                                        <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage_${loop.index + 1}" class="input form-control" value="${image.image_url}" required/>
-                                        <input type="hidden" name="Image_id_${loop.index + 1}" value="${image.image_id}">
+                                        <div class="row" style="margin-top: 15px;">
+                                            <div class="col-lg-9">
+                                                <label>Hình ảnh sản phẩm</label>
+                                                <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage_${loop.index + 1}" class="input form-control" value="${image.image_url}"/>
+                                                <input type="hidden" name="Image_id_${loop.index + 1}" value="${image.image_id}">                                                
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <img style="float: right;" class="accessory-image" src="${image.image_url}"/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </c:forEach>
                             </c:if>
 
                         </div>
-                        <input type="hidden" name="btAction" value="Update">
                         <div class="col-lg-12" style="margin-top: 10px;">
                             <button style="float: right;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit">Hủy bỏ</button>
-                            <button style="margin-right: 10px; float: right;" class="button-submit btn-primary" type="submit">Hoàn tất</button>
+                            <button style="margin-right: 10px; float: right;" class="button-submit btn-primary" type="submit" name="btAction" value="Update">Hoàn tất</button>
                         </div>
                     </div>
 
