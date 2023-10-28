@@ -109,4 +109,12 @@ public class BirdBreedDAO {
         }
         return breed_id;
     }
+    
+    public static void main(String[] args) throws SQLException {
+        BirdBreedDAO dao = new BirdBreedDAO();
+        List<BirdBreed> breeds = dao.getBirdBreeds();
+        for (BirdBreed breed : breeds) {
+            System.out.println(breed.getBreed_name());
+        }
+    }
 }

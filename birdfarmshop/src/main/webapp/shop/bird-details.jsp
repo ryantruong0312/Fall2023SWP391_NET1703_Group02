@@ -181,7 +181,7 @@
                             <div class="image-bottom">
                                 <c:forEach items="${birdDetails.image_urls}" var="bird">
                                     <c:if test="${bird ne im}">
-                                        <img style="width: 100px; height: 75px; border: 1px solid;" class="accessory-image" src="${bird}" alt="" onclick="swapImages(this)">
+                                        <img style="width: 100px; height: 75px; border: 1px solid;" class="accessory-image" src="${bird}" alt="" onclick="swapImages(this)"/>
                                     </c:if>
                                 </c:forEach>
                             </div>

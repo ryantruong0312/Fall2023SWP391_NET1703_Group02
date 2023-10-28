@@ -92,8 +92,26 @@
                 width: auto;
                 padding: 10px;
             }
-        </style>
-        <style>
+            .col-md-3 img {
+                width: 250px;
+                height: 250px;
+            }
+            .col-md-3 {
+                margin: 10px 0;
+                display: flex;
+                justify-content: center;/*Căn theo chiều ngang*/
+                align-items: center; /*Căn theo chiều dọc*/
+            }
+            .col-md-6 {
+                margin: 10px 0;
+                display: flex;
+                align-items: center;
+            }
+            .card-body h3,h5,p {
+                float: left;
+                clear: left;
+                text-align: left;
+            }
             .odd {
                 background-color: #FFFFFF;
             }
@@ -135,14 +153,15 @@
                 <div class="col-lg-12">
                     <div class="order-bar" style="background-color: #cccccc; text-align: center;">
                         <div style="background-color: #cccccc; border-bottom: 3px solid #ffffff;">
-                            <img style="width: 15px; height: 15px; float: left; margin: 5px;" class="icon" src="assets/images/test.png" alt="Đơn hàng"/>
+                            <img style="width: 15px; height: 15px; float: left; margin: 5px;" class="icon" src="assets/images/order.png" alt="Đơn hàng"/>
                             <span style="color: black; float: left;">Đơn hàng: ${itemList.get(0).order_id}</span>
                             <br/>
                         </div>
                         <div class="scrollable-container">
                             <div class="card mb-3" style="max-width: 100%;">
                                 <div class="row no-gutters">
-                                    <c:forEach items="${itemList}" var="item" varStatus="counter">
+                                    <c:forEach items="${itemList}" var="item">
+                                    <c:set value="${counter.count}" var="index"/>
                                     <c:choose>    
                                         <c:when test="${item.bird != null}">
                                     <div class="col-md-3">
@@ -150,16 +169,22 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="card-body">
-                                            <h5 class="card-title">${item.bird.bird_id}</h5>
-                                            <p class="card-text">${item.bird.bird_name}</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                            <h3 class="card-title">${item.bird.bird_name}</h3>
+                                            <h5 class="card-title">Màu sắc: ${item.bird.color}</h5><br/>
+                                            <c:forEach items="${requestScope.BREEDS}" var="breed">
+                                                <c:if test="${breed.breed_id eq item.bird.breed_id}">
+                                            <h5 class="card-title">Phân loại: ${breed.breed_name}</h5>
+                                                </c:if>
+                                            </c:forEach>
+                                            <p class="card-text">${item.bird.achievement}</p>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
-                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                            <h5 class="card-title">Số lượng: 1</h5>
+                                            <h5 class="btn btn-primary">
+                                                ${item.bird.price} <span class="badge badge-light">- ${item.bird.discount}%</span>
+                                            </h5>
                                         </div>
                                     </div>
                                         </c:when>
@@ -169,16 +194,16 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="card-body">
-                                            <h5 class="card-title">${item.bird.accessory_id}</h5>
-                                            <p class="card-text">${item.bird.accessory_name}</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                            <h3 class="card-title">Phụ kiện: ${item.accessory.accessory_name}</h3>
+                                            <p class="card-text">${item.accessory.description}</p>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
-                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                            <h5 class="card-title">Số lượng: ${item.accessory.stock_quantity}</h5>
+                                            <h5 class="btn btn-primary">
+                                                ${item.accessory.unit_price} <span class="badge badge-light">- ${item.accessory.discount}%</span>
+                                            </h5>
                                         </div>
                                     </div>
                                         </c:when>
@@ -188,35 +213,35 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="card-body">
-                                            <h5 class="card-title">${item.birdNest.nest_id}</h5>
-                                            <p class="card-text">${item.birdNest.nest_name}</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                            <h3 class="card-title">Tổ chim non: ${item.birdNest.nest_name}</h3>
+                                            <p class="card-text"><small class="text-muted">${item.birdNest.description}</small></p>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
-                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                            <h5 class="card-title">Số lượng: ${item.birdNest.baby_quantity}</h5>
+                                            <h5 class="btn btn-primary">
+                                                ${item.birdNest.price} <span class="badge badge-light">- ${item.birdNest.discount}%</span>
+                                            </h5>
                                         </div>
                                     </div>
                                         </c:when>
                                         <c:otherwise>
                                     <div class="col-md-3">
-                                        <img src="" class="card-img" alt="">
+                                        <img src="${item.birdPair.image_url}" class="card-img" alt="${item.birdPair.nest_id}">
                                     </div>
                                     <div class="col-md-6">
                                         <div class="card-body">
-                                            <h5 class="card-title"></h5>
-                                            <p class="card-text"></p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                            <h3 class="card-title">Ghép cặp ${item.birdPair.male_bird.bird_name} với ${item.birdPair.female_bird.bird_name}</h3>
+                                            <p class="card-text"><small class="text-muted">${item.birdPair.status}</small></p>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="card-body">
-                                            <h5 class="card-title">Card title</h5>
-                                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                            <h5 class="card-title">Số lượng: ${item.birdPair.number_young_bird}</h5>
+                                            <h5 class="btn btn-primary">
+                                                2,000,000
+                                            </h5>
                                         </div>
                                     </div>
                                         </c:otherwise>
@@ -224,52 +249,6 @@
                                     </c:forEach>
                                 </div>
                             </div>
-                            
-
-                            <%--                            <table class="scrollable-list">                                
-                                <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Hình ảnh</th>
-                                        <th>Mã sản phẩm</th>
-                                        <th>Tên sản phẩm</th>
-                                        <th>Giá thành sản phẩm</th>
-                                        <th>Số lượng</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach items="${itemList}" var="item" varStatus="counter">
-                                        <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}">
-                                            <td>${counter.count}</td>
-                                            <c:choose>
-                                                <c:when test="${item.bird != null}">
-                                                    <td><img style="height: 100px; width: 80px;" src="${item.bird.image_url}"/></td>
-                                                    <td>${item.bird.bird_id}</td>
-                                                    <td>${item.bird.bird_name}</td>
-                                                </c:when>
-                                                <c:when test="${item.accessory != null}">
-                                                    <td><img style="height: 100px; width: 80px;" src="${item.accessory.image_url}"/></td>
-                                                    <td>${item.accessory.accessory_id}</td>
-                                                    <td>${item.accessory.accessory_name}</td>
-                                                </c:when>
-                                                <c:when test="${item.birdNest != null}">
-                                                    <td><img style="height: 100px; width: 80px;" src="${item.birdNest.image_url}"/></td>
-                                                    <td>${item.birdNest.nest_id}</td>
-                                                    <td>${item.birdNest.nest_name}</td>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <td></td>
-                                                    <td>${item.birdPair.birdPair_id}</td>
-                                                    <td></td>
-                                                </c:otherwise>
-                                            </c:choose>
-                                            <td>${item.unit_price}</td>
-                                            <td>${item.order_quantity}</td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                            --%>
                         </div>
                     </div>
                 </div>        
@@ -277,22 +256,5 @@
         </main>
         <!-- Start Footer -->
         <%@include file="../layout/footer.jsp" %>
-        <%@include file="../layout/message.jsp" %>
-        <script src="assets/js/jquery-3.7.1.min.js"></script>
-        <script src="assets/js/popper.min.js"></script>
-        <script src="assets/js/jquery.validate.min.js" ></script>
-        <script src="assets/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="assets/js/birdshop.js"></script>
-        <!-- Plugins -->
-        <script src="assets/js/owl-carousel.js"></script>
-        <script src="assets/js/accordions.js"></script>
-        <script src="assets/js/datepicker.js"></script>
-        <script src="assets/js/scrollreveal.min.js"></script>
-        <script src="assets/js/slick.js"></script> 
-        <script src="assets/js/lightbox.js"></script> 
-        <script src="assets/js/isotope.js"></script> 
-        <!-- Global Init -->
-        <script src="assets/js/custom.js"></script>
-        <!-- End Footer -->
     </body>
 </html>

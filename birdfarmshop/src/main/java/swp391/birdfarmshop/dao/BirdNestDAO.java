@@ -13,7 +13,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dto.BirdNestDTO;
-import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.model.BirdNest;
 import swp391.birdfarmshop.util.DBUtils;
 
@@ -347,5 +346,40 @@ public class BirdNestDAO {
             
         }
         return false;
+    }
+    
+    public boolean updateBirdNestBaby(int baby_quantity, String nest_id) throws SQLException, ClassNotFoundException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String sql = "  UPDATE [BirdFarmShop].[dbo].[BirdNest] "
+                        + "    SET [baby_quantity] = ? "
+                        + "    WHERE [nest_id] = ?; ";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, baby_quantity);
+                stm.setString(2, nest_id);
+                int row = stm.executeUpdate();
+                if (row > 0) {
+                    return true;
+                    
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            
+        }
+        return false;
+    }
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        BirdNestDAO dao = new BirdNestDAO();
+        dao.updateBirdNestBaby(10, "BN001");
     }
 }

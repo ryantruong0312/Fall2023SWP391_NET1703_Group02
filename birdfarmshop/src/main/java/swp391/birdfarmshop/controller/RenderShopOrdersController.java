@@ -44,36 +44,8 @@ public class RenderShopOrdersController extends HttpServlet {
             int numberOfOrder;
             int noOfPages;
             if (user != null && !user.getRole().equals("customer")) {
+                url = SUCCESS;
                 String page = "1";
-//                String[] pageArray = request.getParameterValues("page");
-//                if (pageArray != null) {
-//                    page = pageArray[pageArray.length - 1];
-//                }
-//                String date = null;
-//                String[] dateArray = request.getParameterValues("date");
-//                if (dateArray != null) {
-//                    date = dateArray[dateArray.length - 1];
-//                }
-//                String status = null;
-//                String[] statusArray = request.getParameterValues("status");
-//                if (statusArray != null) {
-//                    status = statusArray[statusArray.length - 1];
-//                }
-//                String search = null;
-//                String[] searchArray = request.getParameterValues("search");
-//                if (searchArray != null) {
-//                    search = searchArray[searchArray.length - 1];
-//                }
-//                String startDay = null;
-//                String[] startDayArray = request.getParameterValues("startDay");
-//                if (startDayArray != null) {
-//                    startDay = startDayArray[startDayArray.length - 1];
-//                }
-//                String endDay = null;
-//                String[] endDayArray = request.getParameterValues("endDay");
-//                if (endDayArray != null) {
-//                    endDay = endDayArray[endDayArray.length - 1];
-//                }
                 if(request.getParameter("page") != null) {
                     page = request.getParameter("page");
                 }
@@ -100,15 +72,12 @@ public class RenderShopOrdersController extends HttpServlet {
                         request.setAttribute("page", page);
                         request.setAttribute("noOfPages", noOfPages);
                         session.setAttribute("ERROR", "Khoảng thời gian không hợp lệ");
-                        request.getRequestDispatcher(SUCCESS).forward(request, response);
                         return;
                     }
                 }
                 numberOfOrder = orderDao.numberOfOrder(date, startDay, endDay, status, search);
                 noOfPages = (int) Math.ceil(numberOfOrder * 1.0 / recordsPerPage);
                 orderList = orderDao.getAllOfOrder(date, startDay, endDay, status, search, page, recordsPerPage);
-//                ArrayList<String> statuses = orderDao.getOrderStatus();
-//                request.setAttribute("statuses", statuses);
                 request.setAttribute("ORDERLIST", orderList);
                 request.setAttribute("date", date);
                 request.setAttribute("startDay", startDay);
@@ -117,11 +86,10 @@ public class RenderShopOrdersController extends HttpServlet {
                 request.setAttribute("status", status);
                 request.setAttribute("page", page);
                 request.setAttribute("noOfPages", noOfPages);
-                url = SUCCESS;
             } else {
                 response.sendRedirect(HOME);
             }
-        } catch (ServletException | IOException | SQLException | ParseException e) {
+        } catch (IOException | SQLException | ParseException e) {
             log("Error at RenderShopOrdersController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);

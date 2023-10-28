@@ -177,112 +177,28 @@
             #orderTabs li:hover{
                 cursor: pointer;
             }
+            
+            .scrollable-container {
+                width: 100%;
+                max-height: 300px; /* Điều chỉnh kích thước tối đa theo nhu cầu */
+                overflow-y: auto;
+            }
+
+            .scrollable-list {
+                width: 100%;
+            }
+
+            .scrollable-list th, .scrollable-list td {
+                text-align: center;
+            }
         </style>
 
     </head>
 
     <body>
-        <c:url var="toCompare" value="MainController?action=NavToCompare"/>
-        <c:url var="toHome" value="MainController?action=NavToHome"/>
-        <c:url var="toLogin" value="MainController?action=NavToLogin"/>
-        <c:url var="logout" value="MainController?action=Logout"/>
-        <c:url var="toAccessories" value="MainController?action=NavToAccessory&amount=0"/>
-        <c:url var="toBirds" value="MainController?action=NavToBird&amount=0"/>
-        <c:url var="toBirdNests" value="MainController?action=NavToBirdNests"/>
-        <c:url var="toCart" value="MainController?action=NavToCart"/>
-        <c:url var="toProfile" value="MainController?action=NavToProfile"/>
-        <c:url var="toEditProfile" value="MainController?action=NavToEditProfile"/>
-        <c:url var="toOrders" value="MainController?action=NavToOrders"/>
-        <c:url var="toShopOrders" value="MainController?action=NavToShopOrders"/>
-        <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
-        <c:url var="toReports" value="MainController?action=NavToReports"/>
-        <c:url var="toPair" value="MainController?action=NavToPairBirds"/>
-
-        <!-- ***** Preloader Start ***** -->
-        <div id="preloader">
-            <div class="jumper">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>  
-        <!-- ***** Preloader End ***** -->
-
-        <!-- ***** Header Area Start ***** -->
-        <header class="header-area header-sticky">
-            <div class="container home-custom">
-                <div class="row">
-                    <div class="col-12">
-                        <nav class="main-nav">
-                            <!-- ***** Logo Start ***** -->
-                            <a href="#" class="logo scroll-to-section">
-                                <img src="assets/images/logo.png">
-                            </a>
-                            <!-- ***** Logo End ***** -->
-                            <!-- ***** Menu Start ***** -->
-                            <ul class="nav">
-                                <li class="scroll-to-section"><a href="${pageScope.toHome}" >Trang chủ</a></li>
-                                    <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer' || LOGIN_USER.role == 'staff'}">
-                                    <li class="submenu"><a href="">Sản phẩm</a>
-                                        <ul>
-                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                        <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
-                                        <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                        </c:if>
-                                        <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
-                                        <li class="scroll-to-section"><a href="${pageScope.toPair}">Nhân giống</a></li>
-                                        <li id="show-cart" class="scroll-to-section">
-                                            <a href="${pageScope.toCart}"><i style="font-size: 25px" class="fa fa-shopping-cart" aria-hidden="true"></i></a>
-                                            <div class="cart-amount">
-                                                <c:choose>
-                                                    <c:when test="${sessionScope.CART == null}">0</c:when>
-                                                    <c:otherwise>${sessionScope.CART.totalItem}</c:otherwise>
-                                                </c:choose>
-                                            </div>
-                                        </li>
-
-                                        <c:if test="${sessionScope.LOGIN_USER == null}">
-                                            <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
-                                            </c:if>
-                                        </c:if>
-                                    </c:if>
-                                    <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
-                                    <li class="submenu"><a href="">Sản phẩm</a>
-                                        <ul>
-                                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toCompare}">So sánh</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toShopOrders}">Đơn hàng</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toAccounts}">Tài khoản</a></li>
-                                    <li class="scroll-to-section"><a href="${pageScope.toReports}">Thống kê</a></li>
-                                    </c:if>
-                                    <c:if test="${sessionScope.LOGIN_USER != null}">
-                                    <li class="submenu"><a class="user-name text-right active" href="#">${LOGIN_USER.fullName}</a>
-                                        <ul>
-                                            <li><a href="${pageScope.toProfile}&username=${sessionScope.LOGIN_USER.username}">Cá nhân</a></li>
-                                            <li><a href="${pageScope.logout}">Đăng xuất</a></li>
-                                        </ul>
-                                    </li>
-                                </c:if>
-                            </ul>           
-                            <a class='menu-trigger'>
-                                <span>Menu</span>
-                            </a>
-                            <!-- ***** Menu End ***** -->
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <!-- ***** Header Area End ***** -->
+        <!-- Header Start -->
+        <%@include file="../layout/header.jsp" %>
+        <!-- Header End -->
 
         <c:set value="${requestScope.ITEMMAP}" var="itemMap"/>
         <main>
@@ -295,355 +211,86 @@
                                 <div class="row gutters">
                                     <div class="card-body order-section">
                                         <!-- Tab buttons -->
-                                        <ul class="nav nav-tabs" id="orderTabs">
-                                            <li class="nav-item">
+                                        <ul class="nav nav-tabs row" id="orderTabs">
+                                            <li class="nav-item col">
                                                 <a class="nav-link active" data-toggle="tab" href="#allOrder">Tất cả</a>
                                             </li>
-                                            <li class="nav-item">
+                                            <li class="nav-item col">
+                                                <a class="nav-link" data-toggle="tab" href="#wait">Chờ xử lý</a>
+                                            </li>
+                                            <li class="nav-item col">
                                                 <a class="nav-link" data-toggle="tab" href="#inProgress">Đang xử lý</a>
                                             </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" data-toggle="tab" href="#delivering">Đang giao hàng</a>
+                                            <li class="nav-item col">
+                                                <a class="nav-link" data-toggle="tab" href="#delivering">Đang giao</a>
                                             </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" data-toggle="tab" href="#delivered">Đã vận chuyển</a>
+                                            <li class="nav-item col">
+                                                <a class="nav-link" data-toggle="tab" href="#delivered">Đã giao</a>
                                             </li>
-                                            <li class="nav-item">
+                                            <li class="nav-item col">
                                                 <a class="nav-link" data-toggle="tab" href="#rated">Đã đánh giá</a>
                                             </li>
-                                            <li class="nav-item">
+                                            <li class="nav-item col">
                                                 <a class="nav-link" data-toggle="tab" href="#cancel">Đã hủy</a>
                                             </li>
                                         </ul>
-
-                                        <!-- Tab content -->
                                         <div class="tab-content">
                                             <div class="tab-pane fade show active" id="allOrder">
                                                 <div class="row">
                                                     <!-- Card components for pending orders -->
-                                                    <div class="col-12 body-bird">
-                                                        <c:forEach var="item" items="${itemMap}">
-                                                        <c:choose>
-                                                            <c:when test="${item.key != null}">
-                                                                <c:forEach var="all" items="${item.value}">
-                                                                    <c:if test="${item.key.order_id eq all.order_id}">
-                                                                    <div class="card w-100 mt-2">
-                                                                        <div class="card-body bird">
-                                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                                <div class="order">
-                                                                                    <h6 class="text-center"></h6>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <h5>${all.order_id}</h5>
-                                                                                </div>
-                                                                                <div class="image-item">
-                                                                                    <c:choose>
-                                                                                    <c:when test="${all.bird != null}">
-                                                                                    <img src="${all.bird.image_url}" alt="${all.bird.bird_name}"/>
-                                                                                    </c:when>
-                                                                                    <c:when test="${all.accessory != null}">
-                                                                                    <img src="${all.accessory.image_url}" alt="${all.accessory.accessory_name}"/>
-                                                                                    </c:when>
-                                                                                    <c:otherwise>
-                                                                                    <img src="${all.birdNest.image_url}" alt="${all.birdNest.nest_name}"/>
-                                                                                    </c:otherwise>
-                                                                                    </c:choose>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    </c:if>
+                                                    <div class="scrollable-container">
+                                                        <%--    <c:forEach items="${itemMap}" var="map">
+                                                        <div style="display: none;" class="table-hover scrollable-list w-100" id="cc">
+                                                                <c:forEach items="${map.value}" var="orderItem">
+                                                                        <c:choose>
+                                                                            <c:when test="${orderItem.bird != null}">
+                                                                                <span>Tên sản phẩm: ${orderItem.bird.bird_name}</span>
+                                                                                <span>Số lượng: 1</span>
+                                                                                <span>Giá tiền: ${orderItem.bird.price}</span>
+                                                                            </c:when>
+                                                                            <c:when test="$${orderItem.accessory != null}">
+                                                                                <span>Tên sản phẩm: ${orderItem.accessory.accessory_name}</span>
+                                                                                <span>Số lượng: ${orderItem.accessory.stock_quantity}</span>
+                                                                                <span>Giá tiền: ${orderItem.accessory.unit_price}</span>
+                                                                            </c:when>
+                                                                            <c:when test="$${orderItem.birdNest != null}">
+                                                                                <span>Tên sản phẩm: ${orderItem.birdNest.nest_name}</span>
+                                                                                <span>Số lượng: ${orderItem.birdNest.baby_quantity}</span>
+                                                                                <span>Giá tiền: ${orderItem.birdNest.price}</span>
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                <span>Tên sản phẩm: ${orderItem.birdPair.male_bird.bird_id} lai với ${orderItem.birdPair.female_bird.bird_id}</span>
+                                                                                <span>Số lượng: ${orderItem.birdPair.number_young_bird}</span>
+                                                                                <span>Giá tiền: 2,000,000</span>
+                                                                            </c:otherwise>
+                                                                        </c:choose>
                                                                 </c:forEach>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <div class="mt-5">
-                                                                    <h4 class="text-center">Bạn chưa có đơn hàng nào</h4>
-                                                                </div>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                        </c:forEach>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane fade" id="inProgress">
-                                                <div class="row">
-                                                    <!-- Card components for pending orders -->
-                                                    <div class="col-12 body-bird">
-                                                        <c:forEach var="item" items="${itemMap}">
-                                                        <c:choose>
-                                                            <c:when test="${item.key != null}">
-                                                                <c:forEach var="inProgress" items="${item.value}">
-                                                                    <c:if test="${item.key.order_id eq inProgress.order_id && item.key.order_status eq 'Đang xử lý'}">
-                                                                    <div class="card w-100 mt-2">
-                                                                        <div class="card-body bird">
-                                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                                <div class="order">
-                                                                                    <h6 class="text-center"></h6>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <h5>${inProgress.order_id}</h5>
-                                                                                </div>
-                                                                                <div class="image-item">
-                                                                                    <c:choose>
-                                                                                    <c:when test="${inProgress.bird != null}">
-                                                                                    <img src="${inProgress.bird.image_url}" alt="${inProgress.bird.bird_name}"/>
-                                                                                    </c:when>
-                                                                                    <c:when test="${inProgress.accessory != null}">
-                                                                                    <img src="${inProgress.accessory.image_url}" alt="${inProgress.accessory.accessory_name}"/>
-                                                                                    </c:when>
-                                                                                    <c:otherwise>
-                                                                                    <img src="${inProgress.birdNest.image_url}" alt="${inProgress.birdNest.nest_name}"/>
-                                                                                    </c:otherwise>
-                                                                                    </c:choose>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    </c:if>
+                                                        </div>
+                                                    </c:forEach> --%>
+                                                        <table class="table table-striped table-hover scrollable-list w-100">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Mã đơn hàng</th>
+                                                                    <th>Tên người nhận</th>
+                                                                    <th>Số điện thoại</th>
+                                                                    <th>Địa chỉ</th>
+                                                                    <th>Tổng hóa đơn</th>
+                                                                    <th>Điểm đã dùng</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <c:forEach items="${ITEMMAP}" var="item" varStatus="counter">
+                                                                <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}" onclick="toggleList('cc')">
+                                                                    <td>${item.key.order_id}</td>
+                                                                    <td>${item.key.name_receiver}</td>
+                                                                    <td>${item.key.phone_receiver}</td>
+                                                                    <td>${item.key.address_receiver}</td>
+                                                                    <td>${item.key.total_price}</td>
+                                                                    <td>${item.key.point}</td>
+                                                                </tr>
                                                                 </c:forEach>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <div class="mt-5">
-                                                                    <h4 class="text-center">Bạn chưa có đơn hàng nào</h4>
-                                                                </div>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                        </c:forEach>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane fade" id="delivering">
-                                                <div class="row">
-                                                    <!-- Card components for pending orders -->
-                                                    <div class="col-12 body-bird">
-                                                        <c:forEach var="item" items="${itemMap}">
-                                                        <c:choose>
-                                                            <c:when test="${item.key != null}">
-                                                                <c:forEach var="delivering" items="${item.value}">
-                                                                    <c:if test="${item.key.order_id eq delivering.order_id && item.key.order_status eq 'Đang giao hàng'}">
-                                                                    <div class="card w-100 mt-2">
-                                                                        <div class="card-body bird">
-                                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                                <div class="order">
-                                                                                    <h6 class="text-center"></h6>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <h5>${delivering.order_id}</h5>
-                                                                                </div>
-                                                                                <div class="image-item">
-                                                                                    <c:choose>
-                                                                                    <c:when test="${delivering.bird != null}">
-                                                                                    <img src="${delivering.bird.image_url}" alt="${delivering.bird.bird_name}"/>
-                                                                                    </c:when>
-                                                                                    <c:when test="${delivering.accessory != null}">
-                                                                                    <img src="${delivering.accessory.image_url}" alt="${delivering.accessory.accessory_name}"/>
-                                                                                    </c:when>
-                                                                                    <c:otherwise>
-                                                                                    <img src="${delivering.birdNest.image_url}" alt="${delivering.birdNest.nest_name}"/>
-                                                                                    </c:otherwise>
-                                                                                    </c:choose>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <div class="mt-5">
-                                                                    <h4 class="text-center">Bạn chưa có đơn hàng nào</h4>
-                                                                </div>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                        </c:forEach>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane fade" id="delivered">
-                                                <div class="row">
-                                                    <!-- Card components for pending orders -->
-                                                    <div class="col-12 body-bird">
-                                                        <c:forEach var="item" items="${itemMap}">
-                                                        <c:choose>
-                                                            <c:when test="${item.key != null}">
-                                                                <c:forEach var="delivered" items="${item.value}">
-                                                                    <c:if test="${item.key.order_id eq delivered.order_id && item.key.order_status eq 'Đã vận chuyển'}">
-                                                                    <div class="card w-100 mt-2">
-                                                                        <div class="card-body bird">
-                                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                                <div class="order">
-                                                                                    <h6 class="text-center"></h6>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <h5>${delivered.order_id}</h5>
-                                                                                </div>
-                                                                                <div class="image-item">
-                                                                                    <c:choose>
-                                                                                    <c:when test="${delivered.bird != null}">
-                                                                                    <img src="${delivered.bird.image_url}" alt="${delivered.bird.bird_name}"/>
-                                                                                    </c:when>
-                                                                                    <c:when test="${delivered.accessory != null}">
-                                                                                    <img src="${delivered.accessory.image_url}" alt="${delivered.accessory.accessory_name}"/>
-                                                                                    </c:when>
-                                                                                    <c:otherwise>
-                                                                                    <img src="${delivered.birdNest.image_url}" alt="${delivered.birdNest.nest_name}"/>
-                                                                                    </c:otherwise>
-                                                                                    </c:choose>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <div class="mt-5">
-                                                                    <h4 class="text-center">Bạn chưa có đơn hàng nào</h4>
-                                                                </div>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                        </c:forEach>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane fade" id="rated">
-                                                <div class="row">
-                                                    <!-- Card components for pending orders -->
-                                                    <div class="col-12 body-bird">
-                                                        <c:forEach var="item" items="${itemMap}">
-                                                        <c:choose>
-                                                            <c:when test="${item.key != null}">
-                                                                <c:forEach var="rated" items="${item.value}">
-                                                                    <c:if test="${item.key.order_id eq rated.order_id && item.key.order_status eq 'Đã đánh giá'}">
-                                                                    <div class="card w-100 mt-2">
-                                                                        <div class="card-body bird">
-                                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                                <div class="order">
-                                                                                    <h6 class="text-center"></h6>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <h5>${rated.order_id}</h5>
-                                                                                </div>
-                                                                                <div class="image-item">
-                                                                                    <c:choose>
-                                                                                    <c:when test="${rated.bird != null}">
-                                                                                    <img src="${rated.bird.image_url}" alt="${rated.bird.bird_name}"/>
-                                                                                    </c:when>
-                                                                                    <c:when test="${rated.accessory != null}">
-                                                                                    <img src="${rated.accessory.image_url}" alt="${rated.accessory.accessory_name}"/>
-                                                                                    </c:when>
-                                                                                    <c:otherwise>
-                                                                                    <img src="${rated.birdNest.image_url}" alt="${rated.birdNest.nest_name}"/>
-                                                                                    </c:otherwise>
-                                                                                    </c:choose>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <div class="mt-5">
-                                                                    <h4 class="text-center">Bạn chưa có đơn hàng nào</h4>
-                                                                </div>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                        </c:forEach>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane fade" id="cancel">
-                                                <div class="row">
-                                                    <!-- Card components for pending orders -->
-                                                    <div class="col-12 body-bird">
-                                                        <c:forEach var="item" items="${itemMap}">
-                                                        <c:choose>
-                                                            <c:when test="${item.key != null}">
-                                                                <c:forEach var="cancel" items="${item.value}">
-                                                                    <c:if test="${item.key.order_id eq cancel.order_id && item.key.order_status eq 'Đã hủy'}">
-                                                                    <div class="card w-100 mt-2">
-                                                                        <div class="card-body bird">
-                                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                                <div class="order">
-                                                                                    <h6 class="text-center"></h6>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <h5>${cancel.order_id}</h5>
-                                                                                </div>
-                                                                                <div class="image-item">
-                                                                                    <c:choose>
-                                                                                    <c:when test="${cancel.bird != null}">
-                                                                                    <img src="${cancel.bird.image_url}" alt="${cancel.bird.bird_name}"/>
-                                                                                    </c:when>
-                                                                                    <c:when test="${cancel.accessory != null}">
-                                                                                    <img src="${cancel.accessory.image_url}" alt="${cancel.accessory.accessory_name}"/>
-                                                                                    </c:when>
-                                                                                    <c:otherwise>
-                                                                                    <img src="${cancel.birdNest.image_url}" alt="${cancel.birdNest.nest_name}"/>
-                                                                                    </c:otherwise>
-                                                                                    </c:choose>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <div class="mt-5">
-                                                                    <h4 class="text-center">Bạn chưa có đơn hàng nào</h4>
-                                                                </div>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                        </c:forEach>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane fade" id="allOrder">
-                                                <div class="row">
-                                                    <!-- Card components for pending orders -->
-                                                    <div class="col-12 body-bird">
-                                                        <c:forEach var="item" items="${itemMap}">
-                                                        <c:choose>
-                                                            <c:when test="${item.key != null}">
-                                                                <c:forEach var="all" items="${item.value}">
-                                                                    <c:if test="${item.key.order_id eq all.order_id}">
-                                                                    <div class="card w-100 mt-2">
-                                                                        <div class="card-body bird">
-                                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                                <div class="order">
-                                                                                    <h6 class="text-center"></h6>
-                                                                                </div>
-                                                                                <div>
-                                                                                    <h5>${all.order_id}</h5>
-                                                                                </div>
-                                                                                <div class="image-item">
-                                                                                    <c:choose>
-                                                                                    <c:when test="${all.bird != null}">
-                                                                                    <img src="${all.bird.image_url}" alt="${all.bird.bird_name}"/>
-                                                                                    </c:when>
-                                                                                    <c:when test="${all.accessory != null}">
-                                                                                    <img src="${all.accessory.image_url}" alt="${all.accessory.accessory_name}"/>
-                                                                                    </c:when>
-                                                                                    <c:otherwise>
-                                                                                    <img src="${all.birdNest.image_url}" alt="${all.birdNest.nest_name}"/>
-                                                                                    </c:otherwise>
-                                                                                    </c:choose>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <div class="mt-5">
-                                                                    <h4 class="text-center">Bạn chưa có đơn hàng nào</h4>
-                                                                </div>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                        </c:forEach>
+                                                            </tbody>
+                                                        </table>
                                                     </div>
                                                 </div>
                                             </div>
@@ -656,88 +303,18 @@
                 </div>
             </div>
         </main>
-
-
-        <!-- ***** Footer Start ***** -->
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="first-item">
-                            <div class="logo">
-                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
-                            </div>
-                            <ul>
-                                <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
-                                <li><a href="#">0913-244-567</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Sản phẩm và dịch vụ</h4>
-                        <ul>
-                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                            <li><a href="${pageScope.toCompare}">So sánh</a></li>
-                            <li><a href="${pageScope.toPair}">Nhân giống</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Đường dẫn hữu ích</h4>
-                        <ul>
-                            <li><a href="${pageScope.toHome}">Trang chủ</a></li>
-                            <li><a href="#">Về chúng tôi</a></li>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Liên hệ</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Thông tin hỗ trợ</h4>
-                        <ul>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Câu hỏi thường gặp</a></li>
-                            <li><a href="#">Giao hàng</a></li>
-                            <li><a href="#">Theo dõi đơn hàng</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="under-footer">
-                            <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
-
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- ***** Footer Area Ends ***** -->
-
-        <!-- jQuery -->
-        <script src="assets/js/jquery-2.1.0.min.js"></script>
-
-        <!-- Bootstrap -->
-        <script src="assets/js/popper.js"></script>
-        <script src="assets/js/bootstrap.min.js"></script>
-
-        <!-- Plugins -->
-        <script src="assets/js/owl-carousel.js"></script>
-        <script src="assets/js/accordions.js"></script>
-        <script src="assets/js/datepicker.js"></script>
-        <script src="assets/js/scrollreveal.min.js"></script>
-        <script src="assets/js/waypoints.min.js"></script>
-        <script src="assets/js/jquery.counterup.min.js"></script>
-        <script src="assets/js/imgfix.min.js"></script> 
-        <script src="assets/js/slick.js"></script> 
-        <script src="assets/js/lightbox.js"></script> 
-        <script src="assets/js/isotope.js"></script> 
-
-        <!-- Global Init -->
-        <script src="assets/js/custom.js"></script>
+        <!-- Start Footer -->
+        <%@include file="../layout/footer.jsp" %>
+        <!-- End Footer -->
+        <script>
+            function toggleList(listId) {
+                var list = document.getElementById(listId);
+                if (list.style.display === "none" || list.style.display === "") {
+                    list.style.display = "block";
+                } else {
+                    list.style.display = "none";
+                }
+            }
+        </script>
     </body>
 </html>
