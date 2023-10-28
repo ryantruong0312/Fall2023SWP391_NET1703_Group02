@@ -96,6 +96,8 @@ Main Components
 @media only screen and (min-width: 1170px) {
     .cd-products-comparison-table {
         margin-bottom: 8em;
+        display: flex;
+        justify-content: center
     }
     .cd-products-comparison-table::after {
         /* never visible - this is used in jQuery to check the current MQ */
@@ -119,6 +121,7 @@ Main Components
 .cd-products-table {
     position: relative;
     overflow: hidden;
+    overflow-x: auto;
 }
 
 .cd-products-table .features {
@@ -160,10 +163,8 @@ Main Components
 }
 
 .cd-products-wrapper {
-    overflow-x: auto;
     /* this fixes the buggy scrolling on webkit browsers - mobile devices only - when overflow property is applied */
     -webkit-overflow-scrolling: touch;
-    border-style: solid;
     border-color: #e6e6e6;
     border-top-width: 1px;
     border-bottom-width: 1px;
@@ -172,8 +173,6 @@ Main Components
 
 .cd-products-columns {
     /* products list wrapper */
-    width: 1200px;
-    margin-left: 120px;
 }
 .cd-products-columns::after {
     clear: both;
@@ -182,8 +181,8 @@ Main Components
 }
 @media only screen and (min-width: 1170px) {
     .cd-products-columns {
-        width: 2400px;
-        margin-left: 210px;
+        display: flex;
+        justify-content: center;
     }
 }
 
@@ -220,12 +219,10 @@ Main Components
 }
 
 .cd-features-list li {
-    font-size: 1.4rem;
     padding: 25px 40px;
     border-color: #e6e6e6;
     border-style: solid;
-    border-top-width: 1px;
-    border-right-width: 1px;
+    border-width: 1px;
 }
 .cd-features-list li.rate {
     /* rating stars */
@@ -578,7 +575,7 @@ No JS
 }
 
 .cd-features-list li:first-child{
-    height: 500px;
+    height: 400px;
 }
 
 .cd-features-list li:last-child{
@@ -606,12 +603,7 @@ main {
 }
 
 /* Unique styling for the bird image */
-#birdImage1,
-#birdImage2,
-#birdImage3,
-#birdImage4,
-#birdImage5,
-#birdImage6{
+.birdImage{
     max-width: 100%;
     height: 250px; /* Fixed height for the bird image */
     display: block;
@@ -621,27 +613,10 @@ main {
 }
 
 /* Unique styling for bird price */
-#birdPrice1,
-#birdPrice2,
-#birdPrice3,
-#birdPrice4,
-#birdPrice5,
-#birdPrice6 {
+.birdPrice{
     font-size: 20px;
     font-weight: bold;
     color: #ff5733; /* Orange color for price */
-}
-
-.detail-info{
-    display: inline-block; /* Make the span a block-level element to apply styling */
-    padding: 10px 20px; /* Add padding to create some spacing around the text */
-    border: 1px solid #ccc; /* Add a light grey border */
-    border-radius: 5px; /* Apply a corner radius */
-    background-color: #f5f5f5; /* Set a background color (light grey) */
-    color: #333; /* Set text color */
-}
-.detail-info:hover{
-    background-color: #bcbcbc;
 }
 
 .cd-features-list li:nth-child(5){
