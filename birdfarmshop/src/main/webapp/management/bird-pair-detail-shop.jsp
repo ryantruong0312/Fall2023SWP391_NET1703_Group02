@@ -262,14 +262,18 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="content-birdpair mx-3">
-                                                                        <div class="d-flex">
-                                                                            <p>Số lượng trứng</p>
-                                                                            <p class="ml-3">${birdPair.number_egg}</p>
-                                                                        </div>
-                                                                        <div class="d-flex">
-                                                                            <p>Số lượng chim non</p>
-                                                                            <p class="ml-3">${birdPair.number_young_bird}</p>
-                                                                        </div>
+                                                                        <c:if test="${birdPair.status == 'Đã sinh sản' || birdPair.status == 'Đã ấp nở' ||  birdPair.status == 'Đã thanh toán'}">
+                                                                            <div class="d-flex">
+                                                                                <p>Số lượng trứng</p>
+                                                                                <p class="ml-3">${birdPair.number_egg}</p>
+                                                                            </div>
+                                                                        </c:if>
+                                                                        <c:if test="${birdPair.status == 'Đã ấp nở' ||  birdPair.status == 'Đã thanh toán'}">
+                                                                            <div class="d-flex">
+                                                                                <p>Số lượng chim non</p>
+                                                                                <p class="ml-3">${birdPair.number_young_bird}</p>
+                                                                            </div>
+                                                                        </c:if>
                                                                         <div class="d-flex">
                                                                             <div class="price-pair">
                                                                                 <p>Giá tiền một con chim non</p>
@@ -347,14 +351,18 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="content-birdpair mx-3">
-                                                                        <div class="d-flex">
-                                                                            <p>Số lượng trứng</p>
-                                                                            <p class="ml-3">${birdPair.number_egg}</p>
-                                                                        </div>
-                                                                        <div class="d-flex">
-                                                                            <p>Số lượng chim non</p>
-                                                                            <p class="ml-3">${birdPair.number_young_bird}</p>
-                                                                        </div>
+                                                                        <c:if test="${birdPair.status == 'Đã sinh sản' || birdPair.status == 'Đã ấp nở' ||  birdPair.status == 'Đã thanh toán'}">
+                                                                            <div class="d-flex">
+                                                                                <p>Số lượng trứng</p>
+                                                                                <p class="ml-3">${birdPair.number_egg}</p>
+                                                                            </div>
+                                                                        </c:if>
+                                                                        <c:if test="${birdPair.status == 'Đã ấp nở' ||  birdPair.status == 'Đã thanh toán'}">
+                                                                            <div class="d-flex">
+                                                                                <p>Số lượng chim non</p>
+                                                                                <p class="ml-3">${birdPair.number_young_bird}</p>
+                                                                            </div>
+                                                                        </c:if>
                                                                         <div class="d-flex">
                                                                             <div class="price-pair pr-1">
                                                                                 <p>Giá tiền một con chim non</p>
@@ -365,10 +373,6 @@
                                                                         <div class="d-flex">
                                                                             <p>Tổng tiền cần thanh toán</p>
                                                                             <p class="ml-3 text-danger"><fmt:formatNumber value="${birdPair.number_young_bird * birdPair.young_bird_price}" pattern="#,###"/> ₫</p>
-                                                                        </div>
-                                                                        <div class="d-flex">
-                                                                            <p>Hình thức thanh toán</p>
-                                                                            <p class="ml-3">Chưa thanh toán</p>
                                                                         </div>
                                                                         <div class="text-center border-bottom-0">
                                                                             <button style="background-color: #007bff; color: white;" id="payment-youngBird" class="mt-3 py-2 px-3">Cập nhật theo dõi nhân giống</button>
@@ -405,20 +409,22 @@
                             <input type="hidden" name="order_id" value="${requestScope.BIRDPAIR.order_id}" />
                             <div class="row mt-5">
                                 <div style="width: 350px" class="col-12 col-md-6">
-                                     <label for="status">Chọn trạng thái: </label>
-                                     <select id="status" class="input w-100 pl-2" name="status" >
-                                         <option class="p-2" value="">Chọn trạng thái</option>
-                                        <option class="p-2" ${requestScope.BIRDPAIR.status == 'Chờ lấy chim' ? 'selected':''} value="Chờ lấy chim">Chờ lấy chim</option>
-                                        <option class="p-2" ${requestScope.BIRDPAIR.status == 'Đang ghép cặp' ? 'selected':''} value="Đang ghép cặp">Đang ghép cặp</option>
-                                        <option class="p-2" ${requestScope.BIRDPAIR.status == 'Đã sinh sản' ? 'selected':''} value="Đã sinh sản">Đã sinh sản</option>
-                                        <option class="p-2" ${requestScope.BIRDPAIR.status == 'Đã ấp nở' ? 'selected':''} value="Đã ấp nở">Đã ấp nở</option>
+                                    <label for="status">Chọn trạng thái: </label>
+                                    <select onchange="show(this)" id="status" class="input w-100 pl-2" name="status" >
+                                        <option class="p-2" value="">Chọn trạng thái</option>
+                                        <option class="p-2" value="Chờ lấy chim">Chờ lấy chim</option>
+                                        <option class="p-2" value="Đang ghép cặp">Đang ghép cặp</option>
+                                        <option class="p-2" value="Đã sinh sản">Đã sinh sản</option>
+                                        <c:if test="${requestScope.BIRDPAIR.status == 'Đã sinh sản'||requestScope.BIRDPAIR.status == 'Đã ấp nở'}">
+                                            <option class="p-2" value="Đã ấp nở">Đã ấp nở</option>
+                                        </c:if>
                                     </select>
                                     <div class="d-flex">
-                                        <div class="mt-3 mr-3 w-50">
+                                        <div class="mt-3 w-50 number-egg w-100">
                                             <label for="egg">Số lượng trứng: </label>
                                             <input type="number" class="input w-100 pl-2" id="egg" min="0" name="quantity_egg" value="${requestScope.BIRDPAIR.number_egg }"/>
                                         </div>
-                                        <div class="mt-3 ml-3 w-50">
+                                        <div class="mt-3 w-50 bird-young w-100">
                                             <label for="birdYoung">Số lượng chim con: </label>
                                             <input type="number" class="input w-100 pl-2" id="birdYoung" min="0" max="${requestScope.BIRDPAIR.number_egg}" name="quantity_young_bird" value="${requestScope.BIRDPAIR.number_young_bird}"/>
                                         </div>
@@ -430,7 +436,7 @@
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <label for="image">Chọn ảnh: </label>
-                                    <input id="image" type="file" name="file"  accept="image/jpeg, image/png, image/gif"/>
+                                    <input id="image" type="file" name="file"  accept="image/jpeg, image/png, image/gif">
                                     <div class="img-upload my-3">
 
                                     </div>
@@ -528,6 +534,20 @@
                 currentImageIndex = event;
                 changeImages();
             }
+            function show(event) {
+                if (event.value === 'Đã sinh sản') {
+                    $('.number-egg').css('display', 'block');
+                    $('.bird-young').css('display', 'none');
+                    $('input[name=quantity_egg]').removeAttr('readonly');
+                }
+                if (event.value === 'Đã ấp nở') {
+                    $('.number-egg').css('display', 'block');
+                    $('.number-egg').css('margin-right', '5px');
+                    $('input[name=quantity_egg]').attr('readonly', 'true');
+                    $('.bird-young').css('margin-left', '5px');
+                    $('.bird-young').css('display', 'block');
+                }
+            }
             $('input[type=file]').change(function (e) {
                 let file = e.target.files[0];
                 if (file) {
@@ -542,10 +562,10 @@
                     reader.readAsDataURL(file);
                 }
             });
-            $('input[name=quantity_egg]').change(function (){
+            $('input[name=quantity_egg]').change(function () {
                 const numberBirdNode = $('input[name=quantity_young_bird]');
                 numberBirdNode.val(0);
-                numberBirdNode.attr('max',$(this).val());
+                numberBirdNode.attr('max', $(this).val());
             });
         </script>
     </body>

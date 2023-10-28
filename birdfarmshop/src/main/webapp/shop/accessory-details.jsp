@@ -471,7 +471,7 @@
                 $.ajax({
                     url: "AddAccessoryToCartController",
                     type: 'POST',
-                    data: {accessory_id: accessory_id, order_quantity: quantity},
+                    data: {accessory_id: accessory_id, order_quantity: quantity},                    
                     success: function (data) {
                         if (data == 0) {
                             toast({

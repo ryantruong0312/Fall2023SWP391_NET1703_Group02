@@ -8,8 +8,8 @@ $('.type-shop').click(function (event){
     $('.bird-customer').css('display','none');
 });
 $('.type-customer').click(function (event){
-    let login = $('#checkLogin').attr('data-login');
-    if(login === 'false'){   
+    let login = $('#checkLogin').attr('data-value');
+    if(login){   
           toast({
                 title: 'Lỗi',
                 message: 'Bạn chưa đăng nhập',
@@ -17,10 +17,11 @@ $('.type-customer').click(function (event){
                 duration: 3000
             });
        return;     
+    }else{
+        $('.type-pair').css('display','none');
+        $('.bird-shop').css('display','none');
+        $('.bird-customer').css('display','block');
     }
-    $('.type-pair').css('display','none');
-    $('.bird-shop').css('display','none');
-    $('.bird-customer').css('display','block');
 });
 $('.back-choose h5').click(function (event){
     $('.type-pair').css('display','block');
@@ -34,10 +35,10 @@ $('main #breedSelect1').change(function (event) {
     $('main #breedSelect2').val(breedSelect1);
     if(!breedSelect1){
         $('#birdInformation1').html(" <div class=\"bird-info-row\">\n"
-            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            
             + "    </div>");
         $('#birdInformation2').html(" <div class=\"bird-info-row\">\n"
-            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            
             + "    </div>");
         $('#birdSelect1').html("");
         $('#birdSelect2').html("");
@@ -61,10 +62,10 @@ $('main #breedSelect1').change(function (event) {
     });
     if(breedIntital !== null && breedSelect1 !== breedIntital){
         $('#birdInformation1').html(" <div class=\"bird-info-row\">\n"
-            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            
             + "    </div>");
         $('#birdInformation2').html(" <div class=\"bird-info-row\">\n"
-            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            
             + "    </div>");
         $('#birdSelect1').html("");
         $('#birdSelect2').html("");
@@ -77,10 +78,10 @@ $('main #breedSelect2').change(function (event) {
     $('main #breedSelect1').val(breedSelect2);
     if(!breedSelect2){
         $('#birdInformation1').html(" <div class=\"bird-info-row\">\n"
-            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            
             + "    </div>");
         $('#birdInformation2').html(" <div class=\"bird-info-row\">\n"
-            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            
             + "    </div>");
         $('#birdSelect1').html("");
         $('#birdSelect2').html("");
@@ -104,10 +105,10 @@ $('main #breedSelect2').change(function (event) {
     });
      if(breedIntital !== null && breedSelect2 !== breedIntital){
         $('#birdInformation1').html(" <div class=\"bird-info-row\">\n"
-            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            
             + "    </div>");
         $('#birdInformation2').html(" <div class=\"bird-info-row\">\n"
-            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            
             + "    </div>");
         $('#birdSelect1').html("");
         $('#birdSelect2').html("");
@@ -119,7 +120,7 @@ $('#birdSelect1').change(function (event){
     let birdId = $(this).val();
     if(!birdId){
            $('#birdInformation1').html(" <div class=\"bird-info-row\">\n"
-            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            
             + "    </div>");
     return;
     }
@@ -138,7 +139,7 @@ $('#birdSelect2').change(function (event){
     let birdId = $(this).val();
     if(!birdId){
            $('#birdInformation2').html(" <div class=\"bird-info-row\">\n"
-            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            
             + "    </div>");
     return;
     }
@@ -160,10 +161,10 @@ $('main #breedSelect3').change(function (event) {
     let username = $('input[name=username]').val();
     if(!breedSelect3){
         $('#birdInformation3').html(" <div class=\"bird-info-row\">\n"
-            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            
             + "    </div>");
         $('#birdInformation4').html(" <div class=\"bird-info-row\">\n"
-            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            
             + "    </div>");
         $('#birdSelect3').html("");
         $('#birdSelect4').html("");
@@ -179,10 +180,10 @@ $('main #breedSelect3').change(function (event) {
     });
     if(breedCustomer !== null && breedSelect3 !== breedCustomer){
         $('#birdInformation3').html(" <div class=\"bird-info-row\">\n"
-            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            
             + "    </div>");
         $('#birdInformation4').html(" <div class=\"bird-info-row\">\n"
-            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            
             + "    </div>");
         $('#birdSelect3').html("");
         $('#birdSelect4').html("");
@@ -195,7 +196,7 @@ $('#birdSelect4').change(function (event) {
     let username = $('input[name=username]').val();
     if (!birdId) {
         $('#birdInformation4').html(" <div class=\"bird-info-row\">\n"
-            + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+            
             + "    </div>");
         $('#birdSelect4').html("<option>Chọn vẹt</option>");
         return;
@@ -215,10 +216,10 @@ $('#birdSelect3').change(function (event) {
     let birdId = $(this).val();
     if (!birdId) {
         $('#birdInformation3').html(" <div class=\"bird-info-row\">\n"
-                + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+                
                 + "    </div>");
         $('#birdInformation4').html(" <div class=\"bird-info-row\">\n"
-                + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+                
                 + "    </div>");
         $('#birdSelect4').html("");
         return;
@@ -230,10 +231,10 @@ $('#birdSelect3').change(function (event) {
 
     if (birdCustomer !== null && birdId !== birdCustomer) {
         $('#birdInformation3').html(" <div class=\"bird-info-row\">\n"
-                + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+                
                 + "    </div>");
         $('#birdInformation4').html(" <div class=\"bird-info-row\">\n"
-                + "        <img id=\"birdImage1\" src=\"assets/images/bird-compare-1.jpg\" alt=\"Bird Image\">\n"
+                
                 + "    </div>");
         $('#birdSelect4').html("");
     }
@@ -310,14 +311,17 @@ $("#update-tracking").validate({
         },
         quantity_egg: {
             required: true,
-             min: 0
+            number: true,
+            min: 0
         },
         quantity_young_bird: {
             required: true,
-             min: 0
+            number: true,
+            min: 0
         },
         content: {
-            required: true
+            required: true,
+            regex: /^(?!\s)[\s\S]*$/
         }
     },
     messages: {
@@ -326,14 +330,18 @@ $("#update-tracking").validate({
         },
         quantity_egg: {
             required: 'Vui lòng nhập số trứng',
+            number: 'Vui lòng nhập số',
             min: 'Vui lòng nhập số trứng lớn hơn hoặc bằng 0'
         },
         quantity_young_bird: {
             required: 'Vui lòng nhập số chim con',
-            min: 'Vui lòng nhập số chim non lớn hơn hoặc bằng 0'
+            number: 'Vui lòng nhập số',
+            min: 'Vui lòng nhập số chim non lớn hơn hoặc bằng 0',
+            max: 'Số chim non không lớn hơn số trứng'
         },
         content: {
-            required: 'Vui lòng nhập nội dung theo dõi'
+            required: 'Vui lòng nhập nội dung theo dõi',
+            regex: 'Không nhập kí tự trắng đầu tiên'
         }
     }
 });

@@ -195,17 +195,14 @@
                                             </c:choose>
                                         </div>
                                         <div class="col-md-3 col-lg-3 col-xl-3">
-
                                             <c:choose>
                                                 <c:when test="${not empty birdPair.value.birdCustomer}">
-                                                    <p class="lead fw-bold mb-5" style="font-size: 23px;">${birdPair.value.birdCustomer.name} </p>
-                                                    <p class="lead fw-bold mb-2" style="font-size: 23px;">Nhân giống</p>
-                                                    <p class="lead fw-bold mt-5" style="font-size: 23px;">${not empty birdPair.value.birdMale ?  birdPair.value.birdMale.bird_name : birdPair.value.birdFemale.bird_name}</p>
+                                                    <p class="lead fw-bold mb-2" style="font-size: 23px;">Phí nhân giống ban đầu</p>
+                                                    <span>(${birdPair.value.birdCustomer.name} với ${not empty birdPair.value.birdMale ?  birdPair.value.birdMale.bird_name : birdPair.value.birdFemale.bird_name})</span>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <p class="lead fw-bold mb-5" style="font-size: 23px;">${birdPair.value.birdMale.bird_name}</p>
-                                                    <p class="lead fw-bold mb-2" style="font-size: 23px;">Nhân giống</p>
-                                                    <p class="lead fw-bold mt-5" style="font-size: 23px;">${birdPair.value.birdFemale.bird_name}</p>               
+                                                    <p class="lead fw-bold mb-2" style="font-size: 23px;">Phí nhân giống ban đầu</p>         
+                                                    <span>(${birdPair.value.birdMale.bird_name} với ${birdPair.value.birdFemale.bird_name})</span>
                                                 </c:otherwise>
                                             </c:choose>               
                                         </div>

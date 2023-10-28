@@ -23,7 +23,6 @@ import swp391.birdfarmshop.dto.OrderItemDTO;
 @WebServlet(name = "AddNewOrderItemBirdPairController", urlPatterns = {"/AddNewOrderItemBirdPairController"})
 public class AddNewOrderItemBirdPairController extends HttpServlet {
 
-    private static final String DEST_NAV_HOME = "RenderHomeController";
     private static final String DEST_BIRD_PAIR_CUSTOMER = "RenderBirdPairCustomerController";
 
     /**
@@ -38,7 +37,7 @@ public class AddNewOrderItemBirdPairController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = DEST_NAV_HOME;
+        String url = DEST_BIRD_PAIR_CUSTOMER;
         try {
             String male_bird_id = request.getParameter("male_bird");
             String female_bird_id = request.getParameter("female_bird");
@@ -61,10 +60,8 @@ public class AddNewOrderItemBirdPairController extends HttpServlet {
                 int result = oid.addNewPairOrderItem(order_id, male_bird_id, female_bird_id, accessory_id, totalPrice,pair_id);
                 if (result > 0) {
                     session.setAttribute("SUCCESS", "Thanh toán thành công");
-
                 } else {
                     session.setAttribute("ERROR", oid.error);
-                    url = DEST_BIRD_PAIR_CUSTOMER;
                 }
             } else if (male_bird_id != null) {
                 int result1 = oid.addNewPairOrderItem(order_id, male_bird_id, female_bird_id, accessory_id, totalPrice,pair_id);
@@ -72,25 +69,20 @@ public class AddNewOrderItemBirdPairController extends HttpServlet {
                     session.setAttribute("SUCCESS", "Thanh toán thành công");
                 } else {
                     session.setAttribute("ERROR", oid.error);
-                    url = DEST_BIRD_PAIR_CUSTOMER;
                 }
             } else if (female_bird_id != null) {
                 int result1 = oid.addNewPairOrderItem(order_id, male_bird_id, female_bird_id, accessory_id, totalPrice,pair_id);
                 if (result1 > 0) {
                     session.setAttribute("SUCCESS", "Thanh toán thành công");
-                    url = DEST_BIRD_PAIR_CUSTOMER;
                 } else {
                     session.setAttribute("ERROR", "Thanh toán thất bại");
-                    url = DEST_BIRD_PAIR_CUSTOMER;
                 }
             } else {
                 int result1 = oid.addNewPairOrderItem(order_id, male_bird_id, female_bird_id, accessory_id, totalPrice,pair_id);
                 if (result1 > 0) {
                     session.setAttribute("SUCCESS", "Thanh toán thành công");
-                    url = DEST_BIRD_PAIR_CUSTOMER;
                 } else {
                     session.setAttribute("ERROR", "Thanh toán thất bại");
-                    url = DEST_BIRD_PAIR_CUSTOMER;
                 }
             }
             request.setAttribute("ITEMLIST", orderItemList);

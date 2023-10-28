@@ -56,8 +56,8 @@ public class UpdateStatusTrackingController extends HttpServlet {
             }
             String content = request.getParameter("content");
             String status = request.getParameter("status");
-            int quantiy_egg = Integer.parseInt(request.getParameter("quantity_egg"));
-            int  quantity_young_bird =  Integer.parseInt(request.getParameter("quantity_young_bird"));
+            String quantity_egg = request.getParameter("quantity_egg");
+            String quantity_young_bird =  request.getParameter("quantity_young_bird");
             String order_id = request.getParameter("order_id");
             Part part = request.getPart("file");
             url = "MainController?action=NavToBirdPairDetailShop&order_id="+order_id;
@@ -70,8 +70,11 @@ public class UpdateStatusTrackingController extends HttpServlet {
                             LocalTime currentTime = LocalTime.now();
                             String nameImage = currentTime.getNano() + file;
                             String img_url = Constants.C3_HOST + nameImage;
+                            if(file.isEmpty()){
+                                img_url = null;
+                            }
                             S3Utils.uploadFile(nameImage, part.getInputStream());
-                            int result = trackingDao.getTrackingBirdPair(img_url, pairId,content, u.getUsername(),status,quantity_young_bird,quantiy_egg);
+                            int result = trackingDao.updateTrackingBirdPair(img_url, pairId,content, u.getUsername(),status,quantity_young_bird,quantity_egg);
                             if (result == 0){
                                 session.setAttribute("ERROR", "Cập nhật trạng thái thất bại");
                                  request.getRequestDispatcher(url).forward(request, response);

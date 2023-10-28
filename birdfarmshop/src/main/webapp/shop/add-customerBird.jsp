@@ -48,7 +48,7 @@
                         <select class="combo-box" name="txtBreedId" id="breedSelect3">
                             <option value = "">Chọn giống vẹt</option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                                <option value="${breed.breed_id}" ${param.txtBreedId == breed.breed_id ? "selected":""}>${breed.breed_name}</option>
+                                    <option value="${breed.breed_id}" ${param.txtBreedId == breed.breed_id ? "selected":""}>${breed.breed_name}</option>
                             </c:forEach>
                         </select>
                         <!-- EL to populate the bird name combo box -->
@@ -70,8 +70,7 @@
                         <!-- Additional rows to display bird information -->
                         <div id="birdInformation3">         
                             <div class="bird-info-row">
-                                <!-- Placeholder for bird image -->
-                                <img id="birdImage1" src="assets/images/bird-compare-1.jpg" alt="Bird Image">
+                              
                             </div>
                         </div>
                 </div>
@@ -101,16 +100,23 @@
         $('#breedSelect3').change(function () {
             let breedId = $(this).val();
             $('input[type=file]').val('');
-            $('#birdInformation3').html(`<div class="bird-info-row">
-                                                            <img id="birdImage1" src="assets/images/bird-compare-1.jpg" alt="Bird Image">
-                                                        </div>`);
+            $('#birdInformation3').html(`<div class="bird-info-row"></div>`);
         });
         $('input[type=file]').change(function (e) {
             let file = e.target.files[0];
             if (file) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
-                    $('#birdImage1').attr('src', e.target.result);
+                    let nodeImage = $('#birdImage1').val();
+                    if(nodeImage){
+                       $('#birdImage1').attr('src', e.target.result);
+                    }else{
+                        const imgNode = document.createElement('img');
+                        imgNode.alt = 'Chim khách hàng';
+                        imgNode.src = e.target.result;
+                        imgNode.id = 'birdImage1';
+                        $('.bird-info-row').html(imgNode); 
+                    }
                 };
                 reader.readAsDataURL(file);
             }

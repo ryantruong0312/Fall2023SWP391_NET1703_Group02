@@ -3174,7 +3174,6 @@ register*/
     border-radius: 0;
     width: 8px;
 }
-
 .card-pair::-webkit-scrollbar-thumb {
     border-radius: 4px;
     background-color: rgba(22, 24, 35, 0.06);
@@ -3192,6 +3191,11 @@ register*/
 }
 #confirm-payment .box-remove p{
    font-size: 1.1rem;
+}
+#confirm-payment .number-egg,
+#confirm-payment .bird-young
+{
+    display: none;
 }
 /*containter custom profile*/
 .container-custome{

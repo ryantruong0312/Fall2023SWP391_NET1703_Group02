@@ -49,7 +49,7 @@
                         </div>
                         <div class="d-flex">
                             <div class="box"></div>
-                            <div class="box-middle box-content">Chim của khách hàng</div>
+                            <div class="box-middle box-content">Giao chú vẹt của bạn đến ghép cặp cùng một chú vẹt có tại shop theo ý muốn</div>
                             <div class="box"></div>
                         </div>
                         <div class="d-flex">
@@ -67,7 +67,7 @@
                         </div>
                         <div class="d-flex">
                             <div class="box"></div>
-                            <div class="box-middle box-content">Chim trong cửa hàng</div>
+                            <div class="box-middle box-content">Ghép cặp 2 chú vẹt có sẵn tại cửa hàng</div>
                             <div class="box"></div>
                         </div>
                         <div class="d-flex">
@@ -93,7 +93,7 @@
                         <select class="combo-box" id="breedSelect1">
                             <option value = "">Chọn giống vẹt</option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                                <option value="${breed.breed_id}">${breed.breed_name}</option>
+                                    <option value="${breed.breed_id}">${breed.breed_name}</option>
                             </c:forEach>
                         </select>
 
@@ -103,10 +103,7 @@
 
                         <!-- Additional rows to display bird information -->
                         <div id="birdInformation1">         
-                            <div class="bird-info-row">
-                                <!-- Placeholder for bird image -->
-                                <img id="birdImage1" src="assets/images/bird-compare-1.jpg" alt="Bird Image">
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -118,7 +115,7 @@
                         <select class="combo-box" id="breedSelect2">
                             <option value = "">Chọn giống vẹt</option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                                <option value="${breed.breed_id}">${breed.breed_name}</option>
+                                 <option value="${breed.breed_id}">${breed.breed_name}</option> 
                             </c:forEach>
                         </select>
 
@@ -128,10 +125,7 @@
 
                         <!-- Additional rows to display bird information -->
                         <div id="birdInformation2"> 
-                            <div class="bird-info-row">
-                                <!-- Placeholder for bird image -->
-                                <img id="birdImage1" src="assets/images/bird-compare-1.jpg" alt="Bird Image">
-                            </div>
+
                         </div>
                     </div>
                 </div>  
@@ -160,7 +154,7 @@
                         <select class="combo-box" id="breedSelect3">
                             <option value = "">Chọn giống vẹt</option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                                <option value="${breed.breed_id}">${breed.breed_name}</option>
+                                    <option value="${breed.breed_id}">${breed.breed_name}</option>
                             </c:forEach>
                         </select>
 
@@ -169,10 +163,7 @@
                         </select>
                         <!-- Additional rows to display bird information -->
                         <div id="birdInformation3">         
-                            <div class="bird-info-row">
-                                <!-- Placeholder for bird image -->
-                                <img id="birdImage1" src="assets/images/bird-compare-1.jpg" alt="Bird Image">
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -186,7 +177,7 @@
                         <select class="combo-box" id="breedSelect4" disabled>
                             <option value = "">Chọn giống vẹt</option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                                <option value="${breed.breed_id}">${breed.breed_name}</option>
+                                    <option value="${breed.breed_id}">${breed.breed_name}</option>
                             </c:forEach>
                         </select>
 
@@ -196,10 +187,7 @@
 
                         <!-- Additional rows to display bird information -->
                         <div id="birdInformation4"> 
-                            <div class="bird-info-row">
-                                <!-- Placeholder for bird image -->
-                                <img id="birdImage1" src="assets/images/bird-compare-1.jpg" alt="Bird Image">
-                            </div>
+    
                         </div>
                     </div>
                 </div>  
@@ -288,19 +276,7 @@
                                             duration: 3000
                                         });
                                     } else {
-                                        toast({
-                                            title: 'Thành công',
-                                            message: 'Thêm sản phẩm vào giỏ hàng thành công',
-                                            type: 'success',
-                                            duration: 3000
-                                        });
-                                        $.ajax({
-                                            url: "AddBirdToCartController",
-                                            type: 'POST',
-                                            success: function (data) {
-                                                $('.cart-amount').html(data);
-                                            }
-                                        });
+                                        window.location.href='MainController?action=NavToCart';
                                     }
                                 }
                             });
@@ -330,19 +306,7 @@
                                             duration: 3000
                                         });
                                     } else {
-                                        toast({
-                                            title: 'Thành công',
-                                            message: 'Thêm sản phẩm vào giỏ hàng thành công',
-                                            type: 'success',
-                                            duration: 3000
-                                        });
-                                        $.ajax({
-                                            url: "AddBirdToCartController",
-                                            type: 'POST',
-                                            success: function (data) {
-                                                $('.cart-amount').html(data);
-                                            }
-                                        });
+                                        window.location.href='MainController?action=NavToCart';
                                     }
                                 }
                             });

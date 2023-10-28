@@ -72,8 +72,8 @@ public class TrackingBirdPairDAO {
         return trackingList;
     }
 
-    public int getTrackingBirdPair(String url, int pair_id, String content, String username, String status,
-            int quanitty_young_bird, int quantity_egg) {
+    public int updateTrackingBirdPair(String url, int pair_id, String content, String username, String status,
+            String quantity_young_bird, String quantity_egg) {
         int result = 0;
         Connection con = null;
         PreparedStatement pst = null;
@@ -110,8 +110,8 @@ public class TrackingBirdPairDAO {
                                 + "[status] = ?\n"
                                 + "WHERE [pair_id] = ?";
                         pst = con.prepareStatement(sql);
-                        pst.setInt(1, quantity_egg);
-                        pst.setInt(2, quanitty_young_bird);
+                        pst.setString(1, quantity_egg);
+                        pst.setString(2, quantity_young_bird);
                         pst.setString(3, status);
                         pst.setInt(4, pair_id);
                         result = pst.executeUpdate();

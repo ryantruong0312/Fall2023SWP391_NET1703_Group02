@@ -1,7 +1,7 @@
 <%-- 
-    Document   : home
-    Created on : Sep 13, 2023, 7:25:56 PM
-    Author     : tlminh
+Document   : home
+Created on : Sep 13, 2023, 7:25:56 PM
+Author     : tlminh
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -133,19 +133,17 @@
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </div>
-                                                <div class="infor-item px-5 col-lg-7 col-md-6 col-sm-7 col-7 mt-4">
+                                                <div class="infor-item px-5 col-lg-7 col-md-6 col-sm-7 col-7 mt-4">                                    
                                                     <c:choose>
                                                         <c:when test="${not empty birdPair.value.birdCustomer}">
-                                                            <p class="lead fw-bold mb-3" style="font-size: 18px;">${birdPair.value.birdCustomer.name} </p>
-                                                            <p class="lead fw-bold" style="font-size: 18px;">Nhân giống</p>
-                                                            <p class="lead fw-bold mt-3" style="font-size: 18px;">${not empty birdPair.value.birdMale ?  birdPair.value.birdMale.bird_name : birdPair.value.birdFemale.bird_name}</p>
+                                                            <p class="lead fw-bold mb-2" style="font-size: 20px;">Phí nhân giống ban đầu</p>
+                                                            <span style="font-size: 14px;display: block">(${birdPair.value.birdCustomer.name} với ${not empty birdPair.value.birdMale ?  birdPair.value.birdMale.bird_name : birdPair.value.birdFemale.bird_name})</span>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <p class="lead fw-bold mb-3" style="font-size: 18px;">${birdPair.value.birdMale.bird_name}</p>
-                                                            <p class="lead fw-bold" style="font-size: 18px;">Nhân giống</p>
-                                                            <p class="lead fw-bold mt-3" style="font-size: 18px;">${birdPair.value.birdFemale.bird_name}</p>               
+                                                            <p class="lead fw-bold mb-2" style="font-size: 20px;">Phí nhân giống ban đầu</p>         
+                                                            <span style="font-size: 14px;display: block">(${birdPair.value.birdMale.bird_name} với ${birdPair.value.birdFemale.bird_name})</span>
                                                         </c:otherwise>
-                                                    </c:choose> 
+                                                    </c:choose>  
                                                 </div>
                                                 <div class="price-item ml-2 px-3 col-lg-2 col-md-3 col-sm-2 col-2">
                                                     <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${birdPair.value.servicePrice}" pattern="#,###"/> ₫</p>

@@ -1,4 +1,4 @@
-
+    
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -228,14 +228,18 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="content-birdpair mx-3">
-                                                                        <div class="d-flex">
-                                                                            <p>Số lượng trứng</p>
-                                                                            <p class="ml-3">${birdPair.number_egg}</p>
-                                                                        </div>
-                                                                        <div class="d-flex">
-                                                                            <p>Số lượng chim non</p>
-                                                                            <p class="ml-3">${birdPair.number_young_bird}</p>
-                                                                        </div>
+                                                                         <c:if test="${birdPair.status == 'Đã sinh sản' || birdPair.status == 'Đã ấp nở' || birdPair.status == 'Đã thanh toán'}">
+                                                                            <div class="d-flex">
+                                                                                <p>Số lượng trứng</p>
+                                                                                <p class="ml-3">${birdPair.number_egg}</p>
+                                                                            </div>
+                                                                        </c:if>
+                                                                        <c:if test="${birdPair.status == 'Đã ấp nở' || birdPair.status == 'Đã thanh toán'}">
+                                                                            <div class="d-flex">
+                                                                                <p>Số lượng chim non</p>
+                                                                                <p class="ml-3">${birdPair.number_young_bird}</p>
+                                                                            </div>
+                                                                        </c:if>
                                                                         <div class="d-flex">
                                                                             <div class="price-pair">
                                                                                 <p>Giá tiền một con chim non</p>
@@ -248,11 +252,7 @@
                                                                             <p>Tổng tiền cần thanh toán</p>
                                                                             <p class="ml-3 text-danger"><fmt:formatNumber value="${birdPair.number_young_bird * birdPair.young_bird_price}" pattern="#,###"/> ₫</p>
                                                                         </div>
-                                                                        <c:if test="${birdPair.status == 'Đã ấp nở'}">
-                                                                            <div class="d-flex">
-                                                                                <p>Hình thức thanh toán</p>
-                                                                                <p class="ml-3">Chưa thanh toán</p>
-                                                                            </div>
+                                                                        <c:if test="${birdPair.status == 'Đã ấp nở' && birdPair.number_young_bird > 0}">
                                                                             <div class="text-center  border-0">
                                                                                 <button id="payment-youngBird" class="btn-danger mt-3 py-2 px-3">Xác nhận thanh toán</button>
                                                                             </div>
@@ -284,23 +284,23 @@
                                                                     <div class="line-status d-flex align-items-center py-5">
                                                                         <div class="img-status col-6 h-100">
                                                                             <c:choose>
-                                                                            <c:when test="${not empty birdPair.pList}">
-                                                                                <div class="d-flex justify-content-around align-items-center">
-                                                                                    <div class="img-button">
-                                                                                        <img onclick="nextImage()"  src="assets/images/decrease-button.png"  alt="nút quay lại" />
+                                                                                <c:when test="${not empty birdPair.pList}">
+                                                                                    <div class="d-flex justify-content-around align-items-center">
+                                                                                        <div class="img-button">
+                                                                                            <img onclick="nextImage()"  src="assets/images/decrease-button.png"  alt="nút quay lại" />
+                                                                                        </div>
+                                                                                        <img id="main-ImgPair" src="${birdPair.pList.get(0)}"  alt="ảnh chính giống" />
+                                                                                        <div class="img-button">
+                                                                                            <img onclick="prevImage()"  src="assets/images/increase-button.png"  alt="nút tiếp" />
+                                                                                        </div>
                                                                                     </div>
-                                                                                    <img id="main-ImgPair" src="${birdPair.pList.get(0)}"  alt="ảnh chính giống" />
-                                                                                    <div class="img-button">
-                                                                                        <img onclick="prevImage()"  src="assets/images/increase-button.png"  alt="nút tiếp" />
-                                                                                    </div>
-                                                                                </div>
-                                                                            </c:when>
-                                                                            <c:otherwise>
-                                                                                <h5 class="text-center">Chưa có ảnh</h5>
-                                                                            </c:otherwise>
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <h5 class="text-center">Chưa có ảnh</h5>
+                                                                                </c:otherwise>
                                                                             </c:choose>
                                                                             <div class="img-more d-flex mt-4 justify-content-center">
-                                                                                
+
                                                                             </div>
                                                                         </div>
                                                                         <div class="line-time col-6 h-100">
@@ -312,14 +312,20 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="content-birdpair mx-3">
-                                                                        <div class="d-flex">
-                                                                            <p>Số lượng trứng</p>
-                                                                            <p class="ml-3">${birdPair.number_egg}</p>
-                                                                        </div>
-                                                                        <div class="d-flex">
-                                                                            <p>Số lượng chim non</p>
-                                                                            <p class="ml-3">${birdPair.number_young_bird}</p>
-                                                                        </div>
+                                                                        <c:if test="${birdPair.status == 'Đã sinh sản' || birdPair.status == 'Đã ấp nở' ||  birdPair.status == 'Đã thanh toán'}">
+                                                                            <div class="d-flex">
+                                                                                <p>Số lượng trứng</p>
+                                                                                <p class="ml-3">${birdPair.number_egg}</p>
+                                                                            </div>
+                                                                        </c:if>
+
+                                                                        <c:if test="${birdPair.status == 'Đã ấp nở' ||  birdPair.status == 'Đã thanh toán'}">
+                                                                            <div class="d-flex">
+                                                                                <p>Số lượng chim non</p>
+                                                                                <p class="ml-3">${birdPair.number_young_bird}</p>
+                                                                            </div>
+                                                                        </c:if>
+
                                                                         <div class="d-flex">
                                                                             <div class="price-pair pr-1">
                                                                                 <p>Giá tiền một con chim non</p>
@@ -332,11 +338,7 @@
                                                                                 <p>Tổng tiền cần thanh toán</p>
                                                                                 <p class="ml-3 text-danger"><fmt:formatNumber value="${birdPair.number_young_bird * birdPair.young_bird_price}" pattern="#,###"/> ₫</p>
                                                                             </div>
-                                                                            <c:if test="${birdPair.status == 'Đã ấp nở'}">
-                                                                                <div class="d-flex">
-                                                                                    <p>Hình thức thanh toán</p>
-                                                                                    <p class="ml-3">Chưa thanh toán</p>
-                                                                                </div>
+                                                                            <c:if test="${birdPair.status == 'Đã ấp nở' && birdPair.number_young_bird > 0}">
                                                                                 <div class="text-center border-bottom-0">
                                                                                     <button id="payment-youngBird" class="btn-danger mt-3 py-2 px-3">Xác nhận thanh toán</button>
                                                                                 </div>
@@ -630,11 +632,12 @@
             const nextButton = document.querySelector(".img-button img[alt='nút tiếp']");
             const prevButton = document.querySelector(".img-button img[alt='nút quay lại']");
 
-              function nextImage() {
+            function nextImage() {
                 changeImages("next");
-            };
+            }
+            ;
 
-           function prevImage() {
+            function prevImage() {
                 changeImages("prev");
             }
             function choseImage(event) {
