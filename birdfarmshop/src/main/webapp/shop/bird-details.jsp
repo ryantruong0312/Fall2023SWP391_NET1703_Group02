@@ -34,20 +34,20 @@
                 align-items: center;
             }
 
-            .col-lg-12 a {
-                border-radius: 10px;
-                border: 1px solid rgb(221, 221, 227);
-                background-color: #f5c6cb;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin: 0 auto;
-                width: 50%;
-                margin-bottom: 30px;
-                margin-top: 20px;
-                width: 150px;
-                float: right;
-            }
+            /*            .col-lg-12 a {
+                            border-radius: 10px;
+                            border: 1px solid rgb(221, 221, 227);
+                            background-color: #f5c6cb;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            margin: 0 auto;
+                            width: 50%;
+                            margin-bottom: 30px;
+                            margin-top: 20px;
+                            width: 150px;
+                            float: right;
+                        }*/
 
             .overlay-text {
                 position: absolute;
@@ -85,6 +85,37 @@
             .overlay-container {
                 position: relative;
             }
+            .button-form{
+                margin-bottom: 5px;
+                display:block;
+                color: white;
+                padding: 10px;
+                border: 1px solid;
+                font-size: 15px;
+                border-radius: 4px;
+                width: 160px;
+            }
+            .tag-discount{
+                position: absolute;
+                top: 7%;
+                left: 3%;
+                transform: translate(-50%, -50%);
+                color: #fff;
+                text-align: center;
+                border-top-right-radius: 10px; /* Điều chỉnh bán kính cho góc trên cùng bên trái */
+                border-bottom-right-radius: 10px;
+                background-color: red;
+                padding: 5px 5px 5px 10px;
+                font-weight: bold;
+            }
+            pre {
+                width: 100%;
+                white-space: pre-wrap;
+                overflow-y: auto;
+                max-height: 250px;
+                font-family: inherit;
+                font-size: 20px;
+            }
         </style>
         <script>
             function swapImages(clickedImage) {
@@ -116,12 +147,12 @@
         <!-- ***** Main Banner Area End ***** -->
         <!-- ***** Product Area Starts ***** -->
         <c:set var="birdDetails" value="${requestScope.birdDetails}"/>
-        <section class="section" id="product">
+        <section class="section" id="product" style="margin-top: 30px; margin-bottom: 75px;">
             <div class="container">
                 <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
-                    <div class="row">
+                    <div class="row" style="margin-bottom: 15px;">
                         <div class="col-lg-12">
-                            <a href="MainController?action=UpdateBird&bird_id=${birdDetails.bird_id}"><span>Cập nhật chim</span></a>
+                            <button class="btn-primary button-form" style="float: right;"><a href="MainController?action=UpdateBird&bird_id=${birdDetails.bird_id}"><span style="color: white;">Cập nhật chim</span></a></button>
                         </div>
                     </div>
                 </c:if>
@@ -132,6 +163,9 @@
                                 <div class="image-top">
                                     <div class="overlay-container">
                                         <img id="mainImage" style="width: 500px; height: 400px;" src="${im}" alt="" onclick="swapImages(this)">
+                                        <c:if test="${birdDetails.discount > 0}">
+                                            <span class="tag-discount"> -${birdDetails.discount}%</span>
+                                        </c:if>
                                         <c:if test="${birdDetails.status == 'Đã bán'}">
                                             <div class="overlay-text">Đã bán</div>
                                         </c:if>
@@ -147,7 +181,7 @@
                             <div class="image-bottom">
                                 <c:forEach items="${birdDetails.image_urls}" var="bird">
                                     <c:if test="${bird ne im}">
-                                        <img style="width: 100px; height: 75px; border: 1px solid;" class="accessory-image" src="${bird}" alt="" onclick="swapImages(this)">
+                                        <img style="width: 100px; height: 75px; border: 1px solid;" class="accessory-image" src="${bird}" alt="" onclick="swapImages(this)"/>
                                     </c:if>
                                 </c:forEach>
                             </div>
@@ -155,57 +189,62 @@
                     </div>
                     <div class="col-lg-5">
                         <div class="right-content">
-                            <h4>${birdDetails.bird_name}</h4>
+                            <h2>${birdDetails.bird_name}</h2>
                             <c:choose>
                                 <c:when test="${birdDetails.discount > 0}">
-                                    <span style="display: inline-block;"><del><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</del></span>
-                                    <span style="display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${birdDetails.discount}%</span>
-                                    <span style="font-size: 20px;"><fmt:formatNumber value="${birdDetails.price - birdDetails.price * birdDetails.discount / 100}" pattern="#,###"/> ₫</span>
+                                    <span style="display: inline-block; color: #cccccc; font-size: 15px;"><del><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</del></span>
+                                    <span style="display: inline-block; border-radius: 10px; background-color: red; padding: 0 5px 0 5px; color: white;"> -${birdDetails.discount}%</span>
+                                    <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${birdDetails.price - birdDetails.price * birdDetails.discount / 100}" pattern="#,###"/> ₫</span>
                                 </c:when>
                                 <c:otherwise>
-                                    <span style="font-size: 20px;"><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</span>
+                                    <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${birdDetails.price}" pattern="#,###"/> ₫</span>
                                 </c:otherwise>
                             </c:choose>
                             <div class="mt-2">
-                                <h4>Mô tả sản phẩm: </h4>
                                 <div style="white-space: nowrap; margin-top: 10px;">
-                                    <h5 style="display: inline;">Màu sắc: </h5>
-                                    <span style="display: inline;">${birdDetails.color}</span>
+                                    <h4 style="display: inline;">Giống loài: </h4>
+                                    <span style="display: inline; color: black; font-size: 20px;">${birdDetails.breed_name}</span>
+                                </div>
+                                
+                                <div style="white-space: nowrap; margin-top: 10px;">
+                                    <h4 style="display: inline;">Màu sắc: </h4>
+                                    <span style="display: inline; color: black; font-size: 20px;"">${birdDetails.color}</span>
                                 </div>
 
                                 <div style="white-space: nowrap; margin-top: 10px;">
-                                    <h5 style="display: inline;">Tháng tuổi: </h5>
-                                    <span style="display: inline;">${birdDetails.age}</span>
+                                    <h4 style="display: inline;">Tuổi: </h4>
+                                    <span style="display: inline; color: black; font-size: 20px;">${birdDetails.age} tháng</span>
                                 </div>
 
                                 <div style="white-space: nowrap; margin-top: 10px;">
-                                    <h5 style="display: inline;">Thời gian trưởng thành: </h5>
-                                    <span style="display: inline;">${birdDetails.grown_age} tháng</span>
+                                    <h4 style="display: inline;">Tuổi trưởng thành: </h4>
+                                    <span style="display: inline; color: black; font-size: 20px;">${birdDetails.grown_age} tháng</span>
                                 </div>
 
                                 <div style="white-space: nowrap; margin-top: 10px;">
-                                    <h5 style="display: inline;">Số lần giao phối: </h5>
-                                    <span style="display: inline;">${birdDetails.reproduction_history}</span>
+                                    <h4 style="display: inline;">Lứa sinh sản: </h4>
+                                    <span style="display: inline; color: black; font-size: 20px;">${birdDetails.reproduction_history}</span>
                                 </div>
                                 <c:if test="${not empty birdDetails.achievement}">
-                                    <div style="white-space: nowrap; margin-top: 10px;">
-                                        <h5 style="display: inline;">Thành tựu: </h5>
-                                        <span style="display: inline;">${birdDetails.achievement}</span>
+                                    <div style="margin-top: 10px;">
+                                        <h4 style="">Thành tựu: </h4>
+                                        <pre style="color: black; font-size: 20px; margin-top: 10px;">${birdDetails.achievement}</pre>
                                     </div>
                                 </c:if>
 
                                 <c:if test="${not empty birdDetails.description}">
                                     <div style="margin-top: 10px;">
-                                        <h5>Thông tin: </h5>
-                                        <span style="margin-top: 10px;">${birdDetails.description}</span>
+                                        <h4>Mô tả chi tiết: </h4>
+                                        <!--<span style="margin-top: 10px; color: black; font-size: 20px;">${birdDetails.description}</span>-->
+                                        <pre style="margin-top: 10px;">${birdDetails.description}</pre>
                                     </div>
                                 </c:if>
                                 <div>
                                     <c:if test="${empty sessionScope.LOGIN_USER || sessionScope.LOGIN_USER.role == 'customer'}">
                                         <c:if test="${bird.status ne 'Đã bán' && birdDetails.status ne 'Đang sinh sản' && birdDetails.status ne 'Đang ghép cặp'}">
-                                            <div class="total">
+                                            <div class="total" style="margin-top: 30px;">
                                                 <div class="main-border-button">
-                                                    <a class="bird-cart" style="cursor: pointer" data-value="${birdDetails.bird_id}">Thêm vào giỏ hàng</a>
+                                                    <a class="bird-cart btn-primary" style="cursor: pointer; color: white;" data-value="${birdDetails.bird_id}">Thêm vào giỏ hàng</a>
                                                 </div>
                                             </div>
                                         </c:if>

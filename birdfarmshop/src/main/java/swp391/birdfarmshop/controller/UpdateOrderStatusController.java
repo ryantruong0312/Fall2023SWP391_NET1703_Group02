@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,16 +31,21 @@ public class UpdateOrderStatusController extends HttpServlet {
     private static final String HOME = "MainController?action=NavToHome";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException, SQLException {
+    throws ServletException, IOException, SQLException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
-            if (user != null && (user.getRole().equals("manager") || user.getRole().equals("staff") 
-                    ||  user.getRole().equals("admin"))) {
+            if (user != null && !user.getRole().equals("customer")) {
                 String[] statusArray = request.getParameterValues("status");
                 String status = statusArray[statusArray.length - 1];
+                if("Giao hàng thành công".equals(status)) {
+                    status = "Đã giao hàng";
+                }
+                if("Giao hàng thất bại".equals(status)) {
+                    status = "Đã hủy";
+                }
                 String order_id = request.getParameter("order_id");
                 OrderDAO orderDao = new OrderDAO();
                 boolean isUpdated = orderDao.updateOrderStatus(order_id, status);
@@ -76,6 +82,8 @@ public class UpdateOrderStatusController extends HttpServlet {
             processRequest(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(UpdateOrderStatusController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(UpdateOrderStatusController.class.getName()).log(Level.SEVERE, null, ex);
         }
     } 
 
@@ -92,6 +100,8 @@ public class UpdateOrderStatusController extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
+            Logger.getLogger(UpdateOrderStatusController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
             Logger.getLogger(UpdateOrderStatusController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

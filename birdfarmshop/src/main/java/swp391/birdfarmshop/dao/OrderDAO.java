@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -18,10 +19,13 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
+import swp391.birdfarmshop.dto.AccessoryDTO;
 import swp391.birdfarmshop.dto.CartDTO;
+import swp391.birdfarmshop.dto.OrderItemDTO;
 import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.model.BirdCustomer;
+import swp391.birdfarmshop.model.BirdNest;
 import swp391.birdfarmshop.model.Order;
 import swp391.birdfarmshop.model.OrderItem;
 import swp391.birdfarmshop.model.OrderedAccessoryItem;
@@ -596,7 +600,26 @@ public class OrderDAO {
                     }
                 }
                 if (status != null && !status.isEmpty()) {
-                    query += "AND ([order_status] = N'" + status + "')";
+                    switch (status) {
+                        case "wait":
+                            query += "AND ([order_status] = N'Chờ xử lý')";
+                            break;
+                        case "inProgress":
+                            query += "AND ([order_status] = N'Đang xử lý')";
+                            break;
+                        case "delivering":
+                            query += "AND ([order_status] = N'Đang giao hàng')";
+                            break;
+                        case "delivered":
+                            query += "AND ([order_status] = N'Đã giao hàng')";
+                            break;
+                        case "rated":
+                            query += "AND ([order_status] = N'Đã đánh giá')";
+                            break;
+                        case "cancel":
+                            query += "AND ([order_status] = N'Đã hủy')";
+                            break;
+                    }
                 }
                 if (search != null && !search.isEmpty()) {
                     query += "AND ([order_id] LIKE '%" + search + "%' OR [customer] LIKE '%" + search + "%')";
@@ -626,7 +649,6 @@ public class OrderDAO {
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
         } finally {
             if (stm != null) {
                 stm.close();
@@ -804,13 +826,55 @@ public class OrderDAO {
         return statuses;
     }
 
-    public boolean updateOrderStatus(String order_id, String status) throws SQLException {
+    public boolean updateOrderStatus(String order_id, String status) throws SQLException, ParseException {
         Connection con = null;
         PreparedStatement stm = null;
         boolean isUpdated = false;
+        OrderItemDAO itemDao = new OrderItemDAO();
+        BirdDAO birdDao = new BirdDAO();
+        AccessoryDAO accessoryDao = new AccessoryDAO();
+        BirdNestDAO nestDao = new BirdNestDAO();
+        BirdPairDAO pairDao = new BirdPairDAO();
         try {
             con = DBUtils.getConnection();
             if (con != null) {
+                switch(status) {
+                    case "wait":
+                        status = "Chờ xử lý";
+                        break;
+                    case "inProgress":
+                        status = "Đang xử lý";
+                        break;
+                    case "delivering":
+                        status = "Đang giao hàng";
+                        break;
+                    case "delivered":
+                        status = "Đã giao hàng";
+                        break;
+                    case "rated":
+                        status = "Đã đánh giá";
+                        break;
+                    case "cancel":
+                        status = "Đã hủy";
+                        ArrayList<OrderItemDTO> orderDetails = itemDao.getItemByOrderId(order_id);
+                        for (OrderItemDTO orderDetail : orderDetails) {
+                            if(orderDetail.getBird() != null ) {
+                                birdDao.updateBirdStatus("Còn hàng", orderDetail.getBird().getBird_id());
+                            }
+                            if(orderDetail.getAccessory() != null) {
+                                AccessoryDTO accessory = accessoryDao.getAccessoryDetailsByID(orderDetail.getAccessory().getAccessory_id());
+                                int quantity = accessory.getStock_quantity();
+                                String stockQuantity = String.valueOf(orderDetail.getAccessory().getStock_quantity()+quantity);
+                                accessoryDao.updateAccessoryQuantity(orderDetail.getAccessory().getAccessory_id(), stockQuantity);
+                            }
+                            if(orderDetail.getBirdNest() != null) {
+                                BirdNest nest = nestDao.getBirdsNestById(orderDetail.getBirdNest().getNest_id());
+                                int baby_quantity = nest.getBaby_quantity() + orderDetail.getBirdNest().getBaby_quantity();
+                                nestDao.updateBirdNestBaby(baby_quantity, orderDetail.getBirdNest().getNest_id());
+                            }
+                        }
+                        break;
+                }
                 String query = "UPDATE [dbo].[Order] SET [order_status] = ? WHERE [order_id] = ?";
                 stm = con.prepareStatement(query);
                 stm.setString(1, status);

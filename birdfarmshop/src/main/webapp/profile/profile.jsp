@@ -160,6 +160,14 @@
         <!-- Header End -->
         <main>
             <div class="container-sm container-custome">
+                <c:if test="${LOGIN_USER.role ne 'customer' && USER.role ne 'admin' && USER.role ne 'manager' && USER.role ne 'staff'}">
+                <div style="margin-bottom: 10px;" class="col-lg-12">
+                    <a style="background-color: #cbcbcb; padding: 5px; border-radius: 5px;" id="back" href="MainController?action=NavToShopOrders">
+                        <i style="color: white; font-size: 1rem; width: 30px;" class="fa fa-arrow-left"></i>
+                        <span style="color: black;">Quay lại</span>
+                    </a>
+                </div>
+                </c:if>
                 <div class="row gutters">
                     <%@include file="../layout/sidebar-profile.jsp" %>
                     <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
@@ -227,6 +235,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <c:if test="${sessionScope.LOGIN_USER.username eq requestScope.USER.username}">
                                     <div class="row gutters">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                             <div class="text-right">
@@ -235,6 +244,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    </c:if>
                                 </form>
                             </div>
                         </div>

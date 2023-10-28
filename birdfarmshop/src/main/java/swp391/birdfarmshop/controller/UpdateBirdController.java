@@ -16,10 +16,10 @@ import jakarta.servlet.http.Part;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -59,8 +59,8 @@ public class UpdateBirdController extends HttpServlet {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
             if (user != null && !user.getRole().equals("customer")) {
+                url = SUCCESS;
                 String bird_id = request.getParameter("bird_id");
-                System.out.println(bird_id);
                 BirdDAO birdDao = new BirdDAO();
                 List<BirdDTO> birds = birdDao.getAllBirds();
                 BirdDTO birdDetails = birdDao.getBirdDetailsById(bird_id);
@@ -83,16 +83,16 @@ public class UpdateBirdController extends HttpServlet {
                 String btAction = request.getParameter("btAction");
                 if (btAction != null) {
                     if (btAction.equals("Update")) {
+                        String birdDate = request.getParameter("txtBirdDate");
+                        String oldBirdDate = request.getParameter("oldBirdDate");
+                        Date birthday = dateFormat.parse(birdDate);
+                        Date today = new Date();
+                        if (birthday.after(today)) {
+                            session.setAttribute("ERROR", "Ngày sinh không hợp lệ");
+                            return;
+                        }
                         String txtBirdName = request.getParameter("txtBirdName");
                         String txtBirdColor = request.getParameter("txtBirdColor");
-                        String txtBirdDate = request.getParameter("txtBirdDate");
-//                        java.util.Date date = dateFormat.parse(txtBirdDate);
-//                        LocalDate localBirdDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//                        LocalDate currentDate = LocalDate.now();
-//                        if (!localBirdDate.isBefore(currentDate) || !localBirdDate.isEqual(currentDate)) {
-//                            session.setAttribute("ERROR", "Ngày sinh không hợp lệ");
-//                            request.getRequestDispatcher(SUCCESS).forward(request, response);
-//                        }
                         String txtBirdGrownAge = request.getParameter("txtBirdGrownAge");
                         String txtBirdGender = request.getParameter("txtBirdGender");
                         String txtBirdBreed = request.getParameter("txtBirdBreed");
@@ -105,43 +105,33 @@ public class UpdateBirdController extends HttpServlet {
                         Part image_1 = request.getPart("txtImage_1");
                         Part image_2 = request.getPart("txtImage_2");
                         Part image_3 = request.getPart("txtImage_3");
-                        if (image_1 != null && images.size() == 1) {
-                            addNewImage(image_3, bird_id, images.get(0).getImage_id());
-                        } else {
-                            return;
+                        if (image_1 != null && image_1.getSize() > 0 && images.size() >= 1) {
+                            updateImage(image_3, bird_id, images.get(0).getImage_id());
                         }
-                        if (image_2 != null && images.size() == 2) {
-                            addNewImage(image_2, bird_id, images.get(1).getImage_id());
-                        } else {
-                            return;
+                        if (image_2 != null && image_2.getSize() > 0 && images.size() >= 2) {
+                            updateImage(image_2, bird_id, images.get(1).getImage_id());
+                        } else if(image_2 != null && image_2.getSize() > 0 && images.size() == 1) {
+                            addNewImage(image_2, bird_id);
                         }
-                        if (image_3 != null && images.size() == 3) {
-                            addNewImage(image_3, bird_id, images.get(2).getImage_id());
-                        } else if (image_3 != null && images.size() == 2) {
-                            addNewImage(image_3, bird_id, images.get(1).getImage_id());
-                        } else {
-                            return;
+                        if (image_3 != null && image_3.getSize() > 0 && images.size() == 3) {
+                            updateImage(image_3, bird_id, images.get(2).getImage_id());
+                        } else if (image_3 != null && image_3.getSize() > 0 && images.size() == 2) {
+                            addNewImage(image_3, bird_id);
                         }
-                        boolean check = birdDao.updateBird(bird_id, txtBirdName, txtBirdColor, txtBirdDate, 
+                        boolean check = birdDao.updateBird(bird_id, txtBirdName, txtBirdColor, birdDate, 
                                     txtBirdGrownAge, txtBirdGender, txtBirdBreed, txtBirdAchievement, 
                                     txtBirdReproduction_history, txtBirdPrice, txtBirdDescription, 
                                     txtBirdDiscount, txtBirdStatus);
-                        System.out.println(check);
                         if (check) {
                             session.setAttribute("SUCCESS", "Cập nhật thành công");
                             url = DETAIL + bird_id;
                         } else {
                             session.setAttribute("ERROR", "Cập nhật thất bại");
-                            url = SUCCESS;
                         }
-                    } else {
-                        url = SUCCESS;
                     }
-                } else {
-                    url = SUCCESS;
                 }
             } else {
-                url = HOME;
+                response.sendRedirect(HOME);
             }
         } catch (SQLException | ParseException e) {
         } finally {
@@ -149,7 +139,7 @@ public class UpdateBirdController extends HttpServlet {
         }
     }
 
-    public void addNewImage(Part part, String bird_id, int image_id) throws SQLException {
+    public void updateImage(Part part, String bird_id, int image_id) throws SQLException {
         ImageDAO imgDao = new ImageDAO();
         if (part.getSize() < 1048576) {
             String file = ImageUtils.getFileName(part);
@@ -157,6 +147,17 @@ public class UpdateBirdController extends HttpServlet {
             String nameImage = currentTime.getNano() + file;
             String img_url = Constants.C3_HOST + nameImage;
             imgDao.updateImageBird(img_url, bird_id, image_id);
+        }
+    }
+    
+    public void addNewImage(Part part, String bird_id) throws SQLException {
+        ImageDAO imgDao = new ImageDAO();
+        if (part.getSize() < 1048576) {
+            String file = ImageUtils.getFileName(part);
+            LocalTime currentTime = LocalTime.now();
+            String nameImage = currentTime.getNano() + file;
+            String img_url = Constants.C3_HOST + nameImage;
+            imgDao.addNewImageBird(img_url, "0", bird_id);
         }
     }
 

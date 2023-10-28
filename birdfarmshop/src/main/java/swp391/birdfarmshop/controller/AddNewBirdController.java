@@ -90,38 +90,23 @@ public class AddNewBirdController extends HttpServlet {
                     String txtBirdDescription = request.getParameter("txtBirdDescription");
                     String txtBirdDiscount = request.getParameter("txtBirdDiscount");
                     String txtBirdStatus = "Còn hàng";
-                    Collection<Part> parts = request.getParts();
-                    ArrayList<String> images = new ArrayList<>();
-                    int imageCount = 0;
-                    for (Part part : parts) {
-                        if (imageCount >= 2) {
-                            break;
-                        }
-                        if (part.getName().equals("filePicture")) {
-                            imageCount++;
-                            String file = ImageUtils.getFileName(part);
-                            currentTime = LocalTime.now();
-                            String nameImage = currentTime.getNano() + file;
-                            S3Utils.uploadFile(nameImage, part.getInputStream());
-                            String img_url = Constants.C3_HOST + nameImage;
-                            images.add(img_url);
-                        }
+                    Part image_1 = request.getPart("txtImage_1");
+                    Part image_2 = request.getPart("txtImage_2");
+                    Part image_3 = request.getPart("txtImage_3");
+                    if (image_1 != null && image_1.getSize() > 0) {
+                        addNewImage(image_1, "1", txtBirdId);
+                    }
+                    if(image_2 != null && image_2.getSize() > 0) {
+                        addNewImage(image_2, "0", txtBirdId);
+                    }
+                    if (image_3 != null && image_3.getSize() > 0) {
+                        addNewImage(image_3, "0", txtBirdId);
                     }
                     boolean check = false;
-                    if (images.size() == 1) {
-                        check = birdDao.addNewBird(txtBirdId, txtBirdName + " " + txtBirdId, txtBirdColor,
+                    check = birdDao.addNewBird(txtBirdId, txtBirdName + " " + txtBirdId, txtBirdColor,
                                 txtBirdDate, txtBirdGrownAge, txtBirdGender, txtBirdBreed,
                                 txtBirdAchievement, txtBirdReproduction_history, txtBirdPrice,
-                                txtBirdDescription, txtBirdDiscount, txtBirdStatus, images.get(0));
-                    }
-                    ImageDAO imgDao = new ImageDAO();
-
-                    if (images.size() == 2) {
-                        imgDao.addNewImageBird(images.get(1), "0", txtBirdId);
-                    }
-                    if (images.size() == 3) {
-                        imgDao.addNewImageBird(images.get(2), "0", txtBirdId);
-                    }
+                                txtBirdDescription, txtBirdDiscount, txtBirdStatus);
                     if (check) {
                         session.setAttribute("SUCCESS", "Tạo mới thành công");
                     } else {
@@ -144,6 +129,17 @@ public class AddNewBirdController extends HttpServlet {
         }
     }
 
+    public void addNewImage(Part part, String isThumbnail, String bird_id) throws SQLException {
+        ImageDAO imgDao = new ImageDAO();
+        if (part.getSize() < 1048576) {
+            String file = ImageUtils.getFileName(part);
+            LocalTime currentTime = LocalTime.now();
+            String nameImage = currentTime.getNano() + file;
+            String img_url = Constants.C3_HOST + nameImage;
+            imgDao.addNewImageBird(img_url, isThumbnail, bird_id);
+        }
+    }
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

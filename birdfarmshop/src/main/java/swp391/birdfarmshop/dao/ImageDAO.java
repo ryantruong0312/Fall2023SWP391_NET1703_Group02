@@ -257,11 +257,7 @@ public class ImageDAO {
                         + "           ([image_url],[is_thumbnail],[bird_id],[nest_id],[accessory_id])\n"
                         + "           VALUES (?,?,?,?,?)");
                 stm.setString(1, url);
-                if (is_thumbnail.equals("1")) {
-                    is_thumbnaill = true;
-                } else {
-                    is_thumbnaill = false;
-                }
+                is_thumbnaill = is_thumbnail.equals("1");
                 stm.setBoolean(2, is_thumbnaill);
                 stm.setString(3, bird_id);
                 stm.setString(4, null);

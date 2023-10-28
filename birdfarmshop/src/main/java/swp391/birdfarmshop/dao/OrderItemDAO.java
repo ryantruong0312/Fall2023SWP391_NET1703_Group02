@@ -29,7 +29,7 @@ public class OrderItemDAO {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        OrderItemDTO orderItem = null;
+        OrderItemDTO orderItem;
         BirdDAO birdDao = new BirdDAO();
         BirdNestDAO bnDao = new BirdNestDAO();
         AccessoryDAO accessoryDao = new AccessoryDAO();
@@ -37,10 +37,10 @@ public class OrderItemDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement("SELECT Item.[order_item_id],Item.[order_id]\n"
-                        + "                            ,Item.[bird_id],Item.[nest_id],Item.[accessory_id],Item.[pair_id],Item.[unit_price],Item.[order_quantity]\n"
-                        + "                            FROM [dbo].[OrderItem] AS Item\n"
-                        + "                            WHERE Item.[order_id] = ?");
+                stm = con.prepareStatement("SELECT [order_item_id],[bird_id],[nest_id],"
+                        + "                 [accessory_id],[pair_id],[unit_price],[order_quantity]\n"
+                        + "                 FROM [dbo].[OrderItem]\n"
+                        + "                 WHERE [order_id] = ?");
                 stm.setString(1, order_id);
                 rs = stm.executeQuery();
                 while (rs.next()) {
@@ -50,12 +50,12 @@ public class OrderItemDAO {
                     String accessory_id = rs.getString("accessory_id");
                     String pair_id = rs.getString("pair_id");
                     Bird bird = birdDao.getBirdById(bird_id);
-                    BirdNest birdNest = bnDao.getBirdNestById(nest_id);
+                    BirdNest birdNest = bnDao.getBirdsNestById(nest_id);
                     Accessory accessory = accessoryDao.getAccessoryByID(accessory_id);
                     BirdPairDTO birdPair = bpDao.getBirdPairByOrderId(order_id);
                     int unit_price = rs.getInt("unit_price");
                     int order_quantity = rs.getInt("order_quantity");
-                    orderItem = new OrderItemDTO(order_item_id, order_id, null, bird, accessory, birdNest, birdPair, unit_price, order_quantity);
+                    orderItem = new OrderItemDTO(order_item_id, order_id, null, bird, accessory, birdNest, null, unit_price, order_quantity);
                     orderItemList.add(orderItem);
                 }
             }
