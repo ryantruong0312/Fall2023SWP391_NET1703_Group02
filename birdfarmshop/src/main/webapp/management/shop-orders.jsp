@@ -179,7 +179,7 @@
                         <form style="float: right;" action="MainController" method="GET">
                             <h3 style="color: #006699;">Theo thời gian</h3>
                             <c:if test="${requestScope.date != null}">
-                            <input type="hidden" name="date" value="${requestScope.date}"/>
+                                <input type="hidden" name="date" value="${requestScope.date}"/>
                             </c:if>
                             <ul>
                                 <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=today"><span>Hôm nay</span></a></li>
@@ -187,15 +187,15 @@
                                 <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisWeek"><span>Tuần này</span></a></li>
                                 <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisMonth"><span>Tháng này</span></a></li>
                                 <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisYear"><span>Năm nay</span></a></li>
-                                <label for="start-date">Từ ngày:</label>
-                                <input type="date" name="startDay" value="${requestScope.startDay}"/>
-                                <label for="end-date">Đến ngày:</label>
-                                <input type="date" name="endDay" value="${requestScope.endDay}"/>
+                                <label>Từ ngày:</label>
+                                <input id="startDay" type="date" name="startDay" value="${requestScope.startDay}"/>
+                                <label>Đến ngày:</label>
+                                <input id="endDay" type="date" name="endDay" value="${requestScope.endDay}"/>
                                 <button type="submit" name="action" value="NavToShopOrders"><span>Chọn</span></button>
                             </ul>
                             <h3 style="color: #006699;">Theo trạng thái</h3>
                             <c:if test="${requestScope.status != null}">
-                            <input type="hidden" name="status" value="${requestScope.status}"/>
+                                <input type="hidden" name="status" value="${requestScope.status}"/>
                             </c:if>
                             <ul>
                                 <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&status=wait"><span>Chờ xử lý</span></a></li>
@@ -209,95 +209,95 @@
                                 <a href="MainController?action=NavToShopOrders"><span style="color: #b9130f; margin-left: 10px;">BỎ LỌC</span></a>
                                 <br/>
                                 <h6 style="margin-left: 10px;">Lọc theo: <br/>
-                                <c:if test="${not empty requestScope.date}">
-                                    <a href="<%= fullURL.replace(dateReq, "") %>">
-                                        <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
-                                        <c:choose>
-                                            <c:when test="${requestScope.date eq 'today'}">
-                                                <span>Thời gian: Hôm nay</span>
-                                            </c:when>
-                                            <c:when test="${requestScope.date eq 'yesterday'}">
-                                                <span>Thời gian: Hôm qua</span>
-                                            </c:when>
-                                            <c:when test="${requestScope.date eq 'thisWeek'}">
-                                                <span>Thời gian: Tuần này</span>
-                                            </c:when>
-                                            <c:when test="${requestScope.date eq 'thisMonth'}">
-                                                <span>Thời gian: Tháng này</span>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span>Thời gian: Năm nay</span>
-                                            </c:otherwise>    
-                                        </c:choose>
-                                    </a>
-                                    <br/>
-                                </c:if>
-                                <c:set var="dateFormat" value="\\d{4}-\\d{2}-\\d{2}" />
-                                <c:if test="${not empty requestScope.startDay || not empty requestScope.endDay}">
-                                    <a href="<%= fullURL.replace(startDayReq, "").replace(endDayReq, "") %>">
-                                        <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
-                                        <span>Khoảng thời gian: Từ ${requestScope.startDay} đến ${requestScope.endDay}</span>
-                                    </a>
-                                    <br/>
-                                </c:if>
-                                <c:if test="${not empty requestScope.search}">
-                                    <a href="<%= fullURL.replace(searchReq, "") %>">
-                                        <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
-                                        <span>Tìm kiếm: ${requestScope.search}</span>
-                                    </a>
-                                    <br/>
-                                </c:if>
-                                <c:if test="${not empty requestScope.status}">
-                                    <a href="<%= fullURL.replace(statusReq, "") %>">
-                                        <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
-                                        <c:choose>
-                                            <c:when test="${requestScope.status eq 'wait'}">
-                                                <span>Trạng thái: Chờ xử lý</span>
-                                            </c:when>
-                                            <c:when test="${requestScope.status eq 'inProgress'}">
-                                                <span>Trạng thái: Đang xử lý</span>
-                                            </c:when>
-                                            <c:when test="${requestScope.status eq 'delivering'}">
-                                                <span>Trạng thái: Đang giao hàng</span>
-                                            </c:when>
-                                            <c:when test="${requestScope.status eq 'delivered'}">
-                                                <span>Trạng thái: Đã giao hàng</span>
-                                            </c:when>
-                                            <c:when test="${requestScope.status eq 'rated'}">
-                                                <span>Trạng thái: Đã đánh giá</span>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span>Trạng thái: Đã hủy</span>
-                                            </c:otherwise>    
-                                        </c:choose>
-                                    </a>
-                                    <br/>
-                                </c:if>
+                                    <c:if test="${not empty requestScope.date}">
+                                        <a href="<%= fullURL.replace(dateReq, "") %>">
+                                            <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
+                                            <c:choose>
+                                                <c:when test="${requestScope.date eq 'today'}">
+                                                    <span>Thời gian: Hôm nay</span>
+                                                </c:when>
+                                                <c:when test="${requestScope.date eq 'yesterday'}">
+                                                    <span>Thời gian: Hôm qua</span>
+                                                </c:when>
+                                                <c:when test="${requestScope.date eq 'thisWeek'}">
+                                                    <span>Thời gian: Tuần này</span>
+                                                </c:when>
+                                                <c:when test="${requestScope.date eq 'thisMonth'}">
+                                                    <span>Thời gian: Tháng này</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span>Thời gian: Năm nay</span>
+                                                </c:otherwise>    
+                                            </c:choose>
+                                        </a>
+                                        <br/>
+                                    </c:if>
+                                    <c:set var="dateFormat" value="\\d{4}-\\d{2}-\\d{2}" />
+                                    <c:if test="${not empty requestScope.startDay || not empty requestScope.endDay}">
+                                        <a href="<%= fullURL.replace(startDayReq, "").replace(endDayReq, "") %>">
+                                            <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
+                                            <span>Khoảng thời gian: Từ ${requestScope.startDay} đến ${requestScope.endDay}</span>
+                                        </a>
+                                        <br/>
+                                    </c:if>
+                                    <c:if test="${not empty requestScope.search}">
+                                        <a href="<%= fullURL.replace(searchReq, "") %>">
+                                            <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
+                                            <span>Tìm kiếm: ${requestScope.search}</span>
+                                        </a>
+                                        <br/>
+                                    </c:if>
+                                    <c:if test="${not empty requestScope.status}">
+                                        <a href="<%= fullURL.replace(statusReq, "") %>">
+                                            <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
+                                            <c:choose>
+                                                <c:when test="${requestScope.status eq 'wait'}">
+                                                    <span>Trạng thái: Chờ xử lý</span>
+                                                </c:when>
+                                                <c:when test="${requestScope.status eq 'inProgress'}">
+                                                    <span>Trạng thái: Đang xử lý</span>
+                                                </c:when>
+                                                <c:when test="${requestScope.status eq 'delivering'}">
+                                                    <span>Trạng thái: Đang giao hàng</span>
+                                                </c:when>
+                                                <c:when test="${requestScope.status eq 'delivered'}">
+                                                    <span>Trạng thái: Đã giao hàng</span>
+                                                </c:when>
+                                                <c:when test="${requestScope.status eq 'rated'}">
+                                                    <span>Trạng thái: Đã đánh giá</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span>Trạng thái: Đã hủy</span>
+                                                </c:otherwise>    
+                                            </c:choose>
+                                        </a>
+                                        <br/>
+                                    </c:if>
                                 </h6>
+                            </div>
+                            <div class="order-bar" style="background-color: #cccccc; margin: 10px 0;">
+                                <div style="padding-bottom: 15px;">
+                                    <img style="width: 15px; height: 15px; float: left; margin: 5px;" class="icon" src="assets/images/order.png" alt="Đơn hàng"/>
+                                    <span style="color: black; float: left;">Đơn hàng</span>
                                 </div>
-                                <div class="order-bar" style="background-color: #cccccc; margin: 10px 0;">
-                                    <div style="padding-bottom: 15px;">
-                                        <img style="width: 15px; height: 15px; float: left; margin: 5px;" class="icon" src="assets/images/order.png" alt="Đơn hàng"/>
-                                        <span style="color: black; float: left;">Đơn hàng</span>
-                                    </div>
-                                    <div style="" class="search-bar">
-                                        <img src="assets/images/search.png"/>
-                                        <input type="text" name="search" placeholder="Tìm kiếm" value="${requestScope.search}">
+                                <div style="" class="search-bar">
+                                    <img src="assets/images/search.png"/>
+                                    <input type="text" name="search" placeholder="Tìm kiếm" value="${requestScope.search}">
                                     <button type="submit" name="action" value="NavToShopOrders"><span>Tìm kiếm</span></button>
                                 </div>
-
-                                <ul style="display: none; padding: 5px 0; white-space: nowrap;" id="update">
-                                    <%--<c:forEach items="${requestScope.statuses}" var="status_choosing">
-                                        <li><input type="radio" name="status" value="${status_choosing}" id="${status_choosing}"><label for="${status_choosing}">${status_choosing}</label></li>
-                                    </c:forEach>--%>
-                                    <div id="choosing" style="display: none; white-space: nowrap;">
-                                    <li id="status1"><input type="radio" name="status" value="Giao hàng thành công" id="option1"><label for="option1">Giao hàng thành công</label></li>
-                                    <li id="status2"><input type="radio" name="status" value="Giao hàng thất bại" id="option2"><label for="option2">Giao hàng thất bại</label></li>
-                                    </div>
-                                    <button style="white-space: nowrap;" id="submit" type="submit" name="action" value="NavToUpdateOrder"><span>Xác nhận</span></button>
-                                    <a style="white-space: nowrap;" class="bordered-link" onclick="hide('update');"><span>Hủy bỏ</span></a>
-                                </ul>
-                                    
+                                <div id="popup" style="display: none; position: fixed; background-color: white; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;">
+                                    <ul style="padding: 5px 0; white-space: nowrap;" id="update">
+                                        <!--                                <ul style="display: none; padding: 5px 0; white-space: nowrap;" id="update">-->
+                                        <div id="choosing" style="display: none; white-space: nowrap;">
+                                            <li id="status1"><input type="radio" name="status" value="Giao hàng thành công" id="option1"><label for="option1">Giao hàng thành công</label></li>
+                                            <li id="status2"><input type="radio" name="status" value="Giao hàng thất bại" id="option2"><label for="option2">Giao hàng thất bại</label></li>
+                                        </div>
+                                        <div class="flex">
+                                            <button class="flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" id="submit" type="submit" name="action" value="NavToUpdateOrder"><span>Xác nhận</span></button>
+                                            <a class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" onclick="hide('popup');"><span>Hủy bỏ</span></a>
+                                        </div>
+                                    </ul>
+                                </div>   
                                 <div class="scrollable-container">
                                     <table id="order-list" class="scrollable-list">
                                         <thead>
@@ -319,31 +319,32 @@
                                         </thead>
                                         <tbody>
                                             <c:if test="${not empty orderList}">
-                                            <c:forEach items="${orderList}" var="order" varStatus="counter">
-                                                <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}" onclick="window.location.href = 'MainController?action=NavToOrderItems&order_id=${order.order_id}'">
-                                                    <td>${counter.count}</td>
-                                                    <td>${order.order_id}</td>
-                                                    <td><a href="MainController?action=NavToProfile&username=${order.customer}">${order.customer}</a></td>
-                                                    <td>${order.order_date}</td>
-                                                    <td>${order.order_status}</td>
-                                                    <td>
-                                                    <c:if test="${order.order_status ne 'Đã hủy' && order.order_status ne 'Đã giao hàng' && order.order_status ne 'Đã đánh giá'}">
-                                                    <a onclick="show('update', '${order.order_id}', '${order.order_status}'); event.stopPropagation();" style="color: #007BFF;">Cập nhật</a>
-                                                    </c:if>
-                                                    </td>
-                                                    <td>
-                                                        <c:if test="${order.order_status eq 'Chờ xử lý'}">
-                                                        <a href="MainController?action=NavToUpdateOrder&order_id=${order.order_id}&status=cancel">Hủy đơn</a>
-                                                        </c:if>
-                                                    </td>
-                                                    <td>${order.name_receiver}</td>
-                                                    <td>${order.phone_receiver}</td>
-                                                    <td>${order.address_receiver}</td>
-                                                    <td>${order.payment_status}</td>
-                                                    <td>${order.total_price}</td>
-                                                    <td>${order.point}</td>
-                                                </tr>
-                                            </c:forEach>
+                                                <c:forEach items="${orderList}" var="order" varStatus="counter">
+                                                    <tr class="${counter.count % 2 == 0 ? 'even' : 'odd'}" onclick="window.location.href = 'MainController?action=NavToOrderItems&order_id=${order.order_id}'">
+                                                        <td>${counter.count}</td>
+                                                        <td>${order.order_id}</td>
+                                                        <td><a href="MainController?action=NavToProfile&username=${order.customer}">${order.customer}</a></td>
+                                                        <td>${order.order_date}</td>
+                                                        <td>${order.order_status}</td>
+                                                        <td>
+                                                            <c:if test="${order.order_status ne 'Đã hủy' && order.order_status ne 'Đã giao hàng' && order.order_status ne 'Đã đánh giá'}">
+                                                                <%--<a onclick="show('update', '${order.order_id}', '${order.order_status}'); event.stopPropagation();" style="color: #007BFF;">Cập nhật</a>--%>
+                                                                <a onclick="show('popup', '${order.order_id}', '${order.order_status}'); event.stopPropagation();" style="color: #007BFF;">Cập nhật</a>
+                                                            </c:if>
+                                                        </td>
+                                                        <td>
+                                                            <c:if test="${order.order_status eq 'Chờ xử lý'}">
+                                                                <a href="MainController?action=NavToUpdateOrder&order_id=${order.order_id}&status=cancel">Hủy đơn</a>
+                                                            </c:if>
+                                                        </td>
+                                                        <td>${order.name_receiver}</td>
+                                                        <td>${order.phone_receiver}</td>
+                                                        <td>${order.address_receiver}</td>
+                                                        <td>${order.payment_status}</td>
+                                                        <td>${order.total_price}</td>
+                                                        <td>${order.point}</td>
+                                                    </tr>
+                                                </c:forEach>
                                             </c:if>
                                             <c:if test="${empty orderList}">
                                                 <tr>
@@ -422,38 +423,61 @@
         <script src="assets/js/custom.js"></script>
         <!-- End Footer -->
         <script>
-                                                            function show(id, orderId, orderStatus) {
-                                                                var list = document.getElementById(id);
-                                                                list.style.display = "block";
-                                                                
-                                                                if(orderStatus === 'Chờ xử lý') {
-                                                                    const hiddenStatus1 = document.createElement('input');
-                                                                    hiddenStatus1.type = 'hidden';
-                                                                    hiddenStatus1.name = 'status';
-                                                                    hiddenStatus1.value = 'Đang xử lý';
-                                                                    list.appendChild(hiddenStatus1);
-                                                                }
-                                                                if(orderStatus === 'Đang xử lý') {
-                                                                    const hiddenStatus2 = document.createElement('input');
-                                                                    hiddenStatus2.type = 'hidden';
-                                                                    hiddenStatus2.name = 'status';
-                                                                    hiddenStatus2.value = 'Đang giao hàng';
-                                                                    list.appendChild(hiddenStatus2);
-                                                                }
-                                                                if(orderStatus === 'Đang giao hàng') {
-                                                                    var liStatuses = document.getElementById('choosing');
-                                                                    liStatuses.style.display = "block";
-                                                                }
-                                                                const inputHidden = document.createElement('input');
-                                                                inputHidden.type = 'hidden';
-                                                                inputHidden.name = 'order_id';
-                                                                inputHidden.value = orderId;
-                                                                list.appendChild(inputHidden);
+                                                        function show(id, orderId, orderStatus) {
+                                                            var list = document.getElementById(id);
+                                                            list.style.display = "block";
+
+                                                            if (orderStatus === 'Chờ xử lý') {
+                                                                const hiddenStatus1 = document.createElement('input');
+                                                                hiddenStatus1.type = 'hidden';
+                                                                hiddenStatus1.name = 'status';
+                                                                hiddenStatus1.value = 'Đang xử lý';
+                                                                list.appendChild(hiddenStatus1);
                                                             }
-                                                            function hide(id) {
-                                                                var list = document.getElementById(id);
-                                                                list.style.display = "none";
+                                                            if (orderStatus === 'Đang xử lý') {
+                                                                const hiddenStatus2 = document.createElement('input');
+                                                                hiddenStatus2.type = 'hidden';
+                                                                hiddenStatus2.name = 'status';
+                                                                hiddenStatus2.value = 'Đang giao hàng';
+                                                                list.appendChild(hiddenStatus2);
                                                             }
+                                                            if (orderStatus === 'Đang giao hàng') {
+                                                                var liStatuses = document.getElementById('choosing');
+                                                                liStatuses.style.display = "block";
+                                                            }
+                                                            const inputHidden = document.createElement('input');
+                                                            inputHidden.type = 'hidden';
+                                                            inputHidden.name = 'order_id';
+                                                            inputHidden.value = orderId;
+                                                            list.appendChild(inputHidden);
+                                                        }
+                                                        function hide(id) {
+                                                            var list = document.getElementById(id);
+                                                            list.style.display = "none";
+                                                        }
+                                                        var sdateInput = document.getElementById("startDay");
+                                                        var edateInput = document.getElementById("endDay");
+                                                        var today = new Date();
+                                                        sdateInput.addEventListener("change", function () {
+                                                            var selectedsDate = new Date(sdateInput.value);
+                                                            if (selectedsDate > today) {
+                                                                alert("Ngày được chọn không thể là một ngày trong tương lai. Vui lòng chọn lại.");
+                                                                sdateInput.value = "";
+                                                            }
+                                                        });
+                                                        edateInput.addEventListener("change", function () {
+                                                            var selectedsDate = new Date(sdateInput.value);
+                                                            var selectedeDate = new Date(edateInput.value);
+                                                            if (selectedeDate > today) {
+                                                                alert("Ngày được chọn không thể là một ngày trong tương lai. Vui lòng chọn lại.");
+                                                                edateInput.value = "";
+                                                            }
+                                                            if (selectedsDate > selectedeDate) {
+                                                                alert("Ngày kết thúc phải sau ngày bắt đầu. Vui lòng chọn lại");
+                                                                sdateInput.value = "";
+                                                                edateInput.value = "";
+                                                            }
+                                                        });
         </script>
     </body>
 </html>

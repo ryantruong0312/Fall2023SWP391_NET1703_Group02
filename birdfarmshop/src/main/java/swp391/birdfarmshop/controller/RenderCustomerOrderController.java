@@ -11,14 +11,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import swp391.birdfarmshop.dao.OrderDAO;
 import swp391.birdfarmshop.dao.OrderItemDAO;
 import swp391.birdfarmshop.dto.OrderItemDTO;
 import swp391.birdfarmshop.model.Order;
-import swp391.birdfarmshop.model.OrderItem;
 import swp391.birdfarmshop.model.User;
 
 /**
@@ -56,7 +55,7 @@ public class RenderCustomerOrderController extends HttpServlet {
             } else {
                 response.sendRedirect(HOME);
             }
-        } catch (Exception e) {
+        } catch (ServletException | IOException | SQLException e) {
             log("Error at RenderShopOrdersController: " + e.toString());
         } finally {
             

@@ -103,6 +103,12 @@
             font-size: 16px;
             float: right;
         }
+        .form-add img {
+                float: right;
+                width: 100px;
+                height: 75px;
+                border: 1px solid;
+            }
     </style>
 
     <body>
@@ -154,7 +160,7 @@
                             </div>
                             <div class="form-add mb-3">
                                 <label>Ngày Sinh</label>
-                                <input style="float: right; width: 50%;" type="date" name="txtBirdDate" value="${txtBirdDate}" required/>
+                                <input id="birthday" style="float: right; width: 50%;" type="date" name="txtBirdDate" value="${txtBirdDate}" required/>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Giới tính</label>
@@ -189,13 +195,13 @@
                             <div class="form-add mb-3 column-container">
                                 <label>Giá bán</label>
                                 <div style="width: 100%; position: relative;">
-                                    <input style="width: 80%;" type="number" min="0" name="txtBirdPrice" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${txtBirdPrice}" required>
+                                    <input style="width: 80%;" type="number" min="0" name="txtBirdPrice" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdPrice}" required>
                                     <span style="position: absolute; right: 37px; top: 50%; transform: translateY(-50%);">₫</span>
                                 </div>
                                 <div style="margin-top: 15px;">
                                     <label>Tuổi trưởng thành</label>
                                     <div style="width: 100%; position: relative;">
-                                        <input style="width: 80%;" type="number" name="txtBirdGrownAge" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${txtBirdGrownAge}" required/>
+                                        <input style="width: 80%;" type="number" min="0" name="txtBirdGrownAge" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdGrownAge}" required/>
                                         <span style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%);">tháng</span>
                                     </div>
                                 </div>
@@ -204,13 +210,13 @@
                             <div class="form-add mb-3 column-container">
                                 <label>Giảm giá</label>
                                 <div style="width: 100%; position: relative;">
-                                    <input style="width: 80%;" type="number" min="0" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" title="Vui lòng chỉ nhập chữ số" value="${txtBirdDiscount}" />
+                                    <input style="width: 80%;" type="number" min="0" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdDiscount}" />
                                     <span style="position: absolute; right: 36px; top: 50%; transform: translateY(-50%);">%</span>
                                 </div>
                                 <div style="margin-top: 15px;">
                                     <label>Lịch sử sinh sản</label>
                                     <div style="width: 100%; position: relative;">
-                                        <input style="width: 80%;" type="number" min="0" name="txtBirdReproduction_history" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${txtBirdReproduction_history}"/>
+                                        <input style="width: 80%;" type="number" min="0" name="txtBirdReproduction_history" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdReproduction_history}"/>
                                         <span style="position: absolute; right: 27px; top: 50%; transform: translateY(-50%);">lứa</span>
                                     </div>
                                 </div>
@@ -302,5 +308,14 @@
             function cancelRemove() {
                 $('#confirm-remove').css('display', 'none');
             }
+            var dateInput = document.getElementById("birthday");
+            var today = new Date();
+            dateInput.addEventListener("change", function () {
+                var selectedDate = new Date(dateInput.value);
+                if (selectedDate > today) {
+                  alert("Ngày được chọn không thể là một ngày trong tương lai. Vui lòng chọn lại.");
+                  dateInput.value = "";
+                }
+            });
     </script>
 </html>

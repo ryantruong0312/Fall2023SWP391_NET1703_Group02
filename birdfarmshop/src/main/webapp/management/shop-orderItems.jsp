@@ -176,7 +176,6 @@
                                             <h5 class="card-title">Phân loại: ${breed.breed_name}</h5>
                                                 </c:if>
                                             </c:forEach>
-                                            <p class="card-text">${item.bird.achievement}</p>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -194,8 +193,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="card-body">
-                                            <h3 class="card-title">Phụ kiện: ${item.accessory.accessory_name}</h3>
-                                            <p class="card-text">${item.accessory.description}</p>
+                                            <h3 class="card-title">Phụ kiện: ${item.accessory.accessory_name}</h3>\
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -214,7 +212,6 @@
                                     <div class="col-md-6">
                                         <div class="card-body">
                                             <h3 class="card-title">Tổ chim non: ${item.birdNest.nest_name}</h3>
-                                            <p class="card-text"><small class="text-muted">${item.birdNest.description}</small></p>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -232,8 +229,10 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="card-body">
+                                            <c:if test="${item.birdPair.male_bird != null && item.birdPair.female_bird != null}">
                                             <h3 class="card-title">Ghép cặp ${item.birdPair.male_bird.bird_name} với ${item.birdPair.female_bird.bird_name}</h3>
                                             <p class="card-text"><small class="text-muted">${item.birdPair.status}</small></p>
+                                            </c:if>
                                         </div>
                                     </div>
                                     <div class="col-md-3">

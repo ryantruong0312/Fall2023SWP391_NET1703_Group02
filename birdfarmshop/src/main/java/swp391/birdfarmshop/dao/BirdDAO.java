@@ -477,7 +477,6 @@ public class BirdDAO {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date utilDate = dateFormat.parse(birthday);
         Date sqlDate = new Date(utilDate.getTime());
-        ImageDAO imgDao = new ImageDAO();
         try {
             con = DBUtils.getConnection();
             if (con != null) {
@@ -502,11 +501,7 @@ public class BirdDAO {
                 } else {
                     stm.setString(8, null);
                 }
-                if (reproduction_history != null && !reproduction_history.isEmpty()) {
-                    stm.setInt(9, Integer.parseInt(reproduction_history));
-                } else {
-                    stm.setInt(9, 0);
-                }
+                stm.setInt(9, Integer.parseInt(reproduction_history));
                 stm.setInt(10, Integer.parseInt(price));
                 if(description != null && !description.isEmpty()) {
                     stm.setString(11, description);
