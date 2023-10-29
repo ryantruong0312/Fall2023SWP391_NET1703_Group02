@@ -31,13 +31,12 @@ public class RenderBirdCompareController extends HttpServlet {
             throws ServletException, IOException {
         String url = ERROR;
         try {
+            String[] birdIds = request.getParameterValues("birdIds");
             List<Bird> birdList = new ArrayList<>();
-            List<BirdBreed> breedList = new ArrayList<>();
             BirdDAO dao = new BirdDAO();
-            BirdBreedDAO breedDao = new BirdBreedDAO();
-            breedList = breedDao.getBirdBreeds();
-            birdList = dao.getBirds();
-            request.setAttribute("BIRD_BREEDS", breedList);
+            for (String birdId : birdIds) {
+                birdList.add(dao.getBirdById(birdId));
+            }
             request.setAttribute("BIRDS", birdList);
             url = SUCCESS;
 
