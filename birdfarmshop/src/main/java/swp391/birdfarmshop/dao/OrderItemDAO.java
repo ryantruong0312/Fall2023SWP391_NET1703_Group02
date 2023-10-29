@@ -400,11 +400,11 @@ public class OrderItemDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement("SELECT Item.[order_item_id],Item.[order_id],[Order].[order_status]\n"
-                        + "                            ,Item.[bird_id],Item.[nest_id],Item.[accessory_id],Item.[pair_id],Item.[unit_price],Item.[order_quantity]\n"
-                        + "                            FROM [dbo].[OrderItem] AS Item\n"
-                        + "                            LEFT JOIN [dbo].[Order] ON Item.[order_id] = [Order].[order_id]\n"
-                        + "                            WHERE Item.[order_id] = ?");
+                stm = con.prepareStatement( "SELECT Item.[order_item_id],Item.[order_id],[Order].[order_status]\n" +
+"                            ,Item.[bird_id],Item.[nest_id],Item.[accessory_id],Item.[pair_id],Item.[unit_price],Item.[order_quantity]\n" +
+"                            FROM [dbo].[OrderItem] AS Item\n" +
+"                            LEFT JOIN [dbo].[Order] ON Item.[order_id] = [Order].[order_id]\n" +
+"                            WHERE Item.[order_id] = ?");
                 stm.setString(1, order_id);
                 rs = stm.executeQuery();
                 while (rs.next()) {
