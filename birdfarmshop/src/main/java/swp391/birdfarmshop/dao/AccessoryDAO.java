@@ -362,9 +362,9 @@ public class AccessoryDAO {
                     status = "hết hàng";
                 }
                 stm.setString(8, status);
-                
+
                 rs = stm.executeUpdate();
-                
+
                 boolean checkImage_1 = im.addNewAccessoryImage(imageURL_1, true, txtAccessoryID);
                 boolean checkImage_2 = im.addNewAccessoryImage(imageURL_2, false, txtAccessoryID);
                 boolean checkImage_3 = im.addNewAccessoryImage(imageURL_3, false, txtAccessoryID);
@@ -480,19 +480,19 @@ public class AccessoryDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement("SELECT\n"
-                        + "  (SELECT COUNT(status) FROM Accessory WHERE status = 'còn hàng') AS Available,\n"
-                        + "  (SELECT COUNT(status) FROM Accessory WHERE status = N'hết hàng') AS OutOfStock;");
+                stm = con.prepareStatement("  SELECT\n"
+                        + "  (SELECT COUNT([stock_quantity]) FROM [BirdFarmShop].[dbo].[Accessory] WHERE [stock_quantity] > 0 ) AS Available,\n"
+                        + "  (SELECT COUNT([stock_quantity]) FROM [BirdFarmShop].[dbo].[Accessory] WHERE [stock_quantity] = 0 ) AS OutOfStock;");
             }
             rs = stm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 listStatus[0] = rs.getInt("Available");
                 listStatus[1] = rs.getInt("OutOfStock");
             }
-        } catch (ClassNotFoundException e ) {
+        } catch (ClassNotFoundException e) {
 
-        }finally {
-            if(rs != null){
+        } finally {
+            if (rs != null) {
                 rs.close();
             }
             if (stm != null) {
@@ -507,7 +507,7 @@ public class AccessoryDAO {
     
     public static void main(String[] args) throws SQLException {
         AccessoryDAO a = new AccessoryDAO();
-        int[] list  = a.getQuantityByStatus();
+        int list[] = a.getQuantityByStatus();
         for(int i = 0; i < list.length; i++){
             System.out.println(list[i]);
         }

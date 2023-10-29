@@ -56,8 +56,9 @@
                 height: 100px;
             }
             .accessory-image{
-                width: 100px;
-                height: 100px;
+                width: 115px;
+                height: 75px;
+                margin-top: 7px;
             }
         </style>
     </head>
@@ -133,7 +134,7 @@
                                     <div class="form-outline mt-2">
                                         <label>Giảm giá (%)</label>
                                         <div style="position: relative">
-                                            <input style="color: #0c5460; width: 80%;" type="number" name="txtDiscount" min="0" class="input form-control" value="${a.discount}"/>                            
+                                            <input style="color: #0c5460; width: 80%;" type="number" name="txtDiscount" min="0" class="input form-control" value="${a.discount}" required=""/>                            
                                             <span style="position: absolute; right: 28px; top: 50%; transform: translateY(-50%);">%</span>
                                         </div>
                                     </div>
@@ -150,17 +151,17 @@
                         <div class="col-lg-6">
                             <div class="form-outline mt-2">
                                 <label for="txtDescribe">Mô tả</label><br>
-                                <textarea class="form-control" id="txtDescribe" name="txtDescribe" rows="5" cols="50" style="width: 100%px; height: 142px; color: #0c5460;">${a.description}</textarea>
+                                <textarea class="form-control" id="txtDescribe" name="txtDescribe" rows="5" cols="50" style="width: 100%px; height: 140px; color: #0c5460;" required="">${a.description}</textarea>
                             </div>
 
                             <div class="form-outline mt-2">
-                                <div class="row"  style="margin-top: 15px;">
+                                <div class="row">
                                     <div class="col-lg-9">
                                         <label>Hình ảnh sản phẩm (Bắt buộc)</label>
-                                        <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage"  class="input form-control" value="${url_thumnail}"/>                                           
+                                        <input onchange="previewImage(event, 'productImagePreview')" style="color: #0c5460;" type="file" accept="image/*" name="txtImage"  class="input form-control" value="${url_thumnail}"/>                                           
                                     </div>
                                     <div class="col-lg-3">
-                                        <img style="float: right;" class="accessory-image" src="${url_thumnail}"/>
+                                        <img id="productImagePreview" class="accessory-image" src="${url_thumnail}"/>
                                     </div>
                                 </div>
                             </div>
@@ -168,14 +169,14 @@
                             <c:if test="${requestScope.list != null}">
                                 <c:forEach var="image" items="${list}" varStatus="loop">
                                     <div class="form-outline mt-2">
-                                        <div class="row" style="margin-top: 15px;">
+                                        <div class="row">
                                             <div class="col-lg-9">
                                                 <label>Hình ảnh sản phẩm</label>
-                                                <input style="color: #0c5460;" type="file" accept="image/*" name="txtImage_${loop.index + 1}" class="input form-control" value="${image.image_url}"/>
+                                                <input onchange="previewImage(event, 'productImagePreview${loop.index + 1}')" style="color: #0c5460;" type="file" accept="image/*" name="txtImage_${loop.index + 1}" class="input form-control" value="${image.image_url}"/>
                                                 <input type="hidden" name="Image_id_${loop.index + 1}" value="${image.image_id}">                                                
                                             </div>
                                             <div class="col-lg-3">
-                                                <img style="float: right;" class="accessory-image" src="${image.image_url}"/>
+                                                <img id="productImagePreview${loop.index + 1}" class="accessory-image" src="${image.image_url}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -209,65 +210,8 @@
             </div>
         </section>
 
-        <!-- ***** Footer Start ***** -->
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="first-item">
-                            <div class="logo">
-                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
-                            </div>
-                            <ul>
-                                <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
-                                <li><a href="#">0913-244-567</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Sản phẩm và dịch vụ</h4>
-                        <ul>
-                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                            <li><a href="${pageScope.toCompare}">So sánh</a></li>
-                            <li><a href="${pageScope.toPair}">Nhân giống</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Đường dẫn hữu ích</h4>
-                        <ul>
-                            <li><a href="${pageScope.toHome}">Trang chủ</a></li>
-                            <li><a href="#">Về chúng tôi</a></li>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Liên hệ</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Thông tin hỗ trợ</h4>
-                        <ul>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Câu hỏi thường gặp</a></li>
-                            <li><a href="#">Giao hàng</a></li>
-                            <li><a href="#">Theo dõi đơn hàng</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="under-footer">
-                            <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
-
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- ***** Footer Area Ends ***** -->
+        <%@include file="../layout/footer.jsp" %>
+        <%@include file="../layout/message.jsp" %>
 
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
@@ -300,6 +244,16 @@
                                 }
                                 function cancelRemove() {
                                     $('#confirm-remove').css('display', 'none');
+                                }
+
+                                function previewImage(event, imageId) {
+                                    var file = event.target.files[0];
+                                    var reader = new FileReader();
+                                    reader.onload = function () {
+                                        var image = document.getElementById(imageId);
+                                        image.src = reader.result;
+                                    };
+                                    reader.readAsDataURL(file);
                                 }
     </script>
 </html>

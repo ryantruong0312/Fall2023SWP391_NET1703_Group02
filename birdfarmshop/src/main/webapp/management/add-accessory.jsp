@@ -26,7 +26,7 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-        
+
         <style>
             .col-lg-12 .product-part {
                 margin: 0 0 10px 10px;
@@ -68,17 +68,18 @@
                 text-align: center;
                 display: flex;
                 justify-content: center;
-                align-items: center;.button-submit{
-                border-radius: 10px;
-                border: none;
-                color: white;
-                padding: 10px 20px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 16px;
-                float: right;
-            }
+                align-items: center;
+                .button-submit{
+                    border-radius: 10px;
+                    border: none;
+                    color: white;
+                    padding: 10px 20px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    float: right;
+                }
             }
             .button-updateAccessory{
                 margin-bottom: 5px;
@@ -111,9 +112,15 @@
                 border-radius: 5px;
                 padding: 10px;
             }
+            .accessory-image{
+                width: 115px;
+                height: 75px;
+                margin-top: 7px;
+                display: none;
+            }
         </style>   
     </head>
-     
+
     <body>
         <!-- Header Start -->
         <%@include file="../layout/header.jsp" %>
@@ -151,7 +158,7 @@
 
                             <div class="form-outline mt-2">
                                 <label>Loại phụ kiện</label>
-                                <select name="txtCategoryID" class="input form-control" style="color: #0c5460;">
+                                <select name="txtCategoryID" class="input form-control" style="color: #0c5460;" required="">
                                     <option value="" disabled selected>Chọn phụ kiện</option>
                                     <c:forEach items="${ac}" var="a">
                                         <c:if test="${a.category_id ne 'other'}">
@@ -177,7 +184,7 @@
                                     <div class="form-outline mt-2">
                                         <label>Giảm giá</label>
                                         <div style="position: relative;">
-                                            <input style="color: #0c5460; width: 80%;" type="number" name="txtDiscount" min="0" max="100" class="input form-control" placeholder="Nhập giảm giá phụ kiện"/>                            
+                                            <input style="color: #0c5460; width: 80%;" type="number" name="txtDiscount" min="0" max="100" class="input form-control" placeholder="Nhập giảm giá phụ kiện" required=""/>                            
                                             <span style="position: absolute; right: 28px; top: 50%; transform: translateY(-50%);">%</span>
                                         </div>
                                     </div>
@@ -192,25 +199,45 @@
                         <div class="col-lg-6">
                             <div class="form-outline mt-2">
                                 <label for="txtDescribe">Mô tả</label><br>
-                                <textarea class="form-control" id="txtDescribe" name="txtDescribe" rows="5" cols="50" style="width: 100%; height: 142px; color: #0c5460;;" placeholder="Nhập mô tả phụ kiện"></textarea>
+                                <textarea class="form-control" id="txtDescribe" name="txtDescribe" rows="5" cols="50" style="width: 100%; height: 142px; color: #0c5460;;" placeholder="Nhập mô tả phụ kiện" required=""></textarea>
                             </div>
 
                             <div class="form-outline mt-2">
-                                <label>Hình ảnh sản phẩm 1 (Bắt buộc)</label>
-                                <input style="color: #0c5460;" type="file" name="txtImage_1" class="input form-control" accept="image/*" required/>
+                                <div class="row">                           
+                                    <div class="col-lg-9">
+                                        <label>Hình ảnh sản phẩm 1 (Bắt buộc)</label>
+                                        <input onchange="previewImage(event, 'productImagePreview1')" style="color: #0c5460;" type="file" name="txtImage_1" class="input form-control" accept="image/*" required/>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <img id="productImagePreview1" class="accessory-image"/>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="form-outline mt-2">
-                                <label>Hình ảnh sản phẩm 2</label>
-                                <!--<input style="color: #0c5460;" type="file" name="txtImage_2" class="input form-control" value="" required=""/>-->
-                                <input style="color: #0c5460;" type="file" name="txtImage_2" class="input form-control" accept="image/*" required/>
+                                <div class="row">                           
+                                    <div class="col-lg-9">
+                                        <label>Hình ảnh sản phẩm 2</label>
+                                        <input onchange="previewImage(event, 'productImagePreview2')" style="color: #0c5460;" type="file" name="txtImage_2" class="input form-control" accept="image/*"/>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <img id="productImagePreview2" class="accessory-image"/>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="form-outline mt-2">
-                                <label>Hình ảnh sản phẩm 3</label>
-                                <!--<input style="color: #0c5460;;" type="file" name="txtImage_3" class="input form-control" value="" placeholder="URL" pattern="^(http|https|ftp)://[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}(:[0-9]+)?(/.*)?$"/>-->
-                                <input style="color: #0c5460;" type="file" name="txtImage_3" class="input form-control" accept="image/*" required/>
+                                <div class="row">
+                                    <div class="col-lg-9">
+                                        <label>Hình ảnh sản phẩm 3</label>
+                                        <input onchange="previewImage(event, 'productImagePreview3')" style="color: #0c5460;" type="file" name="txtImage_3" class="input form-control" accept="image/*"/>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <img id="productImagePreview3" class="accessory-image"/>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
                         <div class="col-lg-12" style="margin-top: 15px;">
                             <button style="float: right; margin-left: 10px;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit" formnovalidate>Hủy bỏ</button>
@@ -241,65 +268,8 @@
         </section>
         <!-- ***** Products Area Ends ***** -->
 
-        <!-- ***** Footer Start ***** -->
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="first-item">
-                            <div class="logo">
-                                <img src="assets/images/logo.png" alt="hexashop ecommerce templatemo">
-                            </div>
-                            <ul>
-                                <li><a href="#">284 Pasteur, P.8 Q.3, TP.HCM</a></li>
-                                <li><a href="#">thegioivetcanh@petshop.com</a></li>
-                                <li><a href="#">0913-244-567</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Sản phẩm và dịch vụ</h4>
-                        <ul>
-                            <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                            <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
-                            <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
-                            <li><a href="${pageScope.toCompare}">So sánh</a></li>
-                            <li><a href="${pageScope.toPair}">Nhân giống</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Đường dẫn hữu ích</h4>
-                        <ul>
-                            <li><a href="${pageScope.toHome}">Trang chủ</a></li>
-                            <li><a href="#">Về chúng tôi</a></li>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Liên hệ</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3">
-                        <h4>Thông tin hỗ trợ</h4>
-                        <ul>
-                            <li><a href="#">Hỗ trợ</a></li>
-                            <li><a href="#">Câu hỏi thường gặp</a></li>
-                            <li><a href="#">Giao hàng</a></li>
-                            <li><a href="#">Theo dõi đơn hàng</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="under-footer">
-                            <p>Copyright © 2023 V.E.T Co., Ltd. All Rights Reserved. 
-
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- ***** Footer Area Ends ***** -->
+        <%@include file="../layout/footer.jsp" %>
+        <%@include file="../layout/message.jsp" %>
 
         <!-- jQuery -->
         <script src="assets/js/jquery-2.1.0.min.js"></script>
@@ -325,62 +295,82 @@
     </body>
 
     <script>
-            $(document).ready(function () {
-                // Get a reference to the search input element
-                var searchInput = $("#searchInput");
-                // Add an event listener for input changes
-                searchInput.on("input", function () {
-                    var keyword = searchInput.val().toLowerCase();
-                    // Loop through each row in the table
-                    $("tbody tr").each(function () {
-                        var row = $(this);
-                        // Check if any cell in the row contains the keyword
-                        if (row.text().toLowerCase().includes(keyword)) {
-                            row.show(); // Show the row if keyword found
-                        } else {
-                            row.hide(); // Hide the row if keyword not found
-                        }
-                    });
-                });
-                // Show the modal when the "Cấp mới tài khoản" button is clicked
-                $("#createAccountBtn").click(function () {
-                    $("#createAccountModal").modal("show");
-                });
-                // Handle form submission
-                $("#submitAccountBtn").click(function () {
-                    // Get the form data
-                    const fullname = $("#fullname").val();
-                    const username = $("#username").val();
-                    // You can perform validation here if needed
-                    // Close the modal
-                    $("#createAccountModal").modal("hide");
-                    // Send the form data to the server via AJAX or perform any desired action
-                });
-            });
-            function submitForm() {
-                // Get the form element by its ID
-                var form = document.getElementById("createAccountForm");
-                // Define the controller URL
-                var controllerUrl = "/birdfarmshop/MainController";
-                // Set the form's action attribute to the controller URL
-                form.action = controllerUrl;
-                document.querySelector('input[name=txtAccessoryName]').addEventListener('input', function () {
-                    var input = this;
-                    if (input.value.length > 50) {
-                        input.setCustomValidity("Tên phụ kiện không được dài hơn 50 ký tự.");
-                    } else {
-                        input.setCustomValidity("");
-                    }
-                }
-            );}
-            function checkUser(event) {
-                $('#confirm-remove').css('display', 'block');
-                let idForm = event.form.id;
-                $('#btn-confirrm').attr('data-value', idForm);
-                return false;
-            }
-            function cancelRemove() {
-                $('#confirm-remove').css('display', 'none');
-            }
+                                $(document).ready(function () {
+                                    // Get a reference to the search input element
+                                    var searchInput = $("#searchInput");
+                                    // Add an event listener for input changes
+                                    searchInput.on("input", function () {
+                                        var keyword = searchInput.val().toLowerCase();
+                                        // Loop through each row in the table
+                                        $("tbody tr").each(function () {
+                                            var row = $(this);
+                                            // Check if any cell in the row contains the keyword
+                                            if (row.text().toLowerCase().includes(keyword)) {
+                                                row.show(); // Show the row if keyword found
+                                            } else {
+                                                row.hide(); // Hide the row if keyword not found
+                                            }
+                                        });
+                                    });
+                                    // Show the modal when the "Cấp mới tài khoản" button is clicked
+                                    $("#createAccountBtn").click(function () {
+                                        $("#createAccountModal").modal("show");
+                                    });
+                                    // Handle form submission
+                                    $("#submitAccountBtn").click(function () {
+                                        // Get the form data
+                                        const fullname = $("#fullname").val();
+                                        const username = $("#username").val();
+                                        // You can perform validation here if needed
+                                        // Close the modal
+                                        $("#createAccountModal").modal("hide");
+                                        // Send the form data to the server via AJAX or perform any desired action
+                                    });
+                                });
+                                function submitForm() {
+                                    // Get the form element by its ID
+                                    var form = document.getElementById("createAccountForm");
+                                    // Define the controller URL
+                                    var controllerUrl = "/birdfarmshop/MainController";
+                                    // Set the form's action attribute to the controller URL
+                                    form.action = controllerUrl;
+                                    document.querySelector('input[name=txtAccessoryName]').addEventListener('input', function () {
+                                        var input = this;
+                                        if (input.value.length > 50) {
+                                            input.setCustomValidity("Tên phụ kiện không được dài hơn 50 ký tự.");
+                                        } else {
+                                            input.setCustomValidity("");
+                                        }
+                                    }
+                                    );
+                                }
+                                function checkUser(event) {
+                                    $('#confirm-remove').css('display', 'block');
+                                    let idForm = event.form.id;
+                                    $('#btn-confirrm').attr('data-value', idForm);
+                                    return false;
+                                }
+                                function cancelRemove() {
+                                    $('#confirm-remove').css('display', 'none');
+                                }
+                                function previewImage(event, imageId) {
+                                    var file = event.target.files[0];
+                                    var reader = new FileReader();
+                                    var image = document.getElementById(imageId);
+
+                                    // Kiểm tra xem có tập tin hình ảnh được chọn hay không
+                                    if (file) {
+                                        reader.onload = function () {
+                                            // Hiển thị hình ảnh và đặt lại thuộc tính hiển thị
+                                            image.src = reader.result;
+                                            image.style.display = 'block'; // Hiển thị ảnh
+                                        };
+                                        reader.readAsDataURL(file);
+                                    } else {
+                                        // Nếu không có tập tin hình ảnh, ẩn khung hình ảnh
+                                        image.style.display = 'none';
+                                    }
+                                }
+
     </script>
 </html>
