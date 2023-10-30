@@ -42,7 +42,7 @@ public class OrderDAO {
     public String error = null;
 
     public int createNewOrder(String order_id, String username, String status, String name_receiver, String phone_receiver,
-            String address_receiver, String payment_status, CartDTO cart, CartDTO cartCheckout, int point) {
+            String address_receiver, String payment_status, CartDTO cart, CartDTO cartCheckout, int point, String payment_type) {
         int result = 0;
         Connection con = null;
         OrderItemDAO oid = new OrderItemDAO();
@@ -54,7 +54,7 @@ public class OrderDAO {
             if (con != null) {
                 con.setAutoCommit(false);
                 String insertOrder = "INSERT INTO [ORDER]\n"
-                        + "VALUES(?,?,?,?,?,?,?,?,?,?)";
+                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
                 pst = con.prepareStatement(insertOrder);
                 pst.setString(1, order_id);
                 pst.setString(2, username);
@@ -67,8 +67,9 @@ public class OrderDAO {
                 pst.setString(6, phone_receiver);
                 pst.setString(7, address_receiver);
                 pst.setString(8, payment_status);
-                pst.setInt(9, cart.getCartTotalPrice());
-                pst.setInt(10, point);
+                pst.setString(9, payment_type);
+                pst.setInt(10, cart.getCartTotalPrice());
+                pst.setInt(11, point);
                 result = pst.executeUpdate();
                 boolean checkBird = true;
                 boolean checkAccessory = true;
@@ -105,7 +106,7 @@ public class OrderDAO {
                             pst.setString(1, b.getBird_id());
                             result = pst.executeUpdate();
                             if (result == 0) {
-                                 checkBird = false;
+                                checkBird = false;
                                 break;
                             } else {
                                 String insertBird = "INSERT INTO [OrderItem]([order_id],[bird_id],\n"
@@ -118,7 +119,7 @@ public class OrderDAO {
                                 pst.setInt(4, 1);
                                 result = pst.executeUpdate();
                                 if (result == 0) {
-                                     checkBird = false;
+                                    checkBird = false;
                                     break;
                                 }
                             }
@@ -141,11 +142,11 @@ public class OrderDAO {
                             int numberAccessory = rs.getInt("stock_quantity");
                             if (numberAccessory == 0) {
                                 error = a.getAccessory_name() + " đã hết hàng";
-                                 checkAccessory = false;
+                                checkAccessory = false;
                                 break;
                             } else if (numberAccessory < oa.getOrder_quantity()) {
                                 error = a.getAccessory_name() + " không đủ số lượng trong kho";
-                                 checkAccessory = false;
+                                checkAccessory = false;
                                 break;
                             } else {
                                 int newStock = numberAccessory - oa.getOrder_quantity();
@@ -311,7 +312,7 @@ public class OrderDAO {
                                         pst.setString(1, order_id);
                                         long malePrice = (long) male.getPrice() * 20 / 100;
                                         long femalePrice = (long) female.getPrice() * 20 / 100;
-                                        pst.setInt(2,  Math.round((int)(malePrice + femalePrice) / 100000) * 100000);
+                                        pst.setInt(2, Math.round((int) (malePrice + femalePrice) / 100000) * 100000);
                                         pst.setString(3, male.getBird_id());
                                         pst.setString(4, female.getBird_id());
                                         pst.setString(5, "Chờ lấy chim");
@@ -325,7 +326,7 @@ public class OrderDAO {
                                             pst = con.prepareStatement(updateBirdMale);
                                             pst.setString(1, male.getBird_id());
                                             result = pst.executeUpdate();
-                                            if (result == 0) {                                               
+                                            if (result == 0) {
                                                 error = "Sản phẩm này không thể ghép cặp";
                                                 checkBirdPair = false;
                                                 break;
@@ -838,7 +839,7 @@ public class OrderDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                switch(status) {
+                switch (status) {
                     case "wait":
                         status = "Chờ xử lý";
                         break;
@@ -858,16 +859,16 @@ public class OrderDAO {
                         status = "Đã hủy";
                         ArrayList<OrderItemDTO> orderDetails = itemDao.getItemByOrderId(order_id);
                         for (OrderItemDTO orderDetail : orderDetails) {
-                            if(orderDetail.getBird() != null ) {
+                            if (orderDetail.getBird() != null) {
                                 birdDao.updateBirdStatus("Còn hàng", orderDetail.getBird().getBird_id());
                             }
-                            if(orderDetail.getAccessory() != null) {
+                            if (orderDetail.getAccessory() != null) {
                                 AccessoryDTO accessory = accessoryDao.getAccessoryDetailsByID(orderDetail.getAccessory().getAccessory_id());
                                 int quantity = accessory.getStock_quantity();
-                                String stockQuantity = String.valueOf(orderDetail.getAccessory().getStock_quantity()+quantity);
+                                String stockQuantity = String.valueOf(orderDetail.getAccessory().getStock_quantity() + quantity);
                                 accessoryDao.updateAccessoryQuantity(orderDetail.getAccessory().getAccessory_id(), stockQuantity);
                             }
-                            if(orderDetail.getBirdNest() != null) {
+                            if (orderDetail.getBirdNest() != null) {
                                 BirdNest nest = nestDao.getBirdsNestById(orderDetail.getBirdNest().getNest_id());
                                 int baby_quantity = nest.getBaby_quantity() + orderDetail.getBirdNest().getBaby_quantity();
                                 nestDao.updateBirdNestBaby(baby_quantity, orderDetail.getBirdNest().getNest_id());
@@ -949,7 +950,7 @@ public class OrderDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-               
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -978,6 +979,99 @@ public class OrderDAO {
         }
 
         return result;
+    }
+
+    public ArrayList<Object> getRevenue(LocalDate startDay) throws SQLException {
+        ArrayList<Object> r = new ArrayList<>();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String query = "SELECT SUM(total_price) AS [total_price], \n"
+                        + "       COUNT(order_id) AS[amount_order],\n"
+                        + "       COUNT(CASE WHEN order_status = N'Đã hủy' THEN 1 END) AS [cancel_order]\n"
+                        + "FROM [BirdFarmShop].[dbo].[Order]\n";
+                if (startDay != null) {
+                    query += "WHERE [order_date] >= '" + startDay + "'";
+                }
+                st = con.createStatement();
+                rs = st.executeQuery(query);
+                if (rs != null && rs.next()) {
+                    r.add(rs.getLong("total_price"));
+                    r.add(rs.getInt("amount_order"));
+                    r.add(rs.getInt("cancel_order"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (st != null) {
+                st.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return r;
+    }
+
+    public ArrayList<Integer> getProductSale(LocalDate startDay) throws SQLException {
+        ArrayList<Integer> p = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String query = "SELECT COUNT(order_item_id) AS totalProduct,\n"
+                        + "       COUNT( bird_id ) AS bird,\n"
+                        + "       COUNT( accessory_id ) AS accessory,\n"
+                        + "       (SELECT COUNT(oi.pair_id)\n"
+                        + "		FROM [BirdFarmShop].[dbo].[OrderItem] oi\n"
+                        + "		LEFT JOIN [BirdFarmShop].[dbo].BirdPair bp\n"
+                        + "		ON oi.pair_id = bp.pair_id\n"
+                        + "		RIGHT JOIN [BirdFarmShop].[dbo].[Order] o\n"
+                        + "		ON oi.order_id = o.order_id\n"
+                        + "		WHERE bp.status = N'Đã thanh toán' \n";
+                if (startDay != null) {
+                    query += "		AND o.order_date >= '" + startDay + "'\n";
+                }
+                query += "	 	)AS pair\n"
+                        + "FROM [BirdFarmShop].[dbo].[OrderItem] oi\n"
+                        + "RIGHT JOIN [BirdFarmShop].[dbo].[Order] o\n"
+                        + "ON oi.order_id = o.order_id\n";
+                if (startDay != null) {
+                    query += "WHERE o.order_date >= '" + startDay + "'";
+                }
+                stm = con.prepareStatement(query);
+                rs = stm.executeQuery();
+                if (rs != null && rs.next()) {
+                    p.add(rs.getInt("totalProduct"));
+                    p.add(rs.getInt("bird"));
+                    p.add(rs.getInt("accessory"));
+                    p.add(rs.getInt("pair"));
+                    p.add(0);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return p;
     }
 
 }

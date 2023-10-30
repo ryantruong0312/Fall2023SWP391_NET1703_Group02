@@ -34,11 +34,11 @@
                 color: #fff; /* Text color */
                 border-radius: 5px; /* Makes the box circular */
                 width: 200px; /* Set the width of the box */
-                height: 50px; /* Set the height of the box */
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                line-height: 50px; /* Set the height of the box */
+                text-align: center;
                 z-index: 3;
+                display: none;
+                cursor: pointer;
             }
 
             #compare-counter {
@@ -292,7 +292,6 @@
                 var counter = $("#compare-counter");
                 var countText = counter.text();
                 var count = parseInt(countText.match(/\d+/));
-
                 if (count > 1) {
                     // Create a form and submit it to the CompareBirdController
                     var form = $("<form>")
@@ -316,7 +315,7 @@
                 var counter = $("#compare-counter");
                 var countText = counter.text();
                 var count = parseInt(countText.match(/\d+/));
-
+                $('#counter-box').css('display', 'block');
                 // Check if the icon is active (toggled on)
                 var isActive = $(this).hasClass("active");
 
@@ -338,6 +337,13 @@
                         $(this).addClass("active");
                         // Add the bird ID to the selectedBirds array
                         selectedBirds.push(birdId);
+                    } else {
+                        toast({
+                            title: 'Lỗi',
+                            message: 'Bạn chỉ có thể só sánh 5 vẹt',
+                            type: 'error',
+                            duration: 3000
+                        });
                     }
                 }
 

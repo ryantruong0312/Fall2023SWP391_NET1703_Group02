@@ -130,6 +130,7 @@ CREATE TABLE [Order]
 	[phone_receiver] VARCHAR(15),
 	[address_receiver] NVARCHAR(MAX),
 	[payment_status] NVARCHAR(20),
+	[payment_type] NVARCHAR(20),
 	[total_price] INT,
 	[applied_point] SMALLINT,
 	CONSTRAINT PK_Order PRIMARY KEY ([order_id]),
@@ -271,7 +272,7 @@ VALUES
 	0, 15000000, 
 	N'Vẹt xích Ấn – xích Nepal có nguồn gốc từ vùng đông nam châu Á, bao gồm Nepal, Ấn Độ, Pakistan, và Sri Lanka. Chúng thường sống trong các khu rừng, cánh đồng và vùng đồng cỏ.
 	Vẹt xích Ấn có một cái mỏ lớn, màu đen và một đốm màu đỏ trên vai. Một đặc điểm nổi bật của chúng là vòng cổ màu đỏ tươi rực, tạo ra sự tương phản đẹp với bộ lông xanh sẫm. Chúng là những vẹt thông minh và thích thể hiện khả năng nói chuyện. Tuy nhiên, khả năng nói chuyện của từng cá thể có thể khác nhau.',
-	0, N'Đang ghép cặp'),
+	0, N'Đang sinh sản'),
 
 	('CP101', N'Vẹt xám CP101', N'Xám', '2022-10-01', 4, 0, 'african', N'Chưa có', 0, 
 	2500000, 
@@ -281,7 +282,7 @@ VALUES
     ('CP201', N'Vẹt Cape Parrot CP201', N'Xám, xanh', '2022-10-01', 4, 1, 'african', N'Chưa có', 0, 
 	3000000,
 	N'Vẹt Cape Parrot African có bộ lông màu xanh lá cây và đỏ với mỏ màu xám. Tính cách thường thân thiện, nhưng có thể ngại ngùng và thận trọng. Việc huấn luyện có thể khá khó khăn do chúng có tính cách độc lập và đôi khi khó nắm bắt.',
-	0, N'Đang ghép cặp'),
+	0, N'Đang sinh sản'),
 
     ('CP301', N'Vẹt Senegal CP301', N'Xanh lá, vàng', '2022-10-01', 6, 0, 'african', N'Chưa có', 2, 
 	8000000, 
@@ -714,16 +715,16 @@ VALUES
 	1, NULL, 'BN002', NULL)
 GO
 
-INSERT INTO [Order]([order_id],[customer],[order_date],[order_status],[address_receiver],[payment_status],[total_price],[applied_point])
-VALUES('230925O0001','customer','2023-09-25',N'Đã hủy',null,N'Đã thanh toán',3000000,3),
-	  ('230915O0002','giaphong','2023-09-15',N'Đang xử lý',null,N'Đã thanh toán',300000,1),
-	  ('230916O0003','nhathoang','2023-09-16',N'Đang giao hàng',null,N'Đã thanh toán',300000,1),
-	  ('230917O0004','huynhduc','2023-09-17',N'Đang giao hàng',null,N'Đã thanh toán',300000,1),
-	  ('230918O0005','khachhangvip','2023-09-18',N'Đã hủy',null,N'Đã thanh toán',300000,1),
-	  ('230919O0006','customer','2023-09-19',N'Đã giao hàng',null,N'Đã thanh toán',300000,1),
-	  ('230912O0007','customer','2023-09-20',N'Đã đánh giá',null,N'Đã thanh toán',300000,1),
-	  ('231027O0008','customer','2023-10-27',N'Chờ xử lý',null,N'Đã thanh toán',300000,1),
-	  ('231027O0009','customer','2023-10-27',N'Chờ xử lý',null,N'Đã thanh toán',300000,1);
+INSERT INTO [Order]([order_id],[customer],[order_date],[order_status],[address_receiver],[payment_status],[payment_type],[total_price],[applied_point])
+VALUES('230925O0001','customer','2023-09-25',N'Đã hủy',null,N'Đã thanh toán',N'Chuyển khoản',3000000,3),
+	  ('230915O0002','giaphong','2023-09-15',N'Đang xử lý',null,N'Đã thanh toán',N'Chuyển khoản',300000,1),
+	  ('230916O0003','nhathoang','2023-09-16',N'Đang giao hàng',null,N'Đã thanh toán',N'Tiền mặt',300000,1),
+	  ('230917O0004','huynhduc','2023-09-17',N'Đang giao hàng',null,N'Đã thanh toán',N'Tiền mặt',300000,1),
+	  ('230918O0005','khachhangvip','2023-09-18',N'Đã hủy',null,N'Đã thanh toán',N'Chuyển khoản',300000,1),
+	  ('230919O0006','customer','2023-09-19',N'Đã giao hàng',null,N'Đã thanh toán',N'Tiền mặt',300000,1),
+	  ('230912O0007','customer','2023-09-20',N'Đã đánh giá',null,N'Đã thanh toán',N'Chuyển khoản',300000,1),
+	  ('231027O0008','customer','2023-10-27',N'Chờ xử lý',null,N'Đã thanh toán',N'Chuyển khoản',300000,1),
+	  ('231027O0009','customer','2023-10-27',N'Chờ xử lý',null,N'Đã thanh toán',N'Chuyển khoản',300000,1);
 GO
 
 INSERT INTO [OrderItem]([order_id],[bird_id],[nest_id],[accessory_id],[unit_price],[order_quantity])

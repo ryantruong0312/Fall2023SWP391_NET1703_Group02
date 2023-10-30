@@ -3207,3 +3207,13 @@ register*/
     padding-left: 100px;
     padding-right: 100px;
 }
+#report .chart-pie {
+    position: relative;
+}
+#report .center-text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 35px;
+}

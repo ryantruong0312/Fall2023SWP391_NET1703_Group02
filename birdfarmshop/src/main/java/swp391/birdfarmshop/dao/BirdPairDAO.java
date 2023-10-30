@@ -277,4 +277,59 @@ public class BirdPairDAO {
         }
         return result;
     }
+    public ArrayList<Integer> getBirdPairByStatus(){
+        ArrayList<Integer> birdPair = new ArrayList<>();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        BirdCustomerDAO bsd = new BirdCustomerDAO();
+        BirdDAO bd = new BirdDAO();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String sql = "SELECT COUNT(pair_id) AS [total_birdPair],\n"
+                        + "	   COUNT(CASE WHEN [status]= N'Đã thanh toán' THEN 1 END) AS [payment],\n"
+                        + "	   COUNT(CASE WHEN [status]= N'Chờ lấy chim' THEN 1 END) AS [waiting_bird],\n"
+                        + "	   COUNT(CASE WHEN [status]= N'Đang ghép cặp' THEN 1 END) AS [pairing],\n"
+                        + "	   COUNT(CASE WHEN [status]= N'Đã sinh sản' THEN 1 END) AS [spawned],\n"
+                        + "	   COUNT(CASE WHEN [status]= N'Đã ấp nở' THEN 1 END) AS [hatched]\n"
+                        + "FROM [BirdFarmShop].[dbo].[BirdPair]";
+                st = con.createStatement();
+                rs = st.executeQuery(sql);
+                if (rs != null && rs.next()) {
+                   birdPair.add(rs.getInt("total_birdPair"));
+                   birdPair.add(rs.getInt("payment"));
+                   birdPair.add(rs.getInt("waiting_bird"));
+                   birdPair.add(rs.getInt("pairing"));
+                   birdPair.add(rs.getInt("spawned") );
+                   birdPair.add(rs.getInt("hatched")+rs.getInt("payment"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (st != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return birdPair;
+    }
 }

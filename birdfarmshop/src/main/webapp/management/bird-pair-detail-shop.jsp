@@ -374,9 +374,11 @@
                                                                             <p>Tổng tiền cần thanh toán</p>
                                                                             <p class="ml-3 text-danger"><fmt:formatNumber value="${birdPair.number_young_bird * birdPair.young_bird_price}" pattern="#,###"/> ₫</p>
                                                                         </div>
-                                                                        <div class="text-center border-bottom-0">
-                                                                            <button style="background-color: #007bff; color: white;" id="payment-youngBird" class="mt-3 py-2 px-3">Cập nhật theo dõi nhân giống</button>
-                                                                        </div>
+                                                                        <c:if test="${birdPair.status != 'Đã thanh toán'}" >
+                                                                            <div class="text-center border-bottom-0">
+                                                                                <button style="background-color: #007bff; color: white;" id="payment-youngBird" class="mt-3 py-2 px-3">Cập nhật theo dõi nhân giống</button>
+                                                                            </div>
+                                                                        </c:if>
                                                                     </div>        
                                                                 </c:otherwise>
                                                             </c:choose>

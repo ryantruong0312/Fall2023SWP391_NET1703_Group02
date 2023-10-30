@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import swp391.birdfarmshop.dto.AccountDTO;
@@ -455,5 +456,40 @@ public class UserDAO {
             }
         }
         return user;
+    }
+    public int numberCustomer(LocalDate startDay) throws SQLException{
+        int amount = 0;
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String sql = "SELECT COUNT(username) AS [amount]\n"
+                        + "  FROM [BirdFarmShop].[dbo].[User]\n"
+                        + " WHERE role = 'customer'\n"; 
+                if(startDay != null){
+                    sql += " AND register_date >= '"+startDay+"'";
+                }
+                st = con.createStatement();
+                rs = st.executeQuery(sql);
+                if (rs != null && rs.next()) {
+                    amount = rs.getInt("amount");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (st != null) {
+                st.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return amount;
     }
 }
