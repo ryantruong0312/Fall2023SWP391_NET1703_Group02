@@ -55,26 +55,6 @@ public class RenderShopOrdersController extends HttpServlet {
                 String search = request.getParameter("search");
                 String status = request.getParameter("status");
                 System.out.println(date + " " + startDay + " " + endDay + " " + status + " " + search + " " + page);
-                if (startDay != null && endDay != null && !startDay.isEmpty() && !endDay.isEmpty()) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date from = dateFormat.parse(startDay);
-                    Date to = dateFormat.parse(endDay);
-                    if(from.after(to)) {
-                        orderList = orderDao.getAllOfOrder(date, null, null, status, search, page, recordsPerPage);
-                        numberOfOrder = orderDao.numberOfOrder(date, null, null, status, search);
-                        noOfPages = (int) Math.ceil(numberOfOrder * 1.0 / recordsPerPage);
-                        request.setAttribute("ORDERLIST", orderList);
-                        request.setAttribute("date", date);
-                        request.setAttribute("startDay", null);
-                        request.setAttribute("endDay", null);
-                        request.setAttribute("search", search);
-                        request.setAttribute("status", status);
-                        request.setAttribute("page", page);
-                        request.setAttribute("noOfPages", noOfPages);
-                        session.setAttribute("ERROR", "Khoảng thời gian không hợp lệ");
-                        return;
-                    }
-                }
                 numberOfOrder = orderDao.numberOfOrder(date, startDay, endDay, status, search);
                 noOfPages = (int) Math.ceil(numberOfOrder * 1.0 / recordsPerPage);
                 orderList = orderDao.getAllOfOrder(date, startDay, endDay, status, search, page, recordsPerPage);
@@ -89,7 +69,7 @@ public class RenderShopOrdersController extends HttpServlet {
             } else {
                 response.sendRedirect(HOME);
             }
-        } catch (IOException | SQLException | ParseException e) {
+        } catch (IOException | SQLException  e) {
             log("Error at RenderShopOrdersController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);

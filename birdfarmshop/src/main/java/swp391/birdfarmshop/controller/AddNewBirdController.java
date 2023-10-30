@@ -54,7 +54,6 @@ public class AddNewBirdController extends HttpServlet {
             throws ServletException, IOException, SQLException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
-        LocalTime currentTime;
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
@@ -129,13 +128,14 @@ public class AddNewBirdController extends HttpServlet {
         }
     }
 
-    public void addNewImage(Part part, String isThumbnail, String bird_id) throws SQLException {
+    public void addNewImage(Part part, String isThumbnail, String bird_id) throws SQLException, IOException {
         ImageDAO imgDao = new ImageDAO();
         if (part.getSize() < 1048576) {
             String file = ImageUtils.getFileName(part);
             LocalTime currentTime = LocalTime.now();
             String nameImage = currentTime.getNano() + file;
             String img_url = Constants.C3_HOST + nameImage;
+            S3Utils.uploadFile(nameImage, part.getInputStream());
             imgDao.addNewImageBird(img_url, isThumbnail, bird_id);
         }
     }

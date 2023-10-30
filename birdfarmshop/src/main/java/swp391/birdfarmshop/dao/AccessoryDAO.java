@@ -362,9 +362,9 @@ public class AccessoryDAO {
                     status = "hết hàng";
                 }
                 stm.setString(8, status);
-                
+
                 rs = stm.executeUpdate();
-                
+
                 boolean checkImage_1 = im.addNewAccessoryImage(imageURL_1, true, txtAccessoryID);
                 boolean checkImage_2 = im.addNewAccessoryImage(imageURL_2, false, txtAccessoryID);
                 boolean checkImage_3 = im.addNewAccessoryImage(imageURL_3, false, txtAccessoryID);

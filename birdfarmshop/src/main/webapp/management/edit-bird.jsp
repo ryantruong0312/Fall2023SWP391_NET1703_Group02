@@ -120,8 +120,8 @@
                             </div>
                             <div class="form-add mb-3">
                                 <label>Ngày Sinh</label>
-                                <input style="float: right; width: 50%;" type="date" name="txtBirdDate" value="${birdDetails.birthday}" required/>
-                                <input type="hidden" name="oldBirdDate" value="${birdDetails.birthday}" />
+                                <input style="float: right; width: 50%;" id="birthday" type="date" name="txtBirdDate" value="${birdDetails.birthday}" required/>
+                                <input type="hidden" id="birdDate" name="oldBirdDate" value="${birdDetails.birthday}" />
                             </div>
                             <div class="form-add mb-3">
                                 <label>Tên</label>
@@ -150,7 +150,7 @@
                                 <div style="margin-top: 15px;">
                                     <label>Tuổi trưởng thành</label>
                                     <div style="width: 100%; position: relative;">
-                                        <input style="width: 80%;" type="number" name="txtBirdGrownAge" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.grown_age}" required/>
+                                        <input style="width: 80%;" type="number" min="0" name="txtBirdGrownAge" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.grown_age}" required/>
                                         <span style="position: absolute; right: 7px; top: 50%; transform: translateY(-50%);">tháng</span>
                                     </div>
                                 </div>
@@ -254,6 +254,16 @@
                                         reader.readAsDataURL(input.files[0]);
                                     }
                                 }
+                                var dateInput = document.getElementById("birthday");
+                                var birdDate = document.getElementById("birdDate");
+                                var today = new Date();
+                                dateInput.addEventListener("change", function () {
+                                    var selectedDate = new Date(dateInput.value);
+                                    if (selectedDate > today) {
+                                        alert("Ngày được chọn không thể là một ngày trong tương lai. Vui lòng chọn lại.");
+                                        dateInput.value = birdDate.value;
+                                    }
+                                });
                                 function checkUser(event) {
                                     $('#confirm-remove').css('display', 'block');
                                     let idForm = event.form.id;

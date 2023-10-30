@@ -18,8 +18,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -31,6 +29,7 @@ import swp391.birdfarmshop.model.Image;
 import swp391.birdfarmshop.model.User;
 import swp391.birdfarmshop.util.Constants;
 import swp391.birdfarmshop.util.ImageUtils;
+import swp391.birdfarmshop.util.S3Utils;
 
 /**
  *
@@ -54,7 +53,6 @@ public class UpdateBirdController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         String url = ERROR;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
@@ -83,16 +81,9 @@ public class UpdateBirdController extends HttpServlet {
                 String btAction = request.getParameter("btAction");
                 if (btAction != null) {
                     if (btAction.equals("Update")) {
-                        String birdDate = request.getParameter("txtBirdDate");
-                        String oldBirdDate = request.getParameter("oldBirdDate");
-                        Date birthday = dateFormat.parse(birdDate);
-                        Date today = new Date();
-                        if (birthday.after(today)) {
-                            session.setAttribute("ERROR", "Ngày sinh không hợp lệ");
-                            return;
-                        }
                         String txtBirdName = request.getParameter("txtBirdName");
                         String txtBirdColor = request.getParameter("txtBirdColor");
+                        String birdDate = request.getParameter("txtBirdDate");
                         String txtBirdGrownAge = request.getParameter("txtBirdGrownAge");
                         String txtBirdGender = request.getParameter("txtBirdGender");
                         String txtBirdBreed = request.getParameter("txtBirdBreed");
@@ -117,6 +108,8 @@ public class UpdateBirdController extends HttpServlet {
                             updateImage(image_3, bird_id, images.get(2).getImage_id());
                         } else if (image_3 != null && image_3.getSize() > 0 && images.size() == 2) {
                             addNewImage(image_3, bird_id);
+                        } else if (image_3 != null && image_3.getSize() > 0 && images.size() == 1) {
+                            addNewImage(image_3, bird_id);
                         }
                         boolean check = birdDao.updateBird(bird_id, txtBirdName, txtBirdColor, birdDate, 
                                     txtBirdGrownAge, txtBirdGender, txtBirdBreed, txtBirdAchievement, 
@@ -139,24 +132,26 @@ public class UpdateBirdController extends HttpServlet {
         }
     }
 
-    public void updateImage(Part part, String bird_id, int image_id) throws SQLException {
+    public void updateImage(Part part, String bird_id, int image_id) throws SQLException, IOException {
         ImageDAO imgDao = new ImageDAO();
         if (part.getSize() < 1048576) {
             String file = ImageUtils.getFileName(part);
             LocalTime currentTime = LocalTime.now();
             String nameImage = currentTime.getNano() + file;
             String img_url = Constants.C3_HOST + nameImage;
+            S3Utils.uploadFile(nameImage, part.getInputStream());
             imgDao.updateImageBird(img_url, bird_id, image_id);
         }
     }
     
-    public void addNewImage(Part part, String bird_id) throws SQLException {
+    public void addNewImage(Part part, String bird_id) throws SQLException, IOException {
         ImageDAO imgDao = new ImageDAO();
         if (part.getSize() < 1048576) {
             String file = ImageUtils.getFileName(part);
             LocalTime currentTime = LocalTime.now();
             String nameImage = currentTime.getNano() + file;
             String img_url = Constants.C3_HOST + nameImage;
+            S3Utils.uploadFile(nameImage, part.getInputStream());
             imgDao.addNewImageBird(img_url, "0", bird_id);
         }
     }
