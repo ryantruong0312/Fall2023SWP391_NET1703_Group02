@@ -907,7 +907,7 @@ public class OrderDAO {
             if (con != null) {
                 String query = "SELECT [order_id],[customer],[order_date],[order_status],[name_receiver],\n"
                         + "[phone_receiver],[address_receiver],[payment_status],[total_price],[applied_point]\n"
-                        + "FROM [BirdFarmShop].[dbo].[Order] WHERE [customer] = ?";
+                        + "FROM [BirdFarmShop].[dbo].[Order] WHERE [customer] = ? ORDER BY [order_date] DESC";
                 stm = con.prepareStatement(query);
                 stm.setString(1, customer);
                 rs = stm.executeQuery();
@@ -979,5 +979,11 @@ public class OrderDAO {
 
         return result;
     }
-
+    public static void main(String[] args) throws SQLException {
+        OrderDAO dao = new OrderDAO();
+        ArrayList<Order> orders = dao.getOrderByCustomer("customer");
+        for (Order order : orders) {
+            System.out.println(order.getOrder_id());
+        }
+    }
 }
