@@ -43,7 +43,7 @@ public class OrderDAO {
     public String error = null;
 
     public int createNewOrder(String order_id, String username, String status, String name_receiver, String phone_receiver,
-            String address_receiver, String payment_status, CartDTO cart, CartDTO cartCheckout, int point) {
+            String address_receiver, String payment_status, CartDTO cart, CartDTO cartCheckout, int point,String payment_type) {
         int result = 0;
         Connection con = null;
         OrderItemDAO oid = new OrderItemDAO();
@@ -55,7 +55,7 @@ public class OrderDAO {
             if (con != null) {
                 con.setAutoCommit(false);
                 String insertOrder = "INSERT INTO [ORDER]\n"
-                        + "VALUES(?,?,?,?,?,?,?,?,?,?)";
+                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
                 pst = con.prepareStatement(insertOrder);
                 pst.setString(1, order_id);
                 pst.setString(2, username);
@@ -68,8 +68,9 @@ public class OrderDAO {
                 pst.setString(6, phone_receiver);
                 pst.setString(7, address_receiver);
                 pst.setString(8, payment_status);
-                pst.setInt(9, cart.getCartTotalPrice());
-                pst.setInt(10, point);
+                pst.setString(9, payment_type);
+                pst.setInt(10, cart.getCartTotalPrice());
+                pst.setInt(11, point);
                 result = pst.executeUpdate();
                 boolean checkBird = true;
                 boolean checkAccessory = true;
