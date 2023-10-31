@@ -981,42 +981,6 @@ public class OrderDAO {
         return result;
     }
 
- public ArrayList<Object> getRevenue(LocalDate startDay) throws SQLException {
-        ArrayList<Object> r = new ArrayList<>();
-        Connection con = null;
-        Statement st = null;
-        ResultSet rs = null;
-        try {
-            con = DBUtils.getConnection();
-            if (con != null) {
-                String query = "SELECT SUM(total_price) AS [total_price], \n"
-                        + "       COUNT(order_id) AS[amount_order],\n"
-                        + "       COUNT(CASE WHEN order_status = N'Đã hủy' THEN 1 END) AS [cancel_order]\n"
-                        + "FROM [BirdFarmShop].[dbo].[Order]\n";
-                if (startDay != null) {
-                    query += "WHERE [order_date] >= '" + startDay + "'";
-                }
-                st = con.createStatement();
-                rs = st.executeQuery(query);
-                if (rs != null && rs.next()) {
-                    r.add(rs.getLong("total_price"));
-                    r.add(rs.getInt("amount_order"));
-                    r.add(rs.getInt("cancel_order"));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (st != null) {
-                st.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-            if (rs != null) {
-                rs.close();
-            }
-
     public ArrayList<Object> getRevenue(LocalDate startDay, LocalDate endDay) throws SQLException {
         ArrayList<Object> r = new ArrayList<>();
         Connection con = null;
@@ -1176,7 +1140,7 @@ public class OrderDAO {
             }
         }
         return p;
-   
+    }
     public ArrayList<Object> getMoneyByWeek(LocalDate startDay, String typeMoney) throws SQLException {
         ArrayList<Object> r = new ArrayList<>();
         ArrayList<String> dateWeek = new ArrayList<>();

@@ -472,27 +472,29 @@ public class AccessoryDAO {
         return false;
     }
 
-    public int[] getQuantityByStatus() throws SQLException {
-        int[] listStatus = new int[2];
+    public ArrayList<Integer> getQuantityByStatus() throws SQLException {
+        ArrayList<Integer> accessory = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement("  SELECT\n"
-                        + "  (SELECT COUNT([stock_quantity]) FROM [BirdFarmShop].[dbo].[Accessory] WHERE [stock_quantity] > 0 ) AS Available,\n"
-                        + "  (SELECT COUNT([stock_quantity]) FROM [BirdFarmShop].[dbo].[Accessory] WHERE [stock_quantity] = 0 ) AS OutOfStock;");
+                stm = con.prepareStatement("SELECT COUNT(accessory_id) AS totalAccessory,\n"
+                        + "	   COUNT(CASE WHEN [stock_quantity] > 0 THEN 1 END) AS Available,\n"
+                        + "	   COUNT(CASE WHEN [stock_quantity] = 0 THEN 1 END) AS OutOfStock\n"
+                        + "FROM [BirdFarmShop].[dbo].[Accessory]");
             }
             rs = stm.executeQuery();
-            while (rs.next()) {
-                listStatus[0] = rs.getInt("Available");
-                listStatus[1] = rs.getInt("OutOfStock");
+            if(rs!= null && rs.next()){
+                accessory.add(rs.getInt("totalAccessory"));
+                accessory.add(rs.getInt("Available"));
+                accessory.add(rs.getInt("OutOfStock"));
             }
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e ) {
 
-        } finally {
-            if (rs != null) {
+        }finally {
+            if(rs != null){
                 rs.close();
             }
             if (stm != null) {
@@ -502,14 +504,6 @@ public class AccessoryDAO {
                 con.close();
             }
         }
-        return listStatus;
-    }
-    
-    public static void main(String[] args) throws SQLException {
-        AccessoryDAO a = new AccessoryDAO();
-        int list[] = a.getQuantityByStatus();
-        for(int i = 0; i < list.length; i++){
-            System.out.println(list[i]);
-        }
+        return accessory;
     }
 }

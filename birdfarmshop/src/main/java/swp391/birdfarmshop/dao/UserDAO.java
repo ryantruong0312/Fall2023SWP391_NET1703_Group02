@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import swp391.birdfarmshop.dto.AccountDTO;
@@ -457,7 +458,7 @@ public class UserDAO {
         return user;
     }
 
-    public int numberCustomer(LocalDate startDay) throws SQLException{
+    public int numberCustomer(LocalDate startDay, LocalDate endDay) throws SQLException {
         int amount = 0;
         Connection con = null;
         Statement st = null;
@@ -467,9 +468,14 @@ public class UserDAO {
             if (con != null) {
                 String sql = "SELECT COUNT(username) AS [amount]\n"
                         + "  FROM [BirdFarmShop].[dbo].[User]\n"
-                        + " WHERE role = 'customer'\n"; 
-                if(startDay != null){
-                    sql += " AND register_date >= '"+startDay+"'";
+                        + " WHERE role = 'customer'\n";
+                if (startDay != null && endDay == null) {
+                    sql += " AND register_date >= '" + startDay + "'\n";
+                } else if (endDay != null && startDay == null) {
+                    sql += " AND register_date <= '" + endDay + "'\n";
+                } else if(startDay != null && endDay != null){
+                    sql += " AND (register_date <= '" + endDay + "'\n"
+                            + " AND register_date >= '" + startDay + "')";
                 }
                 st = con.createStatement();
                 rs = st.executeQuery(sql);
