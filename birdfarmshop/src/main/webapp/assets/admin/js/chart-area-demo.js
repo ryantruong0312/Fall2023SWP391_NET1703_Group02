@@ -26,7 +26,6 @@ function number_format(number, decimals, dec_point, thousands_sep) {
     }
     return s.join(dec);
 }
-
 function showGraph(lables, data, numberCore, data2, data3, data4) {
     // Area Chart Example
     var ctx = document.getElementById("myAreaChart");

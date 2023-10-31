@@ -430,7 +430,8 @@
             $(function () {
                 $(".accessory-cart").click(function () {
                     let accessory_id = $(this).attr('data-value');
-                    let quantity = $('input[name=order_quantity]').val();
+                    console.log(accessory_id);
+                    let quantity = $('input[name=quantity]').val();
                     $.ajax({
                         url: "AddAccessoryToCartController",
                         type: 'POST',
@@ -439,7 +440,7 @@
                             if (data == 0) {
                                 toast({
                                     title: 'Lỗi',
-                                    message: 'Sản phẩm này đã hết hàng',
+                                    message: 'Sản phẩm này đã có trong giỏ hàng',
                                     type: 'error',
                                     duration: 3000
                                 });

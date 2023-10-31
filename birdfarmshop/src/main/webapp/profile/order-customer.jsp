@@ -419,7 +419,7 @@
                                                                 <section style="display: block;">
                                                                     <div class="order-bar">
                                                                         <!-- order id -->
-                                                                        <div class="order-id"><img style="width: 25px; height: 25px;" src="assets\images\order.png"/>${order.order_id}</div>
+                                                                        <div class="order-id">Mã đơn hàng: ${order.order_id} - Ngày mua: ${order.order_date}.</div>
                                                                         <!-- order status -->
                                                                         <div class="order-status">${order.order_status}</div>
                                                                     </div>
@@ -445,14 +445,19 @@
                                                                                                         </div>
                                                                                                         <div>
                                                                                                             <div class="product-category"><span></span></div>
-                                                                                                            <div class="product-quantity"><span>x1</span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div class="info-right">
                                                                                                     <div class="price">
+                                                                                                        <c:if test="${orderItem.bird.discount != 0}">
                                                                                                         <span class="old-price">${orderItem.bird.price}đ</span>
-                                                                                                        <span class="new-price">${orderItem.bird.price * (1 - orderItem.bird.discount/100)}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price * (1 - orderItem.bird.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.bird.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
@@ -469,14 +474,19 @@
                                                                                                         </div>
                                                                                                         <div>
                                                                                                             <div class="product-category"><span></span></div>
-                                                                                                            <div class="product-quantity"><span>x${orderItem.accessory.stock_quantity}</span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div class="info-right">
                                                                                                     <div class="price">
+                                                                                                        <c:if test="${orderItem.accessory.discount != 0}">
                                                                                                         <span class="old-price">${orderItem.accessory.unit_price}đ</span>
-                                                                                                        <span class="new-price">${orderItem.accessory.unit_price * (1 - orderItem.accessory.discount/100)}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.accessory.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
@@ -493,14 +503,19 @@
                                                                                                         </div>
                                                                                                         <div>
                                                                                                             <div class="product-category"><span></span></div>
-                                                                                                            <div class="product-quantity"><span>x${orderItem.birdNest.baby_quantity}</span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div class="info-right">
                                                                                                     <div class="price">
+                                                                                                        <c:if test="${orderItem.birdNest.discount != 0}">
                                                                                                         <span class="old-price">${orderItem.birdNest.price}đ</span>
-                                                                                                        <span class="new-price">${orderItem.birdNest.price * (1 - orderItem.birdNest.discount/100)}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price * (1 - orderItem.birdNest.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.birdNest.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
@@ -517,14 +532,19 @@
                                                                                                         </div>
                                                                                                         <div>
                                                                                                             <div class="product-category">${orderItem.birdPair.status}<span></span></div>
-                                                                                                            <div class="product-quantity">x${orderItem.birdPair.number_young_bird}<span></span></div>
+                                                                                                            <div class="product-quantity">x${orderItem.order_quantity}<span></span></div>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div class="info-right">
                                                                                                     <div class="price">
+                                                                                                        <c:if test="${orderItem.birdPair.discount != 0}">
                                                                                                         <span class="old-price">${orderItem.birdPair.price}đ</span>
-                                                                                                        <span class="new-price">${orderItem.birdPair.price * (1 - orderItem.birdPair.discount/100)}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdPair.price * (1 - orderItem.birdPair.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.birdPair.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdPair.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
@@ -545,13 +565,1050 @@
                                                             <div class="boundary-2 boundary-both"></div>
                                                         </div>
                                                         <div class="total-price">
+                                                            <c:if test="${order.name_receiver != null && order.phone_receiver != 0}">
+                                                            <div style="float: left;">
+                                                                <span>Người nhận: ${order.name_receiver} - Sđt: ${order.phone_receiver}</span>
+                                                            </div>
+                                                            </c:if>
                                                             <div class="show-price">
                                                                 <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
                                                                 <label>Thành tiền: </label>
-                                                                <div class="total">đ ${order.total_price}</div>
+                                                                <div class="total">${order.total_price}₫</div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="wait">
+                                                <div class="row"><!-- all orders -->
+                                                    <c:forEach items="${itemMap}" var="map">
+                                                    <c:if test="${map.key.order_status == 'Chờ xử lý'}">
+                                                    <div class="order-info"><!-- display order -->
+                                                        <div style="width: 100%;"><!-- cover product, status -->
+                                                            <div class="order-detail"><!-- small div product, status -->
+                                                                <section style="display: block;">
+                                                                    <div class="order-bar">
+                                                                        <!-- order id -->
+                                                                        <div class="order-id">Mã đơn hàng: ${map.key.order_id} - Ngày mua: ${map.key.order_date}.</div>
+                                                                        <!-- order status -->
+                                                                        <div class="order-status">${map.key.order_status}</div>
+                                                                    </div>
+                                                                </section>
+                                                                <div class="seperate"></div>
+                                                                <section>
+                                                                    <h3></h3>
+                                                                    <a href="#">
+                                                                        <div>
+                                                                            <div class="detail-inner-1">
+                                                                                <div class="detail-inner-2">
+                                                                                    <div>
+                                                                                <c:forEach items="${map.value}" var="orderItem">
+                                                                                    <c:choose>
+                                                                                        <c:when test="${orderItem.bird != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.bird.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.bird.bird_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.bird.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.bird.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price * (1 - orderItem.bird.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.bird.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:when test="${orderItem.accessory != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.accessory.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.accessory.accessory_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.accessory.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.accessory.unit_price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.accessory.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:when test="${orderItem.birdNest != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.birdNest.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.birdNest.nest_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.birdNest.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.birdNest.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price * (1 - orderItem.birdNest.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.birdNest.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:otherwise>
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.birdPair.male_bird.bird_name} lai với ${orderItem.birdPair.female_bird.bird_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category">${orderItem.birdPair.status}<span></span></div>
+                                                                                                            <div class="product-quantity">x${orderItem.order_quantity}<span></span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.birdPair.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.birdPair.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdPair.price * (1 - orderItem.birdPair.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.birdPair.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdPair.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:otherwise>
+                                                                                    </c:choose> 
+                                                                                </c:forEach>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
+                                                                </section>
+                                                            </div>
+                                                        </div>
+                                                        <div class="boundary">
+                                                            <div class="boundary-1 boundary-both"></div>
+                                                            <div class="boundary-2 boundary-both"></div>
+                                                        </div>
+                                                        <div class="total-price">
+                                                            <c:if test="${map.key.name_receiver != null && map.key.phone_receiver != 0}">
+                                                            <div style="float: left;">
+                                                                <span>Người nhận: ${map.key.name_receiver} - Sđt: ${map.key.phone_receiver}</span>
+                                                            </div>
+                                                            </c:if>
+                                                            <div class="show-price">
+                                                                <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
+                                                                <label>Thành tiền: </label>
+                                                                <div class="total">${map.key.total_price}₫</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </c:if>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="inProgress">
+                                                <div class="row"><!-- all orders -->
+                                                    <c:forEach items="${itemMap}" var="map">
+                                                    <c:if test="${map.key.order_status == 'Đang xử lý'}">
+                                                    <div class="order-info"><!-- display order -->
+                                                        <div style="width: 100%;"><!-- cover product, status -->
+                                                            <div class="order-detail"><!-- small div product, status -->
+                                                                <section style="display: block;">
+                                                                    <div class="order-bar">
+                                                                        <!-- order id -->
+                                                                        <div class="order-id">Mã đơn hàng: ${map.key.order_id} - Ngày mua: ${map.key.order_date}.</div>
+                                                                        <!-- order status -->
+                                                                        <div class="order-status">${map.key.order_status}</div>
+                                                                    </div>
+                                                                </section>
+                                                                <div class="seperate"></div>
+                                                                <section>
+                                                                    <h3></h3>
+                                                                    <a href="#">
+                                                                        <div>
+                                                                            <div class="detail-inner-1">
+                                                                                <div class="detail-inner-2">
+                                                                                    <div>
+                                                                                <c:forEach items="${map.value}" var="orderItem">
+                                                                                    <c:choose>
+                                                                                        <c:when test="${orderItem.bird != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.bird.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.bird.bird_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.bird.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.bird.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price * (1 - orderItem.bird.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.bird.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:when test="${orderItem.accessory != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.accessory.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.accessory.accessory_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.accessory.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.accessory.unit_price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.accessory.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:when test="${orderItem.birdNest != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.birdNest.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.birdNest.nest_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.birdNest.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.birdNest.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price * (1 - orderItem.birdNest.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.birdNest.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:otherwise>
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.birdPair.male_bird.bird_name} lai với ${orderItem.birdPair.female_bird.bird_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category">${orderItem.birdPair.status}<span></span></div>
+                                                                                                            <div class="product-quantity">x${orderItem.order_quantity}<span></span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.birdPair.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.birdPair.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdPair.price * (1 - orderItem.birdPair.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.birdPair.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdPair.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:otherwise>
+                                                                                    </c:choose> 
+                                                                                </c:forEach>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
+                                                                </section>
+                                                            </div>
+                                                        </div>
+                                                        <div class="boundary">
+                                                            <div class="boundary-1 boundary-both"></div>
+                                                            <div class="boundary-2 boundary-both"></div>
+                                                        </div>
+                                                        <div class="total-price">
+                                                            <c:if test="${map.key.name_receiver != null && map.key.phone_receiver != 0}">
+                                                            <div style="float: left;">
+                                                                <span>Người nhận: ${map.key.name_receiver} - Sđt: ${map.key.phone_receiver}</span>
+                                                            </div>
+                                                            </c:if>
+                                                            <div class="show-price">
+                                                                <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
+                                                                <label>Thành tiền: </label>
+                                                                <div class="total">${map.key.total_price}₫</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </c:if>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="delivering">
+                                                <div class="row"><!-- all orders -->
+                                                    <c:forEach items="${itemMap}" var="map">
+                                                    <c:if test="${map.key.order_status == 'Đang giao hàng'}">
+                                                    <div class="order-info"><!-- display order -->
+                                                        <div style="width: 100%;"><!-- cover product, status -->
+                                                            <div class="order-detail"><!-- small div product, status -->
+                                                                <section style="display: block;">
+                                                                    <div class="order-bar">
+                                                                        <!-- order id -->
+                                                                        <div class="order-id">Mã đơn hàng: ${map.key.order_id} - Ngày mua: ${map.key.order_date}.</div>
+                                                                        <!-- order status -->
+                                                                        <div class="order-status">${map.key.order_status}</div>
+                                                                    </div>
+                                                                </section>
+                                                                <div class="seperate"></div>
+                                                                <section>
+                                                                    <h3></h3>
+                                                                    <a href="#">
+                                                                        <div>
+                                                                            <div class="detail-inner-1">
+                                                                                <div class="detail-inner-2">
+                                                                                    <div>
+                                                                                <c:forEach items="${map.value}" var="orderItem">
+                                                                                    <c:choose>
+                                                                                        <c:when test="${orderItem.bird != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.bird.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.bird.bird_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.bird.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.bird.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price * (1 - orderItem.bird.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.bird.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:when test="${orderItem.accessory != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.accessory.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.accessory.accessory_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.accessory.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.accessory.unit_price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.accessory.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:when test="${orderItem.birdNest != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.birdNest.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.birdNest.nest_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.birdNest.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.birdNest.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price * (1 - orderItem.birdNest.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.birdNest.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:otherwise>
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.birdPair.male_bird.bird_name} lai với ${orderItem.birdPair.female_bird.bird_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category">${orderItem.birdPair.status}<span></span></div>
+                                                                                                            <div class="product-quantity">x${orderItem.order_quantity}<span></span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.birdPair.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.birdPair.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdPair.price * (1 - orderItem.birdPair.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.birdPair.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdPair.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:otherwise>
+                                                                                    </c:choose> 
+                                                                                </c:forEach>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
+                                                                </section>
+                                                            </div>
+                                                        </div>
+                                                        <div class="boundary">
+                                                            <div class="boundary-1 boundary-both"></div>
+                                                            <div class="boundary-2 boundary-both"></div>
+                                                        </div>
+                                                        <div class="total-price">
+                                                            <c:if test="${map.key.name_receiver != null && map.key.phone_receiver != 0}">
+                                                            <div style="float: left;">
+                                                                <span>Người nhận: ${map.key.name_receiver} - Sđt: ${map.key.phone_receiver}</span>
+                                                            </div>
+                                                            </c:if>
+                                                            <div class="show-price">
+                                                                <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
+                                                                <label>Thành tiền: </label>
+                                                                <div class="total">${map.key.total_price}₫</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </c:if>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="delivered">
+                                                <div class="row"><!-- all orders -->
+                                                    <c:forEach items="${itemMap}" var="map">
+                                                    <c:if test="${map.key.order_status == 'Đã giao hàng'}">
+                                                    <div class="order-info"><!-- display order -->
+                                                        <div style="width: 100%;"><!-- cover product, status -->
+                                                            <div class="order-detail"><!-- small div product, status -->
+                                                                <section style="display: block;">
+                                                                    <div class="order-bar">
+                                                                        <!-- order id -->
+                                                                        <div class="order-id">Mã đơn hàng: ${map.key.order_id} - Ngày mua: ${map.key.order_date}.</div>
+                                                                        <!-- order status -->
+                                                                        <div class="order-status">${map.key.order_status}</div>
+                                                                    </div>
+                                                                </section>
+                                                                <div class="seperate"></div>
+                                                                <section>
+                                                                    <h3></h3>
+                                                                    <a href="#">
+                                                                        <div>
+                                                                            <div class="detail-inner-1">
+                                                                                <div class="detail-inner-2">
+                                                                                    <div>
+                                                                                <c:forEach items="${map.value}" var="orderItem">
+                                                                                    <c:choose>
+                                                                                        <c:when test="${orderItem.bird != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.bird.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.bird.bird_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.bird.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.bird.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price * (1 - orderItem.bird.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.bird.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:when test="${orderItem.accessory != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.accessory.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.accessory.accessory_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.accessory.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.accessory.unit_price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.accessory.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:when test="${orderItem.birdNest != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.birdNest.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.birdNest.nest_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.birdNest.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.birdNest.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price * (1 - orderItem.birdNest.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.birdNest.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:otherwise>
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.birdPair.male_bird.bird_name} lai với ${orderItem.birdPair.female_bird.bird_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category">${orderItem.birdPair.status}<span></span></div>
+                                                                                                            <div class="product-quantity">x${orderItem.order_quantity}<span></span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.birdPair.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.birdPair.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdPair.price * (1 - orderItem.birdPair.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.birdPair.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdPair.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:otherwise>
+                                                                                    </c:choose> 
+                                                                                </c:forEach>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
+                                                                </section>
+                                                            </div>
+                                                        </div>
+                                                        <div class="boundary">
+                                                            <div class="boundary-1 boundary-both"></div>
+                                                            <div class="boundary-2 boundary-both"></div>
+                                                        </div>
+                                                        <div class="total-price">
+                                                            <c:if test="${map.key.name_receiver != null && map.key.phone_receiver != 0}">
+                                                            <div style="float: left;">
+                                                                <span>Người nhận: ${map.key.name_receiver} - Sđt: ${map.key.phone_receiver}</span>
+                                                            </div>
+                                                            </c:if>
+                                                            <div class="show-price">
+                                                                <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
+                                                                <label>Thành tiền: </label>
+                                                                <div class="total">${map.key.total_price}₫</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </c:if>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="rated">
+                                                <div class="row"><!-- all orders -->
+                                                    <c:forEach items="${itemMap}" var="map">
+                                                    <c:if test="${map.key.order_status == 'Đã đánh giá'}">
+                                                    <div class="order-info"><!-- display order -->
+                                                        <div style="width: 100%;"><!-- cover product, status -->
+                                                            <div class="order-detail"><!-- small div product, status -->
+                                                                <section style="display: block;">
+                                                                    <div class="order-bar">
+                                                                        <!-- order id -->
+                                                                        <div class="order-id">Mã đơn hàng: ${map.key.order_id} - Ngày mua: ${map.key.order_date}.</div>
+                                                                        <!-- order status -->
+                                                                        <div class="order-status">${map.key.order_status}</div>
+                                                                    </div>
+                                                                </section>
+                                                                <div class="seperate"></div>
+                                                                <section>
+                                                                    <h3></h3>
+                                                                    <a href="#">
+                                                                        <div>
+                                                                            <div class="detail-inner-1">
+                                                                                <div class="detail-inner-2">
+                                                                                    <div>
+                                                                                <c:forEach items="${map.value}" var="orderItem">
+                                                                                    <c:choose>
+                                                                                        <c:when test="${orderItem.bird != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.bird.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.bird.bird_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.bird.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.bird.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price * (1 - orderItem.bird.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.bird.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:when test="${orderItem.accessory != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.accessory.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.accessory.accessory_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.accessory.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.accessory.unit_price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.accessory.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:when test="${orderItem.birdNest != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.birdNest.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.birdNest.nest_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.birdNest.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.birdNest.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price * (1 - orderItem.birdNest.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.birdNest.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:otherwise>
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.birdPair.male_bird.bird_name} lai với ${orderItem.birdPair.female_bird.bird_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category">${orderItem.birdPair.status}<span></span></div>
+                                                                                                            <div class="product-quantity">x${orderItem.order_quantity}<span></span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.birdPair.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.birdPair.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdPair.price * (1 - orderItem.birdPair.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.birdPair.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdPair.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:otherwise>
+                                                                                    </c:choose> 
+                                                                                </c:forEach>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
+                                                                </section>
+                                                            </div>
+                                                        </div>
+                                                        <div class="boundary">
+                                                            <div class="boundary-1 boundary-both"></div>
+                                                            <div class="boundary-2 boundary-both"></div>
+                                                        </div>
+                                                        <div class="total-price">
+                                                            <c:if test="${map.key.name_receiver != null && map.key.phone_receiver != 0}">
+                                                            <div style="float: left;">
+                                                                <span>Người nhận: ${map.key.name_receiver} - Sđt: ${map.key.phone_receiver}</span>
+                                                            </div>
+                                                            </c:if>
+                                                            <div class="show-price">
+                                                                <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
+                                                                <label>Thành tiền: </label>
+                                                                <div class="total">${map.key.total_price}₫</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </c:if>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="cancel">
+                                                <div class="row"><!-- all orders -->
+                                                    <c:forEach items="${itemMap}" var="map">
+                                                    <c:if test="${map.key.order_status == 'Đã hủy'}">
+                                                    <div class="order-info"><!-- display order -->
+                                                        <div style="width: 100%;"><!-- cover product, status -->
+                                                            <div class="order-detail"><!-- small div product, status -->
+                                                                <section style="display: block;">
+                                                                    <div class="order-bar">
+                                                                        <!-- order id -->
+                                                                        <div class="order-id">Mã đơn hàng: ${map.key.order_id} - Ngày mua: ${map.key.order_date}.</div>
+                                                                        <!-- order status -->
+                                                                        <div class="order-status">${map.key.order_status}</div>
+                                                                    </div>
+                                                                </section>
+                                                                <div class="seperate"></div>
+                                                                <section>
+                                                                    <h3></h3>
+                                                                    <a href="#">
+                                                                        <div>
+                                                                            <div class="detail-inner-1">
+                                                                                <div class="detail-inner-2">
+                                                                                    <div>
+                                                                                <c:forEach items="${map.value}" var="orderItem">
+                                                                                    <c:choose>
+                                                                                        <c:when test="${orderItem.bird != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.bird.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.bird.bird_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.bird.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.bird.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price * (1 - orderItem.bird.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.bird.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:when test="${orderItem.accessory != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.accessory.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.accessory.accessory_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.accessory.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.accessory.unit_price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.accessory.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:when test="${orderItem.birdNest != null}">
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="${orderItem.birdNest.image_url}" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.birdNest.nest_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.birdNest.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.birdNest.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price * (1 - orderItem.birdNest.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.birdNest.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:when>
+                                                                                        <c:otherwise>
+                                                                                        <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <img src="" class="product-image" alt="" />
+                                                                                                    <div class="showAll">
+                                                                                                        <div>
+                                                                                                            <div class="product-name"><span>${orderItem.birdPair.male_bird.bird_name} lai với ${orderItem.birdPair.female_bird.bird_name}</span></div>
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            <div class="product-category">${orderItem.birdPair.status}<span></span></div>
+                                                                                                            <div class="product-quantity">x${orderItem.order_quantity}<span></span></div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="info-right">
+                                                                                                    <div class="price">
+                                                                                                        <c:if test="${orderItem.birdPair.discount != 0}">
+                                                                                                        <span class="old-price">${orderItem.birdPair.price}đ</span>
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdPair.price * (1 - orderItem.birdPair.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                        <c:if test="${orderItem.birdPair.discount == 0}">
+                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdPair.price}" pattern="#,###"/>₫</span>
+                                                                                                        </c:if>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
+                                                                                        </c:otherwise>
+                                                                                    </c:choose> 
+                                                                                </c:forEach>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
+                                                                </section>
+                                                            </div>
+                                                        </div>
+                                                        <div class="boundary">
+                                                            <div class="boundary-1 boundary-both"></div>
+                                                            <div class="boundary-2 boundary-both"></div>
+                                                        </div>
+                                                        <div class="total-price">
+                                                            <c:if test="${map.key.name_receiver != null && map.key.phone_receiver != 0}">
+                                                            <div style="float: left;">
+                                                                <span>Người nhận: ${map.key.name_receiver} - Sđt: ${map.key.phone_receiver}</span>
+                                                            </div>
+                                                            </c:if>
+                                                            <div class="show-price">
+                                                                <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
+                                                                <label>Thành tiền: </label>
+                                                                <div class="total">${map.key.total_price}₫</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </c:if>
                                                     </c:forEach>
                                                 </div>
                                             </div>
@@ -567,15 +1624,5 @@
         <!-- Start Footer -->
         <%@include file="../layout/footer.jsp" %>
         <!-- End Footer -->
-        <script>
-            function toggleList(listId) {
-                var list = document.getElementById(listId);
-                if (list.style.display === "none" || list.style.display === "") {
-                    list.style.display = "block";
-                } else {
-                    list.style.display = "none";
-                }
-            }
-        </script>
     </body>
 </html>

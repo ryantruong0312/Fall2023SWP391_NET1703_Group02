@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package swp391.birdfarmshop.controller;
 
 import com.google.gson.Gson;
@@ -27,8 +28,10 @@ import swp391.birdfarmshop.model.User;
  *
  * @author tlminh
  */
+@WebServlet(name="RenderReportsController", urlPatterns={"/RenderReportsController"})
 @WebServlet(name = "RenderReportsController", urlPatterns = {"/RenderReportsController"})
 public class RenderReportsController extends HttpServlet {
+   
 
     private static final String ERROR = "RenderHomeController";
     private static final String SUCCESS = "management/reports.jsp";
@@ -39,10 +42,57 @@ public class RenderReportsController extends HttpServlet {
         PrintWriter out = response.getWriter();
         String url = ERROR;
         String filter = request.getParameter("filter");
+        System.out.println(filter);
+        if(filter == null) filter = "All";
+        String filter = request.getParameter("filter");
         if (filter == null) {
             filter = "All";
         }
         try {
+           url = SUCCESS;
+           HttpSession session = request.getSession();
+           OrderDAO order = new OrderDAO();
+           UserDAO user = new UserDAO();
+           BirdDAO bird = new BirdDAO();
+           AccessoryDAO accessory = new AccessoryDAO();
+           BirdPairDAO birdPair = new BirdPairDAO();
+           ReportDTO r = new ReportDTO();
+           User u = (User) session.getAttribute("LOGIN_USER");
+           if(u != null){
+               if(u.getRole().equals("admin")|| u.getRole().equals("manager")){
+                   switch (filter) {  
+                       case "week":
+                           LocalDate dateNow = LocalDate.now();
+                           LocalDate startDate = LocalDate.of(dateNow.getYear(), dateNow.getMonth(), dateNow.getDayOfMonth());
+
+                           LocalDate startDateMonday = startDate;
+                           while (startDateMonday.getDayOfWeek() != DayOfWeek.MONDAY) {
+                               startDateMonday = startDateMonday.minusDays(1);
+                           }
+                           r.setRevenue(order.getRevenue(startDateMonday));
+                           r.getRevenue().add(user.numberCustomer(startDateMonday));
+                           r.setProduct_sale(order.getProductSale(startDateMonday));
+                           Gson gson = new Gson();
+                           String json = gson.toJson(r);
+                           out.println(json);
+                           break;
+                       default:
+                           r.setRevenue(order.getRevenue(null));
+                           r.getRevenue().add(user.numberCustomer(null));
+                           r.setProduct_sale(order.getProductSale(null));
+                           r.setBird(bird.getBirdAmount());
+                           r.setAccessory(accessory.getQuantityByStatus());
+                           r.setBirdPair(birdPair.getBirdPairByStatus());
+                           request.setAttribute("REPORT", r);
+                   }
+               }else{
+                   url = ERROR;
+                   session.setAttribute("ERROR", "B?n kh�ng c� quy?n truy c?p");
+               }
+           }else{
+               url = ERROR;
+               session.setAttribute("ERROR", "B?n chua dang nh?p");
+           }
             url = SUCCESS;
             HttpSession session = request.getSession();
             OrderDAO order = new OrderDAO();
@@ -116,23 +166,23 @@ public class RenderReportsController extends HttpServlet {
                         case "to_date":
                             String to_date = request.getParameter("data");
                             LocalDate toDate = LocalDate.parse(to_date);
-                            LocalDate enđDate = LocalDate.of(toDate.getYear(), toDate.getMonth(), toDate.getDayOfMonth());
-                            r.setRevenue(order.getRevenue(null, enđDate));
-                            r.getRevenue().add(user.numberCustomer(null, enđDate));
-                            r.setProduct_sale(order.getProductSale(null, enđDate));
+                            LocalDate endDate = LocalDate.of(toDate.getYear(), toDate.getMonth(), toDate.getDayOfMonth());
+                            r.setRevenue(order.getRevenue(null, endDate));
+                            r.getRevenue().add(user.numberCustomer(null, endDate));
+                            r.setProduct_sale(order.getProductSale(null, endDate));
                             json = gson.toJson(r);
                             out.println(json);
                             break;
                         case "both":
                             to_date = request.getParameter("to_date");
                             toDate = LocalDate.parse(to_date);
-                            enđDate = LocalDate.of(toDate.getYear(), toDate.getMonth(), toDate.getDayOfMonth());
+                            endDate = LocalDate.of(toDate.getYear(), toDate.getMonth(), toDate.getDayOfMonth());
                             from_date = request.getParameter("from_date");
                             fromDate = LocalDate.parse(from_date);
                             startDate = LocalDate.of(fromDate.getYear(), fromDate.getMonth(), fromDate.getDayOfMonth());
-                            r.setRevenue(order.getRevenue(startDate, enđDate));
-                            r.getRevenue().add(user.numberCustomer(startDate, enđDate));
-                            r.setProduct_sale(order.getProductSale(startDate, enđDate));
+                            r.setRevenue(order.getRevenue(startDate, endDate));
+                            r.getRevenue().add(user.numberCustomer(startDate, endDate));
+                            r.setProduct_sale(order.getProductSale(startDate, endDate));
                             json = gson.toJson(r);
                             out.println(json);
                             break;
@@ -154,15 +204,18 @@ public class RenderReportsController extends HttpServlet {
                     }
                 } else {
                     url = ERROR;
-                    session.setAttribute("ERROR", "Bạn không có quyền truy cập");
+                    session.setAttribute("ERROR", "B?n kh�ng c� quy?n truy c?p");
                 }
             } else {
                 url = ERROR;
-                session.setAttribute("ERROR", "Bạn chưa đăng nhập");
+                session.setAttribute("ERROR", "B?n chua dang nh?p");
             }
         } catch (Exception e) {
             log("Error at RenderReportsController: " + e.toString());
         } finally {
+            if(filter.equals("All")){
+                request.getRequestDispatcher(url).forward(request, response);
+            }
             if (filter.equals("All")) {
                 request.getRequestDispatcher(url).forward(request, response);
             }
@@ -170,6 +223,7 @@ public class RenderReportsController extends HttpServlet {
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /** 
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -180,10 +234,13 @@ public class RenderReportsController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
             throws ServletException, IOException {
         processRequest(request, response);
+    } 
     }
 
+    /** 
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -194,10 +251,12 @@ public class RenderReportsController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
+    /** 
     /**
      * Returns a short description of the servlet.
      *

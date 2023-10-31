@@ -726,43 +726,9 @@ public class BirdDAO {
         }
         return false;
     }
-    public ArrayList<Integer> getBirdAmount() throws SQLException{
-    
-        ArrayList<Integer> bird = new ArrayList<>();
-        Connection con = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        try {
-            con = DBUtils.getConnection();
-            if (con != null) {
-                String sql = "SELECT COUNT(bird_id) AS [totalBird],\n"
-                        + "	   COUNT(CASE WHEN [status] = N'Còn hàng' THEN 1 END) AS [available],\n"
-                        + "	   COUNT(CASE WHEN [status] = N'Đang sinh sản' THEN 1 END) AS [reproduction],\n"
-                        + "	   COUNT(CASE WHEN [status] = N'Đã bán' THEN 1 END) AS [sold]\n"
-                        + "FROM [BirdFarmShop].[dbo].[Bird]";
-                stm = con.prepareStatement(sql);
-                rs = stm.executeQuery();
-                if (rs != null && rs.next()) {
-                    bird.add(rs.getInt("totalBird"));
-                    bird.add(rs.getInt("available"));
-                    bird.add(rs.getInt("reproduction"));
-                    bird.add(rs.getInt("sold"));
-                }
-            }
-            
-        }catch(Exception e){
-            e.printStackTrace();
-        }finally {
-            if (stm != null) {
-                stm.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-            if (rs != null) {
-                rs.close();
-            }
-        }
-        return bird;
+    public static void main(String[] args) throws SQLException, ParseException {
+        BirdDAO dao = new BirdDAO();
+        boolean check = dao.updateBird("CL201", "Vẹt Cockatiel Lutino CL201", "xám, vàng, cam", "2023-10-23", "1", "Đực", "australian", null, "0", "2500000", null, "0", "Còn hàng");
+        System.out.println(check);
     }
 }
