@@ -89,7 +89,6 @@
                                 value=""
                                 />
                             <br />
-                            <input type="hidden" value="custom" name="type" />
                             <input
                                 id="search"
                                 value="Tìm"
@@ -98,6 +97,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" name="type" value="all">
             </div>
             <!-- Content Row -->
             <div class="row">
@@ -191,7 +191,7 @@
 
             <div class="row">
                 <!-- Area Chart -->
-                <div class="col-xl-8 col-lg-7">
+                <div class="col-xl-8 col-lg-7 typePayment">
                     <div class="card shadow mb-4">
                         <!-- Card Header - Dropdown -->
                         <div
@@ -217,9 +217,9 @@
                                     aria-labelledby="dropdownMenuLink"
                                     >
                                     <div class="dropdown-header">Loại thanh toán:</div>
-                                    <a class="dropdown-item active" href="#">Tất cả</a>
-                                    <a class="dropdown-item" href="#">Thanh toán chuyển khoản</a>
-                                    <a class="dropdown-item" href="#">Thanh toán khi nhận hàng</a>
+                                    <a class="dropdown-item all active">Tất cả</a>
+                                    <a class="dropdown-item online">Thanh toán chuyển khoản</a>
+                                    <a class="dropdown-item receiver">Thanh toán khi nhận hàng</a>
                                 </div>
                             </div>
                         </div>
@@ -409,6 +409,7 @@
 
         <!-- Page level custom scripts -->
         <script src="assets/admin/js/chart-area-demo.js"></script>
+        <script src="assets/admin/js/chart-pie-demo.js"></script>
         <script>
             const labelQuantity = ["Chim", "Phụ kiện", "Nhân giống", "Tổ chim non"];
             const nodeQuantity = document.getElementById("myPieChart");
@@ -451,43 +452,8 @@
             <c:forEach var="r" items="${requestScope.REPORT.revenue}">
             allData.push(${r});
             </c:forEach>
-            function pie(nodePie, label, color, hoverColor, data) {
-                if (nodePie && nodePie.chart) {
-                    nodePie.chart.destroy();
-                }
-                var myPieChart = new Chart(nodePie, {
-                    type: "doughnut",
-                    data: {
-                        labels: label,
-                        datasets: [
-                            {
-                                data: data,
-                                backgroundColor: color,
-                                hoverBackgroundColor: hoverColor,
-                                hoverBorderColor: "rgba(234, 236, 244, 1)",
-                            },
-                        ],
-                    },
-                    options: {
-                        maintainAspectRatio: false,
-                        tooltips: {
-                            backgroundColor: "rgb(255,255,255)",
-                            bodyFontColor: "#858796",
-                            borderColor: "#dddfeb",
-                            borderWidth: 1,
-                            xPadding: 15,
-                            yPadding: 15,
-                            displayColors: false,
-                            caretPadding: 10,
-                        },
-                        legend: {
-                            display: false,
-                        },
-                        cutoutPercentage: 80,
-                    },
-                });
-                nodePie.chart = myPieChart;
-            }
+            showGraph(${requestScope.REPORT.totalMoney[0]},${requestScope.REPORT.totalMoney[1]}, 12,
+            ${requestScope.REPORT.totalMoneyBird},${requestScope.REPORT.totalMoneyAccessory},${requestScope.REPORT.totalMoneyBirdPair});
             pie(nodeQuantity, labelQuantity, colorQuantity, hoverColorQuantity, dataQuantity);
             pie(nodeBird, labelBird, colorBird, hoverColorBird, dataBird);
             pie(nodeAccessory, labelAccessory, colorAccessory, hoverColorAccessory, dataAccessory);
@@ -507,11 +473,32 @@
                 $('#report .stock-quatity1 h6').html('Số lượng sản phẩm đã bán');
                 $('#report .stock-quatity1 .stock').removeClass('active');
                 $('#report .stock-quatity1 .sale').addClass('active');
-                pie(nodeQuantity, labelQuantity, colorQuantity, hoverColorQuantity, dataQuantity);
+                const value = $('input[name=type]').val();
+                const to_date = $('input[name=to_date]').val();
+                const from_date = $('input[name=from_date]').val();
+                $.ajax({
+                    url: 'RenderReportsController',
+                    type: 'POST',
+                    data: {filter: value, data: to_date || from_date, from_date: from_date, to_date: to_date},
+                    success: function (data) {
+                        const jsonArray = JSON.parse(data);
+                        const dataQuantitySale = jsonArray.product_sale;
+                        $('#report .stock-quatity1 .center-text').html(jsonArray.totalProduct);
+                        pie(nodeQuantity, labelQuantity, colorQuantity, hoverColorQuantity, dataQuantitySale);
+                    }
+                });
             });
             $('#week').click(function () {
+                $('input[name=type]').val('week');
                 $('#report .statistic .active').removeClass('active');
                 $('#week').addClass('active');
+                $('#report .stock-quatity1 h6').html('Số lượng sản phẩm đã bán');
+                $('#report .stock-quatity1 .stock').removeClass('active');
+                $('#report .stock-quatity1 .sale').addClass('active');
+                $('#report .typePayment h6').html('Tổng quan doanh thu');
+                $('#report .typePayment .all').addClass('active');
+                $('#report .typePayment .online').removeClass('active');
+                $('#report .typePayment .receiver').removeClass('active');
                 $.ajax({
                     url: 'RenderReportsController',
                     type: 'POST',
@@ -526,29 +513,232 @@
                         const dataQuantityWeek = jsonArray.product_sale;
                         pie(nodeQuantity, labelQuantity, colorQuantity, hoverColorQuantity, dataQuantityWeek);
                         $('.product-sale').html(Number(jsonArray.totalProduct).toLocaleString('vi-VN'));
+                        showGraph(jsonArray.totalMoney[0], jsonArray.totalMoney[1], 7, jsonArray.totalMoneyBird, jsonArray.totalMoneyAccessory, jsonArray.totalMoneyBirdPair);
                     }
                 });
             });
             $('#month').click(function () {
+                $('input[name=type]').val('month');
                 $('#report .statistic .active').removeClass('active');
                 $('#month').addClass('active');
+                $('#report .stock-quatity1 h6').html('Số lượng sản phẩm đã bán');
+                $('#report .stock-quatity1 .stock').removeClass('active');
+                $('#report .stock-quatity1 .sale').addClass('active');
+                $('#report .typePayment h6').html('Tổng quan doanh thu');
+                $('#report .typePayment .all').addClass('active');
+                $('#report .typePayment .online').removeClass('active');
+                $('#report .typePayment .receiver').removeClass('active');
+                $.ajax({
+                    url: 'RenderReportsController',
+                    type: 'POST',
+                    data: {filter: 'month'},
+                    success: function (data) {
+                        const jsonArray = JSON.parse(data);
+                        const revenue = jsonArray.revenue;
+                        $('.money').html(Number(revenue[0]).toLocaleString('vi-VN'));
+                        $('.order').html(revenue[1]);
+                        $('.cancel-order').html(revenue[2]);
+                        $('.number-user').html(revenue[3]);
+                        const dataQuantityWeek = jsonArray.product_sale;
+                        pie(nodeQuantity, labelQuantity, colorQuantity, hoverColorQuantity, dataQuantityWeek);
+                        $('.product-sale').html(Number(jsonArray.totalProduct).toLocaleString('vi-VN'));
+                        showGraph(jsonArray.totalMoney[0], jsonArray.totalMoney[1], 16, jsonArray.totalMoneyBird, jsonArray.totalMoneyAccessory, jsonArray.totalMoneyBirdPair);
+                    }
+                });
             });
             $('#year').click(function () {
+                $('input[name=type]').val('year');
                 $('#report .statistic .active').removeClass('active');
                 $('#year').addClass('active');
+                $('#report .stock-quatity1 h6').html('Số lượng sản phẩm đã bán');
+                $('#report .stock-quatity1 .stock').removeClass('active');
+                $('#report .stock-quatity1 .sale').addClass('active');
+                $('#report .typePayment h6').html('Tổng quan doanh thu');
+                $('#report .typePayment .all').addClass('active');
+                $('#report .typePayment .online').removeClass('active');
+                $('#report .typePayment .receiver').removeClass('active');
+                $.ajax({
+                    url: 'RenderReportsController',
+                    type: 'POST',
+                    data: {filter: 'year'},
+                    success: function (data) {
+                        const jsonArray = JSON.parse(data);
+                        const revenue = jsonArray.revenue;
+                        $('.money').html(Number(revenue[0]).toLocaleString('vi-VN'));
+                        $('.order').html(revenue[1]);
+                        $('.cancel-order').html(revenue[2]);
+                        $('.number-user').html(revenue[3]);
+                        const dataQuantityWeek = jsonArray.product_sale;
+                        pie(nodeQuantity, labelQuantity, colorQuantity, hoverColorQuantity, dataQuantityWeek);
+                        $('.product-sale').html(Number(jsonArray.totalProduct).toLocaleString('vi-VN'));
+                        showGraph(jsonArray.totalMoney[0], jsonArray.totalMoney[1], 7, jsonArray.totalMoneyBird, jsonArray.totalMoneyAccessory, jsonArray.totalMoneyBirdPair);
+                    }
+                });
             });
             $('#all').click(function () {
+                $('input[name=type]').val('all');
                 $('#report .statistic .active').removeClass('active');
                 $('#all').addClass('active');
                 $('.money').html(Number(allData[0]).toLocaleString('vi-VN'));
                 $('.order').html(allData[1]);
                 $('.cancel-order').html(allData[2]);
                 $('.number-user').html(allData[3]);
+
+                $('#report .stock-quatity1 h6').html('Số lượng sản phẩm đã bán');
+                $('#report .stock-quatity1 .stock').removeClass('active');
+                $('#report .stock-quatity1 .sale').addClass('active');
+                $('#report .stock-quatity1 .center-text').html(${requestScope.REPORT.totalProduct});
                 pie(nodeQuantity, labelQuantity, colorQuantity, hoverColorQuantity, dataQuantity);
+                showGraph(${requestScope.REPORT.totalMoney[0]},${requestScope.REPORT.totalMoney[1]}, 12,
+            ${requestScope.REPORT.totalMoneyBird},${requestScope.REPORT.totalMoneyAccessory},${requestScope.REPORT.totalMoneyBirdPair});
             });
             $('#search').click(function () {
                 $('#report .statistic .active').removeClass('active');
                 $('#filter').addClass('active');
+                $('#report .typePayment h6').html('Tổng quan doanh thu');
+                $('#report .typePayment .all').addClass('active');
+                $('#report .typePayment .online').removeClass('active');
+                $('#report .typePayment .receiver').removeClass('active');
+                const to_date = $('input[name=to_date]').val();
+                const from_date = $('input[name=from_date]').val();
+                if (to_date && from_date) {
+                    $('input[name=type]').val('both');
+                    $.ajax({
+                        url: 'RenderReportsController',
+                        type: 'POST',
+                        data: {filter: 'both', to_date: to_date, from_date: from_date},
+                        success: function (data) {
+                            const jsonArray = JSON.parse(data);
+                            const revenue = jsonArray.revenue;
+                            $('.money').html(Number(revenue[0]).toLocaleString('vi-VN'));
+                            $('.order').html(revenue[1]);
+                            $('.cancel-order').html(revenue[2]);
+                            $('.number-user').html(revenue[3]);
+                            const dataQuantityWeek = jsonArray.product_sale;
+                            pie(nodeQuantity, labelQuantity, colorQuantity, hoverColorQuantity, dataQuantityWeek);
+                            $('.product-sale').html(Number(jsonArray.totalProduct).toLocaleString('vi-VN'));
+                        }
+                    });
+                } else if (to_date) {
+                    $('input[name=type]').val('to_date');
+                    $('#report .typePayment h6').html('Tổng quan doanh thu');
+                    $('#report .typePayment .all').addClass('active');
+                    $('#report .typePayment .online').removeClass('active');
+                    $('#report .typePayment .receiver').removeClass('active');
+                    $.ajax({
+                        url: 'RenderReportsController',
+                        type: 'POST',
+                        data: {filter: 'to_date', data: to_date},
+                        success: function (data) {
+                            const jsonArray = JSON.parse(data);
+                            const revenue = jsonArray.revenue;
+                            $('.money').html(Number(revenue[0]).toLocaleString('vi-VN'));
+                            $('.order').html(revenue[1]);
+                            $('.cancel-order').html(revenue[2]);
+                            $('.number-user').html(revenue[3]);
+                            const dataQuantityWeek = jsonArray.product_sale;
+                            pie(nodeQuantity, labelQuantity, colorQuantity, hoverColorQuantity, dataQuantityWeek);
+                            $('.product-sale').html(Number(jsonArray.totalProduct).toLocaleString('vi-VN'));
+                        }
+                    });
+                } else {
+                    $('input[name=type]').val('from_date');
+                    $('#report .typePayment h6').html('Tổng quan doanh thu');
+                    $('#report .typePayment .all').addClass('active');
+                    $('#report .typePayment .online').removeClass('active');
+                    $('#report .typePayment .receiver').removeClass('active');
+                    $.ajax({
+                        url: 'RenderReportsController',
+                        type: 'POST',
+                        data: {filter: 'from_date', data: from_date},
+                        success: function (data) {
+                            const jsonArray = JSON.parse(data);
+                            const revenue = jsonArray.revenue;
+                            $('.money').html(Number(revenue[0]).toLocaleString('vi-VN'));
+                            $('.order').html(revenue[1]);
+                            $('.cancel-order').html(revenue[2]);
+                            $('.number-user').html(revenue[3]);
+                            const dataQuantityWeek = jsonArray.product_sale;
+                            pie(nodeQuantity, labelQuantity, colorQuantity, hoverColorQuantity, dataQuantityWeek);
+                            $('.product-sale').html(Number(jsonArray.totalProduct).toLocaleString('vi-VN'));
+                        }
+                    });
+                }
+            });
+            $('.dropdown').click(function () {
+                const currentDate = new Date();
+                const year = currentDate.getFullYear();
+                const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                const day = String(currentDate.getDate()).padStart(2, '0');
+                const formattedDate = year + "-" + month + "-" + day;
+                $('input[name=to_date]').attr('max', formattedDate);
+                $('input[name=from_date]').attr('max', formattedDate);
+            });
+            $('#report .typePayment .all').click(function () {
+                $('#report .typePayment h6').html('Tổng quan doanh thu');
+                $('#report .typePayment .all').addClass('active');
+                $('#report .typePayment .online').removeClass('active');
+                $('#report .typePayment .receiver').removeClass('active');
+                const value = $('input[name=type]').val();
+                $.ajax({
+                    url: 'RenderReportsController',
+                    type: 'POST',
+                    data: {filter: value, type_money: null},
+                    success: function (data) {
+                        const jsonArray = JSON.parse(data);
+                        let amountColoumn = 12;
+                        if (value === 'week') {
+                            amountColoumn = 7;
+                        } else if (value === 'month') {
+                            amountColoumn = 16;
+                        }
+                        showGraph(jsonArray.totalMoney[0], jsonArray.totalMoney[1], amountColoumn,jsonArray.totalMoneyBird, jsonArray.totalMoneyAccessory, jsonArray.totalMoneyBirdPair);
+                    }
+                });
+            });
+            $('#report .typePayment .online').click(function () {
+                $('#report .typePayment h6').html('Tổng quan doanh thu theo chuyển khoản');
+                $('#report .typePayment .all').removeClass('active');
+                $('#report .typePayment .online').addClass('active');
+                $('#report .typePayment .receiver').removeClass('active');
+                const value = $('input[name=type]').val();
+                $.ajax({
+                    url: 'RenderReportsController',
+                    type: 'POST',
+                    data: {filter: value, type_money: 'online'},
+                    success: function (data) {
+                        const jsonArray = JSON.parse(data);
+                        let amountColoumn = 12;
+                        if (value === 'week') {
+                            amountColoumn = 7;
+                        } else if (value === 'month') {
+                            amountColoumn = 16;
+                        }
+                        showGraph(jsonArray.totalMoney[0], jsonArray.totalMoney[1], amountColoumn);
+                    }
+                });
+            });
+            $('#report .typePayment .receiver').click(function () {
+                $('#report .typePayment h6').html('Tổng quan doanh thu theo tiền mặt');
+                $('#report .typePayment .all').removeClass('active');
+                $('#report .typePayment .online').removeClass('active');
+                $('#report .typePayment .receiver').addClass('active');
+                const value = $('input[name=type]').val();
+                $.ajax({
+                    url: 'RenderReportsController',
+                    type: 'POST',
+                    data: {filter: value, type_money: 'receiver'},
+                    success: function (data) {
+                        const jsonArray = JSON.parse(data);
+                        let amountColoumn = 12;
+                        if (value === 'week') {
+                            amountColoumn = 7;
+                        } else if (value === 'month') {
+                            amountColoumn = 16;
+                        }
+                        showGraph(jsonArray.totalMoney[0], jsonArray.totalMoney[1], amountColoumn);
+                    }
+                });
             });
         </script>
     </body>

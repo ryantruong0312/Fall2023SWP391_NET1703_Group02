@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -981,7 +982,7 @@ public class OrderDAO {
         return result;
     }
 
-    public ArrayList<Object> getRevenue(LocalDate startDay) throws SQLException {
+    public ArrayList<Object> getRevenue(LocalDate startDay, LocalDate endDay) throws SQLException {
         ArrayList<Object> r = new ArrayList<>();
         Connection con = null;
         Statement st = null;
@@ -993,8 +994,13 @@ public class OrderDAO {
                         + "       COUNT(order_id) AS[amount_order],\n"
                         + "       COUNT(CASE WHEN order_status = N'Đã hủy' THEN 1 END) AS [cancel_order]\n"
                         + "FROM [BirdFarmShop].[dbo].[Order]\n";
-                if (startDay != null) {
-                    query += "WHERE [order_date] >= '" + startDay + "'";
+                if (startDay != null && endDay == null) {
+                    query += "WHERE [order_date] >= '" + startDay + " 00:00:00.000'";
+                } else if (endDay != null && startDay == null) {
+                    query += "WHERE [order_date] <= '" + endDay + " 00:00:00.000'";
+                } else if (endDay != null && startDay != null) {
+                    query += "WHERE [order_date] >= '" + startDay + " 00:00:00.000'\n"
+                            + " AND [order_date] <= '" + endDay + " 00:00:00.000'";
                 }
                 st = con.createStatement();
                 rs = st.executeQuery(query);
@@ -1020,7 +1026,7 @@ public class OrderDAO {
         return r;
     }
 
-    public ArrayList<Integer> getProductSale(LocalDate startDay) throws SQLException {
+    public ArrayList<Integer> getProductSale(LocalDate startDay, LocalDate endDay) throws SQLException {
         ArrayList<Integer> p = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
@@ -1036,17 +1042,25 @@ public class OrderDAO {
                         + "		LEFT JOIN [BirdFarmShop].[dbo].BirdPair bp\n"
                         + "		ON oi.pair_id = bp.pair_id\n"
                         + "		RIGHT JOIN [BirdFarmShop].[dbo].[Order] o\n"
-                        + "		ON oi.order_id = o.order_id\n"
+                        + "		ON oi.[order_id] = o.[order_id]\n"
                         + "		WHERE bp.status = N'Đã thanh toán' \n";
-                if (startDay != null) {
-                    query += "		AND o.order_date >= '" + startDay + "'\n";
+                if (startDay != null && endDay == null) {
+                    query += "		AND o.[order_date] >= '" + startDay + " 00:00:00.000'\n";
+                } else if (endDay != null && startDay == null) {
+                    query += "		AND o.[order_date] <= '" + endDay + " 00:00:00.000'\n";
+                } else if (startDay != null && endDay != null) {
+                    query += "		AND (order_date >= '" + startDay + " 00:00:00.000' AND order_date < = '" + endDay + " 00:00:00.000')\n";
                 }
                 query += "	 	)AS pair\n"
                         + "FROM [BirdFarmShop].[dbo].[OrderItem] oi\n"
                         + "RIGHT JOIN [BirdFarmShop].[dbo].[Order] o\n"
-                        + "ON oi.order_id = o.order_id\n";
-                if (startDay != null) {
-                    query += "WHERE o.order_date >= '" + startDay + "'";
+                        + "ON oi.[order_id] = o.[order_id]\n";
+                if (startDay != null && endDay == null) {
+                    query += "WHERE o.[order_date] >= '" + startDay + " 00:00:00.000'\n";
+                } else if (endDay != null && startDay == null) {
+                    query += "		AND o.[order_date] <= '" + endDay + " 00:00:00.000'\n";
+                } else if (startDay != null && endDay != null) {
+                    query += "		AND (order_date >= '" + startDay + " 00:00:00.000' AND order_date < = '" + endDay + " 00:00:00.000')\n";
                 }
                 stm = con.prepareStatement(query);
                 rs = stm.executeQuery();
@@ -1074,4 +1088,524 @@ public class OrderDAO {
         return p;
     }
 
+    public ArrayList<Object> getMoneyByWeek(LocalDate startDay, String typeMoney) throws SQLException {
+        ArrayList<Object> r = new ArrayList<>();
+        ArrayList<String> dateWeek = new ArrayList<>();
+        ArrayList<Long> money = new ArrayList<>();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        LocalDate dateNow = LocalDate.now();
+        String[] date = {"Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật"};
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                for (int i = 0; i < date.length - 1; i++) {
+                    String query = "SELECT SUM(total_price) AS [total_price]\n"
+                            + "       FROM [BirdFarmShop].[dbo].[Order]\n";
+                    if (startDay != null) {
+                        query += "       WHERE (order_date >= '" + startDay + " 00:00:00.000' \n"
+                                + "	   AND order_date < = '" + startDay + " 23:59:59.999')\n";
+                    }
+                    if (typeMoney != null && typeMoney.equals("online")) {
+                        query += "   AND payment_type = N'Chuyển khoản'\n";
+                    } else if (typeMoney != null && typeMoney.equals("receiver")) {
+                        query += "   AND payment_type = N'Tiền mặt'\n";
+                    }
+                    st = con.createStatement();
+                    rs = st.executeQuery(query);
+                    if (rs != null && rs.next()) {
+                        money.add(rs.getLong("total_price"));
+                        dateWeek.add(date[i]);
+                    }
+                    if (startDay.getDayOfWeek() == dateNow.getDayOfWeek()) {
+                        break;
+                    }
+                    startDay = startDay.plusDays(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (st != null) {
+                st.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+
+        r.add(dateWeek);
+
+        r.add(money);
+        return r;
+    }
+
+    public ArrayList<Long> getMoneyByWeek(LocalDate startDay, String typeMoney, boolean bird, boolean accessory, boolean birdPair) throws SQLException {
+        ArrayList<Long> money = new ArrayList<>();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        LocalDate dateNow = LocalDate.now();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                for (int i = 0; i < 6; i++) {
+                    String query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]) AS [total_price]\n"
+                            + "       FROM [BirdFarmShop].[dbo].[Order] o\n"
+                            + "	   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
+                            + "	   ON o.[order_id] = oi.[order_id]\n";
+                    if (startDay != null) {
+                        query += "       WHERE (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
+                                + "	   AND o.[order_date] < = '" + startDay + " 23:59:59.999')\n";
+                    }
+                    if (typeMoney != null && typeMoney.equals("online")) {
+                        query += "   AND o.payment_type = N'Chuyển khoản'\n";
+                    } else if (typeMoney != null && typeMoney.equals("receiver")) {
+                        query += "   AND o.payment_type = N'Tiền mặt'\n";
+                    }
+                    if (bird) {
+                        query += " AND oi.bird_id IS NOT NULL\n";
+                    } else if (accessory) {
+                        query += "AND oi.accessory_id IS NOT NULL\n";
+                    } else {
+                        query += "AND oi.pair_id IS NOT NULL\n";
+                    }
+                    st = con.createStatement();
+                    rs = st.executeQuery(query);
+                    if (rs != null && rs.next()) {
+                        money.add(rs.getLong("total_price"));
+                    }
+                    if (startDay.getDayOfWeek() == dateNow.getDayOfWeek()) {
+                        break;
+                    }
+                    startDay = startDay.plusDays(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (st != null) {
+                st.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return money;
+    }
+
+    public ArrayList<Object> getMoneyByMonth(LocalDate startDay, String typeMoney) throws SQLException {
+        ArrayList<Object> r = new ArrayList<>();
+        ArrayList<Integer> dateMonth = new ArrayList<>();
+        ArrayList<Long> money = new ArrayList<>();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        LocalDate dateNow = LocalDate.now();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                for (int i = 0; i < 31; i++) {
+                    String query = "SELECT SUM(total_price) AS [total_price]\n"
+                            + "       FROM [BirdFarmShop].[dbo].[Order]\n";
+                    if (startDay != null) {
+                        query += "       WHERE (order_date >= '" + startDay + " 00:00:00.000' \n"
+                                + "	   AND order_date < = '" + startDay + " 23:59:59.999')\n";
+                    }
+                    if (typeMoney != null && typeMoney.equals("online")) {
+                        query += "   AND payment_type = N'Chuyển khoản'\n";
+                    } else if (typeMoney != null && typeMoney.equals("receiver")) {
+                        query += "   AND payment_type = N'Tiền mặt'\n";
+                    }
+                    st = con.createStatement();
+                    rs = st.executeQuery(query);
+                    if (rs != null && rs.next()) {
+                        money.add(rs.getLong("total_price"));
+                        dateMonth.add(startDay.getDayOfMonth());
+                    }
+                    if (startDay.getDayOfMonth() == dateNow.getDayOfMonth()) {
+                        break;
+                    }
+                    startDay = startDay.plusDays(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (st != null) {
+                st.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+
+        r.add(dateMonth);
+        r.add(money);
+        return r;
+    }
+
+    public ArrayList<Long> getMoneyByMonth(LocalDate startDay, String typeMoney, boolean bird, boolean accessory, boolean birdPair) throws SQLException {
+        ArrayList<Long> money = new ArrayList<>();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        LocalDate dateNow = LocalDate.now();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                for (int i = 0; i < 31; i++) {
+                    String query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]) AS [total_price]\n"
+                            + "       FROM [BirdFarmShop].[dbo].[Order] o\n"
+                            + "	   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
+                            + "	   ON o.[order_id] = oi.[order_id]\n";
+                    if (startDay != null) {
+                        query += "       WHERE (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
+                                + "	   AND o.[order_date] < = '" + startDay + " 23:59:59.999')\n";
+                    }
+                    if (typeMoney != null && typeMoney.equals("online")) {
+                        query += "   AND o.payment_type = N'Chuyển khoản'\n";
+                    } else if (typeMoney != null && typeMoney.equals("receiver")) {
+                        query += "   AND o.payment_type = N'Tiền mặt'\n";
+                    }
+                    if (bird) {
+                        query += " AND oi.bird_id IS NOT NULL\n";
+                    } else if (accessory) {
+                        query += "AND oi.accessory_id IS NOT NULL\n";
+                    } else {
+                        query += "AND oi.pair_id IS NOT NULL\n";
+                    }
+                    st = con.createStatement();
+                    rs = st.executeQuery(query);
+                    if (rs != null && rs.next()) {
+                        money.add(rs.getLong("total_price"));
+                    }
+                    if (startDay.getDayOfMonth() == dateNow.getDayOfMonth()) {
+                        break;
+                    }
+                    startDay = startDay.plusDays(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (st != null) {
+                st.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return money;
+    }
+
+    public ArrayList<Object> getMoneyByYear(LocalDate startDay, String typeMoney) throws SQLException {
+        ArrayList<Object> r = new ArrayList<>();
+        ArrayList<String> dateYear = new ArrayList<>();
+        ArrayList<Long> money = new ArrayList<>();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        LocalDate dateNow = LocalDate.now();
+        String[] month = {"Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"};
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                for (int i = 0; i < month.length - 1; i++) {
+                    int maxDay = startDay.lengthOfMonth();
+                    LocalDate localMaxDate = LocalDate.of(startDay.getYear(), startDay.getMonth(), maxDay);
+                    String query = "SELECT SUM(total_price) AS [total_price]\n"
+                            + "       FROM [BirdFarmShop].[dbo].[Order]\n";
+                    if (startDay != null) {
+                        query += "       WHERE (order_date >= '" + startDay + " 00:00:00.000' \n"
+                                + "	   AND order_date < = '" + localMaxDate + " 23:59:59.999')\n";
+                    }
+                    if (typeMoney != null && typeMoney.equals("online")) {
+                        query += "   AND payment_type = N'Chuyển khoản'\n";
+                    } else if (typeMoney != null && typeMoney.equals("receiver")) {
+                        query += "   AND payment_type = N'Tiền mặt'\n";
+                    }
+                    st = con.createStatement();
+                    rs = st.executeQuery(query);
+                    if (rs != null && rs.next()) {
+                        money.add(rs.getLong("total_price"));
+                        dateYear.add(month[i]);
+                    }
+                    if (startDay.getMonth() == dateNow.getMonth()) {
+                        break;
+                    }
+                    startDay = startDay.plusMonths(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (st != null) {
+                st.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+
+        r.add(dateYear);
+
+        r.add(money);
+        return r;
+    }
+
+    public ArrayList<Long> getMoneyByYear(LocalDate startDay, String typeMoney, boolean bird, boolean accessory, boolean birdPair) throws SQLException {
+        ArrayList<Long> money = new ArrayList<>();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        LocalDate dateNow = LocalDate.now();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                for (int i = 0; i < 11; i++) {
+                    int maxDay = startDay.lengthOfMonth();
+                    LocalDate localMaxDate = LocalDate.of(startDay.getYear(), startDay.getMonth(), maxDay);
+                    String query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]) AS [total_price]\n"
+                            + "       FROM [BirdFarmShop].[dbo].[Order] o\n"
+                            + "	   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
+                            + "	   ON o.[order_id] = oi.[order_id]\n";
+                    if (startDay != null) {
+                        query += "       WHERE (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
+                                + "	   AND o.[order_date] < = '" + localMaxDate + " 23:59:59.999')\n";
+                    }
+                    if (typeMoney != null && typeMoney.equals("online")) {
+                        query += "   AND o.payment_type = N'Chuyển khoản'\n";
+                    } else if (typeMoney != null && typeMoney.equals("receiver")) {
+                        query += "   AND o.payment_type = N'Tiền mặt'\n";
+                    }
+                    if (bird) {
+                        query += " AND oi.bird_id IS NOT NULL\n";
+                    } else if (accessory) {
+                        query += "AND oi.accessory_id IS NOT NULL\n";
+                    } else {
+                        query += "AND oi.pair_id IS NOT NULL\n";
+                    }
+                    st = con.createStatement();
+                    rs = st.executeQuery(query);
+                    if (rs != null && rs.next()) {
+                        money.add(rs.getLong("total_price"));
+                    }
+                    if (startDay.getMonth() == dateNow.getMonth()) {
+                        break;
+                    }
+                    startDay = startDay.plusMonths(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (st != null) {
+                st.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return money;
+    }
+
+    public ArrayList<Object> getMoneyByAll(String typeMoney) throws SQLException {
+        OrderDAO order = new OrderDAO();
+        ArrayList<Object> r = new ArrayList<>();
+        ArrayList<Integer> dateYear = new ArrayList<>();
+        ArrayList<Long> money = new ArrayList<>();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        LocalDate dateNow = LocalDate.now();
+        LocalDate dateOrder = order.getFirstOrder().getOrder_date().toLocalDate();
+        LocalDate startDate = LocalDate.of(dateOrder.getYear(), 1, 1);
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                for (int i = 0; i < 11; i++) {
+                    LocalDate localMaxDate = LocalDate.of(startDate.getYear(), 12, 31);
+                    String query = "SELECT SUM(total_price) AS [total_price]\n"
+                            + "       FROM [BirdFarmShop].[dbo].[Order]\n"
+                            + "       WHERE (order_date >= '" + startDate + " 00:00:00.000' \n"
+                            + "	   AND order_date < = '" + localMaxDate + " 23:59:59.999')\n";
+                    if (typeMoney != null && typeMoney.equals("online")) {
+                        query += "   AND payment_type = N'Chuyển khoản'\n";
+                    } else if (typeMoney != null && typeMoney.equals("receiver")) {
+                        query += "   AND payment_type = N'Tiền mặt'\n";
+                    }
+                    st = con.createStatement();
+                    rs = st.executeQuery(query);
+                    if (rs != null && rs.next()) {
+                        money.add(rs.getLong("total_price"));
+                        dateYear.add(startDate.getYear());
+                    }
+                    if (startDate.getYear() == dateNow.getYear()) {
+                        break;
+                    }
+                    startDate = startDate.plusYears(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (st != null) {
+                st.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+
+        r.add(dateYear);
+        r.add(money);
+        return r;
+    }
+
+    public ArrayList<Long> getMoneyByAll(String typeMoney, boolean bird, boolean accessory, boolean birdPair) throws SQLException {
+        OrderDAO order = new OrderDAO();
+        ArrayList<Long> money = new ArrayList<>();
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        LocalDate dateNow = LocalDate.now();
+        LocalDate dateOrder = order.getFirstOrder().getOrder_date().toLocalDate();
+        LocalDate startDate = LocalDate.of(dateOrder.getYear(), 1, 1);
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                for (int i = 0; i < 11; i++) {
+                    LocalDate localMaxDate = LocalDate.of(startDate.getYear(), 12, 31);
+                    String query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]) AS [total_price]\n"
+                            + "       FROM [BirdFarmShop].[dbo].[Order] o\n"
+                            + "	   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
+                            + "	   ON o.[order_id] = oi.[order_id]\n"
+                            + "       WHERE (o.[order_date] >= '" + startDate + " 00:00:00.000' \n"
+                            + "	   AND o.[order_date] < = '" + localMaxDate + " 23:59:59.999')\n";
+                    if (typeMoney != null && typeMoney.equals("online")) {
+                        query += "   AND o.payment_type = N'Chuyển khoản'\n";
+                    } else if (typeMoney != null && typeMoney.equals("receiver")) {
+                        query += "   AND o.payment_type = N'Tiền mặt'\n";
+                    }
+                    if (bird) {
+                        query += " AND oi.bird_id IS NOT NULL\n";
+                    } else if (accessory) {
+                        query += "AND oi.accessory_id IS NOT NULL\n";
+                    } else {
+                        query += "AND oi.pair_id IS NOT NULL\n";
+                    }
+                    System.out.println(query);
+                    st = con.createStatement();
+                    rs = st.executeQuery(query);
+                    if (rs != null && rs.next()) {
+                        money.add(rs.getLong("total_price"));
+                    }
+                    if (startDate.getYear() == dateNow.getYear()) {
+                        break;
+                    }
+                    startDate = startDate.plusYears(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (st != null) {
+                st.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return money;
+    }
+
+    public Order getFirstOrder() {
+        Order o = null;
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String sql = "SELECT TOP 1 [order_id]\n"
+                        + "      ,[customer]\n"
+                        + "      ,[order_date]\n"
+                        + "      ,[order_status]\n"
+                        + "      ,[name_receiver]\n"
+                        + "      ,[phone_receiver]\n"
+                        + "      ,[address_receiver]\n"
+                        + "      ,[payment_status]\n"
+                        + "      ,[total_price]\n"
+                        + "      ,[applied_point]\n"
+                        + "  FROM [BirdFarmShop].[dbo].[Order]\n"
+                        + "  ORDER BY order_date ASC";
+                st = con.createStatement();
+                rs = st.executeQuery(sql);
+                if (rs != null && rs.next()) {
+                    String order_id = rs.getString("order_id");
+                    String customer = rs.getString("customer");
+                    Date order_date = rs.getDate("order_date");
+                    String order_status = rs.getString("order_status");
+                    String name_receiver = rs.getString("name_receiver");
+                    int phone_receiver = rs.getInt("phone_receiver");
+                    String address_receiver = rs.getString("address_receiver");
+                    String payment_status = rs.getString("payment_status");
+                    int total_price = rs.getInt("total_price");
+                    int point = rs.getInt("applied_point");
+                    o = new Order(order_id, customer, order_date, order_status, name_receiver, phone_receiver, address_receiver, payment_status, total_price, point);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return o;
+    }
 }

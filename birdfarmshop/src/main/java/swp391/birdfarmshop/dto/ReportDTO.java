@@ -22,7 +22,10 @@ public class ReportDTO {
     private int totalBirdPair;
     private int stockBirdPair;
     private ArrayList<Integer> birdPair;
-
+    private ArrayList<Long> totalMoneyBird;
+    private ArrayList<Long> totalMoneyAccessory;
+    private ArrayList<Long> totalMoneyBirdPair;
+    private ArrayList<Object> totalMoney;
     public ArrayList<Object> getRevenue() {
         return revenue;
     }
@@ -100,7 +103,7 @@ public class ReportDTO {
     public void setBirdPair(ArrayList<Integer> birdPair) {
         this.totalBirdPair = birdPair.get(0);
         birdPair.remove(0);
-        this.stockBirdPair = this.totalBirdPair - birdPair.get(1);
+        this.stockBirdPair = this.totalBirdPair - birdPair.get(0);
         birdPair.remove(0);
         this.birdPair = birdPair;
     }
@@ -113,4 +116,36 @@ public class ReportDTO {
         this.stockBirdPair = stockBirdPair;
     }
 
+    public ArrayList<Object> getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(ArrayList<Object> totalMoney) {
+        this.totalMoney = totalMoney;
+    }
+
+    public ArrayList<Long> getTotalMoneyBird() {
+        return totalMoneyBird;
+    }
+
+    public void setTotalMoneyBird(ArrayList<Long> totalMoneyBird) {
+        this.totalMoneyBird = totalMoneyBird;
+    }
+
+    public ArrayList<Long> getTotalMoneyAccessory() {
+        return totalMoneyAccessory;
+    }
+
+    public void setTotalMoneyAccessory(ArrayList<Long> totalMoneyAccessory) {
+        this.totalMoneyAccessory = totalMoneyAccessory;
+    }
+
+    public ArrayList<Long> getTotalMoneyBirdPair() {
+        return totalMoneyBirdPair;
+    }
+
+    public void setTotalMoneyBirdPair(ArrayList<Long> totalMoneyBirdPair) {
+        this.totalMoneyBirdPair = totalMoneyBirdPair;
+    }
+    
 }

@@ -3,33 +3,40 @@ Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,Bli
 Chart.defaults.global.defaultFontColor = '#858796';
 
 // Pie Chart Example
-var ctx = document.getElementById("myPieChart");
-var myPieChart = new Chart(ctx, {
-  type: 'doughnut',
-  data: {
-    labels: ["Chim", "Phụ kiện", "Nhân giống","Tổ chim non"],
-    datasets: [{
-      data: [20, 60, 10,10],
-      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc','#FAF356'],
-      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf','#A4A038'],
-      hoverBorderColor: "rgba(234, 236, 244, 1)",
-    }],
-  },
-  options: {
-    maintainAspectRatio: false,
-    tooltips: {
-      backgroundColor: "rgb(255,255,255)",
-      bodyFontColor: "#858796",
-      borderColor: '#dddfeb',
-      borderWidth: 1,
-      xPadding: 15,
-      yPadding: 15,
-      displayColors: false,
-      caretPadding: 10,
-    },
-    legend: {
-      display: false
-    },
-    cutoutPercentage: 80,
-  },
-});
+function pie(nodePie, label, color, hoverColor, data) {
+    if (nodePie && nodePie.chart) {
+        nodePie.chart.destroy();
+    }
+    var myPieChart = new Chart(nodePie, {
+        type: "doughnut",
+        data: {
+            labels: label,
+            datasets: [
+                {
+                    data: data,
+                    backgroundColor: color,
+                    hoverBackgroundColor: hoverColor,
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                },
+            ],
+        },
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                borderColor: "#dddfeb",
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                caretPadding: 10,
+            },
+            legend: {
+                display: false,
+            },
+            cutoutPercentage: 60,
+        },
+    });
+    nodePie.chart = myPieChart;
+}

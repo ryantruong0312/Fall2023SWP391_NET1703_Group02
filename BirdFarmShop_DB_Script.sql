@@ -716,15 +716,15 @@ VALUES
 GO
 
 INSERT INTO [Order]([order_id],[customer],[order_date],[order_status],[address_receiver],[payment_status],[payment_type],[total_price],[applied_point])
-VALUES('230925O0001','customer','2023-09-25',N'Đã hủy',null,N'Đã thanh toán',N'Chuyển khoản',3000000,3),
-	  ('230915O0002','giaphong','2023-09-15',N'Đang xử lý',null,N'Đã thanh toán',N'Chuyển khoản',300000,1),
-	  ('230916O0003','nhathoang','2023-09-16',N'Đang giao hàng',null,N'Đã thanh toán',N'Tiền mặt',300000,1),
-	  ('230917O0004','huynhduc','2023-09-17',N'Đang giao hàng',null,N'Đã thanh toán',N'Tiền mặt',300000,1),
-	  ('230918O0005','khachhangvip','2023-09-18',N'Đã hủy',null,N'Đã thanh toán',N'Chuyển khoản',300000,1),
-	  ('230919O0006','customer','2023-09-19',N'Đã giao hàng',null,N'Đã thanh toán',N'Tiền mặt',300000,1),
-	  ('230912O0007','customer','2023-09-20',N'Đã đánh giá',null,N'Đã thanh toán',N'Chuyển khoản',300000,1),
-	  ('231027O0008','customer','2023-10-27',N'Chờ xử lý',null,N'Đã thanh toán',N'Chuyển khoản',300000,1),
-	  ('231027O0009','customer','2023-10-27',N'Chờ xử lý',null,N'Đã thanh toán',N'Chuyển khoản',300000,1);
+VALUES('230925O0001','customer','2022-09-25',N'Đã hủy',null,N'Đã thanh toán',N'Chuyển khoản',2950000,0),
+	  ('230915O0002','giaphong','2021-09-15',N'Đang xử lý',null,N'Đã thanh toán',N'Chuyển khoản',27600000,0),
+	  ('230916O0003','nhathoang','2023-03-16',N'Đang giao hàng',null,N'Đã thanh toán',N'Tiền mặt',4950000,0),
+	  ('230917O0004','huynhduc','2023-09-17',N'Đang giao hàng',null,N'Đã thanh toán',N'Tiền mặt',830000,0),
+	  ('230918O0005','khachhangvip','2023-09-18',N'Đã hủy',null,N'Đã thanh toán',N'Chuyển khoản',3450000,0),
+	  ('230919O0006','customer','2020-09-19',N'Đã giao hàng',null,N'Đã thanh toán',N'Tiền mặt',25570000,0),
+	  ('230912O0007','customer','2020-09-20',N'Đã đánh giá',null,N'Đã thanh toán',N'Chuyển khoản',7650000,0),
+	  ('231027O0008','customer','2023-6-27',N'Chờ xử lý',null,N'Đã thanh toán',N'Chuyển khoản',700000,0),
+	  ('231027O0009','customer','2023-7-27',N'Chờ xử lý',null,N'Đã thanh toán',N'Chuyển khoản',700000,0);
 GO
 
 INSERT INTO [OrderItem]([order_id],[bird_id],[nest_id],[accessory_id],[unit_price],[order_quantity])

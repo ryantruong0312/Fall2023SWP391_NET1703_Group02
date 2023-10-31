@@ -46,7 +46,7 @@ public class BirdPairDAO {
                 if (username == null && status != null) {
                     sql += "WHERE bp.[status] = N'" + status + "'\n";
                 }
-                 sql  += "ORDER BY bp.pair_id DESC";
+                sql += "ORDER BY bp.pair_id DESC";
                 st = con.createStatement();
                 rs = st.executeQuery(sql);
                 while (rs.next()) {
@@ -277,7 +277,8 @@ public class BirdPairDAO {
         }
         return result;
     }
-    public ArrayList<Integer> getBirdPairByStatus(){
+
+    public ArrayList<Integer> getBirdPairByStatus() {
         ArrayList<Integer> birdPair = new ArrayList<>();
         Connection con = null;
         Statement st = null;
@@ -297,12 +298,12 @@ public class BirdPairDAO {
                 st = con.createStatement();
                 rs = st.executeQuery(sql);
                 if (rs != null && rs.next()) {
-                   birdPair.add(rs.getInt("total_birdPair"));
-                   birdPair.add(rs.getInt("payment"));
-                   birdPair.add(rs.getInt("waiting_bird"));
-                   birdPair.add(rs.getInt("pairing"));
-                   birdPair.add(rs.getInt("spawned") );
-                   birdPair.add(rs.getInt("hatched")+rs.getInt("payment"));
+                    birdPair.add(rs.getInt("total_birdPair"));
+                    birdPair.add(rs.getInt("payment"));
+                    birdPair.add(rs.getInt("waiting_bird"));
+                    birdPair.add(rs.getInt("pairing"));
+                    birdPair.add(rs.getInt("spawned"));
+                    birdPair.add(rs.getInt("hatched") + rs.getInt("payment"));
                 }
             }
         } catch (Exception e) {
