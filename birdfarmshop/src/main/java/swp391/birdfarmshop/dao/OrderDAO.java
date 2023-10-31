@@ -630,7 +630,6 @@ public class OrderDAO {
                     int start = (pageNumber - 1) * recordsPerPage;
                     query += "ORDER BY (SELECT NULL) OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
                 }
-                System.out.println(query);
                 stm = con.prepareStatement(query);
                 rs = stm.executeQuery();
                 while (rs.next()) {
@@ -1570,7 +1569,6 @@ public class OrderDAO {
                     } else {
                         query += "AND oi.pair_id IS NOT NULL\n";
                     }
-                    System.out.println(query);
                     st = con.createStatement();
                     rs = st.executeQuery(query);
                     if (rs != null && rs.next()) {

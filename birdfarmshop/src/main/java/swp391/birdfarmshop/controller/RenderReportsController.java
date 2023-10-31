@@ -37,7 +37,7 @@ public class RenderReportsController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        String url = ERROR;
+        String url = SUCCESS;
         String filter = request.getParameter("filter");
         if (filter == null) {
             filter = "All";
@@ -152,11 +152,11 @@ public class RenderReportsController extends HttpServlet {
                     }
                 } else {
                     url = ERROR;
-                    session.setAttribute("ERROR", "B?n kh�ng c� quy?n truy c?p");
+                    session.setAttribute("ERROR", "Bạn không có quyền truy cập");
                 }
             } else {
                 url = ERROR;
-                session.setAttribute("ERROR", "B?n chua dang nh?p");
+                session.setAttribute("ERROR", "Bạn chưa đăng nhập");
             }
         } catch (Exception e) {
             log("Error at RenderReportsController: " + e.toString());

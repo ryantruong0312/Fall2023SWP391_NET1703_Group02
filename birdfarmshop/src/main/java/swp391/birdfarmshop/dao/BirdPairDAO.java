@@ -289,11 +289,11 @@ public class BirdPairDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 String sql = "SELECT COUNT(pair_id) AS [total_birdPair],\n"
-                        + "	   COUNT(CASE WHEN [status]= N'–„ thanh to·n' THEN 1 END) AS [payment],\n"
-                        + "	   COUNT(CASE WHEN [status]= N'Ch? l?y chim' THEN 1 END) AS [waiting_bird],\n"
-                        + "	   COUNT(CASE WHEN [status]= N'–ang ghÈp c?p' THEN 1 END) AS [pairing],\n"
-                        + "	   COUNT(CASE WHEN [status]= N'–„ sinh s?n' THEN 1 END) AS [spawned],\n"
-                        + "	   COUNT(CASE WHEN [status]= N'–„ ?p n?' THEN 1 END) AS [hatched]\n"
+                        + "	   COUNT(CASE WHEN [status]= N'ƒê√£ thanh to√°n' THEN 1 END) AS [payment],\n"
+                        + "	   COUNT(CASE WHEN [status]= N'Ch·ªù l·∫•y chim' THEN 1 END) AS [waiting_bird],\n"
+                        + "	   COUNT(CASE WHEN [status]= N'ƒêang gh√©p c·∫∑p' THEN 1 END) AS [pairing],\n"
+                        + "	   COUNT(CASE WHEN [status]= N'ƒêang sinh s·∫£n' THEN 1 END) AS [spawned],\n"
+                        + "	   COUNT(CASE WHEN [status]= N'ƒê√£ ·∫•p n·ªü' THEN 1 END) AS [hatched]\n"
                         + "FROM [BirdFarmShop].[dbo].[BirdPair]";
                 st = con.createStatement();
                 rs = st.executeQuery(sql);
