@@ -42,6 +42,61 @@ public class OrderDAO {
 
     public String error = null;
 
+    public int createOrder(String order_id, String username, String status, String name_receiver, String phone_receiver,
+            String address_receiver, String payment_status, String payment_type, CartDTO cart, int point) throws SQLException {
+        int result = 0;
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String createOrder = "INSERT INTO [ORDER]\n"
+                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+                pst.setString(1, order_id);
+                pst.setString(2, username);
+                LocalDateTime customDateTime = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+                String sqlDate = customDateTime.format(formatter);
+                pst.setString(3, sqlDate);
+                pst.setString(4, status);
+                pst.setString(5, name_receiver);
+                pst.setString(6, phone_receiver);
+                pst.setString(7, address_receiver);
+                pst.setString(8, payment_status);
+                pst.setString(9, payment_type);
+                pst.setInt(10, cart.getCartTotalPrice());
+                pst.setInt(11, point);
+                result = pst.executeUpdate();
+            }
+        }catch(Exception e){ e.printStackTrace();
+            try {
+                con.rollback();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return result;
+            
+        }
+
+    
+
     public int createNewOrder(String order_id, String username, String status, String name_receiver, String phone_receiver,
             String address_receiver, String payment_status, CartDTO cart, CartDTO cartCheckout, int point,String payment_type) {
         int result = 0;
@@ -107,7 +162,7 @@ public class OrderDAO {
                             pst.setString(1, b.getBird_id());
                             result = pst.executeUpdate();
                             if (result == 0) {
-                                 checkBird = false;
+                                checkBird = false;
                                 break;
                             } else {
                                 String insertBird = "INSERT INTO [OrderItem]([order_id],[bird_id],\n"
@@ -120,7 +175,7 @@ public class OrderDAO {
                                 pst.setInt(4, 1);
                                 result = pst.executeUpdate();
                                 if (result == 0) {
-                                     checkBird = false;
+                                    checkBird = false;
                                     break;
                                 }
                             }
@@ -143,11 +198,11 @@ public class OrderDAO {
                             int numberAccessory = rs.getInt("stock_quantity");
                             if (numberAccessory == 0) {
                                 error = a.getAccessory_name() + " đã hết hàng";
-                                 checkAccessory = false;
+                                checkAccessory = false;
                                 break;
                             } else if (numberAccessory < oa.getOrder_quantity()) {
                                 error = a.getAccessory_name() + " không đủ số lượng trong kho";
-                                 checkAccessory = false;
+                                checkAccessory = false;
                                 break;
                             } else {
                                 int newStock = numberAccessory - oa.getOrder_quantity();
@@ -313,7 +368,7 @@ public class OrderDAO {
                                         pst.setString(1, order_id);
                                         long malePrice = (long) male.getPrice() * 20 / 100;
                                         long femalePrice = (long) female.getPrice() * 20 / 100;
-                                        pst.setInt(2,  Math.round((int)(malePrice + femalePrice) / 100000) * 100000);
+                                        pst.setInt(2, Math.round((int) (malePrice + femalePrice) / 100000) * 100000);
                                         pst.setString(3, male.getBird_id());
                                         pst.setString(4, female.getBird_id());
                                         pst.setString(5, "Chờ lấy chim");
@@ -327,7 +382,7 @@ public class OrderDAO {
                                             pst = con.prepareStatement(updateBirdMale);
                                             pst.setString(1, male.getBird_id());
                                             result = pst.executeUpdate();
-                                            if (result == 0) {                                               
+                                            if (result == 0) {
                                                 error = "Sản phẩm này không thể ghép cặp";
                                                 checkBirdPair = false;
                                                 break;
@@ -839,7 +894,7 @@ public class OrderDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                switch(status) {
+                switch (status) {
                     case "wait":
                         status = "Chờ xử lý";
                         break;
@@ -859,16 +914,16 @@ public class OrderDAO {
                         status = "Đã hủy";
                         ArrayList<OrderItemDTO> orderDetails = itemDao.getItemByOrderId(order_id);
                         for (OrderItemDTO orderDetail : orderDetails) {
-                            if(orderDetail.getBird() != null ) {
+                            if (orderDetail.getBird() != null) {
                                 birdDao.updateBirdStatus("Còn hàng", orderDetail.getBird().getBird_id());
                             }
-                            if(orderDetail.getAccessory() != null) {
+                            if (orderDetail.getAccessory() != null) {
                                 AccessoryDTO accessory = accessoryDao.getAccessoryDetailsByID(orderDetail.getAccessory().getAccessory_id());
                                 int quantity = accessory.getStock_quantity();
-                                String stockQuantity = String.valueOf(orderDetail.getAccessory().getStock_quantity()+quantity);
+                                String stockQuantity = String.valueOf(orderDetail.getAccessory().getStock_quantity() + quantity);
                                 accessoryDao.updateAccessoryQuantity(orderDetail.getAccessory().getAccessory_id(), stockQuantity);
                             }
-                            if(orderDetail.getBirdNest() != null) {
+                            if (orderDetail.getBirdNest() != null) {
                                 BirdNest nest = nestDao.getBirdsNestById(orderDetail.getBirdNest().getNest_id());
                                 int baby_quantity = nest.getBaby_quantity() + orderDetail.getBirdNest().getBaby_quantity();
                                 nestDao.updateBirdNestBaby(baby_quantity, orderDetail.getBirdNest().getNest_id());
@@ -950,7 +1005,7 @@ public class OrderDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-               
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1079,7 +1134,6 @@ public class OrderDAO {
         return p;
     }
 
-
     public ArrayList<Integer> getProductSale(LocalDate startDay, LocalDate endDay) throws SQLException {
         ArrayList<Integer> p = new ArrayList<>();
         Connection con = null;
@@ -1141,6 +1195,7 @@ public class OrderDAO {
         }
         return p;
     }
+
     public ArrayList<Object> getMoneyByWeek(LocalDate startDay, String typeMoney) throws SQLException {
         ArrayList<Object> r = new ArrayList<>();
         ArrayList<String> dateWeek = new ArrayList<>();

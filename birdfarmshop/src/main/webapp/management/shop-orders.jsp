@@ -171,7 +171,10 @@
                                 dateReq = "&"+dateReq;
                             }
                             String statusReq = "&status=" + (String) request.getAttribute("status");
-                            String startDayReq = "&startDay=" + (String) request.getAttribute("startDay");
+                            String startDayReq = "startDay=" + (String) request.getAttribute("startDay");
+                            if(fullURL.contains("&"+startDayReq)) {
+                                startDayReq = "&"+startDayReq;
+                            }
                             String endDayReq = "&endDay=" + (String) request.getAttribute("endDay");
                             String searchReq = "&search=" + (String) request.getAttribute("search");
                             String pageReq = "&page=" + (String) request.getAttribute("page");
