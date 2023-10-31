@@ -34,6 +34,7 @@ public class UpdateOrderStatusController extends HttpServlet {
     throws ServletException, IOException, SQLException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
+        OrderDAO orderDao = new OrderDAO();
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
@@ -47,7 +48,6 @@ public class UpdateOrderStatusController extends HttpServlet {
                     status = "Đã hủy";
                 }
                 String order_id = request.getParameter("order_id");
-                OrderDAO orderDao = new OrderDAO();
                 boolean isUpdated = orderDao.updateOrderStatus(order_id, status);
                 Order order = orderDao.getOrderById(order_id);
                 ArrayList<Order> orderList = new ArrayList<>();
@@ -59,6 +59,15 @@ public class UpdateOrderStatusController extends HttpServlet {
                     request.setAttribute("MESSAGE", "Cập nhật thất bại");
                 }
                 url = SUCCESS;
+            } else if(user != null && user.getRole().equals("customer")){
+                String txtOrderId = request.getParameter("order_id");
+                boolean isUpdated = orderDao.updateOrderStatus(txtOrderId, "cancel");
+                url = "MainController?action=NavToCustomerOrder";
+                if(isUpdated) {
+                    session.setAttribute("SUCCESS", "Bạn đã hủy đơn hàng thành công");
+                } else {
+                    session.setAttribute("ERROR", "Bạn hủy đơn hàng thất bại. Liên hệ nhân viên để biết thêm thông tin.");
+                }
             } else {
                 url = HOME;
             }
