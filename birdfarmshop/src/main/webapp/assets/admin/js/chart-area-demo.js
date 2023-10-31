@@ -52,7 +52,7 @@ function showGraph(lables, data, numberCore, data2, data3, data4) {
                     data: data,
                 },
                 {
-                    label: "Số tiền chim",
+                    label: "Số tiền bán chim",
                     lineTension: 0.3,
                     backgroundColor: "rgba(73, 111, 222, 0.15)",
                     borderColor: "rgba(73, 111, 222, 1)",
@@ -83,7 +83,7 @@ function showGraph(lables, data, numberCore, data2, data3, data4) {
                     data: data3,
                 },
                 {
-                    label: "Số tiền ghép giống",
+                    label: "Số tiền nhân giống",
                     lineTension: 0.3,
                     backgroundColor: "rgba(54, 185, 204, 0.15)",
                     borderColor: "rgba(54, 185, 204, 1)",
@@ -141,7 +141,8 @@ function showGraph(lables, data, numberCore, data2, data3, data4) {
                     }],
             },
             legend: {
-                display: false
+                display: true,  
+                position: 'bottom'
             },
             tooltips: {
                 backgroundColor: "rgb(255,255,255)",

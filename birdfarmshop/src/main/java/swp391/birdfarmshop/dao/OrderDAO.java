@@ -1088,9 +1088,9 @@ public class OrderDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String query = "SELECT COUNT(order_item_id) AS totalProduct,\n"
+                String query = "SELECT SUM(CASE WHEN oi.unit_price > 0 THEN oi.order_quantity END) AS totalProduct,\n"
                         + "       COUNT( bird_id ) AS bird,\n"
-                        + "       COUNT( accessory_id ) AS accessory,\n"
+                        + "       SUM(CASE WHEN oi.unit_price > 0 AND oi.accessory_id IS NOT NULL THEN oi.order_quantity END) AS accessory,\n"
                         + "       (SELECT COUNT(oi.pair_id)\n"
                         + "		FROM [BirdFarmShop].[dbo].[OrderItem] oi\n"
                         + "		LEFT JOIN [BirdFarmShop].[dbo].BirdPair bp\n"
