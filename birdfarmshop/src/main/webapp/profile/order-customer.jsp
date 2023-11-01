@@ -421,6 +421,9 @@
                                                                         <!-- order id -->
                                                                         <div class="order-id">Mã đơn hàng: ${order.order_id} - Ngày mua: ${order.order_date}.</div>
                                                                         <!-- order status -->
+                                                                        <c:if test="${order.order_status eq 'Chờ xử lý'}">
+                                                                            <div><a href="UpdateOrderStatusController?order_id=${order.order_id}">HỦY ĐƠN HÀNG</a></div>
+                                                                        </c:if>
                                                                         <div class="order-status">${order.order_status}</div>
                                                                     </div>
                                                                 </section>
@@ -565,7 +568,7 @@
                                                             <div class="boundary-2 boundary-both"></div>
                                                         </div>
                                                         <div class="total-price">
-                                                            <c:if test="${order.name_receiver != null && order.phone_receiver != 0}">
+                                                            <c:if test="${order.name_receiver != null && order.phone_receiver != null}">
                                                             <div style="float: left;">
                                                                 <span>Người nhận: ${order.name_receiver} - Sđt: ${order.phone_receiver}</span>
                                                             </div>
@@ -591,6 +594,7 @@
                                                                     <div class="order-bar">
                                                                         <!-- order id -->
                                                                         <div class="order-id">Mã đơn hàng: ${map.key.order_id} - Ngày mua: ${map.key.order_date}.</div>
+                                                                        <div><a href="UpdateOrderStatusController?order_id=${order.order_id}">HỦY ĐƠN HÀNG</a></div>
                                                                         <!-- order status -->
                                                                         <div class="order-status">${map.key.order_status}</div>
                                                                     </div>
