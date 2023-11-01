@@ -17,7 +17,7 @@
 <c:url var="toShopOrders" value="MainController?action=NavToShopOrders"/>
 <c:url var="toAccounts" value="MainController?action=NavToAccounts"/>
 <c:url var="toReports" value="MainController?action=NavToReports"/>
-<c:url var="toPair" value="MainController?action=NavToPairBirds"/>\
+<c:url var="toPair" value="MainController?action=NavToPairBirds"/>
 <c:url var="toAddAccessory" value="MainController?action=NavToAddAccessory"/>
 <c:url var="toEditProfile" value="MainController?action=NavToEditProfile"/>
 <c:url var="toUpdatePassword" value="MainController?action=NavToUpdatePassword"/>
@@ -93,7 +93,7 @@
                                     <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                 </ul>
                             </li>
-                            <li class="submenu"><a class="${param.action == 'NavToBird' ? "active":""
+                            <li class="submenu"><a class="${param.action == 'NavToBirdPairShop' ? "active":""
                                                             ||param.action == 'NavToShopOrders' ? "active":""}">Đơn hàng</a>
                                 <ul>
                                     <li  class="scroll-to-section"><a class="${param.action == 'NavToShopOrders' ? "active":""}" href="${pageScope.toShopOrders}">Chim và phụ kiện</a></li>
