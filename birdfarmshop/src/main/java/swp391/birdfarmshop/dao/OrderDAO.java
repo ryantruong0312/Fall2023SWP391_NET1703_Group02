@@ -684,7 +684,7 @@ public class OrderDAO {
                 if (page != null) {
                     int pageNumber = Integer.parseInt(page);
                     int start = (pageNumber - 1) * recordsPerPage;
-                    query += "ORDER BY (SELECT NULL) OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
+                    query += "ORDER BY [order_date] DESC OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
                 }
                 stm = con.prepareStatement(query);
                 rs = stm.executeQuery();
