@@ -218,7 +218,7 @@
                                 <div class="row">                           
                                     <div class="col-lg-9">
                                         <label>Hình ảnh sản phẩm 2</label>
-                                        <input onchange="previewImage(event, 'productImagePreview2')" style="color: #0c5460;" type="file" name="txtImage_2" class="input form-control" accept="image/*"/>
+                                        <input onchange="previewImage(event, 'productImagePreview2')" style="color: #0c5460;" type="file" name="txtImage_2" class="input form-control" accept="image/*" required/>
                                     </div>
                                     <div class="col-lg-3">
                                         <img id="productImagePreview2" class="accessory-image"/>
@@ -230,7 +230,7 @@
                                 <div class="row">
                                     <div class="col-lg-9">
                                         <label>Hình ảnh sản phẩm 3</label>
-                                        <input onchange="previewImage(event, 'productImagePreview3')" style="color: #0c5460;" type="file" name="txtImage_3" class="input form-control" accept="image/*"/>
+                                        <input onchange="previewImage(event, 'productImagePreview3')" style="color: #0c5460;" type="file" name="txtImage_3" class="input form-control" accept="image/*" required/>
                                     </div>
                                     <div class="col-lg-3">
                                         <img id="productImagePreview3" class="accessory-image"/>

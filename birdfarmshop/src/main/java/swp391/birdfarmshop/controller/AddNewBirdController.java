@@ -89,23 +89,17 @@ public class AddNewBirdController extends HttpServlet {
                     String txtBirdDescription = request.getParameter("txtBirdDescription");
                     String txtBirdDiscount = request.getParameter("txtBirdDiscount");
                     String txtBirdStatus = "Còn hàng";
-                    Part image_1 = request.getPart("txtImage_1");
-                    Part image_2 = request.getPart("txtImage_2");
-                    Part image_3 = request.getPart("txtImage_3");
-                    if (image_1 != null && image_1.getSize() > 0) {
-                        addNewImage(image_1, "1", txtBirdId);
-                    }
-                    if(image_2 != null && image_2.getSize() > 0) {
-                        addNewImage(image_2, "0", txtBirdId);
-                    }
-                    if (image_3 != null && image_3.getSize() > 0) {
-                        addNewImage(image_3, "0", txtBirdId);
-                    }
                     boolean check = false;
                     check = birdDao.addNewBird(txtBirdId, txtBirdName + " " + txtBirdId, txtBirdColor,
                                 txtBirdDate, txtBirdGrownAge, txtBirdGender, txtBirdBreed,
                                 txtBirdAchievement, txtBirdReproduction_history, txtBirdPrice,
                                 txtBirdDescription, txtBirdDiscount, txtBirdStatus);
+                    Part image_1 = request.getPart("txtImage_1");
+                    Part image_2 = request.getPart("txtImage_2");
+                    Part image_3 = request.getPart("txtImage_3");
+                    addNewImage(image_1, "1", txtBirdId);
+                    addNewImage(image_2, "0", txtBirdId);
+                    addNewImage(image_3, "0", txtBirdId);
                     if (check) {
                         session.setAttribute("SUCCESS", "Tạo mới thành công");
                     } else {
