@@ -383,6 +383,14 @@
                             <div class="card-body profile-section">
                                 <div class="row gutters">
                                     <div class="card-body order-section">
+                                        <div id="popup" style="display: none; position: fixed; background-color: white; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;">
+                                            <div style="padding: 5px 0; white-space: nowrap;" id="update">
+                                                <div class="flex">
+                                                    <a href="UpdateOrderStatusController?order_id=${order.order_id}" style="background-color: #ffcccc;" class="flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round"><span>Xác nhận</span></a>
+                                                    <a style="background-color: #ffcccc;" class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" onclick="hide('popup');"><span>Hủy bỏ</span></a>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <!-- Tab buttons -->
                                         <ul class="nav nav-tabs row" id="orderTabs">
                                             <li class="nav-item col">
@@ -422,7 +430,10 @@
                                                                         <div class="order-id">Mã đơn hàng: ${order.order_id} - Ngày mua: ${order.order_date}.</div>
                                                                         <!-- order status -->
                                                                         <c:if test="${order.order_status eq 'Chờ xử lý'}">
-                                                                            <div><a href="UpdateOrderStatusController?order_id=${order.order_id}">HỦY ĐƠN HÀNG</a></div>
+                                                                            <div><a onclick="show('popup'); event.stopPropagation();" style="color: #007BFF;">HỦY ĐƠN HÀNG</a></div>
+                                                                        </c:if>
+                                                                        <c:if test="${order.order_status eq 'Đã giao hàng'}">
+                                                                            <div><a><span>ĐÁNH GIÁ ĐƠN HÀNG</span></a></div>
                                                                         </c:if>
                                                                         <div class="order-status">${order.order_status}</div>
                                                                     </div>
@@ -576,7 +587,7 @@
                                                             <div class="show-price">
                                                                 <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
                                                                 <label>Thành tiền: </label>
-                                                                <div class="total">${order.total_price}₫</div>
+                                                                <div class="total"><fmt:formatNumber value="${order.total_price}" pattern="#,###"/>₫</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -594,7 +605,7 @@
                                                                     <div class="order-bar">
                                                                         <!-- order id -->
                                                                         <div class="order-id">Mã đơn hàng: ${map.key.order_id} - Ngày mua: ${map.key.order_date}.</div>
-                                                                        <div><a href="UpdateOrderStatusController?order_id=${order.order_id}">HỦY ĐƠN HÀNG</a></div>
+                                                                        <div><a onclick="show('popup'); event.stopPropagation();" style="color: #007BFF;">HỦY ĐƠN HÀNG</a></div>
                                                                         <!-- order status -->
                                                                         <div class="order-status">${map.key.order_status}</div>
                                                                     </div>
@@ -748,7 +759,7 @@
                                                             <div class="show-price">
                                                                 <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
                                                                 <label>Thành tiền: </label>
-                                                                <div class="total">${map.key.total_price}₫</div>
+                                                                <div class="total"><fmt:formatNumber value="${map.key.total_price}" pattern="#,###"/>₫</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -868,7 +879,7 @@
                                                                                             </div>
                                                                                         </section>
                                                                                         </c:when>
-                                                                                        <c:otherwise>
+                                                                                        <c:when test="${orderItem.birdPair != null}">
                                                                                         <section>
                                                                                             <div class="info">
                                                                                                 <div class="info-left">
@@ -896,6 +907,15 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </section>
+                                                                                        </c:when>
+                                                                                        <c:otherwise>
+                                                                                            <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <span>Không có đơn hàng nào</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
                                                                                         </c:otherwise>
                                                                                     </c:choose> 
                                                                                 </c:forEach>
@@ -920,7 +940,7 @@
                                                             <div class="show-price">
                                                                 <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
                                                                 <label>Thành tiền: </label>
-                                                                <div class="total">${map.key.total_price}₫</div>
+                                                                <div class="total"><fmt:formatNumber value="${map.key.total_price}" pattern="#,###"/>₫</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1040,7 +1060,7 @@
                                                                                             </div>
                                                                                         </section>
                                                                                         </c:when>
-                                                                                        <c:otherwise>
+                                                                                        <c:when test="${orderItem.birdPair != null}">
                                                                                         <section>
                                                                                             <div class="info">
                                                                                                 <div class="info-left">
@@ -1068,6 +1088,15 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </section>
+                                                                                        </c:when>
+                                                                                        <c:otherwise>
+                                                                                            <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <span>Không có đơn hàng nào</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
                                                                                         </c:otherwise>
                                                                                     </c:choose> 
                                                                                 </c:forEach>
@@ -1092,7 +1121,7 @@
                                                             <div class="show-price">
                                                                 <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
                                                                 <label>Thành tiền: </label>
-                                                                <div class="total">${map.key.total_price}₫</div>
+                                                                <div class="total"><fmt:formatNumber value="${map.key.total_price}" pattern="#,###"/>₫</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1112,6 +1141,7 @@
                                                                         <!-- order id -->
                                                                         <div class="order-id">Mã đơn hàng: ${map.key.order_id} - Ngày mua: ${map.key.order_date}.</div>
                                                                         <!-- order status -->
+                                                                        <div><a><span>ĐÁNH GIÁ ĐƠN HÀNG</span></a></div>
                                                                         <div class="order-status">${map.key.order_status}</div>
                                                                     </div>
                                                                 </section>
@@ -1212,7 +1242,7 @@
                                                                                             </div>
                                                                                         </section>
                                                                                         </c:when>
-                                                                                        <c:otherwise>
+                                                                                        <c:when test="${orderItem.birdPair != null}">
                                                                                         <section>
                                                                                             <div class="info">
                                                                                                 <div class="info-left">
@@ -1240,6 +1270,15 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </section>
+                                                                                        </c:when>
+                                                                                        <c:otherwise>
+                                                                                            <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <span>Không có đơn hàng nào</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
                                                                                         </c:otherwise>
                                                                                     </c:choose> 
                                                                                 </c:forEach>
@@ -1264,7 +1303,7 @@
                                                             <div class="show-price">
                                                                 <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
                                                                 <label>Thành tiền: </label>
-                                                                <div class="total">${map.key.total_price}₫</div>
+                                                                <div class="total"><fmt:formatNumber value="${map.key.total_price}" pattern="#,###"/>₫</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1384,7 +1423,7 @@
                                                                                             </div>
                                                                                         </section>
                                                                                         </c:when>
-                                                                                        <c:otherwise>
+                                                                                        <c:when test="${orderItem.birdPair != null}">
                                                                                         <section>
                                                                                             <div class="info">
                                                                                                 <div class="info-left">
@@ -1412,6 +1451,15 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </section>
+                                                                                        </c:when>
+                                                                                        <c:otherwise>
+                                                                                            <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <span>Không có đơn hàng nào</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
                                                                                         </c:otherwise>
                                                                                     </c:choose> 
                                                                                 </c:forEach>
@@ -1436,7 +1484,7 @@
                                                             <div class="show-price">
                                                                 <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
                                                                 <label>Thành tiền: </label>
-                                                                <div class="total">${map.key.total_price}₫</div>
+                                                                <div class="total"><fmt:formatNumber value="${map.key.total_price}" pattern="#,###"/>₫</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1556,7 +1604,7 @@
                                                                                             </div>
                                                                                         </section>
                                                                                         </c:when>
-                                                                                        <c:otherwise>
+                                                                                        <c:when test="${orderItem.birdPair != null}">
                                                                                         <section>
                                                                                             <div class="info">
                                                                                                 <div class="info-left">
@@ -1584,6 +1632,15 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </section>
+                                                                                        </c:when>
+                                                                                        <c:otherwise>
+                                                                                            <section>
+                                                                                            <div class="info">
+                                                                                                <div class="info-left">
+                                                                                                    <span>Không có đơn hàng nào</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </section>
                                                                                         </c:otherwise>
                                                                                     </c:choose> 
                                                                                 </c:forEach>
@@ -1608,7 +1665,7 @@
                                                             <div class="show-price">
                                                                 <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
                                                                 <label>Thành tiền: </label>
-                                                                <div class="total">${map.key.total_price}₫</div>
+                                                                <div class="total"><fmt:formatNumber value="${map.key.total_price}" pattern="#,###"/>₫</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1628,5 +1685,15 @@
         <!-- Start Footer -->
         <%@include file="../layout/footer.jsp" %>
         <!-- End Footer -->
+        <script>
+                                                        function show(id) {
+                                                            var list = document.getElementById(id);
+                                                            list.style.display = "block";
+                                                        }
+                                                        function hide(id) {
+                                                            var list = document.getElementById(id);
+                                                            list.style.display = "none";
+                                                        }
+        </script>
     </body>
 </html>
