@@ -140,10 +140,10 @@ Author     : tlminh
         <div class="py-5 px-2 layout-item" style="border-bottom: none" id="top">
             <form id="selectAccessory" action="MainController" method="POST">
                 <input type="hidden" name="action" value="NavToAccessory"> 
-                <div class="row">
+                <div class="d-flex">
                     <div class="col-md-4"></div>
                     <div class="col-md-4">
-                        <div class="d-flex justify-content-center">
+                        <div class="d-flex justify-content-center mb-4">
                             <div class="search-bar" style="margin-bottom: 5px;">
                                 <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
                                 <input type="text" name="txtAccessory" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
@@ -152,7 +152,7 @@ Author     : tlminh
                             </div>
                         </div>                      
                     </div>             
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
                             <div>
                                 <a href="${toAddAccessory}"><span class="btn-success">Thêm mới phụ kiện</span></a>

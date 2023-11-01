@@ -431,7 +431,7 @@
                 $(".accessory-cart").click(function () {
                     let accessory_id = $(this).attr('data-value');
                     console.log(accessory_id);
-                    let quantity = $('input[name=quantity]').val();
+                    let quantity = $('input[name=order_quantity]').val();
                     $.ajax({
                         url: "AddAccessoryToCartController",
                         type: 'POST',
