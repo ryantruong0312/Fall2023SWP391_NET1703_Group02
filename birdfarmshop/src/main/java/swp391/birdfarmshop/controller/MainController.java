@@ -133,6 +133,10 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_BIRD_PAIR_DETAIL_SHOP = "RenderBirdPairDetailShopController";
     private static final String ACT_UPDATE_STATUS_TRACKING = "UpdateStatusTracking";
     private static final String DEST_UPDATE_STATUS_TRACKING  = "UpdateStatusTrackingController";
+    private static final String ACT_NAV_PAYMENT_VNPAY = "NavToVNPAY";
+    private static final String DEST_NAV_PAYMENT_VNPAY  = "OnlinePaymentController";
+    private static final String ACT_PAYMENT_VNPAY = "NavToAddOrder";
+    private static final String DEST_PAYMENT_VNPAY  = "AddOrderByOnlineController";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
@@ -314,6 +318,12 @@ public class MainController extends HttpServlet {
                 case ACT_NAV_ADD_ACCESSORY:
                     url = DEST_NAV_ADD_ACCESSORY;
                     break;
+                case ACT_NAV_PAYMENT_VNPAY:
+                    url = DEST_NAV_PAYMENT_VNPAY;
+                break;
+                case ACT_PAYMENT_VNPAY:
+                    url = DEST_PAYMENT_VNPAY;
+                break;
                 default:
                     break;
             }

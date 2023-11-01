@@ -5,7 +5,6 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,9 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -25,9 +21,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import swp391.birdfarmshop.dao.OrderDAO;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import swp391.birdfarmshop.dto.CartDTO;
 import swp391.birdfarmshop.model.User;
 
@@ -38,7 +33,7 @@ import swp391.birdfarmshop.model.User;
 @WebServlet(name = "OnlinePaymentController", urlPatterns = {"/OnlinePaymentController"})
 public class OnlinePaymentController extends HttpServlet {
 
-    private static final String VNP_SECRET_KEY = "QDCVHACBEJZKLNFUWTWGCWIYJKGNLDBG";
+    private static final String VNP_SECRET_KEY = "FZHSMOLLELQBQCZDCQWEANKTEEITDIIL";
     private static final String VNPAY_PAYMENT_URL = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     private static final String ERROR = "RenderCheckoutController";
 
@@ -62,36 +57,36 @@ public class OnlinePaymentController extends HttpServlet {
             String name_receiver = request.getParameter("name");
             String phone_receiver = request.getParameter("mobile");
             String address_receiver = request.getParameter("address");
+            ArrayList<String> listInfo = new ArrayList<>();
+            listInfo.add(name_receiver);
+            listInfo.add(phone_receiver);
+            listInfo.add(address_receiver);
+            session.setAttribute("INFOORRDER", listInfo);
             CartDTO cart = (CartDTO) session.getAttribute("CART");
-
-            // Generate a unique orderId
-            String order_id = generateOrderId();
-
             // Calculate the createDateTime and expireDateTime in the format yymmddhhmmss
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
             String createDateTime = now.format(formatter);
-            String expireDateTime = now.plusMinutes(15).format(formatter);
+            String expireDateTime = now.plusMinutes(5).format(formatter);
 
+            String vnp_IpAddr = getIpAddress(request);
             // Retrieve the client's IP address from the request context
-            String clientIp = request.getRemoteAddr();
-
+            String order = generateOrderId();
             // Create a map containing the payment data as query parameters
             Map<String, String> vnpParams = new HashMap<>();
             vnpParams.put("vnp_Amount", String.valueOf(cart.getCartTotalPrice() * 100));
             vnpParams.put("vnp_Command", "pay");
+            vnpParams.put("vnp_IpAddr", vnp_IpAddr);
             vnpParams.put("vnp_CreateDate", createDateTime);
             vnpParams.put("vnp_ExpireDate", expireDateTime);
             vnpParams.put("vnp_CurrCode", "VND");
-            vnpParams.put("vnp_IpAddr", clientIp);
             vnpParams.put("vnp_Locale", "vn");
             vnpParams.put("vnp_OrderInfo", "Thanhtoán");
             vnpParams.put("vnp_OrderType", "other");
-            vnpParams.put("vnp_ReturnUrl", "http://localhost:8080");
-            vnpParams.put("vnp_TmnCode", "N6DA850E");
-            vnpParams.put("vnp_TxnRef", order_id);
+            vnpParams.put("vnp_ReturnUrl", "http://localhost:8080/birdfarmshop/MainController?action=NavToAddOrder");
+            vnpParams.put("vnp_TmnCode", "VSQ6NENZ");
+            vnpParams.put("vnp_TxnRef", order);
             vnpParams.put("vnp_Version", "2.1.0");
-
             // Sort the parameters alphabetically by parameter name
             List<String> fieldNames = new ArrayList<>(vnpParams.keySet());
             Collections.sort(fieldNames);
@@ -119,23 +114,14 @@ public class OnlinePaymentController extends HttpServlet {
                     }
                 }
             }
-
+            String queryUrl = query.toString();
             // Generate the secure hash
-            String secureHash = generateSecureHash(hashData.toString(), VNP_SECRET_KEY);
-
+            String secureHash = hmacSHA512(VNP_SECRET_KEY, hashData.toString());
             // Include the secure hash in the payment data
-            query.append("&vnp_SecureHash=").append(secureHash);
-
+            queryUrl += "&vnp_SecureHash=" + secureHash;
+            String paymentUrl = VNPAY_PAYMENT_URL + "?" + queryUrl;
             // Construct the final payment URL
-            String finalPaymentUrl = VNPAY_PAYMENT_URL + "?" + query;
-
-            OrderDAO odao = new OrderDAO();
-            try {
-                odao.createOrder(order_id, u.getUsername(), "Chờ xử lý", name_receiver, phone_receiver, address_receiver, "Chưa thanh toán", "Chuyển khoản", cart, 0);
-            } catch (SQLException ex) {
-                Logger.getLogger(OnlinePaymentController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            url = finalPaymentUrl;
+            url = paymentUrl;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -182,24 +168,43 @@ public class OnlinePaymentController extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    public static String hmacSHA512(final String key, final String data) {
+        try {
+
+            if (key == null || data == null) {
+                throw new NullPointerException();
+            }
+            final Mac hmac512 = Mac.getInstance("HmacSHA512");
+            byte[] hmacKeyBytes = key.getBytes();
+            final SecretKeySpec secretKey = new SecretKeySpec(hmacKeyBytes, "HmacSHA512");
+            hmac512.init(secretKey);
+            byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
+            byte[] result = hmac512.doFinal(dataBytes);
+            StringBuilder sb = new StringBuilder(2 * result.length);
+            for (byte b : result) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            return sb.toString();
+
+        } catch (Exception ex) {
+            return "";
+        }
+    }
     private String generateOrderId() {
         // Generate a unique orderId
         String order_id_prefix = "VNP" + System.currentTimeMillis();
         return order_id_prefix;
     }
-
-    private String generateSecureHash(String data, String secretKey) {
+      public static String getIpAddress(HttpServletRequest request) {
+        String ipAdress;
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-512");
-            byte[] encodedHash = digest.digest((data + secretKey).getBytes(StandardCharsets.UTF_8));
-            StringBuilder hexString = new StringBuilder(2 * encodedHash.length);
-            for (byte encodedHashByte : encodedHash) {
-                hexString.append(String.format("%02X", encodedHashByte));
+            ipAdress = request.getHeader("X-FORWARDED-FOR");
+            if (ipAdress == null) {
+                ipAdress = request.getRemoteAddr();
             }
-            return hexString.toString().toLowerCase(); // Convert the hash to lowercase
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
+        } catch (Exception e) {
+            ipAdress = "Invalid IP:" + e.getMessage();
         }
+        return ipAdress;
     }
 }

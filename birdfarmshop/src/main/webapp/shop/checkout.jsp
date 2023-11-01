@@ -184,7 +184,7 @@ Author     : tlminh
                                 <div class="payment-method mt-5">
                                     <h5 class="mt-3">Chọn phương thức thanh toán</h5>
                                     <table class="mt-3">
-                                        <tr>
+                                        <tr class="money-payment">
                                             <td><input id="money" class="" type="radio" name="method" value="" checked=""/></td>
                                             <td><i class="fa fa-money ml-3 icon-money" aria-hidden="true"></i></td>
                                             <td><label for="money" class="ml-3">Thanh toán khi nhận hàng</label></td>
@@ -220,13 +220,10 @@ Author     : tlminh
 
                 });
                 $('.credit-payment').click(function (e) {
-                    e.preventDefault();
-                    toast({
-                        title: 'Lỗi',
-                        message: 'Hệ thống chưa hỗ trợ thanh toán trực tuyến',
-                        type: 'error',
-                        duration: 3000
-                    });
+                    $('input[name=action]').val('NavToVNPAY');
+                });
+                 $('.money-payment').click(function (e) {
+                    $('input[name=action]').val('NavToPayment');
                 });
             });
 
