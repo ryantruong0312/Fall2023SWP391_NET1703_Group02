@@ -152,7 +152,7 @@ Author     : tlminh
                             </div>
                         </div>                      
                     </div>             
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
                             <div>
                                 <a href="${toAddAccessory}"><span class="btn-success">Thêm mới phụ kiện</span></a>
