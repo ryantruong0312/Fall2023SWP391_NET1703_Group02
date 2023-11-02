@@ -430,8 +430,8 @@ public class OrderItemDAO {
                     Bird bird = birdDao.getBirdById(bird_id);
                     BirdNest birdNest = bnDao.getBirdNestById(nest_id);
                     Accessory accessory = accessoryDao.getAccessoryByID(accessory_id);
-                    //BirdPairDTO birdPair = bpDao.getBirdPairById(pair_id);
-                    orderItem = new OrderItemDTO(order_item_id, order_id, order_status, bird, accessory, birdNest, null, unit_price, order_quantity);
+                    BirdPairDTO birdPair = bpDao.getBirdPairByOrderId(order_id);
+                    orderItem = new OrderItemDTO(order_item_id, order_id, order_status, bird, accessory, birdNest, birdPair, unit_price, order_quantity);
                     orderItemList.add(orderItem);
                 }
             }

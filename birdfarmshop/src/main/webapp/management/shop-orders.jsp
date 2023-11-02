@@ -190,11 +190,13 @@
                                 <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisWeek"><span>Tuần này</span></a></li>
                                 <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisMonth"><span>Tháng này</span></a></li>
                                 <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisYear"><span>Năm nay</span></a></li>
+                                <li>
                                 <label>Từ ngày:</label>
                                 <input id="startDay" type="date" name="startDay" value="${requestScope.startDay}"/>
                                 <label>Đến ngày:</label>
                                 <input id="endDay" type="date" name="endDay" value="${requestScope.endDay}"/>
                                 <button type="submit" name="action" value="NavToShopOrders"><span>Chọn</span></button>
+                                </li>
                             </ul>
                             <h3 style="color: #006699;">Theo trạng thái</h3>
                             <c:if test="${requestScope.status != null}">

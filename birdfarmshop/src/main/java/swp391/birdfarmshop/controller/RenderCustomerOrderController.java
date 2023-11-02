@@ -43,10 +43,68 @@ public class RenderCustomerOrderController extends HttpServlet {
                 OrderItemDAO orderItemDao = new OrderItemDAO();
                 ArrayList<OrderItemDTO> orderItemList;
                 LinkedHashMap<Order, ArrayList> orderItemMap = new LinkedHashMap<>();
-                for (Order order : orderList) {
-                    if (!orderItemMap.containsKey(order)) {
-                        orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
-                        orderItemMap.put(order, orderItemList);
+                String status = request.getParameter("status");
+                if(status != null) {
+                    if(status.equals("wait")) {
+                        for (Order order : orderList) {
+                            if (!orderItemMap.containsKey(order) && order.getOrder_status().equals("Chờ xử lý")) {
+                                orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
+                                orderItemMap.put(order, orderItemList);
+                            }
+                        }
+                        request.setAttribute("status", "wait");
+                    }
+                    if(status.equals("inProgress")) {
+                        for (Order order : orderList) {
+                            if (!orderItemMap.containsKey(order) && order.getOrder_status().equals("Đang xử lý")) {
+                                orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
+                                orderItemMap.put(order, orderItemList);
+                            }
+                        }
+                        request.setAttribute("status", "inProgress");
+                    }
+                    if(status.equals("delivering")) {
+                        for (Order order : orderList) {
+                            if (!orderItemMap.containsKey(order) && order.getOrder_status().equals("Đang giao hàng")) {
+                                orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
+                                orderItemMap.put(order, orderItemList);
+                            }
+                        }
+                        request.setAttribute("status", "delivering");
+                    }
+                    if(status.equals("delivered")) {
+                        for (Order order : orderList) {
+                            if (!orderItemMap.containsKey(order) && order.getOrder_status().equals("Đã giao hàng")) {
+                                orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
+                                orderItemMap.put(order, orderItemList);
+                            }
+                        }
+                        request.setAttribute("status", "delivered");
+                    }
+                    if(status.equals("rated")) {
+                        for (Order order : orderList) {
+                            if (!orderItemMap.containsKey(order) && order.getOrder_status().equals("Đã đánh giá")) {
+                                orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
+                                orderItemMap.put(order, orderItemList);
+                            }
+                        }
+                        request.setAttribute("status", "rated");
+                    }
+                    if(status.equals("cancel")) {
+                        for (Order order : orderList) {
+                            if (!orderItemMap.containsKey(order) && order.getOrder_status().equals("Đã hủy")) {
+                                orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
+                                orderItemMap.put(order, orderItemList);
+                            }
+                        }
+                        request.setAttribute("status", "cancel");
+                    }
+                } else {
+                    for (Order order : orderList) {
+                        if (!orderItemMap.containsKey(order)) {
+                            orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
+                            orderItemMap.put(order, orderItemList);
+                        }
                     }
                 }
                 request.setAttribute("ITEMMAP", orderItemMap);
