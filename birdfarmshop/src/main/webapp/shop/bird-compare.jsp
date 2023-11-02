@@ -47,16 +47,21 @@
         <!-- ***** Main Banner Area End ***** -->
 
         <main>
-
-            <a href="${toBirds}"><button class="btn btn-primary">Quay lại</button></a>
-            <section class="cd-products-comparison-table">
+            <section class="cd-products-comparison-table py-5">
                 <div class="cd-products-table">
-                    <div class="cd-products-wrapper">
+                    <a  style="color: white;font-size: 1.6rem; line-height: 2.5" class="btn-lg btn-primary py-3" href="${toBirds}">
+                        <i style="color: white; font-size: 1.6rem; width: 20px;" class="fa fa-arrow-left" aria-hidden="true"></i>
+                        Quay lại
+                    </a>
+                    <div class="cd-products-wrapper mt-5">
                         <ul class="cd-products-columns">
                             <c:forEach var="bird" items="${requestScope.BIRDS}">
                                 <li class="product">
+                                    <div onclick="remove(this,'${bird.bird_id}')" class="cd-remove-bird">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </div>
                                     <ul class="cd-features-list">
-                                        <li>
+                                        <li style="padding: 25px 40px;">
                                             <img class="birdImage" src="${bird.image_url}" style="height: 250px" alt="product image">
                                             <h3> ${bird.bird_name} </h3>
                                         </li>
@@ -73,13 +78,14 @@
                                                 </li>
                                             </c:otherwise>
                                         </c:choose> 
+                                        <li>Màu sắc: ${bird.color}</li>
                                         <li>Tuổi chim: ${bird.age} tháng</li>
                                         <li>Lứa sinh sản: ${bird.reproduction_history} </li>
                                         <li>Thành tích: ${bird.achievement} </li>
                                         <li>Tình trạng: ${bird.status} </li>
                                         <li>
                                             <a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}">
-                                                <button class="detail-info btn btn-success">Chi tiết</button>
+                                                <button style="font-size: 1.6rem;" class="detail-info btn btn-success">Chi tiết</button>
                                             </a>
                                         </li>
                                     </ul>
@@ -93,7 +99,16 @@
         <!-- Start Footer -->
         <%@include file="../layout/footer.jsp" %>
         <!-- End Footer -->
-
+        <script>
+            function remove(e, data) {
+                e.closest(".product").remove();
+                $.ajax({
+                    url: "AddBirdCompareController",
+                    type: 'POST',
+                    data: {bird_id: data}
+                });
+            }
+        </script>
     </body>
 </html>
 

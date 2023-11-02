@@ -79,13 +79,13 @@
                     <div class="col-md-4"></div>
                     <div class="col-md-4">
                         <div class="d-flex justify-content-center mb-4">
-                        <div class="search-bar">
-                            <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                            <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
-                            <input type="hidden" name="page" value="1" />
-                            <input type="submit" value="Tìm kiếm">
+                            <div class="search-bar">
+                                <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                                <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                                <input type="hidden" name="page" value="1" />
+                                <input type="submit" value="Tìm kiếm">
+                            </div>
                         </div>
-                    </div>
                     </div>
                     <div class="col-md-4">
                         <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
@@ -154,7 +154,7 @@
                                                                             <i class="fa fa-eye"></i>
                                                                         </a>
                                                                     </li>
-                                                                    <li>
+                                                                    <li bird-compare-id="${bird.bird_id}">
                                                                         <a class="bird-compare" data-bird-id="${bird.bird_id}">
                                                                             <img src="assets/images/compare.png" style="width: 16px; height: 16px;"/>
                                                                         </a>
@@ -287,6 +287,15 @@
         <!-- End Footer -->
         <script>
             var selectedBirds = [];
+            <c:forEach items="${sessionScope.BIRDCOMAPRE}" var="item">
+            selectedBirds.push("${item}");
+            $('a[data-bird-id="${item}"]').addClass('active');
+            $('a[data-bird-id="${item}"]').css("background-color", "#63b885");
+            </c:forEach>
+            if (selectedBirds.length > 0) {
+                $("#compare-counter").html("So sánh (" + (selectedBirds.length) + ")");
+                $('#counter-box').css('display', 'block');
+            }
             // Add an event handler for the counter-box
             $("#counter-box").on("click", function () {
                 var counter = $("#compare-counter");
@@ -316,28 +325,41 @@
                 var counter = $("#compare-counter");
                 var countText = counter.text();
                 var count = parseInt(countText.match(/\d+/));
-                  $('#counter-box').css('display', 'block');
+                $('#counter-box').css('display', 'block');
                 // Check if the icon is active (toggled on)
                 var isActive = $(this).hasClass("active");
 
                 if (isActive) {
                     // Decrease the counter and remove the active class
                     counter.text("So sánh (" + (count - 1) + ")");
+                    if(count - 1 === 0){
+                        $('#counter-box').css('display', 'none');
+                    }
                     $(this).css("background-color", ""); // Remove background color
                     $(this).removeClass("active");
                     // Remove the bird ID from the selectedBirds array
                     var index = selectedBirds.indexOf(birdId);
                     if (index > -1) {
                         selectedBirds.splice(index, 1);
+                        $.ajax({
+                            url: "AddBirdCompareController",
+                            type: 'POST',
+                            data: {bird_id: birdId}
+                        });
                     }
                 } else {
-                      if (count < 5) {
+                    if (count < 5) {
                         // Increase the counter and add the active class
                         counter.text("So sánh (" + (count + 1) + ")");
                         $(this).css("background-color", "#63b885"); // Set background color
                         $(this).addClass("active");
                         // Add the bird ID to the selectedBirds array
                         selectedBirds.push(birdId);
+                        $.ajax({
+                            url: "AddBirdCompareController",
+                            type: 'POST',
+                            data: {bird_id: birdId}
+                        });
                     } else {
                         toast({
                             title: 'Lỗi',

@@ -93,7 +93,7 @@
                         <select class="combo-box" id="breedSelect1">
                             <option value = "">Chọn giống vẹt</option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                                    <option value="${breed.breed_id}">${breed.breed_name}</option>
+                                <option value="${breed.breed_id}">${breed.breed_name}</option>
                             </c:forEach>
                         </select>
 
@@ -115,7 +115,7 @@
                         <select class="combo-box" id="breedSelect2">
                             <option value = "">Chọn giống vẹt</option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                                 <option value="${breed.breed_id}">${breed.breed_name}</option> 
+                                <option value="${breed.breed_id}">${breed.breed_name}</option> 
                             </c:forEach>
                         </select>
 
@@ -154,7 +154,7 @@
                         <select class="combo-box" id="breedSelect3">
                             <option value = "">Chọn giống vẹt</option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                                    <option value="${breed.breed_id}">${breed.breed_name}</option>
+                                <option value="${breed.breed_id}">${breed.breed_name}</option>
                             </c:forEach>
                         </select>
 
@@ -177,7 +177,7 @@
                         <select class="combo-box" id="breedSelect4" disabled>
                             <option value = "">Chọn giống vẹt</option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                                    <option value="${breed.breed_id}">${breed.breed_name}</option>
+                                <option value="${breed.breed_id}">${breed.breed_name}</option>
                             </c:forEach>
                         </select>
 
@@ -187,7 +187,7 @@
 
                         <!-- Additional rows to display bird information -->
                         <div id="birdInformation4"> 
-    
+
                         </div>
                     </div>
                 </div>  
@@ -200,13 +200,18 @@
             <div class="vh-100 row">
                 <div class="h-100 m-auto d-flex align-items-center">
                     <div class="box-remove bg-white p-4">
-                        <h4>Xác nhận</h4>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h4>Xác nhận</h4>
+                            <div  onclick="cancelRemove()" class="btn-close">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </div>
+                        </div> 
                         <p class="mb-4 mt-4">
                             Vui lòng xác nhận vẹt đã đủ tuổi sinh sản (12 tháng tuổi)?
                         </p>
                         <div class="float-right">
                             <button id="btn-confirrm" data-value="" class="btn btn-group-sm btn-primary">Có</button>
-                            <button  id="btn-cancel" class="btn btn-group-sm btn-secondary">Không</button>
+                            <button onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Không</button>
                         </div>
                     </div>
                 </div>
@@ -253,10 +258,6 @@
                     });
 
                 });
-                $('#btn-cancel').click(function () {
-                    $('#confirm-remove').css('display', 'none');
-                    $('#birdSelect3').val("");
-                });
                 $('#pair-shop').click(function () {
                     let selectBirdMale = $('#birdSelect1').val();
                     let selectBirdFemale = $('#birdSelect2').val();
@@ -276,7 +277,7 @@
                                             duration: 3000
                                         });
                                     } else {
-                                        window.location.href='MainController?action=NavToCart';
+                                        window.location.href = 'MainController?action=NavToCart';
                                     }
                                 }
                             });
@@ -306,7 +307,7 @@
                                             duration: 3000
                                         });
                                     } else {
-                                        window.location.href='MainController?action=NavToCart';
+                                        window.location.href = 'MainController?action=NavToCart';
                                     }
                                 }
                             });
@@ -318,6 +319,10 @@
                     }
                 });
             });
+            function cancelRemove() {
+                $('#confirm-remove').css('display', 'none');
+                $('#birdSelect3').val("");
+            }
         </script>
     </body>
 </html>

@@ -23,8 +23,8 @@ import swp391.birdfarmshop.dto.OrderItemDTO;
 @WebServlet(name = "AddNewOrderItemBirdPairController", urlPatterns = {"/AddNewOrderItemBirdPairController"})
 public class AddNewOrderItemBirdPairController extends HttpServlet {
 
-    private static final String DEST_BIRD_PAIR_CUSTOMER = "RenderBirdPairCustomerController";
-
+     String DEST_BIRD_PAIR_CUSTOMER = "RenderBirdPairCustomerController";
+     String DEST_ADD_ORDER_ITEMS = "RenderCheckoutBirdPairController";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,48 +44,64 @@ public class AddNewOrderItemBirdPairController extends HttpServlet {
             String accessory_id = request.getParameter("accessory_id");
             String order_id = request.getParameter("order_id");
             String pair_idPara = request.getParameter("pair_id");
+            String price = request.getParameter("total_price");
+            boolean typePayment = false;
+            HttpSession session = request.getSession();
+            ArrayList<String> orderItem = (ArrayList<String>) session.getAttribute("LISTBIRDPAIR");
+            int result = 0;
+            if(orderItem != null){
+                order_id = orderItem.get(0);
+                male_bird_id = orderItem.get(1);
+                female_bird_id = orderItem.get(2);
+                accessory_id = orderItem.get(3);
+                pair_idPara = orderItem.get(4);
+                price = orderItem.get(5);
+                typePayment = true;
+            }
             int pair_id = 0;
             if(pair_idPara != null){
                 pair_id = Integer.parseInt(pair_idPara);
             }
-            String price = request.getParameter("total_price");
             int totalPrice = 0;
             if (price != null) {
                 totalPrice = Integer.parseInt(price);
             }
             OrderItemDAO oid = new OrderItemDAO();
-            HttpSession session = request.getSession();
-            ArrayList<OrderItemDTO> orderItemList = new ArrayList<>();
             if (male_bird_id != null && female_bird_id != null) {
-                int result = oid.addNewPairOrderItem(order_id, male_bird_id, female_bird_id, accessory_id, totalPrice,pair_id);
+                result = oid.addNewPairOrderItem(order_id, male_bird_id, female_bird_id, accessory_id, totalPrice,pair_id,typePayment);
+                if (result > 0) {
+                    session.setAttribute("SUCCESS", "Thanh toán thành công");
+                    
+                } else {
+                    session.setAttribute("ERROR", oid.error);
+                }
+            } else if (male_bird_id != null) {
+                result = oid.addNewPairOrderItem(order_id, male_bird_id, female_bird_id, accessory_id, totalPrice,pair_id,typePayment);
                 if (result > 0) {
                     session.setAttribute("SUCCESS", "Thanh toán thành công");
                 } else {
                     session.setAttribute("ERROR", oid.error);
                 }
-            } else if (male_bird_id != null) {
-                int result1 = oid.addNewPairOrderItem(order_id, male_bird_id, female_bird_id, accessory_id, totalPrice,pair_id);
-                if (result1 > 0) {
-                    session.setAttribute("SUCCESS", "Thanh toán thành công");
-                } else {
-                    session.setAttribute("ERROR", oid.error);
-                }
             } else if (female_bird_id != null) {
-                int result1 = oid.addNewPairOrderItem(order_id, male_bird_id, female_bird_id, accessory_id, totalPrice,pair_id);
-                if (result1 > 0) {
+                result = oid.addNewPairOrderItem(order_id, male_bird_id, female_bird_id, accessory_id, totalPrice,pair_id,typePayment);
+                if (result > 0) {
                     session.setAttribute("SUCCESS", "Thanh toán thành công");
                 } else {
                     session.setAttribute("ERROR", "Thanh toán thất bại");
                 }
             } else {
-                int result1 = oid.addNewPairOrderItem(order_id, male_bird_id, female_bird_id, accessory_id, totalPrice,pair_id);
-                if (result1 > 0) {
+                result = oid.addNewPairOrderItem(order_id, male_bird_id, female_bird_id, accessory_id, totalPrice,pair_id,typePayment);
+                if (result > 0) {
                     session.setAttribute("SUCCESS", "Thanh toán thành công");
                 } else {
                     session.setAttribute("ERROR", "Thanh toán thất bại");
                 }
             }
-            request.setAttribute("ITEMLIST", orderItemList);
+            if(result == 0){
+                url = DEST_ADD_ORDER_ITEMS;
+            }else{
+                session.removeAttribute("LISTBIRDPAIR");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

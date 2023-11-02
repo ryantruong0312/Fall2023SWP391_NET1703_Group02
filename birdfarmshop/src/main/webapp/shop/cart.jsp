@@ -306,7 +306,12 @@
             <div class="vh-100 row">
                 <div class="h-100 m-auto d-flex align-items-center">
                     <div class="box-remove bg-white p-4">
-                        <h4>Xóa sản phẩm</h4>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h4>Xóa sản phẩm</h4>
+                            <div onclick="cancelRemove()" class="btn-close">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </div>
+                        </div> 
                         <p class="mb-4 mt-4">
                             Bạn có muốn xóa sản phẩm đang chọn không ?
                         </p>

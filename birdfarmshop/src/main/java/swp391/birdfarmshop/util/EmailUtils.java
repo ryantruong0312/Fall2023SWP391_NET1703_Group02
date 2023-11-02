@@ -100,9 +100,7 @@ public class EmailUtils {
     }
 
     public static String sendOrderToCustomer(String name,CartDTO c,CartDTO checkout, String order_id,
-    String name_receiver, String phone , String address
-
-    
+    String name_receiver, String phone , String address, String type_payment
         ){
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
         String totalMoney = numberFormat.format(c.getCartTotalPrice());
@@ -207,8 +205,8 @@ public class EmailUtils {
                 + "                    </tr>\n"
                 + "                    <tr style=\"padding-top: 10px\">\n"
                 + "                        <td style=\"padding-top: 15px; padding-right: 40px ;padding-left: 20px;\">\n"
-                + "                            <p style=\"display: inline-block; font-weight: bold;font-size: 15px;\">Hình thức thanh toán: </p> \n"
-                + "                            <p style=\"display: inline-block;font-size: 15px\">Thanh toán khi nhận hàng</p>\n"
+                + "                            <p style=\"display: inline-block; font-weight: bold;font-size: 15px;\">Trạng thái thanh toán: </p> \n"
+                + "                            <p style=\"display: inline-block;font-size: 15px\">"+type_payment+"</p>\n"
                 + "                        </td>\n"
                 + "                    </tr>\n"
                 + "\n"
@@ -240,12 +238,6 @@ public class EmailUtils {
                 + "                            Nếu có vấn đề cần hỗ trợ Quý khách vui lòng liên hệ: Điện thoại: 19006955  email: thegioivetcanh@gmail.com\n"
                 + "                        </td>\n"
                 + "                    </tr>        \n"
-                + "                    <tr style=\"padding-top: 10px\">\n"
-                + "                        <td style=\"padding-top: 50px; padding-right: 40px ;padding-left: 20px; text-align: center; padding-bottom: 20px\">\n"
-                + "                            <a href=\"MainController?action=NavToOrderItem&order_id="+order_id+"\"><button style=\"background-color: orange; border:none; line-height: 40px; color: white; font-weight: bold; padding: 0 10px; cursor: pointer\">Xem đơn hàng</button></a>\n"
-                + "                        </td>\n"
-                + "                    </tr>\n"
-                + "\n"
                 + "                    <tr style=\"padding-top: 10px;\">\n"
                 + "                        <td style=\"padding-top: 30px; padding-right: 40px ;padding-left: 20px; padding-bottom: 40px;font-size: 15px\">\n"
                 + "                            Chúc Quý khách sức khoẻ và thành công!,\n"

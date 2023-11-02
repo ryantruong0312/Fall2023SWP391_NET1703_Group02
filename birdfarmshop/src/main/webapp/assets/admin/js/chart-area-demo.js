@@ -37,7 +37,7 @@ function showGraph(lables, data, numberCore, data2, data3, data4) {
         data: {
             labels: lables,
             datasets: [{
-                    label: "Số tiền",
+                    label: "Tổng tiền",
                     lineTension: 0.3,
                     backgroundColor: "rgba(231, 74, 59, 0.15)",
                     borderColor: "rgba(231, 74, 59, 1)",

@@ -251,7 +251,7 @@ VALUES
 	Được đánh giá là loài vẹt có khả năng nhại tốt, thực tế chất lượng nhại giọng nói của Vẹt má vàng thua xa chim Nhồng hoặc vẹt xám Châu Phi. Chim bắt chước giọng người không giỏi lắm, đặc biệt khó bắt chước các từ nhiều nguyên âm o, a. Ghi nhận trên thế giới, chỉ một số ít cá thể có thể nhớ và học được đến khoảng 20 từ.',
 	0, N'Đã bán'),
 
-	('IR001', N'Vẹt Indian Ringneck IR001', N'Xanh dương', '2022-06-01', 4, 1, 'asian', 
+	('IR001', N'Vẹt Indian Ringneck IR001', N'Xanh dương', '2022-06-01', 4, 0, 'asian', 
 	N'Top 4 cuộc thi Hội Đam Mê Lông Vũ TP.HCM 2020-2021', 
 	1, 9000000, 
 	N'Indian Ringneck hay còn gọi là Rose-ringed Parakeets thực sự là những sinh vật kỳ diệu. Thực vậy, chỉ cần nhìn vào những con chim bạn có thể dễ dàng nhận ra chúng qua màu sắc, cái mỏ nổi và long đuôi dài. Cả chim trống và mái đều có đuôi lớn và dài bao gồm 12 lông, 2 lông đuôi lớn chím phần lớn kích thước của con vẹt. Về màu sắc chúng có những màu phổ biến như xanh lá, trắng, vàng, xanh dương. Một số dòng đặc biệt có các màu sắc khá đẹp như xám khói, tím, xanh pastel… Con trống và mái có vẻ ngoài rất giống nhau tuy nhiên những con vẹt trống khi trưởng thành có thể phân biệt bằng vòng đen, trắng hoặc hồng quanh cổ.
@@ -272,7 +272,7 @@ VALUES
 	0, 15000000, 
 	N'Vẹt xích Ấn – xích Nepal có nguồn gốc từ vùng đông nam châu Á, bao gồm Nepal, Ấn Độ, Pakistan, và Sri Lanka. Chúng thường sống trong các khu rừng, cánh đồng và vùng đồng cỏ.
 	Vẹt xích Ấn có một cái mỏ lớn, màu đen và một đốm màu đỏ trên vai. Một đặc điểm nổi bật của chúng là vòng cổ màu đỏ tươi rực, tạo ra sự tương phản đẹp với bộ lông xanh sẫm. Chúng là những vẹt thông minh và thích thể hiện khả năng nói chuyện. Tuy nhiên, khả năng nói chuyện của từng cá thể có thể khác nhau.',
-	0, N'Đang sinh sản'),
+	0, N'Còn hàng'),
 
 	('CP101', N'Vẹt xám CP101', N'Xám', '2022-10-01', 4, 0, 'african', N'Chưa có', 0, 
 	2500000, 
@@ -284,7 +284,7 @@ VALUES
 	N'Vẹt Cape Parrot African có bộ lông màu xanh lá cây và đỏ với mỏ màu xám. Tính cách thường thân thiện, nhưng có thể ngại ngùng và thận trọng. Việc huấn luyện có thể khá khó khăn do chúng có tính cách độc lập và đôi khi khó nắm bắt.',
 	0, N'Đã bán'),
 
-    ('CP301', N'Vẹt Senegal CP301', N'Xanh lá, vàng', '2022-10-01', 6, 0, 'african', N'Chưa có', 2, 
+    ('CP301', N'Vẹt Senegal CP301', N'Xanh lá, vàng', '2022-10-01', 6, 1, 'african', N'Chưa có', 2, 
 	8000000, 
 	N'Vẹt Senegal African có bộ lông màu xanh lá cây, đỏ và xám. Tính cách thông minh, thân thiện và tương đối dễ huấn luyện. Chúng là loài vẹt nhỏ tương đối dễ chăm sóc và phù hợp cho người mới nuôi vẹt.', 
 	0, N'Còn hàng'),
@@ -298,7 +298,7 @@ VALUES
     N'Vẹt Lovebird African có lông màu rực rỡ, thường là xanh, đỏ và cam. Tính cách thường thân thiện, tò mò và dễ huấn luyện cho việc học các lệnh cơ bản. Tuy nhiên, tính cách có thể thay đổi tùy từng cá thể và đòi hỏi kiên nhẫn trong quá trình huấn luyện.', 
     0, N'Đang sinh sản'),
 
-	('WA301', N'Vẹt Orange Winged Amazon WA301', N'xanh lá, vàng', '2022-02-01', 1, 0, 'amazon', 
+	('WA301', N'Vẹt Orange Winged Amazon WA301', N'xanh lá, vàng', '2022-02-01', 1, 1, 'amazon', 
 	N'Giải khuyến khích cuộc thi Phong trào vẹt kiểng Sài Gòn 2020', 0, 3000000, 
 	N'Vẹt Orange-winged Amazon có lông màu xanh với đốm da cam trên cánh. Tính cách thân thiện và hướng ngoại, chúng có khả năng học nói và huấn luyện dễ dàng hơn so với nhiều loài vẹt khác.', 
 	0, N'Đã bán'),
@@ -308,7 +308,7 @@ VALUES
 	N'Lông của Vẹt Blue-fronted Amazon dày, màu xanh lục và đỏ trên trán. Chúng thông minh, thân thiện và dễ huấn luyện, có khả năng học nói và thực hiện các lệnh đơn giản. Tính cách tùy từng cá thể, nhưng nói chung, chúng có khả năng làm thú cưng đáng yêu và thân thiện.', 
 	0, N'Còn hàng'),
 
-	('FA303', N'Vẹt Red Faced Amazon FA303', N'xanh lá, đỏ', '2022-10-01', 1, 0, 'amazon', 
+	('FA303', N'Vẹt Red Faced Amazon FA303', N'xanh lá, đỏ', '2022-10-01', 1, 1, 'amazon', 
 	N'Tham gia World Parrot Trust Parrot Festival 2022', 0, 3000000,
 	N'Vẹt Red-faced Amazon (Amazona autumnalis) có lông xanh lá cây với khu vực trán đỏ. Tính cách thân thiện, thông minh, nhưng đôi khi có thể cứng đầu. Có khả năng học nói và học lệnh, tuy nhiên, việc huấn luyện có thể đòi hỏi kiên nhẫn và thời gian.', 
 	0, N'Còn hàng'),
@@ -322,7 +322,7 @@ VALUES
 	N'Vẹt Yellow Naped Amazon có lông màu xanh lá cây sáng với một vùng vàng ở gốc cổ và đỉnh đầu. Tính cách thông minh, tò mò, thân thiện và có khả năng học nói. Chúng có thể được huấn luyện tương đối dễ dàng, nhưng yêu cầu sự kiên nhẫn và tương tác đều đặn.', 
 	0, N'Đã bán'),
 
-	('CL201', N'Vẹt Cockatiel Lutino CL201', N'xám, vàng, cam', '2022-12-01', 1, 1, 'australian', N'Chưa có', 0, 2500000,
+	('CL201', N'Vẹt Cockatiel Lutino CL201', N'xám, vàng, cam', '2022-12-01', 1, 0, 'australian', N'Chưa có', 0, 2500000,
 	N'Vẹt Cockatiel Lutino nổi bật với lớp lông màu vàng cam ánh hồng, đầu có mảng màu tương tự, mắt đỏ rực, và đuôi dài màu cam. Loài vẹt này thường rất tình cảm, thân thiện, và dễ huấn luyện, làm cho nó trở thành một thú cưng lý tưởng cho người mới nuôi vẹt.',
 	0, N'Còn hàng'),
 
@@ -330,7 +330,7 @@ VALUES
 	N'Lông trắng mịn, mắt đỏ, không vùng màu cam trên mặt. Tính cách thân thiện, tinh quái. Dễ huấn luyện, thích tương tác.',
 	0, N'Đã bán'),
 
-	('RL391', N'Vẹt Rainbow Lory RL391', N'đen, đỏ, tím, xanh lá, vàng', '2022-12-01', 1, 0, 'australian', N'Chưa có', 0, 9500000,
+	('RL391', N'Vẹt Rainbow Lory RL391', N'đen, đỏ, tím, xanh lá, vàng', '2022-12-01', 1, 1, 'australian', N'Chưa có', 0, 9500000,
 	N'Lông nhiều màu sắc rực rỡ, mỏ cam, tính cách vui vẻ, tươi mới, yêu đời. Yêu thích tương tác và cần chế độ ăn uống đa dạng, hoạt động vui chơi để duy trì sức khỏe tốt và làm phong phú cuộc sống của người nuôi.',
 	0, N'Đang sinh sản'),
 	
@@ -348,13 +348,13 @@ VALUES
 	('YC090', N'Vẹt Yellow Collared Macaw YC090', N'xanh lá', '2022-11-01', 1, 1, 'macaw', N'chưa có',0, 25000000 ,N'Vẹt Yellow-collared Macaw có kích thước nhỏ hơn so với một số loài vẹt khác, với chiều dài khoảng 35-37 cm. Bộ lông của chúng chủ yếu màu xanh da trời và vàng, với cổ màu vàng rực rỡ, đó là nguồn gốc của tên gọi của loài vẹt này. Chúng có vẻ ngoài dễ thương và thu hút, và thường được nuôi làm vật nuôi trong các gia đình',
 	0, N'Đã bán'),
 	
-	('SM808', N'Vẹt Scarlet Macaw SM808', N'đỏ, vàng, xanh dương', '2022-07-01', 1, 0, 'macaw', N'chưa có',0, 200000000 ,N'Scarlet thông minh, xinh đẹp và cũng rất ham học hỏi. Scarlet được huấn luyện đúng cách sẽ có thể làm được nhiều trò cũng như có tài ăn nói rất giỏi. Scarlet tràn đầy năng lượng, thích chơi đùa và tương tác với chủ nuôi, khá ồn ào và thích gây sự chú ý.',
+	('SM808', N'Vẹt Scarlet Macaw SM808', N'đỏ, vàng, xanh dương', '2022-07-01', 1, 0, 'macaw', N'chưa có',0, 30000000 ,N'Scarlet thông minh, xinh đẹp và cũng rất ham học hỏi. Scarlet được huấn luyện đúng cách sẽ có thể làm được nhiều trò cũng như có tài ăn nói rất giỏi. Scarlet tràn đầy năng lượng, thích chơi đùa và tương tác với chủ nuôi, khá ồn ào và thích gây sự chú ý.',
 	0, N'Còn hàng'),
 	
-	('HM101', N'Vẹt Hyacinth Macaw HM101', N'xanh dương', '2022-07-01', 1, 1, 'macaw', N'chưa có',0, 700000000 ,N'Hyacinth là giống vẹt đắt đỏ nhất thế giới và cũng là giống vẹt được cho là một trong những loài vẹt lớn nhất thế giới. Vẹt khá thuần và trầm tính, và là vật nuôi tuyệt vời. Chúng ngọt ngào, dịu dàng và không thích làm ồn cũng như rất thích vui đùa và gắn bó với gia đình, đặc biệt là chúng rất thân thiện với trẻ con.',
+	('HM101', N'Vẹt Hyacinth Macaw HM101', N'xanh dương', '2022-07-01', 1, 1, 'macaw', N'chưa có',0, 40000000 ,N'Hyacinth là giống vẹt đắt đỏ nhất thế giới và cũng là giống vẹt được cho là một trong những loài vẹt lớn nhất thế giới. Vẹt khá thuần và trầm tính, và là vật nuôi tuyệt vời. Chúng ngọt ngào, dịu dàng và không thích làm ồn cũng như rất thích vui đùa và gắn bó với gia đình, đặc biệt là chúng rất thân thiện với trẻ con.',
 	0, N'Còn hàng'),
 	
-	('GW125', N'Vẹt Green Winged Macaw GW125', N'đỏ, xanh dương, xanh lá', '2022-02-01', 1, 0, 'macaw', N'chưa có',0, 160000000 ,N'Green Winged thuộc trong top những loài vẹt Nam Mỹ có kích thước lớn nhất, to thứ nhì sau Vẹt Hyacinth. Green-winged tuy lớn con nhưng lại nổi tiếng là loài vẹt hiền hoà, được ví von như gã khổng lồ dịu dàng. Loài vẹt này do đó được yêu thích không phải chỉ bởi bộ lông xinh đẹp với ba màu đỏ, xanh lá và xanh dương nhưng còn vì sự dịu dàng, trầm tính hơn những loài Macaw khác. Do đó, Green-winged được chọn là người bạn đồng hành hoặc vật nuôi gia đình rất tốt.',
+	('GW125', N'Vẹt Green Winged Macaw GW125', N'đỏ, xanh dương, xanh lá', '2022-02-01', 1, 1, 'macaw', N'chưa có',0, 60000000 ,N'Green Winged thuộc trong top những loài vẹt Nam Mỹ có kích thước lớn nhất, to thứ nhì sau Vẹt Hyacinth. Green-winged tuy lớn con nhưng lại nổi tiếng là loài vẹt hiền hoà, được ví von như gã khổng lồ dịu dàng. Loài vẹt này do đó được yêu thích không phải chỉ bởi bộ lông xinh đẹp với ba màu đỏ, xanh lá và xanh dương nhưng còn vì sự dịu dàng, trầm tính hơn những loài Macaw khác. Do đó, Green-winged được chọn là người bạn đồng hành hoặc vật nuôi gia đình rất tốt.',
 	0, N'Còn hàng')	
 GO
 

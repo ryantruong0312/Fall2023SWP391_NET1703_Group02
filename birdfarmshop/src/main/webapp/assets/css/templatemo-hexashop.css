@@ -2946,6 +2946,13 @@ register*/
 #confirm-remove .box-remove p{
     font-size: 1.05rem;
 }
+#confirm-remove .btn-close{
+    font-size: 20px;
+    cursor: pointer;
+}
+#confirm-remove .btn-close:hover{
+   color: #6c757d;
+}
 /*layout-items*/
 .layout-item .new-item a{
     border-radius: 10px;

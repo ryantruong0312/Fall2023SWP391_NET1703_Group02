@@ -69,7 +69,8 @@ public class OrderDAO {
                 pst.setInt(11, point);
                 result = pst.executeUpdate();
             }
-        }catch(Exception e){ e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
             try {
                 con.rollback();
             } catch (Exception e1) {
@@ -92,13 +93,11 @@ public class OrderDAO {
             }
         }
         return result;
-            
-        }
 
-    
+    }
 
     public int createNewOrder(String order_id, String username, String status, String name_receiver, String phone_receiver,
-            String address_receiver, String payment_status, CartDTO cart, CartDTO cartCheckout, int point,String payment_type) {
+            String address_receiver, String payment_status, CartDTO cart, CartDTO cartCheckout, int point, String payment_type) {
         int result = 0;
         Connection con = null;
         OrderItemDAO oid = new OrderItemDAO();
@@ -1153,11 +1152,11 @@ public class OrderDAO {
                         + "		ON oi.[order_id] = o.[order_id]\n"
                         + "		WHERE bp.status = N'Đã thanh toán' \n";
                 if (startDay != null && endDay == null) {
-                    query += "		AND o.[order_date] >= '" + startDay + " 00:00:00.000'\n";
+                    query += "	AND o.[order_date] >= '" + startDay + " 00:00:00.000'\n";
                 } else if (endDay != null && startDay == null) {
-                    query += "		AND o.[order_date] <= '" + endDay + " 00:00:00.000'\n";
+                    query += "	AND o.[order_date] <= '" + endDay + " 00:00:00.000'\n";
                 } else if (startDay != null && endDay != null) {
-                    query += "		AND (order_date >= '" + startDay + " 00:00:00.000' AND order_date < = '" + endDay + " 00:00:00.000')\n";
+                    query += "	AND   (order_date >= '" + startDay + " 00:00:00.000' AND order_date < = '" + endDay + " 00:00:00.000')\n";
                 }
                 query += "	 	)AS pair\n"
                         + "FROM [BirdFarmShop].[dbo].[OrderItem] oi\n"
@@ -1280,7 +1279,15 @@ public class OrderDAO {
                     } else if (accessory) {
                         query += "AND oi.accessory_id IS NOT NULL\n";
                     } else {
-                        query += "AND oi.pair_id IS NOT NULL\n";
+                        query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]+bp.young_bird_price * bp.number_young_bird) AS [total_price]\n"
+                                + "  FROM [BirdFarmShop].[dbo].[Order] o\n"
+                                + "   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
+                                + "   ON o.[order_id] = oi.[order_id]\n"
+                                + "   LEFT JOIN BirdPair bp \n"
+                                + "   ON oi.pair_id = bp.pair_id\n"
+                                + "       WHERE (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
+                                + "	   AND o.[order_date] < = '" + startDay + " 23:59:59.999')\n"
+                                + "   AND oi.pair_id IS NOT NULL";
                     }
                     st = con.createStatement();
                     rs = st.executeQuery(query);
@@ -1391,7 +1398,15 @@ public class OrderDAO {
                     } else if (accessory) {
                         query += "AND oi.accessory_id IS NOT NULL\n";
                     } else {
-                        query += "AND oi.pair_id IS NOT NULL\n";
+                        query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]+bp.young_bird_price * bp.number_young_bird) AS [total_price]\n"
+                                + "  FROM [BirdFarmShop].[dbo].[Order] o\n"
+                                + "   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
+                                + "   ON o.[order_id] = oi.[order_id]\n"
+                                + "   LEFT JOIN BirdPair bp \n"
+                                + "   ON oi.pair_id = bp.pair_id\n"
+                                + "       WHERE (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
+                                + "	   AND o.[order_date] < = '" + startDay + " 23:59:59.999')\n"
+                                + "   AND oi.pair_id IS NOT NULL";
                     }
                     st = con.createStatement();
                     rs = st.executeQuery(query);
@@ -1508,7 +1523,15 @@ public class OrderDAO {
                     } else if (accessory) {
                         query += "AND oi.accessory_id IS NOT NULL\n";
                     } else {
-                        query += "AND oi.pair_id IS NOT NULL\n";
+                        query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]+bp.young_bird_price * bp.number_young_bird) AS [total_price]\n"
+                                + "  FROM [BirdFarmShop].[dbo].[Order] o\n"
+                                + "   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
+                                + "   ON o.[order_id] = oi.[order_id]\n"
+                                + "   LEFT JOIN BirdPair bp \n"
+                                + "   ON oi.pair_id = bp.pair_id\n"
+                                + "       WHERE (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
+                                + "	   AND o.[order_date] < = '" + localMaxDate + " 23:59:59.999')\n"
+                                + "   AND oi.pair_id IS NOT NULL";
                     }
                     st = con.createStatement();
                     rs = st.executeQuery(query);
@@ -1623,7 +1646,15 @@ public class OrderDAO {
                     } else if (accessory) {
                         query += "AND oi.accessory_id IS NOT NULL\n";
                     } else {
-                        query += "AND oi.pair_id IS NOT NULL\n";
+                        query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]+bp.young_bird_price * bp.number_young_bird) AS [total_price]\n"
+                                + "  FROM [BirdFarmShop].[dbo].[Order] o\n"
+                                + "   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
+                                + "   ON o.[order_id] = oi.[order_id]\n"
+                                + "   LEFT JOIN BirdPair bp \n"
+                                + "   ON oi.pair_id = bp.pair_id\n"
+                                + "       WHERE (o.[order_date] >= '" + startDate + " 00:00:00.000' \n"
+                                + "	   AND o.[order_date] < = '" + localMaxDate + " 23:59:59.999')\n"
+                                + "   AND oi.pair_id IS NOT NULL";
                     }
                     st = con.createStatement();
                     rs = st.executeQuery(query);

@@ -74,7 +74,7 @@ public class OrderItemDAO {
         return orderItemList;
     }
 
-    public int addNewPairOrderItem(String order_id, String male_bird_id, String female_bird_id, String accessory_id, int totalPrice, int pair_id) {
+    public int addNewPairOrderItem(String order_id, String male_bird_id, String female_bird_id, String accessory_id, int totalPrice, int pair_id,boolean typePayment) {
         int result = 0;
         Connection con = null;
         OrderItemDAO oid = new OrderItemDAO();
@@ -327,12 +327,23 @@ public class OrderItemDAO {
                     if (rs != null && rs.next()) {
                         int oldPrice = rs.getInt("total_price");
                         totalPrice += oldPrice;
-                        String update = "UPDATE [ORDER]\n"
-                                + "SET [total_price] = ?\n"
-                                + "WHERE [order_id] = ?";
-                        pst = con.prepareStatement(update);
-                        pst.setInt(1, totalPrice);
-                        pst.setString(2, order_id);
+                        if(typePayment == false){
+                             String update = "UPDATE [ORDER]\n"
+                                    + "SET [total_price] = ?\n"
+                                    + "WHERE [order_id] = ?";
+                            pst = con.prepareStatement(update);
+                            pst.setInt(1, totalPrice);
+                            pst.setString(2, order_id);
+                        }else{
+                            String update = "UPDATE [ORDER]\n"
+                                    + "SET [total_price] = ?, \n"
+                                    + "[payment_type] = N'Chuyển khoản',\n"
+                                    + "[payment_status] = N'Đã thanh toán'\n"
+                                    + "WHERE [order_id] = ?";
+                            pst = con.prepareStatement(update);
+                            pst.setInt(1, totalPrice);
+                            pst.setString(2, order_id);
+                        }
                         result = pst.executeUpdate();
                         if (result == 0) {
                             checkMoney = false;

@@ -89,11 +89,10 @@
                                 value=""
                                 />
                             <br />
-                            <input
+                            <button
                                 id="search"
-                                value="Tìm"
                                 class="btn btn-primary form-control"
-                                />
+                                >Tìm</button>
                         </div>
                     </div>
                 </div>
@@ -659,6 +658,7 @@
                             $('.cancel-order').html(revenue[2]);
                             $('.number-user').html(revenue[3]);
                             const dataQuantityWeek = jsonArray.product_sale;
+                            console.log(dataQuantityWeek);
                             pie(nodeQuantity, labelQuantity, colorQuantity, hoverColorQuantity, dataQuantityWeek);
                             $('.product-sale').html(Number(jsonArray.totalProduct).toLocaleString('vi-VN'));
                         }

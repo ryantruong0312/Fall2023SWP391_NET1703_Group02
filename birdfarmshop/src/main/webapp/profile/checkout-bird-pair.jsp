@@ -124,7 +124,7 @@
                                     <div class="item-cart my-3">
                                         <div class="row align-items-center py-3 pl-3">
                                             <div class="image-item col-lg-2 col-md-2 col-sm-2 col-2">
-                                                
+
                                                 <img src="${not empty birdPair.pList ? birdPair.pList.get(0):"assets/images/bird-compare-1.jpg"}" alt="chim non" />
                                             </div>
                                             <div class="infor-item px-5 col-md-6 col-sm-7 col-7">
@@ -204,7 +204,7 @@
                             <div class="payment-method mt-5">
                                 <h5 class="mt-3">Chọn phương thức thanh toán</h5>
                                 <table class="mt-3">
-                                    <tr>
+                                    <tr class="money-payment">
                                         <td><input id="money" class="" type="radio" name="method" value="" checked=""/></td>
                                         <td><i class="fa fa-money ml-3 icon-money" aria-hidden="true"></i></td>
                                         <td><label for="money" class="ml-3">Thanh toán khi nhận hàng</label></td>
@@ -231,7 +231,7 @@
                                 <c:if test="${not empty requestScope.BIRDPAIR}">
                                     <input type="hidden" name="pair_id" value="${requestScope.BIRDPAIR.pair_id}"/>
                                 </c:if>
-                                 <input type="hidden" name="total_price" value="${requestScope.TOTALPRICE}"/>
+                                <input type="hidden" name="total_price" value="${requestScope.TOTALPRICE}"/>
                                 <button type="submit" class="mt-4 btn btn-primary w-100">Thanh toán</button>
                             </form>
                         </div>
@@ -257,13 +257,11 @@
 
                 });
                 $('.credit-payment').click(function (e) {
-                    e.preventDefault();
-                    toast({
-                        title: 'Lỗi',
-                        message: 'Hệ thống chưa hỗ trợ thanh toán trực tuyến',
-                        type: 'error',
-                        duration: 3000
-                    });
+                    $('input[name=action]').val('NavToVNPAY');
+                    console.log($('input[name=action]').val());
+                });
+                $('.money-payment').click(function (e) {
+                    $('input[name=action]').val('NavToPaymentBirdPair');
                 });
             });
 

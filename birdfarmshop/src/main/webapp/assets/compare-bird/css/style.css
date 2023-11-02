@@ -219,7 +219,7 @@ Main Components
 }
 
 .cd-features-list li {
-    padding: 25px 40px;
+    padding: 20px 10px;
     border-color: #e6e6e6;
     border-style: solid;
     border-width: 1px;
@@ -237,7 +237,7 @@ Main Components
 }
 @media only screen and (min-width: 1170px) {
     .cd-features-list li {
-        line-height: 16px;
+        line-height: 20px;
         height: 67px;
     }
     .cd-features-list li.rate {
@@ -624,3 +624,16 @@ main {
     line-height: 20px;
 }
 
+.cd-products-comparison-table .product{
+    position: relative;
+}
+.cd-products-comparison-table .cd-remove-bird{
+    position: absolute;
+    right: 15px;
+    top: 5px;
+    font-size: 2rem;
+    cursor: pointer;
+}
+.cd-products-comparison-table .cd-remove-bird:hover{
+    color: #6c757d;
+}

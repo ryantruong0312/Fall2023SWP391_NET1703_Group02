@@ -496,14 +496,14 @@ public class BirdDAO {
                 sex = gender.equals("Đực");
                 stm.setBoolean(6, sex);
                 stm.setString(7, breed_id);
-                if(achievement != null && !achievement.isEmpty()) {
+                if (achievement != null && !achievement.isEmpty()) {
                     stm.setString(8, achievement);
                 } else {
                     stm.setString(8, null);
                 }
                 stm.setInt(9, Integer.parseInt(reproduction_history));
                 stm.setInt(10, Integer.parseInt(price));
-                if(description != null && !description.isEmpty()) {
+                if (description != null && !description.isEmpty()) {
                     stm.setString(11, description);
                 } else {
                     stm.setString(11, null);
@@ -631,8 +631,8 @@ public class BirdDAO {
     }
 
     public boolean updateBird(String bird_id, String bird_name, String color, String birthday, String grown_age,
-             String gender, String breed_id, String achievement, String reproduction_history, String price, String description,
-             String discount, String status) throws SQLException, ParseException {
+            String gender, String breed_id, String achievement, String reproduction_history, String price, String description,
+            String discount, String status) throws SQLException, ParseException {
         Connection con = null;
         PreparedStatement stm = null;
         boolean sex;
@@ -642,13 +642,13 @@ public class BirdDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String query =          "UPDATE [dbo].[Bird]\n"
+                String query = "UPDATE [dbo].[Bird]\n"
                         + "             SET [bird_name] = ?,[color] = ?,[birthday] = ?,[grown_age] = ?,[gender] = ?,[breed_id] = ?,\n"
                         + "             [price] = ?,[status] = ?,[reproduction_history] = ?,[discount] = ?,[achievement] = ?, "
                         + "             [description] = ?\n"
                         + "             WHERE [bird_id] = ?";
                 stm = con.prepareStatement(query);
-                if(!bird_name.contains(bird_id)) {
+                if (!bird_name.contains(bird_id)) {
                     bird_name = bird_name + " " + bird_id;
                 }
                 stm.setString(1, bird_name.trim());
@@ -670,12 +670,12 @@ public class BirdDAO {
                 } else {
                     stm.setInt(10, 0);
                 }
-                if(achievement != null) {
+                if (achievement != null) {
                     stm.setString(11, achievement);
                 } else {
                     stm.setString(11, "");
                 }
-                if(description != null) {
+                if (description != null) {
                     stm.setString(12, description);
                 } else {
                     stm.setString(12, "");
@@ -697,14 +697,14 @@ public class BirdDAO {
         }
         return false;
     }
-    
+
     public boolean updateBirdStatus(String status, String bird_id) throws SQLException, ParseException {
         Connection con = null;
         PreparedStatement stm = null;
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String query =          "UPDATE [dbo].[Bird]\n"
+                String query = "UPDATE [dbo].[Bird]\n"
                         + "             SET [status] = ?\n"
                         + "             WHERE [bird_id] = ?";
                 stm = con.prepareStatement(query);
@@ -726,8 +726,9 @@ public class BirdDAO {
         }
         return false;
     }
-  public ArrayList<Integer> getBirdAmount() throws SQLException{
-    
+
+    public ArrayList<Integer> getBirdAmount() throws SQLException {
+
         ArrayList<Integer> bird = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
@@ -749,10 +750,10 @@ public class BirdDAO {
                     bird.add(rs.getInt("sold"));
                 }
             }
-            
-        }catch(Exception e){
+
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             if (stm != null) {
                 stm.close();
             }

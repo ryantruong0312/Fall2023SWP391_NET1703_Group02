@@ -67,7 +67,7 @@ public class AddOrderController extends HttpServlet {
                                 phone_receiver, address_receiver, "Chưa thanh toán", cart,cartCheckout, 0,"Tiền mặt");
                         if (result != 0) {
                             EmailService.sendEmail(u.getEmail(), "Đơn đặt hàng của bạn",
-                      EmailUtils.sendOrderToCustomer(u.getFullName(),cart, cartCheckout, order_id, name_receiver, phone_receiver, address_receiver));
+                      EmailUtils.sendOrderToCustomer(u.getFullName(),cart, cartCheckout, order_id, name_receiver, phone_receiver, address_receiver,"Thanh toán khi nhận hàng"));
                             cart = null;
                             url = DEST_NAV_HOME;
                             session.setAttribute("CART", null);
@@ -77,21 +77,7 @@ public class AddOrderController extends HttpServlet {
                             session.setAttribute("ERROR", od.error);
                         }
                         
-                    } else {
-                        String number = String.format("%06d", 1);
-                        String order_id = formattedDate + 'O' + number;
-                        int result = od.createNewOrder(order_id, u.getUsername(), "Chờ xử lý", name_receiver,
-                                phone_receiver, address_receiver, formattedDate, cart, cartCheckout,0,"Tiền mặt");
-                        if (result != 0) {
-                            EmailService.sendEmail(u.getEmail(), "Đơn đặt hàng của bạn",
-                                    EmailUtils.sendOrderToCustomer(u.getFullName(),cart, cartCheckout, order_id, name_receiver, phone_receiver, address_receiver));
-                            cart = null;
-                            session.setAttribute("CART", cart);
-                            session.setAttribute("SUCCESS", "Đặt hàng thành công");
-                        } else {
-                            session.setAttribute("ERROR", "Đặt hàng thất bại");
-                        }
-                    }
+                    } 
                 } else {
                     session.setAttribute("ERROR", "Không có sản phẩm nào trong giỏ hàng của bạn");
                     url = DEST_NAV_HOME;

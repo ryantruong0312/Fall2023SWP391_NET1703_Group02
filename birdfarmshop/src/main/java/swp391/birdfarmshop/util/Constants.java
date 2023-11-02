@@ -28,4 +28,11 @@ public class Constants {
     public static final String C3_KEY = "AKIA2SM4QLQQLKZRIO7G";
     public static final String C3_SECRET_KEY = "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";
     public static final String C3_HOST = "https://birdfarmshop.s3.amazonaws.com/";
+    
+    public static final String VNPAY_KEY = "VSQ6NENZ";
+    public static final String VNPAY_SECRET_KEY = "FZHSMOLLELQBQCZDCQWEANKTEEITDIIL";
+    public static final String VNPAY_PAYMENT_URL = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    public static final String VNPAY_RETURN = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    public static final String VNPAY_RETUNRURL= "http://localhost:8080/birdfarmshop/MainController?action=NavToReturnVNPAY";
+    
 }

@@ -73,8 +73,6 @@ public class MainController extends HttpServlet {
     private static final String DEST_REMOVE_ACCESSORY_FROM_CART = "RemoveAccessoryFromCartController";
     private static final String ACT_REMOVE_BIRD_PAIR_FROM_CART = "RemoveBirdPairFromCart";
     private static final String DEST_REMOVE_BIRD_PAIR_FROM_CART = "RemoveBirdPairFromCartController";
-    private static final String ACT_CHECK_OUT = "CheckOut";
-    private static final String DEST_CHECK_OUT = "RenderCheckOutController";
     private static final String ACT_RENDER_BIRD_BREED_ID = "RenderBirdByBreed_id";
     private static final String DEST_RENDER_BIRD_BREED_ID = "RenderBirdByBreed_idController";
     private static final String ACT_UPDATE_PROFILE = "UpdateProfile";
@@ -137,6 +135,8 @@ public class MainController extends HttpServlet {
     private static final String DEST_NAV_PAYMENT_VNPAY  = "OnlinePaymentController";
     private static final String ACT_PAYMENT_VNPAY = "NavToAddOrder";
     private static final String DEST_PAYMENT_VNPAY  = "AddOrderByOnlineController";
+    private static final String ACT_RETURN_VNPAY = "NavToReturnVNPAY";
+    private static final String DEST_RETURN_VNPAY  = "OnlinePaymentReturnController";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
@@ -214,9 +214,6 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_ADD_ACCESSORY_TO_CART:
                     url = DEST_ADD_ACCESSORY_TO_CART;
-                    break;
-                case ACT_CHECK_OUT:
-                    url = DEST_CHECK_OUT;
                     break;
                 case ACT_NAV_BIRD_NESTS_DETAIL:
                     url = DEST_NAV_BIRD_NESTS_DETAIL;
@@ -323,6 +320,9 @@ public class MainController extends HttpServlet {
                 break;
                 case ACT_PAYMENT_VNPAY:
                     url = DEST_PAYMENT_VNPAY;
+                break;
+                case ACT_RETURN_VNPAY:
+                    url = DEST_RETURN_VNPAY;
                 break;
                 default:
                     break;

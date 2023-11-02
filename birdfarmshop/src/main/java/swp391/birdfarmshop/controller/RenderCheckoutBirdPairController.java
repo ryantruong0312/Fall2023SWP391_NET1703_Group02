@@ -10,6 +10,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
@@ -45,7 +47,16 @@ public class RenderCheckoutBirdPairController extends HttpServlet {
             String male_bird_id = request.getParameter("male_bird");
             String female_bird_id = request.getParameter("female_bird");
             String order_id = request.getParameter("order_id");
-            String pair_id = request.getParameter("pari_id");
+            request.removeAttribute("BIRDPAIR");
+            request.removeAttribute("MALEBIRD");
+            request.removeAttribute("FEMALEBIRD");
+            HttpSession session = request.getSession();
+            ArrayList<String> orderItem = (ArrayList<String>) session.getAttribute("LISTBIRDPAIR");
+            if(orderItem != null){
+                order_id = orderItem.get(0);
+                male_bird_id = orderItem.get(1);
+                female_bird_id = orderItem.get(2);
+            }
             BirdDAO bDao = new BirdDAO();
             AccessoryDAO adao = new AccessoryDAO();
             BirdPairDAO bpDao = new BirdPairDAO();

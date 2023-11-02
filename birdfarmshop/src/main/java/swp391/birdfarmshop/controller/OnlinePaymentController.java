@@ -21,10 +21,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import swp391.birdfarmshop.dto.CartDTO;
-import swp391.birdfarmshop.model.User;
+import swp391.birdfarmshop.util.Constants;
+import swp391.birdfarmshop.util.VNPAYUtils;
 
 /**
  *
@@ -33,8 +32,6 @@ import swp391.birdfarmshop.model.User;
 @WebServlet(name = "OnlinePaymentController", urlPatterns = {"/OnlinePaymentController"})
 public class OnlinePaymentController extends HttpServlet {
 
-    private static final String VNP_SECRET_KEY = "FZHSMOLLELQBQCZDCQWEANKTEEITDIIL";
-    private static final String VNPAY_PAYMENT_URL = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     private static final String ERROR = "RenderCheckoutController";
 
     /**
@@ -53,28 +50,48 @@ public class OnlinePaymentController extends HttpServlet {
         try {
             // Extract required input from the requestParameters
             HttpSession session = request.getSession();
-            User u = (User) session.getAttribute("LOGIN_USER");
             String name_receiver = request.getParameter("name");
             String phone_receiver = request.getParameter("mobile");
             String address_receiver = request.getParameter("address");
+            String male_bird_id = request.getParameter("male_bird");
+            String female_bird_id = request.getParameter("female_bird");
+            String accessory_id = request.getParameter("accessory_id");
+            String order_id = request.getParameter("order_id");
+            String pair_id = request.getParameter("pair_id");
+            String price = request.getParameter("total_price");
+            CartDTO cart = (CartDTO) session.getAttribute("CART");
+            String vnpay_price;
             ArrayList<String> listInfo = new ArrayList<>();
             listInfo.add(name_receiver);
             listInfo.add(phone_receiver);
             listInfo.add(address_receiver);
             session.setAttribute("INFOORRDER", listInfo);
-            CartDTO cart = (CartDTO) session.getAttribute("CART");
+            if (order_id != null) {
+                ArrayList<String> listBirdPair = new ArrayList<>();
+                listBirdPair.add(order_id);
+                listBirdPair.add(male_bird_id);
+                listBirdPair.add(female_bird_id);
+                listBirdPair.add(accessory_id);
+                listBirdPair.add(pair_id);
+                listBirdPair.add(price);
+                vnpay_price = String.valueOf(Long.parseLong(price) * 100);
+                session.setAttribute("LISTBIRDPAIR", listBirdPair);
+            }else{
+                vnpay_price = String.valueOf(cart.getCartTotalPrice() * 100);
+            }
+
             // Calculate the createDateTime and expireDateTime in the format yymmddhhmmss
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
             String createDateTime = now.format(formatter);
             String expireDateTime = now.plusMinutes(5).format(formatter);
 
-            String vnp_IpAddr = getIpAddress(request);
+            String vnp_IpAddr = VNPAYUtils.getIpAddress(request);
             // Retrieve the client's IP address from the request context
-            String order = generateOrderId();
+            String order = VNPAYUtils.generateOrderId();
             // Create a map containing the payment data as query parameters
             Map<String, String> vnpParams = new HashMap<>();
-            vnpParams.put("vnp_Amount", String.valueOf(cart.getCartTotalPrice() * 100));
+            vnpParams.put("vnp_Amount", vnpay_price);
             vnpParams.put("vnp_Command", "pay");
             vnpParams.put("vnp_IpAddr", vnp_IpAddr);
             vnpParams.put("vnp_CreateDate", createDateTime);
@@ -83,8 +100,8 @@ public class OnlinePaymentController extends HttpServlet {
             vnpParams.put("vnp_Locale", "vn");
             vnpParams.put("vnp_OrderInfo", "Thanhtoán");
             vnpParams.put("vnp_OrderType", "other");
-            vnpParams.put("vnp_ReturnUrl", "http://localhost:8080/birdfarmshop/MainController?action=NavToAddOrder");
-            vnpParams.put("vnp_TmnCode", "VSQ6NENZ");
+            vnpParams.put("vnp_ReturnUrl", Constants.VNPAY_RETUNRURL);
+            vnpParams.put("vnp_TmnCode", Constants.VNPAY_KEY);
             vnpParams.put("vnp_TxnRef", order);
             vnpParams.put("vnp_Version", "2.1.0");
             // Sort the parameters alphabetically by parameter name
@@ -116,10 +133,10 @@ public class OnlinePaymentController extends HttpServlet {
             }
             String queryUrl = query.toString();
             // Generate the secure hash
-            String secureHash = hmacSHA512(VNP_SECRET_KEY, hashData.toString());
+            String secureHash = VNPAYUtils.hmacSHA512(Constants.VNPAY_SECRET_KEY, hashData.toString());
             // Include the secure hash in the payment data
             queryUrl += "&vnp_SecureHash=" + secureHash;
-            String paymentUrl = VNPAY_PAYMENT_URL + "?" + queryUrl;
+            String paymentUrl = Constants.VNPAY_PAYMENT_URL + "?" + queryUrl;
             // Construct the final payment URL
             url = paymentUrl;
         } catch (Exception e) {
@@ -167,44 +184,4 @@ public class OnlinePaymentController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    public static String hmacSHA512(final String key, final String data) {
-        try {
-
-            if (key == null || data == null) {
-                throw new NullPointerException();
-            }
-            final Mac hmac512 = Mac.getInstance("HmacSHA512");
-            byte[] hmacKeyBytes = key.getBytes();
-            final SecretKeySpec secretKey = new SecretKeySpec(hmacKeyBytes, "HmacSHA512");
-            hmac512.init(secretKey);
-            byte[] dataBytes = data.getBytes(StandardCharsets.UTF_8);
-            byte[] result = hmac512.doFinal(dataBytes);
-            StringBuilder sb = new StringBuilder(2 * result.length);
-            for (byte b : result) {
-                sb.append(String.format("%02x", b & 0xff));
-            }
-            return sb.toString();
-
-        } catch (Exception ex) {
-            return "";
-        }
-    }
-    private String generateOrderId() {
-        // Generate a unique orderId
-        String order_id_prefix = "VNP" + System.currentTimeMillis();
-        return order_id_prefix;
-    }
-      public static String getIpAddress(HttpServletRequest request) {
-        String ipAdress;
-        try {
-            ipAdress = request.getHeader("X-FORWARDED-FOR");
-            if (ipAdress == null) {
-                ipAdress = request.getRemoteAddr();
-            }
-        } catch (Exception e) {
-            ipAdress = "Invalid IP:" + e.getMessage();
-        }
-        return ipAdress;
-    }
 }

@@ -11,25 +11,20 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import swp391.birdfarmshop.dao.OrderDAO;
-import swp391.birdfarmshop.dto.CartDTO;
-import swp391.birdfarmshop.model.Order;
-import swp391.birdfarmshop.model.User;
-import swp391.birdfarmshop.services.EmailService;
-import swp391.birdfarmshop.util.EmailUtils;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import swp391.birdfarmshop.util.VNPAYUtils;
 
 /**
  *
  * @author Admin
  */
-@WebServlet(name = "AddOrderByOnlineController", urlPatterns = {"/AddOrderByOnlineController"})
-public class AddOrderByOnlineController extends HttpServlet {
-
-    private static final String DEST_NAV_HOME = "RenderHomeController";
-    private static final String DEST_NAV_CHECKOUT = "RenderCheckOutController";
+@WebServlet(name = "OnlinePaymentReturnController", urlPatterns = {"/OnlinePaymentReturnController"})
+public class OnlinePaymentReturnController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,44 +38,28 @@ public class AddOrderByOnlineController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = DEST_NAV_CHECKOUT;
+        String url = "RenderHomeController";
         try {
             HttpSession session = request.getSession();
-            User u = (User) session.getAttribute("LOGIN_USER");
-            ArrayList<String> infor = (ArrayList<String>) session.getAttribute("INFOORRDER");
-            CartDTO cart = (CartDTO) session.getAttribute("CART");
-            CartDTO cartCheckout = (CartDTO) session.getAttribute("CARTCHECKOUT");  
-            OrderDAO od = new OrderDAO();
-            DateTimeFormatter formatterOrder = DateTimeFormatter.ofPattern("yyyyMMdd");
-            String formattedDate = LocalDate.now().format(formatterOrder);
-            Order o = od.getOrderLatest();
-            // Generate a unique orderId
-            String numberSTT = o.getOrder_id().substring(9);
-            int numberLast = Integer.parseInt(numberSTT);
-            numberLast += 1;
-            String number = String.format("%06d", numberLast);
-            String order_id = formattedDate + 'O' + number;
-            if (order_id != null) {
-                int result = od.createNewOrder(order_id, u.getUsername(), "Chờ xử lý", infor.get(0),
-                        infor.get(1), infor.get(2), "Đã thanh toán", cart, cartCheckout, 0, "Chuyển khoản");
-                if (result != 0) {
-                    EmailService.sendEmail(u.getEmail(), "Đơn đặt hàng của bạn",
-                            EmailUtils.sendOrderToCustomer(u.getFullName(), cart, cartCheckout, order_id, infor.get(0), infor.get(1), infor.get(2),"Đã thanh toán"));
-                    cart = null;
-                    url = DEST_NAV_HOME;
-                    session.setAttribute("CART", null);
-                    session.setAttribute("CARTCHECKOUT", null);
-                    session.setAttribute("SUCCESS", "Đặt hàng thành công");
+            ArrayList<String> orderitem = (ArrayList<String>) session.getAttribute("LISTBIRDPAIR");
+
+            if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
+                if (orderitem == null) {
+                    url = "AddOrderByOnlineController";
                 } else {
-                    session.setAttribute("ERROR", od.error);
+                    url = "AddNewOrderItemBirdPairController";
                 }
-            }else{
-                session.setAttribute("ERROR", "Thanh toán thất bại");     
+            } else {
+                if (orderitem == null) {
+                    url = "RenderCheckOutController";
+                } else {
+                    url = "RenderCheckoutBirdPairController";
+                }
+                session.setAttribute("ERROR", "Thanh toán thất bại");
             }
-            session.removeAttribute("INFOORRDER");
         } catch (Exception e) {
             e.printStackTrace();
-        }finally{
+        } finally {
             response.sendRedirect(url);
         }
     }
@@ -123,5 +102,4 @@ public class AddOrderByOnlineController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
