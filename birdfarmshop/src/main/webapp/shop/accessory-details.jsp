@@ -52,14 +52,8 @@
             .descript span{
                 margin-top: 0px;
             }
-            .image-bottom {
-                display: inline-block;
-                margin: 10px 10px 0 0;
-            }
 
             #mainImage {
-                width: 500px;
-                height: 400px;
                 border: 1px solid;
                 transition: transform 0.3s ease-in-out;
             }
@@ -106,7 +100,6 @@
                 max-height: 200px;
                 font-family: inherit;
             }
-
         </style>
     </head>
 
@@ -161,27 +154,33 @@
 
                 <div class="row">
                     <div class="col-lg-7">
-                        <div class="image-container">
-                            <div class="image-top">
-                                <div class="overlay-container">
-                                    <input type="hidden" name="txtAccessoryID" value="${a.accessory_id}"/>
-                                    <img id="mainImage" style="width: 500px; height: 400px;" src="${im}" alt="Image main" onclick="swapImages()">
-                                    <c:if test="${a.discount > 0}">
-                                        <span class="tag-discount"> -${a.discount}%</span>
-                                    </c:if>
-                                    <c:if test="${requestScope.MESSAGE != null}">
-                                        <div class="overlay-text">${MESSAGE}</div>
-                                    </c:if>
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <div class="image-container" >
+                                    <div class="image-top">
+                                        <div class="overlay-container">
+                                            <input type="hidden" name="txtAccessoryID" value="${a.accessory_id}"/>
+                                            <img id="mainImage" style="width: 370px; height: 444px;" src="${im}" alt="Image main" onclick="swapImages()">
+                                            <c:if test="${a.discount > 0}">
+                                                <span class="tag-discount"> -${a.discount}%</span>
+                                            </c:if>
+                                            <c:if test="${requestScope.MESSAGE != null}">
+                                                <div class="overlay-text">${MESSAGE}</div>
+                                            </c:if>
+                                        </div>
+                                    </div> 
                                 </div>
-                            </div> 
-                        </div>
-                        <div class="image-bottom">
-                            <c:forEach items="${a.image_url}" var="accessory">
-                                <c:if test="${im ne accessory}">
-                                    <img style="width: 100px; height: 75px; border: 1px solid;" class="accessory-image" src="${accessory}" alt="" onclick="swapImages(this)">
-                                </c:if>
-                            </c:forEach>
-                        </div>                         
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="image-bottom">
+                                    <c:forEach items="${a.image_url}" var="accessory">
+                                        <c:if test="${im ne accessory}">
+                                            <img style="width: 154px; height: 185px; border: 1px solid; display: block; margin-bottom: 15px;" class="accessory-image" src="${accessory}" alt="" onclick="swapImages(this)">
+                                        </c:if>
+                                    </c:forEach>
+                                </div> 
+                            </div>
+                        </div>                                               
                     </div>
 
                     <div class="col-lg-5">
@@ -236,7 +235,7 @@
                                     </c:choose>
                                     <div class="main-border-button">
                                         <input type="hidden" name="accessory_id" value="${a.accessory_id}" />
-                                        <a class="accessory-cart btn-primary" style="cursor: pointer; color: white;" data-value="${a.accessory_id}">Thêm vào giỏ hàng</a>
+                                        <a class="accessory-cart btn-primary" style="cursor: pointer; color: white; border: 0px; border-radius: 20px;" data-value="${a.accessory_id}">Thêm vào giỏ hàng</a>
                                     </div>
                                 </div>
                             </c:if>
@@ -254,15 +253,15 @@
                             <input type="hidden" value="${a.accessory_id}" name="txtAccessoryID">
                             <input type="hidden" name="btAction" value="UpdateQuantity">
                             <h3>Cập nhật kho</h3>
-                                <p style="margin-top: 10px;" class="mb-4 mt-4">                                
-                                <p>Số lượng hiện tại trong kho: <span id="currentStock">${a.stock_quantity}</span></p>
-                                <label for="newStock">Số lượng mới:</label>
-                                <input style="width: 50%" type="number" id="newStock" name="txtNewQuantity" min="0" value="${a.stock_quantity}">
-                                </p>
-                                <div class="float-right" style="margin-top: 15px;">                                  
-                                    <button id="btn-confirrm" class="btn btn-group-sm btn-primary" name="action" value="NavToUpdateAccessory">Xác nhận</button>
-                                    <a type="button" class="btn-secondary btn btn-group-sm" onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</a>
-                                </div>
+                            <p style="margin-top: 10px;" class="mb-4 mt-4">                                
+                            <p>Số lượng hiện tại trong kho: <span id="currentStock">${a.stock_quantity}</span></p>
+                            <label for="newStock">Số lượng mới:</label>
+                            <input style="width: 50%" type="number" id="newStock" name="txtNewQuantity" min="0" value="${a.stock_quantity}">
+                            </p>
+                            <div class="float-right" style="margin-top: 15px;">                                  
+                                <button id="btn-confirrm" class="btn btn-group-sm btn-primary" name="action" value="NavToUpdateAccessory">Xác nhận</button>
+                                <a type="button" class="btn-secondary btn btn-group-sm" onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</a>
+                            </div>
                         </form>                       
                     </div>
                 </div>
