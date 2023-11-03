@@ -147,7 +147,7 @@
         <!-- ***** Main Banner Area End ***** -->
         <!-- ***** Product Area Starts ***** -->
         <c:set var="birdDetails" value="${requestScope.birdDetails}"/>
-        <section class="section" id="product" style="margin-top: 30px; margin-bottom: 75px;">
+        <section class="section" id="product" style="margin-top: 60px; margin-bottom: 75px;">
             <div class="container">
                 <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
                     <div class="row" style="margin-bottom: 15px;">
@@ -205,7 +205,7 @@
                                     <h4 style="display: inline;">Giống loài: </h4>
                                     <span style="display: inline; color: black; font-size: 20px;">${birdDetails.breed_name}</span>
                                 </div>
-                                
+
                                 <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Màu sắc: </h4>
                                     <span style="display: inline; color: black; font-size: 20px;"">${birdDetails.color}</span>
@@ -282,28 +282,14 @@
                         type: 'POST',
                         data: {bird_id: birdId},
                         success: function (data) {
-                            if (data == 0) {
-                                toast({
-                                    title: 'Lỗi',
-                                    message: 'Sản phẩm này đã có trong giỏ hàng',
-                                    type: 'error',
-                                    duration: 3000
-                                });
-                            } else {
-                                toast({
-                                    title: 'Thành công',
-                                    message: 'Thêm sản phẩm vào giỏ hàng thành công',
-                                    type: 'success',
-                                    duration: 3000
-                                });
-                                $.ajax({
-                                    url: "AddBirdToCartController",
-                                    type: 'POST',
-                                    success: function (data) {
-                                        $('.cart-amount').html(data);
-                                    }
-                                });
-                            }
+                            const json = JSON.parse(data);
+                            toast({
+                                title: json.status,
+                                message: json.content,
+                                type: json.type,
+                                duration: 3000
+                            });
+                            $('.cart-amount').html(json.quantity);
                         }
                     });
                 });

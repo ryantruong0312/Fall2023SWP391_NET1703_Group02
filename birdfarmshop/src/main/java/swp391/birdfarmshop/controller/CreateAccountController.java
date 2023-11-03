@@ -41,7 +41,7 @@ public class CreateAccountController extends HttpServlet {
                     String password = JWTUtils.encodeJWT(token);
                     u = userDao.getUserByUsername(username);
                     if (u == null) {
-                        int result = userDao.createUser(username, "", password, full_name, "", role, "form", "inactive");
+                        int result = userDao.createUser(username, "", password, full_name, "", role, "form", "active");
                         if (result == 0) {
                             session.setAttribute("ERROR", "Tạo tài khoản thất bại");
                         } else {

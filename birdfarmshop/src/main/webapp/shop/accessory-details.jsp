@@ -129,7 +129,7 @@
         </div>
         <!-- ***** Main Banner Area End ***** -->
         <!-- ***** Product Area Starts ***** -->
-        <section class="section" id="product" style="margin-top: 30px; margin-bottom: 75px;">
+        <section class="section" id="product" style="margin-top: 60px; margin-bottom: 75px;">
             <div class="container">
                 <div class="row" style="margin-bottom: 15px;">
                     <div class="col-lg-12">
@@ -254,15 +254,15 @@
                             <input type="hidden" value="${a.accessory_id}" name="txtAccessoryID">
                             <input type="hidden" name="btAction" value="UpdateQuantity">
                             <h3>Cập nhật kho</h3>
-                                <p style="margin-top: 10px;" class="mb-4 mt-4">                                
-                                <p>Số lượng hiện tại trong kho: <span id="currentStock">${a.stock_quantity}</span></p>
-                                <label for="newStock">Số lượng mới:</label>
-                                <input style="width: 50%" type="number" id="newStock" name="txtNewQuantity" min="0" value="${a.stock_quantity}">
-                                </p>
-                                <div class="float-right" style="margin-top: 15px;">                                  
-                                    <button id="btn-confirrm" class="btn btn-group-sm btn-primary" name="action" value="NavToUpdateAccessory">Xác nhận</button>
-                                    <a type="button" class="btn-secondary btn btn-group-sm" onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</a>
-                                </div>
+                            <p style="margin-top: 10px;" class="mb-4 mt-4">                                
+                            <p>Số lượng hiện tại trong kho: <span id="currentStock">${a.stock_quantity}</span></p>
+                            <label for="newStock">Số lượng mới:</label>
+                            <input style="width: 50%" type="number" id="newStock" name="txtNewQuantity" min="0" value="${a.stock_quantity}">
+                            </p>
+                            <div class="float-right" style="margin-top: 15px;">                                  
+                                <button id="btn-confirrm" class="btn btn-group-sm btn-primary" name="action" value="NavToUpdateAccessory">Xác nhận</button>
+                                <a type="button" class="btn-secondary btn btn-group-sm" onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</a>
+                            </div>
                         </form>                       
                     </div>
                 </div>
@@ -437,29 +437,14 @@
                         type: 'POST',
                         data: {accessory_id: accessory_id, order_quantity: quantity},
                         success: function (data) {
-                            if (data == 0) {
-                                toast({
-                                    title: 'Lỗi',
-                                    message: 'Sản phẩm này đã có trong giỏ hàng',
-                                    type: 'error',
-                                    duration: 3000
-                                });
-                            } else {
-                                toast({
-                                    title: 'Thành công',
-                                    message: 'Thêm sản phẩm vào giỏ hàng thành công',
-                                    type: 'success',
-                                    duration: 3000
-                                });
-                                $.ajax({
-                                    url: "AddAccessoryToCartController",
-                                    type: 'POST',
-                                    data: {order_quantity: 1},
-                                    success: function (data) {
-                                        $('.cart-amount').html(data);
-                                    }
-                                });
-                            }
+                            const json = JSON.parse(data);
+                            toast({
+                                title: json.status,
+                                message: json.content,
+                                type: json.type,
+                                duration: 3000
+                            });
+                            $('.cart-amount').html(json.quantity);
                         }
                     });
                 });

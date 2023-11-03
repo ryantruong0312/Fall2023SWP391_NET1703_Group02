@@ -105,7 +105,13 @@
                 $.ajax({
                     url: "AddBirdCompareController",
                     type: 'POST',
-                    data: {bird_id: data}
+                    data: {bird_id: data},
+                    success: function (check) {
+                        const number = Number(check);
+                        if(check == 0){   
+                            window.location.href = 'MainController?action=NavToBird';
+                        }
+                    }
                 });
             }
         </script>

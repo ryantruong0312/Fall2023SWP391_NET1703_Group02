@@ -176,43 +176,14 @@ h2 {
         opacity: 1;
     }
 } 
-.type-pair .box-chose{
+.type-customer,
+.type-shop{
     cursor: pointer;
+    line-height: 50px;
+    font-size: 22px;
+    width: 600px;
+    border-radius: 20px;
     margin: auto;
-}
-
-.type-pair .line-pagination{
-    border-right: 1px solid black;
-    height: 300px;
-}
-.type-pair .box{
-    height: 30px;
-    width: 30px;
-}
-.type-pair .box-top--left{
-    border-top: 2px dashed black;
-    border-left: 2px dashed black;
-}
-.type-pair .box-middle{
-    height: 50px;
-    width: 300px;
-}
-.type-pair .box-top--right{
-    border-top: 2px dashed black;
-    border-right: 2px dashed black ;
-}
-.type-pair .box-content{
-    text-align: center;
-    font-size: 15px;
-    font-weight: bold;
-}
-.type-pair .box-bottom--left{
-    border-bottom: 2px dashed black;
-    border-left: 2px dashed black
-}
-.type-pair .box-bottom--right{
-    border-bottom: 2px dashed black;
-    border-right: 2px dashed black;
 }
 .back-choose h5{
     margin: auto;
