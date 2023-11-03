@@ -130,13 +130,18 @@ public class MainController extends HttpServlet {
     private static final String ACT_NAV_BIRD_PAIR_DETAIL_SHOP = "NavToBirdPairDetailShop";
     private static final String DEST_NAV_BIRD_PAIR_DETAIL_SHOP = "RenderBirdPairDetailShopController";
     private static final String ACT_UPDATE_STATUS_TRACKING = "UpdateStatusTracking";
-    private static final String DEST_UPDATE_STATUS_TRACKING  = "UpdateStatusTrackingController";
+    private static final String DEST_UPDATE_STATUS_TRACKING = "UpdateStatusTrackingController";
     private static final String ACT_NAV_PAYMENT_VNPAY = "NavToVNPAY";
-    private static final String DEST_NAV_PAYMENT_VNPAY  = "OnlinePaymentController";
+    private static final String DEST_NAV_PAYMENT_VNPAY = "OnlinePaymentController";
     private static final String ACT_PAYMENT_VNPAY = "NavToAddOrder";
-    private static final String DEST_PAYMENT_VNPAY  = "AddOrderByOnlineController";
+    private static final String DEST_PAYMENT_VNPAY = "AddOrderByOnlineController";
     private static final String ACT_RETURN_VNPAY = "NavToReturnVNPAY";
-    private static final String DEST_RETURN_VNPAY  = "OnlinePaymentReturnController";
+    private static final String DEST_RETURN_VNPAY = "OnlinePaymentReturnController";
+    private static final String ACT_CREATE_FEEDBACK = "CreateFeedback";
+    private static final String DEST_CREATE_FEEDBACK = "CreateFeedbackController";
+    private static final String ACT_ADD_BIRDNEST_TO_CART = "AddBirdNestToCart";
+    private static final String DEST_ADD_BIRDNEST_TO_CART = "AddBirdNestToCartController";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
@@ -299,31 +304,37 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_ADD_ORDER_ITEMS:
                     url = DEST_ADD_ORDER_ITEMS;
-                break;  
+                    break;
                 case ACT_PAYMENT_BIRD_PAIR:
                     url = DEST_PAYMENT_BIRD_PAIR;
-                break; 
+                    break;
                 case ACT_NAV_BIRD_PAIR_SHOP:
                     url = DEST_NAV_BIRD_PAIR_SHOP;
-                break;  
+                    break;
                 case ACT_NAV_BIRD_PAIR_DETAIL_SHOP:
                     url = DEST_NAV_BIRD_PAIR_DETAIL_SHOP;
-                break;  
+                    break;
                 case ACT_UPDATE_STATUS_TRACKING:
                     url = DEST_UPDATE_STATUS_TRACKING;
-                break;  
+                    break;
                 case ACT_NAV_ADD_ACCESSORY:
                     url = DEST_NAV_ADD_ACCESSORY;
                     break;
                 case ACT_NAV_PAYMENT_VNPAY:
                     url = DEST_NAV_PAYMENT_VNPAY;
-                break;
+                    break;
                 case ACT_PAYMENT_VNPAY:
                     url = DEST_PAYMENT_VNPAY;
-                break;
+                    break;
                 case ACT_RETURN_VNPAY:
                     url = DEST_RETURN_VNPAY;
-                break;
+                    break;
+                case ACT_CREATE_FEEDBACK:
+                    url = DEST_CREATE_FEEDBACK;
+                    break;
+                case ACT_ADD_BIRDNEST_TO_CART:
+                    url = DEST_ADD_BIRDNEST_TO_CART;
+                    break;
                 default:
                     break;
             }

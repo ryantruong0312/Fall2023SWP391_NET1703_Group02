@@ -8,9 +8,14 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import swp391.birdfarmshop.dto.FeedbackDTO;
 import swp391.birdfarmshop.dto.StarDTO;
+import swp391.birdfarmshop.model.Feedback;
 import swp391.birdfarmshop.util.DBUtils;
 
 /**
@@ -205,5 +210,42 @@ public class FeedbackDAO {
             }
         }
         return s;
+    }
+      public boolean addFeedback(Feedback fb) throws SQLException, ParseException, ClassNotFoundException {
+        Connection con = null;
+        
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                LocalDateTime customDateTime = LocalDateTime.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+                String sqlDate = customDateTime.format(formatter);
+                stm = con.prepareStatement("INSERT INTO [dbo].[Feedback]\n"
+                        + "             ([customer],[order_item_id],[rating],[comment],[feedback_date])"
+                        + "             VALUES (?,?,?,?,?) ");
+                stm.setString(1, fb.getCustomer());
+                stm.setInt(2, fb.getOrder_item_id());
+                stm.setInt(3, fb.getRating());
+                stm.setString(4, fb.getComment());
+                stm.setString(5, sqlDate);
+                int row = stm.executeUpdate();
+                if (row > 0) {
+                    return true;
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return false;
     }
 }

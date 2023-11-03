@@ -4,10 +4,8 @@
  */
 package swp391.birdfarmshop.model;
 
-/**
- *
- * @author tlminh
- */
+import java.util.ArrayList;
+
 public class BirdNest {
 
     private String nest_id;
@@ -21,6 +19,7 @@ public class BirdNest {
     private int discount;
     private String image_url;
     private String description;
+        private ArrayList<String> image_url_arr;
 
     public BirdNest() {
     }
@@ -37,6 +36,14 @@ public class BirdNest {
         this.discount = discount;
         this.image_url = image_url;
         this.description = description;
+    }
+
+    public ArrayList<String> getImage_url_arr() {
+        return image_url_arr;
+    }
+
+    public void setImage_url_arr(ArrayList<String> image_url_arr) {
+        this.image_url_arr = image_url_arr;
     }
     
     public String getNest_id() {

@@ -1,7 +1,7 @@
- <%-- 
-    Document   : order-customer
-    Created on : Oct 18, 2023, 12:19:32 AM
-    Author     : phong pc
+<%-- 
+   Document   : order-customer
+   Created on : Oct 18, 2023, 12:19:32 AM
+   Author     : phong pc
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -17,6 +17,8 @@
         <meta name="author" content="">
         <link rel="icon" type="image/png" href="assets/images/logo-title-bar.png"/>
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+
 
         <title>V.E.T - Thông tin cá nhân</title>
 
@@ -26,6 +28,8 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
         <style type="text/css">
             body {
                 margin: 0;
@@ -34,6 +38,38 @@
                 background: #f5f6fa;
                 position: relative;
                 height: 100%;
+            }
+            .stars {
+                margin-left: 32px;
+            }
+            .rating-box {
+                text-align: center;
+                position: relative;
+                background: #fff;
+                padding: 25px 50px 35px;
+                border-radius: 25px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+            }
+            .rating-box header {
+                font-size: 22px;
+                color: #dadada;
+                font-weight: 500;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            .rating-box .stars {
+                display: flex;
+                align-items: center;
+                gap: 25px;
+            }
+            .stars i {
+                color: #e6e6e6;
+                font-size: 35px;
+                cursor: pointer;
+                transition: color 0.2s ease;
+            }
+            .stars i.active {
+                color: #ff9c1a;
             }
             .account-settings .user-profile {
                 margin: 0 0 1rem 0;
@@ -177,7 +213,7 @@
             .nav-link span {
                 font-size: 12px;
             }
-            
+
             .scrollable-container {
                 width: 100%;
                 max-height: 300px; /* Điều chỉnh kích thước tối đa theo nhu cầu */
@@ -190,7 +226,7 @@
             .scrollable-list th, .scrollable-list td {
                 text-align: center;
             }
-            
+
             div {
                 display: block;
             }
@@ -348,7 +384,7 @@
                 align-items: center;
             }
             .show-price span {
-                cursor: pointer; 
+                cursor: pointer;
             }
             .show-price label {
                 margin: 0 10px 0 0;
@@ -361,7 +397,7 @@
                 font-size: 24px;
                 line-height: 30px;
             }
-            
+
             .pair-status {
                 line-height: 36px;
                 width: 150px;
@@ -426,176 +462,332 @@
                                             <div class="tab-pane fade show active">
                                                 <div class="row"><!-- all orders -->
                                                     <c:forEach items="${itemMap}" var="map">
-                                                    <c:set value="${map.key}" var="order"/>
-                                                    <c:set value="${map.value}" var="itemList"/>
-                                                    <div class="order-info"><!-- display order -->
-                                                        <div style="width: 100%;"><!-- cover product, status -->
-                                                            <div class="order-detail"><!-- small div product, status -->
-                                                                <section style="display: block;">
-                                                                    <div class="order-bar">
-                                                                        <!-- order id -->
-                                                                        <div class="order-id">Mã đơn hàng: ${order.order_id} - Ngày mua: ${order.order_date}.</div>
-                                                                        <!-- order status -->
-                                                                        <c:if test="${order.order_status eq 'Chờ xử lý'}">
-                                                                            <div><a onclick="show('popup'); event.stopPropagation();" style="color: #007BFF;">HỦY ĐƠN HÀNG</a></div>
-                                                                        </c:if>
-                                                                        <c:if test="${order.order_status eq 'Đã giao hàng'}">
-                                                                            <div style="color: #007BFF;"><a>ĐÁNH GIÁ ĐƠN HÀNG</a></div>
-                                                                        </c:if>
-                                                                        <div class="order-status">${order.order_status}</div>
-                                                                    </div>
-                                                                </section>
-                                                                <div class="seperate"></div>
-                                                                <section>
-                                                                    <h3></h3>
-                                                                    <a href="#">
-                                                                        <div>
-                                                                            <div class="detail-inner-1">
-                                                                                <div class="detail-inner-2">
-                                                                                    <div>
-                                                                                <c:forEach items="${itemList}" var="orderItem">
-                                                                                    <c:choose>
-                                                                                        <c:when test="${orderItem.bird != null}">
-                                                                                        <section>
-                                                                                            <div class="info">
-                                                                                                <div class="info-left">
-                                                                                                    <img src="${orderItem.bird.image_url}" class="product-image" alt="" />
-                                                                                                    <div class="showAll">
-                                                                                                        <div>
-                                                                                                            <div class="product-name"><span>${orderItem.bird.bird_name}</span></div>
-                                                                                                        </div>
-                                                                                                        <div>
-                                                                                                            <div class="product-category"><span></span></div>
-                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="info-right">
-                                                                                                    <div class="price">
-                                                                                                        <c:if test="${orderItem.bird.discount != 0}">
-                                                                                                        <span class="old-price">${orderItem.bird.price}đ</span>
-                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price * (1 - orderItem.bird.discount/100)}" pattern="#,###"/>₫</span>
-                                                                                                        </c:if>
-                                                                                                        <c:if test="${orderItem.bird.discount == 0}">
-                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price}" pattern="#,###"/>₫</span>
-                                                                                                        </c:if>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </section>
-                                                                                        </c:when>
-                                                                                        <c:when test="${orderItem.accessory != null}">
-                                                                                        <section>
-                                                                                            <div class="info">
-                                                                                                <div class="info-left">
-                                                                                                    <img src="${orderItem.accessory.image_url}" class="product-image" alt="" />
-                                                                                                    <div class="showAll">
-                                                                                                        <div>
-                                                                                                            <div class="product-name"><span>${orderItem.accessory.accessory_name}</span></div>
-                                                                                                        </div>
-                                                                                                        <div>
-                                                                                                            <div class="product-category"><span></span></div>
-                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="info-right">
-                                                                                                    <div class="price">
-                                                                                                        <c:if test="${orderItem.accessory.discount != 0}">
-                                                                                                        <span class="old-price">${orderItem.accessory.unit_price}đ</span>
-                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
-                                                                                                        </c:if>
-                                                                                                        <c:if test="${orderItem.accessory.discount == 0}">
-                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price}" pattern="#,###"/>₫</span>
-                                                                                                        </c:if>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </section>
-                                                                                        </c:when>
-                                                                                        <c:when test="${orderItem.birdNest != null}">
-                                                                                        <section>
-                                                                                            <div class="info">
-                                                                                                <div class="info-left">
-                                                                                                    <img src="${orderItem.birdNest.image_url}" class="product-image" alt="" />
-                                                                                                    <div class="showAll">
-                                                                                                        <div>
-                                                                                                            <div class="product-name"><span>${orderItem.birdNest.nest_name}</span></div>
-                                                                                                        </div>
-                                                                                                        <div>
-                                                                                                            <div class="product-category"><span></span></div>
-                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="info-right">
-                                                                                                    <div class="price">
-                                                                                                        <c:if test="${orderItem.birdNest.discount != 0}">
-                                                                                                        <span class="old-price">${orderItem.birdNest.price}đ</span>
-                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price * (1 - orderItem.birdNest.discount/100)}" pattern="#,###"/>₫</span>
-                                                                                                        </c:if>
-                                                                                                        <c:if test="${orderItem.birdNest.discount == 0}">
-                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price}" pattern="#,###"/>₫</span>
-                                                                                                        </c:if>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </section>
-                                                                                        </c:when>
-                                                                                        <c:when test="${orderItem.birdPair != null}">
-                                                                                        <section>
-                                                                                            <div class="d-flex align-items-center justify-content-between">
-                                                                                                <div class="pair-img pl-3 py-3 text-center">
-                                                                                                    <img style="width: 80px;" src="${orderItem.birdPair.male_bird.image_url}"/>
-                                                                                                    <p>${orderItem.birdPair.male_bird.bird_name}</p>
-                                                                                                </div>
-                                                                                                <div class="text-center">
-                                                                                                    <div class="pair-status mb-4">
-                                                                                                        ${orderItem.birdPair.status}
-                                                                                                    </div>
-                                                                                                    <a href="MainController?action=NavToBirdPairDetail&order_id=${orderItem.birdPair.order_id}&pair_id=${orderItem.birdPair.pair_id}"><span>Xem chi tiết</span></a>
-                                                                                                </div>
-                                                                                                <div class="pair-img pr-3 py-3 text-center">
-                                                                                                    <img style="width: 80px;" src="${orderItem.birdPair.female_bird.image_url}"/>
-                                                                                                    <p>${orderItem.birdPair.female_bird.bird_name}</p>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </section>
-                                                                                        </c:when>
-                                                                                        <c:otherwise>
-                                                                                        <section>
-                                                                                            <div class="info">
-                                                                                                <span>Không có đơn hàng nào</span>
-                                                                                            </div>
-                                                                                        </section>
-                                                                                        </c:otherwise>
-                                                                                    </c:choose>
-                                                                                </c:forEach>
+                                                        <c:set value="${map.key}" var="order"/>
+                                                        <c:set value="${map.value}" var="itemList"/>
+                                                        <div class="order-info"><!-- display order -->
+                                                            <div style="width: 100%;"><!-- cover product, status -->
+                                                                <div class="order-detail"><!-- small div product, status -->
+                                                                    <section style="display: block;">
+                                                                        <div class="order-bar">
+                                                                            <!-- order id -->
+                                                                            <div class="order-id">Mã đơn hàng: ${order.order_id} - Ngày mua: ${order.order_date}.</div>
+                                                                            <!-- order status -->
+                                                                            <c:if test="${order.order_status eq 'Chờ xử lý'}">
+                                                                                <div><a onclick="show('popup'); event.stopPropagation();" style="color: #007BFF;">HỦY ĐƠN HÀNG</a></div>
+                                                                            </c:if>
+                                                                            <c:if test="${order.order_status eq 'Đã giao hàng'}">
+                                                                                <div style="color: #007BFF;"><a>ĐÁNH GIÁ ĐƠN HÀNG</a></div>
+                                                                            </c:if>
+                                                                            <div class="order-status">${order.order_status}</div>
+                                                                        </div>
+                                                                    </section>
+                                                                    <div class="seperate"></div>
+                                                                    <section>
+                                                                        <h3></h3>
+                                                                        <a href="#">
+                                                                            <div>
+                                                                                <div class="detail-inner-1">
+                                                                                    <div class="detail-inner-2">
+                                                                                        <div>
+                                                                                            <c:forEach items="${itemList}" var="orderItem">
+                                                                                                <c:choose>
+                                                                                                    <c:when test="${orderItem.bird != null}">
+                                                                                                        <section>
+                                                                                                            <div class="info">
+                                                                                                                <div class="info-left">
+                                                                                                                    <img src="${orderItem.bird.image_url}" class="product-image" alt="" />
+                                                                                                                    <div class="showAll">
+                                                                                                                        <div>
+                                                                                                                            <div class="product-name"><span>${orderItem.bird.bird_name}</span></div>
+                                                                                                                        </div>
+                                                                                                                        <div>
+                                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="info-right">
+                                                                                                                    <div class="price">
+                                                                                                                        <c:if test="${orderItem.bird.discount != 0}">
+                                                                                                                            <span class="old-price">${orderItem.bird.price}đ</span>
+                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price * (1 - orderItem.bird.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                                        </c:if>
+                                                                                                                        <c:if test="${orderItem.bird.discount == 0}">
+                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price}" pattern="#,###"/>₫</span>
+                                                                                                                        </c:if>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+                                                                                                                Đánh giá
+                                                                                                            </button>                 
+                                                                                                            <!-- Modal -->
+                                                                                                            <form action = "MainController">
+                                                                                                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                                                    <div class="modal-dialog">
+                                                                                                                        <div class="modal-content">
+                                                                                                                            <div class="modal-header">
+                                                                                                                                <h5 class="modal-title" id="exampleModalLabel">Đánh giá của bạn</h5>
+                                                                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                                            </div>
+                                                                                                                            <div class="modal-body">
+                                                                                                                                <input type="hidden" name="order_item_id" id="order_feedback"/>
+                                                                                                                                <input type="hidden" class="" min="1" max="5" name="star" required="" id="star_number"/>
+
+                                                                                                                                <div class="rating-box">
+                                                                                                                                    <h4>Trải nghiệm của bạn thế nào ?</h4>
+                                                                                                                                    <div class="stars">
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div class="mb-3">
+                                                                                                                                    <label for="exampleFormControlTextarea1" class="form-label">Nhập đánh giá</label>
+                                                                                                                                    <textarea class="form-control" name="feedback" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div class="modal-footer">
+                                                                                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                                                                                                <button type="submit" id="submit" class="btn btn-primary" name="action" value="CreateFeedback">Lưu</button>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </form>
+                                                                                                        </section>
+                                                                                                    </c:when>
+                                                                                                    <c:when test="${orderItem.accessory != null}">
+                                                                                                        <section>
+                                                                                                            <div class="info">
+                                                                                                                <div class="info-left">
+                                                                                                                    <img src="${orderItem.accessory.image_url}" class="product-image" alt="" />
+                                                                                                                    <div class="showAll">
+                                                                                                                        <div>
+                                                                                                                            <div class="product-name"><span>${orderItem.accessory.accessory_name}</span></div>
+                                                                                                                        </div>
+                                                                                                                        <div>
+                                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="info-right">
+                                                                                                                    <div class="price">
+                                                                                                                        <c:if test="${orderItem.accessory.discount != 0}">
+                                                                                                                            <span class="old-price">${orderItem.accessory.unit_price}đ</span>
+                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                                        </c:if>
+                                                                                                                        <c:if test="${orderItem.accessory.discount == 0}">
+                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price}" pattern="#,###"/>₫</span>
+                                                                                                                        </c:if>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+                                                                                                                Đánh giá
+                                                                                                            </button>                 
+                                                                                                            <!-- Modal -->
+                                                                                                            <form action = "MainController">
+                                                                                                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                                                    <div class="modal-dialog">
+                                                                                                                        <div class="modal-content">
+                                                                                                                            <div class="modal-header">
+                                                                                                                                <h5 class="modal-title" id="exampleModalLabel">Đánh giá của bạn</h5>
+                                                                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                                            </div>
+                                                                                                                            <div class="modal-body">
+                                                                                                                                <input type="hidden" name="order_item_id" id="order_feedback"/>
+                                                                                                                                <input type="hidden" class="" min="1" max="5" name="star" required="" id="star_number"/>
+
+                                                                                                                                <div class="rating-box">
+                                                                                                                                    <h4>Trải nghiệm của bạn thế nào ?</h4>
+                                                                                                                                    <div class="stars">
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div class="mb-3">
+                                                                                                                                    <label for="exampleFormControlTextarea1" class="form-label">Nhập đánh giá</label>
+                                                                                                                                    <textarea class="form-control" name="feedback" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div class="modal-footer">
+                                                                                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                                                                                                <button type="submit" id="submit" class="btn btn-primary" name="action" value="CreateFeedback">Lưu</button>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </form>
+                                                                                                        </section>
+                                                                                                    </c:when>
+                                                                                                    <c:when test="${orderItem.birdNest != null}">
+                                                                                                        <section>
+                                                                                                            <div class="info">
+                                                                                                                <div class="info-left">
+                                                                                                                    <img src="${orderItem.birdNest.image_url}" class="product-image" alt="" />
+                                                                                                                    <div class="showAll">
+                                                                                                                        <div>
+                                                                                                                            <div class="product-name"><span>${orderItem.birdNest.nest_name}</span></div>
+                                                                                                                        </div>
+                                                                                                                        <div>
+                                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="info-right">
+                                                                                                                    <div class="price">
+                                                                                                                        <c:if test="${orderItem.birdNest.discount != 0}">
+                                                                                                                            <span class="old-price">${orderItem.birdNest.price}đ</span>
+                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price * (1 - orderItem.birdNest.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                                        </c:if>
+                                                                                                                        <c:if test="${orderItem.birdNest.discount == 0}">
+                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price}" pattern="#,###"/>₫</span>
+                                                                                                                        </c:if>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+                                                                                                                Đánh giá
+                                                                                                            </button>                 
+                                                                                                            <!-- Modal -->
+                                                                                                            <form action = "MainController">
+                                                                                                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                                                    <div class="modal-dialog">
+                                                                                                                        <div class="modal-content">
+                                                                                                                            <div class="modal-header">
+                                                                                                                                <h5 class="modal-title" id="exampleModalLabel">Đánh giá của bạn</h5>
+                                                                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                                            </div>
+                                                                                                                            <div class="modal-body">
+                                                                                                                                <input type="hidden" name="order_item_id" id="order_feedback"/>
+                                                                                                                                <input type="hidden" class="" min="1" max="5" name="star" required="" id="star_number"/>
+
+                                                                                                                                <div class="rating-box">
+                                                                                                                                    <h4>Trải nghiệm của bạn thế nào ?</h4>
+                                                                                                                                    <div class="stars">
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div class="mb-3">
+                                                                                                                                    <label for="exampleFormControlTextarea1" class="form-label">Nhập đánh giá</label>
+                                                                                                                                    <textarea class="form-control" name="feedback" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div class="modal-footer">
+                                                                                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                                                                                                <button type="submit" id="submit" class="btn btn-primary" name="action" value="CreateFeedback">Lưu</button>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </form>
+                                                                                                        </section>
+                                                                                                    </c:when>
+                                                                                                    <c:when test="${orderItem.birdPair != null}">
+                                                                                                        <section>
+                                                                                                            <div class="d-flex align-items-center justify-content-between">
+                                                                                                                <div class="pair-img pl-3 py-3 text-center">
+                                                                                                                    <img style="width: 80px;" src="${orderItem.birdPair.male_bird.image_url}"/>
+                                                                                                                    <p>${orderItem.birdPair.male_bird.bird_name}</p>
+                                                                                                                </div>
+                                                                                                                <div class="text-center">
+                                                                                                                    <div class="pair-status mb-4">
+                                                                                                                        ${orderItem.birdPair.status}
+                                                                                                                    </div>
+                                                                                                                    <a href="MainController?action=NavToBirdPairDetail&order_id=${orderItem.birdPair.order_id}&pair_id=${orderItem.birdPair.pair_id}"><span>Xem chi tiết</span></a>
+                                                                                                                </div>
+                                                                                                                <div class="pair-img pr-3 py-3 text-center">
+                                                                                                                    <img style="width: 80px;" src="${orderItem.birdPair.female_bird.image_url}"/>
+                                                                                                                    <p>${orderItem.birdPair.female_bird.bird_name}</p>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+                                                                                                                Đánh giá
+                                                                                                            </button>                 
+                                                                                                            <!-- Modal -->
+                                                                                                            <form action = "MainController">
+                                                                                                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                                                    <div class="modal-dialog">
+                                                                                                                        <div class="modal-content">
+                                                                                                                            <div class="modal-header">
+                                                                                                                                <h5 class="modal-title" id="exampleModalLabel">Đánh giá của bạn</h5>
+                                                                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                                            </div>
+                                                                                                                            <div class="modal-body">
+                                                                                                                                <input type="hidden" name="order_item_id" id="order_feedback"/>
+                                                                                                                                <input type="hidden" class="" min="1" max="5" name="star" required="" id="star_number"/>
+
+                                                                                                                                <div class="rating-box">
+                                                                                                                                    <h4>Trải nghiệm của bạn thế nào ?</h4>
+                                                                                                                                    <div class="stars">
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                                <div class="mb-3">
+                                                                                                                                    <label for="exampleFormControlTextarea1" class="form-label">Nhập đánh giá</label>
+                                                                                                                                    <textarea class="form-control" name="feedback" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <div class="modal-footer">
+                                                                                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                                                                                                <button type="submit" id="submit" class="btn btn-primary" name="action" value="CreateFeedback">Lưu</button>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </form>
+                                                                                                        </section>
+                                                                                                    </c:when>
+                                                                                                    <c:otherwise>
+                                                                                                        <section>
+                                                                                                            <div class="info">
+                                                                                                                <span>Không có đơn hàng nào</span>
+                                                                                                            </div>
+                                                                                                        </section>
+                                                                                                    </c:otherwise>
+                                                                                                </c:choose>
+                                                                                            </c:forEach>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </a>
-                                                                </section>
+                                                                        </a>
+                                                                    </section>
+                                                                </div>
+                                                            </div>
+                                                            <div class="boundary">
+                                                                <div class="boundary-1 boundary-both"></div>
+                                                                <div class="boundary-2 boundary-both"></div>
+                                                            </div>
+                                                            <div class="total-price">
+                                                                <c:if test="${order.name_receiver != null && order.phone_receiver != null}">
+                                                                    <div style="float: left;">
+                                                                        <span>Người nhận: ${order.name_receiver} - Sđt: ${order.phone_receiver}</span>
+                                                                    </div>
+                                                                </c:if>
+                                                                <div class="show-price">
+                                                                    <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
+                                                                    <label>Thành tiền: </label>
+                                                                    <div class="total"><fmt:formatNumber value="${order.total_price}" pattern="#,###"/>₫</div>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div class="boundary">
-                                                            <div class="boundary-1 boundary-both"></div>
-                                                            <div class="boundary-2 boundary-both"></div>
-                                                        </div>
-                                                        <div class="total-price">
-                                                            <c:if test="${order.name_receiver != null && order.phone_receiver != null}">
-                                                            <div style="float: left;">
-                                                                <span>Người nhận: ${order.name_receiver} - Sđt: ${order.phone_receiver}</span>
-                                                            </div>
-                                                            </c:if>
-                                                            <div class="show-price">
-                                                                <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
-                                                                <label>Thành tiền: </label>
-                                                                <div class="total"><fmt:formatNumber value="${order.total_price}" pattern="#,###"/>₫</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                     </c:forEach>
                                                 </div>
                                             </div>
@@ -612,14 +804,48 @@
         <%@include file="../layout/footer.jsp" %>
         <!-- End Footer -->
         <script>
-                                                        function show(id) {
-                                                            var list = document.getElementById(id);
-                                                            list.style.display = "block";
-                                                        }
-                                                        function hide(id) {
-                                                            var list = document.getElementById(id);
-                                                            list.style.display = "none";
-                                                        }
+            function show(id) {
+                var list = document.getElementById(id);
+                list.style.display = "block";
+            }
+            function hide(id) {
+                var list = document.getElementById(id);
+                list.style.display = "none";
+            }
         </script>
+        <script>
+            const stars = document.querySelectorAll(".stars i");
+            stars.forEach((star, index1) => {
+                star.addEventListener("click", () => {
+                    document.getElementById("star_number").value = index1 + 1;
+                    stars.forEach((star, index2) => {
+                        index1 >= index2 ? star.classList.add("active") : star.classList.remove("active");
+                    });
+                });
+            });
+
+            function createFeedback(id) {
+                document.getElementById("order_feedback").value = id;
+            }
+        </script>
+        <!-- jQuery -->
+        <script src="assets/js/jquery-2.1.0.min.js"></script>
+
+        <!-- Bootstrap -->
+        <script src="assets/js/popper.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+
+        <!-- Plugins -->
+        <script src="assets/js/owl-carousel.js"></script>
+        <script src="assets/js/accordions.js"></script>
+        <script src="assets/js/datepicker.js"></script>
+        <script src="assets/js/scrollreveal.min.js"></script>
+        <script src="assets/js/waypoints.min.js"></script>
+        <script src="assets/js/jquery.counterup.min.js"></script>
+        <script src="assets/js/imgfix.min.js"></script> 
+        <script src="assets/js/slick.js"></script> 
+        <script src="assets/js/lightbox.js"></script> 
+        <script src="assets/js/isotope.js"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     </body>
 </html>
