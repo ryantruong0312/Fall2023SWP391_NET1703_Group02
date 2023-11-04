@@ -124,7 +124,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <p class="text-muted user-select-none"><c:out value="${feedback.feedbackDate}"/></p>
+                                        <p class="text-muted user-select-none"><fmt:formatDate value="${feedback.feedbackDate}" pattern="dd-MM-yyyy"/></p>
                                     </div>
                                 </div>
                                 <p class="mt-2"><c:out value="${feedback.comment}"/></p>

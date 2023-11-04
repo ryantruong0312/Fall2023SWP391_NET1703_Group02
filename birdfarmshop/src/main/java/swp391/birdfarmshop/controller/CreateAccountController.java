@@ -28,6 +28,7 @@ public class CreateAccountController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
+        boolean check = true;
         try {
             UserDAO userDao = new UserDAO();
             HttpSession session = request.getSession();
@@ -46,6 +47,8 @@ public class CreateAccountController extends HttpServlet {
                             session.setAttribute("ERROR", "Tạo tài khoản thất bại");
                         } else {
                             session.setAttribute("SUCCESS", "Tạo tài khoản thành công");
+                            check = false;
+                            response.sendRedirect("MainController?action=NavToAccounts");
                         }
                     } else {
                         session.setAttribute("ERROR", "Tài khoản này đã sử dụng");
@@ -62,7 +65,9 @@ public class CreateAccountController extends HttpServlet {
         } catch (Exception ex) {
             log("Error at CreateAccountController: " + ex.toString());
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+           if(check){
+              request.getRequestDispatcher(url).forward(request, response);
+           }
         }
     }
 

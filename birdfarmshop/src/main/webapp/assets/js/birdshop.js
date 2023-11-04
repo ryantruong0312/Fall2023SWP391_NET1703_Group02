@@ -322,6 +322,9 @@ $("#update-tracking").validate({
         content: {
             required: true,
             regex: /^(?!\s)[\s\S]*$/
+        },
+        file:{
+            required: true
         }
     },
     messages: {
@@ -342,6 +345,9 @@ $("#update-tracking").validate({
         content: {
             required: 'Vui lòng nhập nội dung theo dõi',
             regex: 'Không nhập kí tự trắng đầu tiên'
+        },
+        file:{
+            required: 'Vui lòng chọn ảnh'
         }
     }
 });

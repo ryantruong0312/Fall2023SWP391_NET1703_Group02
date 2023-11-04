@@ -14,7 +14,7 @@
         <link rel="icon" type="image/png" href="assets/images/logo-title-bar.png"/>
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-        <title>V.E.T - Ghép cặp</title>
+        <title>V.E.T - Chi tiết nhân giống</title>
 
         <!-- Additional CSS Files -->
         <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
@@ -438,7 +438,7 @@
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <label for="image">Chọn ảnh: </label>
-                                    <input id="image" type="file" name="file"  accept="image/jpeg, image/png, image/gif">
+                                    <input id="image" type="file" name="file"  accept="image/jpeg, image/png, image/gif" required="">
                                     <div class="img-upload my-3">
 
                                     </div>
