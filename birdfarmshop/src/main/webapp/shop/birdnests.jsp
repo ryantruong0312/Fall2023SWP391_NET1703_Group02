@@ -27,6 +27,31 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
+        
+        <style>
+            #counter-box {
+                position: fixed;
+                bottom: 20px; /* Adjust the distance from the bottom as needed */
+                right: 20px; /* Adjust the distance from the right as needed */
+                background-color: #6ac8b6; /* Background color of the counter box */
+                color: #fff; /* Text color */
+                border-radius: 5px; /* Makes the box circular */
+                width: 200px; /* Set the width of the box */
+                height: 50px; /* Set the height of the box */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 3;
+            }
+
+            #compare-counter {
+                font-size: 1.2rem;
+            }
+            .btn-success{
+                padding: 15px;
+                border-radius: 5px;
+            }
+        </style>
     </head>
 
     <body>
@@ -51,21 +76,29 @@
 
         <!-- ***** Products Area Starts ***** -->
         <div class="py-5 px-2 layout-item" style="border-bottom: none" id="top">
-            <form id="selectNest" action="MainController" method="POST">
-                <input type="hidden" name="action" value="NavToBirdNests"> 
-                <div class="d-flex justify-content-center">
-                    <div class="search-bar">
-                        <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
-                        <input type="text" name="txtBirdNest" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
-                        <input type="hidden" name="page" value="1" />
-                        <input type="submit" value="Tìm kiếm">
+                <form id="selectBird" action="MainController" method="POST">
+                <input type="hidden" name="action" value="NavToBird"> 
+                <div class="d-flex">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <div class="d-flex justify-content-center mb-4">
+                        <div class="search-bar">
+                            <img style="width: 15px; height: 15px;" src="assets/images/search.png"/>
+                            <input type="text" name="txtBirdName" id="search" placeholder="Tìm kiếm" value="${requestScope.SEARCH}">
+                            <input type="hidden" name="page" value="1" />
+                            <input type="submit" value="Tìm kiếm">
+                        </div>
                     </div>
+                    </div>
+                    <div class="col-md-4">
+                        <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
+                            <div>
+                                <a href="MainController?action=NavToNewBirdNest"><span class="btn-success">Thêm mới chim</span></a>
+                            </div>
+                        </c:if>
+                    </div>
+
                 </div>
-                <c:if test="${sessionScope.LOGIN_USER.role == 'manager' || sessionScope.LOGIN_USER.role == 'admin'}">
-                    <div class="new-item d-flex justify-content-center">
-                        <a href="MainController?action=NavToNewBirdNest"><span>Thêm mới tổ chim</span></a>
-                    </div>
-                </c:if>
                 <main class="my-5">
                     <div class="container-fluid">
                         <div class="row m-0">
@@ -110,7 +143,7 @@
                                                                     </li>
                                                                     <c:if test="${(sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer')}">
                                                                         <c:if test="${nest.status == 'Còn hàng'}">
-                                                                            <li><a style="cursor: pointer" class="accessory-cart" data-value="${nest.nest_id}"><i class="fa fa-shopping-cart"></i></a></li>
+                                                                            <li><a style="cursor: pointer" class="accessory-cart" data-value="${nest.nest_id}" href="MainController?action=AddBirdNestToCart&nest_id=${nest.nest_id}"><i class="fa fa-shopping-cart"></i></a></li>
                                                                                 </c:if>
                                                                             </c:if>
                                                                 </ul>
