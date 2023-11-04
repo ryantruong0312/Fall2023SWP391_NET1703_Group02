@@ -33,22 +33,6 @@
                 display: flex;
                 align-items: center;
             }
-
-            /*            .col-lg-12 a {
-                            border-radius: 10px;
-                            border: 1px solid rgb(221, 221, 227);
-                            background-color: #f5c6cb;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            margin: 0 auto;
-                            width: 50%;
-                            margin-bottom: 30px;
-                            margin-top: 20px;
-                            width: 150px;
-                            float: right;
-                        }*/
-
             .overlay-text {
                 position: absolute;
                 top: 50%;
@@ -61,16 +45,9 @@
                 font-size: 25px;
                 text-align: center;
             }
-            .image-bottom {
-                cursor: pointer;
-                display: inline-block;
-                margin: 10px 10px 0 0;
-            }
 
             #mainImage {
-                width: 500px;
-                height: 400px;
-                border: 1px solid;
+                border: 1px solid #000; 
                 transition: transform 0.3s ease-in-out;
             }
 
@@ -114,8 +91,15 @@
                 overflow-y: auto;
                 max-height: 250px;
                 font-family: inherit;
-                font-size: 20px;
             }
+            .image-bottom img {
+                width: 154px;
+                height: 185px;
+                display: block;
+                margin-bottom: 15px;    
+                border: 1px solid #000;    
+            }
+
         </style>
         <script>
             function swapImages(clickedImage) {
@@ -158,34 +142,40 @@
                 </c:if>
                 <div class="row">
                     <div class="col-lg-7">
-                        <c:if test="${birdDetails != null}">
-                            <div class="image-container">
-                                <div class="image-top">
-                                    <div class="overlay-container">
-                                        <img id="mainImage" style="width: 500px; height: 400px;" src="${im}" alt="" onclick="swapImages(this)">
-                                        <c:if test="${birdDetails.discount > 0}">
-                                            <span class="tag-discount"> -${birdDetails.discount}%</span>
-                                        </c:if>
-                                        <c:if test="${birdDetails.status == 'Đã bán'}">
-                                            <div class="overlay-text">Đã bán</div>
-                                        </c:if>
-                                        <c:if test="${birdDetails.status == 'Đang sinh sản'}">
-                                            <div class="overlay-text">Đang sinh sản</div>
-                                        </c:if>
-                                        <c:if test="${birdDetails.status == 'Đang ghép cặp'}">
-                                            <div class="overlay-text">Đang ghép cặp</div>
-                                        </c:if>
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <c:if test="${birdDetails != null}">
+                                    <div class="image-container">
+                                        <div class="image-top">
+                                            <div class="overlay-container">
+                                                <img id="mainImage" style="width: 370px; height: 444px;" src="${im}" alt="" onclick="swapImages(this)">
+                                                <c:if test="${birdDetails.discount > 0}">
+                                                    <span class="tag-discount"> -${birdDetails.discount}%</span>
+                                                </c:if>
+                                                <c:if test="${birdDetails.status == 'Đã bán'}">
+                                                    <div class="overlay-text">Đã bán</div>
+                                                </c:if>
+                                                <c:if test="${birdDetails.status == 'Đang sinh sản'}">
+                                                    <div class="overlay-text">Đang sinh sản</div>
+                                                </c:if>
+                                                <c:if test="${birdDetails.status == 'Đang ghép cặp'}">
+                                                    <div class="overlay-text">Đang ghép cặp</div>
+                                                </c:if>
+                                            </div>
+                                        </div>
                                     </div>
+                                </c:if>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="image-bottom">
+                                    <c:forEach items="${birdDetails.image_urls}" var="bird">
+                                        <c:if test="${bird ne im}">
+                                            <img src="${bird}" alt="" onclick="swapImages(this)"/>
+                                        </c:if>
+                                    </c:forEach>
                                 </div>
                             </div>
-                            <div class="image-bottom">
-                                <c:forEach items="${birdDetails.image_urls}" var="bird">
-                                    <c:if test="${bird ne im}">
-                                        <img style="width: 100px; height: 75px; border: 1px solid;" class="accessory-image" src="${bird}" alt="" onclick="swapImages(this)"/>
-                                    </c:if>
-                                </c:forEach>
-                            </div>
-                        </c:if>
+                        </div>
                     </div>
                     <div class="col-lg-5">
                         <div class="right-content">
@@ -203,32 +193,32 @@
                             <div class="mt-2">
                                 <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Giống loài: </h4>
-                                    <span style="display: inline; color: black; font-size: 20px;">${birdDetails.breed_name}</span>
+                                    <span style="display: inline; color: black;">${birdDetails.breed_name}</span>
                                 </div>
 
                                 <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Màu sắc: </h4>
-                                    <span style="display: inline; color: black; font-size: 20px;"">${birdDetails.color}</span>
+                                    <span style="display: inline; color: black;">${birdDetails.color}</span>
                                 </div>
 
                                 <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Tuổi: </h4>
-                                    <span style="display: inline; color: black; font-size: 20px;">${birdDetails.age} tháng</span>
+                                    <span style="display: inline; color: black;">${birdDetails.age} tháng</span>
                                 </div>
 
                                 <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Tuổi trưởng thành: </h4>
-                                    <span style="display: inline; color: black; font-size: 20px;">${birdDetails.grown_age} tháng</span>
+                                    <span style="display: inline; color: black;">${birdDetails.grown_age} tháng</span>
                                 </div>
 
                                 <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Lứa sinh sản: </h4>
-                                    <span style="display: inline; color: black; font-size: 20px;">${birdDetails.reproduction_history}</span>
+                                    <span style="display: inline; color: black;">${birdDetails.reproduction_history}</span>
                                 </div>
                                 <c:if test="${not empty birdDetails.achievement}">
                                     <div style="margin-top: 10px;">
                                         <h4 style="">Thành tựu: </h4>
-                                        <pre style="color: black; font-size: 20px; margin-top: 10px;">${birdDetails.achievement}</pre>
+                                        <pre style="color: black;margin-top: 10px;">${birdDetails.achievement}</pre>
                                     </div>
                                 </c:if>
 
@@ -244,7 +234,7 @@
                                         <c:if test="${bird.status ne 'Đã bán' && birdDetails.status ne 'Đang sinh sản' && birdDetails.status ne 'Đang ghép cặp'}">
                                             <div class="total" style="margin-top: 30px;">
                                                 <div class="main-border-button">
-                                                    <a class="bird-cart btn-primary" style="cursor: pointer; color: white;" data-value="${birdDetails.bird_id}">Thêm vào giỏ hàng</a>
+                                                    <a class="bird-cart btn-primary" style="cursor: pointer; color: white; border: 0px; border-radius: 20px;" data-value="${birdDetails.bird_id}">Thêm vào giỏ hàng</a>
                                                 </div>
                                             </div>
                                         </c:if>

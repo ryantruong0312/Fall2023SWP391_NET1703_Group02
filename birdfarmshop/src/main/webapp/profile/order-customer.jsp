@@ -435,45 +435,46 @@
                                             </div>
                                         </div>
                                         <!-- Tab buttons -->
-                                        <ul class="nav nav-tabs" id="orderTabs">
-                                            <li class="nav-item">
-                                                <a onclick="event.stopPropagation();" class="nav-link ${param.status == 'all' ? "active":"" || param.status == null ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder">Tất cả</a>
+                                        <ul style="border-color: skyblue;" class="nav nav-tabs" id="orderTabs">
+                                            <li style="border-color: skyblue;" class="nav-item">
+                                                <a ${param.status == 'all' ? "style='border-color: skyblue;'":"" || param.status == null ? "style='border-color: skyblue;'":""} onclick="event.stopPropagation();" class="nav-link ${param.status == 'all' ? "active":"" || param.status == null ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder">Tất cả</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a onclick="event.stopPropagation();" class="nav-link ${param.status == 'wait' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=wait">Chờ xử lý</a>
+                                                <a ${param.status == 'wait' ? "style='border-color: skyblue;'":""} onclick="event.stopPropagation();" class="nav-link ${param.status == 'wait' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=wait">Chờ xử lý</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a onclick="event.stopPropagation();" class="nav-link ${param.status == 'inProgress' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=inProgress">Đang xử lý</a>
+                                                <a ${param.status == 'inProgress' ? "style='border-color: skyblue;'":""} onclick="event.stopPropagation();" class="nav-link ${param.status == 'inProgress' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=inProgress">Đang xử lý</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a onclick="event.stopPropagation();" class="nav-link ${param.status == 'delivering' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=delivering">Đang giao</a>
+                                                <a ${param.status == 'delivering' ? "style='border-color: skyblue;'":""} onclick="event.stopPropagation();" class="nav-link ${param.status == 'delivering' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=delivering">Đang giao</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a onclick="event.stopPropagation();" class="nav-link ${param.status == 'delivered' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=delivered">Đã giao</a>
+                                                <a ${param.status == 'delivered' ? "style='border-color: skyblue;'":""} onclick="event.stopPropagation();" class="nav-link ${param.status == 'delivered' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=delivered">Đã giao</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a onclick="event.stopPropagation();" class="nav-link ${param.status == 'rated' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=rated">Đã đánh giá</a>
+                                                <a ${param.status == 'rated' ? "style='border-color: skyblue;'":""} onclick="event.stopPropagation();" class="nav-link ${param.status == 'rated' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=rated">Đã đánh giá</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a onclick="event.stopPropagation();" class="nav-link ${param.status == 'cancel' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=cancel">Đã hủy</a>
+                                                <a ${param.status == 'cancel' ? "style='border-color: skyblue;'":""} onclick="event.stopPropagation();" class="nav-link ${param.status == 'cancel' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=cancel">Đã hủy</a>
                                             </li>
                                         </ul>
                                         <div class="tab-content">
                                             <div class="tab-pane fade show active">
-                                                <div class="row"><!-- all orders -->
+                                                <div style="margin-left: 1px;" class="row"><!-- all orders -->
                                                     <c:forEach items="${itemMap}" var="map">
                                                         <c:set value="${map.key}" var="order"/>
                                                         <c:set value="${map.value}" var="itemList"/>
+                                                        <fmt:formatDate value="${order.order_date}" pattern="dd/MM/yyyy" var="formattedDate" />
                                                         <div class="order-info"><!-- display order -->
                                                             <div style="width: 100%;"><!-- cover product, status -->
                                                                 <div class="order-detail"><!-- small div product, status -->
                                                                     <section style="display: block;">
                                                                         <div class="order-bar">
                                                                             <!-- order id -->
-                                                                            <div class="order-id">Mã đơn hàng: ${order.order_id} - Ngày mua: ${order.order_date}.</div>
+                                                                            <div class="order-id">Mã đơn hàng: ${order.order_id} - Ngày đặt hàng: ${formattedDate}.</div>
                                                                             <!-- order status -->
                                                                             <c:if test="${order.order_status eq 'Chờ xử lý'}">
-                                                                                <div><a onclick="show('popup'); event.stopPropagation();" style="color: #007BFF;">HỦY ĐƠN HÀNG</a></div>
+                                                                                <div><a onclick="show('popup'); event.stopPropagation();" style="color: white; background-color: #0066ff; padding: 5px 10px; border-radius: 20px; font-size: 16px;">HỦY ĐƠN</a></div>
                                                                             </c:if>
                                                                             <c:if test="${order.order_status eq 'Đã giao hàng'}">
                                                                                 <div style="color: #007BFF;"><a>ĐÁNH GIÁ ĐƠN HÀNG</a></div>
@@ -518,9 +519,11 @@
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
+                                                                                                            <c:if test="${order.order_status eq 'Đã giao hàng'}">
                                                                                                             <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
                                                                                                                 Đánh giá
-                                                                                                            </button>                 
+                                                                                                            </button>          
+                                                                                                            </c:if>
                                                                                                             <!-- Modal -->
                                                                                                             <form action = "MainController">
                                                                                                                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -586,9 +589,11 @@
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
+                                                                                                            <c:if test="${order.order_status eq 'Đã giao hàng'}">
                                                                                                             <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
                                                                                                                 Đánh giá
-                                                                                                            </button>                 
+                                                                                                            </button>
+                                                                                                            </c:if>
                                                                                                             <!-- Modal -->
                                                                                                             <form action = "MainController">
                                                                                                                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -654,9 +659,11 @@
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
+                                                                                                            <c:if test="${order.order_status eq 'Đã giao hàng'}">
                                                                                                             <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
                                                                                                                 Đánh giá
-                                                                                                            </button>                 
+                                                                                                            </button> 
+                                                                                                            </c:if>
                                                                                                             <!-- Modal -->
                                                                                                             <form action = "MainController">
                                                                                                                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -713,9 +720,11 @@
                                                                                                                     <p>${orderItem.birdPair.female_bird.bird_name}</p>
                                                                                                                 </div>
                                                                                                             </div>
+                                                                                                            <c:if test="${order.order_status eq 'Đã giao hàng'}">
                                                                                                             <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
                                                                                                                 Đánh giá
-                                                                                                            </button>                 
+                                                                                                            </button>
+                                                                                                            </c:if>
                                                                                                             <!-- Modal -->
                                                                                                             <form action = "MainController">
                                                                                                                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -776,16 +785,30 @@
                                                                 <div class="boundary-2 boundary-both"></div>
                                                             </div>
                                                             <div class="total-price">
-                                                                <c:if test="${order.name_receiver != null && order.phone_receiver != null}">
-                                                                    <div style="float: left;">
-                                                                        <span>Người nhận: ${order.name_receiver} - Sđt: ${order.phone_receiver}</span>
-                                                                    </div>
-                                                                </c:if>
+                                                                <div style="float: left;" class="order-status">${order.payment_status}</div>
                                                                 <div class="show-price">
-                                                                    <img style="height: 20px; width: 15px;" src="assets\images\th.jfif"/>
                                                                     <label>Thành tiền: </label>
                                                                     <div class="total"><fmt:formatNumber value="${order.total_price}" pattern="#,###"/>₫</div>
                                                                 </div>
+                                                            </div>
+                                                            <div style="margin-bottom: 20px;" class="total-price">
+                                                                <c:if test="${order.name_receiver != null}">
+                                                                    <div style="float: left;">
+                                                                        <span>Người nhận: ${order.name_receiver}</span>
+                                                                    </div>
+                                                                </c:if>
+                                                                <br/>
+                                                                <c:if test="${order.phone_receiver != null}">
+                                                                    <div style="float: left;">
+                                                                        <span>Số điện thoại: 0${order.phone_receiver}</span>
+                                                                    </div>
+                                                                </c:if>
+                                                                <br/>
+                                                                <c:if test="${order.address_receiver != null}">
+                                                                    <div style="float: left;">
+                                                                        <span>Địa chỉ nhận hàng: ${order.address_receiver}</span>
+                                                                    </div>
+                                                                </c:if>
                                                             </div>
                                                         </div>
                                                     </c:forEach>

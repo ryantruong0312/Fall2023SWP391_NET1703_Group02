@@ -24,14 +24,14 @@ public class BirdNestDTO {
     private String status;
     private int price;
     private String description;
-    private String image_url;
+    private ArrayList<String> image_url;
     private String breed_id;
     private int discount;
 
     public BirdNestDTO() {
     }
 
-    public BirdNestDTO(String nest_id, String nest_name, String dad_bird_id, String dad_bird_name, String dad_bird_thumbnail, String mom_bird_id, String mom_bird_name, String mom_bird_thumbnail, int baby_quantity, String status, int price, String description, String image_url) {
+    public BirdNestDTO(String nest_id, String nest_name, String dad_bird_id, String dad_bird_name, String dad_bird_thumbnail, String mom_bird_id, String mom_bird_name, String mom_bird_thumbnail, int baby_quantity, String status, int price, String description, ArrayList<String> image_url) {
         this.nest_id = nest_id;
         this.nest_name = nest_name;
         this.dad_bird_id = dad_bird_id;
@@ -156,11 +156,11 @@ public class BirdNestDTO {
         this.description = description;
     }
 
-    public String getImage_url() {
+    public ArrayList<String> getImage_url() {
         return image_url;
     }
 
-    public void setImage_url(String image_url) {
+    public void setImage_url(ArrayList<String> image_url) {
         this.image_url = image_url;
     }
 

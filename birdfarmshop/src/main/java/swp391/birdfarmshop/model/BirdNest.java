@@ -19,7 +19,7 @@ public class BirdNest {
     private int discount;
     private String image_url;
     private String description;
-        private ArrayList<String> image_url_arr;
+    private ArrayList<String> image_url_arr;
 
     public BirdNest() {
     }

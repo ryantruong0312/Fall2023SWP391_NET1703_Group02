@@ -11,7 +11,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import swp391.birdfarmshop.dao.BirdNestDAO;
+import swp391.birdfarmshop.dao.ImageDAO;
 import swp391.birdfarmshop.model.BirdNest;
 
 /**
@@ -32,10 +34,15 @@ public class RenderBirdNestDetailsController extends HttpServlet {
             String nest_id = request.getParameter("id");
             BirdNestDAO birdnest = new BirdNestDAO();
             BirdNest nest = birdnest.getBirdsNestById(nest_id);
+            ImageDAO i = new ImageDAO();
+            String thumbnail = i.getThumbnailUrlByBirdNestId(nest_id);
+            ArrayList<String> img_url = i.getImagesByBirdNestId(nest_id);
             if (nest == null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("ERROR", "không tìm thấy tổ chim");
             } else {
+                request.setAttribute("IMG", thumbnail);
+                request.setAttribute("IMG_URL", img_url);
                 request.setAttribute("NEST", nest);
                 url = SUCCESS;
             }
