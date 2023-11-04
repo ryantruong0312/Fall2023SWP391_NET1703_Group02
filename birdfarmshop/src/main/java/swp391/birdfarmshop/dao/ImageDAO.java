@@ -121,7 +121,7 @@ public class ImageDAO {
         return urls;
     }
 
-    public ArrayList<String> getImagesByBirdNestId(int birdnestId) throws SQLException {
+    public ArrayList<String> getImagesByBirdNestId(String birdnestId) throws SQLException {
         ArrayList<String> urls = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;
@@ -130,7 +130,7 @@ public class ImageDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 stm = con.prepareStatement(GET_IMAGES_BY_BIRDNEST_ID);
-                stm.setInt(1, birdnestId);
+                stm.setString(1, birdnestId);
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     String url = rs.getString("image_url");

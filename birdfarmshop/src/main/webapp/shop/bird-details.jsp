@@ -33,22 +33,6 @@
                 display: flex;
                 align-items: center;
             }
-
-            /*            .col-lg-12 a {
-                            border-radius: 10px;
-                            border: 1px solid rgb(221, 221, 227);
-                            background-color: #f5c6cb;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            margin: 0 auto;
-                            width: 50%;
-                            margin-bottom: 30px;
-                            margin-top: 20px;
-                            width: 150px;
-                            float: right;
-                        }*/
-
             .overlay-text {
                 position: absolute;
                 top: 50%;
@@ -63,9 +47,7 @@
             }
 
             #mainImage {
-                width: 500px;
-                height: 400px;
-                border: 1px solid #000; /* Đường viền giống như đỉnh với độ rộng 2px và màu đen */
+                border: 1px solid #000; 
                 transition: transform 0.3s ease-in-out;
             }
 
@@ -109,7 +91,6 @@
                 overflow-y: auto;
                 max-height: 250px;
                 font-family: inherit;
-                font-size: 20px;
             }
             .image-bottom img {
                 width: 154px;
@@ -212,32 +193,32 @@
                             <div class="mt-2">
                                 <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Giống loài: </h4>
-                                    <span style="display: inline; color: black; font-size: 20px;">${birdDetails.breed_name}</span>
+                                    <span style="display: inline; color: black;">${birdDetails.breed_name}</span>
                                 </div>
 
                                 <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Màu sắc: </h4>
-                                    <span style="display: inline; color: black; font-size: 20px;"">${birdDetails.color}</span>
+                                    <span style="display: inline; color: black;">${birdDetails.color}</span>
                                 </div>
 
                                 <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Tuổi: </h4>
-                                    <span style="display: inline; color: black; font-size: 20px;">${birdDetails.age} tháng</span>
+                                    <span style="display: inline; color: black;">${birdDetails.age} tháng</span>
                                 </div>
 
                                 <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Tuổi trưởng thành: </h4>
-                                    <span style="display: inline; color: black; font-size: 20px;">${birdDetails.grown_age} tháng</span>
+                                    <span style="display: inline; color: black;">${birdDetails.grown_age} tháng</span>
                                 </div>
 
                                 <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Lứa sinh sản: </h4>
-                                    <span style="display: inline; color: black; font-size: 20px;">${birdDetails.reproduction_history}</span>
+                                    <span style="display: inline; color: black;">${birdDetails.reproduction_history}</span>
                                 </div>
                                 <c:if test="${not empty birdDetails.achievement}">
                                     <div style="margin-top: 10px;">
                                         <h4 style="">Thành tựu: </h4>
-                                        <pre style="color: black; font-size: 20px; margin-top: 10px;">${birdDetails.achievement}</pre>
+                                        <pre style="color: black;margin-top: 10px;">${birdDetails.achievement}</pre>
                                     </div>
                                 </c:if>
 

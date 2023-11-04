@@ -51,23 +51,25 @@
                 align-items: center;
             }
 
-            .right-image {
-                display: flex;
-                flex-direction: column;
+            #mainImage {
+                border: 1px solid #000;
+                transition: transform 0.3s ease-in-out;
             }
 
-            .left-image img{
-                width: 400px;
-                height: 400px;
-                margin-right: 10px;
+            #mainImage:hover {
+                transform: scale(1.1);
+                cursor: pointer;
+                border: 0px;
             }
 
-            .right-image img{
-                width: 200px;
-                height: 200px;
-                margin-right: 2px;
+            .image-bottom img {
+                width: 154px;
+                height: 185px;
+                display: block;
+                margin-bottom: 15px;
+                border: 1px solid #000;
             }
-                        .button-form{
+            .button-form{
                 margin-bottom: 5px;
                 display:block;
                 color: white;
@@ -76,6 +78,13 @@
                 font-size: 15px;
                 border-radius: 4px;
                 width: 160px;
+            }
+            pre {
+                width: 100%;
+                white-space: pre-wrap;
+                overflow-y: auto;
+                max-height: 200px;
+                font-family: inherit;
             }
         </style>
     </head>
@@ -104,64 +113,72 @@
         <c:set var="birdNest" value="${NEST}" />
 
 
-        <section class="section" id="product">
+        <section class="section" id="product" style="margin-top: 30px; margin-bottom: 75px;">
             <div class="container">
                 <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
-                    <div class="row">
+                    <div class="row" style="margin-bottom: 15px;">
                         <div class="col-lg-12">
-                                <button class="btn-primary button-form" style="float: right;"><a class="btn-update" href="MainController?action=NavToUpdateBirdNest&id=${birdNest.nest_id}"><span>Cập nhật tổ chim</span></a></button>
+                            <button class="btn-primary button-form" style="float: right;"><a class="btn-update" href="MainController?action=NavToUpdateBirdNest&id=${birdNest.nest_id}"><span>Cập nhật tổ chim</span></a></button>
                         </div>
                     </div>
                 </c:if>
                 <div class="row">
-                    <div class="col-lg-8">                    
-                        <c:if test="${birdNest != null}">
-                            <c:set var="image_url_arr" value="${birdNest.image_url_arr}" />
-                            <div class="image-container">
-                                <div class="left-image">
-                                    <img id="image_main" src="${image_url_arr[0]}" alt="Image 1" onclick="swapImages(this)">
+                    <div class="col-lg-7">                    
+                        <div class="row">
+                            <c:if test="${birdNest != null}">
+                                <div class="col-lg-7">
+                                    <c:set var="image_url_arr" value="${birdNest.image_url_arr}" />
+                                    <div class="image-container">
+                                        <div class="left-image">
+                                            <img id="mainImage" style="width: 370px; height: 444px;" src="${IMG}" alt="Image 1" onclick="swapImages(this)">
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="right-image">
-                                    <img src="${image_url_arr[1]}" alt="Image 2" onclick="swapImages(this)">
-                                    <img src="${image_url_arr[2]}" alt="Image 3" onclick="swapImages(this)">
+                                <div class="col-lg-5">
+                                    <div class="image-bottom">
+                                        <c:forEach items="${IMG_URL}" var="img_url">
+                                            <c:if test="${img_url ne IMG}">
+                                                <img src="${img_url}" alt="" onclick="swapImages(this)"/>
+                                            </c:if>
+                                        </c:forEach>
+                                    </div>
                                 </div>
-                            </div>
-                        </c:if>
+                            </c:if>
+                        </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-5">
                         <div class="right-content">
                             <h2 id="nameAccessory">${birdNest.nest_name}</h2>
                             <span style="font-size: 20px; color: red;"><fmt:formatNumber value="${birdNest.price}" pattern="#,###"/> ₫</span>
                             <div style="white-space: nowrap; margin-top: 10px;">
                                 <h4 style="display: inline;">Chim bố: </h4>
-                                <span style="display: inline; color: black; font-size: 20px;">${birdNest.dad_bird_id}</span>
+                                <span style="display: inline; color: black;">${birdNest.dad_bird_id}</span>
                             </div>
                             <div style="white-space: nowrap; margin-top: 10px;">
                                 <h4 style="display: inline;">Chim mẹ: </h4>
-                                <span style="display: inline; color: black; font-size: 20px;">${birdNest.mom_bird_id}</span>
+                                <span style="display: inline; color: black;">${birdNest.mom_bird_id}</span>
                             </div>
                             <div style="white-space: nowrap; margin-top: 10px;">
                                 <h4 style="display: inline;">Chim non/trứng trong tổ: </h4>
-                                <span style="display: inline; color: black; font-size: 20px;">${birdNest.baby_quantity}</span>
+                                <span style="display: inline; color: black;">${birdNest.baby_quantity}</span>
                             </div>
                             <div style="margin-top: 10px;">
                                 <h4>Mô tả chi tiết: </h4>
-                                <span style="margin-top: 10px; color: black; font-size: 15px;">${birdNest.description}</span>
+                                <pre style="margin-top: 10px; color: black;">${birdNest.description}</pre>
                             </div>
                         </div>
                         <div class="total">
                             <c:if test="${(sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer') && bird.status != 'Đã bán'}">
                                 <div class="total" style="margin-top: 30px;">
-                                                <div class="main-border-button">
-                                                    <a class="bird-cart btn-primary" style="cursor: pointer; color: white;" >Thêm vào giỏ hàng</a>
-                                                </div>
-                                            </div>
+                                    <div class="main-border-button">
+                                        <a class="bird-cart btn-primary" style="cursor: pointer; color: white; border: 0px; border-radius: 20px;" >Thêm vào giỏ hàng</a>
+                                    </div>
+                                </div>
                             </c:if>
                             <div style="clear: both;"></div>
                         </div>
-                            
-                            
+
+
 
                     </div>
                 </div>
