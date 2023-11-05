@@ -47,11 +47,15 @@ public class RenderCheckoutBirdPairController extends HttpServlet {
             String male_bird_id = request.getParameter("male_bird");
             String female_bird_id = request.getParameter("female_bird");
             String order_id = request.getParameter("order_id");
-            request.removeAttribute("BIRDPAIR");
-            request.removeAttribute("MALEBIRD");
-            request.removeAttribute("FEMALEBIRD");
+            
             HttpSession session = request.getSession();
             ArrayList<String> orderItem = (ArrayList<String>) session.getAttribute("LISTBIRDPAIR");
+            if(orderItem == null){
+                orderItem = new ArrayList<>();
+                orderItem.add(order_id);
+                orderItem.add(male_bird_id);
+                orderItem.add(female_bird_id);
+            }
             if(orderItem != null){
                 order_id = orderItem.get(0);
                 male_bird_id = orderItem.get(1);
@@ -84,11 +88,13 @@ public class RenderCheckoutBirdPairController extends HttpServlet {
             }else if (female_bird != null){
                 totalPrice += female_bird.getPrice();
             }
+            orderItem.add(totalPrice+"");
+            orderItem.add(bp.getPair_id()+"");
             if(male_bird_id != null || female_bird_id != null){
-                request.setAttribute("LISTCAGE", cageList);
+                orderItem.add(cheapestCage.getAccessory_id());
                 request.setAttribute("CHEAPESTCAGE", cheapestCage);
             }
-            request.setAttribute("TOTALPRICE", totalPrice);
+            session.setAttribute("LISTBIRDPAIR", orderItem);
             request.setAttribute("BIRDPAIR", bp);
             request.setAttribute("MALEBIRD", male_bird);
             request.setAttribute("FEMALEBIRD", female_bird);

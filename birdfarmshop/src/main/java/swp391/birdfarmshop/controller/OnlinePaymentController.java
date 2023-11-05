@@ -53,12 +53,6 @@ public class OnlinePaymentController extends HttpServlet {
             String name_receiver = request.getParameter("name");
             String phone_receiver = request.getParameter("mobile");
             String address_receiver = request.getParameter("address");
-            String male_bird_id = request.getParameter("male_bird");
-            String female_bird_id = request.getParameter("female_bird");
-            String accessory_id = request.getParameter("accessory_id");
-            String order_id = request.getParameter("order_id");
-            String pair_id = request.getParameter("pair_id");
-            String price = request.getParameter("total_price");
             CartDTO cart = (CartDTO) session.getAttribute("CART");
             String vnpay_price;
             ArrayList<String> listInfo = new ArrayList<>();
@@ -66,20 +60,12 @@ public class OnlinePaymentController extends HttpServlet {
             listInfo.add(phone_receiver);
             listInfo.add(address_receiver);
             session.setAttribute("INFOORRDER", listInfo);
-            if (order_id != null) {
-                ArrayList<String> listBirdPair = new ArrayList<>();
-                listBirdPair.add(order_id);
-                listBirdPair.add(male_bird_id);
-                listBirdPair.add(female_bird_id);
-                listBirdPair.add(accessory_id);
-                listBirdPair.add(pair_id);
-                listBirdPair.add(price);
-                vnpay_price = String.valueOf(Long.parseLong(price) * 100);
-                session.setAttribute("LISTBIRDPAIR", listBirdPair);
+            ArrayList<String> listBirdPair = (ArrayList<String>) session.getAttribute("INFOORRDER");
+            if(listBirdPair != null){
+                   vnpay_price = String.valueOf(Long.parseLong(listBirdPair.get(3)) * 100);
             }else{
                 vnpay_price = String.valueOf(cart.getCartTotalPrice() * 100);
             }
-
             // Calculate the createDateTime and expireDateTime in the format yymmddhhmmss
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");

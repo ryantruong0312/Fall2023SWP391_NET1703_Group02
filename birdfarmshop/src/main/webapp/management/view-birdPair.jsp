@@ -127,7 +127,7 @@
                                             </c:otherwise>
                                         </c:choose>
 
-                                            <td><a href="MainController?action=NavToBirdPairDetailShop&order_id=${birdPair.order_id}"><button class="btn btn-primary">Chi tiết</button></a></td>
+                                            <td><a href="MainController?action=NavToBirdPairDetailShop&pair_id=${birdPair.pair_id}"><button class="btn btn-primary">Chi tiết</button></a></td>
                                 </tr>
                             </c:forEach>
                         </c:when>

@@ -34,7 +34,8 @@
             .overlay-text {
                 position: absolute;
                 top: 50%;
-                left: 40%;
+                left: 50%;
+                width: 200px;
                 transform: translate(-50%, -50%);
                 background-color: rgba(0, 0, 0, 0.5);
                 border-radius: 50%;
@@ -403,7 +404,7 @@
                 let amountPage = Number(limitPage);
                 let nextPage = Number(page) + 1;
                 let accessory_id = $('input[name=accessory_id]').val();
-                if (accessory_id && nextPage < amountPage) {
+                if (accessory_id && nextPage <= amountPage) {
                     $.ajax({
                         url: 'RenderAccessoryDetailsController',
                         type: 'POST',

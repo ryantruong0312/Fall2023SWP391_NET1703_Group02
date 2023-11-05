@@ -38,7 +38,7 @@ Author     : tlminh
             <main id="maincontent" class="page-checkout">
                 <div class="container">
                     <form id="form-order" action="MainController" method="POST">
-                        <input type="hidden" name="action" value="NavToPayment">
+                        <input type="hidden" name="action" value="${sessionScope.CART.birdPairList.size() == 0 ? "NavToPayment":"NavToVNPAY"}">
                         <div class="row">
                             <div class="col-lg-7">
                                 <h5 class="font-weight-bold mb-3">Giỏ hàng của bạn</h5>
@@ -184,13 +184,15 @@ Author     : tlminh
                                 <div class="payment-method mt-5">
                                     <h5 class="mt-3">Chọn phương thức thanh toán</h5>
                                     <table class="mt-3">
-                                        <tr class="money-payment">
-                                            <td><input id="money" class="" type="radio" name="method" value="" checked=""/></td>
-                                            <td><i class="fa fa-money ml-3 icon-money" aria-hidden="true"></i></td>
-                                            <td><label for="money" class="ml-3">Thanh toán khi nhận hàng</label></td>
-                                        </tr>
+                                        <c:if test="${sessionScope.CART.birdPairList.size() == 0}">
+                                            <tr class="money-payment">
+                                                <td><input id="money" class="" type="radio" name="method" value="NavToPayment" checked=""/></td>
+                                                <td><i class="fa fa-money ml-3 icon-money" aria-hidden="true"></i></td>
+                                                <td><label for="money" class="ml-3">Thanh toán khi nhận hàng</label></td>
+                                            </tr>
+                                        </c:if>
                                         <tr class="credit-payment">
-                                            <td><input id="credit" class="" type="radio" name="method" value=""/></td>
+                                            <td><input id="credit" class="" type="radio" ${sessionScope.CART.birdPairList.size() == 0 ? "":"checked"} name="method" value="NavToVNPAY"/></td>
                                             <td><i class="fa fa-credit-card ml-3 icon-credit" aria-hidden="true"></i></td>
                                             <td><label for="credit" class="ml-3">Thanh toán qua thẻ tín dụng</label></td>
                                         </tr>
@@ -226,7 +228,6 @@ Author     : tlminh
                     $('input[name=action]').val('NavToPayment');
                 });
             });
-
         </script>
 
     </body>

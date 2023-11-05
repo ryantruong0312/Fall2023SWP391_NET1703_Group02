@@ -601,23 +601,33 @@
                 const to_date = $('input[name=to_date]').val();
                 const from_date = $('input[name=from_date]').val();
                 if (to_date && from_date) {
-                    $('input[name=type]').val('both');
-                    $.ajax({
-                        url: 'RenderReportsController',
-                        type: 'POST',
-                        data: {filter: 'both', to_date: to_date, from_date: from_date},
-                        success: function (data) {
-                            const jsonArray = JSON.parse(data);
-                            const revenue = jsonArray.revenue;
-                            $('.money').html(Number(revenue[0]).toLocaleString('vi-VN'));
-                            $('.order').html(revenue[1]);
-                            $('.cancel-order').html(revenue[2]);
-                            $('.number-user').html(revenue[3]);
-                            const dataQuantityWeek = jsonArray.product_sale;
-                            pie(nodeQuantity, labelQuantity, colorQuantity, hoverColorQuantity, dataQuantityWeek);
-                            $('.product-sale').html(Number(jsonArray.totalProduct).toLocaleString('vi-VN'));
-                        }
-                    });
+                    if (to_date < from_date) {
+                          toast({
+                                        title: "Lỗi",
+                                        message: "Ngày đến không hợp lệ",
+                                        type: "error",
+                                        duration: 3000
+                                    });
+                    } else {
+                        $('input[name=type]').val('both');
+                        $.ajax({
+                            url: 'RenderReportsController',
+                            type: 'POST',
+                            data: {filter: 'both', to_date: to_date, from_date: from_date},
+                            success: function (data) {
+                                const jsonArray = JSON.parse(data);
+                                const revenue = jsonArray.revenue;
+                                $('.money').html(Number(revenue[0]).toLocaleString('vi-VN'));
+                                $('.order').html(revenue[1]);
+                                $('.cancel-order').html(revenue[2]);
+                                $('.number-user').html(revenue[3]);
+                                const dataQuantityWeek = jsonArray.product_sale;
+                                pie(nodeQuantity, labelQuantity, colorQuantity, hoverColorQuantity, dataQuantityWeek);
+                                $('.product-sale').html(Number(jsonArray.totalProduct).toLocaleString('vi-VN'));
+                            }
+                        });
+                    }
+
                 } else if (to_date) {
                     $('input[name=type]').val('to_date');
                     $('#report .typePayment h6').html('Tổng quan doanh thu');
@@ -692,7 +702,7 @@
                         } else if (value === 'month') {
                             amountColoumn = 16;
                         }
-                        showGraph(jsonArray.totalMoney[0], jsonArray.totalMoney[1], amountColoumn,jsonArray.totalMoneyBird, jsonArray.totalMoneyAccessory, jsonArray.totalMoneyBirdPair);
+                        showGraph(jsonArray.totalMoney[0], jsonArray.totalMoney[1], amountColoumn, jsonArray.totalMoneyBird, jsonArray.totalMoneyAccessory, jsonArray.totalMoneyBirdPair);
                     }
                 });
             });

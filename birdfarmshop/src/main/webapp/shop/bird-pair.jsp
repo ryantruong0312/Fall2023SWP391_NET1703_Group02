@@ -119,7 +119,7 @@
                         <button type="submit" class="button-create">Thêm vẹt mới</button>
                     </form>
                     <div class="column-content">
-                        <h2>Chọn một chú vẹt của khách</h2>
+                        <h2>Chọn một chú vẹt của khách ${sessionScope.LOGIN_USER.fullName}</h2>
 
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect3">
@@ -239,15 +239,16 @@
                                 type: 'POST',
                                 data: {bird_male_id: selectBirdMale, bird_female_id: selectBirdFemale},
                                 success: function (data) {
-                                    console.log(data);
-                                    const jsonShop = JSON.parse(data);
-                                    toast({
-                                        title: jsonShop.status,
-                                        message: jsonShop.content,
-                                        type: jsonShop.type,
-                                        duration: 3000
-                                    });
-                                    $('.cart-amount').html(jsonShop.quantity);
+//                                    console.log(data);
+//                                    const jsonShop = JSON.parse(data);
+//                                    toast({
+//                                        title: jsonShop.status,
+//                                        message: jsonShop.content,
+//                                        type: jsonShop.type,
+//                                        duration: 3000
+//                                    });
+//                                    $('.cart-amount').html(jsonShop.quantity);
+                                    window.location.href = 'MainController?action=NavToCheckout';
                                 }
                             });
                         } else {
@@ -267,14 +268,15 @@
                                 type: 'POST',
                                 data: {bird_shop_id: selectBirdShop, bird_customer_id: selectBirdCustomer},
                                 success: function (data) {
-                                    const jsonCustoemr = JSON.parse(data);
-                                    toast({
-                                        title: jsonCustoemr.status,
-                                        message: jsonCustoemr.content,
-                                        type: jsonCustoemr.type,
-                                        duration: 3000
-                                    });
-                                    $('.cart-amount').html(jsonCustoemr.quantity);
+//                                    const jsonCustoemr = JSON.parse(data);
+//                                    toast({
+//                                        title: jsonCustoemr.status,
+//                                        message: jsonCustoemr.content,
+//                                        type: jsonCustoemr.type,
+//                                        duration: 3000
+//                                    });
+//                                    $('.cart-amount').html(jsonCustoemr.quantity);
+                                    window.location.href = 'MainController?action=NavToCheckout';
                                 }
 
                             });

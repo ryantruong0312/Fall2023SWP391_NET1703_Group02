@@ -28,7 +28,7 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+     
 
         <style type="text/css">
             body {
@@ -477,7 +477,7 @@
                                                                                 <div><a onclick="show('popup'); event.stopPropagation();" style="color: white; background-color: #0066ff; padding: 5px 10px; border-radius: 20px; font-size: 16px;">HỦY ĐƠN</a></div>
                                                                             </c:if>
                                                                             <c:if test="${order.order_status eq 'Đã giao hàng'}">
-                                                                                <div style="color: #007BFF;"><a>ĐÁNH GIÁ ĐƠN HÀNG</a></div>
+                                                                                <div class="mt-1" style="color: #007BFF;"><a>ĐÁNH GIÁ ĐƠN HÀNG</a></div>
                                                                             </c:if>
                                                                             <div class="order-status">${order.order_status}</div>
                                                                         </div>
@@ -549,7 +549,7 @@
                                                                                                                                 </div>
                                                                                                                                 <div class="mb-3">
                                                                                                                                     <label for="exampleFormControlTextarea1" class="form-label">Nhập đánh giá</label>
-                                                                                                                                    <textarea class="form-control" name="feedback" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                                                                                                    <textarea class="form-control" name="feedback" id="exampleFormControlTextarea1" rows="3" required="" title="Vui lòng nhập nội dung"></textarea>
                                                                                                                                 </div>
                                                                                                                             </div>
                                                                                                                             <div class="modal-footer">

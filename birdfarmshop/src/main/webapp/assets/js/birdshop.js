@@ -306,9 +306,6 @@ $(".form-login").validate({
 });
 $("#update-tracking").validate({
     rules: {
-        status: {
-            required: true
-        },
         quantity_egg: {
             required: true,
             number: true,
@@ -328,9 +325,6 @@ $("#update-tracking").validate({
         }
     },
     messages: {
-        status: {
-            required: 'Vui lòng chọn trạng thái'
-        },
         quantity_egg: {
             required: 'Vui lòng nhập số trứng',
             number: 'Vui lòng nhập số',

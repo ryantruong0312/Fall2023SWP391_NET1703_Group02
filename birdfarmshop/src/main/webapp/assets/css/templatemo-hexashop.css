@@ -3201,11 +3201,6 @@ register*/
 #confirm-payment .box-remove p{
    font-size: 1.1rem;
 }
-#confirm-payment .number-egg,
-#confirm-payment .bird-young
-{
-    display: none;
-}
 /*containter custom profile*/
 .container-custome{
     max-width: 1300px!important;

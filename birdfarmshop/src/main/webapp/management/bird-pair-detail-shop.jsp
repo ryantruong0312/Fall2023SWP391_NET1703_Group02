@@ -186,13 +186,13 @@
                                         <div class="col-12">
                                             <div class="card w-100"> 
                                                 <div class="card-body card-pair p-0">
+                                                    <a style="color: black;" class="ml-3"href="MainController?action=NavToBirdPairShop">
+                                                        <i style="color: black; font-size: 1rem; width: 20px;" class="fa fa-arrow-left" aria-hidden="true"></i>
+                                                        Quay lại
+                                                    </a>
                                                     <c:choose>
                                                         <c:when test="${not empty requestScope.BIRDPAIR}">
                                                             <c:set var="birdPair" value="${requestScope.BIRDPAIR}"/>
-                                                            <a style="color: black;" class="ml-3"href="MainController?action=NavToBirdPairShop">
-                                                                <i style="color: black; font-size: 1rem; width: 20px;" class="fa fa-arrow-left" aria-hidden="true"></i>
-                                                                Quay lại
-                                                            </a>
                                                             <c:choose>
                                                                 <c:when test="${not empty birdPair.birdCustomer}">
                                                                     <div class="box-pair mt-2">
@@ -374,7 +374,7 @@
                                                                             <p>Tổng tiền cần thanh toán</p>
                                                                             <p class="ml-3 text-danger"><fmt:formatNumber value="${birdPair.number_young_bird * birdPair.young_bird_price}" pattern="#,###"/> ₫</p>
                                                                         </div>
-                                                                        <c:if test="${birdPair.status != 'Đã thanh toán'}">
+                                                                        <c:if test="${birdPair.status == 'Chờ lấy chim' || birdPair.status == 'Đang ghép cặp'||birdPair.status == 'Đã sinh sản'}">
                                                                             <div class="text-center border-bottom-0">
                                                                                 <button style="background-color: #007bff; color: white;" id="payment-youngBird" class="mt-3 py-2 px-3">Cập nhật theo dõi nhân giống</button>
                                                                             </div>
@@ -411,27 +411,19 @@
                             <input type="hidden" name="order_id" value="${requestScope.BIRDPAIR.order_id}" />
                             <div class="row mt-5">
                                 <div style="width: 350px" class="col-12 col-md-6">
-                                    <label for="status">Chọn trạng thái: </label>
-                                    <select onchange="show(this)" id="status" class="input w-100 pl-2" name="status" >
-                                        <option class="p-2" value="">Chọn trạng thái</option>
-                                        <option class="p-2" value="Chờ lấy chim">Chờ lấy chim</option>
-                                        <option class="p-2" value="Đang ghép cặp">Đang ghép cặp</option>
-                                        <option class="p-2" value="Đã sinh sản">Đã sinh sản</option>
-                                        <c:if test="${requestScope.BIRDPAIR.status == 'Đã sinh sản'||requestScope.BIRDPAIR.status == 'Đã ấp nở'}">
-                                            <option class="p-2" value="Đã ấp nở">Đã ấp nở</option>
-                                        </c:if>
-                                    </select>
-                                    <div class="d-flex">
-                                        <div class="mt-3 w-50 number-egg w-100">
+                                    <c:if test="${requestScope.BIRDPAIR.status == 'Đang ghép cặp'}">
+                                        <div class="number-egg w-100 mr-2 mb-3">
                                             <label for="egg">Số lượng trứng: </label>
                                             <input type="number" class="input w-100 pl-2" id="egg" min="0" name="quantity_egg" value="${requestScope.BIRDPAIR.number_egg }"/>
                                         </div>
-                                        <div class="mt-3 w-50 bird-young w-100">
+                                    </c:if>
+                                    <c:if test="${requestScope.BIRDPAIR.status == 'Đã sinh sản'}">
+                                        <div class="bird-young w-100 mb-3">
                                             <label for="birdYoung">Số lượng chim con: </label>
                                             <input type="number" class="input w-100 pl-2" id="birdYoung" min="0" max="${requestScope.BIRDPAIR.number_egg}" name="quantity_young_bird" value="${requestScope.BIRDPAIR.number_young_bird}"/>
                                         </div>
-                                    </div>
-                                    <div class="mt-3">
+                                    </c:if>
+                                    <div>
                                         <label for="content">Nội dung theo dõi: </label>
                                         <textarea id="content" name="content" rows="5" class="w-100 pl-2" placeholder="Nhập nội dung theo dõi">${param.content}</textarea>
                                     </div>
@@ -535,20 +527,6 @@
             function choseImage(event) {
                 currentImageIndex = event;
                 changeImages();
-            }
-            function show(event) {
-                if (event.value === 'Đã sinh sản') {
-                    $('.number-egg').css('display', 'block');
-                    $('.bird-young').css('display', 'none');
-                    $('input[name=quantity_egg]').removeAttr('readonly');
-                }
-                if (event.value === 'Đã ấp nở') {
-                    $('.number-egg').css('display', 'block');
-                    $('.number-egg').css('margin-right', '5px');
-                    $('input[name=quantity_egg]').attr('readonly', 'true');
-                    $('.bird-young').css('margin-left', '5px');
-                    $('.bird-young').css('display', 'block');
-                }
             }
             $('input[type=file]').change(function (e) {
                 let file = e.target.files[0];

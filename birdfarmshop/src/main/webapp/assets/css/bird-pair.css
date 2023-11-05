@@ -179,11 +179,14 @@ h2 {
 .type-customer,
 .type-shop{
     cursor: pointer;
-    line-height: 50px;
-    font-size: 22px;
+    line-height: 30px;
+    font-size: 20px;
     width: 600px;
     border-radius: 20px;
     margin: auto;
+}
+.type-shop{
+     line-height: 50px;
 }
 .back-choose h5{
     margin: auto;

@@ -11,7 +11,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import swp391.birdfarmshop.util.VNPAYUtils;
 
 /**
  *
@@ -36,7 +42,34 @@ public class OnlinePaymentReturnController extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             ArrayList<String> orderitem = (ArrayList<String>) session.getAttribute("LISTBIRDPAIR");
-
+            Map fields = new HashMap();
+            for (Enumeration params = request.getParameterNames(); params.hasMoreElements();) {
+                String fieldName = URLEncoder.encode((String) params.nextElement(), StandardCharsets.US_ASCII.toString());
+                String fieldValue = URLEncoder.encode(request.getParameter(fieldName), StandardCharsets.US_ASCII.toString());
+                if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                    fields.put(fieldName, fieldValue);
+                }
+            }
+            if (fields.containsKey("vnp_SecureHashType")) {
+                fields.remove("vnp_SecureHashType");
+            }
+            if (fields.containsKey("vnp_SecureHash")) {
+                fields.remove("vnp_SecureHash");
+            }
+            ArrayList<String> infor = (ArrayList<String>) session.getAttribute("INFOORRDER");
+            if(fields.containsKey("vnp_TxnRef")){
+                infor.add((String) fields.get("vnp_TxnRef"));
+            }
+            if(fields.containsKey("vnp_Amount")){
+                infor.add((String) fields.get("vnp_Amount"));
+            }
+            if(fields.containsKey("vnp_PayDate")){
+                infor.add((String) fields.get("vnp_PayDate"));
+            }
+            if(fields.containsKey("vnp_TransactionNo")){
+                infor.add((String) fields.get("vnp_TransactionNo"));
+            }
+            session.setAttribute("INFOORRDER", infor);
             if ("00".equals(request.getParameter("vnp_ResponseCode"))) {
                 if (orderitem == null) {
                     url = "AddOrderByOnlineController";

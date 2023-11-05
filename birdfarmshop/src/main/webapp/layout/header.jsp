@@ -53,7 +53,7 @@
                                                             ||param.action == 'NavToAccessory' ? "active":""}">Sản phẩm</a>
                                 <ul>
                                     <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                                    <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                                   <%-- <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>--%>
                                     <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                 </ul>
                             </li>
@@ -79,7 +79,7 @@
                                 </li>
 
                                 <c:if test="${sessionScope.LOGIN_USER == null}">
-                                    <li  class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
+                                    <li id="checkLogin" data-value="login" class="scroll-to-section"> <a href="${pageScope.toLogin}">Đăng nhập</a></li>
                                     </c:if>
                                 </c:if>
                             </c:if>
@@ -89,7 +89,7 @@
                                                             ||param.action == 'NavToAccessory' ? "active":""}">Sản phẩm</a>
                                 <ul>
                                     <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                                    <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
+                                   <%-- <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>--%>
                                     <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                 </ul>
                             </li>

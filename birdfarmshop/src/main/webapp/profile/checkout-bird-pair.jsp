@@ -153,7 +153,7 @@
                                             <div class="infor-item px-5 col-md-6 col-sm-7 col-7">
                                                 <h5>${cage.accessory_name}</h5>
                                                 <div class="mt-2">
-                                                    <p>1
+                                                    <p>${requestScope.FEMALEBIRD != null && requestScope.FEMALEBIRD != null ? "2":"1"}
                                                         <span style="font-size: 13px; margin-right: 5px">x</span>
                                                         <c:choose>
                                                             <c:when test="${cage.discount > 0}">
@@ -218,20 +218,6 @@
                             </div>
                             <form id="form-order" action="MainController" method="POST">
                                 <input type="hidden" name="action" value="NavToPaymentBirdPair">
-                                <input type="hidden" name="order_id" value="${requestScope.ORDERID}"/>
-                                <c:if test="${not empty requestScope.MALEBIRD}">
-                                    <input type="hidden" name="male_bird" value="${requestScope.MALEBIRD.bird_id}"/>
-                                </c:if>
-                                <c:if test="${not empty requestScope.FEMALEBIRD}">
-                                    <input type="hidden" name="female_bird" value="${requestScope.FEMALEBIRD.bird_id}"/>
-                                </c:if>
-                                <c:if test="${not empty requestScope.CHEAPESTCAGE}">
-                                    <input type="hidden" name="accessory_id" value="${requestScope.CHEAPESTCAGE.accessory_id}"/>
-                                </c:if>
-                                <c:if test="${not empty requestScope.BIRDPAIR}">
-                                    <input type="hidden" name="pair_id" value="${requestScope.BIRDPAIR.pair_id}"/>
-                                </c:if>
-                                <input type="hidden" name="total_price" value="${requestScope.TOTALPRICE}"/>
                                 <button type="submit" class="mt-4 btn btn-primary w-100">Thanh toán</button>
                             </form>
                         </div>
