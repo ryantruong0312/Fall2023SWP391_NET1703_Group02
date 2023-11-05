@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,7 +96,7 @@ public class UpdateBirdController extends HttpServlet {
                         Part image_2 = request.getPart("txtImage_2");
                         Part image_3 = request.getPart("txtImage_3");
                         if (image_1.getSize() > 0 && images.size() >= 1) {
-                            updateImage(image_3, bird_id, images.get(0).getImage_id());
+                            updateImage(image_1, bird_id, images.get(0).getImage_id());
                         }
                         if (image_2.getSize() > 0 && images.size() >= 2) {
                             updateImage(image_2, bird_id, images.get(1).getImage_id());
