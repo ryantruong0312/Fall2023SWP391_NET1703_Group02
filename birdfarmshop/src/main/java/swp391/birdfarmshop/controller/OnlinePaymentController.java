@@ -60,7 +60,7 @@ public class OnlinePaymentController extends HttpServlet {
             listInfo.add(phone_receiver);
             listInfo.add(address_receiver);
             session.setAttribute("INFOORRDER", listInfo);
-            ArrayList<String> listBirdPair = (ArrayList<String>) session.getAttribute("INFOORRDER");
+            ArrayList<String> listBirdPair = (ArrayList<String>) session.getAttribute("LISTBIRDPAIR");
             if(listBirdPair != null){
                    vnpay_price = String.valueOf(Long.parseLong(listBirdPair.get(3)) * 100);
             }else{

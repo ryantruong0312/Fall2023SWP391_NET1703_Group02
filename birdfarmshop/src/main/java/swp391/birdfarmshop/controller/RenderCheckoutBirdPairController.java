@@ -36,7 +36,7 @@ public class RenderCheckoutBirdPairController extends HttpServlet {
              * @param request servlet request
              * @param response servlet response
              * @throws ServletException if a servlet-specific error occurs
-             * @throws IOException if an I/O error occurs
+         * @throws IOException if an I/O error occurs
      */
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -55,6 +55,21 @@ public class RenderCheckoutBirdPairController extends HttpServlet {
                 orderItem.add(order_id);
                 orderItem.add(male_bird_id);
                 orderItem.add(female_bird_id);
+            }else if(male_bird_id != null){
+                orderItem = new ArrayList<>();
+                orderItem.add(order_id);
+                orderItem.add(male_bird_id);
+                orderItem.add(female_bird_id);
+            }else if (female_bird_id != null){
+                orderItem = new ArrayList<>();
+                orderItem.add(order_id);
+                orderItem.add(male_bird_id);
+                orderItem.add(female_bird_id);
+            }else if(female_bird_id == null&& male_bird_id == null&& order_id != null){
+                 orderItem = new ArrayList<>();
+                 orderItem.add(order_id);
+                 orderItem.add(male_bird_id);
+                 orderItem.add(female_bird_id);
             }
             if(orderItem != null){
                 order_id = orderItem.get(0);

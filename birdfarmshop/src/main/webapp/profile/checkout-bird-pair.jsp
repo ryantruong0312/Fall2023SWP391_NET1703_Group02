@@ -153,7 +153,7 @@
                                             <div class="infor-item px-5 col-md-6 col-sm-7 col-7">
                                                 <h5>${cage.accessory_name}</h5>
                                                 <div class="mt-2">
-                                                    <p>${requestScope.FEMALEBIRD != null && requestScope.FEMALEBIRD != null ? "2":"1"}
+                                                    <p>${not empty requestScope.MALEBIRD && not empty requestScope.FEMALEBIRD ? "2" : "1"}
                                                         <span style="font-size: 13px; margin-right: 5px">x</span>
                                                         <c:choose>
                                                             <c:when test="${cage.discount > 0}">
@@ -197,7 +197,7 @@
                                 <div class="d-flex mt-3 total-money">
                                     <div class="d-flex align-items-center">
                                         <p>Tổng tiền: </p>
-                                        <span class="ml-3"><fmt:formatNumber value="${requestScope.TOTALPRICE}" pattern="#,###"/> ₫</span>
+                                        <span class="ml-3"><fmt:formatNumber value="${sessionScope.LISTBIRDPAIR.get(3)}" pattern="#,###"/> ₫</span>
                                     </div>
                                 </div>
                             </div>
