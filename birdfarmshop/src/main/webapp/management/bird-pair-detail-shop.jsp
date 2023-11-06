@@ -287,9 +287,11 @@
                                                                             <p class="ml-3 text-danger"><fmt:formatNumber value="${birdPair.number_young_bird * birdPair.young_bird_price}" pattern="#,###"/> ₫</p>
                                                                         </div>
 
-                                                                        <div class="text-center  border-0">
-                                                                            <button id="payment-youngBird" style="background-color: #007bff; color: white;" class="btn-danger mt-3 py-2 px-3">Cập nhật theo dõi nhân giống</button>
-                                                                        </div>
+                                                                        <c:if test="${birdPair.status == 'Chờ lấy chim' || birdPair.status == 'Đang ghép cặp'||birdPair.status == 'Đã sinh sản'}">
+                                                                            <div class="text-center border-bottom-0">
+                                                                                <button style="background-color: #007bff; color: white;" id="payment-youngBird" class="mt-3 py-2 px-3">Cập nhật theo dõi nhân giống</button>
+                                                                            </div>
+                                                                        </c:if>
 
                                                                     </div>
                                                                 </c:when>
@@ -405,7 +407,12 @@
             <div class="vh-100 row">
                 <div class="h-100 m-auto d-flex align-items-center">
                     <div class="box-remove bg-white p-4">
-                        <h4>Cập nhật trạng thái nhân giống</h4>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h4>Cập nhật trạng thái nhân giống</h4>
+                            <div onclick="cancelRemove()" class="btn-close">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </div>
+                        </div>
                         <form id="update-tracking" action="UpdateStatusTrackingController" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="pair_id" value="${requestScope.BIRDPAIR.pair_id}"/>
                             <input type="hidden" name="order_id" value="${requestScope.BIRDPAIR.order_id}" />

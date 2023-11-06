@@ -2950,9 +2950,16 @@ register*/
     font-size: 20px;
     cursor: pointer;
     color: #6c757d!important;
-    
 }
 #confirm-remove .btn-close:hover{
+   color: #404042;
+}
+#confirm-payment .btn-close{
+    font-size: 20px;
+    cursor: pointer;
+    color: #6c757d!important;
+}
+#confirm-payment .btn-close:hover{
    color: #404042;
 }
 /*layout-items*/

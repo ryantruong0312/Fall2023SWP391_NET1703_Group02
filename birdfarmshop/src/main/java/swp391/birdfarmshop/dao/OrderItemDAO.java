@@ -74,7 +74,7 @@ public class OrderItemDAO {
         return orderItemList;
     }
 
-    public int addNewPairOrderItem(String order_id, String male_bird_id, String female_bird_id, String accessory_id, int totalPrice, int pair_id,boolean typePayment) {
+    public int addNewPairOrderItem(String order_id, String male_bird_id, String female_bird_id, String accessory_id, int totalPrice, int pair_id, boolean typePayment) {
         int result = 0;
         Connection con = null;
         OrderItemDAO oid = new OrderItemDAO();
@@ -128,27 +128,29 @@ public class OrderItemDAO {
                         error = "Không tìm thấy sản phẩm";
                         checkBird = false;
                     }
-                }else{
+                } else {
                     String SelectBirdPair = "SELECT [male_bird_id]\n"
                             + "FROM [BirdPair]\n"
                             + "WHERE [pair_id] = ?";
                     pst = con.prepareStatement(SelectBirdPair);
                     pst.setInt(1, pair_id);
                     rs = pst.executeQuery();
-                    if(rs != null && rs.next()){
+                    if (rs != null && rs.next()) {
                         String id = rs.getString("male_bird_id");
-                        String updateMaleBird = "UPDATE [Bird]\n"
-                                + "SET [status] = N'Còn hàng'\n"
-                                + "WHERE [bird_id] = ?";
-                        pst = con.prepareStatement(updateMaleBird);
-                        pst.setString(1, id);
-                        result = pst.executeUpdate();
-                        if (result == 0) {
-                            checkBird = false;
+                        if (id != null) {
+                            String updateMaleBird = "UPDATE [Bird]\n"
+                                    + "SET [status] = N'Còn hàng'\n"
+                                    + "WHERE [bird_id] = ?";
+                            pst = con.prepareStatement(updateMaleBird);
+                            pst.setString(1, id);
+                            result = pst.executeUpdate();
+                            if (result == 0) {
+                                checkBird = false;
+                            }
                         }
-                    }else{
+                    } else {
                         checkBird = false;
-                    }            
+                    }
                 }
                 if (female_bird_id != null) {
                     String checkFemaleBird = "SELECT [price]\n"
@@ -192,7 +194,7 @@ public class OrderItemDAO {
                         error = "Không tìm thấy sản phẩm";
                         checkBird = false;
                     }
-                }else{
+                } else {
                     String SelectBirdPair = "SELECT [female_bird_id]\n"
                             + "FROM [BirdPair]\n"
                             + "WHERE [pair_id] = ?";
@@ -201,18 +203,20 @@ public class OrderItemDAO {
                     rs = pst.executeQuery();
                     if (rs != null && rs.next()) {
                         String id = rs.getString("female_bird_id");
-                        String updateMaleBird = "UPDATE [Bird]\n"
-                                + "SET [status] = N'Còn hàng'\n"
-                                + "WHERE [bird_id] = ?";
-                        pst = con.prepareStatement(updateMaleBird);
-                        pst.setString(1, id);
-                        result = pst.executeUpdate();
-                        if (result == 0) {
-                            checkBird = false;
+                        if (id != null) {
+                            String updateMaleBird = "UPDATE [Bird]\n"
+                                    + "SET [status] = N'Còn hàng'\n"
+                                    + "WHERE [bird_id] = ?";
+                            pst = con.prepareStatement(updateMaleBird);
+                            pst.setString(1, id);
+                            result = pst.executeUpdate();
+                            if (result == 0) {
+                                checkBird = false;
+                            }
                         }
                     } else {
                         checkBird = false;
-                    }  
+                    }
                 }
                 if (accessory_id != null) {
                     String getAccessoryOrder = "SELECT [order_quantity]\n"
@@ -242,10 +246,10 @@ public class OrderItemDAO {
                                 error = "Sản phẩm này không đủ số lượng trong kho";
                             } else {
                                 int newStock = numberAccessory - 1;
-                                if(female_bird_id != null && male_bird_id != null){
+                                if (female_bird_id != null && male_bird_id != null) {
                                     newStock -= 1;
                                     quantity += 1;
-                                    if(newStock == -1){
+                                    if (newStock == -1) {
                                         error = "Sản phẩm này không đủ số lượng trong kho";
                                         return 0;
                                     }
@@ -268,7 +272,7 @@ public class OrderItemDAO {
                                     pst.setInt(1, quantity + 1);
                                     pst.setString(2, order_id);
                                     pst.setString(3, accessory_id);
-                                    
+
                                     result = pst.executeUpdate();
                                     if (result == 0) {
                                         checkAccessory = false;
@@ -295,7 +299,16 @@ public class OrderItemDAO {
                                 checkAccessory = false;
                                 error = "Sản phẩm này không đủ số lượng trong kho";
                             } else {
+                                int quantity = 1;
                                 int newStock = numberAccessory - 1;
+                                if (female_bird_id != null && male_bird_id != null) {
+                                    newStock -= 1;
+                                    quantity += 1;
+                                    if (newStock == -1) {
+                                        error = "Sản phẩm này không đủ số lượng trong kho";
+                                        return 0;
+                                    }
+                                }
                                 String updateQuantity = "UPDATE [Accessory]\n"
                                         + "SET [stock_quantity] = ?\n"
                                         + "WHERE [accessory_id] = ?";
@@ -313,7 +326,7 @@ public class OrderItemDAO {
                                     pst.setString(1, order_id);
                                     pst.setString(2, accessory_id);
                                     pst.setInt(3, 0);
-                                    pst.setInt(4, 1);
+                                    pst.setInt(4, quantity);
                                     result = pst.executeUpdate();
                                     if (result == 0) {
                                         checkAccessory = false;
@@ -335,14 +348,14 @@ public class OrderItemDAO {
                     if (rs != null && rs.next()) {
                         int oldPrice = rs.getInt("total_price");
                         totalPrice += oldPrice;
-                        if(typePayment == false){
-                             String update = "UPDATE [ORDER]\n"
+                        if (typePayment == false) {
+                            String update = "UPDATE [ORDER]\n"
                                     + "SET [total_price] = ?\n"
                                     + "WHERE [order_id] = ?";
                             pst = con.prepareStatement(update);
                             pst.setInt(1, totalPrice);
                             pst.setString(2, order_id);
-                        }else{
+                        } else {
                             String update = "UPDATE [ORDER]\n"
                                     + "SET [total_price] = ?, \n"
                                     + "[payment_type] = N'Chuyển khoản',\n"
@@ -370,16 +383,17 @@ public class OrderItemDAO {
                     result = pst.executeUpdate();
                     if (result == 0) {
                         checkPair = false;
-                    }   
+                    }
                 }
                 String SelectBirdPair = "SELECT [bird_customer]\n"
-                            + "FROM [BirdPair]\n"
-                            + "WHERE [pair_id] = ?";
-                    pst = con.prepareStatement(SelectBirdPair);
-                    pst.setInt(1, pair_id);
-                    rs = pst.executeQuery();
-                    if(rs != null && rs.next()){
-                        String id = rs.getString("bird_customer");
+                        + "FROM [BirdPair]\n"
+                        + "WHERE [pair_id] = ?";
+                pst = con.prepareStatement(SelectBirdPair);
+                pst.setInt(1, pair_id);
+                rs = pst.executeQuery();
+                if (rs != null && rs.next()) {
+                    String id = rs.getString("bird_customer");
+                    if (id != null) {
                         String updateMaleBird = "UPDATE [CustomerBird]\n"
                                 + "SET [status] = N'Chưa ghép cặp'\n"
                                 + "WHERE [bird_id] = ?";
@@ -389,10 +403,11 @@ public class OrderItemDAO {
                         if (result == 0) {
                             checkBird = false;
                         }
-                    }else{
-                        checkBird = false;
-                    }            
-                if (checkAccessory && checkBird && checkMoney && checkPair ) {
+                    }
+                } else {
+                    checkBird = false;
+                }
+                if (checkAccessory && checkBird && checkMoney && checkPair) {
                     result = 1;
                     con.commit();
                 } else {
@@ -439,11 +454,11 @@ public class OrderItemDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement( "SELECT Item.[order_item_id],Item.[order_id],[Order].[order_status]\n" +
-"                            ,Item.[bird_id],Item.[nest_id],Item.[accessory_id],Item.[pair_id],Item.[unit_price],Item.[order_quantity]\n" +
-"                            FROM [BirdFarmShop].[dbo].[OrderItem] AS Item\n" +
-"                            LEFT JOIN [BirdFarmShop].[dbo].[Order] ON Item.[order_id] = [Order].[order_id]\n" +
-"                            WHERE Item.[order_id] = ?");
+                stm = con.prepareStatement("SELECT Item.[order_item_id],Item.[order_id],[Order].[order_status]\n"
+                        + "                            ,Item.[bird_id],Item.[nest_id],Item.[accessory_id],Item.[pair_id],Item.[unit_price],Item.[order_quantity]\n"
+                        + "                            FROM [BirdFarmShop].[dbo].[OrderItem] AS Item\n"
+                        + "                            LEFT JOIN [BirdFarmShop].[dbo].[Order] ON Item.[order_id] = [Order].[order_id]\n"
+                        + "                            WHERE Item.[order_id] = ?");
                 stm.setString(1, order_id);
                 rs = stm.executeQuery();
                 while (rs.next()) {

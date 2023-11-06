@@ -102,7 +102,7 @@ public class EmailUtils {
     public static String sendOrderToCustomer(String name,CartDTO c,CartDTO checkout, String order_id,
     String name_receiver, String phone , String address, String type_payment
         ){
-        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
         String totalMoney = numberFormat.format(c.getCartTotalPrice());
         Map<String, OrderedBirdItem> birdList =  c.getBirdList();
         Map<String, OrderedAccessoryItem> accessoryList = checkout.getAccessoryList();

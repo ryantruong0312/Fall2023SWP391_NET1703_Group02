@@ -54,7 +54,7 @@ public class RenderBirdPairController extends HttpServlet {
             BirdDAO birdDao = new BirdDAO();
             breedList = breedDao.getBirdBreeds();
             request.setAttribute("BIRD_BREEDS", breedList);
-            NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+            NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
       
             if (breedIdMale == null && breedIdFemale == null
                     && birdId == null && breedId == null
@@ -154,7 +154,7 @@ public class RenderBirdPairController extends HttpServlet {
                         + "                            </div>\n"
                         + "                            <div class=\"bird-info-row customer-hidden\">\n"
                         + "                                <span class=\"info-title\">Giá</span>\n"
-                        + "                                <span id=\"birdPrice1\" class=\"info-content\" pattern=\"#,###\">" + numberFormat.format(bird.getPrice()) + "</span>\n"
+                        + "                                <span id=\"birdPrice1\" class=\"info-content\" pattern=\"#,###\">" + numberFormat.format(bird.getPrice()) + "₫</span>\n"
                         + "                            </div>");
                 return;
             }
