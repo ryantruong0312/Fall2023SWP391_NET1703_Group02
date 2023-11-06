@@ -107,7 +107,7 @@
                                                     <h4>Tổ chim non</h4>
                                                     <p>Hãy khám phá các tổ chim non đáng yêu của chúng tôi!</p>
                                                     <div class="main-border-button">
-                                                        <a href="${pageScope.toBirdNests}">Xem thêm</a>
+                                                        <a>Xem thêm</a>
                                                     </div>
                                                 </div>
                                             </div>

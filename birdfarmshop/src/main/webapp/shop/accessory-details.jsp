@@ -34,7 +34,8 @@
             .overlay-text {
                 position: absolute;
                 top: 50%;
-                left: 40%;
+                left: 50%;
+                width: 200px;
                 transform: translate(-50%, -50%);
                 background-color: rgba(0, 0, 0, 0.5);
                 border-radius: 50%;
@@ -122,7 +123,7 @@
         </div>
         <!-- ***** Main Banner Area End ***** -->
         <!-- ***** Product Area Starts ***** -->
-        <section class="section" id="product" style="margin-top: 30px; margin-bottom: 75px;">
+        <section class="section" id="product" style="margin-top: 60px; margin-bottom: 75px;">
             <div class="container">
                 <div class="row" style="margin-bottom: 15px;">
                     <div class="col-lg-12">
@@ -403,7 +404,7 @@
                 let amountPage = Number(limitPage);
                 let nextPage = Number(page) + 1;
                 let accessory_id = $('input[name=accessory_id]').val();
-                if (accessory_id && nextPage < amountPage) {
+                if (accessory_id && nextPage <= amountPage) {
                     $.ajax({
                         url: 'RenderAccessoryDetailsController',
                         type: 'POST',
@@ -436,29 +437,14 @@
                         type: 'POST',
                         data: {accessory_id: accessory_id, order_quantity: quantity},
                         success: function (data) {
-                            if (data == 0) {
-                                toast({
-                                    title: 'Lỗi',
-                                    message: 'Sản phẩm này đã có trong giỏ hàng',
-                                    type: 'error',
-                                    duration: 3000
-                                });
-                            } else {
-                                toast({
-                                    title: 'Thành công',
-                                    message: 'Thêm sản phẩm vào giỏ hàng thành công',
-                                    type: 'success',
-                                    duration: 3000
-                                });
-                                $.ajax({
-                                    url: "AddAccessoryToCartController",
-                                    type: 'POST',
-                                    data: {order_quantity: 1},
-                                    success: function (data) {
-                                        $('.cart-amount').html(data);
-                                    }
-                                });
-                            }
+                            const json = JSON.parse(data);
+                            toast({
+                                title: json.status,
+                                message: json.content,
+                                type: json.type,
+                                duration: 3000
+                            });
+                            $('.cart-amount').html(json.quantity);
                         }
                     });
                 });

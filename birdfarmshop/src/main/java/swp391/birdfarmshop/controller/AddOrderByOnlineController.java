@@ -20,6 +20,7 @@ import swp391.birdfarmshop.model.Order;
 import swp391.birdfarmshop.model.User;
 import swp391.birdfarmshop.services.EmailService;
 import swp391.birdfarmshop.util.EmailUtils;
+import swp391.birdfarmshop.util.VNPAYUtils;
 
 /**
  *
@@ -42,7 +43,7 @@ public class AddOrderByOnlineController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+         response.setContentType("text/html;charset=UTF-8");
         String url = DEST_NAV_CHECKOUT;
         try {
             HttpSession session = request.getSession();
@@ -72,6 +73,7 @@ public class AddOrderByOnlineController extends HttpServlet {
                     session.setAttribute("CARTCHECKOUT", null);
                     session.setAttribute("SUCCESS", "Đặt hàng thành công");
                 } else {
+                    VNPAYUtils.refundMoney(infor.get(3),cart.getCartTotalPrice()+"",infor.get(5),infor.get(6), request);
                     session.setAttribute("ERROR", od.error);
                 }
             }else{

@@ -46,15 +46,20 @@
             </div>
         </div>
         <!-- ***** Main Banner Area End ***** -->
+        <c:if test="${not empty sessionScope.CART && sessionScope.CART.totalItem == 0}">
+            <c:redirect url="MainController?action=NavToHome"/>
+        </c:if>
         <c:set var="count" value="0" />
         <section class="h-100">
             <div class="container-fluid h-100 py-5">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-10">
                         <c:if test="${sessionScope.CART.totalItem > 0}" ><a onclick="return clearCart(this)" href="MainController?action=DeleteCart"><button type="submit" class="float-right btn btn-danger">Xóa giỏ hàng</button></a></c:if>
+                        <c:if test="${not empty sessionScope.CART.birdList}">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h3 class="fw-normal mb-0 text-black">Vẹt cảnh</h3>
                             </div><hr>
+                        </c:if>
                         <c:forEach items="${sessionScope.CART.birdList}" var="bird" varStatus="counter">
                             <c:set var="count" value="${count + 1}" />
                             <div class="card rounded-3 mb-5">
@@ -167,13 +172,16 @@
                                 </div>
                             </div>      
                         </c:forEach>
-
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h3 class="fw-normal mb-0 text-black">Tổ chim non</h3>
-                        </div><hr>
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h3 class="fw-normal mb-0 text-black">Nhân giống</h3>
-                        </div><hr>
+                        <c:if test="${not empty null}">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h3 class="fw-normal mb-0 text-black">Tổ chim non</h3>
+                            </div><hr>
+                        </c:if>
+                        <c:if test="${not empty sessionScope.CART.birdPairList}">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h3 class="fw-normal mb-0 text-black">Nhân giống</h3>
+                            </div><hr>
+                        </c:if>
                         <c:forEach items="${sessionScope.CART.birdPairList}" var="birdPair">
                             <c:set var="count" value="${count + 1}"/>
                             <div class="card rounded-3 mb-4">
@@ -221,9 +229,11 @@
                             </div>
                         </c:forEach>
 
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <h3 class="fw-normal mb-0 text-black">Phụ kiện</h3>
-                        </div><hr>
+                        <c:if test="${not empty sessionScope.CART.accessoryList}">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h3 class="fw-normal mb-0 text-black">Phụ kiện</h3>
+                            </div><hr>
+                        </c:if>
                         <c:forEach items="${sessionScope.CART.accessoryList}" var="accessory">
                             <c:set var="count" value="${count + 1}"/>
                             <div class="card rounded-3 mb-4">

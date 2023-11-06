@@ -9,9 +9,11 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import static java.sql.Types.NULL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dto.BirdDTO;
@@ -482,36 +484,36 @@ public class BirdDAO {
                         + "             ([bird_id],[bird_name],[color],[birthday],[grown_age],[gender],[breed_id],[achievement],"
                         + "             [reproduction_history],[price],[description],[discount],[status])\n"
                         + "             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) ");
-                stm.setString(1, bird_id.trim());
-                stm.setString(2, bird_name.trim());
+                stm.setString(1, bird_id);
+                stm.setString(2, bird_name);
                 if (color != null && !color.isEmpty()) {
-                    stm.setString(3, color.trim());
+                    stm.setString(3, color);
                 } else {
                     stm.setString(3, null);
                 }
                 stm.setDate(4, sqlDate);
-                stm.setInt(5, Integer.parseInt(grown_age.trim()));
+                stm.setInt(5, Integer.parseInt(grown_age));
                 sex = gender.equals("Đực");
                 stm.setBoolean(6, sex);
-                stm.setString(7, breed_id.trim());
+                stm.setString(7, breed_id);
                 if (achievement != null && !achievement.isEmpty()) {
-                    stm.setString(8, achievement.trim());
+                    stm.setString(8, achievement);
                 } else {
                     stm.setString(8, null);
                 }
-                stm.setInt(9, Integer.parseInt(reproduction_history.trim()));
-                stm.setInt(10, Integer.parseInt(price.trim()));
+                stm.setInt(9, Integer.parseInt(reproduction_history));
+                stm.setInt(10, Integer.parseInt(price));
                 if (description != null && !description.isEmpty()) {
-                    stm.setString(11, description.trim());
+                    stm.setString(11, description);
                 } else {
                     stm.setString(11, null);
                 }
                 if (discount != null && !discount.isEmpty()) {
-                    stm.setInt(12, Integer.parseInt(discount.trim()));
+                    stm.setInt(12, Integer.parseInt(discount));
                 } else {
                     stm.setInt(12, 0);
                 }
-                stm.setString(13, status.trim());
+                stm.setString(13, status);
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;
@@ -650,35 +652,35 @@ public class BirdDAO {
                     bird_name = bird_name + " " + bird_id;
                 }
                 stm.setString(1, bird_name.trim());
-                stm.setString(2, color.trim());
+                stm.setString(2, color);
                 stm.setDate(3, sqlDate);
-                stm.setInt(4, Integer.parseInt(grown_age.trim()));
+                stm.setInt(4, Integer.parseInt(grown_age));
                 sex = gender.equals("Đực");
                 stm.setBoolean(5, sex);
-                stm.setString(6, breed_id.trim());
-                stm.setInt(7, Integer.parseInt(price.trim()));
-                stm.setString(8, status.trim());
+                stm.setString(6, breed_id);
+                stm.setInt(7, Integer.parseInt(price));
+                stm.setString(8, status);
                 if (reproduction_history != null) {
-                    stm.setInt(9, Integer.parseInt(reproduction_history.trim()));
+                    stm.setInt(9, Integer.parseInt(reproduction_history));
                 } else {
                     stm.setInt(9, 0);
                 }
                 if (discount != null) {
-                    stm.setInt(10, Integer.parseInt(discount.trim()));
+                    stm.setInt(10, Integer.parseInt(discount));
                 } else {
                     stm.setInt(10, 0);
                 }
                 if (achievement != null) {
-                    stm.setString(11, achievement.trim());
+                    stm.setString(11, achievement);
                 } else {
                     stm.setString(11, "");
                 }
                 if (description != null) {
-                    stm.setString(12, description.trim());
+                    stm.setString(12, description);
                 } else {
                     stm.setString(12, "");
                 }
-                stm.setString(13, bird_id.trim());
+                stm.setString(13, bird_id);
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;

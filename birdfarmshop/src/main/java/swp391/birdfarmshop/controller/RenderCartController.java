@@ -11,11 +11,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dao.AccessoryCategoryDAO;
 import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.dao.BirdBreedDAO;
+import swp391.birdfarmshop.dto.CartDTO;
 import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.AccessoryCategory;
 import swp391.birdfarmshop.model.BirdBreed;
@@ -27,27 +29,34 @@ import swp391.birdfarmshop.model.BirdBreed;
 @WebServlet(name="RenderCartController", urlPatterns={"/RenderCartController"})
 public class RenderCartController extends HttpServlet {
    
-    private static final String ERROR = "errorpages/error.jsp";
+   private static final String DEST_NAV_HOME = "RenderHomeController";
     private static final String SUCCESS = "shop/cart.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
+        String url = DEST_NAV_HOME;
         try {
-            List<BirdBreed> breeds = new ArrayList<>();
-            BirdBreedDAO breedDao = new BirdBreedDAO();
-            breeds = breedDao.getBirdBreeds();
-            request.setAttribute("BREED_LIST", breeds);
-            List<AccessoryCategory> categories = new ArrayList<>();
-            AccessoryCategoryDAO categoryDao = new AccessoryCategoryDAO();
-            List<Accessory> accessories = new ArrayList<>();
-            AccessoryDAO accessoryDao = new AccessoryDAO();
-            accessories = accessoryDao.getAccessories();
-            categories = categoryDao.getAccessoryCategories();
-            request.setAttribute("ACCESSORY_LIST", accessories);
-            request.setAttribute("CATEGORY_LIST", categories);
-            url = SUCCESS;
+           HttpSession session = request.getSession();
+           CartDTO c = (CartDTO) session.getAttribute("CART");
+           if(c!= null && c.getTotalItem() > 0){
+               List<BirdBreed> breeds = new ArrayList<>();
+               BirdBreedDAO breedDao = new BirdBreedDAO();
+               breeds = breedDao.getBirdBreeds();
+               request.setAttribute("BREED_LIST", breeds);
+               List<AccessoryCategory> categories = new ArrayList<>();
+               AccessoryCategoryDAO categoryDao = new AccessoryCategoryDAO();
+               List<Accessory> accessories = new ArrayList<>();
+               AccessoryDAO accessoryDao = new AccessoryDAO();
+               accessories = accessoryDao.getAccessories();
+               categories = categoryDao.getAccessoryCategories();
+               request.setAttribute("ACCESSORY_LIST", accessories);
+               request.setAttribute("CATEGORY_LIST", categories);
+               url = SUCCESS;
+           }else{
+               session.setAttribute("ERROR", "Giỏ hàng của bạn không có sản phẩm");
+           }
+            
         } catch (Exception e) {
             log("Error at RenderCartController: " + e.toString());
         } finally {

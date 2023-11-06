@@ -160,7 +160,7 @@
                             </div>
                             <div class="form-add mb-3">
                                 <label>Ngày Sinh</label>
-                                <input id="birthday" style="float: right; width: 50%;" type="date" name="txtBirdDate" value="" required/>
+                                <input id="birthday" style="float: right; width: 50%;" type="date" name="txtBirdDate" value="${txtBirdDate}" required/>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Giới tính</label>
@@ -172,36 +172,36 @@
                             </div>
                             <div class="form-add mb-3">
                                 <label>Mã vẹt cảnh (VD: ID123)</label>
-                                <input type="text" name="txtBirdId" class="input form-control" pattern="[A-Z]{2}\d{3}" value=""/>
+                                <input type="text" name="txtBirdId" class="input form-control" pattern="[A-Z]{2}\d{3}" value="${txtBirdId}"/>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Tên vẹt cảnh</label>
-                                <input type="text" name="txtBirdName" class="input form-control" title="Vui lòng chỉ nhập chữ cái" value=""/>                          
+                                <input type="text" name="txtBirdName" class="input form-control" title="Vui lòng chỉ nhập chữ cái" value="${txtBirdName}"/>                          
                             </div>
                             <div class="form-add mb-3">
                                 <label>Màu sắc</label>
-                                <input type="text" name="txtBirdColor" class="input form-control" value=""/>      
+                                <input type="text" name="txtBirdColor" class="input form-control" value="${txtBirdColor}"/>      
                             </div>
                         </div>
                         <div class="col-lg-6 form-custom">
                             <div class="form-add mb-3">
                                 <label>Thành tích thi đấu</label>
-                                <textarea rows="5" name="txtBirdAchievement" class="input form-control" value=""></textarea>
+                                <textarea rows="5" name="txtBirdAchievement" class="input form-control" value="">${txtBirdAchievement}</textarea>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Mô tả chi tiết</label>
-                                <textarea rows="5" name="txtBirdDescription" class="input form-control" value=""></textarea>
+                                <textarea rows="5" name="txtBirdDescription" class="input form-control" value="">${txtBirdDescription}</textarea>
                             </div>
                             <div class="form-add mb-3 column-container">
                                 <label>Giá bán</label>
                                 <div style="width: 100%; position: relative;">
-                                    <input style="width: 80%;" type="number" min="0" name="txtBirdPrice" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="" required/>
+                                    <input style="width: 80%;" type="number" min="0" name="txtBirdPrice" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdPrice}" required/>
                                     <span style="position: absolute; right: 37px; top: 50%; transform: translateY(-50%);">₫</span>
                                 </div>
                                 <div style="margin-top: 15px;">
                                     <label>Tuổi trưởng thành</label>
                                     <div style="width: 100%; position: relative;">
-                                        <input style="width: 80%;" type="number" min="0" name="txtBirdGrownAge" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="" required/>
+                                        <input style="width: 80%;" type="number" min="0" name="txtBirdGrownAge" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdGrownAge}" required/>
                                         <span style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%);">tháng</span>
                                     </div>
                                 </div>
@@ -210,13 +210,13 @@
                             <div class="form-add mb-3 column-container">
                                 <label>Giảm giá</label>
                                 <div style="width: 100%; position: relative;">
-                                    <input style="width: 80%;" type="number" min="0" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="0" required/>
+                                    <input style="width: 80%;" type="number" min="0" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdDiscount}" />
                                     <span style="position: absolute; right: 36px; top: 50%; transform: translateY(-50%);">%</span>
                                 </div>
                                 <div style="margin-top: 15px;">
                                     <label>Lịch sử sinh sản</label>
                                     <div style="width: 100%; position: relative;">
-                                        <input style="width: 80%;" type="number" min="0" name="txtBirdReproduction_history" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="0" required/>
+                                        <input style="width: 80%;" type="number" min="0" name="txtBirdReproduction_history" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdReproduction_history}"/>
                                         <span style="position: absolute; right: 27px; top: 50%; transform: translateY(-50%);">lứa</span>
                                     </div>
                                 </div>
@@ -240,7 +240,9 @@
                         <div class="col-lg-12" style="margin-top: 15px;">
                             <button style="float: right; margin-left: 10px;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit" formnovalidate>Hủy bỏ</button>
                             <button class="btn-primary button-submit" style="margin-left: 10px;" type="submit" name="btAction" value="Add"><span style="color:white;">Lưu và tiếp tục</span></button>
-                            <button class="btn-success button-submit" type="submit" name="btAction" value="Add&Return"><span style="color:white;">Lưu và đóng</span></button>
+                            <button class="btn-success button-submit" type="submit" name="btAction" value="Add&Return">
+                                <span style="color:white;">Lưu và đóng</span>    
+                            </button>
                         </div>
                     </div>
                 </form>

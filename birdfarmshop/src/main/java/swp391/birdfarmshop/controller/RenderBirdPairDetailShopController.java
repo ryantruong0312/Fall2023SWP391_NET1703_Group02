@@ -42,12 +42,12 @@ public class RenderBirdPairDetailShopController extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             User u = (User) session.getAttribute("LOGIN_USER");
-            String order_id = request.getParameter("order_id");
+            String pair_id = request.getParameter("pair_id");
             if(u != null){
                if(!u.getRole().equals("customer")){
                    BirdPairDAO bpd = new BirdPairDAO();
                    TrackingBirdPairDAO trackingDao = new TrackingBirdPairDAO();
-                   BirdPairDTO birdPair = bpd.getBirdPairByOrderId(order_id);
+                   BirdPairDTO birdPair = bpd.getBirdPairByBirdPairId(pair_id);
                    ArrayList<TrackingDTO> trackingList = trackingDao.getTrackingBirdPair(birdPair.getPair_id());
                    trackingList.size();
                    request.setAttribute("BIRDPAIR", birdPair);

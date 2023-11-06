@@ -306,9 +306,6 @@ $(".form-login").validate({
 });
 $("#update-tracking").validate({
     rules: {
-        status: {
-            required: true
-        },
         quantity_egg: {
             required: true,
             number: true,
@@ -322,12 +319,12 @@ $("#update-tracking").validate({
         content: {
             required: true,
             regex: /^(?!\s)[\s\S]*$/
+        },
+        file:{
+            required: true
         }
     },
     messages: {
-        status: {
-            required: 'Vui lòng chọn trạng thái'
-        },
         quantity_egg: {
             required: 'Vui lòng nhập số trứng',
             number: 'Vui lòng nhập số',
@@ -342,6 +339,9 @@ $("#update-tracking").validate({
         content: {
             required: 'Vui lòng nhập nội dung theo dõi',
             regex: 'Không nhập kí tự trắng đầu tiên'
+        },
+        file:{
+            required: 'Vui lòng chọn ảnh'
         }
     }
 });

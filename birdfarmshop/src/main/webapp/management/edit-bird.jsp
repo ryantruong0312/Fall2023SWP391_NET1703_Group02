@@ -125,21 +125,21 @@
                             </div>
                             <div class="form-add mb-3">
                                 <label>Tên</label>
-                                <input type="text" name="txtBirdName" class="input form-control" value="${birdDetails.bird_name}" required/>                          
+                                <input type="text" name="txtBirdName" class="input form-control" value="${birdDetails.bird_name}"/>                          
                             </div>
                             <div class="form-add mb-3">
                                 <label>Màu sắc</label>
-                                <input type="text" name="txtBirdColor" class="input form-control" value="${birdDetails.color}" required/>      
+                                <input type="text" name="txtBirdColor" class="input form-control" value="${birdDetails.color}"/>      
                             </div>
                         </div>
                         <div class="col-lg-6 form-custom">
                             <div class="form-add mb-3">
                                 <label>Thành tích thi đấu</label>
-                                <textarea rows="5" name="txtBirdAchievement" class="input form-control" value="" required>${birdDetails.achievement}</textarea>
+                                <textarea rows="5" name="txtBirdAchievement" class="input form-control" value="">${birdDetails.achievement}</textarea>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Mô tả chi tiết</label>
-                                <textarea rows="5" name="txtBirdDescription" class="input form-control" value="" required>${birdDetails.description}</textarea>
+                                <textarea rows="5" name="txtBirdDescription" class="input form-control" value="">${birdDetails.description}</textarea>
                             </div>
                             <div class="form-add mb-3 column-container">
                                 <label>Giá bán</label>
@@ -159,13 +159,13 @@
                             <div class="form-add mb-3 column-container">
                                 <label>Giảm giá</label>
                                 <div style="width: 100%; position: relative;">
-                                    <input style="width: 80%;" type="number" min="0" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.discount}" required/>
+                                    <input style="width: 80%;" type="number" min="0" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.discount}" />
                                     <span style="position: absolute; right: 37px; top: 50%; transform: translateY(-50%);">%</span>
                                 </div>
                                 <div style="margin-top: 15px;">
                                     <label>Lịch sử sinh sản</label>
                                     <div style="width: 100%; position: relative;">
-                                        <input style="width: 80%;" type="number" min="0" name="txtBirdReproduction_history" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.reproduction_history}" required/>
+                                        <input style="width: 80%;" type="number" min="0" name="txtBirdReproduction_history" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.reproduction_history}"/>
                                         <span style="position: absolute; right: 27px; top: 50%; transform: translateY(-50%);">lứa</span>
                                     </div>
                                 </div>

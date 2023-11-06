@@ -2949,9 +2949,11 @@ register*/
 #confirm-remove .btn-close{
     font-size: 20px;
     cursor: pointer;
+    color: #6c757d!important;
+    
 }
 #confirm-remove .btn-close:hover{
-   color: #6c757d;
+   color: #404042;
 }
 /*layout-items*/
 .layout-item .new-item a{
@@ -3198,11 +3200,6 @@ register*/
 }
 #confirm-payment .box-remove p{
    font-size: 1.1rem;
-}
-#confirm-payment .number-egg,
-#confirm-payment .bird-young
-{
-    display: none;
 }
 /*containter custom profile*/
 .container-custome{

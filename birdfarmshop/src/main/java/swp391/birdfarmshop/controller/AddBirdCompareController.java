@@ -41,6 +41,7 @@ public class AddBirdCompareController extends HttpServlet {
                 for (int i = 0; i < listCompare.size(); i++) {
                     if(birdId.equals(listCompare.get(i))){
                         listCompare.remove(i);
+                        response.getWriter().println(listCompare.size());
                         check = false;
                         break;
                     }

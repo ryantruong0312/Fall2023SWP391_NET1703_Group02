@@ -316,6 +316,13 @@
                     }
 
                     form.appendTo("body").submit();
+                } else {
+                    toast({
+                        title: 'Lỗi',
+                        message: 'Vui lòng chọn thêm một vẹt để so sánh',
+                        type: 'error',
+                        duration: 3000
+                    });
                 }
             });
 
@@ -332,7 +339,7 @@
                 if (isActive) {
                     // Decrease the counter and remove the active class
                     counter.text("So sánh (" + (count - 1) + ")");
-                    if(count - 1 === 0){
+                    if (count - 1 === 0) {
                         $('#counter-box').css('display', 'none');
                     }
                     $(this).css("background-color", ""); // Remove background color
@@ -410,28 +417,14 @@
                         type: 'POST',
                         data: {bird_id: birdId},
                         success: function (data) {
-                            if (data == 0) {
-                                toast({
-                                    title: 'Lỗi',
-                                    message: 'Sản phẩm này đã có trong giỏ hàng',
-                                    type: 'error',
-                                    duration: 3000
-                                });
-                            } else {
-                                toast({
-                                    title: 'Thành công',
-                                    message: 'Thêm sản phẩm vào giỏ hàng thành công',
-                                    type: 'success',
-                                    duration: 3000
-                                });
-                                $.ajax({
-                                    url: "AddBirdToCartController",
-                                    type: 'POST',
-                                    success: function (data) {
-                                        $('.cart-amount').html(data);
-                                    }
-                                });
-                            }
+                            const json = JSON.parse(data);
+                            toast({
+                                title: json.status,
+                                message: json.content,
+                                type: json.type,
+                                duration: 3000
+                            });
+                            $('.cart-amount').html(json.quantity);
                         }
                     });
                 });

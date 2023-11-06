@@ -27,9 +27,8 @@ import swp391.birdfarmshop.model.User;
 public class UpdateOrderStatusController extends HttpServlet {
    
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SHOP_ORDER = "management/shop-orders.jsp";
+    private static final String SUCCESS = "management/shop-orders.jsp";
     private static final String HOME = "MainController?action=NavToHome";
-    private static final String CUSTOMER_ORDER = "MainController?action=NavToCustomerOrder";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException, SQLException, ParseException {
@@ -40,62 +39,34 @@ public class UpdateOrderStatusController extends HttpServlet {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
             if (user != null && !user.getRole().equals("customer")) {
-                url = SHOP_ORDER;
-                String page = "1";
-                if(request.getParameter("page") != null) {
-                    page = request.getParameter("page");
+                String[] statusArray = request.getParameterValues("status");
+                String status = statusArray[statusArray.length - 1];
+                if("Giao hàng thành công".equals(status)) {
+                    status = "Đã giao hàng";
                 }
-                String date = request.getParameter("date");
-                String startDay = request.getParameter("startDay");
-                String endDay = request.getParameter("endDay");
-                String search = request.getParameter("search");
-                String[] statusArr = request.getParameterValues("status");
-                String statusUpdate = null;
-                String status = null;
-                if(statusArr != null) {
-                    for (int i = 0; i < statusArr.length - 1; i++) {
-                        if (statusArr[i].contains("Chờ xử lý") || statusArr[i].contains("Đang xử lý") || 
-                            statusArr[i].contains("Đang giao hàng") || statusArr[i].contains("Đã giao hàng") ||
-                            statusArr[i].contains("Đã đánh giá") || statusArr[i].contains("Đã hủy")) {
-                                statusUpdate = statusArr[i];
-                        }
-                    }
-                    for (int i = 0; i < statusArr.length - 1; i++) {
-                        if (statusArr[i].contains("wait") || statusArr[i].contains("inProgress") || 
-                            statusArr[i].contains("delivering") || statusArr[i].contains("delivered") ||
-                            statusArr[i].contains("rated") || statusArr[i].contains("cancel")) {
-                                status = statusArr[i];
-                        }
-                    }
+                if("Giao hàng thất bại".equals(status)) {
+                    status = "Đã hủy";
                 }
                 String order_id = request.getParameter("order_id");
-                boolean isUpdated = orderDao.updateOrderStatus(order_id, statusUpdate);
+                boolean isUpdated = orderDao.updateOrderStatus(order_id, status);
+                Order order = orderDao.getOrderById(order_id);
+                ArrayList<Order> orderList = new ArrayList<>();
+                orderList.add(order);
                 if(isUpdated) {
-                    session.setAttribute("SUCCESS", "Bạn đã cập nhật đơn hàng thành công");
-                } else {
-                    session.setAttribute("ERROR", "Bạn đã cập nhật đơn hàng thất bại.");
+                    request.setAttribute("MESSAGE", "Cập nhật thành công");
+                    request.setAttribute("ORDERLIST", orderList);
+                }else {
+                    request.setAttribute("MESSAGE", "Cập nhật thất bại");
                 }
-                System.out.println("UPDATE PAGE: "+ date + " " + startDay + " " + endDay + " " + status + " " + search + " " + page);
-                int numberOfOrder = orderDao.numberOfOrder(date, startDay, endDay, status, search);
-                int recordsPerPage = 10;
-                int noOfPages = (int) Math.ceil(numberOfOrder * 1.0 / recordsPerPage);
-                ArrayList<Order> orderList = orderDao.getAllOfOrder(date, startDay, endDay, status, search, page, recordsPerPage);
-                request.setAttribute("ORDERLIST", orderList);
-                request.setAttribute("date", date);
-                request.setAttribute("startDay", startDay);
-                request.setAttribute("endDay", endDay);
-                request.setAttribute("search", search);
-                request.setAttribute("status", status);
-                request.setAttribute("page", page);
-                request.setAttribute("noOfPages", noOfPages);
+                url = SUCCESS;
             } else if(user != null && user.getRole().equals("customer")){
-                url = CUSTOMER_ORDER;
                 String txtOrderId = request.getParameter("order_id");
                 boolean isUpdated = orderDao.updateOrderStatus(txtOrderId, "cancel");
+                url = "MainController?action=NavToCustomerOrder";
                 if(isUpdated) {
                     session.setAttribute("SUCCESS", "Bạn đã hủy đơn hàng thành công");
                 } else {
-                    session.setAttribute("ERROR", "Bạn đã hủy đơn hàng thất bại. Liên hệ nhân viên để biết thêm thông tin.");
+                    session.setAttribute("ERROR", "Bạn hủy đơn hàng thất bại. Liên hệ nhân viên để biết thêm thông tin.");
                 }
             } else {
                 url = HOME;

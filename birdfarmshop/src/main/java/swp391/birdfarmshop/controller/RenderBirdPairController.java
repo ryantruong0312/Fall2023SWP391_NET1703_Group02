@@ -12,8 +12,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import swp391.birdfarmshop.dao.BirdBreedDAO;
 import swp391.birdfarmshop.dao.BirdCustomerDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
@@ -52,6 +54,8 @@ public class RenderBirdPairController extends HttpServlet {
             BirdDAO birdDao = new BirdDAO();
             breedList = breedDao.getBirdBreeds();
             request.setAttribute("BIRD_BREEDS", breedList);
+            NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+      
             if (breedIdMale == null && breedIdFemale == null
                     && birdId == null && breedId == null
                     && gender == null && username == null
@@ -128,7 +132,7 @@ public class RenderBirdPairController extends HttpServlet {
                 return;
             }
             if (birdId != null) {
-                Bird bird = birdDao.getBirdById(birdId);
+                Bird bird = birdDao.getBirdById(birdId);  
                 out.println("                          <div class=\"bird-info-row\">\n"
                         + "                                <!-- Placeholder for bird image -->\n"
                         + "                                <img id=\"birdImage1\" src=\"" + bird.getImage_url() + "\" alt=\"" + bird.getBird_name() + "\">\n"
@@ -150,7 +154,7 @@ public class RenderBirdPairController extends HttpServlet {
                         + "                            </div>\n"
                         + "                            <div class=\"bird-info-row customer-hidden\">\n"
                         + "                                <span class=\"info-title\">Giá</span>\n"
-                        + "                                <span id=\"birdPrice1\" class=\"info-content\" pattern=\"#,###\">" + bird.getPrice() + "</span>\n"
+                        + "                                <span id=\"birdPrice1\" class=\"info-content\" pattern=\"#,###\">" + numberFormat.format(bird.getPrice()) + "</span>\n"
                         + "                            </div>");
                 return;
             }

@@ -21,7 +21,7 @@ import swp391.birdfarmshop.dto.CartDTO;
  */
 @WebServlet(name="DeleteCartController", urlPatterns={"/DeleteCartController"})
 public class DeleteCartController extends HttpServlet {
-    private static final String DEST_NAV_CART = "RenderCartController";
+    private static final String DEST_NAV_HOME = "RenderHomeController";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -45,7 +45,7 @@ public class DeleteCartController extends HttpServlet {
             }else{
                 session.setAttribute("ERROR", "Không có sản phẩm nào trong giỏ hàng của bạn");
             }
-           response.sendRedirect(DEST_NAV_CART);
+           response.sendRedirect(DEST_NAV_HOME);
         }catch(Exception e){
             e.printStackTrace();
         }

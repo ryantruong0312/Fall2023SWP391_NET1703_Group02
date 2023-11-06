@@ -36,13 +36,14 @@ public class RenderProfileController extends HttpServlet {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
             UserDAO userDao = new UserDAO();
-            if(username == null) {
-                user = userDao.getUserByUsername(user.getUsername());
-            } else {
-                user = userDao.getUserByUsername(username);
-            }
             if (user == null) {
                 session.setAttribute("ERROR", "Bạn chưa đăng nhập");
+            } else {
+                if (username == null) {
+                    user = userDao.getUserByUsername(user.getUsername());
+                } else {
+                    user = userDao.getUserByUsername(username);
+                }
             }
             request.setAttribute("USER", user);
 

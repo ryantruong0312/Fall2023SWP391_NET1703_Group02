@@ -27,6 +27,7 @@ public class UpdateActivityController extends HttpServlet {
 
     private static final String DEST_NAV_ACCOUNTS = "RenderAccountsController";
     private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,34 +45,41 @@ public class UpdateActivityController extends HttpServlet {
             String user = request.getParameter("username");
             String type = request.getParameter("type");
             HttpSession session = request.getSession();
-            User sessionUser = (User)session.getAttribute("LOGIN_USER");
+            User sessionUser = (User) session.getAttribute("LOGIN_USER");
             UserDAO ud = new UserDAO();
             User u = ud.getUserByUsername(user);
             if (sessionUser != null) {
                 if (sessionUser.getRole().equals("admin") || sessionUser.getRole().equals("manager")) {
                     if (u != null) {
-                        if (type.equals("lock")) {
-                            int result = ud.updateActive(user, "lock");
-                            if (result == 0) {
-                                session.setAttribute("ERROR", "Khóa tài khoản thất bại");
-                            } else {
-                                session.setAttribute("SUCCESS", "Khóa tài khoản thành công");
+                        switch (type) {
+                            case "lock": {
+                                int result = ud.updateActive(user, "lock");
+                                if (result == 0) {
+                                    session.setAttribute("ERROR", "Khóa tài khoản thất bại");
+                                } else {
+                                    session.setAttribute("SUCCESS", "Khóa tài khoản thành công");
+                                }
+                                break;
                             }
-                        } else if (type.equals("open")) {
-                            int result = ud.updateActive(user, "active");
-                            if (result == 0) {
-                                session.setAttribute("ERROR", "Mở khóa tài khoản thất bại");
-                            } else {
-                                session.setAttribute("SUCCESS", "Mở khóa tài khoản thành công");
+                            case "open": {
+                                int result = ud.updateActive(user, "active");
+                                if (result == 0) {
+                                    session.setAttribute("ERROR", "Mở khóa tài khoản thất bại");
+                                } else {
+                                    session.setAttribute("SUCCESS", "Mở khóa tài khoản thành công");
+                                }
+                                break;
                             }
-                        } else {
-                            String token = "Thegioivetcanh123@";
-                            String password = JWTUtils.encodeJWT(token);
-                            int result = ud.updatePassword(user, password);
-                            if (result == 0) {
-                                session.setAttribute("SUCCESS", "Cấp lại mật khẩu thất bại");
-                            } else {
-                                session.setAttribute("SUCCESS", "Cấp lại mật khẩu thành công");
+                            default: {
+                                String token = "Thegioivetcanh123@";
+                                String password = JWTUtils.encodeJWT(token);
+                                int result = ud.updatePassword(user, password);
+                                if (result == 0) {
+                                    session.setAttribute("SUCCESS", "Cấp lại mật khẩu thất bại");
+                                } else {
+                                    session.setAttribute("SUCCESS", "Cấp lại mật khẩu thành công");
+                                }
+                                break;
                             }
                         }
                     } else {

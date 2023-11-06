@@ -356,29 +356,14 @@ Author     : tlminh
                         type: 'POST',
                         data: {accessory_id: accessory_id, order_quantity: 1},
                         success: function (data) {
-                            if (data == 0) {
-                                toast({
-                                    title: 'Lỗi',
-                                    message: 'Sản phẩm này đã hết hàng',
-                                    type: 'error',
-                                    duration: 3000
-                                });
-                            } else {
-                                toast({
-                                    title: 'Thành công',
-                                    message: 'Thêm sản phẩm vào giỏ hàng thành công',
-                                    type: 'success',
-                                    duration: 3000
-                                });
-                                $.ajax({
-                                    url: "AddAccessoryToCartController",
-                                    type: 'POST',
-                                    data: {order_quantity: 1},
-                                    success: function (data) {
-                                        $('.cart-amount').html(data);
-                                    }
-                                });
-                            }
+                            const json = JSON.parse(data);
+                            toast({
+                                title: json.status,
+                                message: json.content,
+                                type: json.type,
+                                duration: 3000
+                            });
+                            $('.cart-amount').html(json.quantity);
                         }
                     });
                 });

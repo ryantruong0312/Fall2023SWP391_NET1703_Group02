@@ -205,14 +205,14 @@
                                 <h5 class="mt-3">Chọn phương thức thanh toán</h5>
                                 <table class="mt-3">
                                     <tr class="money-payment">
-                                        <td><input id="money" class="" type="radio" name="method" value="" checked=""/></td>
-                                        <td><i class="fa fa-money ml-3 icon-money" aria-hidden="true"></i></td>
+                                        <td><input id="money" class="" type="radio" name="method" value="NavToPayment" checked=""/></td>
+                                        <td><i style="font-size: 28px;" class="fa fa-money ml-3 icon-money" aria-hidden="true"></i></td>
                                         <td><label for="money" class="ml-3">Thanh toán khi nhận hàng</label></td>
                                     </tr>
                                     <tr class="credit-payment">
-                                        <td><input id="credit" class="" type="radio" name="method" value=""/></td>
-                                        <td><i class="fa fa-credit-card ml-3 icon-credit" aria-hidden="true"></i></td>
-                                        <td><label for="credit" class="ml-3">Thanh toán qua thẻ tín dụng</label></td>
+                                        <td><input id="credit" class="" type="radio" name="method" value="NavToVNPAY"/></td>
+                                        <td><img class="ml-2" style="height: 24px; width: 50px;"  src="assets/images/vnpay.png" alt="VNPAY"/></td>
+                                        <td><label for="credit" class="ml-3">Thanh toán qua VNPAY</label></td>
                                     </tr>
                                 </table>
                             </div>

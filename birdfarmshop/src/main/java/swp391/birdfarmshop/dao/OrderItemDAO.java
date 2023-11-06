@@ -242,6 +242,14 @@ public class OrderItemDAO {
                                 error = "Sản phẩm này không đủ số lượng trong kho";
                             } else {
                                 int newStock = numberAccessory - 1;
+                                if(female_bird_id != null && male_bird_id != null){
+                                    newStock -= 1;
+                                    quantity += 1;
+                                    if(newStock == -1){
+                                        error = "Sản phẩm này không đủ số lượng trong kho";
+                                        return 0;
+                                    }
+                                }
                                 String updateQuantity = "UPDATE [Accessory]\n"
                                         + "SET [stock_quantity] = ?\n"
                                         + "WHERE [accessory_id] = ?";
@@ -362,8 +370,28 @@ public class OrderItemDAO {
                     result = pst.executeUpdate();
                     if (result == 0) {
                         checkPair = false;
-                    }
+                    }   
                 }
+                String SelectBirdPair = "SELECT [bird_customer]\n"
+                            + "FROM [BirdPair]\n"
+                            + "WHERE [pair_id] = ?";
+                    pst = con.prepareStatement(SelectBirdPair);
+                    pst.setInt(1, pair_id);
+                    rs = pst.executeQuery();
+                    if(rs != null && rs.next()){
+                        String id = rs.getString("bird_customer");
+                        String updateMaleBird = "UPDATE [CustomerBird]\n"
+                                + "SET [status] = N'Chưa ghép cặp'\n"
+                                + "WHERE [bird_id] = ?";
+                        pst = con.prepareStatement(updateMaleBird);
+                        pst.setString(1, id);
+                        result = pst.executeUpdate();
+                        if (result == 0) {
+                            checkBird = false;
+                        }
+                    }else{
+                        checkBird = false;
+                    }            
                 if (checkAccessory && checkBird && checkMoney && checkPair ) {
                     result = 1;
                     con.commit();
