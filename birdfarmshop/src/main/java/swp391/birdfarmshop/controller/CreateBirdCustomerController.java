@@ -38,10 +38,9 @@ import swp391.birdfarmshop.util.S3Utils;
         maxRequestSize = 1024 * 1024 * 11
 )
 public class CreateBirdCustomerController extends HttpServlet {
-    
-    private static final String DEST_NAV_CREATE_BIRD_CUSTOMER = "shop/add-customerBird.jsp";
-    private static final String DEST_NAV_BIRD_PAIR = "MainController?action=NavToPairBirds";
 
+    private static final String DEST_NAV_CREATE_BIRD_CUSTOMER = "shop/add-customerBird.jsp";
+    private static final String DEST_NAV_BIRD_PAIR = "shop/bird-pair.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -68,7 +67,7 @@ public class CreateBirdCustomerController extends HttpServlet {
             String gender = request.getParameter("gender");
             Part part = null;
             if (nameBird != null && breedId != null
-                    && nameBird != null && gender != null) {
+                && nameBird != null && gender != null) {
                 part = (Part) request.getPart("filePicture");
                 if (u != null) {
                     BirdCustomerDAO bcd = new BirdCustomerDAO();
@@ -80,33 +79,27 @@ public class CreateBirdCustomerController extends HttpServlet {
                             String nameImage = currentTime.getNano() + file;
                             String img_url = Constants.C3_HOST + nameImage;
                             S3Utils.uploadFile(nameImage, part.getInputStream());
-                            int result = bcd.createNewBirdCustomer(birdId, nameBird, gender,
-                                    breedId, u.getUsername(), img_url, "Chưa ghép cặp");
-                            if (result == 0) {
+                            int result = bcd.createNewBirdCustomer(birdId, nameBird, gender, 
+                                breedId,u.getUsername(), img_url, "Chưa ghép cặp");
+                            if (result == 0){
                                 session.setAttribute("ERROR", "Thêm vẹt mới thất bại");
-                                request.getRequestDispatcher(url).forward(request, response);
                             } else {
-                                session.setAttribute("SUCCESS", "Thêm vẹt mới thành công");                                
-                                response.sendRedirect(DEST_NAV_BIRD_PAIR);
+                                session.setAttribute("SUCCESS", "Thêm vẹt mới thành công");  
+                                url = DEST_NAV_BIRD_PAIR;
                             }
                         } else {
                             session.setAttribute("ERROR", "Ảnh có dung lượng quá 1mb");
-                            request.getRequestDispatcher(url).forward(request, response);
                         }
                     } else {
                         session.setAttribute("ERROR", "Mã vẹt đã được sử dụng");
-                        request.getRequestDispatcher(url).forward(request, response);
                     }
-                    
+               
                 } else {
                     session.setAttribute("ERROR", "Bạn phải đăng nhập");
-                    request.getRequestDispatcher(url).forward(request, response);
                 }
             }
             request.setAttribute("BIRD_BREEDS", breedList);
-            if(nameBird == null){
-                request.getRequestDispatcher(url).forward(request, response);
-            }
+            request.getRequestDispatcher(url).forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
         }

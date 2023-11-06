@@ -4,7 +4,6 @@
  */
 package swp391.birdfarmshop.controller;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import swp391.birdfarmshop.dao.AccessoryDAO;
-import swp391.birdfarmshop.dto.AddStatusDTO;
+import swp391.birdfarmshop.dto.AccessoryDTO;
 import swp391.birdfarmshop.dto.CartDTO;
 import swp391.birdfarmshop.model.Accessory;
 
@@ -37,26 +36,25 @@ public class AddAccessoryToCartController extends HttpServlet {
             HttpSession session = request.getSession();
             if (accessory_id != null) {
                 if (session != null) {
-                    AddStatusDTO status = new AddStatusDTO();
-                    Gson gson = new Gson();
-                    status.setStatus("Thất bại");
-                    status.setType("error");
                     CartDTO cart = (CartDTO) session.getAttribute("CART");
                     if (cart == null) {
                         cart = new CartDTO();
                     }
                     boolean checkAdd = cart.addAccessoryToCart(accessory, order_quantity);
                     if (checkAdd) {
-                        status.setStatus("Thành công");
-                        status.setContent("Thêm sản phẩm vào giỏ hàng thành công");
-                        status.setQuantity(cart.getTotalItem());
-                        status.setType("success");
+                        out.println(1);
                         session.setAttribute("CART", cart);
-                    } else {
-                        status.setQuantity(cart.getTotalItem());
-                        status.setContent("Sản phẩm đã hết hàng");
+                    }else{
+                        out.println(0);
                     }
-                    out.println(gson.toJson(status));
+                    return;
+                }
+            } else {
+                CartDTO cart = (CartDTO) session.getAttribute("CART");
+                if (cart != null) {
+                    int amountItems = cart.getTotalItem();
+                    out.println(amountItems);
+                    return;
                 }
             }
         } catch (Exception e) {

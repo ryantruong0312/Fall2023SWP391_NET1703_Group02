@@ -643,16 +643,23 @@ public class OrderDAO {
                             break;
                     }
                 }
-                if (startDay != null && endDay != null) {
-                    if (!startDay.isEmpty() && !endDay.isEmpty()) {
+                if(startDay != null && endDay != null) {
+                    if(!startDay.isBlank() && !endDay.isBlank()) {
                         query += "AND ([order_date] >= '" + startDay + "' AND [order_date] <= '" + endDay + "')";
                     } else {
-                        if (!startDay.isEmpty()) {
+                        if (!startDay.isBlank()) {
                             query += "AND ([order_date] >= '" + startDay + "')";
                         }
-                        if (!endDay.isEmpty()) {
-                            query += "AND ([order_date] <= '" + endDay + "')";
+                        if (!endDay.isBlank()) {
+                            query += "AND ([order_date] >= '" + startDay + "')";
                         }
+                    }
+                } else {
+                    if (startDay != null) {
+                        query += "AND ([order_date] >= '" + startDay + "')";
+                    }
+                    if (endDay != null) {
+                        query += "AND ([order_date] >= '" + startDay + "')";
                     }
                 }
                 if (status != null && !status.isEmpty()) {
@@ -685,6 +692,7 @@ public class OrderDAO {
                     int start = (pageNumber - 1) * recordsPerPage;
                     query += "ORDER BY [order_date] DESC OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
                 }
+                System.out.println(query);
                 stm = con.prepareStatement(query);
                 rs = stm.executeQuery();
                 while (rs.next()) {
@@ -889,46 +897,50 @@ public class OrderDAO {
         BirdDAO birdDao = new BirdDAO();
         AccessoryDAO accessoryDao = new AccessoryDAO();
         BirdNestDAO nestDao = new BirdNestDAO();
-        BirdPairDAO pairDao = new BirdPairDAO();
+        OrderDAO orderDao = new OrderDAO();
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                switch (status) {
-                    case "wait":
-                        status = "Chờ xử lý";
-                        break;
-                    case "inProgress":
-                        status = "Đang xử lý";
-                        break;
-                    case "delivering":
-                        status = "Đang giao hàng";
-                        break;
-                    case "delivered":
-                        status = "Đã giao hàng";
-                        break;
-                    case "rated":
-                        status = "Đã đánh giá";
-                        break;
-                    case "cancel":
-                        status = "Đã hủy";
-                        ArrayList<OrderItemDTO> orderDetails = itemDao.getItemByOrderId(order_id);
-                        for (OrderItemDTO orderDetail : orderDetails) {
-                            if (orderDetail.getBird() != null) {
-                                birdDao.updateBirdStatus("Còn hàng", orderDetail.getBird().getBird_id());
+                if(status != null) {
+                    switch (status) {
+                        case "wait":
+                            status = "Chờ xử lý";
+                            break;
+                        case "inProgress":
+                            status = "Đang xử lý";
+                            break;
+                        case "delivering":
+                            status = "Đang giao hàng";
+                            break;
+                        case "delivered":
+                            status = "Đã giao hàng";
+                            orderDao.updatePaymentStatus(order_id, "Đã thanh toán");
+                            break;
+                        case "rated":
+                            status = "Đã đánh giá";
+                            break;
+                        case "cancel":
+                            status = "Đã hủy";
+                            ArrayList<OrderItemDTO> orderDetails = itemDao.getItemByOrderId(order_id);
+                            for (OrderItemDTO orderDetail : orderDetails) {
+                                if (orderDetail.getBird() != null) {
+                                    birdDao.updateBirdStatus("Còn hàng", orderDetail.getBird().getBird_id());
+                                }
+                                if (orderDetail.getAccessory() != null) {
+                                    String stockQuantity = String.valueOf(orderDetail.getAccessory().getStock_quantity() + orderDetail.getOrder_quantity());
+                                    accessoryDao.updateAccessoryQuantity(orderDetail.getAccessory().getAccessory_id(), stockQuantity);
+                                }
+                                if (orderDetail.getBirdNest() != null) {
+                                    int baby_quantity = orderDetail.getBirdNest().getBaby_quantity() + orderDetail.getOrder_quantity();
+                                    nestDao.updateBirdNestBaby(baby_quantity, orderDetail.getBirdNest().getNest_id());
+                                }
+                                if (orderDetail.getBirdPair() != null) {
+                                    birdDao.updateBirdStatus("Còn hàng", orderDetail.getBirdPair().getMale_bird().getBird_id());
+                                    birdDao.updateBirdStatus("Còn hàng", orderDetail.getBirdPair().getFemale_bird().getBird_id());
+                                }
                             }
-                            if (orderDetail.getAccessory() != null) {
-                                AccessoryDTO accessory = accessoryDao.getAccessoryDetailsByID(orderDetail.getAccessory().getAccessory_id());
-                                int quantity = accessory.getStock_quantity();
-                                String stockQuantity = String.valueOf(orderDetail.getAccessory().getStock_quantity() + quantity);
-                                accessoryDao.updateAccessoryQuantity(orderDetail.getAccessory().getAccessory_id(), stockQuantity);
-                            }
-                            if (orderDetail.getBirdNest() != null) {
-                                BirdNest nest = nestDao.getBirdsNestById(orderDetail.getBirdNest().getNest_id());
-                                int baby_quantity = nest.getBaby_quantity() + orderDetail.getBirdNest().getBaby_quantity();
-                                nestDao.updateBirdNestBaby(baby_quantity, orderDetail.getBirdNest().getNest_id());
-                            }
-                        }
-                        break;
+                            break;
+                    }
                 }
                 String query = "UPDATE [dbo].[Order] SET [order_status] = ? WHERE [order_id] = ?";
                 stm = con.prepareStatement(query);
@@ -1745,5 +1757,32 @@ public class OrderDAO {
             }
         }
         return o;
+    }
+    
+    public boolean updatePaymentStatus(String order_id, String payment_status) throws SQLException, ParseException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String query = "UPDATE [dbo].[Order] SET [order_status] = ? WHERE [order_id] = ?";
+                stm = con.prepareStatement(query);
+                stm.setString(1, payment_status);
+                stm.setString(2, order_id);
+                int rs = stm.executeUpdate();
+                if (rs > 0) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
     }
 }

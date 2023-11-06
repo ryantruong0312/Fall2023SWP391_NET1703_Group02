@@ -311,12 +311,12 @@ public class UserDAO {
                         sql += " WHERE username LIKE N'%" + search + "%' "
                                 + "OR full_name LIKE N'%" + search + "%' \n";
                     } else {
-                        sql += " WHERE (username LIKE N'%" + search + "%' "
-                                + "OR full_name LIKE N'%" + search + "%' )\n"
+                        sql += " WHERE username LIKE N'%" + search + "%' "
+                                + "OR full_name LIKE N'%" + search + "%' \n"
                                 + "AND role LIKE N'%" + roles + "%'";
                     }
                 }
-                if (search == null && roles != null) {
+                if (search == null) {
                     if (roles.equals("all")) {
                         sql = GET_ACCOUNT_LIST;
                     } else {
@@ -353,7 +353,7 @@ public class UserDAO {
         return accountList;
     }
 
-    public int totalAccount(String search,String role) throws SQLException {
+    public int totalAccount(String search) throws SQLException {
         int result = 0;
         Connection con = null;
         PreparedStatement stm = null;
@@ -364,14 +364,8 @@ public class UserDAO {
                 String sql = "SELECT COUNT(username) AS [Amount] \n"
                         + "FROM [User]";
                 if (search != null) {
-                    sql += " WHERE (username LIKE N'%" + search + "%' "
-                            + "OR full_name LIKE N'%" + search + "%' )\n";
-                    if(role != null){
-                        sql += "  role LIKE N'%" + role + "%' \n";
-                    }
-                }
-                if(role != null && search == null){
-                    sql += " WHERE role LIKE N'%" + role + "%' \n";
+                    sql += " WHERE username LIKE N'%" + search + "%' "
+                            + "OR full_name LIKE N'%" + search + "%' \n";
                 }
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();

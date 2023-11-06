@@ -40,13 +40,42 @@
         <!-- ***** Main Banner Area End ***** -->
         <main class="type-pair py-5">
             <div class="container">
-                <div class="type-customer btn-primary text-center">
-                    <div class="m-4">
-                        Giao chú vẹt của bạn đến ghép cặp cùng một chú vẹt có tại shop theo ý muốn
+                <div class="row d-flex justify-content-around align-content-center h-100">
+                    <div class="box-chose type-customer">
+                        <div class="d-flex">
+                            <div class="box box-top--left"></div>
+                            <div class="box-middle"></div>
+                            <div class="box box-top--right"></div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="box"></div>
+                            <div class="box-middle box-content">Giao chú vẹt của bạn đến ghép cặp cùng một chú vẹt có tại shop theo ý muốn</div>
+                            <div class="box"></div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="box box-bottom--left"></div>
+                            <div class="box-middle"></div>
+                            <div class="box box-bottom--right"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="type-shop btn-primary mt-5 text-center">
-                    Ghép cặp 2 chú vẹt có sẵn tại cửa hàng
+                    <div class="line-pagination"></div>
+                    <div class="box-chose type-shop">
+                        <div class="d-flex">
+                            <div class="box box-top--left"></div>
+                            <div class="box-middle"></div>
+                            <div class="box box-top--right"></div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="box"></div>
+                            <div class="box-middle box-content">Ghép cặp 2 chú vẹt có sẵn tại cửa hàng</div>
+                            <div class="box"></div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="box box-bottom--left"></div>
+                            <div class="box-middle"></div>
+                            <div class="box box-bottom--right"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -119,7 +148,7 @@
                         <button type="submit" class="button-create">Thêm vẹt mới</button>
                     </form>
                     <div class="column-content">
-                        <h2>Chọn một chú vẹt của khách ${sessionScope.LOGIN_USER.fullName}</h2>
+                        <h2>Chọn một chú vẹt của khách</h2>
 
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect3">
@@ -239,16 +268,17 @@
                                 type: 'POST',
                                 data: {bird_male_id: selectBirdMale, bird_female_id: selectBirdFemale},
                                 success: function (data) {
-//                                    console.log(data);
-//                                    const jsonShop = JSON.parse(data);
-//                                    toast({
-//                                        title: jsonShop.status,
-//                                        message: jsonShop.content,
-//                                        type: jsonShop.type,
-//                                        duration: 3000
-//                                    });
-//                                    $('.cart-amount').html(jsonShop.quantity);
-                                    window.location.href = 'MainController?action=NavToCheckout';
+                                    console.log(data);
+                                    if (data == 0) {
+                                        toast({
+                                            title: 'Lỗi',
+                                            message: 'Sản phẩm này đã có trong giỏ hàng',
+                                            type: 'error',
+                                            duration: 3000
+                                        });
+                                    } else {
+                                        window.location.href = 'MainController?action=NavToCart';
+                                    }
                                 }
                             });
                         } else {
@@ -268,17 +298,18 @@
                                 type: 'POST',
                                 data: {bird_shop_id: selectBirdShop, bird_customer_id: selectBirdCustomer},
                                 success: function (data) {
-//                                    const jsonCustoemr = JSON.parse(data);
-//                                    toast({
-//                                        title: jsonCustoemr.status,
-//                                        message: jsonCustoemr.content,
-//                                        type: jsonCustoemr.type,
-//                                        duration: 3000
-//                                    });
-//                                    $('.cart-amount').html(jsonCustoemr.quantity);
-                                    window.location.href = 'MainController?action=NavToCheckout';
+                                    console.log(data);
+                                    if (data == 0) {
+                                        toast({
+                                            title: 'Lỗi',
+                                            message: 'Sản phẩm này đã có trong giỏ hàng',
+                                            type: 'error',
+                                            duration: 3000
+                                        });
+                                    } else {
+                                        window.location.href = 'MainController?action=NavToCart';
+                                    }
                                 }
-
                             });
                         } else {
                             toast({title: 'Lỗi', message: 'Vui lòng chọn vẹt của bạn', type: 'error', duration: 3000});

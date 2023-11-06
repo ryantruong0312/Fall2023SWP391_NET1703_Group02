@@ -28,7 +28,7 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-     
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
         <style type="text/css">
             body {
@@ -426,36 +426,36 @@
                             <div class="card-body profile-section">
                                 <div class="row gutters">
                                     <div class="card-body order-section">
-                                        <div id="popup" style="display: none; position: fixed; background-color: white; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;">
+                                        <div id="popup" style="display: none; position: fixed; background-color: #f77b93; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;">
                                             <div style="padding: 5px 0; white-space: nowrap;" id="update">
                                                 <div class="flex">
-                                                    <a href="UpdateOrderStatusController?order_id=${order.order_id}" style="background-color: #ffcccc;" class="flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round"><span>Xác nhận</span></a>
-                                                    <a style="background-color: #ffcccc;" class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" onclick="hide('popup');"><span>Hủy bỏ</span></a>
+                                                    <a id="submit" style="background-color: #ffcccc;" class="flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round"><span style="color: black; font-weight: bold;">Xác nhận</span></a>
+                                                    <a style="background-color: #ffcccc;" class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" onclick="hide('popup');"><span style="color: black; font-weight: bold;">Hủy bỏ</span></a>
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- Tab buttons -->
-                                        <ul style="border-color: skyblue;" class="nav nav-tabs" id="orderTabs">
-                                            <li style="border-color: skyblue;" class="nav-item">
-                                                <a ${param.status == 'all' ? "style='border-color: skyblue;'":"" || param.status == null ? "style='border-color: skyblue;'":""} onclick="event.stopPropagation();" class="nav-link ${param.status == 'all' ? "active":"" || param.status == null ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder">Tất cả</a>
+                                        <ul class="nav nav-tabs" id="orderTabs">
+                                            <li class="nav-item">
+                                                <a onclick="event.stopPropagation();" class="nav-link ${param.status == 'all' ? "active":"" || param.status == null ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder">Tất cả</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a ${param.status == 'wait' ? "style='border-color: skyblue;'":""} onclick="event.stopPropagation();" class="nav-link ${param.status == 'wait' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=wait">Chờ xử lý</a>
+                                                <a onclick="event.stopPropagation();" class="nav-link ${param.status == 'wait' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=wait">Chờ xử lý</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a ${param.status == 'inProgress' ? "style='border-color: skyblue;'":""} onclick="event.stopPropagation();" class="nav-link ${param.status == 'inProgress' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=inProgress">Đang xử lý</a>
+                                                <a onclick="event.stopPropagation();" class="nav-link ${param.status == 'inProgress' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=inProgress">Đang xử lý</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a ${param.status == 'delivering' ? "style='border-color: skyblue;'":""} onclick="event.stopPropagation();" class="nav-link ${param.status == 'delivering' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=delivering">Đang giao</a>
+                                                <a onclick="event.stopPropagation();" class="nav-link ${param.status == 'delivering' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=delivering">Đang giao</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a ${param.status == 'delivered' ? "style='border-color: skyblue;'":""} onclick="event.stopPropagation();" class="nav-link ${param.status == 'delivered' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=delivered">Đã giao</a>
+                                                <a onclick="event.stopPropagation();" class="nav-link ${param.status == 'delivered' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=delivered">Đã giao</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a ${param.status == 'rated' ? "style='border-color: skyblue;'":""} onclick="event.stopPropagation();" class="nav-link ${param.status == 'rated' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=rated">Đã đánh giá</a>
+                                                <a onclick="event.stopPropagation();" class="nav-link ${param.status == 'rated' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=rated">Đã đánh giá</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a ${param.status == 'cancel' ? "style='border-color: skyblue;'":""} onclick="event.stopPropagation();" class="nav-link ${param.status == 'cancel' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=cancel">Đã hủy</a>
+                                                <a onclick="event.stopPropagation();" class="nav-link ${param.status == 'cancel' ? "active":""}" data-toggle="tab" href="MainController?action=NavToCustomerOrder&AMP;status=cancel">Đã hủy</a>
                                             </li>
                                         </ul>
                                         <div class="tab-content">
@@ -474,10 +474,7 @@
                                                                             <div class="order-id">Mã đơn hàng: ${order.order_id} - Ngày đặt hàng: ${formattedDate}.</div>
                                                                             <!-- order status -->
                                                                             <c:if test="${order.order_status eq 'Chờ xử lý'}">
-                                                                                <div><a onclick="show('popup'); event.stopPropagation();" style="color: white; background-color: #0066ff; padding: 5px 10px; border-radius: 20px; font-size: 16px;">HỦY ĐƠN</a></div>
-                                                                            </c:if>
-                                                                            <c:if test="${order.order_status eq 'Đã giao hàng'}">
-                                                                                <div class="mt-1" style="color: #007BFF;"><a>ĐÁNH GIÁ ĐƠN HÀNG</a></div>
+                                                                                <div><a onclick="show('popup', '${order.order_id}'); event.stopPropagation();" style="color: white; background-color: #0066ff; padding: 5px 10px; border-radius: 20px; font-size: 16px;">HỦY ĐƠN</a></div>
                                                                             </c:if>
                                                                             <div class="order-status">${order.order_status}</div>
                                                                         </div>
@@ -549,7 +546,7 @@
                                                                                                                                 </div>
                                                                                                                                 <div class="mb-3">
                                                                                                                                     <label for="exampleFormControlTextarea1" class="form-label">Nhập đánh giá</label>
-                                                                                                                                    <textarea class="form-control" name="feedback" id="exampleFormControlTextarea1" rows="3" required="" title="Vui lòng nhập nội dung"></textarea>
+                                                                                                                                    <textarea class="form-control" name="feedback" id="exampleFormControlTextarea1" rows="3"></textarea>
                                                                                                                                 </div>
                                                                                                                             </div>
                                                                                                                             <div class="modal-footer">
@@ -827,16 +824,16 @@
         <%@include file="../layout/footer.jsp" %>
         <!-- End Footer -->
         <script>
-            function show(id) {
+            function show(id, orderId) {
                 var list = document.getElementById(id);
                 list.style.display = "block";
+                const aNav = document.getElementById("submit");
+                aNav.href = 'MainController?action=NavToUpdateOrder&order_id=' + orderId;
             }
             function hide(id) {
                 var list = document.getElementById(id);
                 list.style.display = "none";
             }
-        </script>
-        <script>
             const stars = document.querySelectorAll(".stars i");
             stars.forEach((star, index1) => {
                 star.addEventListener("click", () => {

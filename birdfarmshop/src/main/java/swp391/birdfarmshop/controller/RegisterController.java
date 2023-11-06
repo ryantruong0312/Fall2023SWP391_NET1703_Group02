@@ -26,7 +26,7 @@ import swp391.birdfarmshop.util.JWTUtils;
 public class RegisterController extends HttpServlet {
 
     private static final String DEST_NAV_REGISTER = "/authentication/register.jsp";
-    private static final String DEST_NAV_LOGIN = "MainController?action=NavToLogin";
+    private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,7 +40,6 @@ public class RegisterController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = DEST_NAV_REGISTER;
-        boolean check = true;
         try {
             String name = request.getParameter("name").trim();
             String email = request.getParameter("email");
@@ -64,8 +63,7 @@ public class RegisterController extends HttpServlet {
                             session.setAttribute("ERROR", "Tạo tài khoản không thành công");
                         } else {
                             session.setAttribute("SUCCESS", "Tạo tài khoản thành công. Kiểm tra email để kích hoạt tài khoản");
-                            check = false;
-                            response.sendRedirect(DEST_NAV_LOGIN);
+                            url = DEST_NAV_LOGIN;
                         }
                     } else {
                         session.setAttribute("ERROR", "Tạo tài khoản không thành công");
@@ -77,9 +75,7 @@ public class RegisterController extends HttpServlet {
         } catch (Exception e) {
             log("Error at RegisterController: " + e.toString());
         }finally {
-           if(check){
-               request.getRequestDispatcher(url).forward(request, response);
-           }
+           request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

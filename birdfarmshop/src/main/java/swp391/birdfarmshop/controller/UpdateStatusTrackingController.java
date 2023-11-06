@@ -5,6 +5,7 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,9 +15,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.time.LocalTime;
-import swp391.birdfarmshop.dao.BirdPairDAO;
+import swp391.birdfarmshop.dao.ImageDAO;
 import swp391.birdfarmshop.dao.TrackingBirdPairDAO;
-import swp391.birdfarmshop.dto.BirdPairDTO;
 import swp391.birdfarmshop.model.User;
 import swp391.birdfarmshop.util.Constants;
 import swp391.birdfarmshop.util.ImageUtils;
@@ -33,9 +33,7 @@ import swp391.birdfarmshop.util.S3Utils;
         maxRequestSize = 1024 * 1024 * 11
 )
 public class UpdateStatusTrackingController extends HttpServlet {
-
     private static final String DEST_NAV_HOME = "RenderHomeController";
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -53,72 +51,50 @@ public class UpdateStatusTrackingController extends HttpServlet {
             HttpSession session = request.getSession();
             String pair_id = request.getParameter("pair_id");
             int pairId = 0;
-            if (pair_id != null) {
+            if(pair_id != null){
                 pairId = Integer.parseInt(pair_id);
             }
             String content = request.getParameter("content");
+            String status = request.getParameter("status");
             String quantity_egg = request.getParameter("quantity_egg");
-            String quantity_young_bird = request.getParameter("quantity_young_bird");
+            String quantity_young_bird =  request.getParameter("quantity_young_bird");
+            String order_id = request.getParameter("order_id");
             Part part = request.getPart("file");
-            url = "MainController?action=NavToBirdPairDetailShop&pair_id=" + pair_id;
+            url = "MainController?action=NavToBirdPairDetailShop&order_id="+order_id;
             User u = (User) session.getAttribute("LOGIN_USER");
             TrackingBirdPairDAO trackingDao = new TrackingBirdPairDAO();
-            BirdPairDAO bpDao = new BirdPairDAO();
-            boolean check = true;
             if (u != null) {
                 if (!u.getRole().equals("customer")) {
-                    BirdPairDTO pair = bpDao.getBirdPairByBirdPairId(pair_id);
-                    String status = pair.getStatus();
-                    switch (status) {
-                        case "Chờ lấy chim":
-                            status = "Đang ghép cặp";
-                            break;
-                        case "Đang ghép cặp":
-                            status = "Đã sinh sản";
-                            break;
-                        case "Đã sinh sản":
-                            quantity_egg = "" + pair.getNumber_egg();
-                            status = "Đã ấp nở";
-                            if (quantity_young_bird != null && Integer.parseInt(quantity_young_bird) > pair.getNumber_egg()) {
-                                session.setAttribute("ERROR", "Số chim non không lớn hơn số trứng");
-                                check = false;
-                            }
-                            break;
-                    }
-                    if (check) {
                         if (part.getSize() < 1048576) {
                             String file = ImageUtils.getFileName(part);
                             LocalTime currentTime = LocalTime.now();
                             String nameImage = currentTime.getNano() + file;
                             String img_url = Constants.C3_HOST + nameImage;
-                            if (file.isEmpty()) {
+                            if(file.isEmpty()){
                                 img_url = null;
                             }
                             S3Utils.uploadFile(nameImage, part.getInputStream());
-                            int result = trackingDao.updateTrackingBirdPair(img_url, pairId, content, u.getUsername(), status, quantity_young_bird, quantity_egg);
-                            if (result == 0) {
+                            int result = trackingDao.updateTrackingBirdPair(img_url, pairId,content, u.getUsername(),status,quantity_young_bird,quantity_egg);
+                            if (result == 0){
                                 session.setAttribute("ERROR", "Cập nhật trạng thái thất bại");
-                                request.getRequestDispatcher(url).forward(request, response);
+                                 request.getRequestDispatcher(url).forward(request, response);
                             } else {
                                 session.setAttribute("SUCCESS", "Cập nhật trạng thái thành công");
                                 response.sendRedirect(url);
                             }
                         } else {
                             session.setAttribute("ERROR", "Ảnh có dung lượng quá 1mb");
-                            request.getRequestDispatcher(url).forward(request, response);
+                             request.getRequestDispatcher(url).forward(request, response);
                         }
-                    } else {
-                        request.getRequestDispatcher(url).forward(request, response);
-                    }
                 } else {
                     session.setAttribute("ERROR", "Bạn không có quyền này");
-                    request.getRequestDispatcher(url).forward(request, response);
+                     request.getRequestDispatcher(url).forward(request, response);
                 }
 
             } else {
                 session.setAttribute("ERROR", "Bạn chưa đăng nhập");
-                request.getRequestDispatcher(url).forward(request, response);
-            }
+                 request.getRequestDispatcher(url).forward(request, response);
+            }          
         } catch (Exception e) {
             e.printStackTrace();
         }

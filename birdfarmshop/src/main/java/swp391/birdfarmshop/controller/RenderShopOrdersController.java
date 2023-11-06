@@ -12,10 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import swp391.birdfarmshop.dao.OrderDAO;
 import swp391.birdfarmshop.model.Order;
 import swp391.birdfarmshop.model.User;
@@ -39,10 +36,6 @@ public class RenderShopOrdersController extends HttpServlet {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
             OrderDAO orderDao = new OrderDAO();
-            ArrayList<Order> orderList;
-            int recordsPerPage = 20;
-            int numberOfOrder;
-            int noOfPages;
             if (user != null && !user.getRole().equals("customer")) {
                 url = SUCCESS;
                 String page = "1";
@@ -53,11 +46,16 @@ public class RenderShopOrdersController extends HttpServlet {
                 String startDay = request.getParameter("startDay");
                 String endDay = request.getParameter("endDay");
                 String search = request.getParameter("search");
-                String status = request.getParameter("status");
-                System.out.println(date + " " + startDay + " " + endDay + " " + status + " " + search + " " + page);
-                numberOfOrder = orderDao.numberOfOrder(date, startDay, endDay, status, search);
-                noOfPages = (int) Math.ceil(numberOfOrder * 1.0 / recordsPerPage);
-                orderList = orderDao.getAllOfOrder(date, startDay, endDay, status, search, page, recordsPerPage);
+                String[] statusArr = request.getParameterValues("status");
+                String status = null;
+                if(statusArr != null) {
+                    status = statusArr[statusArr.length - 1];
+                }
+                System.out.println("RENDER PAGE: "+ date + " " + startDay + " " + endDay + " " + status + " " + search + " " + page);
+                int numberOfOrder = orderDao.numberOfOrder(date, startDay, endDay, status, search);
+                int recordsPerPage = 10;
+                int noOfPages = (int) Math.ceil(numberOfOrder * 1.0 / recordsPerPage);
+                ArrayList<Order> orderList = orderDao.getAllOfOrder(date, startDay, endDay, status, search, page, recordsPerPage);
                 request.setAttribute("ORDERLIST", orderList);
                 request.setAttribute("date", date);
                 request.setAttribute("startDay", startDay);

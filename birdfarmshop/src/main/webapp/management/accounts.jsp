@@ -31,13 +31,17 @@
             .col-md-4 button{
                 font-size: 15px;
                 border-radius: 4px;
+                background-color: green;
                 padding: 5px;
                 margin-left: 5px;
-                border:none;
             }
             .col-md-4 a{
                 color: white;
             }
+            .button-action:active{
+                background-color: black;
+            }
+
         </style>
     </head>
 
@@ -71,10 +75,10 @@
                 <div class="row">
                     <div class="col-md-4" style="margin-top: 10px;">
                         <c:if test="${sessionScope.LOGIN_USER.role == 'admin'}">
-                            <a href="MainController?action=NavToAccounts&roles=all"><button class="btn-success ${param.roles == 'all' ? "active":"" || param.roles == null ? "active":""}">Tất cả</button></a>
-                            <a href="MainController?action=NavToAccounts&roles=manager"><button class="btn-success ${param.roles == 'manager' ? "active":""}">Quản lý</button></a>
-                            <a href="MainController?action=NavToAccounts&roles=staff"><button class="btn-success ${param.roles == 'staff' ? "active":""}">Nhân viên</button></a>
-                            <a href="MainController?action=NavToAccounts&roles=customer"><button class="btn-success ${param.roles == 'customer' ? "active":""}">Khách hàng</button></a>
+                            <button class="button-action"><a href="MainController?action=NavToAccounts&role=all">Tất cả</a></button>
+                            <button class="button-action"><a href="MainController?action=NavToAccounts&role=manager">Quản lý</a></button>
+                            <button class="button-action"><a href="MainController?action=NavToAccounts&role=staff">Nhân viên</a></button>
+                            <button class="button-action"><a href="MainController?action=NavToAccounts&role=customer">Khách hàng</a></button>
                         </c:if>
                     </div>
 

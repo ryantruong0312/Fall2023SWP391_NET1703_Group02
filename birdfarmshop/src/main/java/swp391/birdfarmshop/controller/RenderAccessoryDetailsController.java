@@ -143,9 +143,7 @@ public class RenderAccessoryDetailsController extends HttpServlet {
         } catch (Exception e) {
             log("Error at RenderAccessoryDetailsController: " + e.toString());
         } finally {
-            if(request.getParameter("page") == null){
-               request.getRequestDispatcher(url).forward(request, response);
-            }
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

@@ -28,7 +28,6 @@ public class CreateAccountController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
-        boolean check = true;
         try {
             UserDAO userDao = new UserDAO();
             HttpSession session = request.getSession();
@@ -42,13 +41,11 @@ public class CreateAccountController extends HttpServlet {
                     String password = JWTUtils.encodeJWT(token);
                     u = userDao.getUserByUsername(username);
                     if (u == null) {
-                        int result = userDao.createUser(username, "", password, full_name, "", role, "form", "active");
+                        int result = userDao.createUser(username, "", password, full_name, "", role, "form", "inactive");
                         if (result == 0) {
                             session.setAttribute("ERROR", "Tạo tài khoản thất bại");
                         } else {
                             session.setAttribute("SUCCESS", "Tạo tài khoản thành công");
-                            check = false;
-                            response.sendRedirect("MainController?action=NavToAccounts");
                         }
                     } else {
                         session.setAttribute("ERROR", "Tài khoản này đã sử dụng");
@@ -65,9 +62,7 @@ public class CreateAccountController extends HttpServlet {
         } catch (Exception ex) {
             log("Error at CreateAccountController: " + ex.toString());
         } finally {
-           if(check){
-              request.getRequestDispatcher(url).forward(request, response);
-           }
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

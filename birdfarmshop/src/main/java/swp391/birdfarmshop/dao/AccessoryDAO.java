@@ -480,8 +480,8 @@ public class AccessoryDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                stm = con.prepareStatement("SELECT COUNT([accessory_id]) AS totalAccessory,\n"
-                        + "	   SUM(CASE WHEN [stock_quantity] > 0 THEN 1 END) AS Available,\n"
+                stm = con.prepareStatement("SELECT SUM(CASE WHEN stock_quantity = 0 THEN 1 ELSE stock_quantity END) AS totalAccessory,\n"
+                        + "	   SUM(CASE WHEN [stock_quantity] > 0 THEN stock_quantity END) AS Available,\n"
                         + "	   COUNT(CASE WHEN [stock_quantity] = 0 THEN 1 END) AS OutOfStock\n"
                         + "FROM [BirdFarmShop].[dbo].[Accessory]");
             }

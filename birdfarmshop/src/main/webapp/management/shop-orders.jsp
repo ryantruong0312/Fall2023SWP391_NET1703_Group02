@@ -170,7 +170,10 @@
                             if(fullURL.contains("&"+dateReq)) {
                                 dateReq = "&"+dateReq;
                             }
-                            String statusReq = "&status=" + (String) request.getAttribute("status");
+                            String statusReq = "status=" + (String) request.getAttribute("status");
+                            if(fullURL.contains("&"+statusReq)) {
+                                statusReq = "&"+statusReq;
+                            }
                             String startDayReq = "startDay=" + (String) request.getAttribute("startDay");
                             if(fullURL.contains("&"+startDayReq)) {
                                 startDayReq = "&"+startDayReq;
@@ -271,8 +274,11 @@
                                                 <c:when test="${requestScope.status eq 'rated'}">
                                                     <span>Trạng thái: Đã đánh giá</span>
                                                 </c:when>
-                                                <c:otherwise>
+                                                <c:when test="${requestScope.status eq 'cancel'}">
                                                     <span>Trạng thái: Đã hủy</span>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    
                                                 </c:otherwise>    
                                             </c:choose>
                                         </a>
@@ -294,8 +300,8 @@
                                     <ul style="padding: 5px 0; white-space: nowrap;" id="update">
                                         <!--                                <ul style="display: none; padding: 5px 0; white-space: nowrap;" id="update">-->
                                         <div id="choosing" style="display: none; white-space: nowrap;">
-                                            <li id="status1"><input type="radio" name="status" value="Giao hàng thành công" id="option1"><label for="option1">Giao hàng thành công</label></li>
-                                            <li id="status2"><input type="radio" name="status" value="Giao hàng thất bại" id="option2"><label for="option2">Giao hàng thất bại</label></li>
+                                            <li id="status1"><input type="radio" name="status" value="Đã giao hàng" id="option1" checked><label for="option1">Giao hàng thành công</label></li>
+                                            <li id="status2"><input type="radio" name="status" value="Đã hủy" id="option2"><label for="option2">Giao hàng thất bại</label></li>
                                         </div>
                                         <div class="flex">
                                             <button class="flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" id="submit" type="submit" name="action" value="NavToUpdateOrder"><span>Xác nhận</span></button>
@@ -343,7 +349,7 @@
                                                             </c:if>
                                                         </td>
                                                         <td>${order.name_receiver}</td>
-                                                        <td>${order.phone_receiver}</td>
+                                                        <td>0${order.phone_receiver}</td>
                                                         <td>${order.address_receiver}</td>
                                                         <td>${order.payment_status}</td>
                                                         <td>${order.total_price}</td>
@@ -361,7 +367,7 @@
                                 </div>
                             </div>
                             <div class="pagination">
-                                <c:if test="${requestScope.noOfPages >= 1}">
+                                <c:if test="${requestScope.noOfPages > 1}">
                                     <ul>
                                         <li>
                                             <a href="<%= fullURL.replace(pageReq, "") %>&page=1"><<</a>
@@ -449,6 +455,9 @@
                                                             if (orderStatus === 'Đang giao hàng') {
                                                                 var liStatuses = document.getElementById('choosing');
                                                                 liStatuses.style.display = "block";
+                                                            } else {
+                                                                var liStatuses = document.getElementById('choosing');
+                                                                liStatuses.style.display = "none";
                                                             }
                                                             const inputHidden = document.createElement('input');
                                                             inputHidden.type = 'hidden';

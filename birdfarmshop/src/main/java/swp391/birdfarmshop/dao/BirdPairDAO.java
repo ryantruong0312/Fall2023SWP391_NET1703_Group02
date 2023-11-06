@@ -155,69 +155,6 @@ public class BirdPairDAO {
 
         return bp;
     }
-    public BirdPairDTO getBirdPairByBirdPairId(String pairId) {
-        BirdPairDTO bp = null;
-        Connection con = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
-        BirdCustomerDAO bsd = new BirdCustomerDAO();
-        BirdDAO bd = new BirdDAO();
-        ImageDAO imgDao = new ImageDAO();
-        try {
-            con = DBUtils.getConnection();
-            if (con != null) {
-                String sql = "SELECT bp.pair_id, bp.order_id, bp.young_bird_price,\n"
-                        + "	   bp.bird_customer, bp.male_bird_id, bp.female_bird_id,\n"
-                        + "	   bp.number_egg, bp.number_young_bird, bp.[status]\n"
-                        + "FROM [BirdPair] bp\n"
-                        + "RIGHT JOIN [Order] o\n"
-                        + "ON bp.order_id = o.order_id\n"
-                        + "WHERE bp.pair_id = ?";
-                pst = con.prepareStatement(sql);
-                pst.setString(1, pairId);
-                rs = pst.executeQuery();
-                while (rs.next()) {
-                    int pair_id = rs.getInt("pair_id");
-                    String order_id = rs.getString("order_id");
-                    int young_bird_price = rs.getInt("young_bird_price");
-                    BirdCustomer birdCustomer = bsd.findBirdCustomer(rs.getInt("bird_customer") + "");
-                    Bird male_bird = bd.getBirdById(rs.getString("male_bird_id"));
-                    Bird female_bird = bd.getBirdById(rs.getString("female_bird_id"));
-                    int number_egg = rs.getInt("number_egg");
-                    int number_young_bird = rs.getInt("number_young_bird");
-                    String status = rs.getString("status");
-                    ArrayList<String> listPair = imgDao.getImagesByPairId(pair_id);
-                    bp = new BirdPairDTO(pair_id, order_id, young_bird_price, birdCustomer, male_bird, female_bird, number_egg, number_young_bird, status, listPair);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (con != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (pst != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (rs != null) {
-                try {
-                    con.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return bp;
-    }
 
     public ArrayList<BirdPairDTO> getBirdPair(String search, String page, int recordsPerPage) {
         ArrayList<BirdPairDTO> bpList = new ArrayList<>();

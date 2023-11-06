@@ -4,7 +4,6 @@
  */
 package swp391.birdfarmshop.controller;
 
-import com.google.gson.Gson;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
-import swp391.birdfarmshop.dto.AddStatusDTO;
 import swp391.birdfarmshop.dto.CartDTO;
 import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
@@ -32,7 +30,7 @@ import swp391.birdfarmshop.model.OrderedBirdItem;
 public class AddBirdToCartController extends HttpServlet {
 
     private static final String DEST_NAV_CART = "RenderCartController";
-
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
@@ -42,49 +40,46 @@ public class AddBirdToCartController extends HttpServlet {
             BirdDAO birdDao = new BirdDAO();
             AccessoryDAO adao = new AccessoryDAO();
             HttpSession session = request.getSession();
-            CartDTO cart = (CartDTO) session.getAttribute("CART");
-            AddStatusDTO status = new AddStatusDTO();
-            Gson gson = new Gson();
-            status.setStatus("Thất bại");
-            status.setType("error");
-            if (cart == null) {
-                cart = new CartDTO();
+            if(bird_id != null && cage_id != null){
+                if (session != null) {
+                    CartDTO cart = (CartDTO) session.getAttribute("CART");
+                    if (cart == null) {
+                        session.setAttribute("ERROR", "Không có sản phẩm nào trong giỏ hàng của bạn");
+                    }else{
+                        List<Accessory> cageList = adao.getCageList();
+                        Accessory cheapestCage = cageList.get(0);
+                        int cheapestCagePrice = cheapestCage.getUnit_price() - cheapestCage.getUnit_price() * cheapestCage.getDiscount() / 100;
+                        for (Accessory cage : cageList) {
+                            if ((cage.getUnit_price() - cage.getUnit_price() * cage.getDiscount() / 100) < cheapestCagePrice) {
+                                cheapestCage = cage;
+                            }
+                        }
+                        Accessory a = adao.getAccessoryByID(cage_id);
+                        a.setDiscount(50);
+                        if(cheapestCage.getAccessory_id().equals(cage_id)){
+                                cheapestCage.setUnit_price(0);
+                                cheapestCage.setDiscount(0);
+                                a = cheapestCage;
+                        }
+                        HashMap<String , OrderedBirdItem> birdList = (HashMap<String , OrderedBirdItem>) cart.getBirdList();
+                        for (OrderedBirdItem ob : birdList.values()) {
+                            if(ob.getBird().getBird_id().equals(bird_id)){
+                                Accessory old = ob.getCage();
+                                cart.setCartTotalPrice(cart.getCartTotalPrice()-(old.getUnit_price()- (old.getUnit_price() * old.getDiscount() / 100)));
+                            }
+                            if(ob.getBird().getBird_id().equals(bird_id)){
+                                ob.setCage(a);
+                                break;
+                            }
+                        }
+                        cart.setBirdList(birdList);
+                        cart.setCartTotalPrice(cart.getCartTotalPrice()+ (a.getUnit_price()- (a.getUnit_price() * a.getDiscount() / 100)));
+                        session.setAttribute("CART", cart);
+                        session.setAttribute("SUCCESS", "Đổi lồng thành công");
+                    }
+                    response.sendRedirect(DEST_NAV_CART);
+                }
             }
-            if (bird_id != null && cage_id != null) {
-
-                List<Accessory> cageList = adao.getCageList();
-                Accessory cheapestCage = cageList.get(0);
-                int cheapestCagePrice = cheapestCage.getUnit_price() - cheapestCage.getUnit_price() * cheapestCage.getDiscount() / 100;
-                for (Accessory cage : cageList) {
-                    if ((cage.getUnit_price() - cage.getUnit_price() * cage.getDiscount() / 100) < cheapestCagePrice) {
-                        cheapestCage = cage;
-                    }
-                }
-                Accessory a = adao.getAccessoryByID(cage_id);
-                a.setDiscount(50);
-                if (cheapestCage.getAccessory_id().equals(cage_id)) {
-                    cheapestCage.setUnit_price(0);
-                    cheapestCage.setDiscount(0);
-                    a = cheapestCage;
-                }
-                HashMap<String, OrderedBirdItem> birdList = (HashMap<String, OrderedBirdItem>) cart.getBirdList();
-                for (OrderedBirdItem ob : birdList.values()) {
-                    if (ob.getBird().getBird_id().equals(bird_id)) {
-                        Accessory old = ob.getCage();
-                        cart.setCartTotalPrice(cart.getCartTotalPrice() - (old.getUnit_price() - (old.getUnit_price() * old.getDiscount() / 100)));
-                    }
-                    if (ob.getBird().getBird_id().equals(bird_id)) {
-                        ob.setCage(a);
-                        break;
-                    }
-                }
-                cart.setBirdList(birdList);
-                cart.setCartTotalPrice(cart.getCartTotalPrice() + (a.getUnit_price() - (a.getUnit_price() * a.getDiscount() / 100)));
-                session.setAttribute("CART", cart);
-                session.setAttribute("SUCCESS", "Đổi lồng thành công");
-                response.sendRedirect(DEST_NAV_CART);
-            }
-
             if (bird_id != null && cage_id == null) {
                 Bird bird = birdDao.getBirdById(bird_id);
                 List<Accessory> cageList = adao.getCageList();
@@ -97,22 +92,32 @@ public class AddBirdToCartController extends HttpServlet {
                 }
                 cheapestCage.setUnit_price(0);
                 cheapestCage.setDiscount(0);
-                boolean checkAdd = cart.addBirdToCart(bird, cheapestCage);
-                if (checkAdd) {
-                    status.setStatus("Thành công");
-                    status.setContent("Thêm sản phẩm vào giỏ hàng thành công");
-                    status.setType("success");
-                    status.setQuantity(cart.getTotalItem());
-                    session.setAttribute("CART", cart);
-                } else {
-                    status.setQuantity(cart.getTotalItem());
-                    status.setContent("Sản phẩm này đã có trong giỏ hàng");
+                if (session != null) {
+                    CartDTO cart = (CartDTO) session.getAttribute("CART");
+                    if (cart == null) {
+                        cart = new CartDTO();
+                    }
+                    boolean checkAdd = cart.addBirdToCart(bird, cheapestCage);
+                    if (checkAdd) {
+                        out.println(1);
+                        session.setAttribute("CART", cart);
+                    } else {
+                        out.println(0);
+                    }
+                    return;
                 }
-                out.println(gson.toJson(status));
+            }else{
+                CartDTO cart = (CartDTO) session.getAttribute("CART");
+                if(cart != null){
+                     int amountItems = cart.getTotalItem();
+                     out.println(amountItems);
+                     return;
+                }
             }
+            
         } catch (Exception e) {
             log("Error at AddBirdToCartController: " + e.toString());
-        }
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
