@@ -172,25 +172,25 @@
                             </div>
                             <div class="form-add mb-3">
                                 <label>Mã vẹt cảnh (VD: ID123)</label>
-                                <input type="text" name="txtBirdId" class="input form-control" pattern="[A-Z]{2}\d{3}" value="${txtBirdId}"/>
+                                <input type="text" name="txtBirdId" class="input form-control" pattern="[A-Z]{2}\d{3}" value="${txtBirdId}" required/>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Tên vẹt cảnh</label>
-                                <input type="text" name="txtBirdName" class="input form-control" title="Vui lòng chỉ nhập chữ cái" value="${txtBirdName}"/>                          
+                                <input type="text" name="txtBirdName" class="input form-control" title="Vui lòng chỉ nhập chữ cái" value="${txtBirdName}" required/>                          
                             </div>
                             <div class="form-add mb-3">
                                 <label>Màu sắc</label>
-                                <input type="text" name="txtBirdColor" class="input form-control" value="${txtBirdColor}"/>      
+                                <input type="text" name="txtBirdColor" class="input form-control" value="${txtBirdColor}" required/>      
                             </div>
                         </div>
                         <div class="col-lg-6 form-custom">
                             <div class="form-add mb-3">
                                 <label>Thành tích thi đấu</label>
-                                <textarea rows="5" name="txtBirdAchievement" class="input form-control" value="">${txtBirdAchievement}</textarea>
+                                <textarea rows="5" name="txtBirdAchievement" class="input form-control" value="" required>${txtBirdAchievement}</textarea>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Mô tả chi tiết</label>
-                                <textarea rows="5" name="txtBirdDescription" class="input form-control" value="">${txtBirdDescription}</textarea>
+                                <textarea rows="5" name="txtBirdDescription" class="input form-control" value="" required>${txtBirdDescription}</textarea>
                             </div>
                             <div class="form-add mb-3 column-container">
                                 <label>Giá bán</label>
@@ -210,13 +210,13 @@
                             <div class="form-add mb-3 column-container">
                                 <label>Giảm giá</label>
                                 <div style="width: 100%; position: relative;">
-                                    <input style="width: 80%;" type="number" min="0" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdDiscount}" />
+                                    <input style="width: 80%;" type="number" min="0" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdDiscount}" required/>
                                     <span style="position: absolute; right: 36px; top: 50%; transform: translateY(-50%);">%</span>
                                 </div>
                                 <div style="margin-top: 15px;">
                                     <label>Lịch sử sinh sản</label>
                                     <div style="width: 100%; position: relative;">
-                                        <input style="width: 80%;" type="number" min="0" name="txtBirdReproduction_history" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdReproduction_history}"/>
+                                        <input style="width: 80%;" type="number" min="0" name="txtBirdReproduction_history" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdReproduction_history}" required/>
                                         <span style="position: absolute; right: 27px; top: 50%; transform: translateY(-50%);">lứa</span>
                                     </div>
                                 </div>

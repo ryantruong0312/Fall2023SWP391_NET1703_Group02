@@ -74,7 +74,7 @@ public class UpdateOrderStatusController extends HttpServlet {
                 request.setAttribute("noOfPages", noOfPages);
             } else if(user != null && user.getRole().equals("customer")){
                 String txtOrderId = request.getParameter("order_id");
-                boolean isUpdated = orderDao.updateOrderStatus(txtOrderId, "cancel");
+                boolean isUpdated = orderDao.updateOrderStatus(txtOrderId, "Đã hủy");
                 url = "MainController?action=NavToCustomerOrder";
                 if(isUpdated) {
                     session.setAttribute("SUCCESS", "Bạn đã hủy đơn hàng thành công");

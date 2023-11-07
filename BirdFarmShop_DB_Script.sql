@@ -718,13 +718,15 @@ GO
 INSERT INTO [Order]([order_id],[customer],[order_date],[order_status],[name_receiver],[phone_receiver],[address_receiver],[payment_status],[payment_type],[total_price],[applied_point])
 VALUES('230925O0001','customer','2022-09-25',N'Đã hủy', N'Quân','0912345678',null,N'Đã thanh toán',N'Chuyển khoản',2950000,0),
 	  ('230915O0002','giaphong','2021-09-15',N'Đang xử lý',N'Phong','0368445224',null,N'Đã thanh toán',N'Chuyển khoản',27600000,0),
-	  ('230916O0003','nhathoang','2023-03-16',N'Đang giao hàng',N'Hoàng','0368445224',null,N'Đã thanh toán',N'Tiền mặt',4950000,0),
-	  ('230917O0004','huynhduc','2023-09-17',N'Đang giao hàng',N'Đức','0912245678',null,N'Đã thanh toán',N'Tiền mặt',830000,0),
+	  ('230916O0003','nhathoang','2023-03-16',N'Đang giao hàng',N'Hoàng','0368445224',null,N'Chưa thanh toán',N'Tiền mặt',4950000,0),
+	  ('230917O0004','huynhduc','2023-09-17',N'Đang giao hàng',N'Đức','0912245678',null,N'Chưa thanh toán',N'Tiền mặt',830000,0),
 	  ('230918O0005','khachhangvip','2023-09-18',N'Đã hủy',N'Thuận','0932145678',null,N'Đã thanh toán',N'Chuyển khoản',3450000,0),
 	  ('230919O0006','customer','2020-09-19',N'Đã giao hàng',N'Quân','0912345678',null,N'Đã thanh toán',N'Tiền mặt',25570000,0),
 	  ('230912O0007','customer','2020-09-20',N'Đã đánh giá',N'Quân','0912345678',null,N'Đã thanh toán',N'Chuyển khoản',7650000,0),
 	  ('231027O0008','customer','2023-6-27',N'Chờ xử lý',N'Minh','0915324678',null,N'Đã thanh toán',N'Chuyển khoản',700000,0),
-	  ('231027O0009','customer','2023-7-27',N'Chờ xử lý',N'Thọ','0955555678',null,N'Đã thanh toán',N'Chuyển khoản',700000,0);
+	  ('231027O0009','giaphong','2023-7-27',N'Chờ xử lý',N'Thọ','0955555678',null,N'Đã thanh toán',N'Chuyển khoản',700000,0),
+	  ('231027O0010','huynhduc','2023-7-27',N'Chờ xử lý',N'Đức','0912245678',null,N'Đã thanh toán',N'Chuyển khoản',700000,0),
+	  ('231027O0011','nhathoang','2023-7-27',N'Chờ xử lý',N'Hoàng','0368445224',null,N'Đã thanh toán',N'Chuyển khoản',700000,0);
 GO
 
 INSERT INTO [OrderItem]([order_id],[bird_id],[nest_id],[accessory_id],[unit_price],[order_quantity])
@@ -748,7 +750,11 @@ VALUES ('230925O0001','CW192',null,null,2500000,1),
 		('231027O0008',null,null,'GA001',600000,1),
 		('231027O0008',null,null,'KC213',100000,1),
 		('231027O0009',null,null,'GA001',600000,1),
-		('231027O0009',null,null,'KC213',100000,1)
+		('231027O0009',null,null,'KC213',100000,1),
+		('231027O0010',null,null,'GA001',600000,1),
+		('231027O0010',null,null,'KC213',100000,1),
+		('231027O0011',null,null,'GA001',600000,1),
+		('231027O0011',null,null,'KC213',100000,1)
 GO
 
 INSERT INTO [Feedback]([customer],[order_item_id],[rating],[comment],[feedback_date]) 
@@ -757,9 +763,9 @@ VALUES('customer',1,5,N'Chất lượng ok. Đc tặng cả cái đổ thức ă
 	  ('giaphong',3,5,N'Sản phẩm OK.giao hàng hơi chậm.rất vừa với lồng và tiện lợi','2023-05-24'),
 	  ('nhathoang',4,5,N'Sản phẩm OK.Chim rất đẹp. Giao hàng nhanh','2023-05-24'),
 	  ('nhathoang',5,5,N'Sản phẩm OK. Lồng rất vừa, cứng cáp, chất lượng tuyệt vời','2023-05-24'),
-	  ('huynhduc',6,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
-	  ('huynhduc',7,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
-	  ('huynhduc',8,4,N'Mua lần 2 ở shop. Rata hài lòng','2023-05-06'),
+	  ('huynhduc',6,4,N'Mua lần 2 ở shop. Rất hài lòng','2023-05-06'),
+	  ('huynhduc',7,4,N'Mua lần 2 ở shop. Rất hài lòng','2023-05-06'),
+	  ('huynhduc',8,4,N'Mua lần 2 ở shop. Rất hài lòng','2023-05-06'),
 	  ('khachhangvip',9,4,N'Giao đúng mẫu đẹp ,ok','2023-05-28'),
 	  ('khachhangvip',10,4,N'Nhận được hàng rồi.đẹp quá.rất cứng cáp.sẽ mua thêm','2023-05-28'),
 	  ('customer',11,5,N'Shop giao hàng rất nhanh mặc dù là ngày gần tết. Chim rất ok','2023-06-12'),

@@ -115,7 +115,7 @@
                                 <select name="txtBirdStatus" class="input form-control" style="color: #0c5460;" required>
                                     <c:forEach var="st" items="${requestScope.STATUS}" >
                                         <option ${birdDetails.status == st ? "selected":""} value="${st}">${st}</li>
-                                        </c:forEach>
+                                    </c:forEach>
                                 </select>
                             </div>
                             <div class="form-add mb-3">
@@ -125,21 +125,21 @@
                             </div>
                             <div class="form-add mb-3">
                                 <label>Tên</label>
-                                <input type="text" name="txtBirdName" class="input form-control" value="${birdDetails.bird_name}"/>                          
+                                <input type="text" name="txtBirdName" class="input form-control" value="${birdDetails.bird_name}" required/>                          
                             </div>
                             <div class="form-add mb-3">
                                 <label>Màu sắc</label>
-                                <input type="text" name="txtBirdColor" class="input form-control" value="${birdDetails.color}"/>      
+                                <input type="text" name="txtBirdColor" class="input form-control" value="${birdDetails.color}" required/>      
                             </div>
                         </div>
                         <div class="col-lg-6 form-custom">
                             <div class="form-add mb-3">
                                 <label>Thành tích thi đấu</label>
-                                <textarea rows="5" name="txtBirdAchievement" class="input form-control" value="">${birdDetails.achievement}</textarea>
+                                <textarea rows="5" name="txtBirdAchievement" class="input form-control" value="" required>${birdDetails.achievement}</textarea>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Mô tả chi tiết</label>
-                                <textarea rows="5" name="txtBirdDescription" class="input form-control" value="">${birdDetails.description}</textarea>
+                                <textarea rows="5" name="txtBirdDescription" class="input form-control" value="" required>${birdDetails.description}</textarea>
                             </div>
                             <div class="form-add mb-3 column-container">
                                 <label>Giá bán</label>
@@ -159,13 +159,13 @@
                             <div class="form-add mb-3 column-container">
                                 <label>Giảm giá</label>
                                 <div style="width: 100%; position: relative;">
-                                    <input style="width: 80%;" type="number" min="0" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.discount}" />
+                                    <input style="width: 80%;" type="number" min="0" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.discount}" required/>
                                     <span style="position: absolute; right: 37px; top: 50%; transform: translateY(-50%);">%</span>
                                 </div>
                                 <div style="margin-top: 15px;">
                                     <label>Lịch sử sinh sản</label>
                                     <div style="width: 100%; position: relative;">
-                                        <input style="width: 80%;" type="number" min="0" name="txtBirdReproduction_history" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.reproduction_history}"/>
+                                        <input style="width: 80%;" type="number" min="0" name="txtBirdReproduction_history" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.reproduction_history}" required/>
                                         <span style="position: absolute; right: 27px; top: 50%; transform: translateY(-50%);">lứa</span>
                                     </div>
                                 </div>
