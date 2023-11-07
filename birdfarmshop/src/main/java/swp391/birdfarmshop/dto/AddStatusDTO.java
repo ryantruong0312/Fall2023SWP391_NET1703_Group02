@@ -14,6 +14,9 @@ public class AddStatusDTO {
     String content;
     int quantity;
     String type;
+    int totalPriceAccessory;
+    int totalPrice;
+    int totalAccessory;
     public AddStatusDTO() {
         quantity = 0;
     }
@@ -50,6 +53,28 @@ public class AddStatusDTO {
         this.type = type;
     }
 
-  
+    public int getTotalPriceAccessory() {
+        return totalPriceAccessory;
+    }
 
+    public void setTotalPriceAccessory(int totalPriceAccessory) {
+        this.totalPriceAccessory = totalPriceAccessory;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public int getTotalAccessory() {
+        return totalAccessory;
+    }
+
+    public void setTotalAccessory(int totalAccessory) {
+        this.totalAccessory = totalAccessory;
+    }
+    
 }

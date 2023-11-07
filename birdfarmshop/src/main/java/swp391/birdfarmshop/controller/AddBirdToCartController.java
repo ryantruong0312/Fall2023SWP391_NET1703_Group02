@@ -61,7 +61,7 @@ public class AddBirdToCartController extends HttpServlet {
                     }
                 }
                 Accessory a = adao.getAccessoryByID(cage_id);
-                a.setDiscount(50);
+                a.setDiscount(30);
                 if (cheapestCage.getAccessory_id().equals(cage_id)) {
                     cheapestCage.setUnit_price(0);
                     cheapestCage.setDiscount(0);
@@ -95,10 +95,9 @@ public class AddBirdToCartController extends HttpServlet {
                         cheapestCage = cage;
                     }
                 }
-                cheapestCage.setUnit_price(0);
-                cheapestCage.setDiscount(0);
                 boolean checkAdd = cart.addBirdToCart(bird, cheapestCage);
-                if (checkAdd) {
+                if (checkAdd) {    
+                    cart.addAccessoryToCart(cheapestCage, 1,1);
                     status.setStatus("Thành công");
                     status.setContent("Thêm sản phẩm vào giỏ hàng thành công");
                     status.setType("success");

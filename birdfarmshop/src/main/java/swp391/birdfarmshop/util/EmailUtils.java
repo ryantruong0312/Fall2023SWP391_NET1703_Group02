@@ -99,13 +99,13 @@ public class EmailUtils {
         return message;
     }
 
-    public static String sendOrderToCustomer(String name,CartDTO c,CartDTO checkout, String order_id,
+    public static String sendOrderToCustomer(String name,CartDTO c, String order_id,
     String name_receiver, String phone , String address, String type_payment
         ){
         NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
         String totalMoney = numberFormat.format(c.getCartTotalPrice());
         Map<String, OrderedBirdItem> birdList =  c.getBirdList();
-        Map<String, OrderedAccessoryItem> accessoryList = checkout.getAccessoryList();
+        Map<String, OrderedAccessoryItem> accessoryList = c.getAccessoryList();
         Map<String, OrderedBirdPairItem>  birdPair = c.getBirdPairList();
         String message = "<html>\n"
                 + "        <body>\n"
@@ -160,16 +160,11 @@ public class EmailUtils {
             if (a != null) {
                 int realPrice = (a.getUnit_price() - (a.getUnit_price() * a.getDiscount() / 100)) * oa.getOrder_quantity();
                 String price = numberFormat.format(realPrice);
-                if(a.getUnit_price() == 0){
+                if(oa.getFree_order() > 0){
+                    int total  = oa.getFree_order() + oa.getOrder_quantity();
                       message += "                    <tr style=\"padding-top: 10px\">\n"
                         + "                        <td style=\"padding-top: 15px; padding-right:40px ;padding-left: 20px;\">\n"
-                        + "                              - <p style=\"display: inline-block\"> "+oa.getOrder_quantity()+" </p><p style=\"display: inline-block;margin-left: 3px;\"> " + a.getAccessory_name() + " (Tặng kèm)"+ "</p> - <p style=\"display: inline-block\"> " + price + " ₫</p>"
-                        + "                        </td>\n"
-                        + "                    </tr>\n";
-                }else if(a.getDiscount()==50){
-                      message += "                    <tr style=\"padding-top: 10px\">\n"
-                        + "                        <td style=\"padding-top: 15px; padding-right:40px ;padding-left: 20px;\">\n"
-                        + "                           - <p style=\"display: inline-block\"> "+oa.getOrder_quantity()+" </p><p style=\"display: inline-block;margin-left: 3px;\"> " + a.getAccessory_name() + " (Giảm giá theo chim)"+ "</p> - <p style=\"display: inline-block\"> " + price + " ₫</p>"
+                        + "                              - <p style=\"display: inline-block\"> "+ total +" </p><p style=\"display: inline-block;margin-left: 3px;\"> " + a.getAccessory_name() + " (Tặng kèm "+oa.getFree_order()+")"+ "</p> - <p style=\"display: inline-block\"> " + price + " ₫</p>"
                         + "                        </td>\n"
                         + "                    </tr>\n";
                 }else{

@@ -97,7 +97,7 @@ public class OrderDAO {
     }
 
     public int createNewOrder(String order_id, String username, String status, String name_receiver, String phone_receiver,
-            String address_receiver, String payment_status, CartDTO cart, CartDTO cartCheckout, int point, String payment_type) {
+            String address_receiver, String payment_status, CartDTO cart, int point, String payment_type) {
         int result = 0;
         Connection con = null;
         OrderItemDAO oid = new OrderItemDAO();
@@ -180,18 +180,22 @@ public class OrderDAO {
                             }
                         }
                     }
-                    HashMap<String, OrderedAccessoryItem> accessoryList = (HashMap<String, OrderedAccessoryItem>) cartCheckout.getAccessoryList();
+                    HashMap<String, OrderedAccessoryItem> accessoryList = (HashMap<String, OrderedAccessoryItem>) cart.getAccessoryList();
                     for (OrderedAccessoryItem oa : accessoryList.values()) {
                         Accessory a = oa.getAccessory();
                         int realPrice = a.getUnit_price();
                         if (a.getDiscount() > 0) {
                             realPrice = a.getUnit_price() - a.getUnit_price() * a.getDiscount() / 100;
                         }
+                        int quantity = oa.getOrder_quantity();
+                        if(oa.getFree_order() > 0){
+                            quantity = oa.getFree_order()+ oa.getOrder_quantity();
+                        }
                         String getStockAccessory = "SELECT [stock_quantity]\n"
                                 + "FROM [BirdFarmShop].[dbo].[Accessory]\n"
                                 + "WHERE [accessory_id] = ?";
                         pst = con.prepareStatement(getStockAccessory);
-                        pst.setString(1, a.getAccessory_id().substring(0, 5));
+                        pst.setString(1, a.getAccessory_id());
                         rs = pst.executeQuery();
                         if (rs != null && rs.next()) {
                             int numberAccessory = rs.getInt("stock_quantity");
@@ -199,18 +203,18 @@ public class OrderDAO {
                                 error = a.getAccessory_name() + " đã hết hàng";
                                 checkAccessory = false;
                                 break;
-                            } else if (numberAccessory < oa.getOrder_quantity()) {
+                            } else if (numberAccessory < quantity) {
                                 error = a.getAccessory_name() + " không đủ số lượng trong kho";
                                 checkAccessory = false;
                                 break;
                             } else {
-                                int newStock = numberAccessory - oa.getOrder_quantity();
+                                int newStock = numberAccessory - quantity;
                                 String updateQuantity = "UPDATE [Accessory]\n"
                                         + "SET [stock_quantity] = ?\n"
                                         + "WHERE [accessory_id] = ?";
                                 pst = con.prepareStatement(updateQuantity);
                                 pst.setInt(1, newStock);
-                                pst.setString(2, a.getAccessory_id().substring(0, 5));
+                                pst.setString(2, a.getAccessory_id());
                                 result = pst.executeUpdate();
                                 if (result == 0) {
                                     checkAccessory = false;
@@ -221,13 +225,28 @@ public class OrderDAO {
                                             + "               VALUES(?,?,?,?)";
                                     pst = con.prepareStatement(insertAccessory);
                                     pst.setString(1, order_id);
-                                    pst.setString(2, a.getAccessory_id().substring(0, 5));
+                                    pst.setString(2, a.getAccessory_id());
                                     pst.setInt(3, realPrice);
-                                    pst.setInt(4, oa.getOrder_quantity());
+                                    pst.setInt(4, quantity-oa.getFree_order());
                                     result = pst.executeUpdate();
                                     if (result == 0) {
                                         checkAccessory = false;
                                         break;
+                                    }
+                                    if(oa.getFree_order() > 0){
+                                        insertAccessory = "INSERT INTO [OrderItem]([order_id],\n"
+                                                + "		  [accessory_id],[unit_price],[order_quantity])\n"
+                                                + "               VALUES(?,?,?,?)";
+                                        pst = con.prepareStatement(insertAccessory);
+                                        pst.setString(1, order_id);
+                                        pst.setString(2, a.getAccessory_id());
+                                        pst.setInt(3, 0);
+                                        pst.setInt(4, oa.getFree_order());
+                                        result = pst.executeUpdate();
+                                        if (result == 0) {
+                                            checkAccessory = false;
+                                            break;
+                                        }
                                     }
                                 }
                             }

@@ -531,16 +531,16 @@
                                                                                                                         <div class="modal-content">
                                                                                                                             <div class="modal-header">
                                                                                                                                 <h5 class="modal-title" id="exampleModalLabel">Đánh giá của bạn</h5>
-                                                                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                                                <i class="fa fa-times btn-close" data-bs-dismiss="modal" aria-label="Close" class="fa fa-times" aria-hidden="true"></i>
                                                                                                                             </div>
                                                                                                                             <div class="modal-body">
                                                                                                                                 <input type="hidden" name="order_item_id" id="order_feedback"/>
-                                                                                                                                <input type="hidden" class="" min="1" max="5" name="star" required="" id="star_number"/>
+                                                                                                                                <input type="hidden" class="" min="1" max="5" name="star" value="1" required="" id="star_number"/>
 
                                                                                                                                 <div class="rating-box">
                                                                                                                                     <h4>Trải nghiệm của bạn thế nào ?</h4>
                                                                                                                                     <div class="stars">
-                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star active"></i>
                                                                                                                                         <i class="fa-solid fa-star"></i>
                                                                                                                                         <i class="fa-solid fa-star"></i>
                                                                                                                                         <i class="fa-solid fa-star"></i>
@@ -601,16 +601,16 @@
                                                                                                                         <div class="modal-content">
                                                                                                                             <div class="modal-header">
                                                                                                                                 <h5 class="modal-title" id="exampleModalLabel">Đánh giá của bạn</h5>
-                                                                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                                                 <i class="fa fa-times btn-close" data-bs-dismiss="modal" aria-label="Close" class="fa fa-times" aria-hidden="true"></i>
                                                                                                                             </div>
                                                                                                                             <div class="modal-body">
                                                                                                                                 <input type="hidden" name="order_item_id" id="order_feedback"/>
-                                                                                                                                <input type="hidden" class="" min="1" max="5" name="star" required="" id="star_number"/>
+                                                                                                                                <input type="hidden" class="" min="1" max="5" name="star" required="" value="1" id="star_number"/>
 
                                                                                                                                 <div class="rating-box">
                                                                                                                                     <h4>Trải nghiệm của bạn thế nào ?</h4>
                                                                                                                                     <div class="stars">
-                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star active"></i>
                                                                                                                                         <i class="fa-solid fa-star"></i>
                                                                                                                                         <i class="fa-solid fa-star"></i>
                                                                                                                                         <i class="fa-solid fa-star"></i>
@@ -619,7 +619,7 @@
                                                                                                                                 </div>
                                                                                                                                 <div class="mb-3">
                                                                                                                                     <label for="exampleFormControlTextarea1" class="form-label">Nhập đánh giá</label>
-                                                                                                                                    <textarea class="form-control" name="feedback" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                                                                                                    <textarea class="form-control" name="feedback" id="exampleFormControlTextarea1" rows="3" required="" title="Vui lòng nhập đánh giá"></textarea>
                                                                                                                                 </div>
                                                                                                                             </div>
                                                                                                                             <div class="modal-footer">
@@ -671,16 +671,16 @@
                                                                                                                         <div class="modal-content">
                                                                                                                             <div class="modal-header">
                                                                                                                                 <h5 class="modal-title" id="exampleModalLabel">Đánh giá của bạn</h5>
-                                                                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                                                 <i class="fa fa-times btn-close" data-bs-dismiss="modal" aria-label="Close" class="fa fa-times" aria-hidden="true"></i>
                                                                                                                             </div>
                                                                                                                             <div class="modal-body">
                                                                                                                                 <input type="hidden" name="order_item_id" id="order_feedback"/>
-                                                                                                                                <input type="hidden" class="" min="1" max="5" name="star" required="" id="star_number"/>
+                                                                                                                                <input type="hidden" class="" min="1" max="5" name="star" required="" value="1" id="star_number"/>
 
                                                                                                                                 <div class="rating-box">
                                                                                                                                     <h4>Trải nghiệm của bạn thế nào ?</h4>
                                                                                                                                     <div class="stars">
-                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star active"></i>
                                                                                                                                         <i class="fa-solid fa-star"></i>
                                                                                                                                         <i class="fa-solid fa-star"></i>
                                                                                                                                         <i class="fa-solid fa-star"></i>
@@ -689,7 +689,7 @@
                                                                                                                                 </div>
                                                                                                                                 <div class="mb-3">
                                                                                                                                     <label for="exampleFormControlTextarea1" class="form-label">Nhập đánh giá</label>
-                                                                                                                                    <textarea class="form-control" name="feedback" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                                                                                                    <textarea class="form-control" name="feedback" id="exampleFormControlTextarea1" rows="3" required="" title="Vui lòng nhập đánh giá"></textarea>
                                                                                                                                 </div>
                                                                                                                             </div>
                                                                                                                             <div class="modal-footer">
@@ -732,16 +732,16 @@
                                                                                                                         <div class="modal-content">
                                                                                                                             <div class="modal-header">
                                                                                                                                 <h5 class="modal-title" id="exampleModalLabel">Đánh giá của bạn</h5>
-                                                                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                                                <i class="fa fa-times btn-close" data-bs-dismiss="modal" aria-label="Close" class="fa fa-times" aria-hidden="true"></i>
                                                                                                                             </div>
                                                                                                                             <div class="modal-body">
                                                                                                                                 <input type="hidden" name="order_item_id" id="order_feedback"/>
-                                                                                                                                <input type="hidden" class="" min="1" max="5" name="star" required="" id="star_number"/>
+                                                                                                                                <input type="hidden" class="" min="1" max="5" name="star" value="1" required="" id="star_number"/>
 
                                                                                                                                 <div class="rating-box">
                                                                                                                                     <h4>Trải nghiệm của bạn thế nào ?</h4>
                                                                                                                                     <div class="stars">
-                                                                                                                                        <i class="fa-solid fa-star"></i>
+                                                                                                                                        <i class="fa-solid fa-star active"></i>
                                                                                                                                         <i class="fa-solid fa-star"></i>
                                                                                                                                         <i class="fa-solid fa-star"></i>
                                                                                                                                         <i class="fa-solid fa-star"></i>
@@ -750,7 +750,7 @@
                                                                                                                                 </div>
                                                                                                                                 <div class="mb-3">
                                                                                                                                     <label for="exampleFormControlTextarea1" class="form-label">Nhập đánh giá</label>
-                                                                                                                                    <textarea class="form-control" name="feedback" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                                                                                                    <textarea class="form-control" name="feedback" id="exampleFormControlTextarea1" rows="3" required="" title="Vui lòng nhập đánh giá"></textarea>
                                                                                                                                 </div>
                                                                                                                             </div>
                                                                                                                             <div class="modal-footer">

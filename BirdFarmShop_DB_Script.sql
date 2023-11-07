@@ -122,7 +122,7 @@ GO
 DROP TABLE IF EXISTS [Order]
 CREATE TABLE [Order]
 (
-	[order_id] VARCHAR(15) NOT NULL,
+	[order_id] VARCHAR(11) NOT NULL,
 	[customer] VARCHAR(25),
 	[order_date] DATETIME,
 	[order_status] NVARCHAR(20),
@@ -142,7 +142,7 @@ DROP TABLE IF EXISTS [BirdPair]
 CREATE TABLE [BirdPair]
 (
 	[pair_id] INT IDENTITY,
-	[order_id] VARCHAR(15),
+	[order_id] VARCHAR(11),
 	[young_bird_price] INT,
 	[bird_customer] INT,
 	[male_bird_id] VARCHAR(10),
@@ -162,7 +162,7 @@ DROP TABLE IF EXISTS [OrderItem]
 CREATE TABLE [OrderItem]
 (	
 	[order_item_id] INT IDENTITY,
-	[order_id] VARCHAR(15),
+	[order_id] VARCHAR(11),
 	[bird_id] VARCHAR(10),
 	[nest_id] VARCHAR(10),
 	[accessory_id] VARCHAR(10),

@@ -23,35 +23,38 @@ import swp391.birdfarmshop.model.Bird;
 @WebServlet(name = "RemoveBirdFromCartController", urlPatterns = {"/RemoveBirdFromCartController"})
 public class RemoveBirdFromCartController extends HttpServlet {
 
-    private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "shop/cart.jsp";
+    private static final String SUCCESS = "MainController?action=NavToCart";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
+        String url = SUCCESS;
         try {
             String bird_id = request.getParameter("bird_id");
             BirdDAO birdDao = new BirdDAO();
             Bird bird = birdDao.getBirdById(bird_id);
             HttpSession session = request.getSession();
-            if (session != null) {
-                CartDTO cart = (CartDTO) session.getAttribute("CART");
-                cart.removeBirdFromCart(bird);
-                url = SUCCESS;
+            CartDTO cart = (CartDTO) session.getAttribute("CART");
+            if (cart != null) {
+                if (cart.getBirdList().containsKey(bird.getBird_id())) {
+                    cart.removeBirdFromCart(bird);
+                    session.setAttribute("SUCCESS", "Xóa sản phẩm thành công");
+                } else {
+                    session.setAttribute("ERROR", "Không tìm thấy sản phẩm này");
+                }
                 session.setAttribute("CART", cart);
-                session.setAttribute("SUCCESS", "Xóa sản phẩm thành công");
-            }else{
-                session.setAttribute("ERROR", "Xóa sản phẩm thất bại");
+            } else {
+                session.setAttribute("ERROR", "Không có sản phẩm này trong giỏ hàng");
             }
+
         } catch (Exception e) {
             log("Error at RemoveBirdFromCartController: " + e.toString());
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            response.sendRedirect(url);
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

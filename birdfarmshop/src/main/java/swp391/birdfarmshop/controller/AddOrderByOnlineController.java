@@ -49,28 +49,26 @@ public class AddOrderByOnlineController extends HttpServlet {
             HttpSession session = request.getSession();
             User u = (User) session.getAttribute("LOGIN_USER");
             ArrayList<String> infor = (ArrayList<String>) session.getAttribute("INFOORRDER");
-            CartDTO cart = (CartDTO) session.getAttribute("CART");
-            CartDTO cartCheckout = (CartDTO) session.getAttribute("CARTCHECKOUT");  
+            CartDTO cart = (CartDTO) session.getAttribute("CART"); 
             OrderDAO od = new OrderDAO();
             DateTimeFormatter formatterOrder = DateTimeFormatter.ofPattern("yyyyMMdd");
             String formattedDate = LocalDate.now().format(formatterOrder);
             Order o = od.getOrderLatest();
             // Generate a unique orderId
-            String numberSTT = o.getOrder_id().substring(9);
+            String numberSTT = o.getOrder_id().substring(8);
             int numberLast = Integer.parseInt(numberSTT);
             numberLast += 1;
-            String number = String.format("%06d", numberLast);
-            String order_id = formattedDate + 'O' + number;
-            if (order_id != null) {
+            String number = String.format("%04d", numberLast);
+            String order_id = formattedDate.substring(2) + 'O' + number;
+            if (order_id != null && cart != null) {
                 int result = od.createNewOrder(order_id, u.getUsername(), "Chờ xử lý", infor.get(0),
-                        infor.get(1), infor.get(2), "Đã thanh toán", cart, cartCheckout, 0, "Chuyển khoản");
+                        infor.get(1), infor.get(2), "Đã thanh toán", cart, 0, "Chuyển khoản");
                 if (result != 0) {
                     EmailService.sendEmail(u.getEmail(), "Đơn đặt hàng của bạn",
-                            EmailUtils.sendOrderToCustomer(u.getFullName(), cart, cartCheckout, order_id, infor.get(0), infor.get(1), infor.get(2),"Đã thanh toán"));
+                            EmailUtils.sendOrderToCustomer(u.getFullName(), cart, order_id, infor.get(0), infor.get(1), infor.get(2),"Đã thanh toán"));
                     cart = null;
                     url = DEST_NAV_HOME;
                     session.setAttribute("CART", null);
-                    session.setAttribute("CARTCHECKOUT", null);
                     session.setAttribute("SUCCESS", "Đặt hàng thành công");
                 } else {
                     VNPAYUtils.refundMoney(infor.get(3),cart.getCartTotalPrice()+"",infor.get(5),infor.get(6), request);

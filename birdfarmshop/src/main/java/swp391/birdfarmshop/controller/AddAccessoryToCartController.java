@@ -17,6 +17,7 @@ import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.dto.AddStatusDTO;
 import swp391.birdfarmshop.dto.CartDTO;
 import swp391.birdfarmshop.model.Accessory;
+import swp391.birdfarmshop.model.OrderedAccessoryItem;
 
 /**
  *

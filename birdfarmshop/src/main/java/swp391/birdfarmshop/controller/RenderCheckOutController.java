@@ -26,6 +26,7 @@ import swp391.birdfarmshop.model.User;
 public class RenderCheckOutController extends HttpServlet {
     
 private static final String DEST_NAV_CART = "RenderCartController";
+private static final String DEST_NAV_CHECK_OUT = "shop/checkout.jsp";
     
 protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -36,20 +37,8 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
             User u = (User) session.getAttribute("LOGIN_USER");
             if (u != null) {
                 CartDTO cart = (CartDTO) session.getAttribute("CART");
-                CartDTO cartCheckout = new CartDTO();
-                cartCheckout.setBirdList(new HashMap<>(cart.getBirdList()));
-                cartCheckout.setAccessoryList(new HashMap<>(cart.getAccessoryList()));
                 if(cart != null){
-                    if(cart.getTotalItem() > 0){
-                        HashMap<String, OrderedBirdItem> bList = (HashMap<String, OrderedBirdItem>) cartCheckout.getBirdList();
-                        for (OrderedBirdItem ob : bList.values()) {
-                            cartCheckout.addCageToAccessory(ob.getCage(), 1);
-                        }
-                        session.setAttribute("CARTCHECKOUT", cartCheckout);
-                        url = "shop/checkout.jsp";
-                    }else{
-                     session.setAttribute("ERROR", "Không có sản phẩm nào trong giỏ hàng của bạn");
-                    }
+                    url = DEST_NAV_CHECK_OUT;
                 }else{
                     session.setAttribute("ERROR", "Không có sản phẩm nào trong giỏ hàng của bạn");
                 }

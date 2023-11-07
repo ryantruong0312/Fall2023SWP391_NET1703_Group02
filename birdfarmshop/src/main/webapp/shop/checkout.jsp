@@ -79,7 +79,7 @@ Author     : tlminh
                                             </div>
                                         </div>                                 
                                     </c:forEach>
-                                    <c:forEach items="${sessionScope.CARTCHECKOUT.accessoryList}" var="accessory">
+                                    <c:forEach items="${sessionScope.CART.accessoryList}" var="accessory">
                                         <div class="item-cart pr-3 my-3">
                                             <div class="row align-items-center py-3 pl-3">
                                                 <div class="image-item col-lg-2 col-md-2 col-sm-2 col-2">
@@ -88,30 +88,36 @@ Author     : tlminh
                                                 <div class="infor-item px-5 col-lg-7 col-md-6 col-sm-7 col-7">
                                                     <h5>${accessory.value.accessory.accessory_name}</h5>
                                                     <div class="mt-2">
-                                                        <p>${accessory.value.order_quantity}
-                                                            <span style="font-size: 13px; margin-right: 5px">x</span>
-                                                            <c:choose>
-                                                                <c:when test="${accessory.value.accessory.discount > 0}">
-                                                                <p style="font-size: 14px;">  <fmt:formatNumber value="${accessory.value.accessory.unit_price - accessory.value.accessory.unit_price * accessory.value.accessory.discount / 100}" pattern="#,###"/> ₫</p>
+                                                        <p>
+                                                            <c:if test="${accessory.value.free_order > 0}">
+                                                            <p>Tặng kèm: ${accessory.value.free_order}</p></br>
+                                                        </c:if>
+                                                        <c:choose>
+                                                            <c:when test="${accessory.value.accessory.discount > 0 && accessory.value.order_quantity > 0}">                               
+                                                                <p style="color: red;"><p style="color: black;">Mua:</p> ${accessory.value.order_quantity} x <fmt:formatNumber value="${accessory.value.accessory.unit_price - accessory.value.accessory.unit_price * accessory.value.accessory.discount / 100}" pattern="#,###"/> ₫</p>
                                                             </c:when>
-                                                            <c:otherwise>
-                                                                <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${accessory.value.accessory.unit_price}" pattern="#,###"/> ₫</p>
-                                                            </c:otherwise>
+
+                                                            <c:when test="${accessory.value.accessory.discount == 0 && accessory.value.order_quantity > 0}">
+                                                                <p class="mb-0">Mua: ${accessory.value.order_quantity} x <fmt:formatNumber value="${accessory.value.accessory.unit_price}" pattern="#,###"/> ₫</p>
+                                                            </c:when>
                                                         </c:choose> 
                                                         </p>
                                                     </div>
                                                 </div>
                                                 <div class="price-item ml-2 px-3 col-lg-2 col-md-3 col-sm-2 col-2">
                                                     <c:choose>
-                                                        <c:when test="${accessory.value.accessory.discount > 0}">
-                                                            <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${accessory.value.order_quantity * accessory.value.accessory.unit_price - accessory.value.accessory.unit_price * accessory.value.accessory.discount / 100}" pattern="#,###"/> ₫</p>
+                                                        <c:when test="${accessory.value.accessory.discount > 0 &&  accessory.value.free_order == 0}">                               
+                                                            <p class="float-right" style="font-size: 19px;font-weight: bold; position: relative "><fmt:formatNumber value="${(accessory.value.accessory.unit_price - accessory.value.accessory.unit_price * accessory.value.accessory.discount / 100) * accessory.value.order_quantity}" pattern="#,###"/> ₫</p>
                                                             <p style="position: absolute;top: -25px;right: -13px; display: inline-block; border-radius: 10px; background-color: #cccccc; padding: 0 5px 0 5px; color: black;"> -${accessory.value.accessory.discount}%</p>
                                                         </c:when>
-                                                        <c:when test="${accessory.value.accessory.unit_price == 0}">
+                                                        <c:when test="${accessory.value.order_quantity == 0}">                               
                                                             <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"> Tặng kèm</p>
                                                         </c:when>
+                                                        <c:when test="${accessory.value.accessory.discount > 0 &&  accessory.value.free_order > 0}">                               
+                                                            <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${(accessory.value.accessory.unit_price - (accessory.value.accessory.unit_price * accessory.value.accessory.discount / 100)) * accessory.value.order_quantity}" pattern="#,###"/> ₫</p> 
+                                                        </c:when>
                                                         <c:otherwise>
-                                                            <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${accessory.value.accessory.unit_price}" pattern="#,###"/> ₫</p>
+                                                            <p class="mb-0 float-right" style="font-size: 20px; font-weight: bold; display: inline-block"><fmt:formatNumber value="${accessory.value.accessory.unit_price *accessory.value.order_quantity}" pattern="#,###"/> ₫</p>                         
                                                         </c:otherwise>
                                                     </c:choose> 
                                                 </div>
@@ -224,7 +230,7 @@ Author     : tlminh
                 $('.credit-payment').click(function (e) {
                     $('input[name=action]').val('NavToVNPAY');
                 });
-                 $('.money-payment').click(function (e) {
+                $('.money-payment').click(function (e) {
                     $('input[name=action]').val('NavToPayment');
                 });
             });

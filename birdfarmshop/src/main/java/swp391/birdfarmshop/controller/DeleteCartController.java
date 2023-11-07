@@ -21,7 +21,7 @@ import swp391.birdfarmshop.dto.CartDTO;
  */
 @WebServlet(name="DeleteCartController", urlPatterns={"/DeleteCartController"})
 public class DeleteCartController extends HttpServlet {
-    private static final String DEST_NAV_HOME = "RenderHomeController";
+    private static final String DEST_NAV_HOME = "MainController?action=NavToHome";
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request

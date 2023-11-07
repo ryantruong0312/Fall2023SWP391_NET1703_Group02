@@ -46,7 +46,6 @@ public class AddOrderController extends HttpServlet {
             HttpSession session = request.getSession();
             User u = (User) session.getAttribute("LOGIN_USER");
             CartDTO cart = (CartDTO) session.getAttribute("CART");
-            CartDTO cartCheckout = (CartDTO) session.getAttribute("CARTCHECKOUT");
             String url = DEST_NAV_CHECKOUT;
             if (u != null) {
                 if (cart != null) {
@@ -60,20 +59,19 @@ public class AddOrderController extends HttpServlet {
                         OrderDAO od = new OrderDAO();
                         Order o = od.getOrderLatest();
                         if (o != null) {
-                            String numberSTT = o.getOrder_id().substring(9);
+                            String numberSTT = o.getOrder_id().substring(8);
                             int numberLast = Integer.parseInt(numberSTT);
                             numberLast += 1;
-                            String number = String.format("%06d", numberLast);
-                            String order_id = formattedDate + 'O' + number;
+                            String number = String.format("%04d", numberLast);
+                            String order_id = formattedDate.substring(2) + 'O' + number;
                             int result = od.createNewOrder(order_id, u.getUsername(), "Chờ xử lý", name_receiver,
-                                    phone_receiver, address_receiver, "Chưa thanh toán", cart, cartCheckout, 0, "Tiền mặt");
+                                    phone_receiver, address_receiver, "Chưa thanh toán", cart, 0, "Tiền mặt");
                             if (result != 0) {
                                 EmailService.sendEmail(u.getEmail(), "Đơn đặt hàng của bạn",
-                                        EmailUtils.sendOrderToCustomer(u.getFullName(), cart, cartCheckout, order_id, name_receiver, phone_receiver, address_receiver, "Thanh toán khi nhận hàng"));
+                                        EmailUtils.sendOrderToCustomer(u.getFullName(), cart, order_id, name_receiver, phone_receiver, address_receiver, "Thanh toán khi nhận hàng"));
                                 cart = null;
                                 url = DEST_NAV_HOME;
                                 session.setAttribute("CART", null);
-                                session.setAttribute("CARTCHECKOUT", null);
                                 session.setAttribute("SUCCESS", "Đặt hàng thành công");
                             } else {
                                 session.setAttribute("ERROR", od.error);
