@@ -646,6 +646,11 @@ public class OrderDAO {
                 if (startDay != null && endDay != null) {
                     if (!startDay.isEmpty() && !endDay.isEmpty()) {
                         query += "AND ([order_date] >= '" + startDay + "' AND [order_date] <= '" + endDay + "')";
+                    } else {
+                        if(!startDay.isBlank())
+                            query += "AND ([order_date] >= '" + startDay + "')";
+                        if(!endDay.isBlank())
+                            query += "AND ([order_date] <= '" + endDay + "')";
                     }
                 } else {
                     if (startDay != null) {
@@ -892,6 +897,7 @@ public class OrderDAO {
         AccessoryDAO accessoryDao = new AccessoryDAO();
         BirdNestDAO nestDao = new BirdNestDAO();
         OrderDAO orderDao = new OrderDAO();
+        BirdCustomerDAO birdCustomerDao = new BirdCustomerDAO();
         try {
             con = DBUtils.getConnection();
             if (con != null) {
@@ -914,8 +920,15 @@ public class OrderDAO {
                                 nestDao.updateBirdNestBaby(baby_quantity, orderDetail.getBirdNest().getNest_id());
                             }
                             if (orderDetail.getBirdPair()!= null) {
-                                birdDao.updateBirdStatus("Còn hàng", orderDetail.getBirdPair().getMale_bird().getBird_id());
-                                birdDao.updateBirdStatus("Còn hàng", orderDetail.getBirdPair().getFemale_bird().getBird_id());
+                                if(orderDetail.getBirdPair().getMale_bird() != null) {
+                                    birdDao.updateBirdStatus("Còn hàng", orderDetail.getBirdPair().getMale_bird().getBird_id());
+                                }
+                                if(orderDetail.getBirdPair().getFemale_bird() != null) {
+                                    birdDao.updateBirdStatus("Còn hàng", orderDetail.getBirdPair().getFemale_bird().getBird_id());
+                                }
+                                if(orderDetail.getBirdPair().getBirdCustomer()!= null) {
+                                    birdCustomerDao.updateBirdCustomerStatus(orderDetail.getBirdPair().getUsername(), "Chưa ghép cặp");
+                                }
                             }
                         }
                         break;

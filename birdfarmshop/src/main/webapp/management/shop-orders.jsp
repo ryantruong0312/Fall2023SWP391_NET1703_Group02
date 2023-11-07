@@ -50,14 +50,13 @@
             .bordered-link:hover {
                 background-color: #f0f0f0;
             }
-            #submit {
-                background-color: #cccccc;
+            #updateOrder {
                 border: 1px solid #000;
                 border-radius: 5px;
-                padding: 2px 5px;
+                background-color: white;
             }
-            #submit:hover {
-                background-color: #f0f0f0;
+            #updateOrder:hover {
+                background-color: #f0f0f0 !important;
             }
             span:hover {
                 color: #2a2a2a;
@@ -125,6 +124,9 @@
             }
             .even {
                 background-color: #E0E0E0;
+            }
+            .button-style {
+                padding: 13px 40px !important;
             }
         </style>
     </head>
@@ -301,11 +303,17 @@
                                             <li id="status2"><input type="radio" name="status" value="Đã hủy" id="option2"><label for="option2">Giao hàng thất bại</label></li>
                                         </div>
                                         <div class="flex">
-                                            <button class="flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" id="submit" type="submit" name="action" value="NavToUpdateOrder"><span>Xác nhận</span></button>
-                                            <a class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" onclick="hide('popup');"><span>Hủy bỏ</span></a>
+                                            <button class="flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round button-style" id="updateOrder" type="submit" name="action" value="NavToUpdateOrder"><span>Xác nhận</span></button>
+                                            <a class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" onclick="hide('popup');" style="width: 165px; height: 58px;"><span class="centered-text">Hủy bỏ</span></a>
                                         </div>
                                     </ul>
-                                </div>   
+                                </div>
+                                <div id="popupCancel" style="display: none; position: fixed; background-color: white; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;">
+                                    <div style="padding: 5px 0; white-space: nowrap;" id="cancel">
+                                        <a class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" id="cancelOrder"><span>Xác nhận</span></a>
+                                        <a class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" onclick="hide('popupCancel');"><span>Hủy bỏ</span></a>
+                                    </div>
+                                </div>
                                 <div class="scrollable-container">
                                     <table id="order-list" class="scrollable-list">
                                         <thead>
@@ -336,17 +344,16 @@
                                                         <td>${order.order_status}</td>
                                                         <td>
                                                             <c:if test="${order.order_status ne 'Đã hủy' && order.order_status ne 'Đã giao hàng' && order.order_status ne 'Đã đánh giá'}">
-                                                                <%--<a onclick="show('update', '${order.order_id}', '${order.order_status}'); event.stopPropagation();" style="color: #007BFF;">Cập nhật</a>--%>
                                                                 <a onclick="show('popup', '${order.order_id}', '${order.order_status}'); event.stopPropagation();" style="color: #007BFF;">Cập nhật</a>
                                                             </c:if>
                                                         </td>
                                                         <td>
                                                             <c:if test="${order.order_status eq 'Chờ xử lý'}">
-                                                                <a href="MainController?action=NavToUpdateOrder&order_id=${order.order_id}&status=Đã hủy">Hủy đơn</a>
+                                                                <a onclick="showCancel('popupCancel', '${order.order_id}'); event.stopPropagation();" style="color: #007BFF;">Hủy đơn</a>
                                                             </c:if>
                                                         </td>
                                                         <td>${order.name_receiver}</td>
-                                                        <td>${order.phone_receiver}</td>
+                                                        <td>0${order.phone_receiver}</td>
                                                         <td>${order.address_receiver}</td>
                                                         <td>${order.payment_status}</td>
                                                         <td>${order.total_price}</td>
@@ -458,6 +465,12 @@
                                                             inputHidden.name = 'order_id';
                                                             inputHidden.value = orderId;
                                                             list.appendChild(inputHidden);
+                                                        }
+                                                        function showCancel(id, orderId) {
+                                                            var list = document.getElementById(id);
+                                                            list.style.display = "block";
+                                                            var aHref = document.getElementById("cancelOrder");
+                                                            aHref.href = "MainController?action=NavToUpdateOrder&order_id=" + orderId + "&status=Đã hủy";
                                                         }
                                                         function hide(id) {
                                                             var list = document.getElementById(id);

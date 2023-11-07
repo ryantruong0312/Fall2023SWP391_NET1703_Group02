@@ -180,7 +180,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="card-body">
-                                            <h5 class="card-title">Số lượng: 1</h5>
+                                            <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
                                             <h5 class="btn btn-primary">
                                                 ${item.bird.price} <span class="badge badge-light">- ${item.bird.discount}%</span>
                                             </h5>
@@ -193,12 +193,12 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="card-body">
-                                            <h3 class="card-title">Phụ kiện: ${item.accessory.accessory_name}</h3>\
+                                            <h3 class="card-title">Phụ kiện: ${item.accessory.accessory_name}</h3>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="card-body">
-                                            <h5 class="card-title">Số lượng: ${item.accessory.stock_quantity}</h5>
+                                            <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
                                             <h5 class="btn btn-primary">
                                                 ${item.accessory.unit_price} <span class="badge badge-light">- ${item.accessory.discount}%</span>
                                             </h5>
@@ -216,22 +216,24 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="card-body">
-                                            <h5 class="card-title">Số lượng: ${item.birdNest.baby_quantity}</h5>
+                                            <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
                                             <h5 class="btn btn-primary">
                                                 ${item.birdNest.price} <span class="badge badge-light">- ${item.birdNest.discount}%</span>
                                             </h5>
                                         </div>
                                     </div>
                                         </c:when>
-                                        <c:otherwise>
+                                        <c:when test="${item.birdPair != null}">
                                     <div class="col-md-3">
-                                        <img src="${item.birdPair.image_url}" class="card-img" alt="${item.birdPair.nest_id}">
+                                        <c:if test="${not empty item.birdPair.pList}" >
+                                        <img src="${item.birdPair.pList.get(0)}" class="card-img">
+                                        </c:if>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="card-body">
                                             <c:if test="${item.birdPair.male_bird != null && item.birdPair.female_bird != null}">
-                                            <h3 class="card-title">Ghép cặp ${item.birdPair.male_bird.bird_name} với ${item.birdPair.female_bird.bird_name}</h3>
-                                            <p class="card-text"><small class="text-muted">${item.birdPair.status}</small></p>
+                                            <h3 class="card-title">${item.birdPair.male_bird.bird_name} ghép cặp với ${item.birdPair.female_bird.bird_name}</h3>
+                                            <p class="card-text">Trạng thái nhân giống: ${item.birdPair.status}</p>
                                             </c:if>
                                         </div>
                                     </div>
@@ -239,10 +241,12 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Số lượng: ${item.birdPair.number_young_bird}</h5>
                                             <h5 class="btn btn-primary">
-                                                2,000,000
+                                                ${item.birdPair.number_young_bird * item.birdPair.young_bird_price + 2000000}
                                             </h5>
                                         </div>
                                     </div>
+                                        </c:when>
+                                        <c:otherwise>
                                         </c:otherwise>
                                     </c:choose>
                                     </c:forEach>
