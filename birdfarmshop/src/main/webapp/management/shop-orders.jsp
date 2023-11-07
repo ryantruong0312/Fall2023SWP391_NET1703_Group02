@@ -50,14 +50,13 @@
             .bordered-link:hover {
                 background-color: #f0f0f0;
             }
-            #submit {
-                background-color: #cccccc;
+            #updateOrder {
                 border: 1px solid #000;
                 border-radius: 5px;
-                padding: 2px 5px;
+                background-color: white;
             }
-            #submit:hover {
-                background-color: #f0f0f0;
+            #updateOrder:hover {
+                background-color: #f0f0f0 !important;
             }
             span:hover {
                 color: #2a2a2a;
@@ -126,6 +125,9 @@
             .even {
                 background-color: #E0E0E0;
             }
+            .button-style {
+                padding: 13px 40px !important;
+            }
         </style>
     </head>
 
@@ -170,7 +172,10 @@
                             if(fullURL.contains("&"+dateReq)) {
                                 dateReq = "&"+dateReq;
                             }
-                            String statusReq = "&status=" + (String) request.getAttribute("status");
+                            String statusReq = "filterStatus=" + (String) request.getAttribute("filterStatus");
+                            if(fullURL.contains("&"+statusReq)) {
+                                statusReq = "&"+statusReq;
+                            }
                             String startDayReq = "startDay=" + (String) request.getAttribute("startDay");
                             if(fullURL.contains("&"+startDayReq)) {
                                 startDayReq = "&"+startDayReq;
@@ -199,16 +204,14 @@
                                 </li>
                             </ul>
                             <h3 style="color: #006699;">Theo trạng thái</h3>
-                            <c:if test="${requestScope.status != null}">
-                                <input type="hidden" name="status" value="${requestScope.status}"/>
-                            </c:if>
+                            <input type="hidden" name="filterStatus" value="${requestScope.filterStatus}"/>
                             <ul>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&status=wait"><span>Chờ xử lý</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&status=inProgress"><span>Đang xử lý</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&status=delivering"><span>Đang giao hàng</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&status=delivered"><span>Đã giao hàng</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&status=rated"><span>Đã đánh giá</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&status=cancel"><span>Đã hủy</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=wait"><span>Chờ xử lý</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=inProgress"><span>Đang xử lý</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=delivering"><span>Đang giao hàng</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=delivered"><span>Đã giao hàng</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=rated"><span>Đã đánh giá</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=cancel"><span>Đã hủy</span></a></li>
                             </ul>
                             <div style="background-color: #cccccc;">
                                 <a href="MainController?action=NavToShopOrders"><span style="color: #b9130f; margin-left: 10px;">BỎ LỌC</span></a>
@@ -252,27 +255,29 @@
                                         </a>
                                         <br/>
                                     </c:if>
-                                    <c:if test="${not empty requestScope.status}">
+                                    <c:if test="${not empty requestScope.filterStatus}">
                                         <a href="<%= fullURL.replace(statusReq, "") %>">
                                             <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
                                             <c:choose>
-                                                <c:when test="${requestScope.status eq 'wait'}">
+                                                <c:when test="${requestScope.filterStatus eq 'wait'}">
                                                     <span>Trạng thái: Chờ xử lý</span>
                                                 </c:when>
-                                                <c:when test="${requestScope.status eq 'inProgress'}">
+                                                <c:when test="${requestScope.filterStatus eq 'inProgress'}">
                                                     <span>Trạng thái: Đang xử lý</span>
                                                 </c:when>
-                                                <c:when test="${requestScope.status eq 'delivering'}">
+                                                <c:when test="${requestScope.filterStatus eq 'delivering'}">
                                                     <span>Trạng thái: Đang giao hàng</span>
                                                 </c:when>
-                                                <c:when test="${requestScope.status eq 'delivered'}">
+                                                <c:when test="${requestScope.filterStatus eq 'delivered'}">
                                                     <span>Trạng thái: Đã giao hàng</span>
                                                 </c:when>
-                                                <c:when test="${requestScope.status eq 'rated'}">
+                                                <c:when test="${requestScope.filterStatus eq 'rated'}">
                                                     <span>Trạng thái: Đã đánh giá</span>
                                                 </c:when>
-                                                <c:otherwise>
+                                                <c:when test="${requestScope.filterStatus eq 'cancel'}">
                                                     <span>Trạng thái: Đã hủy</span>
+                                                </c:when>
+                                                <c:otherwise>
                                                 </c:otherwise>    
                                             </c:choose>
                                         </a>
@@ -294,15 +299,21 @@
                                     <ul style="padding: 5px 0; white-space: nowrap;" id="update">
                                         <!--                                <ul style="display: none; padding: 5px 0; white-space: nowrap;" id="update">-->
                                         <div id="choosing" style="display: none; white-space: nowrap;">
-                                            <li id="status1"><input type="radio" name="status" value="Giao hàng thành công" id="option1"><label for="option1">Giao hàng thành công</label></li>
-                                            <li id="status2"><input type="radio" name="status" value="Giao hàng thất bại" id="option2"><label for="option2">Giao hàng thất bại</label></li>
+                                            <li id="status1"><input type="radio" name="status" value="Đã giao hàng" id="option1" checked><label for="option1">Giao hàng thành công</label></li>
+                                            <li id="status2"><input type="radio" name="status" value="Đã hủy" id="option2"><label for="option2">Giao hàng thất bại</label></li>
                                         </div>
                                         <div class="flex">
-                                            <button class="flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" id="submit" type="submit" name="action" value="NavToUpdateOrder"><span>Xác nhận</span></button>
-                                            <a class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" onclick="hide('popup');"><span>Hủy bỏ</span></a>
+                                            <button class="flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round button-style" id="updateOrder" type="submit" name="action" value="NavToUpdateOrder"><span>Xác nhận</span></button>
+                                            <a class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" onclick="hide('popup');" style="width: 165px; height: 58px;"><span class="centered-text">Hủy bỏ</span></a>
                                         </div>
                                     </ul>
-                                </div>   
+                                </div>
+                                <div id="popupCancel" style="display: none; position: fixed; background-color: white; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;">
+                                    <div style="padding: 5px 0; white-space: nowrap;" id="cancel">
+                                        <a class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" id="cancelOrder"><span>Xác nhận</span></a>
+                                        <a class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" onclick="hide('popupCancel');"><span>Hủy bỏ</span></a>
+                                    </div>
+                                </div>
                                 <div class="scrollable-container">
                                     <table id="order-list" class="scrollable-list">
                                         <thead>
@@ -333,17 +344,16 @@
                                                         <td>${order.order_status}</td>
                                                         <td>
                                                             <c:if test="${order.order_status ne 'Đã hủy' && order.order_status ne 'Đã giao hàng' && order.order_status ne 'Đã đánh giá'}">
-                                                                <%--<a onclick="show('update', '${order.order_id}', '${order.order_status}'); event.stopPropagation();" style="color: #007BFF;">Cập nhật</a>--%>
                                                                 <a onclick="show('popup', '${order.order_id}', '${order.order_status}'); event.stopPropagation();" style="color: #007BFF;">Cập nhật</a>
                                                             </c:if>
                                                         </td>
                                                         <td>
                                                             <c:if test="${order.order_status eq 'Chờ xử lý'}">
-                                                                <a href="MainController?action=NavToUpdateOrder&order_id=${order.order_id}&status=cancel">Hủy đơn</a>
+                                                                <a onclick="showCancel('popupCancel', '${order.order_id}'); event.stopPropagation();" style="color: #007BFF;">Hủy đơn</a>
                                                             </c:if>
                                                         </td>
                                                         <td>${order.name_receiver}</td>
-                                                        <td>${order.phone_receiver}</td>
+                                                        <td>0${order.phone_receiver}</td>
                                                         <td>${order.address_receiver}</td>
                                                         <td>${order.payment_status}</td>
                                                         <td>${order.total_price}</td>
@@ -455,6 +465,12 @@
                                                             inputHidden.name = 'order_id';
                                                             inputHidden.value = orderId;
                                                             list.appendChild(inputHidden);
+                                                        }
+                                                        function showCancel(id, orderId) {
+                                                            var list = document.getElementById(id);
+                                                            list.style.display = "block";
+                                                            var aHref = document.getElementById("cancelOrder");
+                                                            aHref.href = "MainController?action=NavToUpdateOrder&order_id=" + orderId + "&status=Đã hủy";
                                                         }
                                                         function hide(id) {
                                                             var list = document.getElementById(id);

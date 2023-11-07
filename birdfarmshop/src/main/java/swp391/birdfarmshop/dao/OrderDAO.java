@@ -666,12 +666,19 @@ public class OrderDAO {
                     if (!startDay.isEmpty() && !endDay.isEmpty()) {
                         query += "AND ([order_date] >= '" + startDay + "' AND [order_date] <= '" + endDay + "')";
                     } else {
-                        if (!startDay.isEmpty()) {
+                        if(!startDay.isBlank())
                             query += "AND ([order_date] >= '" + startDay + "')";
-                        }
-                        if (!endDay.isEmpty()) {
+                        if(!endDay.isBlank())
                             query += "AND ([order_date] <= '" + endDay + "')";
-                        }
+                    }
+                } else {
+                    if (startDay != null) {
+                        if(!startDay.isBlank())
+                            query += "AND ([order_date] >= '" + startDay + "')";
+                    }
+                    if (endDay != null) {
+                        if(!endDay.isBlank())
+                            query += "AND ([order_date] <= '" + endDay + "')";
                     }
                 }
                 if (status != null && !status.isEmpty()) {
@@ -908,43 +915,39 @@ public class OrderDAO {
         BirdDAO birdDao = new BirdDAO();
         AccessoryDAO accessoryDao = new AccessoryDAO();
         BirdNestDAO nestDao = new BirdNestDAO();
-        BirdPairDAO pairDao = new BirdPairDAO();
+        OrderDAO orderDao = new OrderDAO();
+        BirdCustomerDAO birdCustomerDao = new BirdCustomerDAO();
         try {
             con = DBUtils.getConnection();
             if (con != null) {
                 switch (status) {
-                    case "wait":
-                        status = "Chờ xử lý";
+                    case "Đã giao hàng":
+                        orderDao.updatePaymentStatus(order_id, status);
                         break;
-                    case "inProgress":
-                        status = "Đang xử lý";
-                        break;
-                    case "delivering":
-                        status = "Đang giao hàng";
-                        break;
-                    case "delivered":
-                        status = "Đã giao hàng";
-                        break;
-                    case "rated":
-                        status = "Đã đánh giá";
-                        break;
-                    case "cancel":
-                        status = "Đã hủy";
+                    case "Đã hủy":
                         ArrayList<OrderItemDTO> orderDetails = itemDao.getItemByOrderId(order_id);
                         for (OrderItemDTO orderDetail : orderDetails) {
                             if (orderDetail.getBird() != null) {
                                 birdDao.updateBirdStatus("Còn hàng", orderDetail.getBird().getBird_id());
                             }
                             if (orderDetail.getAccessory() != null) {
-                                AccessoryDTO accessory = accessoryDao.getAccessoryDetailsByID(orderDetail.getAccessory().getAccessory_id());
-                                int quantity = accessory.getStock_quantity();
-                                String stockQuantity = String.valueOf(orderDetail.getAccessory().getStock_quantity() + quantity);
+                                String stockQuantity = String.valueOf(orderDetail.getAccessory().getStock_quantity() + orderDetail.getOrder_quantity());
                                 accessoryDao.updateAccessoryQuantity(orderDetail.getAccessory().getAccessory_id(), stockQuantity);
                             }
                             if (orderDetail.getBirdNest() != null) {
-                                BirdNest nest = nestDao.getBirdsNestById(orderDetail.getBirdNest().getNest_id());
-                                int baby_quantity = nest.getBaby_quantity() + orderDetail.getBirdNest().getBaby_quantity();
+                                int baby_quantity = orderDetail.getBirdNest().getBaby_quantity() + orderDetail.getOrder_quantity();
                                 nestDao.updateBirdNestBaby(baby_quantity, orderDetail.getBirdNest().getNest_id());
+                            }
+                            if (orderDetail.getBirdPair()!= null) {
+                                if(orderDetail.getBirdPair().getMale_bird() != null) {
+                                    birdDao.updateBirdStatus("Còn hàng", orderDetail.getBirdPair().getMale_bird().getBird_id());
+                                }
+                                if(orderDetail.getBirdPair().getFemale_bird() != null) {
+                                    birdDao.updateBirdStatus("Còn hàng", orderDetail.getBirdPair().getFemale_bird().getBird_id());
+                                }
+                                if(orderDetail.getBirdPair().getBirdCustomer()!= null) {
+                                    birdCustomerDao.updateBirdCustomerStatus(orderDetail.getBirdPair().getUsername(), "Chưa ghép cặp");
+                                }
                             }
                         }
                         break;
@@ -1764,5 +1767,32 @@ public class OrderDAO {
             }
         }
         return o;
+    }
+    
+    public boolean updatePaymentStatus(String order_id, String status) throws SQLException, ParseException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String query = "UPDATE [dbo].[Order] SET [payment_status] = ? WHERE [order_id] = ?";
+                stm = con.prepareStatement(query);
+                stm.setString(1, status);
+                stm.setString(2, order_id);
+                int rs = stm.executeUpdate();
+                if (rs > 0) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
     }
 }

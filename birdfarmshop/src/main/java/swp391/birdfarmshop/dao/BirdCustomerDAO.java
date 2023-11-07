@@ -7,6 +7,7 @@ package swp391.birdfarmshop.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import swp391.birdfarmshop.model.BirdCustomer;
@@ -244,4 +245,30 @@ public class BirdCustomerDAO {
         return b;
     }
 
+    public boolean updateBirdCustomerStatus(String customer_id, String status) throws SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String query = "UPDATE [BirdFarmShop].[dbo].[CustomerBird] SET [status] = ? WHERE [customer_id] = ?";
+                stm = con.prepareStatement(query);
+                stm.setString(1, status);
+                stm.setString(2, customer_id);
+                int rs = stm.executeUpdate();
+                if (rs > 0) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
 }

@@ -39,26 +39,39 @@ public class UpdateOrderStatusController extends HttpServlet {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
             if (user != null && !user.getRole().equals("customer")) {
-                String[] statusArray = request.getParameterValues("status");
-                String status = statusArray[statusArray.length - 1];
-                if("Giao hàng thành công".equals(status)) {
-                    status = "Đã giao hàng";
-                }
-                if("Giao hàng thất bại".equals(status)) {
-                    status = "Đã hủy";
-                }
-                String order_id = request.getParameter("order_id");
-                boolean isUpdated = orderDao.updateOrderStatus(order_id, status);
-                Order order = orderDao.getOrderById(order_id);
-                ArrayList<Order> orderList = new ArrayList<>();
-                orderList.add(order);
-                if(isUpdated) {
-                    request.setAttribute("MESSAGE", "Cập nhật thành công");
-                    request.setAttribute("ORDERLIST", orderList);
-                }else {
-                    request.setAttribute("MESSAGE", "Cập nhật thất bại");
-                }
                 url = SUCCESS;
+                String page = "1";
+                if(request.getParameter("page") != null) {
+                    page = request.getParameter("page");
+                }
+                String date = request.getParameter("date");
+                String startDay = request.getParameter("startDay");
+                String endDay = request.getParameter("endDay");
+                String search = request.getParameter("search");
+                String filterStatus = request.getParameter("filterStatus");
+                String[] statusArray = request.getParameterValues("status");
+                String statusUpdate = statusArray[statusArray.length - 1];
+                String order_id = request.getParameter("order_id");
+                
+                boolean isUpdated = orderDao.updateOrderStatus(order_id, statusUpdate);
+                if(isUpdated) {
+                    session.setAttribute("SUCCESS", "Cập nhật thành công");
+                }else {
+                    session.setAttribute("ERROR", "Cập nhật thất bại");
+                }
+                
+                int recordsPerPage = 10;
+                int numberOfOrder = orderDao.numberOfOrder(date, startDay, endDay, filterStatus, search);
+                int noOfPages = (int) Math.ceil(numberOfOrder * 1.0 / recordsPerPage);
+                ArrayList<Order>  orderList = orderDao.getAllOfOrder(date, startDay, endDay, filterStatus, search, page, recordsPerPage);
+                request.setAttribute("ORDERLIST", orderList);
+                request.setAttribute("date", date);
+                request.setAttribute("startDay", startDay);
+                request.setAttribute("endDay", endDay);
+                request.setAttribute("search", search);
+                request.setAttribute("filterStatus", filterStatus);
+                request.setAttribute("page", page);
+                request.setAttribute("noOfPages", noOfPages);
             } else if(user != null && user.getRole().equals("customer")){
                 String txtOrderId = request.getParameter("order_id");
                 boolean isUpdated = orderDao.updateOrderStatus(txtOrderId, "cancel");
