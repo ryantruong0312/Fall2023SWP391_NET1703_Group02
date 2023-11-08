@@ -73,8 +73,8 @@ public class AddNewBirdController extends HttpServlet {
                     for (BirdDTO bird : birds) {
                         if (bird.getBird_id().equals(txtBirdId)) {
                             session.setAttribute("ERROR", "ID ĐÃ TỒN TẠI. NHẬP ID MỚI");
-                            request.getRequestDispatcher(SUCCESS).forward(request, response);
-                            break;
+                            url = SUCCESS;
+                            return;
                         }
                     }
                     String txtBirdName = request.getParameter("txtBirdName");
