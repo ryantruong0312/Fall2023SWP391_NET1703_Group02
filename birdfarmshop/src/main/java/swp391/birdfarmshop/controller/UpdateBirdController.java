@@ -118,7 +118,7 @@ public class UpdateBirdController extends HttpServlet {
                     }
                 }
             } else {
-                response.sendRedirect(HOME);
+                url = HOME;
             }
         } catch (SQLException | ParseException e) {
         } finally {
