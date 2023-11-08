@@ -150,7 +150,7 @@
                                 <div style="margin-top: 15px;">
                                     <label>Tuổi trưởng thành</label>
                                     <div style="width: 100%; position: relative;">
-                                        <input style="width: 80%;" type="number" min="0" name="txtBirdGrownAge" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.grown_age}" required/>
+                                        <input style="width: 80%;" type="number" min="1" name="txtBirdGrownAge" class="input form-control" pattern="[0-9]+" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.grown_age}" required/>
                                         <span style="position: absolute; right: 7px; top: 50%; transform: translateY(-50%);">tháng</span>
                                     </div>
                                 </div>
@@ -159,7 +159,7 @@
                             <div class="form-add mb-3 column-container">
                                 <label>Giảm giá</label>
                                 <div style="width: 100%; position: relative;">
-                                    <input style="width: 80%;" type="number" min="0" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.discount}" required/>
+                                    <input style="width: 80%;" type="number" min="0" max="99" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" title="Vui lòng chỉ nhập chữ số" value="${birdDetails.discount}" required/>
                                     <span style="position: absolute; right: 37px; top: 50%; transform: translateY(-50%);">%</span>
                                 </div>
                                 <div style="margin-top: 15px;">
