@@ -148,33 +148,36 @@
                         <div class="col-lg-6" style="margin-top: 10px;">
                             <div class="form-outline">
                                 <label>Mã phụ kiện (Bao gồm 2 chữ hoa và 3 chữ số)</label>
-                                <input style="color: #0c5460;;" type="text" name="txtAccessoryID" class="input form-control" pattern="[A-Z]{2}\d{3}" placeholder="Nhập ID của phụ kiện" value="" required/>
+                                <input style="color: #0c5460;" type="text" name="txtAccessoryID" class="input form-control" pattern="[A-Z]{2}\d{3}" placeholder="Nhập ID của phụ kiện" value="${param.txtAccessoryID}" required/>
                             </div>
+
 
                             <div class="form-outline mt-2">
                                 <label>Tên</label>
-                                <input style="color: #0c5460;;" type="text" id="createAccountForm" name="txtAccessoryName" class="input form-control" placeholder="Nhập tên phụ kiện" required/>
+                                <input style="color: #0c5460;;" type="text" id="createAccountForm" name="txtAccessoryName" class="input form-control" placeholder="Nhập tên phụ kiện" value="${param.txtAccessoryName}" required/>
                             </div>
 
                             <div class="form-outline mt-2">
                                 <label>Loại phụ kiện</label>
                                 <select name="txtCategoryID" class="input form-control" style="color: #0c5460;" required="">
-                                    <option value="" disabled selected>Chọn phụ kiện</option>
+                                    <option value="" disabled>Chọn phụ kiện</option>
                                     <c:forEach items="${ac}" var="a">
                                         <c:if test="${a.category_id ne 'other'}">
-                                            <option value="${a.category_id}">${a.category_name}</option>
+                                            <option value="${a.category_id}" <c:if test="${param.txtCategoryID eq a.category_id}">selected</c:if>>${a.category_name}</option>
                                         </c:if>
                                     </c:forEach>
-                                    <option value="other">Khác</option>
-                                </select>
-                            </div>
+                                    <option value="other" <c:if test="${param.txtCategoryID eq 'other'}">selected</c:if>>Khác</option>
+                                    </select>
+                                </div>
 
-                            <div class="row">
-                                <div class="col-lg-6" style="width: 100%;">
-                                    <div class="form-outline mt-2">
-                                        <label>Giá bán</label>
-                                        <div style="position: relative;">
-                                            <input style="color: #0c5460;width: 80%;" type="number" name="txtPriceNew" min="0" class="input form-control" placeholder="Nhập giá của phụ kiện" required value=""/>
+
+                                <div class="row">
+                                    <div class="col-lg-6" style="width: 100%;">
+
+                                        <div class="form-outline mt-2">
+                                            <label>Giá bán</label>
+                                            <div style="position: relative;">
+                                                <input style="color: #0c5460;width: 80%;" type="number" name="txtPriceNew" min="0" class="input form-control" value="${param.txtPriceNew}" placeholder="Nhập giá của phụ kiện" required value=""/>
                                             <span style="position: absolute; right: 35px; top: 50%; transform: translateY(-50%);">₫</span>
                                         </div>
                                     </div>
@@ -184,7 +187,7 @@
                                     <div class="form-outline mt-2">
                                         <label>Giảm giá</label>
                                         <div style="position: relative;">
-                                            <input style="color: #0c5460; width: 80%;" type="number" name="txtDiscount" min="0" max="100" class="input form-control" placeholder="Nhập giảm giá phụ kiện" required=""/>                            
+                                            <input style="color: #0c5460; width: 80%;" type="number" name="txtDiscount" min="0" max="100" value="${param.txtDiscount}" class="input form-control" placeholder="Nhập giảm giá phụ kiện" required=""/>                            
                                             <span style="position: absolute; right: 28px; top: 50%; transform: translateY(-50%);">%</span>
                                         </div>
                                     </div>
@@ -193,13 +196,13 @@
 
                             <div class="form-outline mt-2">
                                 <label>Số lượng</label>                               
-                                <input style="color: #0c5460;" value="" class="input form-control" type="number" name="txtStockQuantity" min="0" max="999" placeholder="Nhập số lượng phụ kiện" required/>                                                                   
+                                <input style="color: #0c5460;" class="input form-control" type="number" name="txtStockQuantity" value="${param.txtStockQuantity}" min="0" max="999" placeholder="Nhập số lượng phụ kiện" required/>                                                                   
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-outline mt-2">
                                 <label for="txtDescribe">Mô tả</label><br>
-                                <textarea class="form-control" id="txtDescribe" name="txtDescribe" rows="5" cols="50" style="width: 100%; height: 142px; color: #0c5460;;" placeholder="Nhập mô tả phụ kiện" required=""></textarea>
+                                <textarea class="form-control" id="txtDescribe" name="txtDescribe" rows="5" cols="50" style="width: 100%; height: 142px; color: #0c5460;;" placeholder="Nhập mô tả phụ kiện" required="">${param.txtDescribe}</textarea>
                             </div>
 
                             <div class="form-outline mt-2">
