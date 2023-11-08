@@ -24,13 +24,10 @@ import swp391.birdfarmshop.model.Accessory;
 @WebServlet(name="RemoveAccessoryFromCartController", urlPatterns={"/RemoveAccessoryFromCartController"})
 public class RemoveAccessoryFromCartController extends HttpServlet {
    
-    private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "shop/cart.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
         try {
             String accessory_id = request.getParameter("accessory_id");
             AccessoryDAO aDao = new AccessoryDAO();
@@ -40,7 +37,6 @@ public class RemoveAccessoryFromCartController extends HttpServlet {
                 CartDTO cart = (CartDTO) session.getAttribute("CART");
                 int order_quantity = cart.getAccessoryList().get(accessory_id).getOrder_quantity();
                 cart.removeAccessoryFromCart(accessory, order_quantity);
-                url = SUCCESS;
                 session.setAttribute("CART", cart);
                 session.setAttribute("SUCCESS", "Xóa sản phẩm thành công");
             }else{
@@ -49,7 +45,7 @@ public class RemoveAccessoryFromCartController extends HttpServlet {
         } catch (Exception e) {
             log("Error at RemoveBirdFromCartController: " + e.toString());
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            response.sendRedirect("MainController?action=NavToCart");
         }
     }
 
