@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class MainController extends HttpServlet {
 
-    private static final String ERROR = "/WEB-INF/errorpages/error.jsp";
+    private static final String ERROR = "/errorpages/error.jsp";
     private static final String ACT_NAV_HOME = "NavToHome";
     private static final String DEST_NAV_HOME = "RenderHomeController";
     private static final String ACT_NAV_LOGIN = "NavToLogin";

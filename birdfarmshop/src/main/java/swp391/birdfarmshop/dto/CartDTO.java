@@ -212,7 +212,7 @@ public class CartDTO {
         if (accessory != null) {
             if (this.accessoryList.containsKey(accessory.getAccessory_id())) {
                 OrderedAccessoryItem item = this.accessoryList.get(accessory.getAccessory_id());
-               if(item.getOrder_quantity() - 1 > 0){
+               if(item.getOrder_quantity() - 1 >= 0){
                     item.setOrder_quantity(item.getOrder_quantity() - 1);
                     this.totalItem -= 1;
                     check = true;
