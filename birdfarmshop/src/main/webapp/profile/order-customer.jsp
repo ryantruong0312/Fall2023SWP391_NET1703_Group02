@@ -461,7 +461,6 @@
                                         <div class="tab-content">
                                             <div class="tab-pane fade show active">
                                                 <div style="margin-left: 1px;" class="row"><!-- all orders -->
-                                                        <c:set var="limit" value="0" />
                                                     <c:forEach items="${itemMap}" var="map">
                                                         <c:set value="${map.key}" var="order"/>
                                                         <c:set value="${map.value}" var="itemList"/>
@@ -562,10 +561,6 @@
                                                                                                     </c:when>
                                                                                                     <c:when test="${orderItem.accessory != null}">
                                                                                                         <section>
-                                                                                                            <c:if test="${orderItem.accessory.accessory_id eq 'LM001' && limit == 0}">
-                                                                                                                <c:set var="quantity" value="${orderItem.order_quantity}" />
-                                                                                                            </c:if>
-                                                                                                            <c:if test="${orderItem.accessory.accessory_id eq 'LM001' && limit == 1}">
                                                                                                             <div class="info">
                                                                                                                 <div class="info-left">
                                                                                                                     <img src="${orderItem.accessory.image_url}" class="product-image" alt="" />
@@ -574,36 +569,13 @@
                                                                                                                             <div class="product-name"><span>${orderItem.accessory.accessory_name}</span></div>
                                                                                                                         </div>
                                                                                                                         <div>
+                                                                                                                            <c:if test="${orderItem.unit_price == 0}">
                                                                                                                             <div class="product-category"><span>Tặng kèm: ${orderItem.order_quantity}</span></div>
-                                                                                                                            <div class="product-quantity"><span>x${quantity}</span></div>
-                                                                                                                        </div>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div class="info-right">
-                                                                                                                    <div class="price">
-                                                                                                                        <c:if test="${orderItem.accessory.discount != 0}">
-                                                                                                                            <span class="old-price">${orderItem.accessory.unit_price}đ</span>
-                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
-                                                                                                                        </c:if>
-                                                                                                                        <c:if test="${orderItem.accessory.discount == 0}">
-                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price}" pattern="#,###"/>₫</span>
-                                                                                                                        </c:if>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            </c:if>
-                                                                                                            <c:set var="limit" value="1"/>
-                                                                                                            <c:if test="${orderItem.accessory.accessory_id ne 'LM001'}">
-                                                                                                            <div class="info">
-                                                                                                                <div class="info-left">
-                                                                                                                    <img src="${orderItem.accessory.image_url}" class="product-image" alt="" />
-                                                                                                                    <div class="showAll">
-                                                                                                                        <div>
-                                                                                                                            <div class="product-name"><span>${orderItem.accessory.accessory_name}</span></div>
-                                                                                                                        </div>
-                                                                                                                        <div>
-                                                                                                                            <div class="product-category"><span></span></div>
+                                                                                                                            </c:if>
+                                                                                                                            <c:if test="${orderItem.unit_price != 0}">
                                                                                                                             <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                                            </c:if>
+                                                                                                                            
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </div>
@@ -619,7 +591,6 @@
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
-                                                                                                            </c:if>
                                                                                                             <c:if test="${order.order_status eq 'Đã giao hàng'}">
                                                                                                             <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
                                                                                                                 Đánh giá
@@ -823,7 +794,6 @@
                                                                                                     </c:otherwise>
                                                                                                 </c:choose>
                                                                                             </c:forEach>
-                                                                                            <c:set var="limit" value="0"/>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>

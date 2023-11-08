@@ -153,55 +153,55 @@
                                 <select name="txtBirdBreed" class="input form-control" style="color: #0c5460;" id="mySelect" onchange="toggleInput()" required>
                                     <option value="" disabled selected>Chọn giống loài</option>
                                     <c:forEach var="breed" items="${requestScope.BREED}">
-                                    <option value="${breed.key}">${breed.value}</option>
+                                    <option ${requestScope.txtBirdBreed == breed.key ? "selected":""} value="${breed.key}">${breed.value}</option>
                                     </c:forEach>
                                     <option value="other">Khác</option>
                                 </select>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Ngày Sinh</label>
-                                <input id="birthday" style="float: right; width: 50%;" type="date" name="txtBirdDate" value="${txtBirdDate}" required/>
+                                <input id="birthday" style="float: right; width: 50%;" type="date" name="txtBirdDate" value="${requestScope.txtBirdDate}" required/>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Giới tính</label>
                                 <select name="txtBirdGender" class="input form-control" style="color: #0c5460;" required>
                                     <option value="" disabled selected>Chọn giới tính</option>
-                                    <option value="Đực" id="gender-1">Trống</option>
-                                    <option value="Cái" id="gender-0">Mái</option>
+                                    <option ${requestScope.txtBirdGender == 'Đực' ? "selected":""} value="Đực" id="gender-1">Trống</option>
+                                    <option ${requestScope.txtBirdGender == 'Cái' ? "selected":""} value="Cái" id="gender-0">Mái</option>
                                 </select>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Mã vẹt cảnh (VD: ID123)</label>
-                                <input type="text" name="txtBirdId" class="input form-control" pattern="[A-Z]{2}\d{3}" value="${txtBirdId}" required/>
+                                <input type="text" name="txtBirdId" class="input form-control" pattern="[A-Z]{2}\d{3}" value="${requestScope.txtBirdId}" required/>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Tên vẹt cảnh</label>
-                                <input type="text" name="txtBirdName" class="input form-control" title="Vui lòng chỉ nhập chữ cái" value="${txtBirdName}" required/>                          
+                                <input type="text" name="txtBirdName" class="input form-control" title="Vui lòng chỉ nhập chữ cái" value="${requestScope.txtBirdName}" required/>                          
                             </div>
                             <div class="form-add mb-3">
                                 <label>Màu sắc</label>
-                                <input type="text" name="txtBirdColor" class="input form-control" value="${txtBirdColor}" required/>      
+                                <input type="text" name="txtBirdColor" class="input form-control" value="${requestScope.txtBirdColor}" required/>      
                             </div>
                         </div>
                         <div class="col-lg-6 form-custom">
                             <div class="form-add mb-3">
                                 <label>Thành tích thi đấu</label>
-                                <textarea rows="5" name="txtBirdAchievement" class="input form-control" value="" required>${txtBirdAchievement}</textarea>
+                                <textarea rows="5" name="txtBirdAchievement" class="input form-control" value="" required>${requestScope.txtBirdAchievement}</textarea>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Mô tả chi tiết</label>
-                                <textarea rows="5" name="txtBirdDescription" class="input form-control" value="" required>${txtBirdDescription}</textarea>
+                                <textarea rows="5" name="txtBirdDescription" class="input form-control" value="" required>${requestScope.txtBirdDescription}</textarea>
                             </div>
                             <div class="form-add mb-3 column-container">
                                 <label>Giá bán</label>
                                 <div style="width: 100%; position: relative;">
-                                    <input style="width: 80%;" type="number" min="0" name="txtBirdPrice" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdPrice}" required/>
+                                    <input style="width: 80%;" type="number" min="0" name="txtBirdPrice" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${requestScope.txtBirdPrice}" required/>
                                     <span style="position: absolute; right: 37px; top: 50%; transform: translateY(-50%);">₫</span>
                                 </div>
                                 <div style="margin-top: 15px;">
                                     <label>Tuổi trưởng thành</label>
                                     <div style="width: 100%; position: relative;">
-                                        <input style="width: 80%;" type="number" min="1" name="txtBirdGrownAge" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdGrownAge}" required/>
+                                        <input style="width: 80%;" type="number" min="1" name="txtBirdGrownAge" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${requestScope.txtBirdGrownAge}" required/>
                                         <span style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%);">tháng</span>
                                     </div>
                                 </div>
@@ -210,7 +210,7 @@
                             <div class="form-add mb-3 column-container">
                                 <label>Giảm giá</label>
                                 <div style="width: 100%; position: relative;">
-                                    <input style="width: 80%;" type="number" min="0" max="99" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdDiscount}" required/>
+                                    <input style="width: 80%;" type="number" min="0" max="99" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${requestScope.txtBirdDiscount}" required/>
                                     <span style="position: absolute; right: 36px; top: 50%; transform: translateY(-50%);">%</span>
                                 </div>
                                 <div style="margin-top: 15px;">

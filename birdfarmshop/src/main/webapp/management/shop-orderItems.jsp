@@ -200,7 +200,12 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
                                             <h5 class="btn btn-primary">
+                                                <c:if test="${item.unit_price == 0}">
+                                                <div><span>Tặng kèm</span></div>
+                                                </c:if>
+                                                <c:if test="${item.unit_price != 0}">
                                                 <fmt:formatNumber value="${item.accessory.unit_price}" pattern="#,###"/>₫ <span class="badge badge-light">- ${item.accessory.discount}%</span>
+                                                </c:if>
                                             </h5>
                                         </div>
                                     </div>
