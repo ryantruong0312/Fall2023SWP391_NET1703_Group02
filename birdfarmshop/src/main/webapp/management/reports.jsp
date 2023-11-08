@@ -13,10 +13,6 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <link rel="icon" type="image/png" href="assets/images/logo-title-bar.png" />
-        <link
-            href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
-            rel="stylesheet"
-            />
 
         <title>V.E.T - Báo cáo & Thống kê</title>
 
@@ -30,7 +26,7 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css" />
         <link rel="stylesheet" href="assets/css/owl-carousel.css" />
         <link rel="stylesheet" href="assets/css/lightbox.css" />
-        <link rel="stylesheet" href="assets/admin/css/sb-admin-2.min.css" />
+        <link rel="stylesheet" href="assets/admin/css/sb-admin-2.css" />
     </head>
 
     <body>

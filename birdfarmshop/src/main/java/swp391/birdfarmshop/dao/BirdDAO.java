@@ -162,8 +162,13 @@ public class BirdDAO {
                 if (page != null) {
                     int pageNumber = Integer.parseInt(page);
                     int start = (pageNumber - 1) * recordsPerPage;
-                    sql += "ORDER BY (SELECT NULL) OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
+                    sql += "ORDER BY  CASE \n"
+                            + "    WHEN status = N'Còn hàng' THEN 1\n"
+                            + "    WHEN status = N'Đang sinh sản' THEN 2\n"
+                            + "    ELSE 3\n"
+                            + "  END,  age ASC OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
                 }
+                System.out.println(sql);
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
                 while (rs.next()) {
