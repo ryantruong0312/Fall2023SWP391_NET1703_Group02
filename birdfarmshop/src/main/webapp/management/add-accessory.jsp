@@ -193,7 +193,7 @@
 
                             <div class="form-outline mt-2">
                                 <label>Số lượng</label>                               
-                                <input style="color: #0c5460;" value="" class="input form-control" type="number" name="txtStockQuantity" min="0" placeholder="Nhập số lượng phụ kiện" required/>                                                                   
+                                <input style="color: #0c5460;" value="" class="input form-control" type="number" name="txtStockQuantity" min="0" max="999" placeholder="Nhập số lượng phụ kiện" required/>                                                                   
                             </div>
                         </div>
                         <div class="col-lg-6">

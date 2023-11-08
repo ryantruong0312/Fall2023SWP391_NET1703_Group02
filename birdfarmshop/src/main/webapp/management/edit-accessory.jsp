@@ -119,6 +119,8 @@
                                 </select>
                             </div>
 
+                            <input type="hidden" name="category_id" value="${category_id}">
+
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-outline mt-2">
@@ -134,7 +136,7 @@
                                     <div class="form-outline mt-2">
                                         <label>Giảm giá (%)</label>
                                         <div style="position: relative">
-                                            <input style="color: #0c5460; width: 80%;" type="number" name="txtDiscount" min="0" class="input form-control" value="${a.discount}" required=""/>                            
+                                            <input style="color: #0c5460; width: 80%;" type="number" name="txtDiscount" min="0" max="100" class="input form-control" value="${a.discount}" required=""/>                            
                                             <span style="position: absolute; right: 28px; top: 50%; transform: translateY(-50%);">%</span>
                                         </div>
                                     </div>
@@ -143,7 +145,7 @@
 
                             <div class="form-outline mt-2">
                                 <label>Số lượng</label>
-                                <input style="color: #0c5460;" type="number" name="txtStockQuantity" min="0" class="input form-control" value="${a.stock_quantity}" required/>
+                                <input style="color: #0c5460;" type="number" name="txtStockQuantity" min="0" max="999" class="input form-control" value="${a.stock_quantity}" required/>
                             </div>
 
 
@@ -181,8 +183,7 @@
                                         </div>
                                     </div>
                                 </c:forEach>
-                            </c:if>
-
+                            </c:if>                                
                         </div>
                         <div class="col-lg-12" style="margin-top: 10px;">
                             <button style="float: right;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit">Hủy bỏ</button>
