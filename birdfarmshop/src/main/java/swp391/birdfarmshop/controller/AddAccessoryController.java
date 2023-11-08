@@ -62,9 +62,10 @@ public class AddAccessoryController extends HttpServlet {
                         AccessoryDAO d = new AccessoryDAO();
                         ArrayList<Accessory> a = d.getAccessories();
                         for (Accessory id : a) {
-                            if (id.getAccessory_id().equalsIgnoreCase(txtAccessoryID)) {
-                                request.setAttribute("ERROR", "Mã sản phẩm đã tồn tại");
-                                request.getRequestDispatcher("management/add-accessory.jsp").forward(request, response);
+                            if (id.getAccessory_id().equals(txtAccessoryID)) {
+                                session.setAttribute("ERROR", "ID ĐÃ TỒN TẠI. NHẬP ID MỚI");
+                                url = SUCCESS;
+                                return;
                             }
                         }
                         String txtAccessoryName = request.getParameter("txtAccessoryName");
@@ -77,27 +78,30 @@ public class AddAccessoryController extends HttpServlet {
                         Part txtImage_1 = request.getPart("txtImage_1");
                         Part txtImage_2 = request.getPart("txtImage_2");
                         Part txtImage_3 = request.getPart("txtImage_3");
-                        
+
                         String imageURL_1 = null;
                         String imageURL_2 = null;
                         String imageURL_3 = null;
-                        
+
                         if (txtImage_1.getSize() < 1048576 && txtImage_2.getSize() < 1048576 && txtImage_3.getSize() < 1048576) {
                             imageURL_1 = returnUrl(txtImage_1);
                             imageURL_2 = returnUrl(txtImage_2);
                             imageURL_3 = returnUrl(txtImage_3);
                         }
-                        
+
                         boolean rs = d.insertAccessory(txtAccessoryID, txtAccessoryName, txtCategoryID, txtPrice, txtStockQuantity, txtDescribe, txtDiscount, imageURL_1, imageURL_2, imageURL_3);
 
-                        if(rs){
+                        if (rs) {
                             session.setAttribute("SUCCESS", "Thêm mới sản phẩm thành công");
-                            if(type.equals("continue")){
+                            if (type.equals("continue")) {
                                 url = SUCCESS;
-                            }else if(type.equals("close")){
-                                url = "RenderAccessoryController";
+                            } else if (type.equals("close")) {
+                                url = "MainController?action=NavToAccessory";
                             }
+                        } else {
+                            session.setAttribute("ERROR", "Thêm mới sản phẩm thất bại");
                         }
+
                     }
                 }
             }

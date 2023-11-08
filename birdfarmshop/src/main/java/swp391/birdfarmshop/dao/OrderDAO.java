@@ -666,18 +666,18 @@ public class OrderDAO {
                     if (!startDay.isEmpty() && !endDay.isEmpty()) {
                         query += "AND ([order_date] >= '" + startDay + "' AND [order_date] <= '" + endDay + "')";
                     } else {
-                        if(!startDay.isBlank())
+                        if(!startDay.isEmpty())
                             query += "AND ([order_date] >= '" + startDay + "')";
-                        if(!endDay.isBlank())
+                        if(!endDay.isEmpty())
                             query += "AND ([order_date] <= '" + endDay + "')";
                     }
                 } else {
                     if (startDay != null) {
-                        if(!startDay.isBlank())
+                        if(!startDay.isEmpty())
                             query += "AND ([order_date] >= '" + startDay + "')";
                     }
                     if (endDay != null) {
-                        if(!endDay.isBlank())
+                        if(!endDay.isEmpty())
                             query += "AND ([order_date] <= '" + endDay + "')";
                     }
                 }

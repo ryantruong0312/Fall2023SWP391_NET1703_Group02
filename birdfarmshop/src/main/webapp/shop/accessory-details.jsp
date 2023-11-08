@@ -257,7 +257,7 @@
                             <p style="margin-top: 10px;" class="mb-4 mt-4">                                
                             <p>Số lượng hiện tại trong kho: <span id="currentStock">${a.stock_quantity}</span></p>
                             <label for="newStock">Số lượng mới:</label>
-                            <input style="width: 50%" type="number" id="newStock" name="txtNewQuantity" min="0" value="${a.stock_quantity}">
+                            <input style="width: 50%" type="number" id="newStock" name="txtNewQuantity" min="0" max="999" value="${a.stock_quantity}">
                             </p>
                             <div class="float-right" style="margin-top: 15px;">                                  
                                 <button id="btn-confirrm" class="btn btn-group-sm btn-primary" name="action" value="NavToUpdateAccessory">Xác nhận</button>

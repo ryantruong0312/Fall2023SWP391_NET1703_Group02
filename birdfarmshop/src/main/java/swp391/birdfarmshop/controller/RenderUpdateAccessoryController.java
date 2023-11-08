@@ -119,8 +119,10 @@ public class RenderUpdateAccessoryController extends HttpServlet {
                         boolean rs = d.updateAccessory(txtAccessoryID, txtAccessoryName, txtCategoryID, txtPrice, txtStockQuantity, txtDescribe, txtDiscount);
                         if (rs) {
                             session.setAttribute("SUCCESS", "Chỉnh sửa phụ kiện thành công");
+                            url = "MainController?action=NavToAccessoryDetails&id=" + txtAccessoryID;
                         } else {
                             session.setAttribute("ERROR", "Chỉnh sửa phụ kiện thất bại");
+                            url = SUCCESS;
                         }
 
                         AccessoryDAO aDAO = new AccessoryDAO();
@@ -130,14 +132,14 @@ public class RenderUpdateAccessoryController extends HttpServlet {
                             request.setAttribute("MESSAGE", message);
                         }
                         request.setAttribute("a", acDTO);
-                        url = "RenderAccessoryDetailsController?id=" + txtAccessoryID;
+                       
                     }
                 }
                 if (btAction.equalsIgnoreCase("UpdateQuantity")) {
                     if (u.getRole().equals("admin") || u.getRole().equals("manager") || u.getRole().equals("staff")) {
                         exit = true;
                         String txtAccessoryID = request.getParameter("txtAccessoryID");
-                        String txtNewQuantity = request.getParameter("txtNewQuantity");
+                        String txtNewQuantity = request.getParameter("txtNewQuantity");                      
                         boolean rs = d.updateAccessoryQuantity(txtAccessoryID, txtNewQuantity);
                         if (rs) {
                             session.setAttribute("SUCCESS", "Chỉnh sửa số lượng thành công");
@@ -154,7 +156,7 @@ public class RenderUpdateAccessoryController extends HttpServlet {
                         }
                         request.setAttribute("a", acDTO);
 
-                        url = "RenderAccessoryDetailsController?id=" + txtAccessoryID;
+                        url = "MainController?action=NavToAccessoryDetails&id=" + txtAccessoryID;
                     }
                 }
             }
