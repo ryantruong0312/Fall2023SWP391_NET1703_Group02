@@ -54,6 +54,10 @@ public class AddNewBirdController extends HttpServlet {
             throws ServletException, IOException, SQLException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
+        boolean success = true;
+        String  txtBirdId = null, txtBirdName = null, txtBirdColor = null, txtBirdDate = null, txtBirdGrownAge = null, 
+                txtBirdGender = null, txtBirdBreed = null, txtBirdAchievement = null, txtBirdReproduction_history = null, 
+                txtBirdPrice = null, txtBirdDescription = null, txtBirdDiscount = null, txtBirdStatus = null;
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
@@ -68,32 +72,33 @@ public class AddNewBirdController extends HttpServlet {
                 }
                 request.setAttribute("BREED", breed);
                 String btAction = request.getParameter("btAction");
-                String txtBirdId = request.getParameter("txtBirdId");
+                txtBirdId = request.getParameter("txtBirdId");
                 if (btAction != null) {
+                    txtBirdName = request.getParameter("txtBirdName");
+                    txtBirdColor = request.getParameter("txtBirdColor");
+                    txtBirdDate = request.getParameter("txtBirdDate");
+                    txtBirdGrownAge = request.getParameter("txtBirdGrownAge");
+                    txtBirdGender = request.getParameter("txtBirdGender");
+                    txtBirdBreed = request.getParameter("txtBirdBreed");
+                    txtBirdAchievement = request.getParameter("txtBirdAchievement");
+                    txtBirdReproduction_history = request.getParameter("txtBirdReproduction_history");
+                    txtBirdPrice = request.getParameter("txtBirdPrice");
+                    txtBirdDescription = request.getParameter("txtBirdDescription");
+                    txtBirdDiscount = request.getParameter("txtBirdDiscount");
+                    txtBirdStatus = "Còn hàng";
                     for (BirdDTO bird : birds) {
                         if (bird.getBird_id().equals(txtBirdId)) {
                             session.setAttribute("ERROR", "ID ĐÃ TỒN TẠI. NHẬP ID MỚI");
+                            success = false;
                             url = SUCCESS;
                             return;
                         }
                     }
-                    String txtBirdName = request.getParameter("txtBirdName");
-                    String txtBirdColor = request.getParameter("txtBirdColor");
-                    String txtBirdDate = request.getParameter("txtBirdDate");
-                    String txtBirdGrownAge = request.getParameter("txtBirdGrownAge");
-                    String txtBirdGender = request.getParameter("txtBirdGender");
-                    String txtBirdBreed = request.getParameter("txtBirdBreed");
-                    String txtBirdAchievement = request.getParameter("txtBirdAchievement");
-                    String txtBirdReproduction_history = request.getParameter("txtBirdReproduction_history");
-                    String txtBirdPrice = request.getParameter("txtBirdPrice");
-                    String txtBirdDescription = request.getParameter("txtBirdDescription");
-                    String txtBirdDiscount = request.getParameter("txtBirdDiscount");
-                    String txtBirdStatus = "Còn hàng";
                     boolean check = false;
                     check = birdDao.addNewBird(txtBirdId, txtBirdName + " " + txtBirdId, txtBirdColor,
-                                txtBirdDate, txtBirdGrownAge, txtBirdGender, txtBirdBreed,
-                                txtBirdAchievement, txtBirdReproduction_history, txtBirdPrice,
-                                txtBirdDescription, txtBirdDiscount, txtBirdStatus);
+                            txtBirdDate, txtBirdGrownAge, txtBirdGender, txtBirdBreed,
+                            txtBirdAchievement, txtBirdReproduction_history, txtBirdPrice,
+                            txtBirdDescription, txtBirdDiscount, txtBirdStatus);
                     Part image_1 = request.getPart("txtImage_1");
                     Part image_2 = request.getPart("txtImage_2");
                     Part image_3 = request.getPart("txtImage_3");
@@ -104,10 +109,11 @@ public class AddNewBirdController extends HttpServlet {
                         session.setAttribute("SUCCESS", "Tạo mới thành công");
                     } else {
                         session.setAttribute("ERROR", "Tạo mới thất bại");
+                        success = false;
                     }
-                    if(btAction.equals("Add&Return")) {
+                    if (btAction.equals("Add&Return")) {
                         url = DETAIL + txtBirdId;
-                    }else {
+                    } else {
                         url = SUCCESS;
                     }
                 } else {
@@ -118,6 +124,20 @@ public class AddNewBirdController extends HttpServlet {
             }
         } catch (SQLException e) {
         } finally {
+            if (!success) {
+                request.setAttribute("txtBirdId", txtBirdId);
+                request.setAttribute("txtBirdName", txtBirdName);
+                request.setAttribute("txtBirdColor", txtBirdColor);
+                request.setAttribute("txtBirdDate", txtBirdDate);
+                request.setAttribute("txtBirdGrownAge", txtBirdGrownAge);
+                request.setAttribute("txtBirdGender", txtBirdGender);
+                request.setAttribute("txtBirdBreed", txtBirdBreed);
+                request.setAttribute("txtBirdAchievement", txtBirdAchievement);
+                request.setAttribute("txtBirdReproduction_history", txtBirdReproduction_history);
+                request.setAttribute("txtBirdPrice", txtBirdPrice);
+                request.setAttribute("txtBirdDescription", txtBirdDescription);
+                request.setAttribute("txtBirdDiscount", txtBirdDiscount);
+            }
             request.getRequestDispatcher(url).forward(request, response);
         }
     }
@@ -133,7 +153,7 @@ public class AddNewBirdController extends HttpServlet {
             imgDao.addNewImageBird(img_url, isThumbnail, bird_id);
         }
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
