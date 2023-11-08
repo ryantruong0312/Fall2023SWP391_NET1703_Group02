@@ -429,7 +429,7 @@
                                         <div id="popup" style="display: none; position: fixed; background-color: white; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;">
                                             <div style="padding: 5px 0; white-space: nowrap;" id="update">
                                                 <div class="flex">
-                                                    <a href="UpdateOrderStatusController?order_id=${order.order_id}" style="background-color: #ffcccc;" class="flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round"><span>Xác nhận</span></a>
+                                                    <a id="cancelOrder" style="background-color: #ffcccc;" class="flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round"><span>Xác nhận</span></a>
                                                     <a style="background-color: #ffcccc;" class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" onclick="hide('popup');"><span>Hủy bỏ</span></a>
                                                 </div>
                                             </div>
@@ -461,6 +461,7 @@
                                         <div class="tab-content">
                                             <div class="tab-pane fade show active">
                                                 <div style="margin-left: 1px;" class="row"><!-- all orders -->
+                                                        <c:set var="limit" value="0" />
                                                     <c:forEach items="${itemMap}" var="map">
                                                         <c:set value="${map.key}" var="order"/>
                                                         <c:set value="${map.value}" var="itemList"/>
@@ -474,10 +475,7 @@
                                                                             <div class="order-id">Mã đơn hàng: ${order.order_id} - Ngày đặt hàng: ${formattedDate}.</div>
                                                                             <!-- order status -->
                                                                             <c:if test="${order.order_status eq 'Chờ xử lý'}">
-                                                                                <div><a onclick="show('popup'); event.stopPropagation();" style="color: white; background-color: #0066ff; padding: 5px 10px; border-radius: 20px; font-size: 16px;">HỦY ĐƠN</a></div>
-                                                                            </c:if>
-                                                                            <c:if test="${order.order_status eq 'Đã giao hàng'}">
-                                                                                <div class="mt-1" style="color: #007BFF;"><a>ĐÁNH GIÁ ĐƠN HÀNG</a></div>
+                                                                                <div><a onclick="show('popup', '${order.order_id}'); event.stopPropagation();" style="color: white; background-color: #0066ff; padding: 5px 10px; border-radius: 20px; font-size: 16px;">HỦY ĐƠN</a></div>
                                                                             </c:if>
                                                                             <div class="order-status">${order.order_status}</div>
                                                                         </div>
@@ -564,6 +562,38 @@
                                                                                                     </c:when>
                                                                                                     <c:when test="${orderItem.accessory != null}">
                                                                                                         <section>
+                                                                                                            <c:if test="${orderItem.accessory.accessory_id eq 'LM001' && limit == 0}">
+                                                                                                                <c:set var="quantity" value="${orderItem.order_quantity}" />
+                                                                                                            </c:if>
+                                                                                                            <c:if test="${orderItem.accessory.accessory_id eq 'LM001' && limit == 1}">
+                                                                                                            <div class="info">
+                                                                                                                <div class="info-left">
+                                                                                                                    <img src="${orderItem.accessory.image_url}" class="product-image" alt="" />
+                                                                                                                    <div class="showAll">
+                                                                                                                        <div>
+                                                                                                                            <div class="product-name"><span>${orderItem.accessory.accessory_name}</span></div>
+                                                                                                                        </div>
+                                                                                                                        <div>
+                                                                                                                            <div class="product-category"><span>Tặng kèm: ${orderItem.order_quantity}</span></div>
+                                                                                                                            <div class="product-quantity"><span>x${quantity}</span></div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="info-right">
+                                                                                                                    <div class="price">
+                                                                                                                        <c:if test="${orderItem.accessory.discount != 0}">
+                                                                                                                            <span class="old-price">${orderItem.accessory.unit_price}đ</span>
+                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                                        </c:if>
+                                                                                                                        <c:if test="${orderItem.accessory.discount == 0}">
+                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price}" pattern="#,###"/>₫</span>
+                                                                                                                        </c:if>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            </c:if>
+                                                                                                            <c:set var="limit" value="1"/>
+                                                                                                            <c:if test="${orderItem.accessory.accessory_id ne 'LM001'}">
                                                                                                             <div class="info">
                                                                                                                 <div class="info-left">
                                                                                                                     <img src="${orderItem.accessory.image_url}" class="product-image" alt="" />
@@ -589,6 +619,7 @@
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
+                                                                                                            </c:if>
                                                                                                             <c:if test="${order.order_status eq 'Đã giao hàng'}">
                                                                                                             <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
                                                                                                                 Đánh giá
@@ -705,20 +736,40 @@
                                                                                                     <c:when test="${orderItem.birdPair != null}">
                                                                                                         <section>
                                                                                                             <div class="d-flex align-items-center justify-content-between">
+                                                                                                                <c:choose>
+                                                                                                                    <c:when test="${orderItem.birdPair.birdCustomer != null}">
+                                                                                                                <div class="pair-img pl-3 py-3 text-center">
+                                                                                                                    <img style="width: 80px;" src="${orderItem.birdPair.birdCustomer.img_url}"/>
+                                                                                                                    <p>${orderItem.birdPair.birdCustomer.name}</p>
+                                                                                                                </div>  
+                                                                                                                    </c:when>
+                                                                                                                    <c:otherwise>
                                                                                                                 <div class="pair-img pl-3 py-3 text-center">
                                                                                                                     <img style="width: 80px;" src="${orderItem.birdPair.male_bird.image_url}"/>
                                                                                                                     <p>${orderItem.birdPair.male_bird.bird_name}</p>
-                                                                                                                </div>
+                                                                                                                </div> 
+                                                                                                                    </c:otherwise>
+                                                                                                                </c:choose>
                                                                                                                 <div class="text-center">
                                                                                                                     <div class="pair-status mb-4">
                                                                                                                         ${orderItem.birdPair.status}
                                                                                                                     </div>
                                                                                                                     <a href="MainController?action=NavToBirdPairDetail&order_id=${orderItem.birdPair.order_id}&pair_id=${orderItem.birdPair.pair_id}"><span>Xem chi tiết</span></a>
                                                                                                                 </div>
-                                                                                                                <div class="pair-img pr-3 py-3 text-center">
+                                                                                                                <c:choose>
+                                                                                                                    <c:when test="${orderItem.birdPair.female_bird != null}">
+                                                                                                                <div class="pair-img pl-3 py-3 text-center">
                                                                                                                     <img style="width: 80px;" src="${orderItem.birdPair.female_bird.image_url}"/>
                                                                                                                     <p>${orderItem.birdPair.female_bird.bird_name}</p>
-                                                                                                                </div>
+                                                                                                                </div>  
+                                                                                                                    </c:when>
+                                                                                                                    <c:otherwise>
+                                                                                                                <div class="pair-img pl-3 py-3 text-center">
+                                                                                                                    <img style="width: 80px;" src="${orderItem.birdPair.male_bird.image_url}"/>
+                                                                                                                    <p>${orderItem.birdPair.male_bird.bird_name}</p>
+                                                                                                                </div> 
+                                                                                                                    </c:otherwise>
+                                                                                                                </c:choose>
                                                                                                             </div>
                                                                                                             <c:if test="${order.order_status eq 'Đã giao hàng'}">
                                                                                                             <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
@@ -772,6 +823,7 @@
                                                                                                     </c:otherwise>
                                                                                                 </c:choose>
                                                                                             </c:forEach>
+                                                                                            <c:set var="limit" value="0"/>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -827,9 +879,11 @@
         <%@include file="../layout/footer.jsp" %>
         <!-- End Footer -->
         <script>
-            function show(id) {
+            function show(id, orderId) {
                 var list = document.getElementById(id);
                 list.style.display = "block";
+                var aCancel = document.getElementById('cancelOrder');
+                aCancel.href = "MainController?action=NavToUpdateOrder&order_id=" + orderId;
             }
             function hide(id) {
                 var list = document.getElementById(id);
