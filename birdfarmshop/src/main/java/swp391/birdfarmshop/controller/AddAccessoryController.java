@@ -54,27 +54,29 @@ public class AddAccessoryController extends HttpServlet {
                 request.setAttribute("ac", ac);
                 url = SUCCESS;
             }
+            String txtAccessoryID = request.getParameter("txtAccessoryID");
+            String txtAccessoryName = request.getParameter("txtAccessoryName");
+            String txtCategoryID = request.getParameter("txtCategoryID");
+            String txtPrice = request.getParameter("txtPriceNew");
+            String txtStockQuantity = request.getParameter("txtStockQuantity");
+            String txtDescribe = request.getParameter("txtDescribe");
+            String txtDiscount = request.getParameter("txtDiscount");
+            
+            request.setAttribute("txtCategoryID", txtCategoryID);
+            
             if (btAction != null) {
                 if (btAction.equalsIgnoreCase("Add")) {
                     if (u.getRole().equals("admin") || u.getRole().equals("manager")) {
                         String type = request.getParameter("type");
-                        String txtAccessoryID = request.getParameter("txtAccessoryID");
                         AccessoryDAO d = new AccessoryDAO();
                         ArrayList<Accessory> a = d.getAccessories();
                         for (Accessory id : a) {
                             if (id.getAccessory_id().equals(txtAccessoryID)) {
-                                session.setAttribute("ERROR", "ID ĐÃ TỒN TẠI. NHẬP ID MỚI");
+                                session.setAttribute("ERROR", "ID ĐÃ TỒN TẠI. NHẬP ID MỚI");                            
                                 url = SUCCESS;
                                 return;
                             }
                         }
-                        String txtAccessoryName = request.getParameter("txtAccessoryName");
-                        String txtCategoryID = request.getParameter("txtCategoryID");
-                        String txtPrice = request.getParameter("txtPriceNew");
-                        String txtStockQuantity = request.getParameter("txtStockQuantity");
-                        String txtDescribe = request.getParameter("txtDescribe");
-                        String txtDiscount = request.getParameter("txtDiscount");
-
                         Part txtImage_1 = request.getPart("txtImage_1");
                         Part txtImage_2 = request.getPart("txtImage_2");
                         Part txtImage_3 = request.getPart("txtImage_3");
