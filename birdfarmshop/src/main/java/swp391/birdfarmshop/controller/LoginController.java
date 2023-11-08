@@ -25,6 +25,7 @@ import swp391.birdfarmshop.util.JWTUtils;
 public class LoginController extends HttpServlet {
 
     private static final String DEST_NAV_HOME = "RenderHomeController";
+    private static final String DEST_NAV_DASHBOARD = "RenderReportsController";
     private static final String DEST_NAV_LOGIN = "/authentication/login.jsp";
 
     /**
@@ -60,7 +61,11 @@ public class LoginController extends HttpServlet {
                                 cookie.setMaxAge(24 * 60 * 60);
                                 response.addCookie(cookie);
                             }
+
                             url =  DEST_NAV_HOME;
+                            if(u.getRole().equals("admin")||u.getRole().equals("manager")){
+                                url = DEST_NAV_DASHBOARD;
+                            }
                         }
                     } else if (u.getStatus().equals("inactive")) {
                         session.setAttribute("ERROR", "Vui lòng kích hoạt tài khoản của bạn bằng cách nhấn vào liên kết trong email đã đăng ký");
