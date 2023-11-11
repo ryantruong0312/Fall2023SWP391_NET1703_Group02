@@ -17,7 +17,7 @@ public class BirdCustomer {
     private String username;
     private String img_url;
     private String status;
-
+    private String breed_name;
     public BirdCustomer(int bird_id, String name, boolean gender, String breed_id, String username, String img_url, String status) {
         this.bird_id = bird_id;
         this.name = name;
@@ -28,6 +28,18 @@ public class BirdCustomer {
         this.status = status;
     }
 
+    public BirdCustomer(int bird_id, String name, boolean gender, String breed_id, String username, String img_url, String status, String breed_name) {
+        this.bird_id = bird_id;
+        this.name = name;
+        this.gender = gender;
+        this.breed_id = breed_id;
+        this.username = username;
+        this.img_url = img_url;
+        this.status = status;
+        this.breed_name = breed_name;
+    }
+
+    
     public int getBird_id() {
         return bird_id;
     }
@@ -82,6 +94,14 @@ public class BirdCustomer {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getBreed_name() {
+        return breed_name;
+    }
+
+    public void setBreed_name(String breed_name) {
+        this.breed_name = breed_name;
     }
     
     

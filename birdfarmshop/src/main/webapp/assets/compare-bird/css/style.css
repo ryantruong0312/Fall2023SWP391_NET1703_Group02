@@ -637,3 +637,9 @@ main {
 .cd-products-comparison-table .cd-remove-bird:hover{
     color: #6c757d;
 }
+.title{
+    background-color: #03917D;
+    color: white;
+    font-weight: bold;
+    font-size: 17px;
+}

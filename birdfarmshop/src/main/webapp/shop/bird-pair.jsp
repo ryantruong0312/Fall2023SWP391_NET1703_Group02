@@ -119,19 +119,18 @@
                         <button type="submit" class="button-create">Thêm vẹt mới</button>
                     </form>
                     <div class="column-content">
-                        <h2>Chọn một chú vẹt của khách ${sessionScope.LOGIN_USER.fullName}</h2>
+                        <h2>Chọn một chú vẹt của ${sessionScope.LOGIN_USER.fullName}</h2>
 
                         <!-- EL to populate the category combo box -->
                         <select class="combo-box" id="breedSelect3">
-                            <option value = "">Chọn giống vẹt</option>
-                            <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                                <option value="${breed.breed_id}">${breed.breed_name}</option>
+                            <option value="">Chọn vẹt</option>
+                            <c:forEach items="${requestScope.BIRDCUSTOMER}" var="birdcustomer">
+                                <option value="${birdcustomer.breed_id}-${birdcustomer.bird_id}-${birdcustomer.gender}">${birdcustomer.name}(${birdcustomer.breed_name})</option>
                             </c:forEach>
                         </select>
 
                         <!-- EL to populate the bird name combo box -->
-                        <select class="combo-box" id="birdSelect3"  >
-                        </select>
+                        <input class="combo-box" name="gender1" value="" readonly=""/>
                         <!-- Additional rows to display bird information -->
                         <div id="birdInformation3">         
 
@@ -145,16 +144,11 @@
                         <h2>Chọn một chú vẹt của cửa hàng</h2>
 
                         <!-- EL to populate the category combo box -->
-                        <select class="combo-box" id="breedSelect4" disabled>
-                            <option value = "">Chọn giống vẹt</option>
-                            <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
-                                <option value="${breed.breed_id}">${breed.breed_name}</option>
-                            </c:forEach>
+                        <select class="combo-box" id="breedSelect4">
                         </select>
 
                         <!-- EL to populate the bird name combo box -->
-                        <select class="combo-box" id="birdSelect4">
-                        </select>  
+                        <input class="combo-box" name="gender2" value="" readonly=""/>
 
                         <!-- Additional rows to display bird information -->
                         <div id="birdInformation4"> 
@@ -250,24 +244,25 @@
                     }
                 });
                 $('#pair-customer').click(function () {
-                    let selectBirdCustomer = $('#birdSelect3').val();
-                    let selectBirdShop = $('#birdSelect4').val();
+                    let selectBirdCustomer = $('#breedSelect3').val();
+                    let selectBirdShop = $('#breedSelect4').val();
                     if (selectBirdCustomer) {
                         if (selectBirdShop) {
+                            const arr = selectBirdCustomer.split('-');
+                            const arr2 = selectBirdShop.split('-');
                             $.ajax({
                                 url: 'AddBirdPairToCartController',
                                 type: 'POST',
-                                data: {bird_shop_id: selectBirdShop, bird_customer_id: selectBirdCustomer},
+                                data: {bird_shop_id: arr2[1], bird_customer_id: arr[1]},
                                 success: function (data) {
                                     window.location.href = 'MainController?action=NavToCheckout';
                                 }
-
                             });
                         } else {
-                            toast({title: 'Lỗi', message: 'Vui lòng chọn vẹt của bạn', type: 'error', duration: 3000});
+                            toast({title: 'Lỗi', message: 'Vui lòng chọn vẹt của cửa hàng', type: 'error', duration: 3000});
                         }
                     } else {
-                        toast({title: 'Lỗi', message: 'Vui lòng chọn vẹt của cửa hàng', type: 'error', duration: 3000});
+                        toast({title: 'Lỗi', message: 'Vui lòng chọn vẹt của bạn', type: 'error', duration: 3000});
                     }
                 });
             });

@@ -10,8 +10,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +20,9 @@ import swp391.birdfarmshop.dao.BirdBreedDAO;
 import swp391.birdfarmshop.dao.BirdCustomerDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.model.BirdCustomer;
-import swp391.birdfarmshop.dto.BirdDTO;
 import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.model.BirdBreed;
+import swp391.birdfarmshop.model.User;
 
 /**
  *
@@ -41,25 +41,36 @@ public class RenderBirdPairController extends HttpServlet {
         String url = ERROR;
         PrintWriter out = response.getWriter();
         try {
-            String username = request.getParameter("username");
+            HttpSession session = request.getSession();
+            User u = (User) session.getAttribute("LOGIN_USER");
             String birdCustomerId = request.getParameter("birdCustomerId");
             String breedIdMale = request.getParameter("breedIdMale");
             String breedIdFemale = request.getParameter("breedIdFemale");
             String breedId = request.getParameter("breedId");
+            String breedShopId = request.getParameter("breedShopId");
             String gender = request.getParameter("gender");
             String birdId = request.getParameter("birdId");
+            String birdShopId = request.getParameter("birdShopId");
             List<BirdBreed> breedList = new ArrayList<>();
             BirdBreedDAO breedDao = new BirdBreedDAO();
             BirdCustomerDAO bcd = new BirdCustomerDAO();
             BirdDAO birdDao = new BirdDAO();
             breedList = breedDao.getBirdBreeds();
+            if (u != null) {
+                ArrayList<BirdCustomer> bcList = bcd.getBirdCustomerByCustomer(u.getUsername());
+                request.setAttribute("BIRDCUSTOMER", bcList);
+            }
             request.setAttribute("BIRD_BREEDS", breedList);
             NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
-      
-            if (breedIdMale == null && breedIdFemale == null
-                    && birdId == null && breedId == null
-                    && gender == null && username == null
-                    && birdCustomerId == null) {
+
+            if (breedIdMale == null
+                    && breedIdFemale == null
+                    && birdId == null
+                    && breedId == null
+                    && gender == null
+                    && birdCustomerId == null
+                    && breedShopId == null
+                    && birdShopId == null) {
                 request.getRequestDispatcher(SUCCESS).forward(request, response);
             }
 
@@ -70,10 +81,9 @@ public class RenderBirdPairController extends HttpServlet {
                 for (Bird bird : birdList) {
                     if (bird.isGender() == false && bird.getAge() >= bird.getGrown_age()
                             && bird.getStatus().equals("Còn hàng")) {
-                        out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
+                        out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + " (" + bird.getAge() + " " + ")</option>");
                     };
                 }
-                return;
             }
             if (breedId != null && "0".equals(gender)) {
                 List<Bird> birdList = new ArrayList<>();
@@ -85,7 +95,6 @@ public class RenderBirdPairController extends HttpServlet {
                         out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
                     };
                 }
-                return;
             }
 
             if (breedIdMale != null) {
@@ -98,7 +107,6 @@ public class RenderBirdPairController extends HttpServlet {
                         out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
                     }
                 }
-                return;
             }
             if (breedIdFemale != null) {
                 List<Bird> birdList = new ArrayList<>();
@@ -110,29 +118,32 @@ public class RenderBirdPairController extends HttpServlet {
                         out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
                     }
                 }
-                return;
             }
-            if (username != null && breedId != null) {
-                List<BirdCustomer> birdCustomerList = new ArrayList<>();
-                birdCustomerList = bcd.getBirdCustomerByCustomer(username, breedId, null, 0);
-                out.println("<option value = \"\">Chọn vẹt</option>");
-                for (BirdCustomer bird : birdCustomerList) {
-                    if (bird.getStatus().equals("Chưa ghép cặp")) {
-                        out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getName() + "</option>");
-                    }
+            if (breedShopId != null && gender != null) {
+                List<Bird> birdList = new ArrayList<>();
+                birdList = birdDao.getBirdsByBreedId(breedShopId);
+                String breedName = breedDao.getBreedNameById(breedShopId);
+                boolean transGender = true;
+                if ("0".equals(gender)) {
+                    transGender = false;
                 }
-                return;
+                out.println("<option value = \"\">Chọn vẹt</option>");
+                for (Bird bird : birdList) {
+                    if (bird.isGender() == transGender && bird.getAge() >= bird.getGrown_age()
+                            && bird.getStatus().equals("Còn hàng")) {
+                        out.println("<option value=\"" + bird.getBreed_id() + "-" + bird.getBird_id() + "-" + bird.isGender() + "\">" + bird.getBird_name() + "(" + breedName + ")</option>");
+                    };
+                }
             }
-            if (birdId != null && username != null) {
-                Bird bird = birdDao.getBirdById(birdId);
+            if (birdShopId != null && u != null) {
+                Bird bird = birdDao.getBirdById(birdShopId);
                 out.println("                          <div class=\"bird-info-row\">\n"
                         + "                                <!-- Placeholder for bird image -->\n"
                         + "                                <img id=\"birdImage1\" src=\"" + bird.getImage_url() + "\" alt=\"" + bird.getBird_name() + "\">\n"
                         + "                            </div>\n");
-                return;
             }
             if (birdId != null) {
-                Bird bird = birdDao.getBirdById(birdId);  
+                Bird bird = birdDao.getBirdById(birdId);
                 out.println("                          <div class=\"bird-info-row\">\n"
                         + "                                <!-- Placeholder for bird image -->\n"
                         + "                                <img id=\"birdImage1\" src=\"" + bird.getImage_url() + "\" alt=\"" + bird.getBird_name() + "\">\n"
@@ -158,15 +169,12 @@ public class RenderBirdPairController extends HttpServlet {
                         + "                            </div>");
                 return;
             }
-            if (birdCustomerId != null) {
+            if (birdCustomerId != null && u != null) {
                 BirdCustomer bird = bcd.findBirdCustomer(birdCustomerId);
-                String genderBird = bird.isGender() == true ? "1" : "0";
                 out.println("                          <div class=\"bird-info-row\">\n"
-                        + "                                <input type=\"hidden\" name=\"gender\" value=\"" + genderBird + "\">"
                         + "                                <!-- Placeholder for bird image -->\n"
                         + "                                <img id=\"birdImage1\" src=\"" + bird.getImg_url() + "\" alt=\"" + bird.getName() + "\">\n"
                         + "                            </div>\n");
-                return;
             }
         } catch (Exception e) {
             log("Error at RenderBirdPairController: " + e.toString());

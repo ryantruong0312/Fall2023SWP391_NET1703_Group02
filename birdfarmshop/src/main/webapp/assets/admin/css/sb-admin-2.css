@@ -11279,3 +11279,28 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+.home-custom .main-nav .nav .scroll-to-section > a{
+    font-family: 'Arial' !important;
+    font-weight: 600!important;
+    font-size: 15px!important;
+}
+.home-custom .main-nav .nav .submenu > a{
+    font-family: 'Arial' !important;
+    font-weight: 600!important;
+    font-size: 15px!important;
+}
+.home-custom .main-nav .nav .submenu > ul > li > a{
+    font-family: 'Arial' !important;
+    font-weight: 400!important;
+    font-size: 13px!important;
+}
+.home-custom .main-nav .nav .submenu > ul >.scroll-to-section > a{
+    font-family: 'Arial' !important;
+    font-weight: 100!important;
+    font-size: 13px!important;
+}
+#toast .toast-custom{
+    font-family: 'Arial' !important;
+    padding-top: 16px;
+    padding-bottom: 5px
+}

@@ -355,7 +355,7 @@
                         });
                     }
                 } else {
-                    if (count < 5) {
+                    if (count < 4) {
                         // Increase the counter and add the active class
                         counter.text("So sánh (" + (count + 1) + ")");
                         $(this).css("background-color", "#63b885"); // Set background color

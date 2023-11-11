@@ -227,8 +227,38 @@
                                                                             </c:choose>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="line-status d-flex align-items-center py-5">
+                                                                        <div class="img-status col-6 h-100">
+                                                                            <c:choose>
+                                                                                <c:when test="${not empty birdPair.pList}">
+                                                                                    <div class="d-flex justify-content-around align-items-center">
+                                                                                        <div class="img-button">
+                                                                                            <img onclick="nextImage()"  src="assets/images/decrease-button.png"  alt="nút quay lại" />
+                                                                                        </div>
+                                                                                        <img id="main-ImgPair" src="${birdPair.pList.get(0)}"  alt="ảnh chính giống" />
+                                                                                        <div class="img-button">
+                                                                                            <img onclick="prevImage()"  src="assets/images/increase-button.png"  alt="nút tiếp" />
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <h5 class="text-center">Chưa có ảnh</h5>
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                            <div class="img-more d-flex mt-4 justify-content-center">
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="line-time col-6 h-100">
+                                                                            <ul class="p-2 mt-3">
+                                                                                <c:forEach var="tracking" items="${requestScope.TRACKINGLIST}">
+                                                                                    <li class="mb-2"><fmt:formatDate value="${tracking.date}" pattern="dd-MM-yyyy HH:mm"/> <span class="ml-3">${tracking.content}</span></li>
+                                                                                    </c:forEach>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
                                                                     <div class="content-birdpair mx-3">
-                                                                         <c:if test="${birdPair.status == 'Đã sinh sản' || birdPair.status == 'Đã ấp nở' || birdPair.status == 'Đã thanh toán'}">
+                                                                        <c:if test="${birdPair.status == 'Đã sinh sản' || birdPair.status == 'Đã ấp nở' || birdPair.status == 'Đã thanh toán'}">
                                                                             <div class="d-flex">
                                                                                 <p>Số lượng trứng</p>
                                                                                 <p class="ml-3">${birdPair.number_egg}</p>
@@ -255,6 +285,28 @@
                                                                         <c:if test="${birdPair.status == 'Đã ấp nở' && birdPair.number_young_bird > 0}">
                                                                             <div class="text-center  border-0">
                                                                                 <button id="payment-youngBird" class="btn-danger mt-3 py-2 px-3">Xác nhận thanh toán</button>
+                                                                            </div>
+                                                                        </c:if>
+                                                                        <c:if test="${birdPair.status == 'Đã ấp nở' && birdPair.number_young_bird == 0}">
+                                                                            <div style="border-bottom: none" class="row justify-content-center">
+                                                                                <div class="text-center border-bottom-0 mr-2">
+                                                                                    <form action="MainController" method="POST">
+                                                                                        <input type="hidden" name="action" value="UpdateBirdPair">
+                                                                                        <input type="hidden" name="orderId" value="${birdPair.order_id}"/>
+                                                                                        <input type="hidden" name="pairId" value="${birdPair.pair_id}"/>
+                                                                                        <input type="hidden" name="type" value="repair"/>
+                                                                                        <button style="background-color: #007bff" id="repair-youngBird" class="btn-primary mt-3 py-2 px-3">Ghép lại</button>
+                                                                                    </form>
+                                                                                </div>
+                                                                                <div class="text-center border-bottom-0 ml-2">
+                                                                                    <form action="MainController" method="POST">
+                                                                                        <input type="hidden" name="action" value="UpdateBirdPair">
+                                                                                        <input type="hidden" name="orderId" value="${birdPair.order_id}"/>
+                                                                                        <input type="hidden" name="pairId" value="${birdPair.pair_id}"/>
+                                                                                        <input type="hidden" name="type" value="cancel"/>
+                                                                                        <button id="cancel-youngBird" class="btn-danger mt-3 py-2 px-3">Hủy bỏ</button>
+                                                                                    </form>
+                                                                                </div>
                                                                             </div>
                                                                         </c:if>
                                                                     </div>
@@ -343,7 +395,28 @@
                                                                                     <button id="payment-youngBird" class="btn-danger mt-3 py-2 px-3">Xác nhận thanh toán</button>
                                                                                 </div>
                                                                             </c:if>
-
+                                                                            <c:if test="${birdPair.status == 'Đã ấp nở' && birdPair.number_young_bird == 0}">
+                                                                                <div style="border-bottom: none" class="row justify-content-center">
+                                                                                    <div class="text-center border-bottom-0 mr-2">
+                                                                                        <form action="MainController" method="POST">
+                                                                                            <input type="hidden" name="action" value="UpdateBirdPair">
+                                                                                            <input type="hidden" name="orderId" value="${birdPair.order_id}"/>
+                                                                                            <input type="hidden" name="pairId" value="${birdPair.pair_id}"/>
+                                                                                            <input type="hidden" name="type" value="repair"/>
+                                                                                            <button style="background-color: #007bff" id="repair-youngBird" class="btn-primary mt-3 py-2 px-3">Ghép lại</button>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                    <div class="text-center border-bottom-0 ml-2">
+                                                                                        <form action="MainController" method="POST">
+                                                                                            <input type="hidden" name="action" value="UpdateBirdPair">
+                                                                                            <input type="hidden" name="orderId" value="${birdPair.order_id}"/>
+                                                                                            <input type="hidden" name="pairId" value="${birdPair.pair_id}"/>
+                                                                                            <input type="hidden" name="type" value="cancel"/>
+                                                                                            <button id="cancel-youngBird" class="btn-danger mt-3 py-2 px-3">Hủy bỏ</button>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:if>
                                                                         </c:if>
                                                                     </div>        
                                                                 </c:otherwise>
