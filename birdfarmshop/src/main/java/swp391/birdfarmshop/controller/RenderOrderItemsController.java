@@ -14,10 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dao.BirdBreedDAO;
-import swp391.birdfarmshop.dao.FeedbackDAO;
 import swp391.birdfarmshop.dao.OrderItemDAO;
 import swp391.birdfarmshop.dto.OrderItemDTO;
-import swp391.birdfarmshop.dto.StarDTO;
 import swp391.birdfarmshop.model.BirdBreed;
 import swp391.birdfarmshop.model.User;
 
@@ -42,10 +40,23 @@ public class RenderOrderItemsController extends HttpServlet {
             if (user != null && !user.getRole().equals("customer")) {
                 OrderItemDAO orderItemDao = new OrderItemDAO();
                 ArrayList<OrderItemDTO> itemList = orderItemDao.getItemOrder(orderId);
+                int count = 0;
+                OrderItemDTO item = null;
+                for (OrderItemDTO orderItemDTO : itemList) {
+                    count++;
+                    if(orderItemDTO.getUnit_price() == 0) {
+                       item = itemList.get(count-1);
+                       itemList.remove(itemList.get(count-1));
+                       break;
+                    }
+                }
                 BirdBreedDAO breedDao = new BirdBreedDAO();
                 List<BirdBreed> breeds = breedDao.getBirdBreeds();
                 request.setAttribute("BREEDS", breeds);
                 request.setAttribute("ITEMLIST", itemList);
+                if(item != null) {
+                    request.setAttribute("FREEITEM", item);
+                }
                 url = SUCCESS;
             } else {
                 response.sendRedirect(HOME);

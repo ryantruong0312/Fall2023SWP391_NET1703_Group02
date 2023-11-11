@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,39 +59,19 @@ public class UpdateBirdController extends HttpServlet {
                 url = SUCCESS;
                 String bird_id = request.getParameter("bird_id");
                 BirdDAO birdDao = new BirdDAO();
-                List<BirdDTO> birds = birdDao.getAllBirds();
                 BirdDTO birdDetails = birdDao.getBirdDetailsById(bird_id);
                 ImageDAO imageDao = new ImageDAO();
                 ArrayList<Image> images = imageDao.getImagesFollowBirdId(bird_id);
-                HashMap<String, String> breed = new HashMap<>();
-                List<String> listStatus = new ArrayList<>();
-                for (BirdDTO bird : birds) {
-                    if (!breed.containsKey(bird.getBreed_id())) {
-                        breed.put(bird.getBreed_id(), bird.getBreed_name());
-                    }
-                    if (!listStatus.contains(bird.getStatus())) {
-                        listStatus.add(bird.getStatus());
-                    }
-                }
-                request.setAttribute("BREED", breed);
-                request.setAttribute("STATUS", listStatus);
                 request.setAttribute("BIRD", birdDetails);
                 request.setAttribute("BIRDIMAGES", images);
                 String btAction = request.getParameter("btAction");
                 if (btAction != null) {
                     if (btAction.equals("Update")) {
-                        String txtBirdName = request.getParameter("txtBirdName");
                         String txtBirdColor = request.getParameter("txtBirdColor");
-                        String birdDate = request.getParameter("txtBirdDate");
-                        String txtBirdGrownAge = request.getParameter("txtBirdGrownAge");
-                        String txtBirdGender = request.getParameter("txtBirdGender");
-                        String txtBirdBreed = request.getParameter("txtBirdBreed");
                         String txtBirdAchievement = request.getParameter("txtBirdAchievement");
-                        String txtBirdReproduction_history = request.getParameter("txtBirdReproduction_history");
                         String txtBirdPrice = request.getParameter("txtBirdPrice");
                         String txtBirdDescription = request.getParameter("txtBirdDescription");
                         String txtBirdDiscount = request.getParameter("txtBirdDiscount");
-                        String txtBirdStatus = request.getParameter("txtBirdStatus");
                         Part image_1 = request.getPart("txtImage_1");
                         Part image_2 = request.getPart("txtImage_2");
                         Part image_3 = request.getPart("txtImage_3");
@@ -105,10 +84,8 @@ public class UpdateBirdController extends HttpServlet {
                         if (image_3.getSize() > 0 && images.size() == 3) {
                             updateImage(image_3, bird_id, images.get(2).getImage_id());
                         }
-                        boolean check = birdDao.updateBird(bird_id, txtBirdName, txtBirdColor, birdDate, 
-                                    txtBirdGrownAge, txtBirdGender, txtBirdBreed, txtBirdAchievement, 
-                                    txtBirdReproduction_history, txtBirdPrice, txtBirdDescription, 
-                                    txtBirdDiscount, txtBirdStatus);
+                        boolean check = birdDao.updateBird(bird_id, txtBirdColor, txtBirdDiscount, txtBirdAchievement, 
+                                txtBirdPrice, txtBirdDescription);
                         if (check) {
                             session.setAttribute("SUCCESS", "Cập nhật thành công");
                             url = DETAIL + bird_id;
@@ -135,18 +112,6 @@ public class UpdateBirdController extends HttpServlet {
             String img_url = Constants.C3_HOST + nameImage;
             S3Utils.uploadFile(nameImage, part.getInputStream());
             imgDao.updateImageBird(img_url, bird_id, image_id);
-        }
-    }
-    
-    public void addNewImage(Part part, String bird_id) throws SQLException, IOException {
-        ImageDAO imgDao = new ImageDAO();
-        if (part.getSize() < 1048576) {
-            String file = ImageUtils.getFileName(part);
-            LocalTime currentTime = LocalTime.now();
-            String nameImage = currentTime.getNano() + file;
-            String img_url = Constants.C3_HOST + nameImage;
-            S3Utils.uploadFile(nameImage, part.getInputStream());
-            imgDao.addNewImageBird(img_url, "0", bird_id);
         }
     }
 

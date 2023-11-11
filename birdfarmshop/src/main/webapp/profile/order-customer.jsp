@@ -415,7 +415,7 @@
         <!-- Header Start -->
         <%@include file="../layout/header.jsp" %>
         <!-- Header End -->
-
+        <c:set value="${requestScope.FREEITEMLIST}" var="freeItemList"/>
         <c:set value="${requestScope.ITEMMAP}" var="itemMap"/>
         <main>
             <div class="container container-custome">
@@ -569,9 +569,11 @@
                                                                                                                             <div class="product-name"><span>${orderItem.accessory.accessory_name}</span></div>
                                                                                                                         </div>
                                                                                                                         <div>
-                                                                                                                            <c:if test="${orderItem.unit_price == 0}">
-                                                                                                                            <div class="product-category"><span>Tặng kèm: ${orderItem.order_quantity}</span></div>
-                                                                                                                            </c:if>
+                                                                                                                            <c:forEach items="${freeItemList}" var="item">
+                                                                                                                                <c:if test="${orderItem.order_id eq item.order_id}">
+                                                                                                                            <div class="product-category"><span>Tặng kèm: ${item.order_quantity}</span></div>
+                                                                                                                                </c:if>
+                                                                                                                            </c:forEach>
                                                                                                                             <c:if test="${orderItem.unit_price != 0}">
                                                                                                                             <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
                                                                                                                             </c:if>
