@@ -15,7 +15,6 @@ import swp391.birdfarmshop.model.BirdNest;
 public class OrderItemDTO {
     private int order_item_id;
     private String order_id;
-    private String order_status;
     Bird bird;
     Accessory accessory;
     BirdNest birdNest;
@@ -23,10 +22,9 @@ public class OrderItemDTO {
     private int unit_price;
     private int order_quantity;
 
-    public OrderItemDTO(int order_item_id, String order_id, String order_status, Bird bird, Accessory accessory, BirdNest birdNest, BirdPairDTO birdPair, int unit_price, int order_quantity) {
+    public OrderItemDTO(int order_item_id, String order_id, Bird bird, Accessory accessory, BirdNest birdNest, BirdPairDTO birdPair, int unit_price, int order_quantity) {
         this.order_item_id = order_item_id;
         this.order_id = order_id;
-        this.order_status = order_status;
         this.bird = bird;
         this.accessory = accessory;
         this.birdNest = birdNest;
@@ -41,10 +39,6 @@ public class OrderItemDTO {
 
     public String getOrder_id() {
         return order_id;
-    }
-
-    public String getOrder_status() {
-        return order_status;
     }
 
     public Bird getBird() {

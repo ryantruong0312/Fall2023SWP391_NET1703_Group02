@@ -44,11 +44,23 @@ public class RenderCustomerOrderController extends HttpServlet {
                 ArrayList<OrderItemDTO> orderItemList;
                 LinkedHashMap<Order, ArrayList> orderItemMap = new LinkedHashMap<>();
                 String status = request.getParameter("status");
+                ArrayList<OrderItemDTO> freeItemList = new ArrayList<>();
                 if(status != null) {
                     if(status.equals("wait")) {
                         for (Order order : orderList) {
+                            int count = 0;
+                            OrderItemDTO item = null;
                             if (!orderItemMap.containsKey(order) && order.getOrder_status().equals("Chờ xử lý")) {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
+                                for (OrderItemDTO orderItemDTO : orderItemList) {
+                                    count++;
+                                    if(orderItemDTO.getUnit_price() == 0) {
+                                       item = orderItemList.get(count-1);
+                                       freeItemList.add(item);
+                                       orderItemList.remove(orderItemList.get(count-1));
+                                       break;
+                                    }
+                                }
                                 orderItemMap.put(order, orderItemList);
                             }
                         }
@@ -56,8 +68,19 @@ public class RenderCustomerOrderController extends HttpServlet {
                     }
                     if(status.equals("inProgress")) {
                         for (Order order : orderList) {
+                            int count = 0;
+                            OrderItemDTO item = null;
                             if (!orderItemMap.containsKey(order) && order.getOrder_status().equals("Đang xử lý")) {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
+                                for (OrderItemDTO orderItemDTO : orderItemList) {
+                                    count++;
+                                    if(orderItemDTO.getUnit_price() == 0) {
+                                       item = orderItemList.get(count-1);
+                                       freeItemList.add(item);
+                                       orderItemList.remove(orderItemList.get(count-1));
+                                       break;
+                                    }
+                                }
                                 orderItemMap.put(order, orderItemList);
                             }
                         }
@@ -65,8 +88,19 @@ public class RenderCustomerOrderController extends HttpServlet {
                     }
                     if(status.equals("delivering")) {
                         for (Order order : orderList) {
+                            int count = 0;
+                            OrderItemDTO item = null;
                             if (!orderItemMap.containsKey(order) && order.getOrder_status().equals("Đang giao hàng")) {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
+                                for (OrderItemDTO orderItemDTO : orderItemList) {
+                                    count++;
+                                    if(orderItemDTO.getUnit_price() == 0) {
+                                       item = orderItemList.get(count-1);
+                                       freeItemList.add(item);
+                                       orderItemList.remove(orderItemList.get(count-1));
+                                       break;
+                                    }
+                                }
                                 orderItemMap.put(order, orderItemList);
                             }
                         }
@@ -74,8 +108,19 @@ public class RenderCustomerOrderController extends HttpServlet {
                     }
                     if(status.equals("delivered")) {
                         for (Order order : orderList) {
+                            int count = 0;
+                            OrderItemDTO item = null;
                             if (!orderItemMap.containsKey(order) && order.getOrder_status().equals("Đã giao hàng")) {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
+                                for (OrderItemDTO orderItemDTO : orderItemList) {
+                                    count++;
+                                    if(orderItemDTO.getUnit_price() == 0) {
+                                       item = orderItemList.get(count-1);
+                                       freeItemList.add(item);
+                                       orderItemList.remove(orderItemList.get(count-1));
+                                       break;
+                                    }
+                                }
                                 orderItemMap.put(order, orderItemList);
                             }
                         }
@@ -83,8 +128,19 @@ public class RenderCustomerOrderController extends HttpServlet {
                     }
                     if(status.equals("rated")) {
                         for (Order order : orderList) {
+                            int count = 0;
+                            OrderItemDTO item = null;
                             if (!orderItemMap.containsKey(order) && order.getOrder_status().equals("Đã đánh giá")) {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
+                                for (OrderItemDTO orderItemDTO : orderItemList) {
+                                    count++;
+                                    if(orderItemDTO.getUnit_price() == 0) {
+                                       item = orderItemList.get(count-1);
+                                       freeItemList.add(item);
+                                       orderItemList.remove(orderItemList.get(count-1));
+                                       break;
+                                    }
+                                }
                                 orderItemMap.put(order, orderItemList);
                             }
                         }
@@ -92,8 +148,19 @@ public class RenderCustomerOrderController extends HttpServlet {
                     }
                     if(status.equals("cancel")) {
                         for (Order order : orderList) {
+                            int count = 0;
+                            OrderItemDTO item = null;
                             if (!orderItemMap.containsKey(order) && order.getOrder_status().equals("Đã hủy")) {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
+                                for (OrderItemDTO orderItemDTO : orderItemList) {
+                                    count++;
+                                    if(orderItemDTO.getUnit_price() == 0) {
+                                       item = orderItemList.get(count-1);
+                                       freeItemList.add(item);
+                                       orderItemList.remove(orderItemList.get(count-1));
+                                       break;
+                                    }
+                                }
                                 orderItemMap.put(order, orderItemList);
                             }
                         }
@@ -101,13 +168,25 @@ public class RenderCustomerOrderController extends HttpServlet {
                     }
                 } else {
                     for (Order order : orderList) {
+                        int count = 0;
+                        OrderItemDTO item = null;
                         if (!orderItemMap.containsKey(order)) {
                             orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
+                            for (OrderItemDTO orderItemDTO : orderItemList) {
+                                    count++;
+                                    if(orderItemDTO.getUnit_price() == 0) {
+                                       item = orderItemList.get(count-1);
+                                       freeItemList.add(item);
+                                       orderItemList.remove(orderItemList.get(count-1));
+                                       break;
+                                    }
+                                }
                             orderItemMap.put(order, orderItemList);
                         }
                     }
                 }
                 request.setAttribute("ITEMMAP", orderItemMap);
+                request.setAttribute("FREEITEMLIST", freeItemList);
             } else {
                 response.sendRedirect(HOME);
             }

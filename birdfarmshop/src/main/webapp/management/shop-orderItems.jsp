@@ -107,7 +107,7 @@
                 display: flex;
                 align-items: center;
             }
-            .card-body h3,h5,p {
+            .card-body h3,h5,h6,p {
                 float: left;
                 clear: left;
                 text-align: left;
@@ -170,10 +170,9 @@
                                     <div class="col-md-6">
                                         <div class="card-body">
                                             <h3 class="card-title">${item.bird.bird_name}</h3>
-                                            <h5 class="card-title">Màu sắc: ${item.bird.color}</h5><br/>
                                             <c:forEach items="${requestScope.BREEDS}" var="breed">
                                                 <c:if test="${breed.breed_id eq item.bird.breed_id}">
-                                            <h5 class="card-title">Phân loại: ${breed.breed_name}</h5>
+                                            <h5 class="card-title">${breed.breed_name}</h5>
                                                 </c:if>
                                             </c:forEach>
                                         </div>
@@ -182,7 +181,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
                                             <h5 class="btn btn-primary">
-                                                <fmt:formatNumber value="${item.bird.price}" pattern="#,###"/>₫ <span class="badge badge-light">- ${item.bird.discount}%</span>
+                                                <fmt:formatNumber value="${item.unit_price}" pattern="#,###"/>₫
                                             </h5>
                                         </div>
                                     </div>
@@ -199,12 +198,12 @@
                                     <div class="col-md-3">
                                         <div class="card-body">
                                             <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
+                                            <c:if test="${item.accessory.accessory_id eq requestScope.FREEITEM.accessory.accessory_id}">
+                                                <h6 style="margin-bottom: 10px; color: red;" class="card-text">Tặng kèm: ${FREEITEM.order_quantity}</h6>
+                                            </c:if>
                                             <h5 class="btn btn-primary">
-                                                <c:if test="${item.unit_price == 0}">
-                                                <div><span>Tặng kèm</span></div>
-                                                </c:if>
                                                 <c:if test="${item.unit_price != 0}">
-                                                <fmt:formatNumber value="${item.accessory.unit_price}" pattern="#,###"/>₫ <span class="badge badge-light">- ${item.accessory.discount}%</span>
+                                                <fmt:formatNumber value="${item.unit_price}" pattern="#,###"/>₫
                                                 </c:if>
                                             </h5>
                                         </div>
@@ -223,7 +222,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
                                             <h5 class="btn btn-primary">
-                                                <fmt:formatNumber value="${item.birdNest.price}" pattern="#,###"/>₫ <span class="badge badge-light">- ${item.birdNest.discount}%</span>
+                                                <fmt:formatNumber value="${item.unit_price}" pattern="#,###"/>₫
                                             </h5>
                                         </div>
                                     </div>
@@ -252,7 +251,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="card-body">
-                                            <h5 class="card-title">Số lượng: ${item.birdPair.number_young_bird}</h5>
+                                            <h5 class="card-title">Số lượng con non: ${item.birdPair.number_young_bird}</h5>
                                             <h5 class="btn btn-primary">
                                                 Tiền giống: <fmt:formatNumber value="${item.birdPair.number_young_bird * item.birdPair.young_bird_price}" pattern="#,###"/>₫
                                             </h5>

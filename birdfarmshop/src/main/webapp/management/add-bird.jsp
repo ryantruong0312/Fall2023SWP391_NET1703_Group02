@@ -176,7 +176,7 @@
                             </div>
                             <div class="form-add mb-3">
                                 <label>Tên vẹt cảnh</label>
-                                <input type="text" name="txtBirdName" class="input form-control" title="Vui lòng chỉ nhập chữ cái" value="${requestScope.txtBirdName}" required/>                          
+                                <input type="text" name="txtBirdName" class="input form-control" pattern="^\S(?:.*\S)?$" title="Vui lòng nhập chữ cái" value="${requestScope.txtBirdName}" required/>                          
                             </div>
                             <div class="form-add mb-3">
                                 <label>Màu sắc</label>
@@ -186,11 +186,11 @@
                         <div class="col-lg-6 form-custom">
                             <div class="form-add mb-3">
                                 <label>Thành tích thi đấu</label>
-                                <textarea rows="5" name="txtBirdAchievement" class="input form-control" value="" required>${requestScope.txtBirdAchievement}</textarea>
+                                <textarea rows="5" name="txtBirdAchievement" class="input form-control" value="">${requestScope.txtBirdAchievement}</textarea>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Mô tả chi tiết</label>
-                                <textarea rows="5" name="txtBirdDescription" class="input form-control" value="" required>${requestScope.txtBirdDescription}</textarea>
+                                <textarea rows="5" name="txtBirdDescription" class="input form-control" value="">${requestScope.txtBirdDescription}</textarea>
                             </div>
                             <div class="form-add mb-3 column-container">
                                 <label>Giá bán</label>
@@ -222,7 +222,7 @@
                                 </div>
                             </div>
                             <div class="form-add mb-3">
-                                <label>Hình ảnh sản phẩm 1(Bắt buộc)</label>
+                                <label>Hình ảnh sản phẩm 1</label>
                                 <img style="display: none;" id="image-preview-1" src=""/>
                                 <input type="file" name="txtImage_1" accept="image/jpeg, image/png, image/gif" onchange="previewImage(1)" required/>
                             </div>
