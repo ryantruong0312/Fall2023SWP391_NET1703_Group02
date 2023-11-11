@@ -248,4 +248,53 @@ public class FeedbackDAO {
         }
         return false;
     }
+      
+    public ArrayList<Feedback> getFeedbackByCustomer(String customer) {
+        ArrayList<Feedback> feedbacks = new ArrayList<>();
+        Connection cnn = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        try {
+            cnn = DBUtils.getConnection();
+            if (cnn != null) {
+                String sql =    "SELECT TOP (1000) [feedback_id],[customer],[order_item_id],\n" +
+                                "[rating],[comment],[feedback_date]\n" +
+                                "FROM [BirdFarmShop].[dbo].[Feedback]\n" +
+                                "WHERE [customer] = ?";
+                pst = cnn.prepareStatement(sql);
+                pst.setString(1, customer);
+                rs = pst.executeQuery();
+                while (rs.next()) {
+                    String feedback_id = rs.getString("feedback_id");
+                    int order_item_id = rs.getInt("order_item_id");
+                    int rating = rs.getInt("rating");
+                    String commment = rs.getString("comment");
+                    Date feedback_date = rs.getDate("feedback_date");
+                    Feedback feedback = new Feedback(feedback_id, customer, order_item_id, rating, commment, feedback_date);
+                    feedbacks.add(feedback);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (cnn != null) {
+                try {
+                    cnn.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (SQLException e) {
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return feedbacks;
+    }
 }

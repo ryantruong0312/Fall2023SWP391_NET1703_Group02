@@ -161,7 +161,6 @@
                             <div class="card mb-3" style="max-width: 100%;">
                                 <div class="row no-gutters">
                                     <c:forEach items="${itemList}" var="item">
-                                    <c:set value="${counter.count}" var="index"/>
                                     <c:choose>    
                                         <c:when test="${item.bird != null}">
                                     <div class="col-md-3">
@@ -197,14 +196,14 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="card-body">
-                                            <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
+                                            <c:if test="${item.order_quantity != 0}">
+                                                <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
+                                            </c:if>
                                             <c:if test="${item.accessory.accessory_id eq requestScope.FREEITEM.accessory.accessory_id}">
                                                 <h6 style="margin-bottom: 10px; color: red;" class="card-text">Tặng kèm: ${FREEITEM.order_quantity}</h6>
                                             </c:if>
                                             <h5 class="btn btn-primary">
-                                                <c:if test="${item.unit_price != 0}">
-                                                <fmt:formatNumber value="${item.unit_price}" pattern="#,###"/>₫
-                                                </c:if>
+                                                <fmt:formatNumber value="${item.unit_price * item.order_quantity}" pattern="#,###"/>₫
                                             </h5>
                                         </div>
                                     </div>
@@ -222,7 +221,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
                                             <h5 class="btn btn-primary">
-                                                <fmt:formatNumber value="${item.unit_price}" pattern="#,###"/>₫
+                                                <fmt:formatNumber value="${item.unit_price * item.order_quantity}" pattern="#,###"/>₫
                                             </h5>
                                         </div>
                                     </div>

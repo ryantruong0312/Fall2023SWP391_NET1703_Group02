@@ -489,4 +489,51 @@ public class OrderItemDAO {
         }
         return orderItemList;
     }
+    
+    public OrderItemDTO getOrderItem(int order_item_id) throws SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        OrderItemDTO orderItem = null;
+        BirdDAO birdDao = new BirdDAO();
+        BirdNestDAO bnDao = new BirdNestDAO();
+        AccessoryDAO accessoryDao = new AccessoryDAO();
+        BirdPairDAO bpDao = new BirdPairDAO();
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                stm = con.prepareStatement("SELECT [order_id],[bird_id],[nest_id],"
+                        + "                 [accessory_id],[unit_price],[order_quantity]\n"
+                        + "                 FROM [dbo].[OrderItem]\n"
+                        + "                 WHERE [order_item_id] = ?");
+                stm.setInt(1, order_item_id);
+                rs = stm.executeQuery();
+                while (rs.next()) {
+                    String order_id = rs.getString("order_id");
+                    String bird_id = rs.getString("bird_id");
+                    String nest_id = rs.getString("nest_id");
+                    String accessory_id = rs.getString("accessory_id");
+                    Bird bird = birdDao.getBirdById(bird_id);
+                    BirdNest birdNest = bnDao.getBirdsNestById(nest_id);
+                    Accessory accessory = accessoryDao.getAccessoryByID(accessory_id);
+                    BirdPairDTO birdPair = bpDao.getBirdPairByOrderId(order_id);
+                    int unit_price = rs.getInt("unit_price");
+                    int order_quantity = rs.getInt("order_quantity");
+                    orderItem = new OrderItemDTO(order_item_id, order_id, bird, accessory, birdNest, birdPair, unit_price, order_quantity);
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+            if (rs != null) {
+                rs.close();
+            }
+        }
+        return orderItem;
+    }
 }
