@@ -153,92 +153,67 @@ $('#birdSelect2').change(function (event){
     });
     
 });
-//bird-customer start
-var breedCustomer = null;
 $('main #breedSelect3').change(function (event) {
     let breedSelect3 = $(this).val();
-    $('main #breedSelect4').val(breedSelect3);
-    let username = $('input[name=username]').val();
-    if(!breedSelect3){
-        $('#birdInformation3').html(" <div class=\"bird-info-row\">\n"
-            
-            + "    </div>");
-        $('#birdInformation4').html(" <div class=\"bird-info-row\">\n"
-            
-            + "    </div>");
-        $('#birdSelect3').html("");
-        $('#birdSelect4').html("");
+    if(breedSelect3 === ''){
+        $('input[name=gender1]').val("");
+        $('input[name=gender2]').val("");
+        $('#birdInformation3').html("");
+        $('#birdInformation4').html("");
+        $('#breedSelect4').html("");
         return;
-    } 
+    }
+    $('main #breedSelect4').val(breedSelect3);
+    const arr = breedSelect3.split('-');
+    let gender = 0;
+    if(arr[2] === 'true'){
+        $('input[name=gender1]').val("Chim trống");
+    }else{
+        $('input[name=gender1]').val("Chim mái");
+        gender = 1;
+    }
     $.ajax({
         url: 'MainController?action=NavToPairBirds',
         type: 'POST',
-        data: {breedId: breedSelect3, username: username},
+        data: {birdCustomerId: arr[1]},
         success: function (data){
-            $('#birdSelect3').html(data);
+            $('#birdInformation3').html(data);
         }
     });
-    if(breedCustomer !== null && breedSelect3 !== breedCustomer){
-        $('#birdInformation3').html(" <div class=\"bird-info-row\">\n"
-            
-            + "    </div>");
-        $('#birdInformation4').html(" <div class=\"bird-info-row\">\n"
-            
-            + "    </div>");
-        $('#birdSelect3').html("");
-        $('#birdSelect4').html("");
-    }
-    breedCustomer = breedSelect3;
+    $.ajax({
+        url: 'MainController?action=NavToPairBirds',
+        type: 'POST',
+        data: {breedShopId: arr[0], gender: gender},
+        success: function (data) {
+            console.log(data);
+            $('#breedSelect4').html(data);
+            $('input[name=gender2]').val("");
+            $('#birdInformation4').html("");
+        }
+    });  
 });
-//select bird2
-$('#birdSelect4').change(function (event) {
-    let birdId = $(this).val();
-    let username = $('input[name=username]').val();
-    if (!birdId) {
-        $('#birdInformation4').html(" <div class=\"bird-info-row\">\n"
-            
-            + "    </div>");
-        $('#birdSelect4').html("<option>Chọn vẹt</option>");
+$('main #breedSelect4').change(function (event) {
+    let breedSelect4 = $(this).val();
+    if(breedSelect4 === ''){
+        $('input[name=gender2]').val("");
+        $('#birdInformation4').html("");
         return;
+    }
+    $('main #breedSelect4').val(breedSelect4);
+    const arr = breedSelect4.split('-');
+    if(arr[2] === 'true'){
+        $('input[name=gender2]').val("Chim trống");
+    }else{
+        $('input[name=gender2]').val("Chim mái");
     }
     $.ajax({
         url: 'MainController?action=NavToPairBirds',
         type: 'POST',
-        data: {birdId: birdId, username: username },
-        success: function (data) {
+        data: {birdShopId: arr[1]},
+        success: function (data){
             $('#birdInformation4').html(data);
         }
     });
-    
-});
-var birdCustomer = null;
-$('#birdSelect3').change(function (event) {
-    let birdId = $(this).val();
-    if (!birdId) {
-        $('#birdInformation3').html(" <div class=\"bird-info-row\">\n"
-                
-                + "    </div>");
-        $('#birdInformation4').html(" <div class=\"bird-info-row\">\n"
-                
-                + "    </div>");
-        $('#birdSelect4').html("");
-        return;
-    }
-    if(birdId){
-        $('#confirm-remove').css('display', 'block');
-        $('#btn-confirrm').attr('data-value',birdId);   
-    }
-
-    if (birdCustomer !== null && birdId !== birdCustomer) {
-        $('#birdInformation3').html(" <div class=\"bird-info-row\">\n"
-                
-                + "    </div>");
-        $('#birdInformation4').html(" <div class=\"bird-info-row\">\n"
-                
-                + "    </div>");
-        $('#birdSelect4').html("");
-    }
-    birdCustomer = birdId;
 });
 //bird-customer end
 $('.show-password').click(function () {

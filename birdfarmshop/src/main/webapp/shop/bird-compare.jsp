@@ -55,9 +55,25 @@
                     </a>
                     <div class="cd-products-wrapper mt-5">
                         <ul class="cd-products-columns">
+                            <li class="title" style="width: 220px">
+                                <ul class="cd-features-list">
+                                    <li style="line-height: 320px">
+                                        Hình ảnh
+                                    </li>    
+                                    <li clas="birdPrice">
+                                        Giá cả
+                                    </li>
+                                    <li>Màu sắc</li>
+                                    <li>Tuổi</li>
+                                    <li>Lịch sử sinh sản</li>
+                                    <li>Thành tựu</li>
+                                    <li>Trạng thái</li>
+                                    <li></li>
+                                </ul>
+                            </li>
                             <c:forEach var="bird" items="${requestScope.BIRDS}">
                                 <li class="product">
-                                    <div onclick="remove(this,'${bird.bird_id}')" class="cd-remove-bird">
+                                    <div onclick="remove(this, '${bird.bird_id}')" class="cd-remove-bird">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </div>
                                     <ul class="cd-features-list">
@@ -68,21 +84,21 @@
                                         <c:choose>
                                             <c:when test="${bird.discount > 0}">
                                                 <li>
-                                                    <span class="d-block">Giá bán: <del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
+                                                    <span class="d-block"><del><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</del></span>
                                                     <span class="d-block birdPrice" style="color: red; margin-top: 5px;"><fmt:formatNumber value="${bird.price - bird.price * bird.discount / 100}" pattern="#,###"/> ₫</span>
                                                 </li>
                                             </c:when>                                                    
                                             <c:otherwise>
                                                 <li clas="birdPrice">
-                                                    <span>Giá bán: <fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
+                                                    <span><fmt:formatNumber value="${bird.price}" pattern="#,###"/> ₫</span>
                                                 </li>
                                             </c:otherwise>
                                         </c:choose> 
-                                        <li>Màu sắc: ${bird.color}</li>
-                                        <li>Tuổi chim: ${bird.age} tháng</li>
-                                        <li>Lứa sinh sản: ${bird.reproduction_history} </li>
-                                        <li>Thành tích: ${bird.achievement} </li>
-                                        <li>Tình trạng: ${bird.status} </li>
+                                        <li>${bird.color}</li>
+                                        <li>${bird.age} tháng</li>
+                                        <li>${bird.reproduction_history} </li>
+                                        <li>${bird.achievement} </li>
+                                        <li>${bird.status}</li>
                                         <li>
                                             <a href="MainController?action=NavToBirdDetails&bird_id=${bird.bird_id}">
                                                 <button style="font-size: 1.6rem;" class="detail-info btn btn-success">Chi tiết</button>
@@ -108,7 +124,7 @@
                     data: {bird_id: data},
                     success: function (check) {
                         const number = Number(check);
-                        if(check == 0){   
+                        if (check == 0) {
                             window.location.href = 'MainController?action=NavToBird';
                         }
                     }

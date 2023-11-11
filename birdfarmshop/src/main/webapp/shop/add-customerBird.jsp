@@ -45,7 +45,7 @@
                     <h2>Thêm một chú vẹt mới</h2>
                     <form id="form-createBird" action="CreateBirdCustomerController" method="POST" enctype="multipart/form-data"> 
                         <!-- EL to populate the category combo box -->
-                        <select class="combo-box" name="txtBreedId" id="breedSelect3">
+                        <select class="combo-box" name="txtBreedId" id="breedSelect5">
                             <option value = "">Chọn giống vẹt</option>
                             <c:forEach items="${requestScope.BIRD_BREEDS}" var="breed">
                                     <option value="${breed.breed_id}" ${param.txtBreedId == breed.breed_id ? "selected":""}>${breed.breed_name}</option>

@@ -168,7 +168,7 @@
                 width: 10%;
             }
             .nav-item{
-                width: 18%;
+                width: 15%;
             }
             #orderTabs li:hover{
                 cursor: pointer;
@@ -210,6 +210,9 @@
                                         </li>
                                         <li class="nav-item">
                                             <a onclick="changeStatus(this)" data-value="Đã thanh toán" class="nav-link ${param.status == 'Đã thanh toán' ? "active":""}">Đã thanh toán</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a onclick="changeStatus(this)" data-value="Đã hủy" class="nav-link ${param.status == 'Đã hủy' ? "active":""}">Đã hủy</a>
                                         </li>
                                     </ul>
                                     <div class="tab-pane">

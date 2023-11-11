@@ -134,11 +134,13 @@
         <section class="section" id="product" style="margin-top: 60px; margin-bottom: 75px;">
             <div class="container">
                 <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
-                    <div class="row" style="margin-bottom: 15px;">
+                    <c:if test="${requestScope.birdDetails.status eq 'Còn hàng'}">
+                         <div class="row" style="margin-bottom: 15px;">
                         <div class="col-lg-12">
                             <button class="btn-primary button-form" style="float: right;"><a href="MainController?action=UpdateBird&bird_id=${birdDetails.bird_id}"><span style="color: white;">Cập nhật chim</span></a></button>
                         </div>
                     </div>
+                    </c:if>
                 </c:if>
                 <div class="row">
                     <div class="col-lg-7">

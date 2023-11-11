@@ -271,4 +271,61 @@ public class BirdCustomerDAO {
         }
         return false;
     }
+        public ArrayList<BirdCustomer> getBirdCustomerByCustomer(String customer) {
+        ArrayList<BirdCustomer> birdCustomerList = new ArrayList<>();
+        Connection cnn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            cnn = DBUtils.getConnection();
+            if (cnn != null) {
+                String sql = "SELECT [bird_id],[bird_name],[gender],cb.[breed_id],\n"
+                        + "	     [customer_id],[image_url],[status],bb.[breed_name]\n"
+                        + "FROM CustomerBird cb\n"
+                        + "LEFT JOIN BirdBreed bb\n"
+                        + "ON cb.[breed_id] = bb.[breed_id]";
+                if (customer != null) {
+                    sql += " WHERE customer_id = '" + customer + "'\n";
+                }
+                st = cnn.createStatement();
+                rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    int bird_id = rs.getInt("bird_id");
+                    String bird_name = rs.getString("bird_name");
+                    boolean gender = rs.getBoolean("gender");
+                    String breed_id = rs.getString("breed_id");
+                    String img_url = rs.getString("image_url");
+                    String status = rs.getString("status");
+                    String breed_name = rs.getString("breed_name");
+                    BirdCustomer b = new BirdCustomer(bird_id, bird_name, gender, breed_id, customer, img_url, status,breed_name);
+                    birdCustomerList.add(b);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cnn != null) {
+                try {
+                    cnn.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (st != null) {
+                try {
+                    st.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return birdCustomerList;
+    }
 }

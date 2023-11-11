@@ -207,17 +207,25 @@
                                                                     <div class="card w-100 mt-2"> <!-- Add the w-100 class to make the card expand to full width -->
                                                                         <div class="card-body bird">
                                                                             <!-- Order ID and Create Date -->
-                                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                                <div class="order">
+                                                                            <div class="row align-items-center">
+                                                                                <div class="order col-1">
                                                                                     <h6 class="text-center">${counter.count}</h6>
                                                                                 </div>
-                                                                                <div>
+                                                                                <div class="col-3">
                                                                                     <h5>${birdAll.name}</h5>
                                                                                 </div>
-                                                                                <div>
+                                                                                <div class="col-2">
+                                                                                    <c:if test="${birdAll.gender == true}">
+                                                                                        <h5>Chim trống</h5>
+                                                                                    </c:if>
+                                                                                    <c:if test="${birdAll.gender == false}">
+                                                                                        <h5>Chim mái</h5>
+                                                                                    </c:if>
+                                                                                </div>
+                                                                                <div class="col-3">
                                                                                     <h5>${birdAll.status}</h5>
                                                                                 </div>
-                                                                                <div class="image-item">
+                                                                                <div class="image-item col-auto">
                                                                                     <img src="${birdAll.img_url}" alt="${birdAll.name}" />
                                                                                 </div>
                                                                             </div>
@@ -255,6 +263,14 @@
                                                                                     </div>
                                                                                     <div>
                                                                                         <h5>${birdPair.name}</h5>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <c:if test="${birdAll.gender == true}">
+                                                                                            <h5>Chim trống</h5>
+                                                                                        </c:if>
+                                                                                        <c:if test="${birdAll.gender == false}">
+                                                                                            <h5>Chim mái</h5>
+                                                                                        </c:if>
                                                                                     </div>
                                                                                     <div>
                                                                                         <h5>${birdPair.status}</h5>
@@ -296,6 +312,14 @@
                                                                                     </div>
                                                                                     <div>
                                                                                         <h5>${yetPairBird.name}</h5>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <c:if test="${birdAll.gender == true}">
+                                                                                            <h5>Chim trống</h5>
+                                                                                        </c:if>
+                                                                                        <c:if test="${birdAll.gender == false}">
+                                                                                            <h5>Chim mái</h5>
+                                                                                        </c:if>
                                                                                     </div>
                                                                                     <div>
                                                                                         <h5>${yetPairBird.status}</h5>

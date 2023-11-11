@@ -168,7 +168,6 @@ public class BirdDAO {
                             + "    ELSE 3\n"
                             + "  END,  age ASC OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
                 }
-                System.out.println(sql);
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
                 while (rs.next()) {
