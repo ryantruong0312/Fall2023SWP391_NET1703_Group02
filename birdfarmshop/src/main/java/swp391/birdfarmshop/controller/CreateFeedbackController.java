@@ -12,7 +12,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.text.ParseException;
 import swp391.birdfarmshop.dao.FeedbackDAO;
+import swp391.birdfarmshop.dao.OrderDAO;
+import swp391.birdfarmshop.dao.OrderItemDAO;
+import swp391.birdfarmshop.dto.OrderItemDTO;
 import swp391.birdfarmshop.model.Feedback;
 import swp391.birdfarmshop.model.User;
 
@@ -31,22 +36,26 @@ public class CreateFeedbackController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
-            String rating_txt = request.getParameter("star");
-            int rating = Integer.parseInt(rating_txt);
-            String comment = request.getParameter("feedback");
-            String order_item_id_txt = request.getParameter("order_item_id");
-            int order_item_id = Integer.parseInt(order_item_id_txt);
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
-            Feedback feedback = new Feedback(null, user.getUsername(), order_item_id, rating, comment, null);
-            FeedbackDAO feedbackDAO = new FeedbackDAO();
-            boolean fb = feedbackDAO.addFeedback(feedback);
-            if (fb) {
-                session.setAttribute("SUCCESS", "Đã thêm đánh giá thành công");
-                url = SUCCESS;
+            if(user != null  && user.getRole().equals("customer")) {
+                int rating = Integer.parseInt(request.getParameter("star"));
+                String comment = request.getParameter("feedback");
+                int order_item_id = Integer.parseInt(request.getParameter("order_item_id"));
+                OrderItemDAO itemDao = new OrderItemDAO();
+                OrderItemDTO item = itemDao.getOrderItem(order_item_id);
+                Feedback feedback = new Feedback(null, user.getUsername(), order_item_id, rating, comment, null);
+                FeedbackDAO feedbackDAO = new FeedbackDAO();
+                boolean fb = feedbackDAO.addFeedback(feedback);
+                OrderDAO orderDao = new OrderDAO();
+                if (fb) {
+                    orderDao.updateOrderStatus(item.getOrder_id(), "Đã đánh giá");
+                    session.setAttribute("SUCCESS", "Đã thêm đánh giá thành công");
+                    url = SUCCESS;
+                }
             }
-
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | NumberFormatException | SQLException | ParseException e) {
+            log("Error at CreateFeedbackController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

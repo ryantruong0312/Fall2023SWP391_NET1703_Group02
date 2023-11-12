@@ -415,6 +415,7 @@
         <!-- Header Start -->
         <%@include file="../layout/header.jsp" %>
         <!-- Header End -->
+        <c:set value="${requestScope.FEEDBACKLIST}" var="feedbackList"/>
         <c:set value="${requestScope.FREEITEMLIST}" var="freeItemList"/>
         <c:set value="${requestScope.ITEMMAP}" var="itemMap"/>
         <main>
@@ -426,11 +427,11 @@
                             <div class="card-body profile-section">
                                 <div class="row gutters">
                                     <div class="card-body order-section">
-                                        <div id="popup" style="display: none; position: fixed; background-color: white; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;">
-                                            <div style="padding: 5px 0; white-space: nowrap;" id="update">
+                                        <div id="popup" style="display: none; position: fixed; background-color: #ffffcc; border-radius: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;">
+                                            <div style="padding: 30px;" id="update">
                                                 <div class="flex">
-                                                    <a id="cancelOrder" style="background-color: #ffcccc;" class="flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round"><span>Xác nhận</span></a>
-                                                    <a style="background-color: #ffcccc;" class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" onclick="hide('popup');"><span>Hủy bỏ</span></a>
+                                                    <a id="cancelOrder" style="background-color: #ffcccc;" class="flex-1 flex align-items-center justify-content-center m-2 px-5 py-3 border-round"><span style="color: black;">Xác nhận</span></a>
+                                                    <a style="background-color: #ffcccc;" class="bordered-link flex-1 flex align-items-center justify-content-center m-2 px-5 py-3 border-round" onclick="hide('popup');"><span style="color: black;">Hủy bỏ</span></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -474,7 +475,16 @@
                                                                             <div class="order-id">Mã đơn hàng: ${order.order_id} - Ngày đặt hàng: ${formattedDate}.</div>
                                                                             <!-- order status -->
                                                                             <c:if test="${order.order_status eq 'Chờ xử lý'}">
-                                                                                <div><a onclick="show('popup', '${order.order_id}'); event.stopPropagation();" style="color: white; background-color: #0066ff; padding: 5px 10px; border-radius: 20px; font-size: 16px;">HỦY ĐƠN</a></div>
+                                                                                <c:forEach items="${itemList}" var="item">
+                                                                                    <c:if test="${item.birdPair.status eq 'Chờ lấy chim'}">
+                                                                                        <div><a onclick="show('popup', '${order.order_id}'); event.stopPropagation();" style="color: white; background-color: #0066ff; padding: 5px 10px; border-radius: 20px; font-size: 16px;">HỦY ĐƠN</a></div>
+                                                                                    </c:if>
+                                                                                </c:forEach>
+                                                                                <c:forEach items="${itemList}" var="item">
+                                                                                    <c:if test="${item.birdPair == null}">
+                                                                                        <div><a onclick="show('popup', '${order.order_id}'); event.stopPropagation();" style="color: white; background-color: #0066ff; padding: 5px 10px; border-radius: 20px; font-size: 16px;">HỦY ĐƠN</a></div>
+                                                                                    </c:if>
+                                                                                </c:forEach>
                                                                             </c:if>
                                                                             <div class="order-status">${order.order_status}</div>
                                                                         </div>
@@ -516,10 +526,18 @@
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
-                                                                                                            <c:if test="${order.order_status eq 'Đã giao hàng'}">
-                                                                                                            <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
-                                                                                                                Đánh giá
-                                                                                                            </button>          
+                                                                                                            <c:set var="isFeedbacked" value="false" />
+                                                                                                            <c:if test="${order.order_status eq 'Đã giao hàng' || order.order_status eq 'Đã đánh giá'}">
+                                                                                                                <c:forEach items="${feedbackList}" var="feedback">
+                                                                                                                    <c:if test="${orderItem.order_item_id == feedback.order_item_id}">
+                                                                                                                        <c:set var="isFeedbacked" value="true" />
+                                                                                                                    </c:if>
+                                                                                                                </c:forEach>
+                                                                                                            </c:if>
+                                                                                                            <c:if test="${!isFeedbacked}">
+                                                                                                                <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+                                                                                                                    Đánh giá
+                                                                                                                </button>
                                                                                                             </c:if>
                                                                                                             <!-- Modal -->
                                                                                                             <form action = "MainController">
@@ -533,7 +551,6 @@
                                                                                                                             <div class="modal-body">
                                                                                                                                 <input type="hidden" name="order_item_id" id="order_feedback"/>
                                                                                                                                 <input type="hidden" class="" min="1" max="5" name="star" value="1" required="" id="star_number"/>
-
                                                                                                                                 <div class="rating-box">
                                                                                                                                     <h4>Trải nghiệm của bạn thế nào ?</h4>
                                                                                                                                     <div class="stars">
@@ -574,29 +591,49 @@
                                                                                                                             <div class="product-category"><span>Tặng kèm: ${item.order_quantity}</span></div>
                                                                                                                                 </c:if>
                                                                                                                             </c:forEach>
-                                                                                                                            <c:if test="${orderItem.unit_price != 0}">
+                                                                                                                            <c:if test="${orderItem.order_quantity != 0}">
                                                                                                                             <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
                                                                                                                             </c:if>
-                                                                                                                            
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                                 <div class="info-right">
                                                                                                                     <div class="price">
                                                                                                                         <c:if test="${orderItem.accessory.discount != 0}">
-                                                                                                                            <span class="old-price">${orderItem.accessory.unit_price}đ</span>
-                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                                            <c:forEach items="${freeItemList}" var="item">
+                                                                                                                                <c:if test="${orderItem.order_id eq item.order_id}">
+                                                                                                                            <span class="old-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (orderItem.order_quantity + item.order_quantity)}" pattern="#,###"/>₫</span>
+                                                                                                                                </c:if>
+                                                                                                                            </c:forEach>
+                                                                                                                            <c:forEach items="${freeItemList}" var="item">
+                                                                                                                                <c:if test="${orderItem.order_id eq item.order_id}">
+                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * orderItem.order_quantity * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                                                </c:if>
+                                                                                                                            </c:forEach>
                                                                                                                         </c:if>
                                                                                                                         <c:if test="${orderItem.accessory.discount == 0}">
-                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price}" pattern="#,###"/>₫</span>
+                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
                                                                                                                         </c:if>
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
-                                                                                                            <c:if test="${order.order_status eq 'Đã giao hàng'}">
+                                                                                                                            <%--
                                                                                                             <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
                                                                                                                 Đánh giá
                                                                                                             </button>
+                                                                                                                            --%>
+                                                                                                            <c:set var="isFeedbacked" value="false" />
+                                                                                                            <c:if test="${order.order_status eq 'Đã giao hàng' || order.order_status eq 'Đã đánh giá'}">
+                                                                                                                <c:forEach items="${feedbackList}" var="feedback">
+                                                                                                                    <c:if test="${orderItem.order_item_id == feedback.order_item_id}">
+                                                                                                                        <c:set var="isFeedbacked" value="true" />
+                                                                                                                    </c:if>
+                                                                                                                </c:forEach>
+                                                                                                            </c:if>
+                                                                                                            <c:if test="${!isFeedbacked}">
+                                                                                                                <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+                                                                                                                    Đánh giá
+                                                                                                                </button>
                                                                                                             </c:if>
                                                                                                             <!-- Modal -->
                                                                                                             <form action = "MainController">
@@ -610,7 +647,6 @@
                                                                                                                             <div class="modal-body">
                                                                                                                                 <input type="hidden" name="order_item_id" id="order_feedback"/>
                                                                                                                                 <input type="hidden" class="" min="1" max="5" name="star" required="" value="1" id="star_number"/>
-
                                                                                                                                 <div class="rating-box">
                                                                                                                                     <h4>Trải nghiệm của bạn thế nào ?</h4>
                                                                                                                                     <div class="stars">
@@ -663,10 +699,18 @@
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
-                                                                                                            <c:if test="${order.order_status eq 'Đã giao hàng'}">
-                                                                                                            <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
-                                                                                                                Đánh giá
-                                                                                                            </button> 
+                                                                                                            <c:set var="isFeedbacked" value="false" />
+                                                                                                            <c:if test="${order.order_status eq 'Đã giao hàng' || order.order_status eq 'Đã đánh giá'}">
+                                                                                                                <c:forEach items="${feedbackList}" var="feedback">
+                                                                                                                    <c:if test="${orderItem.order_item_id == feedback.order_item_id}">
+                                                                                                                        <c:set var="isFeedbacked" value="true" />
+                                                                                                                    </c:if>
+                                                                                                                </c:forEach>
+                                                                                                            </c:if>
+                                                                                                            <c:if test="${!isFeedbacked}">
+                                                                                                                <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+                                                                                                                    Đánh giá
+                                                                                                                </button>
                                                                                                             </c:if>
                                                                                                             <!-- Modal -->
                                                                                                             <form action = "MainController">
@@ -680,7 +724,6 @@
                                                                                                                             <div class="modal-body">
                                                                                                                                 <input type="hidden" name="order_item_id" id="order_feedback"/>
                                                                                                                                 <input type="hidden" class="" min="1" max="5" name="star" required="" value="1" id="star_number"/>
-
                                                                                                                                 <div class="rating-box">
                                                                                                                                     <h4>Trải nghiệm của bạn thế nào ?</h4>
                                                                                                                                     <div class="stars">
@@ -744,10 +787,18 @@
                                                                                                                     </c:otherwise>
                                                                                                                 </c:choose>
                                                                                                             </div>
-                                                                                                            <c:if test="${order.order_status eq 'Đã giao hàng'}">
-                                                                                                            <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
-                                                                                                                Đánh giá
-                                                                                                            </button>
+                                                                                                            <c:set var="isFeedbacked" value="false" />
+                                                                                                            <c:if test="${order.order_status eq 'Đã giao hàng' || order.order_status eq 'Đã đánh giá'}">
+                                                                                                                <c:forEach items="${feedbackList}" var="feedback">
+                                                                                                                    <c:if test="${orderItem.order_item_id == feedback.order_item_id}">
+                                                                                                                        <c:set var="isFeedbacked" value="true" />
+                                                                                                                    </c:if>
+                                                                                                                </c:forEach>
+                                                                                                            </c:if>
+                                                                                                            <c:if test="${!isFeedbacked}">
+                                                                                                                <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+                                                                                                                    Đánh giá
+                                                                                                                </button>
                                                                                                             </c:if>
                                                                                                             <!-- Modal -->
                                                                                                             <form action = "MainController">
@@ -761,7 +812,6 @@
                                                                                                                             <div class="modal-body">
                                                                                                                                 <input type="hidden" name="order_item_id" id="order_feedback"/>
                                                                                                                                 <input type="hidden" class="" min="1" max="5" name="star" value="1" required="" id="star_number"/>
-
                                                                                                                                 <div class="rating-box">
                                                                                                                                     <h4>Trải nghiệm của bạn thế nào ?</h4>
                                                                                                                                     <div class="stars">

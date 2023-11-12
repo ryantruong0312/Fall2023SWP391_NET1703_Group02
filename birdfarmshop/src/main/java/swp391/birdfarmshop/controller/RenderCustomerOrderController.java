@@ -13,9 +13,11 @@ import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import swp391.birdfarmshop.dao.FeedbackDAO;
 import swp391.birdfarmshop.dao.OrderDAO;
 import swp391.birdfarmshop.dao.OrderItemDAO;
 import swp391.birdfarmshop.dto.OrderItemDTO;
+import swp391.birdfarmshop.model.Feedback;
 import swp391.birdfarmshop.model.Order;
 import swp391.birdfarmshop.model.User;
 
@@ -45,6 +47,8 @@ public class RenderCustomerOrderController extends HttpServlet {
                 LinkedHashMap<Order, ArrayList> orderItemMap = new LinkedHashMap<>();
                 String status = request.getParameter("status");
                 ArrayList<OrderItemDTO> freeItemList = new ArrayList<>();
+                FeedbackDAO feedbackDao = new FeedbackDAO();
+                ArrayList<Feedback> feedbacks = feedbackDao.getFeedbackByCustomer(user.getUsername());
                 if(status != null) {
                     if(status.equals("wait")) {
                         for (Order order : orderList) {
@@ -185,6 +189,7 @@ public class RenderCustomerOrderController extends HttpServlet {
                         }
                     }
                 }
+                request.setAttribute("FEEDBACKLIST", feedbacks);
                 request.setAttribute("ITEMMAP", orderItemMap);
                 request.setAttribute("FREEITEMLIST", freeItemList);
             } else {
