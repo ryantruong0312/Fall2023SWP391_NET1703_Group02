@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import swp391.birdfarmshop.dao.OrderDAO;
 import swp391.birdfarmshop.dao.TrackingBirdPairDAO;
 
 /**
@@ -37,21 +38,21 @@ public class UpdateBirdPairController extends HttpServlet {
         String order = request.getParameter("orderId");
         HttpSession session = request.getSession();
         TrackingBirdPairDAO trackingDao = new TrackingBirdPairDAO();
+        OrderDAO o = new OrderDAO();
         try {
             if (type.endsWith("repair")) {
                 int result = trackingDao.updateTrackingBirdPair(pairId, "Khách hàng yêu cầu ghép cặp lại", "Đang ghép cặp");
                 if(result == 0){
-                    session.setAttribute("ERROR", "Xác nhận  thất bại");
+                    session.setAttribute("ERROR", "Ghép lại thất bại");
                 }else{
-                   session.setAttribute("SUCCESS", "Xác nhận thành công");
+                   session.setAttribute("SUCCESS", "Ghép lại thành công");
                 }
             } else {
-                int result = trackingDao.updateTrackingBirdPair(pairId, "Khách hàng đã hủy đơn", "Đã hủy");
-                if(result == 0){
-                    session.setAttribute("ERROR", "Xác nhận  thất bại");
+                boolean result = o.updateOrderStatus(order, "Đã hủy");
+                if(result == false){
+                    session.setAttribute("ERROR", "Hủy thất bại");
                 }else{
-                   
-                   session.setAttribute("SUCCESS", "Xác nhận thành công");
+                   session.setAttribute("SUCCESS", "Hủy thành công");
                 }
             }
         } catch (Exception e) {

@@ -370,7 +370,7 @@
                     } else {
                         toast({
                             title: 'Lỗi',
-                            message: 'Bạn chỉ có thể só sánh 5 vẹt',
+                            message: 'Bạn chỉ có thể só sánh 4 vẹt',
                             type: 'error',
                             duration: 3000
                         });

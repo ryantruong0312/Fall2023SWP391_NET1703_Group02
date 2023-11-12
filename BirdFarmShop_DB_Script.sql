@@ -133,9 +133,6 @@ CREATE TABLE [Order]
 	[payment_type] NVARCHAR(20),
 	[total_price] INT,
 	[applied_point] SMALLINT,
-	[vnp_TxnRef] VARCHAR(20),
-	[vnp_Date] VARCHAR(20),
-	[vnp_TranasctionNo] VARCHAR(20),
 	CONSTRAINT PK_Order PRIMARY KEY ([order_id]),
 	CONSTRAINT FK_Order_User FOREIGN KEY ([customer]) REFERENCES [User]([username])
 )
