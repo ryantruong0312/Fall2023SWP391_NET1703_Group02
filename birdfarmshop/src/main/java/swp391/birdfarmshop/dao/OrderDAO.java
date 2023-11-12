@@ -922,7 +922,7 @@ public class OrderDAO {
             if (con != null) {
                 switch (status) {
                     case "Đã giao hàng":
-                        orderDao.updatePaymentStatus(order_id, status);
+                        orderDao.updatePaymentStatus(order_id, "Đã thanh toán");
                         break;
                     case "Đã hủy":
                         ArrayList<OrderItemDTO> orderDetails = itemDao.getItemByOrderId(order_id);

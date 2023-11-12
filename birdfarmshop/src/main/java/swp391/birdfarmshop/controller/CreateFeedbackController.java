@@ -39,6 +39,7 @@ public class CreateFeedbackController extends HttpServlet {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
             if(user != null  && user.getRole().equals("customer")) {
+                String status = request.getParameter("status");
                 int rating = Integer.parseInt(request.getParameter("star"));
                 String comment = request.getParameter("feedback");
                 int order_item_id = Integer.parseInt(request.getParameter("order_item_id"));
@@ -49,9 +50,17 @@ public class CreateFeedbackController extends HttpServlet {
                 boolean fb = feedbackDAO.addFeedback(feedback);
                 OrderDAO orderDao = new OrderDAO();
                 if (fb) {
-                    orderDao.updateOrderStatus(item.getOrder_id(), "Đã đánh giá");
+                    if(item != null) {
+                        orderDao.updateOrderStatus(item.getOrder_id(), "Đã đánh giá");
+                    }
                     session.setAttribute("SUCCESS", "Đã thêm đánh giá thành công");
                     url = SUCCESS;
+                }
+                System.out.println(status);
+                if(status != null && !status.isBlank()) {
+                    request.setAttribute("status", status);
+                } else {
+                    request.setAttribute("status", null);
                 }
             }
         } catch (ClassNotFoundException | NumberFormatException | SQLException | ParseException e) {
