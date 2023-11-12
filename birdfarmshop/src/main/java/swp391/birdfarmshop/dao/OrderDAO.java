@@ -42,17 +42,21 @@ public class OrderDAO {
 
     public String error = null;
 
-    public int createOrder(String order_id, String username, String status, String name_receiver, String phone_receiver,
-            String address_receiver, String payment_status, String payment_type, CartDTO cart, int point) throws SQLException {
+    public int createNewOrder(String order_id, String username, String status, String name_receiver, String phone_receiver,
+            String address_receiver, String payment_status, CartDTO cart, int point, String payment_type, String vnp_TxtRef, String vnp_Date, String tractionno) {
         int result = 0;
         Connection con = null;
+        OrderItemDAO oid = new OrderItemDAO();
+        AccessoryDAO ad = new AccessoryDAO();
         PreparedStatement pst = null;
         ResultSet rs = null;
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String createOrder = "INSERT INTO [ORDER]\n"
-                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+                con.setAutoCommit(false);
+                String insertOrder = "INSERT INTO [ORDER]\n"
+                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                pst = con.prepareStatement(insertOrder);
                 pst.setString(1, order_id);
                 pst.setString(2, username);
                 LocalDateTime customDateTime = LocalDateTime.now();
@@ -67,7 +71,357 @@ public class OrderDAO {
                 pst.setString(9, payment_type);
                 pst.setInt(10, cart.getCartTotalPrice());
                 pst.setInt(11, point);
+                pst.setString(12, vnp_TxtRef);
+                pst.setString(13, vnp_Date);
+                pst.setString(14, tractionno);
                 result = pst.executeUpdate();
+                boolean checkBird = true;
+                boolean checkAccessory = true;
+                boolean checkBirdPair = true;
+                if (result > 0) {
+                    HashMap<String, OrderedBirdItem> birdList = (HashMap<String, OrderedBirdItem>) cart.getBirdList();
+                    for (OrderedBirdItem ob : birdList.values()) {
+                        Bird b = ob.getBird();
+                        int realPrice = b.getPrice();
+                        if (b.getDiscount() > 0) {
+                            realPrice = b.getPrice() - b.getPrice() * b.getDiscount() / 100;
+                        }
+                        String checkOrderBird = "SELECT [order_item_id]\n"
+                                + "      ,[order_id]\n"
+                                + "      ,[bird_id]\n"
+                                + "      ,[nest_id]\n"
+                                + "      ,[accessory_id]\n"
+                                + "      ,[unit_price]\n"
+                                + "      ,[order_quantity]\n"
+                                + "  FROM [BirdFarmShop].[dbo].[OrderItem]\n"
+                                + "  WHERE [bird_id] = ?";
+                        pst = con.prepareStatement(checkOrderBird);
+                        pst.setString(1, b.getBird_id());
+                        rs = pst.executeQuery();
+                        if (rs != null && rs.next()) {
+                            error = b.getBird_name() + " đã bán";
+                            checkBird = false;
+                            break;
+                        } else {
+                            String updateBird = "UPDATE [Bird]\n"
+                                    + "SET [status] = N'Đã bán'\n"
+                                    + "WHERE [bird_id] = ?";
+                            pst = con.prepareStatement(updateBird);
+                            pst.setString(1, b.getBird_id());
+                            result = pst.executeUpdate();
+                            if (result == 0) {
+                                checkBird = false;
+                                break;
+                            } else {
+                                String insertBird = "INSERT INTO [OrderItem]([order_id],[bird_id],\n"
+                                        + "		  [unit_price],[order_quantity])\n"
+                                        + "   VALUES(?,?,?,?)";
+                                pst = con.prepareStatement(insertBird);
+                                pst.setString(1, order_id);
+                                pst.setString(2, b.getBird_id());
+                                pst.setInt(3, realPrice);
+                                pst.setInt(4, 1);
+                                result = pst.executeUpdate();
+                                if (result == 0) {
+                                    checkBird = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    HashMap<String, OrderedAccessoryItem> accessoryList = (HashMap<String, OrderedAccessoryItem>) cart.getAccessoryList();
+                    for (OrderedAccessoryItem oa : accessoryList.values()) {
+                        Accessory a = oa.getAccessory();
+                        int realPrice = a.getUnit_price();
+                        if (a.getDiscount() > 0) {
+                            realPrice = a.getUnit_price() - a.getUnit_price() * a.getDiscount() / 100;
+                        }
+                        int quantity = oa.getOrder_quantity();
+                        if (oa.getFree_order() > 0) {
+                            quantity = oa.getFree_order() + oa.getOrder_quantity();
+                        }
+                        String getStockAccessory = "SELECT [stock_quantity]\n"
+                                + "FROM [BirdFarmShop].[dbo].[Accessory]\n"
+                                + "WHERE [accessory_id] = ?";
+                        pst = con.prepareStatement(getStockAccessory);
+                        pst.setString(1, a.getAccessory_id());
+                        rs = pst.executeQuery();
+                        if (rs != null && rs.next()) {
+                            int numberAccessory = rs.getInt("stock_quantity");
+                            if (numberAccessory == 0) {
+                                error = a.getAccessory_name() + " đã hết hàng";
+                                checkAccessory = false;
+                                break;
+                            } else if (numberAccessory < quantity) {
+                                error = a.getAccessory_name() + " không đủ số lượng trong kho";
+                                checkAccessory = false;
+                                break;
+                            } else {
+                                int newStock = numberAccessory - quantity;
+                                String updateQuantity = "UPDATE [Accessory]\n"
+                                        + "SET [stock_quantity] = ?\n"
+                                        + "WHERE [accessory_id] = ?";
+                                pst = con.prepareStatement(updateQuantity);
+                                pst.setInt(1, newStock);
+                                pst.setString(2, a.getAccessory_id());
+                                result = pst.executeUpdate();
+                                if (result == 0) {
+                                    checkAccessory = false;
+                                    break;
+                                } else {
+                                    String insertAccessory = "INSERT INTO [OrderItem]([order_id],\n"
+                                            + "		  [accessory_id],[unit_price],[order_quantity])\n"
+                                            + "               VALUES(?,?,?,?)";
+                                    pst = con.prepareStatement(insertAccessory);
+                                    pst.setString(1, order_id);
+                                    pst.setString(2, a.getAccessory_id());
+                                    pst.setInt(3, realPrice);
+                                    pst.setInt(4, quantity - oa.getFree_order());
+                                    result = pst.executeUpdate();
+                                    if (result == 0) {
+                                        checkAccessory = false;
+                                        break;
+                                    }
+                                    if (oa.getFree_order() > 0) {
+                                        insertAccessory = "INSERT INTO [OrderItem]([order_id],\n"
+                                                + "		  [accessory_id],[unit_price],[order_quantity])\n"
+                                                + "               VALUES(?,?,?,?)";
+                                        pst = con.prepareStatement(insertAccessory);
+                                        pst.setString(1, order_id);
+                                        pst.setString(2, a.getAccessory_id());
+                                        pst.setInt(3, 0);
+                                        pst.setInt(4, oa.getFree_order());
+                                        result = pst.executeUpdate();
+                                        if (result == 0) {
+                                            checkAccessory = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            error = "Không tìm thấy sản phẩm";
+                            break;
+                        }
+                    }
+                    HashMap<String, OrderedBirdPairItem> birdPairList = (HashMap<String, OrderedBirdPairItem>) cart.getBirdPairList();
+                    if (birdPairList != null) {
+                        for (OrderedBirdPairItem opi : birdPairList.values()) {
+                            Bird male = opi.getBirdMale();
+                            Bird female = opi.getBirdFemale();
+                            BirdCustomer customer = opi.getBirdCustomer();
+                            Bird birdShop = opi.getBirdShop();
+                            if (customer != null && birdShop != null) {
+                                String checkBirdShop = "SELECT *\n"
+                                        + "FROM [BirdFarmShop].[dbo].[Bird]\n"
+                                        + "WHERE [bird_id] = ? AND [status] = N'Còn hàng'";
+                                pst = con.prepareStatement(checkBirdShop);
+                                pst.setString(1, birdShop.getBird_id());
+                                rs = pst.executeQuery();
+                                if (rs != null && rs.next()) {
+                                    String checkBirdCustomer = "SELECT *\n"
+                                            + "FROM [BirdFarmShop].[dbo].[CustomerBird]\n"
+                                            + "WHERE [bird_id] = ? AND [status] = N'Chưa ghép cặp'";
+                                    pst = con.prepareStatement(checkBirdCustomer);
+                                    pst.setInt(1, customer.getBird_id());
+                                    rs = pst.executeQuery();
+                                    if (rs != null && rs.next()) {
+                                        String insertBirdPair = "INSERT INTO [BirdPair]([order_id],[young_bird_price],[bird_customer],[male_bird_id],[female_bird_id],[status])\n"
+                                                + "VALUES(?,?,?,?,?,?)";
+                                        pst = con.prepareStatement(insertBirdPair);
+                                        pst.setString(1, order_id);
+                                        int realPrice = birdShop.getPrice() * 20 / 100;
+                                        pst.setInt(2, realPrice);
+                                        pst.setInt(3, customer.getBird_id());
+                                        if (birdShop.isGender()) {
+                                            pst.setString(4, birdShop.getBird_id());
+                                            pst.setString(5, null);
+                                        } else {
+                                            pst.setString(4, null);
+                                            pst.setString(5, birdShop.getBird_id());
+                                        }
+                                        pst.setString(6, "Chờ lấy chim");
+                                        result = pst.executeUpdate();
+                                        if (result == 0) {
+                                            error = "Sản phẩm này không thể ghép cặp";
+                                            checkBirdPair = false;
+                                            break;
+                                        } else {
+                                            String updateBirdCustomer = "UPDATE [CustomerBird]\n"
+                                                    + "SET [status] = N'Đang ghép cặp'\n"
+                                                    + "WHERE bird_id = ?";
+                                            pst = con.prepareStatement(updateBirdCustomer);
+                                            pst.setInt(1, customer.getBird_id());
+                                            result = pst.executeUpdate();
+                                            if (result == 0) {
+                                                checkBirdPair = false;
+                                                break;
+                                            }
+                                            String updateBirdShop = "UPDATE [Bird]\n"
+                                                    + "SET [status] = N'Đang sinh sản'\n"
+                                                    + "WHERE bird_id = ?";
+                                            pst = con.prepareStatement(updateBirdShop);
+                                            pst.setString(1, birdShop.getBird_id());
+                                            result = pst.executeUpdate();
+                                            if (result == 0) {
+                                                checkBirdPair = false;
+                                                break;
+                                            }
+                                            String selectBirdPair = "SELECT TOP 1 [pair_id]\n"
+                                                    + "FROM [BirdFarmShop].[dbo].[BirdPair]\n"
+                                                    + "WHERE [order_id] = ?";
+                                            pst = con.prepareStatement(selectBirdPair);
+                                            pst.setString(1, order_id);
+                                            rs = pst.executeQuery();
+                                            if (rs != null && rs.next()) {
+                                                int pair_id = rs.getInt("pair_id");
+                                                String insertTracking = "INSERT INTO [PairTracking]([pair_id],[content],[date_content])\n"
+                                                        + "VALUES(?,?,?)";
+                                                pst = con.prepareStatement(insertTracking);
+                                                pst.setInt(1, pair_id);
+                                                pst.setString(2, "Chờ khách hàng giao chim để ghép cặp");
+                                                pst.setString(3, sqlDate);
+                                                if (result == 0) {
+                                                    checkBirdPair = false;
+                                                    break;
+                                                }
+                                                String insertBirdPairOrderItem = "INSERT INTO [OrderItem]([order_id],[pair_id],\n"
+                                                        + "		  [unit_price],[order_quantity])\n"
+                                                        + "   VALUES(?,?,?,?)";
+                                                pst = con.prepareStatement(insertBirdPairOrderItem);
+                                                pst.setString(1, order_id);
+                                                pst.setInt(2, pair_id);
+                                                pst.setInt(3, 2000000);
+                                                pst.setInt(4, 1);
+                                                result = pst.executeUpdate();
+                                                if (result == 0) {
+                                                    checkBirdPair = false;
+                                                    break;
+                                                }
+                                            } else {
+                                                checkBirdPair = false;
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        error = customer.getName() + " không thể ghép cặp";
+                                        checkBirdPair = false;
+                                        break;
+                                    }
+                                } else {
+                                    error = birdShop.getBird_name() + " không thể ghép cặp";
+                                    checkBirdPair = false;
+                                    break;
+                                }
+                            }
+                            if (male != null && female != null) {
+                                String checkBirdMale = "SELECT *\n"
+                                        + "FROM [BirdFarmShop].[dbo].[Bird]\n"
+                                        + "WHERE [bird_id] = ? AND [status] = N'Còn hàng'";
+                                pst = con.prepareStatement(checkBirdMale);
+                                pst.setString(1, male.getBird_id());
+                                rs = pst.executeQuery();
+                                if (rs != null && rs.next()) {
+                                    String checkBirdFemale = "SELECT *\n"
+                                            + "FROM [BirdFarmShop].[dbo].[Bird]\n"
+                                            + "WHERE [bird_id] = ? AND [status] = N'Còn hàng'";
+                                    pst = con.prepareStatement(checkBirdFemale);
+                                    pst.setString(1, female.getBird_id());
+                                    rs = pst.executeQuery();
+                                    if (rs != null && rs.next()) {
+                                        String insertBirdPair = "INSERT INTO [BirdPair]([order_id],[young_bird_price],[male_bird_id],[female_bird_id],[status])\n"
+                                                + "VALUES(?,?,?,?,?)";
+                                        pst = con.prepareStatement(insertBirdPair);
+                                        pst.setString(1, order_id);
+                                        long malePrice = (long) male.getPrice() * 20 / 100;
+                                        long femalePrice = (long) female.getPrice() * 20 / 100;
+                                        pst.setInt(2, Math.round((int) (malePrice + femalePrice) / 100000) * 100000);
+                                        pst.setString(3, male.getBird_id());
+                                        pst.setString(4, female.getBird_id());
+                                        pst.setString(5, "Chờ lấy chim");
+                                        result = pst.executeUpdate();
+                                        if (result == 0) {
+                                            break;
+                                        } else {
+                                            String updateBirdMale = "UPDATE [Bird]\n"
+                                                    + "SET [status] = N'Đang sinh sản'\n"
+                                                    + "WHERE bird_id = ?";
+                                            pst = con.prepareStatement(updateBirdMale);
+                                            pst.setString(1, male.getBird_id());
+                                            result = pst.executeUpdate();
+                                            if (result == 0) {
+                                                error = "Sản phẩm này không thể ghép cặp";
+                                                checkBirdPair = false;
+                                                break;
+                                            }
+                                            String updateBirdFemale = "UPDATE [Bird]\n"
+                                                    + "SET [status] = N'Đang sinh sản'\n"
+                                                    + "WHERE bird_id = ?";
+                                            pst = con.prepareStatement(updateBirdFemale);
+                                            pst.setString(1, female.getBird_id());
+                                            result = pst.executeUpdate();
+                                            if (result == 0) {
+                                                checkBirdPair = false;
+                                                break;
+                                            }
+                                            String selectBirdPair = "SELECT TOP 1 [pair_id]\n"
+                                                    + "FROM [BirdFarmShop].[dbo].[BirdPair]\n"
+                                                    + "WHERE [order_id] = ?";
+                                            pst = con.prepareStatement(selectBirdPair);
+                                            pst.setString(1, order_id);
+                                            rs = pst.executeQuery();
+                                            if (rs != null && rs.next()) {
+                                                int pair_id = rs.getInt("pair_id");
+                                                String insertTracking = "INSERT INTO [PairTracking]([pair_id],[content],[date_content])\n"
+                                                        + "VALUES(?,?,?)";
+                                                pst = con.prepareStatement(insertTracking);
+                                                pst.setInt(1, pair_id);
+                                                pst.setString(2, "Đang chuẩn bị chim ghép cặp");
+                                                pst.setString(3, sqlDate);
+                                                result = pst.executeUpdate();
+                                                if (result == 0) {
+                                                    checkBirdPair = false;
+                                                    break;
+                                                }
+                                                String insertBirdPairOrderItem = "INSERT INTO [OrderItem]([order_id],[pair_id],\n"
+                                                        + "		  [unit_price],[order_quantity])\n"
+                                                        + "   VALUES(?,?,?,?)";
+                                                pst = con.prepareStatement(insertBirdPairOrderItem);
+                                                pst.setString(1, order_id);
+                                                pst.setInt(2, pair_id);
+                                                pst.setInt(3, 2000000);
+                                                pst.setInt(4, 1);
+                                                result = pst.executeUpdate();
+                                                if (result == 0) {
+                                                    checkBirdPair = false;
+                                                    break;
+                                                }
+                                            } else {
+                                                checkBirdPair = false;
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        error = female.getBird_name() + " không thể ghép cặp";
+                                        checkBirdPair = false;
+                                        break;
+                                    }
+                                } else {
+                                    error = male.getBird_name() + " không thể ghép cặp";
+                                    checkBirdPair = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (checkBird && checkAccessory && checkBirdPair) {
+                    result = 1;
+                    con.commit();
+                } else {
+                    result = 0;
+                    con.rollback();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,7 +447,6 @@ public class OrderDAO {
             }
         }
         return result;
-
     }
 
     public int createNewOrder(String order_id, String username, String status, String name_receiver, String phone_receiver,
@@ -108,7 +461,17 @@ public class OrderDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 con.setAutoCommit(false);
-                String insertOrder = "INSERT INTO [ORDER]\n"
+                String insertOrder = "INSERT INTO [ORDER]([order_id]\n"
+                        + ",[customer]\n"
+                        + ",[order_date]\n"
+                        + ",[order_status]\n"
+                        + ",[name_receiver]\n"
+                        + ",[phone_receiver]\n"
+                        + ",[address_receiver]\n"
+                        + ",[payment_status]\n"
+                        + ",[payment_type]\n"
+                        + ",[total_price]\n"
+                        + ",[applied_point])\n"
                         + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
                 pst = con.prepareStatement(insertOrder);
                 pst.setString(1, order_id);
@@ -188,8 +551,8 @@ public class OrderDAO {
                             realPrice = a.getUnit_price() - a.getUnit_price() * a.getDiscount() / 100;
                         }
                         int quantity = oa.getOrder_quantity();
-                        if(oa.getFree_order() > 0){
-                            quantity = oa.getFree_order()+ oa.getOrder_quantity();
+                        if (oa.getFree_order() > 0) {
+                            quantity = oa.getFree_order() + oa.getOrder_quantity();
                         }
                         String getStockAccessory = "SELECT [stock_quantity]\n"
                                 + "FROM [BirdFarmShop].[dbo].[Accessory]\n"
@@ -227,13 +590,13 @@ public class OrderDAO {
                                     pst.setString(1, order_id);
                                     pst.setString(2, a.getAccessory_id());
                                     pst.setInt(3, realPrice);
-                                    pst.setInt(4, quantity-oa.getFree_order());
+                                    pst.setInt(4, quantity - oa.getFree_order());
                                     result = pst.executeUpdate();
                                     if (result == 0) {
                                         checkAccessory = false;
                                         break;
                                     }
-                                    if(oa.getFree_order() > 0){
+                                    if (oa.getFree_order() > 0) {
                                         insertAccessory = "INSERT INTO [OrderItem]([order_id],\n"
                                                 + "		  [accessory_id],[unit_price],[order_quantity])\n"
                                                 + "               VALUES(?,?,?,?)";
@@ -666,19 +1029,23 @@ public class OrderDAO {
                     if (!startDay.isEmpty() && !endDay.isEmpty()) {
                         query += "AND ([order_date] >= '" + startDay + "' AND [order_date] <= '" + endDay + "')";
                     } else {
-                        if(!startDay.isEmpty())
+                        if (!startDay.isEmpty()) {
                             query += "AND ([order_date] >= '" + startDay + "')";
-                        if(!endDay.isEmpty())
+                        }
+                        if (!endDay.isEmpty()) {
                             query += "AND ([order_date] <= '" + endDay + "')";
+                        }
                     }
                 } else {
                     if (startDay != null) {
-                        if(!startDay.isEmpty())
+                        if (!startDay.isEmpty()) {
                             query += "AND ([order_date] >= '" + startDay + "')";
+                        }
                     }
                     if (endDay != null) {
-                        if(!endDay.isEmpty())
+                        if (!endDay.isEmpty()) {
                             query += "AND ([order_date] <= '" + endDay + "')";
+                        }
                     }
                 }
                 if (status != null && !status.isEmpty()) {
@@ -938,14 +1305,14 @@ public class OrderDAO {
                                 int baby_quantity = orderDetail.getBirdNest().getBaby_quantity() + orderDetail.getOrder_quantity();
                                 nestDao.updateBirdNestBaby(baby_quantity, orderDetail.getBirdNest().getNest_id());
                             }
-                            if (orderDetail.getBirdPair()!= null) {
-                                if(orderDetail.getBirdPair().getMale_bird() != null) {
+                            if (orderDetail.getBirdPair() != null) {
+                                if (orderDetail.getBirdPair().getMale_bird() != null) {
                                     birdDao.updateBirdStatus("Còn hàng", orderDetail.getBirdPair().getMale_bird().getBird_id());
                                 }
-                                if(orderDetail.getBirdPair().getFemale_bird() != null) {
+                                if (orderDetail.getBirdPair().getFemale_bird() != null) {
                                     birdDao.updateBirdStatus("Còn hàng", orderDetail.getBirdPair().getFemale_bird().getBird_id());
                                 }
-                                if(orderDetail.getBirdPair().getBirdCustomer()!= null) {
+                                if (orderDetail.getBirdPair().getBirdCustomer() != null) {
                                     birdCustomerDao.updateBirdCustomerStatus(orderDetail.getBirdPair().getUsername(), "Chưa ghép cặp");
                                 }
                             }
@@ -1768,7 +2135,7 @@ public class OrderDAO {
         }
         return o;
     }
-    
+
     public boolean updatePaymentStatus(String order_id, String status) throws SQLException, ParseException {
         Connection con = null;
         PreparedStatement stm = null;

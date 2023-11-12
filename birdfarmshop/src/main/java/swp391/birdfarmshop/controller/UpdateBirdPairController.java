@@ -5,13 +5,13 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import swp391.birdfarmshop.dao.TrackingBirdPairDAO;
 
 /**
  *
@@ -36,12 +36,23 @@ public class UpdateBirdPairController extends HttpServlet {
         String type = request.getParameter("type");
         String order = request.getParameter("orderId");
         HttpSession session = request.getSession();
+        TrackingBirdPairDAO trackingDao = new TrackingBirdPairDAO();
         try {
-
             if (type.endsWith("repair")) {
-                session.setAttribute("SUCCESS", "Cập nhật thành công");
+                int result = trackingDao.updateTrackingBirdPair(pairId, "Khách hàng yêu cầu ghép cặp lại", "Đang ghép cặp");
+                if(result == 0){
+                    session.setAttribute("ERROR", "Xác nhận  thất bại");
+                }else{
+                   session.setAttribute("SUCCESS", "Xác nhận thành công");
+                }
             } else {
-                session.setAttribute("ERROR", "Cập nhật thành công");
+                int result = trackingDao.updateTrackingBirdPair(pairId, "Khách hàng đã hủy đơn", "Đã hủy");
+                if(result == 0){
+                    session.setAttribute("ERROR", "Xác nhận  thất bại");
+                }else{
+                   
+                   session.setAttribute("SUCCESS", "Xác nhận thành công");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -149,4 +149,127 @@ public class TrackingBirdPairDAO {
 
         return result;
     }
+
+    public int updateTrackingBirdPair(String pair_id, String content, String status) {
+        int result = 0;
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        boolean check = false;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                con.setAutoCommit(false);
+                String sql = "INSERT INTO [PairTracking]([pair_id],[content],[date_content])\n"
+                        + "VALUES(?,?,?)";
+                pst = con.prepareStatement(sql);
+                pst.setString(1, pair_id);
+                pst.setString(2, content);
+                Timestamp date = new Timestamp(System.currentTimeMillis());
+                pst.setTimestamp(3, date);
+                result = pst.executeUpdate();
+                if (result > 0) {
+                    sql = "UPDATE [BirdPair]\n"
+                            + "SET [status] = ?\n"
+                            + "WHERE [pair_id] = ?";
+                    pst = con.prepareStatement(sql);
+                    pst.setString(1, status);
+                    pst.setString(2, pair_id);
+                    result = pst.executeUpdate();
+                    if (result > 0) {
+                        check = true;
+                    }
+                }
+                if ("Đã hủy".equals(status)) {
+                    String selectPair = "SELECT [pair_id]\n"
+                            + "      ,[order_id]\n"
+                            + "      ,[young_bird_price]\n"
+                            + "      ,[bird_customer]\n"
+                            + "      ,[male_bird_id]\n"
+                            + "      ,[female_bird_id]\n"
+                            + "      ,[number_egg]\n"
+                            + "      ,[number_young_bird]\n"
+                            + "      ,[status]\n"
+                            + "  FROM [BirdFarmShop].[dbo].[BirdPair]\n"
+                            + "  WHERE [pair_id] = ?";
+                    pst = con.prepareStatement(selectPair);
+                    pst.setString(1, pair_id);
+                    rs = pst.executeQuery();
+                    if (rs != null && rs.next()) {
+                        String idMale = rs.getString("male_bird_id");
+                        String idFemale = rs.getString("female_bird_id");
+                        String idCustomer = rs.getString("bird_customer");
+                        if (idMale != null) {
+                            String updateMaleBird = "UPDATE [Bird]\n"
+                                    + "SET [status] = N'Còn hàng'\n"
+                                    + "WHERE [bird_id] = ?";
+                            pst = con.prepareStatement(updateMaleBird);
+                            pst.setString(1, idMale);
+                            result = pst.executeUpdate();
+                            if (result == 0) {
+                                check = false;
+                            }
+                        }
+                        if (idFemale != null) {
+                            String updateFemaleBird = "UPDATE [Bird]\n"
+                                    + "SET [status] = N'Còn hàng'\n"
+                                    + "WHERE [bird_id] = ?";
+                            pst = con.prepareStatement(updateFemaleBird);
+                            pst.setString(1, idFemale);
+                            result = pst.executeUpdate();
+                            if (result == 0) {
+                                check = false;
+                            }
+                        }
+                        if (idCustomer != null) {
+                            String updateCustomerBird = "UPDATE [CustomerBird]\n"
+                                    + "SET [status] = N'Chưa ghép cặp'\n"
+                                    + "WHERE [bird_id] = ?";
+                            pst = con.prepareStatement(updateCustomerBird);
+                            pst.setString(1, idCustomer);
+                            result = pst.executeUpdate();
+                            if (result == 0) {
+                                check = false;
+                            }
+                        }
+                    } else {
+                        check = false;
+                    }
+                }
+                if (check) {
+                    result = 1;
+                    con.commit();
+                } else {
+                    result = 0;
+                    con.rollback();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return result;
+    }
 }

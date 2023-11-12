@@ -12,9 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
-import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dao.OrderItemDAO;
-import swp391.birdfarmshop.dto.OrderItemDTO;
 import swp391.birdfarmshop.util.VNPAYUtils;
 
 /**
