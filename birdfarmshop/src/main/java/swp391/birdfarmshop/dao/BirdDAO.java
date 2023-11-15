@@ -489,13 +489,13 @@ public class BirdDAO {
                         + "             [reproduction_history],[price],[description],[discount],[status])\n"
                         + "             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) ");
                 stm.setString(1, bird_id);
-                if(!bird_name.isBlank()) {
+                if (!bird_name.isEmpty()) {
                     if (!bird_name.contains(bird_id)) {
                         bird_name = bird_name + " " + bird_id;
                     }
                     stm.setString(2, bird_name.trim());
                 }
-                if (!color.isBlank()) {
+                if (!color.isEmpty()) {
                     stm.setString(3, color.trim());
                 } else {
                     stm.setString(3, null);
@@ -505,14 +505,14 @@ public class BirdDAO {
                 sex = gender.equals("Đực");
                 stm.setBoolean(6, sex);
                 stm.setString(7, breed_id);
-                if (!achievement.isBlank()) {
+                if (!achievement.isEmpty()) {
                     stm.setString(8, achievement.trim());
                 } else {
                     stm.setString(8, null);
                 }
                 stm.setInt(9, Integer.parseInt(reproduction_history));
                 stm.setInt(10, Integer.parseInt(price));
-                if (!description.isBlank()) {
+                if (!description.isEmpty()) {
                     stm.setString(11, description.trim());
                 } else {
                     stm.setString(11, null);
@@ -635,8 +635,8 @@ public class BirdDAO {
         return arrlist_b;
     }
 
-    public boolean updateBird(String bird_id, String color, String discount,
-            String achievement, String price, String description) 
+    public boolean updateBird(String bird_id, String bird_name, String color, String discount,
+            String achievement, String price, String description)
             throws SQLException, ParseException {
         Connection con = null;
         PreparedStatement stm = null;
@@ -645,28 +645,29 @@ public class BirdDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 String query = "UPDATE [dbo].[Bird]\n"
-                        + "             SET [color] = ?, [price] = ?,[discount] = ?,"
-                        + "             [achievement] = ?,[description] = ?\n"
-                        + "             WHERE [bird_id] = ?";
+                        + "  SET [bird_name] = ?, [color] = ?, [price] = ?,[discount] = ?,\n"
+                        + "      [achievement] = ?,[description] = ?\n"
+                        + "  WHERE [bird_id] = ?";
                 stm = con.prepareStatement(query);
-                if(!color.isBlank()) {
-                    stm.setString(1, color.trim());
+                stm.setString(1, bird_name + " " + bird_id);
+                if (!color.isEmpty()) {
+                    stm.setString(2, color.trim());
                 } else {
-                    stm.setString(1, null);
+                    stm.setString(2, null);
                 }
-                stm.setInt(2, Integer.parseInt(price));
-                stm.setInt(3, Integer.parseInt(discount));
-                if(!achievement.isBlank()) {
-                    stm.setString(4, achievement.trim());
-                } else {
-                    stm.setString(4, null);
-                }
-                if(!description.isBlank()) {
-                    stm.setString(5, description.trim());
+                stm.setInt(3, Integer.parseInt(price));
+                stm.setInt(4, Integer.parseInt(discount));
+                if (!achievement.isEmpty()) {
+                    stm.setString(5, achievement.trim());
                 } else {
                     stm.setString(5, null);
                 }
-                stm.setString(6, bird_id);
+                if (!description.isEmpty()) {
+                    stm.setString(6, description.trim());
+                } else {
+                    stm.setString(6, null);
+                }
+                stm.setString(7, bird_id);
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;
@@ -682,6 +683,11 @@ public class BirdDAO {
             }
         }
         return false;
+    }
+    
+    public static void main(String[] args) throws SQLException, ParseException {
+        BirdDAO n = new BirdDAO();
+        System.out.println(n.updateBird("CL201", "Vẹt Cockatiel", "do", "5", "Chua co", "100000", "đẹp"));
     }
 
     public boolean updateBirdStatus(String status, String bird_id) throws SQLException, ParseException {

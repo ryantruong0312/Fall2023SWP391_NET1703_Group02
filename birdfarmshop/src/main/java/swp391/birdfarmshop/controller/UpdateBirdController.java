@@ -57,16 +57,20 @@ public class UpdateBirdController extends HttpServlet {
             User user = (User) session.getAttribute("LOGIN_USER");
             if (user != null && !user.getRole().equals("customer")) {
                 url = SUCCESS;
-                String bird_id = request.getParameter("bird_id");
+                String bird_id = request.getParameter("bird_id");             
                 BirdDAO birdDao = new BirdDAO();
                 BirdDTO birdDetails = birdDao.getBirdDetailsById(bird_id);
+                String[] parts = birdDetails.getBird_name().split("[A-Z]{2}\\d{3}");
+                String tenVe = parts[0];
                 ImageDAO imageDao = new ImageDAO();
                 ArrayList<Image> images = imageDao.getImagesFollowBirdId(bird_id);
                 request.setAttribute("BIRD", birdDetails);
+                request.setAttribute("name", tenVe);
                 request.setAttribute("BIRDIMAGES", images);
                 String btAction = request.getParameter("btAction");
                 if (btAction != null) {
                     if (btAction.equals("Update")) {
+                        String bird_name = request.getParameter("bird_name");
                         String txtBirdColor = request.getParameter("txtBirdColor");
                         String txtBirdAchievement = request.getParameter("txtBirdAchievement");
                         String txtBirdPrice = request.getParameter("txtBirdPrice");
@@ -84,7 +88,7 @@ public class UpdateBirdController extends HttpServlet {
                         if (image_3.getSize() > 0 && images.size() == 3) {
                             updateImage(image_3, bird_id, images.get(2).getImage_id());
                         }
-                        boolean check = birdDao.updateBird(bird_id, txtBirdColor, txtBirdDiscount, txtBirdAchievement, 
+                        boolean check = birdDao.updateBird(bird_id, bird_name ,txtBirdColor, txtBirdDiscount, txtBirdAchievement, 
                                 txtBirdPrice, txtBirdDescription);
                         if (check) {
                             session.setAttribute("SUCCESS", "Cập nhật thành công");

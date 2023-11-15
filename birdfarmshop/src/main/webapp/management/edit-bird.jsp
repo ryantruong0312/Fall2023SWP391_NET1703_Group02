@@ -81,8 +81,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="inner-content">
-                            <h2>Cập nhật sản phẩm</h2>
-                            <span>Những chú vẹt thông minh và đáng yêu nhất đã có mặt tại V.E.T</span>
+                            <h2>Cập nhật vẹt cảnh</h2>                           
                         </div>
                     </div>
                 </div>
@@ -107,6 +106,10 @@
                     <div class="row">
                         <div class="col-lg-6 form-custom">
                             <input type="hidden" name="bird_id" value="${birdDetails.bird_id}"/>
+                            <div class="form-add mb-3">
+                                <label>Tên vẹt cảnh</label>
+                                <input type="text" name="bird_name" class="input form-control" value="${name}" required/>      
+                            </div>
                             <div class="form-add mb-3 column-container">
                                 <div class="price">
                                     <label>Giá bán</label>
