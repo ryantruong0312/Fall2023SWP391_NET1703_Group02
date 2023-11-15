@@ -107,6 +107,10 @@
                     <div class="row">
                         <div class="col-lg-6 form-custom">
                             <input type="hidden" name="bird_id" value="${birdDetails.bird_id}"/>
+                            <div class="form-add mb-3">
+                                <label>Tên vẹt cảnh</label>
+                                <input type="text" name="bird_name" class="input form-control" value="${name}" required/>      
+                            </div>
                             <div class="form-add mb-3 column-container">
                                 <div class="price">
                                     <label>Giá bán</label>
