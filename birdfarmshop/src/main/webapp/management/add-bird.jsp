@@ -122,7 +122,6 @@
                     <div class="col-lg-12">
                         <div class="inner-content">
                             <h2>Thêm mới vẹt cảnh</h2>
-                            <span>Những chú vẹt thông minh và đáng yêu nhất đã có mặt tại V.E.T</span>
                         </div>
                     </div>
                 </div>

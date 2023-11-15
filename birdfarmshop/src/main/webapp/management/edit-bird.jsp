@@ -81,8 +81,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="inner-content">
-                            <h2>Cập nhật sản phẩm</h2>
-                            <span>Những chú vẹt thông minh và đáng yêu nhất đã có mặt tại V.E.T</span>
+                            <h2>Cập nhật vẹt cảnh</h2>                           
                         </div>
                     </div>
                 </div>
