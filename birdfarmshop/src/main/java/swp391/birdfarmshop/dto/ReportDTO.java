@@ -103,7 +103,7 @@ public class ReportDTO {
     public void setBirdPair(ArrayList<Integer> birdPair) {
         this.totalBirdPair = birdPair.get(0)-birdPair.get(1);
         birdPair.remove(0);
-        this.stockBirdPair = this.totalBirdPair - birdPair.get(0);
+        this.stockBirdPair = this.totalBirdPair;
         birdPair.remove(0);
         this.birdPair = birdPair;
     }
