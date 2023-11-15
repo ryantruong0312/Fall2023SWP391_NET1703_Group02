@@ -62,7 +62,7 @@ public class AddOrderByOnlineController extends HttpServlet {
             String order_id = formattedDate.substring(2) + 'O' + number;
             if (order_id != null && cart != null) {
                 int result = od.createNewOrder(order_id, u.getUsername(), "Chờ xử lý", infor.get(0),
-                        infor.get(1), infor.get(2), "Đã thanh toán", cart, 0, "Chuyển khoản");
+                        infor.get(1), infor.get(2), "Đã thanh toán", cart, 0, "Chuyển khoản",infor.get(3),infor.get(5),infor.get(6));
                 if (result != 0) {
                     EmailService.sendEmail(u.getEmail(), "Đơn đặt hàng của bạn",
                             EmailUtils.sendOrderToCustomer(u.getFullName(), cart, order_id, infor.get(0), infor.get(1), infor.get(2),"Đã thanh toán"));

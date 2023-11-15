@@ -275,9 +275,6 @@
                                 <span class="mr-2">
                                     <i class="fa fa-circle text-info"></i> Nhân giống
                                 </span>
-                                <span class="mr-2">
-                                    <i style="color: #FAF356;" class="fa fa-circle"></i>Tổ chim non
-                                </span>
                             </div>
                         </div>
                     </div>
@@ -353,7 +350,7 @@
                                 <canvas id="myPieChartBirdPair"></canvas>
                                 <div class="center-text text-black font-weight-bold"><fmt:formatNumber value="${requestScope.REPORT.totalBirdPair}" pattern="#,###"/></div>
                             </div>
-                            <div class="mt-4 text-center small">
+                            <div class="mt-2 text-center small">
                                 <span class="mr-2">
                                     <i style="color: #EF89F1;" class="fa fa-circle"></i> Chờ lấy chim
                                 </span>
@@ -406,10 +403,10 @@
         <script src="assets/admin/js/chart-area-demo.js"></script>
         <script src="assets/admin/js/chart-pie-demo.js"></script>
         <script>
-            const labelQuantity = ["Chim", "Phụ kiện", "Nhân giống", "Tổ chim non"];
+            const labelQuantity = ["Chim", "Phụ kiện", "Nhân giống"];
             const nodeQuantity = document.getElementById("myPieChart");
-            const colorQuantity = ["#4e73df", "#1cc88a", "#36b9cc", "#FAF356"];
-            const hoverColorQuantity = ["#2e59d9", "#17a673", "#2c9faf", "#A4A038"];
+            const colorQuantity = ["#4e73df", "#1cc88a", "#36b9cc"];
+            const hoverColorQuantity = ["#2e59d9", "#17a673", "#2c9faf"];
             const dataQuantity = [];
             <c:forEach var="product" items="${requestScope.REPORT.product_sale}">
             dataQuantity.push(${product});

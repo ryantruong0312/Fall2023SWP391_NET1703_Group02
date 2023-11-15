@@ -11,6 +11,7 @@ import java.sql.Date;
  * @author tlminh
  */
 public class Order {
+
     private String order_id;
     private String customer;
     private Date order_date;
@@ -21,7 +22,10 @@ public class Order {
     private String payment_status;
     private int total_price;
     private int point;
-
+    private String vnpTeref;
+    private String vnpDate;
+    private String vnpTransaction;
+    private String paymentType;
     public Order(String order_id, String customer, Date order_date, String order_status, String name_receiver, int phone_receiver, String address_receiver, String payment_status, int total_price, int point) {
         this.order_id = order_id;
         this.customer = customer;
@@ -33,6 +37,23 @@ public class Order {
         this.payment_status = payment_status;
         this.total_price = total_price;
         this.point = point;
+    }
+
+    public Order(String order_id, String customer, Date order_date, String order_status, String name_receiver, int phone_receiver, String address_receiver, String payment_status, int total_price, int point, String vnpTeref, String vnpDate, String vnpTransaction,String paymentType) {
+        this.order_id = order_id;
+        this.customer = customer;
+        this.order_date = order_date;
+        this.order_status = order_status;
+        this.name_receiver = name_receiver;
+        this.phone_receiver = phone_receiver;
+        this.address_receiver = address_receiver;
+        this.payment_status = payment_status;
+        this.total_price = total_price;
+        this.point = point;
+        this.vnpTeref = vnpTeref;
+        this.vnpDate = vnpDate;
+        this.vnpTransaction = vnpTransaction;
+        this.paymentType = paymentType;
     }
 
     public Order() {
@@ -118,5 +139,36 @@ public class Order {
         this.point = point;
     }
 
-
+    public String getVnpTeref() {
+        return vnpTeref;
     }
+
+    public void setVnpTeref(String vnpTeref) {
+        this.vnpTeref = vnpTeref;
+    }
+
+    public String getVnpDate() {
+        return vnpDate;
+    }
+
+    public void setVnpDate(String vnpDate) {
+        this.vnpDate = vnpDate;
+    }
+
+    public String getVnpTransaction() {
+        return vnpTransaction;
+    }
+
+    public void setVnpTransaction(String vnpTransaction) {
+        this.vnpTransaction = vnpTransaction;
+    }
+
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+    
+}

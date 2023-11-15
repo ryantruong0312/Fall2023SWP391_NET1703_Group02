@@ -355,7 +355,7 @@ public class BirdPairDAO {
                         + "	   COUNT(CASE WHEN [status]= N'Đã thanh toán' THEN 1 END) AS [payment],\n"
                         + "	   COUNT(CASE WHEN [status]= N'Chờ lấy chim' THEN 1 END) AS [waiting_bird],\n"
                         + "	   COUNT(CASE WHEN [status]= N'Đang ghép cặp' THEN 1 END) AS [pairing],\n"
-                        + "	   COUNT(CASE WHEN [status]= N'Đang sinh sản' THEN 1 END) AS [spawned],\n"
+                        + "	   COUNT(CASE WHEN [status]= N'Đã sinh sản' THEN 1 END) AS [spawned],\n"
                         + "	   COUNT(CASE WHEN [status]= N'Đã ấp nở' THEN 1 END) AS [hatched]\n"
                         + "FROM [BirdFarmShop].[dbo].[BirdPair]";
                 st = con.createStatement();
@@ -366,7 +366,7 @@ public class BirdPairDAO {
                     birdPair.add(rs.getInt("waiting_bird"));
                     birdPair.add(rs.getInt("pairing"));
                     birdPair.add(rs.getInt("spawned"));
-                    birdPair.add(rs.getInt("hatched") + rs.getInt("payment"));
+                    birdPair.add(rs.getInt("hatched"));
                 }
             }
         } catch (Exception e) {

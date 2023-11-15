@@ -53,7 +53,7 @@ public class UpdateOrderStatusController extends HttpServlet {
                 String statusUpdate = statusArray[statusArray.length - 1];
                 String order_id = request.getParameter("order_id");
                 
-                boolean isUpdated = orderDao.updateOrderStatus(order_id, statusUpdate);
+                boolean isUpdated = orderDao.updateOrderStatus(order_id, statusUpdate, request);
                 if(isUpdated) {
                     session.setAttribute("SUCCESS", "Cập nhật thành công");
                 }else {
@@ -74,7 +74,7 @@ public class UpdateOrderStatusController extends HttpServlet {
                 request.setAttribute("noOfPages", noOfPages);
             } else if(user != null && user.getRole().equals("customer")){
                 String txtOrderId = request.getParameter("order_id");
-                boolean isUpdated = orderDao.updateOrderStatus(txtOrderId, "Đã hủy");
+                boolean isUpdated = orderDao.updateOrderStatus(txtOrderId, "Đã hủy",request);
                 url = "MainController?action=NavToCustomerOrder";
                 if(isUpdated) {
                     session.setAttribute("SUCCESS", "Bạn đã hủy đơn hàng thành công");
