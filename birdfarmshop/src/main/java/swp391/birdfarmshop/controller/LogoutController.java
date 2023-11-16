@@ -28,9 +28,8 @@ public class LogoutController extends HttpServlet {
             throws ServletException, IOException {
         String url = ERROR;
         try {
-            PrintWriter out = response.getWriter();
             HttpSession session = request.getSession(true);
-            session.removeAttribute("LOGIN_USER");
+            session.invalidate();
             Cookie c = new Cookie("token","");
             c.setMaxAge(0);
             response.addCookie(c);

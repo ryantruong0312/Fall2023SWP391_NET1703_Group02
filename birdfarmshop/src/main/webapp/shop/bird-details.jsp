@@ -232,11 +232,20 @@
                                     </div>
                                 </c:if>
                                 <div>
-                                    <c:if test="${empty sessionScope.LOGIN_USER || sessionScope.LOGIN_USER.role == 'customer'}">
+                                    <c:if test="${sessionScope.LOGIN_USER.role == 'customer'}">
                                         <c:if test="${bird.status ne 'Đã bán' && birdDetails.status ne 'Đang sinh sản' && birdDetails.status ne 'Đang ghép cặp'}">
                                             <div class="total" style="margin-top: 30px;">
                                                 <div class="main-border-button">
                                                     <a class="bird-cart btn-primary" style="cursor: pointer; color: white; border: 0px; border-radius: 20px;" data-value="${birdDetails.bird_id}">Thêm vào giỏ hàng</a>
+                                                </div>
+                                            </div>
+                                        </c:if>
+                                    </c:if>
+                                    <c:if test="${sessionScope.LOGIN_USER == null}">
+                                        <c:if test="${bird.status ne 'Đã bán' && birdDetails.status ne 'Đang sinh sản' && birdDetails.status ne 'Đang ghép cặp'}">
+                                            <div class="total" style="margin-top: 30px;">
+                                                <div class="main-border-button">
+                                                    <a class="bird-cart btn-primary" style="cursor: pointer; color: white; border: 0px; border-radius: 20px;" href="MainController?action=NavToLogin">Thêm vào giỏ hàng</a>
                                                 </div>
                                             </div>
                                         </c:if>

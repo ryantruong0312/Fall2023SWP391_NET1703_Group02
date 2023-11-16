@@ -205,7 +205,6 @@
                                 <h4 style="color:black; font-weight: bold; margin-top: 0px; font-size: 20px; display: inline-block; white-space: nowrap;">Kho: </h4> 
                                 <span style="color: black; white-space: nowrap; display: inline-block; font-size: 20px;">${a.stock_quantity}</span>
                             </div>
-                            <c:if test="${sessionScope.LOGIN_USER.role == 'customer' || sessionScope.LOGIN_USER == null}">
                                 <c:if test="${a.stock_quantity > 0}">
                                     <div class="quantity-content">
                                         <div class="left-content">
@@ -236,10 +235,14 @@
                                     </c:choose>
                                     <div class="main-border-button">
                                         <input type="hidden" name="accessory_id" value="${a.accessory_id}" />
+                                        <c:if test="${sessionScope.LOGIN_USER.role == 'customer'}">
                                         <a class="accessory-cart btn-primary" style="cursor: pointer; color: white; border: 0px; border-radius: 20px;" data-value="${a.accessory_id}">Thêm vào giỏ hàng</a>
+                                        </c:if>
+                                        <c:if test="${sessionScope.LOGIN_USER == null}">
+                                        <a class="accessory-cart btn-primary" style="cursor: pointer; color: white; border: 0px; border-radius: 20px;" href="MainController?action=NavToLogin">Thêm vào giỏ hàng</a>
+                                        </c:if>
                                     </div>
                                 </div>
-                            </c:if>
                         </c:if>
                     </div>
                 </div>
