@@ -26,7 +26,6 @@
                 <h4>Sản phẩm và dịch vụ</h4>
                 <ul>
                     <li><a href="${pageScope.toBirds}">Vẹt cảnh</a></li>
-                    <li><a href="${pageScope.toBirdNests}">Tổ chim non</a></li>
                     <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                     <li><a href="${pageScope.toCompare}">So sánh</a></li>
                     <li><a href="${pageScope.toPair}">Nhân giống</a></li>

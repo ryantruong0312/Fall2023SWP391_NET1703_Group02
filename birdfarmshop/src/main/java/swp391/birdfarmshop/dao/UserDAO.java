@@ -270,7 +270,7 @@ public class UserDAO {
                 if (page != null) {
                     int pageNumber = Integer.parseInt(page);
                     int start = (pageNumber - 1) * recordsPerPage;
-                    sql += "ORDER BY (SELECT NULL) OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
+                    sql += "ORDER BY [register_date] DESC OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
                 }
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
@@ -326,7 +326,7 @@ public class UserDAO {
                 if (page != null) {
                     int pageNumber = Integer.parseInt(page);
                     int start = (pageNumber - 1) * recordsPerPage;
-                    sql += "ORDER BY (SELECT NULL) OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
+                    sql += "ORDER BY [register_date] DESC OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
                 }
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();

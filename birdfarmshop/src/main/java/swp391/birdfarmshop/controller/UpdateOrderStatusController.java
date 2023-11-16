@@ -35,9 +35,9 @@ public class UpdateOrderStatusController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         OrderDAO orderDao = new OrderDAO();
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("LOGIN_USER");
         try {
-            HttpSession session = request.getSession();
-            User user = (User) session.getAttribute("LOGIN_USER");
             if (user != null && !user.getRole().equals("customer")) {
                 url = SUCCESS;
                 String page = "1";
@@ -52,7 +52,6 @@ public class UpdateOrderStatusController extends HttpServlet {
                 String[] statusArray = request.getParameterValues("status");
                 String statusUpdate = statusArray[statusArray.length - 1];
                 String order_id = request.getParameter("order_id");
-                
                 boolean isUpdated = orderDao.updateOrderStatus(order_id, statusUpdate, request);
                 if(isUpdated) {
                     session.setAttribute("SUCCESS", "Cập nhật thành công");
@@ -85,7 +84,11 @@ public class UpdateOrderStatusController extends HttpServlet {
                 url = HOME;
             }
         } finally {
+          if( user != null && user.getRole().equals("customer")){
+              response.sendRedirect("MainController?action=NavToCustomerOrder");
+          }else{
             request.getRequestDispatcher(url).forward(request, response);
+          }
         }
     } 
 

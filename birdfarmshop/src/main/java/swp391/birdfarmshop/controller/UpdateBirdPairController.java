@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import swp391.birdfarmshop.dao.OrderDAO;
 import swp391.birdfarmshop.dao.TrackingBirdPairDAO;
+import swp391.birdfarmshop.model.User;
 
 /**
  *
@@ -39,21 +40,26 @@ public class UpdateBirdPairController extends HttpServlet {
         HttpSession session = request.getSession();
         TrackingBirdPairDAO trackingDao = new TrackingBirdPairDAO();
         OrderDAO o = new OrderDAO();
+        User u = (User) session.getAttribute("LOGIN_USER");
         try {
-            if (type.endsWith("repair")) {
-                int result = trackingDao.updateTrackingBirdPair(pairId, "Khách hàng yêu cầu ghép cặp lại", "Đang ghép cặp");
-                if(result == 0){
-                    session.setAttribute("ERROR", "Ghép lại thất bại");
-                }else{
-                   session.setAttribute("SUCCESS", "Ghép lại thành công");
+            if (u != null) {
+                if (type.endsWith("repair")) {
+                    int result = trackingDao.updateTrackingBirdPair(pairId, "Khách hàng yêu cầu ghép cặp lại", "Đang ghép cặp");
+                    if (result == 0) {
+                        session.setAttribute("ERROR", "Ghép lại thất bại");
+                    } else {
+                        session.setAttribute("SUCCESS", "Ghép lại thành công");
+                    }
+                } else {
+                    boolean result = o.updateOrderStatus(order, "Đã hủy", request);
+                    if (result == false) {
+                        session.setAttribute("ERROR", "Hủy thất bại");
+                    } else {
+                        session.setAttribute("SUCCESS", "Hủy thành công");
+                    }
                 }
             } else {
-                boolean result = o.updateOrderStatus(order, "Đã hủy",request);
-                if(result == false){
-                    session.setAttribute("ERROR", "Hủy thất bại");
-                }else{
-                   session.setAttribute("SUCCESS", "Hủy thành công");
-                }
+                session.setAttribute("ERROR", "Bạn chưa đăng nhập");
             }
         } catch (Exception e) {
             e.printStackTrace();

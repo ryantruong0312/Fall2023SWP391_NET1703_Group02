@@ -28,7 +28,7 @@
         <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
-     
+
 
         <style type="text/css">
             body {
@@ -427,14 +427,6 @@
                             <div class="card-body profile-section">
                                 <div class="row gutters">
                                     <div class="card-body order-section">
-                                        <div id="popup" style="display: none; position: fixed; background-color: #ffffcc; border-radius: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;">
-                                            <div style="padding: 30px;" id="update">
-                                                <div class="flex">
-                                                    <a id="cancelOrder" style="background-color: #ffcccc;" class="flex-1 flex align-items-center justify-content-center m-2 px-5 py-3 border-round"><span style="color: black;">Xác nhận</span></a>
-                                                    <a style="background-color: #ffcccc;" class="bordered-link flex-1 flex align-items-center justify-content-center m-2 px-5 py-3 border-round" onclick="hide('popup');"><span style="color: black;">Hủy bỏ</span></a>
-                                                </div>
-                                            </div>
-                                        </div>
                                         <!-- Tab buttons -->
                                         <ul style="border-color: skyblue;" class="nav nav-tabs" id="orderTabs">
                                             <li style="border-color: skyblue;" class="nav-item">
@@ -486,7 +478,7 @@
                                                                                 <c:set var="viewCancel" value="true" />
                                                                             </c:if>
                                                                             <c:if test="${!viewCancel}">
-                                                                                <div><a onclick="show('popup', '${order.order_id}'); event.stopPropagation();" style="color: white; background-color: #0066ff; padding: 5px 10px; border-radius: 20px; font-size: 16px;">HỦY ĐƠN</a></div>
+                                                                                <div><a onclick="show('${order.order_id}'); event.stopPropagation();" style="color: white; background-color: #0066ff; padding: 5px 10px; border-radius: 20px; font-size: 16px;cursor: pointer">HỦY ĐƠN</a></div>
                                                                             </c:if>
                                                                             <div class="order-status">${order.order_status}</div>
                                                                         </div>
@@ -544,7 +536,7 @@
                                                                                                             <!-- Modal -->
                                                                                                             <form action = "MainController">
                                                                                                                 <c:if test="${param.status != null}">
-                                                                                                                <input type="hidden" name="status" value="${param.status}"/>
+                                                                                                                    <input type="hidden" name="status" value="${param.status}"/>
                                                                                                                 </c:if>
                                                                                                                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                                                                     <div class="modal-dialog">
@@ -596,12 +588,12 @@
                                                                                                                                 <c:if test="${orderItem.accessory.accessory_id eq 'LM001' && orderItem.order_id eq item.order_id}">
                                                                                                                                     <c:set var="isFree" value="true"/>
                                                                                                                                     <c:if test="${isFree}">
-                                                                                                                                    <div class="product-category"><span>Tặng kèm: ${item.order_quantity}</span></div>
+                                                                                                                                        <div class="product-category"><span>Tặng kèm: ${item.order_quantity}</span></div>
                                                                                                                                     </c:if>
                                                                                                                                 </c:if>
                                                                                                                             </c:forEach>
                                                                                                                             <c:if test="${orderItem.order_quantity != 0}">
-                                                                                                                            <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
+                                                                                                                                <div class="product-quantity"><span>x${orderItem.order_quantity}</span></div>
                                                                                                                             </c:if>
                                                                                                                         </div>
                                                                                                                     </div>
@@ -611,12 +603,12 @@
                                                                                                                         <c:if test="${orderItem.accessory.discount != 0}">
                                                                                                                             <c:forEach items="${freeItemList}" var="item">
                                                                                                                                 <c:if test="${orderItem.order_id eq item.order_id}">
-                                                                                                                            <span class="old-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (orderItem.order_quantity + item.order_quantity)}" pattern="#,###"/>₫</span>
+                                                                                                                                    <span class="old-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (orderItem.order_quantity + item.order_quantity)}" pattern="#,###"/>₫</span>
                                                                                                                                 </c:if>
                                                                                                                             </c:forEach>
                                                                                                                             <c:forEach items="${freeItemList}" var="item">
                                                                                                                                 <c:if test="${orderItem.order_id eq item.order_id}">
-                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * orderItem.order_quantity * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                                                    <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * orderItem.order_quantity * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
                                                                                                                                 </c:if>
                                                                                                                             </c:forEach>
                                                                                                                         </c:if>
@@ -626,11 +618,11 @@
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
-                                                                                                                            <%--
-                                                                                                            <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
-                                                                                                                Đánh giá
-                                                                                                            </button>
-                                                                                                                            --%>
+                                                                                                            <%--
+                                                                                            <button onclick="createFeedback('${orderItem.order_item_id}')" type="button" name="btndanhgia" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+                                                                                                Đánh giá
+                                                                                            </button>
+                                                                                                            --%>
                                                                                                             <c:set var="isFeedbacked" value="false" />
                                                                                                             <c:if test="${order.order_status eq 'Đã giao hàng' || order.order_status eq 'Đã đánh giá'}">
                                                                                                                 <c:forEach items="${feedbackList}" var="feedback">
@@ -647,14 +639,14 @@
                                                                                                             <!-- Modal -->
                                                                                                             <form action = "MainController">
                                                                                                                 <c:if test="${param.status != null}">
-                                                                                                                <input type="hidden" name="status" value="${param.status}"/>
+                                                                                                                    <input type="hidden" name="status" value="${param.status}"/>
                                                                                                                 </c:if>
                                                                                                                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                                                                     <div class="modal-dialog">
                                                                                                                         <div class="modal-content">
                                                                                                                             <div class="modal-header">
                                                                                                                                 <h5 class="modal-title" id="exampleModalLabel">Đánh giá của bạn</h5>
-                                                                                                                                 <i class="fa fa-times btn-close" data-bs-dismiss="modal" aria-label="Close" class="fa fa-times" aria-hidden="true"></i>
+                                                                                                                                <i class="fa fa-times btn-close" data-bs-dismiss="modal" aria-label="Close" class="fa fa-times" aria-hidden="true"></i>
                                                                                                                             </div>
                                                                                                                             <div class="modal-body">
                                                                                                                                 <input type="hidden" name="order_item_id" id="order_feedback"/>
@@ -727,14 +719,14 @@
                                                                                                             <!-- Modal -->
                                                                                                             <form action = "MainController">
                                                                                                                 <c:if test="${param.status != null}">
-                                                                                                                <input type="hidden" name="status" value="${param.status}"/>
+                                                                                                                    <input type="hidden" name="status" value="${param.status}"/>
                                                                                                                 </c:if>
                                                                                                                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                                                                     <div class="modal-dialog">
                                                                                                                         <div class="modal-content">
                                                                                                                             <div class="modal-header">
                                                                                                                                 <h5 class="modal-title" id="exampleModalLabel">Đánh giá của bạn</h5>
-                                                                                                                                 <i class="fa fa-times btn-close" data-bs-dismiss="modal" aria-label="Close" class="fa fa-times" aria-hidden="true"></i>
+                                                                                                                                <i class="fa fa-times btn-close" data-bs-dismiss="modal" aria-label="Close" class="fa fa-times" aria-hidden="true"></i>
                                                                                                                             </div>
                                                                                                                             <div class="modal-body">
                                                                                                                                 <input type="hidden" name="order_item_id" id="order_feedback"/>
@@ -769,16 +761,16 @@
                                                                                                             <div class="d-flex align-items-center justify-content-between">
                                                                                                                 <c:choose>
                                                                                                                     <c:when test="${orderItem.birdPair.birdCustomer != null}">
-                                                                                                                <div class="pair-img pl-3 py-3 text-center">
-                                                                                                                    <img style="width: 80px;" src="${orderItem.birdPair.birdCustomer.img_url}"/>
-                                                                                                                    <p>${orderItem.birdPair.birdCustomer.name}</p>
-                                                                                                                </div>  
+                                                                                                                        <div class="pair-img pl-3 py-3 text-center">
+                                                                                                                            <img style="width: 80px;" src="${orderItem.birdPair.birdCustomer.img_url}"/>
+                                                                                                                            <p>${orderItem.birdPair.birdCustomer.name}</p>
+                                                                                                                        </div>  
                                                                                                                     </c:when>
                                                                                                                     <c:otherwise>
-                                                                                                                <div class="pair-img pl-3 py-3 text-center">
-                                                                                                                    <img style="width: 80px;" src="${orderItem.birdPair.male_bird.image_url}"/>
-                                                                                                                    <p>${orderItem.birdPair.male_bird.bird_name}</p>
-                                                                                                                </div> 
+                                                                                                                        <div class="pair-img pl-3 py-3 text-center">
+                                                                                                                            <img style="width: 80px;" src="${orderItem.birdPair.male_bird.image_url}"/>
+                                                                                                                            <p>${orderItem.birdPair.male_bird.bird_name}</p>
+                                                                                                                        </div> 
                                                                                                                     </c:otherwise>
                                                                                                                 </c:choose>
                                                                                                                 <div class="text-center">
@@ -789,16 +781,16 @@
                                                                                                                 </div>
                                                                                                                 <c:choose>
                                                                                                                     <c:when test="${orderItem.birdPair.female_bird != null}">
-                                                                                                                <div class="pair-img pl-3 py-3 text-center">
-                                                                                                                    <img style="width: 80px;" src="${orderItem.birdPair.female_bird.image_url}"/>
-                                                                                                                    <p>${orderItem.birdPair.female_bird.bird_name}</p>
-                                                                                                                </div>  
+                                                                                                                        <div class="pair-img pl-3 py-3 text-center">
+                                                                                                                            <img style="width: 80px;" src="${orderItem.birdPair.female_bird.image_url}"/>
+                                                                                                                            <p>${orderItem.birdPair.female_bird.bird_name}</p>
+                                                                                                                        </div>  
                                                                                                                     </c:when>
                                                                                                                     <c:otherwise>
-                                                                                                                <div class="pair-img pl-3 py-3 text-center">
-                                                                                                                    <img style="width: 80px;" src="${orderItem.birdPair.male_bird.image_url}"/>
-                                                                                                                    <p>${orderItem.birdPair.male_bird.bird_name}</p>
-                                                                                                                </div> 
+                                                                                                                        <div class="pair-img pl-3 py-3 text-center">
+                                                                                                                            <img style="width: 80px;" src="${orderItem.birdPair.male_bird.image_url}"/>
+                                                                                                                            <p>${orderItem.birdPair.male_bird.bird_name}</p>
+                                                                                                                        </div> 
                                                                                                                     </c:otherwise>
                                                                                                                 </c:choose>
                                                                                                             </div>
@@ -818,7 +810,7 @@
                                                                                                             <!-- Modal -->
                                                                                                             <form action = "MainController">
                                                                                                                 <c:if test="${param.status != null}">
-                                                                                                                <input type="hidden" name="status" value="${param.status}"/>
+                                                                                                                    <input type="hidden" name="status" value="${param.status}"/>
                                                                                                                 </c:if>
                                                                                                                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                                                                     <div class="modal-dialog">
@@ -915,19 +907,42 @@
                 </div>
             </div>
         </main>
+        <section id="confirm-remove" class="container-fluid">
+            <div class="vh-100 row">
+                <div class="h-100 m-auto d-flex align-items-center">
+                    <div class="box-remove bg-white p-4">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h4>Xác nhận</h4>
+                            <div onclick="hide()" class="btn-close">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </div>
+                        </div> 
+                        <p class="mb-4 mt-4">
+                            Bạn có muốn thực hiện thao tác này không ?
+                        </p>
+                        <div class="float-right">
+                            <form action="MainController" method="POST">
+                                <input type="hidden" name="action" value="NavToUpdateOrder"/>
+                                <input type="hidden" name="order_id" value=""/>
+                                <button id="btn-confirrm" class="btn btn-group-sm btn-primary">Xác nhận</button>
+                                <button  onclick="return hide();" class="btn btn-group-sm btn-secondary">Hủy</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section> 
         <!-- Start Footer -->
         <%@include file="../layout/footer.jsp" %>
         <!-- End Footer -->
         <script>
-            function show(id, orderId) {
-                var list = document.getElementById(id);
-                list.style.display = "block";
-                var aCancel = document.getElementById('cancelOrder');
-                aCancel.href = "MainController?action=NavToUpdateOrder&order_id=" + orderId;
+            function show(orderId) {
+                $('#confirm-remove').css('display', 'block')
+                $('input[name=order_id]').val(orderId);
             }
-            function hide(id) {
-                var list = document.getElementById(id);
-                list.style.display = "none";
+            function hide() {
+                $('#confirm-remove').css('display', 'none')
+                return false;
             }
         </script>
         <script>

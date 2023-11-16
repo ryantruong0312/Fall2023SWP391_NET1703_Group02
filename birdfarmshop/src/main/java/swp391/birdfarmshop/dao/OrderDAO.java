@@ -899,6 +899,8 @@ public class OrderDAO {
                         break;
                     case "Đã hủy":
                         ArrayList<OrderItemDTO> orderDetails = itemDao.getItemByOrderId(order_id);
+                        Order o = orderDao.getOrderById(order_id);
+                        boolean check = true;
                         for (OrderItemDTO orderDetail : orderDetails) {
                             if (orderDetail.getBird() != null) {
                                 birdDao.updateBirdStatus("Còn hàng", orderDetail.getBird().getBird_id());
@@ -922,10 +924,12 @@ public class OrderDAO {
                                     birdCustomerDao.updateBirdCustomerStatus(orderDetail.getBirdPair().getUsername(), "Chưa ghép cặp");
                                 }
                                 trackingDao.updateTrackingBirdPair(orderDetail.getBirdPair().getPair_id() + "", "Khách hàng đã hủy đơn", "Đã hủy");
+                                if(!orderDetail.getBirdPair().getStatus().equals("Chờ lấy chim")){
+                                   check = false;
+                                }
                             }
                         }
-                        Order o = orderDao.getOrderById(order_id);
-                        if (o != null && "Chuyển khoản".equals(o.getPaymentType())) {
+                        if (o != null && check && "Chuyển khoản".equals(o.getPaymentType())) {
                             VNPAYUtils.refundMoney(o.getVnpTeref(), o.getTotal_price() + "", o.getVnpDate(), o.getVnpTransaction(), r);
                         }
                         break;

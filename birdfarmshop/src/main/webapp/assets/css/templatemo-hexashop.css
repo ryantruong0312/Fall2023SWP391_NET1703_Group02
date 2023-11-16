@@ -2962,6 +2962,76 @@ register*/
 #confirm-payment .btn-close:hover{
    color: #404042;
 }
+#popup{
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    background-color:  rgba(127, 127, 119,0.7);
+    display: none;
+}
+#popup .box-remove{
+    border-radius: 15px;  
+    width: 350px;
+}
+#popup .input{
+    height: 35px!important; 
+    border: 1px solid grey!important;
+}
+
+#popup .box-remove p{
+    font-size: 1.05rem;
+}
+#popup .btn-close{
+    font-size: 20px;
+    cursor: pointer;
+    color: #6c757d!important;
+}
+#popup .btn-close:hover{
+   color: #404042;
+}
+#popup .btn-close{
+    font-size: 20px;
+    cursor: pointer;
+    color: #6c757d!important;
+}
+#popup .btn-close:hover{
+   color: #404042;
+}
+#popupCancel{
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    background-color:  rgba(127, 127, 119,0.7);
+    display: none;
+}
+#popupCancel .box-remove{
+    border-radius: 15px;  
+    width: 355px;
+}
+#popupCancel .input{
+    height: 35px!important; 
+    border: 1px solid grey!important;
+}
+
+#popupCancel .box-remove p{
+    font-size: 1.05rem;
+}
+#popupCancel .btn-close{
+    font-size: 20px;
+    cursor: pointer;
+    color: #6c757d!important;
+}
+#popupCancel .btn-close:hover{
+   color: #404042;
+}
+#popupCancel .btn-close{
+    font-size: 20px;
+    cursor: pointer;
+    color: #6c757d!important;
+}
+#popupCancel .btn-close:hover{
+   color: #404042;
+}
 /*layout-items*/
 .layout-item .new-item a{
     border-radius: 10px;

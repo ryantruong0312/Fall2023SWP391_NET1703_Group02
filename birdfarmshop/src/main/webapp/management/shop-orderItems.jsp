@@ -77,9 +77,6 @@
             .search-bar img {
                 margin-left: 5px;
             }
-            .scrollable-container {
-                overflow-x: scroll;
-            }
             .scrollable-list {
                 white-space: nowrap;
                 display: inline-block;
@@ -145,124 +142,126 @@
         <main>
             <div class="container">
                 <div class="col-lg-12">
-                    <a id="back" href="MainController?action=NavToShopOrders">
-                        <i style="color: white; font-size: 1rem; width: 30px;" class="fa fa-arrow-left"></i>
-                        <span>Quay lại</span>
+                    <a  style="color: white;font-size: 1rem; line-height: 3.5" class="btn-md btn-primary px-2 py-2" href="MainController?action=NavToShopOrders">
+                        <i style="color: white; font-size: 1rem; width: 20px;" class="fa fa-arrow-left" aria-hidden="true"></i>
+                        Quay lại
                     </a>
                 </div>
+                <div class="ml-2 mb-3 d-flex justify-content-center" style="border-bottom: 3px solid #ffffff;">
+                    <div>
+                        <img style="width: 25px; height: 25px; float: left; margin: 5px;" class="icon" src="assets/images/order.png" alt="Đơn hàng"/>
+                        <span style="color: black; font-size: 25px">Đơn hàng: ${itemList.get(0).order_id}</span>
+                        <br/>
+                    </div>
+                </div>
                 <div class="col-lg-12">
-                    <div class="order-bar" style="background-color: #cccccc; text-align: center;">
-                        <div style="background-color: #cccccc; border-bottom: 3px solid #ffffff;">
-                            <img style="width: 15px; height: 15px; float: left; margin: 5px;" class="icon" src="assets/images/order.png" alt="Đơn hàng"/>
-                            <span style="color: black; float: left;">Đơn hàng: ${itemList.get(0).order_id}</span>
-                            <br/>
-                        </div>
+                    <div class="order-bar" style=" text-align: center;">
                         <div class="scrollable-container">
-                            <div class="card mb-3" style="max-width: 100%;">
+                            <div class="card" style="max-width: 100%;">
                                 <div class="row no-gutters">
                                     <c:forEach items="${itemList}" var="item">
-                                    <c:choose>    
-                                        <c:when test="${item.bird != null}">
-                                    <div class="col-md-3">
-                                        <img src="${item.bird.image_url}" class="card-img" alt="${item.bird.bird_id}">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card-body">
-                                            <h3 class="card-title">${item.bird.bird_name}</h3>
-                                            <c:forEach items="${requestScope.BREEDS}" var="breed">
-                                                <c:if test="${breed.breed_id eq item.bird.breed_id}">
-                                            <h5 class="card-title">${breed.breed_name}</h5>
-                                                </c:if>
-                                            </c:forEach>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
-                                            <h5 class="btn btn-primary">
-                                                <fmt:formatNumber value="${item.unit_price}" pattern="#,###"/>₫
-                                            </h5>
-                                        </div>
-                                    </div>
-                                        </c:when>
-                                        <c:when test="${item.accessory != null}">
-                                    <div class="col-md-3">
-                                        <img src="${item.accessory.image_url}" class="card-img" alt="${item.accessory.accessory_id}">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card-body">
-                                            <h3 class="card-title">Phụ kiện: ${item.accessory.accessory_name}</h3>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="card-body">
-                                            <c:if test="${item.order_quantity != 0}">
-                                                <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
-                                            </c:if>
-                                            <c:if test="${item.accessory.accessory_id eq requestScope.FREEITEM.accessory.accessory_id}">
-                                                <h6 style="margin-bottom: 10px; color: red;" class="card-text">Tặng kèm: ${FREEITEM.order_quantity}</h6>
-                                            </c:if>
-                                            <h5 class="btn btn-primary">
-                                                <fmt:formatNumber value="${item.unit_price * item.order_quantity}" pattern="#,###"/>₫
-                                            </h5>
-                                        </div>
-                                    </div>
-                                        </c:when>
-                                        <c:when test="${item.birdNest != null}">
-                                    <div class="col-md-3">
-                                        <img src="${item.birdNest.image_url}" class="card-img" alt="${item.birdNest.nest_id}">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card-body">
-                                            <h3 class="card-title">Tổ chim non: ${item.birdNest.nest_name}</h3>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
-                                            <h5 class="btn btn-primary">
-                                                <fmt:formatNumber value="${item.unit_price * item.order_quantity}" pattern="#,###"/>₫
-                                            </h5>
-                                        </div>
-                                    </div>
-                                        </c:when>
-                                        <c:when test="${item.birdPair != null}">
-                                    <div class="col-md-3">
-                                        <c:if test="${not empty item.birdPair.pList}" >
-                                        <img src="${item.birdPair.pList.get(0)}" class="card-img">
-                                        </c:if>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="card-body">
-                                            <c:if test="${item.birdPair.male_bird != null && item.birdPair.female_bird != null}">
-                                            <h3 class="card-title">${item.birdPair.male_bird.bird_name} x ${item.birdPair.female_bird.bird_name}</h3>
-                                            <p class="card-text">Trạng thái nhân giống: ${item.birdPair.status}</p>
-                                            </c:if>
-                                            <c:if test="${item.birdPair.birdCustomer != null && item.birdPair.female_bird != null}">
-                                            <h3 class="card-title">${item.birdPair.birdCustomer.name} x ${item.birdPair.female_bird.bird_name}</h3>
-                                            <p class="card-text">Trạng thái nhân giống: ${item.birdPair.status}</p>
-                                            </c:if>
-                                            <c:if test="${item.birdPair.male_bird != null && item.birdPair.birdCustomer != null}">
-                                            <h3 class="card-title">${item.birdPair.male_bird.bird_name} x ${item.birdPair.birdCustomer.name}</h3>
-                                            <p class="card-text">Trạng thái nhân giống: ${item.birdPair.status}</p>
-                                            </c:if>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Số lượng con non: ${item.birdPair.number_young_bird}</h5>
-                                            <h5 class="btn btn-primary">
-                                                Tiền giống: <fmt:formatNumber value="${item.birdPair.number_young_bird * item.birdPair.young_bird_price}" pattern="#,###"/>₫
-                                            </h5>
-                                            <h5 class="btn btn-primary">
-                                                Tiền phí: <fmt:formatNumber value="2000000" pattern="#,###"/>₫
-                                            </h5>
-                                        </div>
-                                    </div>
-                                        </c:when>
-                                        <c:otherwise>
-                                        </c:otherwise>
-                                    </c:choose>
+                                        <c:choose>    
+                                            <c:when test="${item.bird != null}">
+                                                <div class="col-md-3">
+                                                    <img src="${item.bird.image_url}" class="card-img" alt="${item.bird.bird_id}">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="card-body">
+                                                        <h3 class="card-title">${item.bird.bird_name}</h3>
+                                                        <c:forEach items="${requestScope.BREEDS}" var="breed">
+                                                            <c:if test="${breed.breed_id eq item.bird.breed_id}">
+                                                                <h5 class="card-title">${breed.breed_name}</h5>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
+                                                        <h5 class="btn btn-primary">
+                                                            <fmt:formatNumber value="${item.unit_price}" pattern="#,###"/>₫
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </c:when>
+                                            <c:when test="${item.accessory != null}">
+                                                <div class="col-md-3">
+                                                    <img src="${item.accessory.image_url}" class="card-img" alt="${item.accessory.accessory_id}">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="card-body">
+                                                        <h3 class="card-title">Phụ kiện: ${item.accessory.accessory_name}</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="card-body">
+                                                        <c:if test="${item.order_quantity != 0}">
+                                                            <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
+                                                        </c:if>
+                                                        <c:if test="${item.accessory.accessory_id eq requestScope.FREEITEM.accessory.accessory_id}">
+                                                            <h6 style="margin-bottom: 10px; color: red;" class="card-text">Tặng kèm: ${FREEITEM.order_quantity}</h6>
+                                                        </c:if>
+                                                        <h5 class="btn btn-primary">
+                                                            <fmt:formatNumber value="${item.unit_price * item.order_quantity}" pattern="#,###"/>₫
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </c:when>
+                                            <c:when test="${item.birdNest != null}">
+                                                <div class="col-md-3">
+                                                    <img src="${item.birdNest.image_url}" class="card-img" alt="${item.birdNest.nest_id}">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="card-body">
+                                                        <h3 class="card-title">Tổ chim non: ${item.birdNest.nest_name}</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Số lượng: ${item.order_quantity}</h5>
+                                                        <h5 class="btn btn-primary">
+                                                            <fmt:formatNumber value="${item.unit_price * item.order_quantity}" pattern="#,###"/>₫
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </c:when>
+                                            <c:when test="${item.birdPair != null}">
+                                                <div class="col-md-3">
+                                                    <c:if test="${not empty item.birdPair.pList}" >
+                                                        <img src="${item.birdPair.pList.get(0)}" class="card-img">
+                                                    </c:if>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="card-body">
+                                                        <c:if test="${item.birdPair.male_bird != null && item.birdPair.female_bird != null}">
+                                                            <h3 class="card-title">${item.birdPair.male_bird.bird_name} x ${item.birdPair.female_bird.bird_name}</h3>
+                                                            <p class="card-text">Trạng thái nhân giống: ${item.birdPair.status}</p>
+                                                        </c:if>
+                                                        <c:if test="${item.birdPair.birdCustomer != null && item.birdPair.female_bird != null}">
+                                                            <h3 class="card-title">${item.birdPair.birdCustomer.name} x ${item.birdPair.female_bird.bird_name}</h3>
+                                                            <p class="card-text">Trạng thái nhân giống: ${item.birdPair.status}</p>
+                                                        </c:if>
+                                                        <c:if test="${item.birdPair.male_bird != null && item.birdPair.birdCustomer != null}">
+                                                            <h3 class="card-title">${item.birdPair.male_bird.bird_name} x ${item.birdPair.birdCustomer.name}</h3>
+                                                            <p class="card-text">Trạng thái nhân giống: ${item.birdPair.status}</p>
+                                                        </c:if>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">Số lượng con non: ${item.birdPair.number_young_bird}</h5>
+                                                        <h5 class="btn btn-primary mb-2">
+                                                            Tiền giống: <fmt:formatNumber value="${item.birdPair.number_young_bird * item.birdPair.young_bird_price}" pattern="#,###"/>₫
+                                                        </h5>
+                                                        <h5 class="btn btn-primary">
+                                                            Tiền phí: <fmt:formatNumber value="2000000" pattern="#,###"/>₫
+                                                        </h5>
+                                                    </div>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </c:forEach>
                                 </div>
                             </div>

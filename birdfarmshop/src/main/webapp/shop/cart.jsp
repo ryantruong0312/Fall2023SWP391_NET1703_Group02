@@ -249,14 +249,14 @@
                             </div>
                         </c:forEach>
 
-                        <div class="card mb-4">
+<!--                        <div class="card mb-4">
                             <div class="card-body p-4 d-flex flex-row">
                                 <div class="form-outline flex-fill">
                                     <input type="text" id="form1" class="form-control form-control-lg" placeholder="Nhập mã khuyến mãi" />
                                 </div>
                                 <button type="button" class="btn btn-outline-warning btn-lg ms-3">Áp dụng</button>
                             </div>
-                        </div><hr>
+                        </div><hr>-->
                         <h3 style="text-align: right">Tổng cộng</h3>
                         <h4 id="price-cart" style="text-align: right"><fmt:formatNumber value="${sessionScope.CART.cartTotalPrice}" pattern="#,###"/> ₫</h4>
 

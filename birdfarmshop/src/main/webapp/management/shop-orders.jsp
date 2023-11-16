@@ -40,28 +40,6 @@
                 padding: 0;
             }
 
-            .bordered-link {
-                border: 1px solid #000;
-                border-radius: 5px;
-                height: 30px;
-                padding: 5px;
-            }
-
-            .bordered-link:hover {
-                background-color: #f0f0f0;
-            }
-            #updateOrder {
-                border: 1px solid #000;
-                border-radius: 5px;
-                background-color: white;
-            }
-            #updateOrder:hover {
-                background-color: #f0f0f0 !important;
-            }
-            span:hover {
-                color: #2a2a2a;
-            }
-
             .order-bar {
                 border: 1px solid #cccccc;
             }
@@ -73,7 +51,9 @@
                 color: black;
                 margin: 0 10px 0 10px;
             }
-
+            .bordered-link span {
+                color: white;
+            }
             .search-bar {
                 border-radius: 8px;
                 border: 1px solid rgb(221, 221, 227);
@@ -119,11 +99,13 @@
                 width: auto;
                 padding: 20px 10px;
             }
-            .odd {
-                background-color: #FFFFFF;
+            .odd:hover {
+                cursor: pointer;
+                background-color: #AFDEE5!important;
             }
-            .even {
-                background-color: #E0E0E0;
+            .even:hover {
+                cursor: pointer;
+                background-color: #AFDEE5;
             }
             .button-style {
                 padding: 13px 40px !important;
@@ -190,31 +172,31 @@
                                 <input type="hidden" name="date" value="${requestScope.date}"/>
                             </c:if>
                             <ul>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=today"><span>Hôm nay</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=yesterday"><span>Hôm qua</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisWeek"><span>Tuần này</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisMonth"><span>Tháng này</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisYear"><span>Năm nay</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=today"><span class="btn btn-info ${requestScope.date eq 'today' ? "active":""}">Hôm nay</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=yesterday"><span class="btn btn-info ${requestScope.date eq 'yesterday' ? "active":""}">Hôm qua</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisWeek"><span class="btn btn-info ${requestScope.date eq 'thisWeek' ? "active":""}">Tuần này</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisMonth"><span class="btn btn-info ${requestScope.date eq 'thisMonth' ? "active":""}">Tháng này</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisYear"><span class="btn btn-info ${requestScope.date eq 'thisYear' ? "active":""}">Năm nay</span></a></li>
                                 <li>
-                                <label>Từ ngày:</label>
-                                <input id="startDay" type="date" name="startDay" value="${requestScope.startDay}"/>
-                                <label>Đến ngày:</label>
-                                <input id="endDay" type="date" name="endDay" value="${requestScope.endDay}"/>
-                                <button type="submit" name="action" value="NavToShopOrders"><span>Chọn</span></button>
+                                    <label>Từ ngày:</label>
+                                    <input id="startDay" type="date" name="startDay" value="${requestScope.startDay}"/>
+                                    <label>Đến ngày:</label>
+                                    <input id="endDay" type="date" name="endDay" value="${requestScope.endDay}"/>
+                                    <button class="btn btn-info ${requestScope.startDay != '' ? "active":"" || requestScope.endDay != '' ? "active":""}" type="submit" name="action" value="NavToShopOrders">Chọn</button>
                                 </li>
                             </ul>
                             <h3 style="color: #006699;">Theo trạng thái</h3>
                             <input type="hidden" name="filterStatus" value="${requestScope.filterStatus}"/>
                             <ul>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=wait"><span>Chờ xử lý</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=inProgress"><span>Đang xử lý</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=delivering"><span>Đang giao hàng</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=delivered"><span>Đã giao hàng</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=rated"><span>Đã đánh giá</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=cancel"><span>Đã hủy</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=wait"><span class="btn btn-info ${requestScope.filterStatus eq 'wait' ? "active":""}">Chờ xử lý</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=inProgress"><span class="btn btn-info ${requestScope.filterStatus eq 'inProgress' ? "active":""}">Đang xử lý</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=delivering"><span class="btn btn-info ${requestScope.filterStatus eq 'delivering' ? "active":""}">Đang giao hàng</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=delivered"><span class="btn btn-info ${requestScope.filterStatus eq 'delivered' ? "active":""}">Đã giao hàng</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=rated"><span class="btn btn-info ${requestScope.filterStatus eq 'rated' ? "active":""}">Đã đánh giá</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=cancel"><span class="btn btn-info ${requestScope.filterStatus eq 'cancel' ? "active":""}">Đã hủy</span></a></li>
                             </ul>
-                            <div style="background-color: #cccccc;">
-                                <a href="MainController?action=NavToShopOrders"><span style="color: #b9130f; margin-left: 10px;">BỎ LỌC</span></a>
+                            <div>
+                                <a href="MainController?action=NavToShopOrders"><span style="color: #b9130f; margin-left: 10px; font-weight: bold">BỎ LỌC</span></a>
                                 <br/>
                                 <h6 style="margin-left: 10px;">Lọc theo: <br/>
                                     <c:if test="${not empty requestScope.date}">
@@ -285,42 +267,23 @@
                                     </c:if>
                                 </h6>
                             </div>
-                            <div class="order-bar" style="background-color: #cccccc; margin: 10px 0;">
+                            <div class="order-bar" style="margin: 10px 0;">
                                 <div style="padding-bottom: 15px;">
                                     <img style="width: 15px; height: 15px; float: left; margin: 5px;" class="icon" src="assets/images/order.png" alt="Đơn hàng"/>
                                     <span style="color: black; float: left;">Đơn hàng</span>
                                 </div>
-                                <div style="" class="search-bar">
+                                <div class="search-bar mt-3">
                                     <img src="assets/images/search.png"/>
                                     <input type="text" name="search" placeholder="Tìm kiếm" value="${requestScope.search}">
                                     <button type="submit" name="action" value="NavToShopOrders"><span>Tìm kiếm</span></button>
                                 </div>
-                                <div id="popup" style="display: none; position: fixed; background-color: white; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;">
-                                    <ul style="padding: 5px 0; white-space: nowrap;" id="update">
-                                        <!--                                <ul style="display: none; padding: 5px 0; white-space: nowrap;" id="update">-->
-                                        <div id="choosing" style="display: none; white-space: nowrap;">
-                                            <li id="status1"><input type="radio" name="status" value="Đã giao hàng" id="option1" checked><label for="option1">Giao hàng thành công</label></li>
-                                            <li id="status2"><input type="radio" name="status" value="Đã hủy" id="option2"><label for="option2">Giao hàng thất bại</label></li>
-                                        </div>
-                                        <div class="flex">
-                                            <button class="flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round button-style" id="updateOrder" type="submit" name="action" value="NavToUpdateOrder"><span>Xác nhận</span></button>
-                                            <a class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" onclick="hide('popup');" style="width: 165px; height: 58px;"><span class="centered-text">Hủy bỏ</span></a>
-                                        </div>
-                                    </ul>
-                                </div>
-                                <div id="popupCancel" style="display: none; position: fixed; background-color: white; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;">
-                                    <div style="padding: 5px 0; white-space: nowrap;" id="cancel">
-                                        <a class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" id="cancelOrder"><span>Xác nhận</span></a>
-                                        <a class="bordered-link flex-1 flex align-items-center justify-content-center text-white m-2 px-5 py-3 border-round" onclick="hide('popupCancel');"><span>Hủy bỏ</span></a>
-                                    </div>
-                                </div>
-                                <div class="scrollable-container">
-                                    <table id="order-list" class="scrollable-list">
+                                <div class="scrollable-container mt-3">
+                                    <table id="order-list" class="scrollable-list table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>STT</th>
-                                                <th>Order Id</th>
-                                                <th>User ID</th>
+                                                <th>Mã đơn hàng</th>
+                                                <th>Tài khoản</th>
                                                 <th>Ngày đặt hàng</th>
                                                 <th>Tình trạng đơn hàng</th>
                                                 <th>Cập nhật</th>
@@ -340,23 +303,23 @@
                                                         <td>${counter.count}</td>
                                                         <td>${order.order_id}</td>
                                                         <td><a href="MainController?action=NavToProfile&username=${order.customer}">${order.customer}</a></td>
-                                                        <td>${order.order_date}</td>
+                                                        <td><fmt:formatDate value="${order.order_date}" pattern="dd-MM-yyyy"/></td>
                                                         <td>${order.order_status}</td>
                                                         <td>
                                                             <c:if test="${order.order_status ne 'Đã hủy' && order.order_status ne 'Đã giao hàng' && order.order_status ne 'Đã đánh giá'}">
-                                                                <a onclick="show('popup', '${order.order_id}', '${order.order_status}'); event.stopPropagation();" style="color: #007BFF;">Cập nhật</a>
+                                                                <a onclick="show('popup', '${order.order_id}', '${order.order_status}'); event.stopPropagation();" style="color: #007BFF;cursor: pointer"><span class="btn btn-primary text-white">Cập nhật</span></a>
                                                             </c:if>
                                                         </td>
                                                         <td>
                                                             <c:if test="${order.order_status eq 'Chờ xử lý'}">
-                                                                <a onclick="showCancel('popupCancel', '${order.order_id}'); event.stopPropagation();" style="color: #007BFF;">Hủy đơn</a>
+                                                                <a onclick="showCancel('popupCancel', '${order.order_id}'); event.stopPropagation();" style="color: #007BFF; cursor: pointer"><span class="btn btn-danger text-white">Hủy đơn</span></a>
                                                             </c:if>
                                                         </td>
                                                         <td>${order.name_receiver}</td>
                                                         <td>0${order.phone_receiver}</td>
                                                         <td>${order.address_receiver}</td>
                                                         <td>${order.payment_status}</td>
-                                                        <td>${order.total_price}</td>
+                                                        <td><fmt:formatNumber value="${order.total_price}" pattern="#,###"/> ₫</td>
                                                         <td>${order.point}</td>
                                                     </tr>
                                                 </c:forEach>
@@ -419,6 +382,55 @@
                 </div>
             </div>                     
         </section>
+        <div id="popup" class="container-fluid">
+            <form action="MainController" method="POST">
+                <input type="hidden" name="action" value="NavToUpdateOrder"/>
+                <div class="vh-100 row">
+                    <div class="h-100 m-auto d-flex align-items-center">
+                        <div class="box-remove bg-white p-4">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h4>Cập nhật đơn hàng</h4>
+                                <div onclick="hide('popup')" class="btn-close">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </div>
+                            </div> 
+                            <p class="mb-4 mt-4">
+                                Bạn có muốn cập nhật đơn hàng này không ?
+                            </p>
+                            <div id="choosing" class="mb-4" style="display: none; white-space: nowrap;">
+                                <li id="status1"><input type="radio" name="status" value="Đã giao hàng" id="option1" checked><label for="option1">Giao hàng thành công</label></li>
+                                <li id="status2"><input type="radio" name="status" value="Đã hủy" id="option2"><label for="option2">Giao hàng thất bại</label></li>
+                            </div>
+                            <div class="float-right" id="update-form">
+                                <button class="btn btn-primary" id="updateOrder" type="submit" name="action" value="NavToUpdateOrder"><span>Xác nhận</span></button>
+                                <a class="bordered-link" onclick="hide('popup');" style="width: 165px; height: 58px;"><span class="centered-text btn btn-danger">Hủy bỏ</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="popupCancel" class="container-fluid">
+            <div class="vh-100 row">
+                <div class="h-100 m-auto d-flex align-items-center">
+                    <div class="box-remove bg-white p-4">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h4>Hủy đơn hàng đơn hàng</h4>
+                            <div onclick="hide('popupCancel')" class="btn-close">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </div>
+                        </div> 
+                        <p class="mb-4 mt-4">
+                            Bạn có muốn huỷ đơn hàng này không ?
+                        </p>
+                        <div class="float-right">
+                            <a id="cancelOrder"><span class="btn btn-primary">Xác nhận</span></a>
+                            <a onclick="hide('popupCancel');"><span class="btn btn-danger">Hủy bỏ</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Start Footer -->
         <%@include file="../layout/message.jsp" %>
         <script src="assets/js/jquery-3.7.1.min.js"></script>
@@ -438,67 +450,67 @@
         <script src="assets/js/custom.js"></script>
         <!-- End Footer -->
         <script>
-                                                        function show(id, orderId, orderStatus) {
-                                                            var list = document.getElementById(id);
-                                                            list.style.display = "block";
-
-                                                            if (orderStatus === 'Chờ xử lý') {
-                                                                const hiddenStatus1 = document.createElement('input');
-                                                                hiddenStatus1.type = 'hidden';
-                                                                hiddenStatus1.name = 'status';
-                                                                hiddenStatus1.value = 'Đang xử lý';
-                                                                list.appendChild(hiddenStatus1);
-                                                            }
-                                                            if (orderStatus === 'Đang xử lý') {
-                                                                const hiddenStatus2 = document.createElement('input');
-                                                                hiddenStatus2.type = 'hidden';
-                                                                hiddenStatus2.name = 'status';
-                                                                hiddenStatus2.value = 'Đang giao hàng';
-                                                                list.appendChild(hiddenStatus2);
-                                                            }
-                                                            if (orderStatus === 'Đang giao hàng') {
-                                                                var liStatuses = document.getElementById('choosing');
-                                                                liStatuses.style.display = "block";
-                                                            }
-                                                            const inputHidden = document.createElement('input');
-                                                            inputHidden.type = 'hidden';
-                                                            inputHidden.name = 'order_id';
-                                                            inputHidden.value = orderId;
-                                                            list.appendChild(inputHidden);
-                                                        }
-                                                        function showCancel(id, orderId) {
-                                                            var list = document.getElementById(id);
-                                                            list.style.display = "block";
-                                                            var aHref = document.getElementById("cancelOrder");
-                                                            aHref.href = "MainController?action=NavToUpdateOrder&order_id=" + orderId + "&status=Đã hủy";
-                                                        }
-                                                        function hide(id) {
-                                                            var list = document.getElementById(id);
-                                                            list.style.display = "none";
-                                                        }
-                                                        var sdateInput = document.getElementById("startDay");
-                                                        var edateInput = document.getElementById("endDay");
-                                                        var today = new Date();
-                                                        sdateInput.addEventListener("change", function () {
-                                                            var selectedsDate = new Date(sdateInput.value);
-                                                            if (selectedsDate > today) {
-                                                                alert("Ngày được chọn không thể là một ngày trong tương lai. Vui lòng chọn lại.");
-                                                                sdateInput.value = "";
-                                                            }
-                                                        });
-                                                        edateInput.addEventListener("change", function () {
-                                                            var selectedsDate = new Date(sdateInput.value);
-                                                            var selectedeDate = new Date(edateInput.value);
-                                                            if (selectedeDate > today) {
-                                                                alert("Ngày được chọn không thể là một ngày trong tương lai. Vui lòng chọn lại.");
-                                                                edateInput.value = "";
-                                                            }
-                                                            if (selectedsDate > selectedeDate) {
-                                                                alert("Ngày kết thúc phải sau ngày bắt đầu. Vui lòng chọn lại");
-                                                                sdateInput.value = "";
-                                                                edateInput.value = "";
-                                                            }
-                                                        });
+                                function show(id, orderId, orderStatus) {
+                                    var list = document.getElementById(id);
+                                    list.style.display = "block";
+                                    list = document.getElementById("update-form");
+                                    if (orderStatus === 'Chờ xử lý') {
+                                        const hiddenStatus1 = document.createElement('input');
+                                        hiddenStatus1.type = 'hidden';
+                                        hiddenStatus1.name = 'status';
+                                        hiddenStatus1.value = 'Đang xử lý';
+                                        list.appendChild(hiddenStatus1);
+                                    }
+                                    if (orderStatus === 'Đang xử lý') {
+                                        const hiddenStatus2 = document.createElement('input');
+                                        hiddenStatus2.type = 'hidden';
+                                        hiddenStatus2.name = 'status';
+                                        hiddenStatus2.value = 'Đang giao hàng';
+                                        list.appendChild(hiddenStatus2);
+                                    }
+                                    if (orderStatus === 'Đang giao hàng') {
+                                        var liStatuses = document.getElementById('choosing');
+                                        liStatuses.style.display = "block";
+                                    }
+                                    const inputHidden = document.createElement('input');
+                                    inputHidden.type = 'hidden';
+                                    inputHidden.name = 'order_id';
+                                    inputHidden.value = orderId;
+                                    list.appendChild(inputHidden);
+                                }
+                                function showCancel(id, orderId) {
+                                    var list = document.getElementById(id);
+                                    list.style.display = "block";
+                                    var aHref = document.getElementById("cancelOrder");
+                                    aHref.href = "MainController?action=NavToUpdateOrder&order_id=" + orderId + "&status=Đã hủy";
+                                }
+                                function hide(id) {
+                                    var list = document.getElementById(id);
+                                    list.style.display = "none";
+                                }
+                                var sdateInput = document.getElementById("startDay");
+                                var edateInput = document.getElementById("endDay");
+                                var today = new Date();
+                                sdateInput.addEventListener("change", function () {
+                                    var selectedsDate = new Date(sdateInput.value);
+                                    if (selectedsDate > today) {
+                                        alert("Ngày được chọn không thể là một ngày trong tương lai. Vui lòng chọn lại.");
+                                        sdateInput.value = "";
+                                    }
+                                });
+                                edateInput.addEventListener("change", function () {
+                                    var selectedsDate = new Date(sdateInput.value);
+                                    var selectedeDate = new Date(edateInput.value);
+                                    if (selectedeDate > today) {
+                                        alert("Ngày được chọn không thể là một ngày trong tương lai. Vui lòng chọn lại.");
+                                        edateInput.value = "";
+                                    }
+                                    if (selectedsDate > selectedeDate) {
+                                        alert("Ngày kết thúc phải sau ngày bắt đầu. Vui lòng chọn lại");
+                                        sdateInput.value = "";
+                                        edateInput.value = "";
+                                    }
+                                });
         </script>
     </body>
 </html>

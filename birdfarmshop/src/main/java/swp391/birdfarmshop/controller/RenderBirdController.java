@@ -52,6 +52,7 @@ public class RenderBirdController extends HttpServlet {
                 price = null;
                 age = null;
                 clear = null;
+                gender = null;
                 page = "1";
             }
             if (breedId != null && breedId.equals("All")) {
