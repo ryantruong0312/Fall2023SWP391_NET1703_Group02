@@ -350,7 +350,7 @@
                                 <canvas id="myPieChartBirdPair"></canvas>
                                 <div class="center-text text-black font-weight-bold"><fmt:formatNumber value="${requestScope.REPORT.totalBirdPair}" pattern="#,###"/></div>
                             </div>
-                            <div class="mt-2 text-center small">
+                            <div class="mt-4 text-center small">
                                 <span class="mr-2">
                                     <i style="color: #EF89F1;" class="fa fa-circle"></i> Chờ lấy chim
                                 </span>

@@ -309,6 +309,7 @@
             }
             var dateInput = document.getElementById("birthday");
             var today = new Date();
+            console.log(today);
             dateInput.addEventListener("change", function () {
                 var selectedDate = new Date(dateInput.value);
                 if (selectedDate > today) {

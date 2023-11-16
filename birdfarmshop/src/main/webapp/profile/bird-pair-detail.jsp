@@ -458,7 +458,7 @@
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </div>
                         </div> 
-                        <p class="mb-4 mt-4">
+                        <p class="mb-4 mt-4" id="content-confirm">
                             Bạn có muốn thực hiện thao tác này không ?
                         </p>
                         <div class="float-right">
@@ -475,7 +475,7 @@
                     <div class="box-remove bg-white p-4">
                         <div class="d-flex align-items-center justify-content-between">
                             <h4>Xác nhận</h4>
-                            <div onclick="cancelRemove()" class="btn-close">
+                            <div onclick="cancelRemovePayment()" class="btn-close">
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </div>
                         </div> 
@@ -665,7 +665,7 @@
                                 <input type="hidden" name="pair_id" value="${birdPair.pair_id}"/>
                                 <button id="btn-confirrm" class="btn btn-group-sm btn-primary mx-1">Không</button>
                             </form>
-                            <button  onclick="cancelRemove()" class="btn btn-group-sm btn-secondary mx-1">Hủy</button>
+                            <button  onclick="cancelRemovePayment()" class="btn btn-group-sm btn-secondary mx-1">Hủy</button>
                         </div>
                     </div>
                 </div>
@@ -762,9 +762,18 @@
                 $('#' + idForm).submit();
                 return true;
             });
+            function cancelRemovePayment() {
+                $('#confirm-payment').css('display', 'none');
+            }
             function cancelRemove() {
                 $('#confirm-remove').css('display', 'none');
             }
+            $('#cancel-youngBird').click(function (event){
+                $('#content-confirm').html('Khi hủy đơn hàng bạn chỉ được hoàn trả một nửa số tiền ghép giống, để nhận lại tiền vui lòng liên hệ trực tiếp với cửa hàng.Bạn có muốn thực hiện thao tác này không ?')
+            });
+             $('#repair-youngBird').click(function (event){
+                $('#content-confirm').html('Bạn có muốn thực hiện thao tác này không ?')
+            });
         </script>
     </body>
 </html>

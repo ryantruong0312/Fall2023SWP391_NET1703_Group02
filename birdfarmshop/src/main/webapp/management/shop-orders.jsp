@@ -293,7 +293,6 @@
                                                 <th>Địa chỉ nhận hàng</th>
                                                 <th>Tình trạng thanh toán</th>
                                                 <th>Tổng đơn hàng</th>
-                                                <th>Điểm đã dùng</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -320,7 +319,6 @@
                                                         <td>${order.address_receiver}</td>
                                                         <td>${order.payment_status}</td>
                                                         <td><fmt:formatNumber value="${order.total_price}" pattern="#,###"/> ₫</td>
-                                                        <td>${order.point}</td>
                                                     </tr>
                                                 </c:forEach>
                                             </c:if>
@@ -398,8 +396,8 @@
                                 Bạn có muốn cập nhật đơn hàng này không ?
                             </p>
                             <div id="choosing" class="mb-4" style="display: none; white-space: nowrap;">
-                                <li id="status1"><input type="radio" name="status" value="Đã giao hàng" id="option1" checked><label for="option1">Giao hàng thành công</label></li>
-                                <li id="status2"><input type="radio" name="status" value="Đã hủy" id="option2"><label for="option2">Giao hàng thất bại</label></li>
+                                <li id="status1"><input type="radio" name="status" value="Đã giao hàng" id="option1" checked><label class="ml-2" for="option1">Giao hàng thành công</label></li>
+                                <li id="status2"><input type="radio" name="status" value="Đã hủy" id="option2"><label class="ml-2" for="option2">Giao hàng thất bại</label></li>
                             </div>
                             <div class="float-right" id="update-form">
                                 <button class="btn btn-primary" id="updateOrder" type="submit" name="action" value="NavToUpdateOrder"><span>Xác nhận</span></button>
@@ -487,6 +485,7 @@
                                 function hide(id) {
                                     var list = document.getElementById(id);
                                     list.style.display = "none";
+                                    $('#choosing').css('display', 'none');
                                 }
                                 var sdateInput = document.getElementById("startDay");
                                 var edateInput = document.getElementById("endDay");

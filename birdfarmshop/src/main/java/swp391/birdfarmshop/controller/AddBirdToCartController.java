@@ -19,6 +19,7 @@ import java.util.List;
 import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dto.AddStatusDTO;
+import swp391.birdfarmshop.dto.BirdDTO;
 import swp391.birdfarmshop.dto.CartDTO;
 import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
@@ -95,17 +96,22 @@ public class AddBirdToCartController extends HttpServlet {
                         cheapestCage = cage;
                     }
                 }
-                boolean checkAdd = cart.addBirdToCart(bird, cheapestCage);
-                if (checkAdd) {    
-                    cart.addAccessoryToCart(cheapestCage, 1,1);
-                    status.setStatus("Thành công");
-                    status.setContent("Thêm sản phẩm vào giỏ hàng thành công");
-                    status.setType("success");
-                    status.setQuantity(cart.getTotalItem());
-                    session.setAttribute("CART", cart);
+                if (bird.getStatus().equals("Còn hàng")) {
+                    boolean checkAdd = cart.addBirdToCart(bird, cheapestCage);
+                    if (checkAdd) {
+                        cart.addAccessoryToCart(cheapestCage, 1, 1);
+                        status.setStatus("Thành công");
+                        status.setContent("Thêm sản phẩm vào giỏ hàng thành công");
+                        status.setType("success");
+                        status.setQuantity(cart.getTotalItem());
+                        session.setAttribute("CART", cart);
+                    } else {
+                        status.setQuantity(cart.getTotalItem());
+                        status.setContent("Sản phẩm này đã có trong giỏ hàng");
+                    }
                 } else {
                     status.setQuantity(cart.getTotalItem());
-                    status.setContent("Sản phẩm này đã có trong giỏ hàng");
+                    status.setContent("Sản phẩm này đã bán");
                 }
                 out.println(gson.toJson(status));
             }

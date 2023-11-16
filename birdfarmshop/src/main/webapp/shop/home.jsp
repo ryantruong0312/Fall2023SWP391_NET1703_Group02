@@ -44,9 +44,6 @@
                                 <div class="inner-content">
                                     <h4>V.E.T - Thế giới vẹt cảnh</h4>
                                     <span>Đặt niềm yêu thú cưng của bạn vào tay chuyên gia về chim vẹt.</span>
-                                    <div class="main-border-button">
-                                        <a href="#">Tìm hiểu ngay!</a>
-                                    </div>
                                 </div>
                                 <img src="assets/images/left-banner-image.jpg" alt="">
                             </div>
@@ -99,26 +96,6 @@
                                     <div class="right-first-image">
                                         <div class="thumb">
                                             <div class="inner-content">
-                                                <h4>Tổ chim non</h4>
-                                                <span>Các tổ chim đang trong quá trình nuôi dưỡng</span>
-                                            </div>
-                                            <div class="hover-content">
-                                                <div class="inner">
-                                                    <h4>Tổ chim non</h4>
-                                                    <p>Hãy khám phá các tổ chim non đáng yêu của chúng tôi!</p>
-                                                    <div class="main-border-button">
-                                                        <a>Xem thêm</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <img src="assets/images/baner-right-image-03.jpg">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="right-first-image">
-                                        <div class="thumb">
-                                            <div class="inner-content">
                                                 <h4>Nhân giống</h4>
                                                 <span>Ghép cặp sinh sản chim vẹt theo yêu cầu</span>
                                             </div>
@@ -135,6 +112,13 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-lg-6">
+                                    <div class="right-first-image">
+                                        <div class="thumb">
+                                            <img src="assets/images/baner-right-image-03.jpg">
+                                        </div>
+                                    </div>
+                                </div>    
                             </div>
                         </div>
                     </div>

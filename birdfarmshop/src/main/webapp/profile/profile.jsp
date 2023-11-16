@@ -219,19 +219,11 @@
                                                 <input type="text" disabled="" class="form-control" placeholder="${requestScope.USER.password}">
                                             </div>
                                         </div>
-                                        <c:if test="${requestScope.USER.role == 'customer'}">
-                                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                                <div class="form-group">
-                                                    <label>Điểm tích lũy</label>
-                                                    <input type="text" disabled="" class="form-control" placeholder="${requestScope.USER.point}">
-                                                </div>
-                                            </div>
-                                        </c:if>
                                     </div>
                                     <div class="row gutters">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                             <div class="text-center register-date">
-                                                Thành viên của V.E.T từ ${requestScope.USER.registerDate}
+                                                Thành viên của V.E.T từ <fmt:formatDate value="${requestScope.USER.registerDate}" pattern="dd-MM-yyyy"/> 
                                             </div>
                                         </div>
                                     </div>

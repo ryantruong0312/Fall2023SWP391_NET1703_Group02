@@ -58,13 +58,8 @@
                                 </ul>
                             </li>
                             <c:if test="${sessionScope.LOGIN_USER.role == 'staff'}">
-                                <li class="submenu"><a class="${param.action == 'NavToShopOrders' ? "active":"" 
-                                                                || param.action == 'NavToBirdPairShop' ? "active":""}">Đơn hàng</a>
-                                    <ul>
-                                        <li  class="scroll-to-section"><a class="${param.action == 'NavToShopOrders' ? "active":""}" href="${pageScope.toShopOrders}">Chim và phụ kiện</a></li>
-                                        <li class="scroll-to-section"><a class="${param.action == 'NavToBirdPairShop' ? "active":""}" href="${pageScope.toBirdPairShop}">Nhân giống</a></li>
-                                    </ul>
-                                </li>
+                                <li class="scroll-to-section"><a class="${param.action == 'NavToShopOrders' ? "active":""}" href="${pageScope.toShopOrders}">Đơn hàng</a></li>
+                                <li class="scroll-to-section"><a class="${param.action == 'NavToBirdPairShop' ? "active":""}" href="${pageScope.toBirdPairShop}">Nhân giống</a></li>
                             </c:if>
                             <c:if test="${LOGIN_USER == null || LOGIN_USER.role == 'customer'}">
                                 <li class="scroll-to-section"><a class="${param.action == 'NavToPairBirds' ? "active":""}" href="${pageScope.toPair}">Nhân giống</a></li>
@@ -93,13 +88,8 @@
                                     <li><a href="${pageScope.toAccessories}">Phụ kiện</a></li>
                                 </ul>
                             </li>
-                            <li class="submenu"><a class="${param.action == 'NavToBirdPairShop' ? "active":""
-                                                            ||param.action == 'NavToShopOrders' ? "active":""}">Đơn hàng</a>
-                                <ul>
-                                    <li  class="scroll-to-section"><a class="${param.action == 'NavToShopOrders' ? "active":""}" href="${pageScope.toShopOrders}">Chim và phụ kiện</a></li>
-                                    <li class="scroll-to-section"><a class="${param.action == 'NavToBirdPairShop' ? "active":""}" href="${pageScope.toBirdPairShop}">Nhân giống</a></li>
-                                </ul>
-                            </li>
+                            <li class="scroll-to-section"><a class="${param.action == 'NavToShopOrders' ? "active":""}" href="${pageScope.toShopOrders}">Đơn hàng</a></li>
+                            <li class="scroll-to-section"><a class="${param.action == 'NavToBirdPairShop' ? "active":""}" href="${pageScope.toBirdPairShop}">Nhân giống</a></li>
                             <li class="scroll-to-section"><a class="${param.action == 'NavToAccounts' ? "active":""}" href="${pageScope.toAccounts}">Tài khoản</a></li>
                             <li class="scroll-to-section"><a class="${param.action == 'NavToReports' ? "active":""}" href="${pageScope.toReports}">Thống kê</a></li>
                             </c:if>

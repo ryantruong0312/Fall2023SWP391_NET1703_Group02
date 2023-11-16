@@ -249,12 +249,14 @@
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="card-body">
-                                                        <h5 class="card-title">Số lượng con non: ${item.birdPair.number_young_bird}</h5>
-                                                        <h5 class="btn btn-primary mb-2">
-                                                            Tiền giống: <fmt:formatNumber value="${item.birdPair.number_young_bird * item.birdPair.young_bird_price}" pattern="#,###"/>₫
-                                                        </h5>
+                                                        <c:if test="${item.birdPair.number_young_bird > 0}">
+                                                            <h5 class="card-title">Số lượng con non: ${item.birdPair.number_young_bird}</h5>
+                                                            <h5 class="btn btn-primary mb-2">
+                                                            Tiền chim non: <fmt:formatNumber value="${item.birdPair.number_young_bird * item.birdPair.young_bird_price}" pattern="#,###"/>₫
+                                                           </h5>
+                                                        </c:if>
                                                         <h5 class="btn btn-primary">
-                                                            Tiền phí: <fmt:formatNumber value="2000000" pattern="#,###"/>₫
+                                                            Tiền phí ghép giống: <fmt:formatNumber value="2000000" pattern="#,###"/>₫
                                                         </h5>
                                                     </div>
                                                 </div>
