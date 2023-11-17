@@ -50,10 +50,14 @@ CREATE TABLE [Bird]
 	[reproduction_history] SMALLINT,
 	[price] INT,
 	[description] NVARCHAR(MAX),
+	[dad_id] VARCHAR(10),
+	[mom_id] VARCHAR(10),
 	[discount] SMALLINT CONSTRAINT DF_Bird_discount DEFAULT 0,
 	[status] NVARCHAR(20),
 	CONSTRAINT PK_Bird PRIMARY KEY ([bird_id]),
 	CONSTRAINT FK_Bird_BirdBreed FOREIGN KEY ([breed_id]) REFERENCES [BirdBreed]([breed_id]),
+	CONSTRAINT FK_Dadbird FOREIGN KEY ([dad_id]) REFERENCES [Bird]([bird_id]),
+	CONSTRAINT FK_Mombird FOREIGN KEY ([mom_id]) REFERENCES [Bird]([bird_id])
 )
 GO
 
@@ -245,14 +249,14 @@ VALUES
 	('cage', N'Lồng & cây đứng', 'https://petmeshop.com/wp-content/uploads/2023/05/cay-dung-de-ban-inox-size-s-loai-a-27x29x14.png'),
 	('toy', N'Phụ kiện trang trí - Đồ chơi', 'https://petmeshop.com/wp-content/uploads/2020/09/Clicker-3.png')
 
-INSERT INTO [Bird] ([bird_id], [bird_name], [color], [birthday], [grown_age], [gender], [breed_id], [achievement], [reproduction_history], [price], [description], [discount], [status]) 
+INSERT INTO [Bird] ([bird_id], [bird_name], [color], [birthday], [grown_age], [gender], [breed_id], [achievement], [reproduction_history], [price], [description],[dad_id] ,[mom_id] , [discount], [status]) 
 VALUES 
 	('XT001', N'Vẹt Xích Thái XT001', N'Xanh lá,vàng', '2021-01-01', 3, 1, 'asian', 
 	N'Giải 3 cuộc thi Vẹt Châu Á Schauwerbung 2023', 
 	0, 6500000, 
 	N'Xét ở góc độ sinh học, Xích Thái (Vẹt Má Vàng) thuộc nhóm vẹt rừng đuôi dài có viền cổ – Ringneck/Long-tail Parakeets, với 2 đặc trưng của loài: chim trống trưởng thành có đường viền sẫm màu phía sau gáy (ring) và các cá thể chim đều có đuôi rất dài, chiếm khoảng 1/2 tổng chiều dài toàn thân. Xét ở góc độ vật nuôi – Alexandrine Parakeet được coi là loài vẹt khá thân thiện, dễ thuần, sức đề kháng khá tốt, với tuổi thọ có thể đạt đến 30-40 năm.
 	Được đánh giá là loài vẹt có khả năng nhại tốt, thực tế chất lượng nhại giọng nói của Vẹt má vàng thua xa chim Nhồng hoặc vẹt xám Châu Phi. Chim bắt chước giọng người không giỏi lắm, đặc biệt khó bắt chước các từ nhiều nguyên âm o, a. Ghi nhận trên thế giới, chỉ một số ít cá thể có thể nhớ và học được đến khoảng 20 từ.',
-	0, N'Đã bán'),
+	NULL, NULL, 0, N'Đã bán'),
 
 	('IR001', N'Vẹt Indian Ringneck IR001', N'Xanh dương', '2022-06-01', 4, 0, 'asian', 
 	N'Top 4 cuộc thi Hội Đam Mê Lông Vũ TP.HCM 2020-2021', 
@@ -260,7 +264,7 @@ VALUES
 	N'Indian Ringneck hay còn gọi là Rose-ringed Parakeets thực sự là những sinh vật kỳ diệu. Thực vậy, chỉ cần nhìn vào những con chim bạn có thể dễ dàng nhận ra chúng qua màu sắc, cái mỏ nổi và long đuôi dài. Cả chim trống và mái đều có đuôi lớn và dài bao gồm 12 lông, 2 lông đuôi lớn chím phần lớn kích thước của con vẹt. Về màu sắc chúng có những màu phổ biến như xanh lá, trắng, vàng, xanh dương. Một số dòng đặc biệt có các màu sắc khá đẹp như xám khói, tím, xanh pastel… Con trống và mái có vẻ ngoài rất giống nhau tuy nhiên những con vẹt trống khi trưởng thành có thể phân biệt bằng vòng đen, trắng hoặc hồng quanh cổ.
 	Ringnecks có nguồn gốc từ Châu Á và Châu Phi và có thể được tìm thấy trong các khu rừng hoặc môi trường khô cằn và cũng xa lạ khi có thể thấy chúng tại các khu đô thị như ở California, Florida và cả vương quốc Anh.
 	Giống như hầu hết các loài vẹt, ringneck thông minh và làm vật nuôi tốt. Chúng học hỏi khá nhanh và thích thể hiện. Ngoài ra chúng còn có thể nói và phát âm khá rõ, một số con nói khá tốt như các loài vẹt Xám Châu Phi hay Amazon tuy khả năng ghi nhớ về số lượng từ vựng không tốt bằng.',
-	5, N'Còn hàng'),
+	NULL, NULL, 5, N'Còn hàng'),
 
 	('IR002', N'Vẹt Indian Ringneck IR002', N'Trắng', '2021-12-01', 5, 0, 'asian', 
 	N'Giải 2 Cuộc Thi Vẹt Châu Á-Australasia 2022', 
@@ -268,97 +272,97 @@ VALUES
 	N'Indian Ringneck hay còn gọi là Rose-ringed Parakeets thực sự là những sinh vật kỳ diệu. Thực vậy, chỉ cần nhìn vào những con chim bạn có thể dễ dàng nhận ra chúng qua màu sắc, cái mỏ nổi và long đuôi dài. Cả chim trống và mái đều có đuôi lớn và dài bao gồm 12 lông, 2 lông đuôi lớn chím phần lớn kích thước của con vẹt. Về màu sắc chúng có những màu phổ biến như xanh lá, trắng, vàng, xanh dương. Một số dòng đặc biệt có các màu sắc khá đẹp như xám khói, tím, xanh pastel… Con trống và mái có vẻ ngoài rất giống nhau tuy nhiên những con vẹt trống khi trưởng thành có thể phân biệt bằng vòng đen, trắng hoặc hồng quanh cổ.
 	Ringnecks có nguồn gốc từ Châu Á và Châu Phi và có thể được tìm thấy trong các khu rừng hoặc môi trường khô cằn và cũng xa lạ khi có thể thấy chúng tại các khu đô thị như ở California, Florida và cả vương quốc Anh.
 	Giống như hầu hết các loài vẹt, ringneck thông minh và làm vật nuôi tốt. Chúng học hỏi khá nhanh và thích thể hiện. Ngoài ra chúng còn có thể nói và phát âm khá rõ, một số con nói khá tốt như các loài vẹt Xám Châu Phi hay Amazon tuy khả năng ghi nhớ về số lượng từ vựng không tốt bằng.',
-	 0, N'Đang sinh sản'),
+	NULL, NULL, 0, N'Đang sinh sản'),
 
 	('XA001', N'Vẹt Xích Ấn XA001', N'Xanh lá', '2022-10-01', 1, 1, 'asian', 
 	N'Top 5 The National Cage Bird Show (NCBS) 2022', 
 	0, 15000000, 
 	N'Vẹt xích Ấn – xích Nepal có nguồn gốc từ vùng đông nam châu Á, bao gồm Nepal, Ấn Độ, Pakistan, và Sri Lanka. Chúng thường sống trong các khu rừng, cánh đồng và vùng đồng cỏ.
 	Vẹt xích Ấn có một cái mỏ lớn, màu đen và một đốm màu đỏ trên vai. Một đặc điểm nổi bật của chúng là vòng cổ màu đỏ tươi rực, tạo ra sự tương phản đẹp với bộ lông xanh sẫm. Chúng là những vẹt thông minh và thích thể hiện khả năng nói chuyện. Tuy nhiên, khả năng nói chuyện của từng cá thể có thể khác nhau.',
-	0, N'Còn hàng'),
+	NULL, NULL, 0, N'Còn hàng'),
 
 	('CP101', N'Vẹt xám CP101', N'Xám', '2022-10-01', 4, 0, 'african', N'Chưa có', 0, 
 	2500000, 
 	N'Vẹt Xám African, hoặc African Grey Parrot, là một loài vẹt thông minh và nổi tiếng với bộ lông màu xám, mỏ màu đen, và mắt vàng. Chúng có khả năng học nói và hiểu ngôn ngữ, thể hiện sự tò mò và thông minh cao. Tính cách cá nhân có thể biến đổi, nhưng chung quy là vui vẻ và thân thiện. Việc huấn luyện vẹt Xám African có thể đòi hỏi kiên nhẫn và thời gian do tính cách đôi khi cứng đầu.', 
-    15, N'Còn hàng'),
+    NULL, NULL, 15, N'Còn hàng'),
 
     ('CP201', N'Vẹt Cape Parrot CP201', N'Xám, xanh', '2022-10-01', 4, 1, 'african', N'Chưa có', 0, 
 	3000000,
 	N'Vẹt Cape Parrot African có bộ lông màu xanh lá cây và đỏ với mỏ màu xám. Tính cách thường thân thiện, nhưng có thể ngại ngùng và thận trọng. Việc huấn luyện có thể khá khó khăn do chúng có tính cách độc lập và đôi khi khó nắm bắt.',
-	0, N'Đã bán'),
+	NULL, NULL, 0, N'Đã bán'),
 
     ('CP301', N'Vẹt Senegal CP301', N'Xanh lá, vàng', '2022-10-01', 6, 1, 'african', N'Chưa có', 2, 
 	8000000, 
 	N'Vẹt Senegal African có bộ lông màu xanh lá cây, đỏ và xám. Tính cách thông minh, thân thiện và tương đối dễ huấn luyện. Chúng là loài vẹt nhỏ tương đối dễ chăm sóc và phù hợp cho người mới nuôi vẹt.', 
-	0, N'Còn hàng'),
+	NULL, NULL, 0, N'Còn hàng'),
 
     ('CP401', N'Vẹt cổ trắng CP401', N'Xanh lá, đỏ', '2022-06-01', 2, 0, 'african', N'Chưa có', 1, 
 	19000000, 
 	N'Vẹt Cổ Trắng African có bộ lông màu xanh biển động đậm và cổ trắng. Tính cách thông minh, tò mò, và thân thiện, giúp dễ huấn luyện. Chúng có khả năng học nói và thích hòa đồng với con người.', 
-	0, N'Đang sinh sản'),
+	NULL, NULL, 0, N'Đang sinh sản'),
 
     ('CP501', N'Vẹt Lovebird CP501', N'Xanh, vàng, cam', '2022-01-01', 1, 1, 'african', N'Chưa có', 1, 2000000, 
     N'Vẹt Lovebird African có lông màu rực rỡ, thường là xanh, đỏ và cam. Tính cách thường thân thiện, tò mò và dễ huấn luyện cho việc học các lệnh cơ bản. Tuy nhiên, tính cách có thể thay đổi tùy từng cá thể và đòi hỏi kiên nhẫn trong quá trình huấn luyện.', 
-    0, N'Đang sinh sản'),
+    NULL, NULL, 0, N'Đang sinh sản'),
 
 	('WA301', N'Vẹt Orange Winged Amazon WA301', N'xanh lá, vàng', '2022-02-01', 1, 1, 'amazon', 
 	N'Giải khuyến khích cuộc thi Phong trào vẹt kiểng Sài Gòn 2020', 0, 3000000, 
 	N'Vẹt Orange-winged Amazon có lông màu xanh với đốm da cam trên cánh. Tính cách thân thiện và hướng ngoại, chúng có khả năng học nói và huấn luyện dễ dàng hơn so với nhiều loài vẹt khác.', 
-	0, N'Đã bán'),
+	NULL, NULL, 0, N'Đã bán'),
 
 	('BA602', N'Vẹt Blue-fronted Amazon BA602', N'xanh lá, xanh dương', '2022-10-01', 1, 0, 'amazon', 
 	N'Top 2 The Parrot Society UK Show 2021', 0, 3000000, 
 	N'Lông của Vẹt Blue-fronted Amazon dày, màu xanh lục và đỏ trên trán. Chúng thông minh, thân thiện và dễ huấn luyện, có khả năng học nói và thực hiện các lệnh đơn giản. Tính cách tùy từng cá thể, nhưng nói chung, chúng có khả năng làm thú cưng đáng yêu và thân thiện.', 
-	0, N'Còn hàng'),
+	NULL, NULL, 0, N'Còn hàng'),
 
 	('FA303', N'Vẹt Red Faced Amazon FA303', N'xanh lá, đỏ', '2022-10-01', 1, 1, 'amazon', 
 	N'Tham gia World Parrot Trust Parrot Festival 2022', 0, 3000000,
 	N'Vẹt Red-faced Amazon (Amazona autumnalis) có lông xanh lá cây với khu vực trán đỏ. Tính cách thân thiện, thông minh, nhưng đôi khi có thể cứng đầu. Có khả năng học nói và học lệnh, tuy nhiên, việc huấn luyện có thể đòi hỏi kiên nhẫn và thời gian.', 
-	0, N'Còn hàng'),
+	NULL, NULL, 0, N'Còn hàng'),
 
 	('HA104', N'Vẹt Double Yellow Headed Amazon HA104', N'xanh lá, vàng, đỏ', '2022-08-01', 1, 0, 'amazon', 
 	N'Giải 3 Nghị Lượng Chim Vẹt Việt Nam 2022-2023', 0, 4500000,
 	N'Vẹt Double Yellow Headed Amazon có lông nền màu xanh với đầu và một phần cổ màu vàng rực rỡ. Chúng thông minh, thân thiện, và dễ huấn luyện. Tính cách tương đối hoà đồng, làm cho chúng trở thành vẹt cảnh lý tưởng và có khả năng học nói rất tốt.', 
-	0, N'Còn hàng'),
+	NULL, NULL, 0, N'Còn hàng'),
 
 	('NA505', N'Vẹt Yellow Naped Amazon NA505',N'xanh lá, vàng', '2022-12-01', 1, 0, 'amazon', N'Top 4 Giải thi đấu Chim Vẹt Cảnh Việt Nam 2020', 0, 9000000,
 	N'Vẹt Yellow Naped Amazon có lông màu xanh lá cây sáng với một vùng vàng ở gốc cổ và đỉnh đầu. Tính cách thông minh, tò mò, thân thiện và có khả năng học nói. Chúng có thể được huấn luyện tương đối dễ dàng, nhưng yêu cầu sự kiên nhẫn và tương tác đều đặn.', 
-	0, N'Đã bán'),
+	NULL, NULL, 0, N'Đã bán'),
 
 	('CL201', N'Vẹt Cockatiel Lutino CL201', N'xám, vàng, cam', '2022-12-01', 1, 0, 'australian', N'Chưa có', 0, 2500000,
 	N'Vẹt Cockatiel Lutino nổi bật với lớp lông màu vàng cam ánh hồng, đầu có mảng màu tương tự, mắt đỏ rực, và đuôi dài màu cam. Loài vẹt này thường rất tình cảm, thân thiện, và dễ huấn luyện, làm cho nó trở thành một thú cưng lý tưởng cho người mới nuôi vẹt.',
-	0, N'Còn hàng'),
+	NULL, NULL, 0, N'Còn hàng'),
 
 	('CW192', N'Vẹt Cockatiel White Face CW192', N'xám, trắng', '2022-12-01', 1, 0, 'australian', N'Chưa có', 1, 3500000,
 	N'Lông trắng mịn, mắt đỏ, không vùng màu cam trên mặt. Tính cách thân thiện, tinh quái. Dễ huấn luyện, thích tương tác.',
-	0, N'Đã bán'),
+	NULL, NULL, 0, N'Đã bán'),
 
 	('RL391', N'Vẹt Rainbow Lory RL391', N'đen, đỏ, tím, xanh lá, vàng', '2022-12-01', 1, 1, 'australian', N'Chưa có', 0, 9500000,
 	N'Lông nhiều màu sắc rực rỡ, mỏ cam, tính cách vui vẻ, tươi mới, yêu đời. Yêu thích tương tác và cần chế độ ăn uống đa dạng, hoạt động vui chơi để duy trì sức khỏe tốt và làm phong phú cuộc sống của người nuôi.',
-	0, N'Đang sinh sản'),
+	NULL, NULL, 0, N'Đang sinh sản'),
 	
 	('RL409', N'Vẹt Red Lory RL409', N'đỏ', '2022-02-01', 1, 1, 'australian',  N'Chưa có', 1, 15000000, 
 	N'Lông đỏ tươi sáng, mỏ và mắt đen nổi bật, tính cách hòa đồng, thích hát hò và tương tác, yêu thích ăn uống đa dạng, làm phong phú cuộc sống gia đình bằng niềm vui vẹt.', 
-	0, N'Còn hàng'),
+	NULL, NULL, 0, N'Còn hàng'),
 
 	('VE358', N'Vẹt Eclectus VE358', N'Xanh lá', '2022-12-01', 1, 1, 'australian',  N'Chưa có', 1, 25000000, 
 	N'Vẹt Eclectus là một loài vẹt đa dạng màu sắc, với đực thường có lông màu xanh smaragd và cái có lông màu đỏ tươi. Chúng có mỏ mạnh mẽ và đôi mắt nâu sáng. Eclectus thích tương tác, thông minh và thích học tiếng nói. Tính cách độc lập và thích khám phá, yêu thích chế độ ăn uống chứa nhiều rau quả tươi ngon.', 
-	0, N'Còn hàng'),
+	NULL, NULL, 0, N'Còn hàng'),
 
 	('HM350', N'Vẹt Hahn’s Macaw HM350', N'xanh lá, đỏ', '2022-12-01', 1, 0, 'macaw', N'chưa có',0, 15000000 ,N'Hahn’s Macaw rất thông minh và nổi bật với khả năng nói rất tốt nên chúng vẫn là một lựa chọn tốt cho những người yêu chim muốn có vẹt đuôi dài nhưng chưa sẵn sàng đón tiếp một thành viên quá to lớn.',
-	0, N'Còn hàng'),
+	NULL, NULL, 0, N'Còn hàng'),
 	
 	('YC090', N'Vẹt Yellow Collared Macaw YC090', N'xanh lá', '2022-11-01', 1, 1, 'macaw', N'chưa có',0, 25000000 ,N'Vẹt Yellow-collared Macaw có kích thước nhỏ hơn so với một số loài vẹt khác, với chiều dài khoảng 35-37 cm. Bộ lông của chúng chủ yếu màu xanh da trời và vàng, với cổ màu vàng rực rỡ, đó là nguồn gốc của tên gọi của loài vẹt này. Chúng có vẻ ngoài dễ thương và thu hút, và thường được nuôi làm vật nuôi trong các gia đình',
-	0, N'Đã bán'),
+	NULL, NULL, 0, N'Đã bán'),
 	
 	('SM808', N'Vẹt Scarlet Macaw SM808', N'đỏ, vàng, xanh dương', '2022-07-01', 1, 0, 'macaw', N'chưa có',0, 30000000 ,N'Scarlet thông minh, xinh đẹp và cũng rất ham học hỏi. Scarlet được huấn luyện đúng cách sẽ có thể làm được nhiều trò cũng như có tài ăn nói rất giỏi. Scarlet tràn đầy năng lượng, thích chơi đùa và tương tác với chủ nuôi, khá ồn ào và thích gây sự chú ý.',
-	0, N'Còn hàng'),
+	NULL, NULL, 0, N'Còn hàng'),
 	
 	('HM101', N'Vẹt Hyacinth Macaw HM101', N'xanh dương', '2022-07-01', 1, 1, 'macaw', N'chưa có',0, 40000000 ,N'Hyacinth là giống vẹt đắt đỏ nhất thế giới và cũng là giống vẹt được cho là một trong những loài vẹt lớn nhất thế giới. Vẹt khá thuần và trầm tính, và là vật nuôi tuyệt vời. Chúng ngọt ngào, dịu dàng và không thích làm ồn cũng như rất thích vui đùa và gắn bó với gia đình, đặc biệt là chúng rất thân thiện với trẻ con.',
-	0, N'Còn hàng'),
+	NULL, NULL, 0, N'Còn hàng'),
 	
 	('GW125', N'Vẹt Green Winged Macaw GW125', N'đỏ, xanh dương, xanh lá', '2022-02-01', 1, 1, 'macaw', N'chưa có',0, 60000000 ,N'Green Winged thuộc trong top những loài vẹt Nam Mỹ có kích thước lớn nhất, to thứ nhì sau Vẹt Hyacinth. Green-winged tuy lớn con nhưng lại nổi tiếng là loài vẹt hiền hoà, được ví von như gã khổng lồ dịu dàng. Loài vẹt này do đó được yêu thích không phải chỉ bởi bộ lông xinh đẹp với ba màu đỏ, xanh lá và xanh dương nhưng còn vì sự dịu dàng, trầm tính hơn những loài Macaw khác. Do đó, Green-winged được chọn là người bạn đồng hành hoặc vật nuôi gia đình rất tốt.',
-	0, N'Còn hàng')	
+	NULL, NULL, 0, N'Còn hàng')	
 GO
 
 INSERT INTO [Accessory] ([accessory_id], [accessory_name], [category_id], [unit_price], [stock_quantity], [description], [discount], [status]) 
@@ -542,9 +546,9 @@ VALUES
 	('https://sinhvatkieng.com/wp-content/uploads/2018/09/a430b205297dfc5592a6e37c3ab74a73.jpeg', 
 	1, 'XT001', NULL, NULL),
 
-	('https://vuongquocvet.com/wp-content/uploads/2021/08/ringneck-11.jpg', 
+	('https://preview.redd.it/2ef6yghwyg681.jpg?width=500&format=pjpg&auto=webp&s=d686b96a7156e335a31ca31427816d00b740ac4b', 
 	1, 'IR001', NULL, NULL),
-	('https://i0.wp.com/hnparrot.com/wp-content/uploads/2023/06/Ringneck-Blue.jpeg?resize=460%2C460&ssl=1', 
+	('https://vetcanh.com/wp-content/uploads/2021/10/20201113070727-vet-ringneck-blue-petee-1.webp', 
 	0, 'IR001', NULL, NULL),
 	('https://yeuchim.net/wp-content/uploads/2023/08/vet-duoi-dai-an-do.jpg', 
 	0, 'IR001', NULL, NULL),
@@ -619,7 +623,7 @@ VALUES
 	('https://upload.wikimedia.org/wikipedia/commons/f/f3/Gr%C3%BCnwangenamazone_Kopf.JPG', 
 	0, 'FA303', NULL, NULL),
 
-	('https://vuongquocvet.com/wp-content/uploads/2021/08/double-yellow-headed-amazon-parrot.jpg', 
+	('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Amazona_oratrix_-Vancouver_Aquarium-8a-4c.jpg/800px-Amazona_oratrix_-Vancouver_Aquarium-8a-4c.jpg', 
 	1, 'HA104', NULL, NULL),
 	('https://petmeshop.com/wp-content/uploads/2020/09/Vet-double-yellow-headed-amazon-3.jpg', 
 	0, 'HA104', NULL, NULL),

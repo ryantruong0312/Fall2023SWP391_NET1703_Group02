@@ -47,7 +47,7 @@
             }
 
             #mainImage {
-                border: 1px solid #000; 
+                border: 1px solid #000;
                 transition: transform 0.3s ease-in-out;
             }
 
@@ -96,8 +96,8 @@
                 width: 154px;
                 height: 185px;
                 display: block;
-                margin-bottom: 15px;    
-                border: 1px solid #000;    
+                margin-bottom: 15px;
+                border: 1px solid #000;
             }
 
         </style>
@@ -135,11 +135,11 @@
             <div class="container">
                 <c:if test="${LOGIN_USER.role == 'admin' || LOGIN_USER.role == 'manager'}">
                     <c:if test="${requestScope.birdDetails.status eq 'Còn hàng'}">
-                         <div class="row" style="margin-bottom: 15px;">
-                        <div class="col-lg-12">
-                            <button class="btn-primary button-form" style="float: right;"><a href="MainController?action=UpdateBird&bird_id=${birdDetails.bird_id}"><span style="color: white;">Cập nhật chim</span></a></button>
+                        <div class="row" style="margin-bottom: 15px;">
+                            <div class="col-lg-12">
+                                <button class="btn-primary button-form" style="float: right;"><a href="MainController?action=UpdateBird&bird_id=${birdDetails.bird_id}"><span style="color: white;">Cập nhật chim</span></a></button>
+                            </div>
                         </div>
-                    </div>
                     </c:if>
                 </c:if>
                 <div class="row">
@@ -193,9 +193,29 @@
                                 </c:otherwise>
                             </c:choose>
                             <div class="mt-2">
+
                                 <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Giống loài: </h4>
                                     <span style="display: inline; color: black;">${birdDetails.breed_name}</span>
+                                </div>
+
+                                <c:if test="${birdMom.bird_name == 'Chưa có'}">
+                                    <div class="bird-info" style="white-space: nowrap; margin-top: 10px;">                                   
+                                        <h4 style="display: inline;">Chim mẹ: </h4>
+                                        <span style="display: inline; color: black;">${birdMom.bird_name}</span>                                  
+                                    </div>
+                                </c:if>
+
+                                <c:if test="${birdDad.bird_name == 'Chưa có'}">
+                                    <div class="bird-info" style="white-space: nowrap; margin-top: 10px;">
+                                        <h4 style="display: inline;">Chim bố: </h4>
+                                        <span style="display: inline; color: black;">${birdDad.bird_name}</span>
+                                    </div>
+                                </c:if>
+
+                                <div style="white-space: nowrap; margin-top: 10px;">
+                                    <h4 style="display: inline;">Giới tính: </h4>
+                                    <span style="display: inline; color: black;">${birdDetails.gender}</span>
                                 </div>
 
                                 <div style="white-space: nowrap; margin-top: 10px;">

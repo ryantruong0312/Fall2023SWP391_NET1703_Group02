@@ -30,11 +30,13 @@ public class BirdDTO {
     private int discount;
     private String status;
     private ArrayList<String> image_urls;
+    private String mom_id;
+    private String dad_id;
 
     public BirdDTO() {
     }
 
-    public BirdDTO(String bird_id, String bird_name, String color, Date birthday, int age, int grown_age, String gender, String breed_id, String breed_name, String achievement, int reproduction_history, int price, String description, int discount, String status, ArrayList<String> image_urls) {
+    public BirdDTO(String bird_id, String bird_name, String color, Date birthday, int age, int grown_age, String gender, String breed_id, String breed_name, String achievement, int reproduction_history, int price, String description, int discount, String status, ArrayList<String> image_urls, String mom_id, String dad_id) {
         this.bird_id = bird_id;
         this.bird_name = bird_name;
         this.color = color;
@@ -51,6 +53,8 @@ public class BirdDTO {
         this.discount = discount;
         this.status = status;
         this.image_urls = image_urls;
+        this.mom_id = mom_id;
+        this.dad_id = dad_id;
     }
 
     public ArrayList<String> getImage_urls() {
@@ -180,5 +184,23 @@ public class BirdDTO {
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
+
+    public String getMom_id() {
+        return mom_id;
+    }
+
+    public void setMom_id(String mom_id) {
+        this.mom_id = mom_id;
+    }
+
+    public String getDad_id() {
+        return dad_id;
+    }
+
+    public void setDad_id(String dad_id) {
+        this.dad_id = dad_id;
+    }
+    
+    
 
 }

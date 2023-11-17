@@ -70,8 +70,10 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
+                    String mom_id = rs.getString("mom_id");
+                    String dad_id = rs.getString("dad_id");
                     Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id,
-                            achievement, reproduction_history, price, description, discount, status, image_url);
+                            achievement, reproduction_history, price, description, discount, status, image_url, mom_id, dad_id);
                     birdList.add(bird);
                 }
             }
@@ -102,7 +104,7 @@ public class BirdDAO {
             if (con != null) {
                 String sql = "SELECT [bird_id],[bird_name],[color],DATEDIFF(MONTH, birthday, GETDATE()) AS age,[grown_age],[gender],[breed_id]"
                         + ",[achievement],[reproduction_history],[price],[description]"
-                        + ",[discount],[status]\n"
+                        + ",[discount],[status], [mom_id], [dad_id]\n"
                         + " FROM [BirdFarmShop].[dbo].[Bird]\n";
                 if (search != null) {
                     sql += " WHERE bird_name LIKE N'%" + search + "%'";
@@ -185,8 +187,10 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
+                    String mom_id = rs.getString("mom_id");
+                    String dad_id = rs.getString("dad_id");
                     Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id,
-                            achievement, reproduction_history, price, description, discount, status, image_url);
+                            achievement, reproduction_history, price, description, discount, status, image_url, mom_id, dad_id);
                     birdList.add(bird);
                 }
             }
@@ -316,9 +320,9 @@ public class BirdDAO {
                     boolean sex = rs.getBoolean("gender");
                     String gender = "";
                     if (sex) {
-                        gender = "Đực";
+                        gender = "Trống";
                     } else {
-                        gender = "Cái";
+                        gender = "Mái";
                     }
                     String breed_id = rs.getString("breed_id");
                     String breed_name = breedDao.getBreedNameById(breed_id);
@@ -328,9 +332,11 @@ public class BirdDAO {
                     String description = rs.getString("description");
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
+                    String mom_id = rs.getString("mom_id");
+                    String dad_id = rs.getString("dad_id");
                     ArrayList<String> image_urls = imgDao.getImagesByBirdId(birdId);
                     bird = new BirdDTO(bird_id, bird_name, color, birdthday, age, grown_age, gender, breed_id, breed_name,
-                            achievement, reproduction_history, price, description, discount, status, image_urls);
+                            achievement, reproduction_history, price, description, discount, status, image_urls, mom_id, dad_id);
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {
@@ -405,8 +411,10 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
+                    String mom_id = rs.getString("mom_id");
+                    String dad_id = rs.getString("dad_id");
                     Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id,
-                            achievement, reproduction_history, price, description, discount, status, image_url);
+                            achievement, reproduction_history, price, description, discount, status, image_url, mom_id, dad_id);
                     birdList.add(bird);
                 }
             }
@@ -451,8 +459,10 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
+                    String mom_id = rs.getString("mom_id");
+                    String dad_id = rs.getString("dad_id");
                     b = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id,
-                            achievement, reproduction_history, price, description, discount, status, image_url);
+                            achievement, reproduction_history, price, description, discount, status, image_url, mom_id, dad_id);
 
                 }
             }
@@ -581,8 +591,10 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     ArrayList<String> image_urls = imgDao.getImagesByBirdId(bird_id);
+                    String mom_id = rs.getString("mom_id");
+                    String dad_id = rs.getString("dad_id");
                     bird = new BirdDTO(bird_id, bird_name, color, birthday, age, grown_age, gender, breed_id, breed_name,
-                            achievement, reproduction_history, price, description, discount, status, image_urls);
+                            achievement, reproduction_history, price, description, discount, status, image_urls, mom_id, dad_id);
                     birds.add(bird);
                 }
             }
@@ -684,11 +696,6 @@ public class BirdDAO {
         }
         return false;
     }
-    
-    public static void main(String[] args) throws SQLException, ParseException {
-        BirdDAO n = new BirdDAO();
-        System.out.println(n.updateBird("CL201", "Vẹt Cockatiel", "do", "5", "Chua co", "100000", "đẹp"));
-    }
 
     public boolean updateBirdStatus(String status, String bird_id) throws SQLException, ParseException {
         Connection con = null;
@@ -720,7 +727,6 @@ public class BirdDAO {
     }
 
     public ArrayList<Integer> getBirdAmount() throws SQLException {
-
         ArrayList<Integer> bird = new ArrayList<>();
         Connection con = null;
         PreparedStatement stm = null;

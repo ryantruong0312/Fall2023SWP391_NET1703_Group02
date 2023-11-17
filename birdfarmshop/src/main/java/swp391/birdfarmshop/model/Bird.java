@@ -25,7 +25,10 @@ public class Bird {
     private String status;
     private String image_url;
     private String breedName;
-    public Bird(String bird_id, String bird_name, String color, int age, int grown_age, boolean gender, String breed_id, String achievement, int reproduction_history, int price, String description, int discount, String status, String image_url) {
+    private String mom_id;
+    private String dad_id;
+
+    public Bird(String bird_id, String bird_name, String color, int age, int grown_age, boolean gender, String breed_id, String achievement, int reproduction_history, int price, String description, int discount, String status, String image_url, String mom_id, String dad_id) {
         this.bird_id = bird_id;
         this.bird_name = bird_name;
         this.color = color;
@@ -40,6 +43,8 @@ public class Bird {
         this.discount = discount;
         this.status = status;
         this.image_url = image_url;
+        this.mom_id = mom_id;
+        this.dad_id = dad_id;
     }
 
     public Bird(String bird_id, String bird_name, String color, int age, int grown_age, boolean gender, String breed_id, String achievement, int reproduction_history, int price, String description, int discount, String status, String image_url, String breedName) {
@@ -59,7 +64,7 @@ public class Bird {
         this.image_url = image_url;
         this.breedName = breedName;
     }
-    
+
     public String getImage_url() {
         return image_url;
     }
@@ -178,6 +183,22 @@ public class Bird {
 
     public void setBreedName(String breedName) {
         this.breedName = breedName;
+    }
+
+    public String getMom_id() {
+        return mom_id;
+    }
+
+    public void setMom_id(String mom_id) {
+        this.mom_id = mom_id;
+    }
+
+    public String getDad_id() {
+        return dad_id;
+    }
+
+    public void setDad_id(String dad_id) {
+        this.dad_id = dad_id;
     }
     
     

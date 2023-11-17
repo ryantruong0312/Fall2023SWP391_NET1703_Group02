@@ -65,6 +65,7 @@
                                     </li>
                                     <li>Màu sắc</li>
                                     <li>Tuổi</li>
+                                    <li>Giới tính</li>
                                     <li>Lịch sử sinh sản</li>
                                     <li>Thành tựu</li>
                                     <li>Trạng thái</li>
@@ -96,6 +97,12 @@
                                         </c:choose> 
                                         <li>${bird.color}</li>
                                         <li>${bird.age} tháng</li>
+                                        <c:if test="${bird.gender == false}">
+                                        <li>Mái</li>
+                                        </c:if>
+                                        <c:if test="${bird.gender == true}">
+                                        <li>Trống</li>
+                                        </c:if>
                                         <li>${bird.reproduction_history} </li>
                                         <li>${bird.achievement} </li>
                                         <li>${bird.status}</li>
