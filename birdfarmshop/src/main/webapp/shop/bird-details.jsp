@@ -154,8 +154,8 @@
                                                 <c:if test="${birdDetails.discount > 0}">
                                                     <span class="tag-discount"> -${birdDetails.discount}%</span>
                                                 </c:if>
-                                                <c:if test="${birdDetails.status == 'Đã bán'}">
-                                                    <div class="overlay-text">Đã bán</div>
+                                                <c:if test="${birdDetails.status == 'Hết hàng'}">
+                                                    <div class="overlay-text">Hết hàng</div>
                                                 </c:if>
                                                 <c:if test="${birdDetails.status == 'Đang sinh sản'}">
                                                     <div class="overlay-text">Đang sinh sản</div>
@@ -199,17 +199,17 @@
                                     <span style="display: inline; color: black;">${birdDetails.breed_name}</span>
                                 </div>
 
-                                <c:if test="${birdMom.bird_name == 'Chưa có'}">
+                                <c:if test="${birdMom.bird_name != null}">
                                     <div class="bird-info" style="white-space: nowrap; margin-top: 10px;">                                   
                                         <h4 style="display: inline;">Chim mẹ: </h4>
-                                        <span style="display: inline; color: black;">${birdMom.bird_name}</span>                                  
+                                        <span style="display: inline; color: black;"><a href="MainController?action=NavToBirdDetails&bird_id=${birdMom.bird_id}">${birdMom.bird_name}</a></span>                                  
                                     </div>
                                 </c:if>
 
-                                <c:if test="${birdDad.bird_name == 'Chưa có'}">
+                                <c:if test="${birdDad.bird_name != null}">
                                     <div class="bird-info" style="white-space: nowrap; margin-top: 10px;">
                                         <h4 style="display: inline;">Chim bố: </h4>
-                                        <span style="display: inline; color: black;">${birdDad.bird_name}</span>
+                                        <span style="display: inline; color: black;"><a href="MainController?action=NavToBirdDetails&bird_id=${birdDad.bird_id}">${birdDad.bird_name}</a></span>
                                     </div>
                                 </c:if>
 

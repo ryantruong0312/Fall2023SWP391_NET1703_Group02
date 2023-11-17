@@ -13,17 +13,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dao.ImageDAO;
 import swp391.birdfarmshop.dto.BirdDTO;
+import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.model.Image;
 import swp391.birdfarmshop.model.User;
 import swp391.birdfarmshop.util.Constants;
@@ -48,7 +49,7 @@ public class UpdateBirdController extends HttpServlet {
     private static final String DETAIL = "MainController?action=NavToBirdDetails&bird_id=";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
+            throws ServletException, IOException, SQLException, ClassNotFoundException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         String url = ERROR;
@@ -60,6 +61,8 @@ public class UpdateBirdController extends HttpServlet {
                 String bird_id = request.getParameter("bird_id");             
                 BirdDAO birdDao = new BirdDAO();
                 BirdDTO birdDetails = birdDao.getBirdDetailsById(bird_id);
+                List<Bird> listBirdDad = birdDao.getBirdMomDadByGender(true);
+                List<Bird> listBirdMom = birdDao.getBirdMomDadByGender(false);
                 String[] parts = birdDetails.getBird_name().split("[A-Z]{2}\\d{3}");
                 String tenVe = parts[0];
                 ImageDAO imageDao = new ImageDAO();
@@ -67,6 +70,8 @@ public class UpdateBirdController extends HttpServlet {
                 request.setAttribute("BIRD", birdDetails);
                 request.setAttribute("name", tenVe);
                 request.setAttribute("BIRDIMAGES", images);
+                request.setAttribute("listMom", listBirdMom);
+                request.setAttribute("listDad", listBirdDad);
                 String btAction = request.getParameter("btAction");
                 if (btAction != null) {
                     if (btAction.equals("Update")) {
@@ -76,6 +81,9 @@ public class UpdateBirdController extends HttpServlet {
                         String txtBirdPrice = request.getParameter("txtBirdPrice");
                         String txtBirdDescription = request.getParameter("txtBirdDescription");
                         String txtBirdDiscount = request.getParameter("txtBirdDiscount");
+                        String txtStatus = request.getParameter("txtStatus");
+                        String txtBirdMom = request.getParameter("txtBirdMom");
+                        String txtBirdDad = request.getParameter("txtBirdDad");
                         Part image_1 = request.getPart("txtImage_1");
                         Part image_2 = request.getPart("txtImage_2");
                         Part image_3 = request.getPart("txtImage_3");
@@ -89,7 +97,7 @@ public class UpdateBirdController extends HttpServlet {
                             updateImage(image_3, bird_id, images.get(2).getImage_id());
                         }
                         boolean check = birdDao.updateBird(bird_id, bird_name ,txtBirdColor, txtBirdDiscount, txtBirdAchievement, 
-                                txtBirdPrice, txtBirdDescription);
+                                txtBirdPrice, txtBirdDescription, txtBirdMom, txtBirdDad, txtStatus);
                         if (check) {
                             session.setAttribute("SUCCESS", "Cập nhật thành công");
                             url = DETAIL + bird_id;
@@ -135,6 +143,8 @@ public class UpdateBirdController extends HttpServlet {
             processRequest(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(UpdateBirdController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UpdateBirdController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -152,6 +162,8 @@ public class UpdateBirdController extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
+            Logger.getLogger(UpdateBirdController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(UpdateBirdController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

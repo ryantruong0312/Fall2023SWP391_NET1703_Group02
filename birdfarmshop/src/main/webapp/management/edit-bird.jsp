@@ -104,7 +104,7 @@
                 <c:set var="birdDetails" value="${requestScope.BIRD}"/>
                 <form action="UpdateBirdController" method="POST" enctype="multipart/form-data">
                     <div class="row">
-                        <div class="col-lg-6 form-custom">
+                        <div class="col-lg-6 form-custom" style="margin-top: 8px;">
                             <input type="hidden" name="bird_id" value="${birdDetails.bird_id}"/>
                             <div class="form-add mb-3">
                                 <label>Tên vẹt cảnh</label>
@@ -130,16 +130,79 @@
                                 <label>Màu sắc</label>
                                 <input type="text" name="txtBirdColor" class="input form-control" value="${birdDetails.color}" required/>      
                             </div>
-                            <div class="form-add mb-3">
-                                <label>Mô tả chi tiết</label>
-                                <textarea rows="7" name="txtBirdDescription" class="input form-control" value="">${birdDetails.description}</textarea>
+                            
+                             <div class="form-add mb-3">
+                                <label>Thành tích thi đấu</label>
+                                <textarea rows="4" name="txtBirdAchievement" class="input form-control" value="">${birdDetails.achievement}</textarea>
                             </div>
+                            
+                            <div class="form-add mb-3">
+                                <label>Trạng thái</label>
+                                <select name="txtStatus" class="input form-control" style="color: #0c5460;">
+                                    <option value="${birdDetails.status}">${birdDetails.status}</option>
+                                    <c:if test="${birdDetails.status ne 'Còn hàng'}">
+                                        <option value="Còn hàng">Còn hàng</option>
+                                    </c:if>
+                                    <c:if test="${birdDetails.status ne 'Hết hàng'}">
+                                        <option value="Hết hàng">Hết hàng</option>
+                                    </c:if>
+                                    <c:if test="${birdDetails.status ne 'Đang ghép cặp'}">
+                                        <option value="Đang ghép cặp">Đang ghép cặp</option>
+                                    </c:if>
+                                    <c:if test="${birdDetails.status ne 'Đang sinh sản'}">
+                                        <option value="Đang sinh sản">Đang sinh sản</option>
+                                    </c:if>
+                                </select>
+                            </div>
+
                         </div>
                         <div class="col-lg-6 form-custom">
-                            <div class="form-add mb-3">
-                                <label>Thành tích thi đấu</label>
-                                <textarea rows="5" name="txtBirdAchievement" class="input form-control" value="">${birdDetails.achievement}</textarea>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-outline mt-2">
+                                        <label>Mã vẹt mẹ</label>
+                                        <select name="txtBirdMom" class="input form-control" style="color: #0c5460;">
+                                            <c:if test="${BIRD.mom_id == null}">
+                                                <option value="${BIRD.mom_id}">Chưa có</option>
+                                            </c:if>
+                                            <c:if test="${BIRD.mom_id != null}">
+                                                <option value="${BIRD.mom_id}">${BIRD.mom_id}</option>
+                                            </c:if>
+                                            <c:forEach items="${listMom}" var="ac">
+                                                <c:if test="${ac.bird_id ne BIRD.mom_id && ac.reproduction_history > 0 && ac.bird_id ne BIRD.bird_id && ac.breed_id eq BIRD.breed_id}">
+                                                    <option value="${ac.bird_id}">${ac.bird_id}</option>
+                                                </c:if>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="form-outline mt-2">
+                                        <label>Mã vẹt cha</label>
+                                        <select name="txtBirdDad" class="input form-control" style="color: #0c5460;">
+                                            <c:if test="${BIRD.dad_id == null}">
+                                                <option value="${BIRD.dad_id}">Chưa có</option>
+                                            </c:if>
+                                            <c:if test="${BIRD.dad_id != null}">
+                                                <option value="${BIRD.dad_id}">${BIRD.dad_id}</option>
+                                            </c:if>
+                                            <c:forEach items="${listDad}" var="ac">
+                                                <c:if test="${ac.bird_id ne BIRD.dad_id && ac.reproduction_history > 0 && ac.bird_id ne BIRD.bird_id && ac.breed_id eq BIRD.breed_id}">
+                                                    <option value="${ac.bird_id}">${ac.bird_id}</option>
+                                                </c:if>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
+                                                     
+                            <div class="form-add mb-3">
+                                <label>Mô tả chi tiết</label>
+                                <textarea rows="7" name="txtBirdDescription" class="input form-control" value="" required="">${birdDetails.description}</textarea>
+                            </div>
+                            
                             <c:set var="image_urls" value="${requestScope.BIRDIMAGES}"/>
                             <div class="form-add mb-3">
                                 <label>Hình ảnh sản phẩm 1</label>

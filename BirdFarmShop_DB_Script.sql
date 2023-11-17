@@ -256,7 +256,7 @@ VALUES
 	0, 6500000, 
 	N'Xét ở góc độ sinh học, Xích Thái (Vẹt Má Vàng) thuộc nhóm vẹt rừng đuôi dài có viền cổ – Ringneck/Long-tail Parakeets, với 2 đặc trưng của loài: chim trống trưởng thành có đường viền sẫm màu phía sau gáy (ring) và các cá thể chim đều có đuôi rất dài, chiếm khoảng 1/2 tổng chiều dài toàn thân. Xét ở góc độ vật nuôi – Alexandrine Parakeet được coi là loài vẹt khá thân thiện, dễ thuần, sức đề kháng khá tốt, với tuổi thọ có thể đạt đến 30-40 năm.
 	Được đánh giá là loài vẹt có khả năng nhại tốt, thực tế chất lượng nhại giọng nói của Vẹt má vàng thua xa chim Nhồng hoặc vẹt xám Châu Phi. Chim bắt chước giọng người không giỏi lắm, đặc biệt khó bắt chước các từ nhiều nguyên âm o, a. Ghi nhận trên thế giới, chỉ một số ít cá thể có thể nhớ và học được đến khoảng 20 từ.',
-	NULL, NULL, 0, N'Đã bán'),
+	NULL, NULL, 0, N'Hết hàng'),
 
 	('IR001', N'Vẹt Indian Ringneck IR001', N'Xanh dương', '2022-06-01', 4, 0, 'asian', 
 	N'Top 4 cuộc thi Hội Đam Mê Lông Vũ TP.HCM 2020-2021', 
@@ -289,7 +289,7 @@ VALUES
     ('CP201', N'Vẹt Cape Parrot CP201', N'Xám, xanh', '2022-10-01', 4, 1, 'african', N'Chưa có', 0, 
 	3000000,
 	N'Vẹt Cape Parrot African có bộ lông màu xanh lá cây và đỏ với mỏ màu xám. Tính cách thường thân thiện, nhưng có thể ngại ngùng và thận trọng. Việc huấn luyện có thể khá khó khăn do chúng có tính cách độc lập và đôi khi khó nắm bắt.',
-	NULL, NULL, 0, N'Đã bán'),
+	NULL, NULL, 0, N'Hết hàng'),
 
     ('CP301', N'Vẹt Senegal CP301', N'Xanh lá, vàng', '2022-10-01', 6, 1, 'african', N'Chưa có', 2, 
 	8000000, 
@@ -308,7 +308,7 @@ VALUES
 	('WA301', N'Vẹt Orange Winged Amazon WA301', N'xanh lá, vàng', '2022-02-01', 1, 1, 'amazon', 
 	N'Giải khuyến khích cuộc thi Phong trào vẹt kiểng Sài Gòn 2020', 0, 3000000, 
 	N'Vẹt Orange-winged Amazon có lông màu xanh với đốm da cam trên cánh. Tính cách thân thiện và hướng ngoại, chúng có khả năng học nói và huấn luyện dễ dàng hơn so với nhiều loài vẹt khác.', 
-	NULL, NULL, 0, N'Đã bán'),
+	NULL, NULL, 0, N'Hết hàng'),
 
 	('BA602', N'Vẹt Blue-fronted Amazon BA602', N'xanh lá, xanh dương', '2022-10-01', 1, 0, 'amazon', 
 	N'Top 2 The Parrot Society UK Show 2021', 0, 3000000, 
@@ -327,7 +327,7 @@ VALUES
 
 	('NA505', N'Vẹt Yellow Naped Amazon NA505',N'xanh lá, vàng', '2022-12-01', 1, 0, 'amazon', N'Top 4 Giải thi đấu Chim Vẹt Cảnh Việt Nam 2020', 0, 9000000,
 	N'Vẹt Yellow Naped Amazon có lông màu xanh lá cây sáng với một vùng vàng ở gốc cổ và đỉnh đầu. Tính cách thông minh, tò mò, thân thiện và có khả năng học nói. Chúng có thể được huấn luyện tương đối dễ dàng, nhưng yêu cầu sự kiên nhẫn và tương tác đều đặn.', 
-	NULL, NULL, 0, N'Đã bán'),
+	NULL, NULL, 0, N'Hết hàng'),
 
 	('CL201', N'Vẹt Cockatiel Lutino CL201', N'xám, vàng, cam', '2022-12-01', 1, 0, 'australian', N'Chưa có', 0, 2500000,
 	N'Vẹt Cockatiel Lutino nổi bật với lớp lông màu vàng cam ánh hồng, đầu có mảng màu tương tự, mắt đỏ rực, và đuôi dài màu cam. Loài vẹt này thường rất tình cảm, thân thiện, và dễ huấn luyện, làm cho nó trở thành một thú cưng lý tưởng cho người mới nuôi vẹt.',
@@ -335,7 +335,7 @@ VALUES
 
 	('CW192', N'Vẹt Cockatiel White Face CW192', N'xám, trắng', '2022-12-01', 1, 0, 'australian', N'Chưa có', 1, 3500000,
 	N'Lông trắng mịn, mắt đỏ, không vùng màu cam trên mặt. Tính cách thân thiện, tinh quái. Dễ huấn luyện, thích tương tác.',
-	NULL, NULL, 0, N'Đã bán'),
+	NULL, NULL, 0, N'Hết hàng'),
 
 	('RL391', N'Vẹt Rainbow Lory RL391', N'đen, đỏ, tím, xanh lá, vàng', '2022-12-01', 1, 1, 'australian', N'Chưa có', 0, 9500000,
 	N'Lông nhiều màu sắc rực rỡ, mỏ cam, tính cách vui vẻ, tươi mới, yêu đời. Yêu thích tương tác và cần chế độ ăn uống đa dạng, hoạt động vui chơi để duy trì sức khỏe tốt và làm phong phú cuộc sống của người nuôi.',
@@ -353,7 +353,7 @@ VALUES
 	NULL, NULL, 0, N'Còn hàng'),
 	
 	('YC090', N'Vẹt Yellow Collared Macaw YC090', N'xanh lá', '2022-11-01', 1, 1, 'macaw', N'chưa có',0, 25000000 ,N'Vẹt Yellow-collared Macaw có kích thước nhỏ hơn so với một số loài vẹt khác, với chiều dài khoảng 35-37 cm. Bộ lông của chúng chủ yếu màu xanh da trời và vàng, với cổ màu vàng rực rỡ, đó là nguồn gốc của tên gọi của loài vẹt này. Chúng có vẻ ngoài dễ thương và thu hút, và thường được nuôi làm vật nuôi trong các gia đình',
-	NULL, NULL, 0, N'Đã bán'),
+	NULL, NULL, 0, N'Hết hàng'),
 	
 	('SM808', N'Vẹt Scarlet Macaw SM808', N'đỏ, vàng, xanh dương', '2022-07-01', 1, 0, 'macaw', N'chưa có',0, 30000000 ,N'Scarlet thông minh, xinh đẹp và cũng rất ham học hỏi. Scarlet được huấn luyện đúng cách sẽ có thể làm được nhiều trò cũng như có tài ăn nói rất giỏi. Scarlet tràn đầy năng lượng, thích chơi đùa và tương tác với chủ nuôi, khá ồn ào và thích gây sự chú ý.',
 	NULL, NULL, 0, N'Còn hàng'),

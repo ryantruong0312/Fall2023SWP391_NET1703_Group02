@@ -175,8 +175,8 @@
                                                                     </c:if>
                                                                 </ul>
                                                             </div>
-                                                            <c:if test="${bird.status == 'Đã bán'}">
-                                                                <div class="overlay-text">Đã bán</div>
+                                                            <c:if test="${bird.status == 'Hết hàng'}">
+                                                                <div class="overlay-text">Hết hàng</div>
                                                             </c:if>
                                                             <c:if test="${bird.status == 'Đang sinh sản'}">
                                                                 <div class="overlay-text">Đang sinh sản</div>
