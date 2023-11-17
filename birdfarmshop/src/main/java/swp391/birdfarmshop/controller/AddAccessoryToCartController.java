@@ -46,16 +46,26 @@ public class AddAccessoryToCartController extends HttpServlet {
                     if (cart == null) {
                         cart = new CartDTO();
                     }
-                    boolean checkAdd = cart.addAccessoryToCart(accessory, order_quantity);
-                    if (checkAdd) {
-                        status.setStatus("Thành công");
-                        status.setContent("Thêm sản phẩm vào giỏ hàng thành công");
+                    int currentStock = accessory.getStock_quantity();
+                    int quantityBuy = 0;
+                    if (cart.getAccessoryList().get(accessory.getAccessory_id()) != null) {
+                        quantityBuy += cart.getAccessoryList().get(accessory.getAccessory_id()).getOrder_quantity() + cart.getAccessoryList().get(accessory.getAccessory_id()).getFree_order();
+                    }
+                    if (order_quantity + quantityBuy <= currentStock) {
+                        boolean checkAdd = cart.addAccessoryToCart(accessory, order_quantity);
+                        if (checkAdd) {
+                            status.setStatus("Thành công");
+                            status.setContent("Thêm sản phẩm vào giỏ hàng thành công");
+                            status.setQuantity(cart.getTotalItem());
+                            status.setType("success");
+                            session.setAttribute("CART", cart);
+                        } else {
+                            status.setQuantity(cart.getTotalItem());
+                            status.setContent("Sản phẩm đã hết hàng");
+                        }
+                    }else{
                         status.setQuantity(cart.getTotalItem());
-                        status.setType("success");
-                        session.setAttribute("CART", cart);
-                    } else {
-                        status.setQuantity(cart.getTotalItem());
-                        status.setContent("Sản phẩm đã hết hàng");
+                        status.setContent(accessory.getAccessory_id() + " chỉ có số lượng là " + currentStock + ", bạn đã có " + quantityBuy + " sản phẩm trong giỏ hàng");
                     }
                     out.println(gson.toJson(status));
                 }

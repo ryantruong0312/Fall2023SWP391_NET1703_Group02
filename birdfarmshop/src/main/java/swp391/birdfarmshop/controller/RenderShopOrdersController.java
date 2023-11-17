@@ -51,7 +51,6 @@ public class RenderShopOrdersController extends HttpServlet {
                 String endDay = request.getParameter("endDay");
                 String search = request.getParameter("search");
                 String filterStatus = request.getParameter("filterStatus");
-                System.out.println(date + " " + startDay + " " + endDay + " " + search + " " + filterStatus + " " + page);
                 numberOfOrder = orderDao.numberOfOrder(date, startDay, endDay, filterStatus, search);
                 noOfPages = (int) Math.ceil(numberOfOrder * 1.0 / recordsPerPage);
                 orderList = orderDao.getAllOfOrder(date, startDay, endDay, filterStatus, search, page, recordsPerPage);

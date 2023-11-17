@@ -510,13 +510,7 @@
                                                                                                                 </div>
                                                                                                                 <div class="info-right">
                                                                                                                     <div class="price">
-                                                                                                                        <c:if test="${orderItem.bird.discount != 0}">
-                                                                                                                            <span class="old-price">${orderItem.bird.price}đ</span>
-                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price * (1 - orderItem.bird.discount/100)}" pattern="#,###"/>₫</span>
-                                                                                                                        </c:if>
-                                                                                                                        <c:if test="${orderItem.bird.discount == 0}">
-                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.bird.price}" pattern="#,###"/>₫</span>
-                                                                                                                        </c:if>
+                                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.unit_price}" pattern="#,###"/>₫</span>
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
@@ -585,7 +579,7 @@
                                                                                                                         <div>
                                                                                                                             <c:set var="isFree" value="false"/>
                                                                                                                             <c:forEach items="${freeItemList}" var="item">
-                                                                                                                                <c:if test="${orderItem.accessory.accessory_id eq 'LM001' && orderItem.order_id eq item.order_id}">
+                                                                                                                                <c:if test="${orderItem.order_id eq item.order_id}">
                                                                                                                                     <c:set var="isFree" value="true"/>
                                                                                                                                     <c:if test="${isFree}">
                                                                                                                                         <div class="product-category"><span>Tặng kèm: ${item.order_quantity}</span></div>
@@ -600,21 +594,17 @@
                                                                                                                 </div>
                                                                                                                 <div class="info-right">
                                                                                                                     <div class="price">
-                                                                                                                        <c:if test="${orderItem.accessory.discount != 0}">
                                                                                                                             <c:forEach items="${freeItemList}" var="item">
                                                                                                                                 <c:if test="${orderItem.order_id eq item.order_id}">
                                                                                                                                     <span class="old-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (orderItem.order_quantity + item.order_quantity)}" pattern="#,###"/>₫</span>
+                                                                                                                                    <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
                                                                                                                                 </c:if>
                                                                                                                             </c:forEach>
                                                                                                                             <c:forEach items="${freeItemList}" var="item">
-                                                                                                                                <c:if test="${orderItem.order_id eq item.order_id}">
-                                                                                                                                    <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * orderItem.order_quantity * (1 - orderItem.accessory.discount/100)}" pattern="#,###"/>₫</span>
+                                                                                                                                <c:if test="${orderItem.order_id ne item.order_id}">
+                                                                                                                                    <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
                                                                                                                                 </c:if>
                                                                                                                             </c:forEach>
-                                                                                                                        </c:if>
-                                                                                                                        <c:if test="${orderItem.accessory.discount == 0}">
-                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
-                                                                                                                        </c:if>
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
@@ -693,13 +683,7 @@
                                                                                                                 </div>
                                                                                                                 <div class="info-right">
                                                                                                                     <div class="price">
-                                                                                                                        <c:if test="${orderItem.birdNest.discount != 0}">
-                                                                                                                            <span class="old-price">${orderItem.birdNest.price}đ</span>
-                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price * (1 - orderItem.birdNest.discount/100)}" pattern="#,###"/>₫</span>
-                                                                                                                        </c:if>
-                                                                                                                        <c:if test="${orderItem.birdNest.discount == 0}">
-                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.birdNest.price}" pattern="#,###"/>₫</span>
-                                                                                                                        </c:if>
+                                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
@@ -848,11 +832,6 @@
                                                                                                         </section>
                                                                                                     </c:when>
                                                                                                     <c:otherwise>
-                                                                                                        <section>
-                                                                                                            <div class="info">
-                                                                                                                <span>Không có đơn hàng nào</span>
-                                                                                                            </div>
-                                                                                                        </section>
                                                                                                     </c:otherwise>
                                                                                                 </c:choose>
                                                                                             </c:forEach>

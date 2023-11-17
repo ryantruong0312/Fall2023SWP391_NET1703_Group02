@@ -138,9 +138,14 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <%
-                            String requestURL = "MainController";
+                            String requestURL = "MainController?";
                             String queryString = request.getQueryString();
-                            String fullURL = requestURL + "?" + queryString;
+                            String fullURL;
+                            if(queryString == null) {
+                                fullURL = requestURL + "action=NavToShopOrders";
+                            } else {
+                                fullURL = requestURL + queryString;
+                            }
                             if(fullURL.contains("startDay=&")) {
                                 fullURL = fullURL.replace("startDay=&", "");
                             }
@@ -172,11 +177,11 @@
                                 <input type="hidden" name="date" value="${requestScope.date}"/>
                             </c:if>
                             <ul>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=today"><span class="btn btn-info ${requestScope.date eq 'today' ? "active":""}">Hôm nay</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=yesterday"><span class="btn btn-info ${requestScope.date eq 'yesterday' ? "active":""}">Hôm qua</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisWeek"><span class="btn btn-info ${requestScope.date eq 'thisWeek' ? "active":""}">Tuần này</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisMonth"><span class="btn btn-info ${requestScope.date eq 'thisMonth' ? "active":""}">Tháng này</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "") %>&date=thisYear"><span class="btn btn-info ${requestScope.date eq 'thisYear' ? "active":""}">Năm nay</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "").replace(pageReq, "") %>&date=today"><span class="btn btn-info ${requestScope.date eq 'today' ? "active":""}">Hôm nay</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "").replace(pageReq, "") %>&date=yesterday"><span class="btn btn-info ${requestScope.date eq 'yesterday' ? "active":""}">Hôm qua</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "").replace(pageReq, "") %>&date=thisWeek"><span class="btn btn-info ${requestScope.date eq 'thisWeek' ? "active":""}">Tuần này</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "").replace(pageReq, "") %>&date=thisMonth"><span class="btn btn-info ${requestScope.date eq 'thisMonth' ? "active":""}">Tháng này</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(dateReq, "").replace(pageReq, "") %>&date=thisYear"><span class="btn btn-info ${requestScope.date eq 'thisYear' ? "active":""}">Năm nay</span></a></li>
                                 <li>
                                     <label>Từ ngày:</label>
                                     <input id="startDay" type="date" name="startDay" value="${requestScope.startDay}"/>
@@ -188,19 +193,19 @@
                             <h3 style="color: #006699;">Theo trạng thái</h3>
                             <input type="hidden" name="filterStatus" value="${requestScope.filterStatus}"/>
                             <ul>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=wait"><span class="btn btn-info ${requestScope.filterStatus eq 'wait' ? "active":""}">Chờ xử lý</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=inProgress"><span class="btn btn-info ${requestScope.filterStatus eq 'inProgress' ? "active":""}">Đang xử lý</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=delivering"><span class="btn btn-info ${requestScope.filterStatus eq 'delivering' ? "active":""}">Đang giao hàng</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=delivered"><span class="btn btn-info ${requestScope.filterStatus eq 'delivered' ? "active":""}">Đã giao hàng</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=rated"><span class="btn btn-info ${requestScope.filterStatus eq 'rated' ? "active":""}">Đã đánh giá</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "") %>&filterStatus=cancel"><span class="btn btn-info ${requestScope.filterStatus eq 'cancel' ? "active":""}">Đã hủy</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=wait"><span class="btn btn-info ${requestScope.filterStatus eq 'wait' ? "active":""}">Chờ xử lý</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=inProgress"><span class="btn btn-info ${requestScope.filterStatus eq 'inProgress' ? "active":""}">Đang xử lý</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=delivering"><span class="btn btn-info ${requestScope.filterStatus eq 'delivering' ? "active":""}">Đang giao hàng</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=delivered"><span class="btn btn-info ${requestScope.filterStatus eq 'delivered' ? "active":""}">Đã giao hàng</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=rated"><span class="btn btn-info ${requestScope.filterStatus eq 'rated' ? "active":""}">Đã đánh giá</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=cancel"><span class="btn btn-info ${requestScope.filterStatus eq 'cancel' ? "active":""}">Đã hủy</span></a></li>
                             </ul>
                             <div>
                                 <a href="MainController?action=NavToShopOrders"><span style="color: #b9130f; margin-left: 10px; font-weight: bold">BỎ LỌC</span></a>
                                 <br/>
                                 <h6 style="margin-left: 10px;">Lọc theo: <br/>
                                     <c:if test="${not empty requestScope.date}">
-                                        <a href="<%= fullURL.replace(dateReq, "") %>">
+                                        <a href="<%= fullURL.replace(dateReq, "").replace(pageReq, "") %>">
                                             <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
                                             <c:choose>
                                                 <c:when test="${requestScope.date eq 'today'}">
@@ -224,21 +229,21 @@
                                     </c:if>
                                     <c:set var="dateFormat" value="\\d{4}-\\d{2}-\\d{2}" />
                                     <c:if test="${not empty requestScope.startDay || not empty requestScope.endDay}">
-                                        <a href="<%= fullURL.replace(startDayReq, "").replace(endDayReq, "") %>">
+                                        <a href="<%= fullURL.replace(startDayReq, "").replace(endDayReq, "").replace(pageReq, "") %>">
                                             <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
                                             <span>Khoảng thời gian: Từ ${requestScope.startDay} đến ${requestScope.endDay}</span>
                                         </a>
                                         <br/>
                                     </c:if>
                                     <c:if test="${not empty requestScope.search}">
-                                        <a href="<%= fullURL.replace(searchReq, "") %>">
+                                        <a href="<%= fullURL.replace(searchReq, "").replace(pageReq, "") %>">
                                             <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
                                             <span>Tìm kiếm: ${requestScope.search}</span>
                                         </a>
                                         <br/>
                                     </c:if>
                                     <c:if test="${not empty requestScope.filterStatus}">
-                                        <a href="<%= fullURL.replace(statusReq, "") %>">
+                                        <a href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>">
                                             <image style="width: 15px; height: 15px; margin-bottom: 3px;" src='.\assets\images\close.png'/>
                                             <c:choose>
                                                 <c:when test="${requestScope.filterStatus eq 'wait'}">
@@ -324,7 +329,7 @@
                                             </c:if>
                                             <c:if test="${empty orderList}">
                                                 <tr>
-                                                    <td colspan="5">Không tìm thấy đơn hàng</td>
+                                                    <td colspan="12">Không tìm thấy đơn hàng</td>
                                                 </tr>
                                             </c:if>
                                         </tbody>
@@ -332,7 +337,7 @@
                                 </div>
                             </div>
                             <div class="pagination">
-                                <c:if test="${requestScope.noOfPages >= 1}">
+                                <c:if test="${requestScope.noOfPages > 1}">
                                     <ul>
                                         <li>
                                             <a href="<%= fullURL.replace(pageReq, "") %>&page=1"><<</a>
@@ -413,14 +418,17 @@
                 <div class="h-100 m-auto d-flex align-items-center">
                     <div class="box-remove bg-white p-4">
                         <div class="d-flex align-items-center justify-content-between">
-                            <h4>Hủy đơn hàng đơn hàng</h4>
+                            <h4>Hủy đơn hàng</h4>
                             <div onclick="hide('popupCancel')" class="btn-close">
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </div>
                         </div> 
                         <p class="mb-4 mt-4">
-                            Bạn có muốn huỷ đơn hàng này không ?
+                            Tại sao bạn muốn huỷ đơn hàng này ?
                         </p>
+                        <textarea rows="3" style="width: 100%;" name="cancelReason" value="">
+                            
+                        </textarea>
                         <div class="float-right">
                             <a id="cancelOrder"><span class="btn btn-primary">Xác nhận</span></a>
                             <a onclick="hide('popupCancel');"><span class="btn btn-danger">Hủy bỏ</span></a>
@@ -490,12 +498,16 @@
                                 var sdateInput = document.getElementById("startDay");
                                 var edateInput = document.getElementById("endDay");
                                 var today = new Date();
+                                console.log(today);
+                                today.setHours(today.getHours() + 7);
+                                console.log(today);
                                 sdateInput.addEventListener("change", function () {
                                     var selectedsDate = new Date(sdateInput.value);
                                     if (selectedsDate > today) {
                                         alert("Ngày được chọn không thể là một ngày trong tương lai. Vui lòng chọn lại.");
                                         sdateInput.value = "";
                                     }
+                                console.log(selectedsDate);
                                 });
                                 edateInput.addEventListener("change", function () {
                                     var selectedsDate = new Date(sdateInput.value);

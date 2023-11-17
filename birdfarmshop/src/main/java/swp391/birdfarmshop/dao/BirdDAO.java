@@ -28,7 +28,7 @@ public class BirdDAO {
             + ",[achievement],[reproduction_history],[price],[description]"
             + ",[discount],[status]FROM [BirdFarmShop].[dbo].[Bird]";
     private static final String GET_BIRD_BY_ID = "SELECT DATEDIFF(MONTH, birthday, GETDATE()) AS age, * FROM [Bird] WHERE [bird_id] = ?";
-    private static final String IS_BIRD_SOLD_OUT = "SELECT [status] FROM [Bird] WHERE [bird_id] = ? AND [status] = N'Đã bán'";
+    private static final String IS_BIRD_SOLD_OUT = "SELECT [status] FROM [Bird] WHERE [bird_id] = ? AND [status] = N'Hết hàng'";
     private static final String GET_BIRD_BY_BREED_ID = "SELECT [bird_id],[bird_name],[color]\n"
             + "      ,DATEDIFF(MONTH, birthday, GETDATE()) AS age,[grown_age] ,[gender]\n"
             + "      ,[breed_id] ,[achievement]\n"
@@ -65,8 +65,8 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
-                    String mom_id = rs.getString("mom_id");
-                    String dad_id = rs.getString("dad_id");
+                    String mom_id = rs.getString("mom_bird_id");
+                    String dad_id = rs.getString("dad_bird_id");
                     Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id, achievement, 
                             reproduction_history, price, description, discount, status, image_url, mom_id, dad_id);
                     birdList.add(bird);
@@ -462,11 +462,10 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
-                    String mom_id = rs.getString("mom_id");
-                    String dad_id = rs.getString("dad_id");
+                    String mom_id = rs.getString("mom_bird_id");
+                    String dad_id = rs.getString("dad_bird_id");
                     b = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id, achievement, 
                             reproduction_history, price, description, discount, status, image_url, mom_id, dad_id);
-
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {
@@ -764,7 +763,7 @@ public class BirdDAO {
                 String sql = "SELECT COUNT(bird_id) AS [totalBird],\n"
                         + "	   COUNT(CASE WHEN [status] = N'Còn hàng' THEN 1 END) AS [available],\n"
                         + "	   COUNT(CASE WHEN [status] = N'Đang sinh sản' THEN 1 END) AS [reproduction],\n"
-                        + "	   COUNT(CASE WHEN [status] = N'Đã bán' THEN 1 END) AS [sold]\n"
+                        + "	   COUNT(CASE WHEN [status] = N'Hết hàng' THEN 1 END) AS [sold]\n"
                         + "FROM [BirdFarmShop].[dbo].[Bird]";
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
@@ -803,7 +802,7 @@ public class BirdDAO {
             if (con != null) {
                 stm = con.prepareStatement("SELECT [bird_id],[bird_name],[color],DATEDIFF(MONTH, birthday, GETDATE()) AS age,[grown_age],[gender],[breed_id]"
                         + ",[achievement],[reproduction_history],[price],[description]"
-                        + ",[discount],[status],[dad_id],[mom_id]"
+                        + ",[discount],[status],[dad_bird_id],[mom_bird_id]"
                         + " FROM [BirdFarmShop].[dbo].[Bird]\n"
                         + " WHERE [gender] = ?");
                 stm.setBoolean(1, gen);
@@ -823,8 +822,8 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
-                    String mom_id = rs.getString("mom_id");
-                    String dad_id = rs.getString("dad_id");
+                    String mom_id = rs.getString("mom_bird_id");
+                    String dad_id = rs.getString("dad_bird_id");
                     Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id, achievement, reproduction_history, price, description, discount, status, image_url, mom_id, dad_id);
                     arrlist_b.add(bird);
                 }
@@ -845,7 +844,6 @@ public class BirdDAO {
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         BirdDAO b = new BirdDAO();
-        for(Bird bi : b.getBirdMomDadByGender(true))
-        System.out.println(bi.getBreed_id());
+        System.out.println(b.getBirdById("CW192").getPrice());
     }
 }

@@ -723,10 +723,10 @@ VALUES
 GO
 
 INSERT INTO [Order]([order_id],[customer],[order_date],[order_status],[name_receiver],[phone_receiver],[address_receiver],[payment_status],[payment_type],[total_price],[applied_point])
-VALUES('230925O0001','customer','2022-09-25',N'Đã hủy', N'Quân','0912345678',null,N'Đã thanh toán',N'Chuyển khoản',2950000,0),
+VALUES('230925O0001','customer','2022-09-25',N'Đã hủy', N'Quân','0912345678',null,N'Đã thanh toán',N'Chuyển khoản',3950000,0),
 	  ('230915O0002','giaphong','2021-09-15',N'Đang xử lý',N'Phong','0368445224',null,N'Đã thanh toán',N'Chuyển khoản',27600000,0),
 	  ('230916O0003','nhathoang','2023-03-16',N'Đang giao hàng',N'Hoàng','0368445224',null,N'Chưa thanh toán',N'Tiền mặt',4950000,0),
-	  ('230917O0004','huynhduc','2023-09-17',N'Đang giao hàng',N'Đức','0912245678',null,N'Chưa thanh toán',N'Tiền mặt',830000,0),
+	  ('230917O0004','huynhduc','2023-09-17',N'Đang giao hàng',N'Đức','0912245678',null,N'Chưa thanh toán',N'Tiền mặt',710000,0),
 	  ('230918O0005','khachhangvip','2023-09-18',N'Đã hủy',N'Thuận','0932145678',null,N'Đã thanh toán',N'Chuyển khoản',3450000,0),
 	  ('230919O0006','customer','2020-09-19',N'Đã giao hàng',N'Quân','0912345678',null,N'Đã thanh toán',N'Tiền mặt',25570000,0),
 	  ('230912O0007','customer','2020-09-20',N'Đã đánh giá',N'Quân','0912345678',null,N'Đã thanh toán',N'Chuyển khoản',7650000,0),
@@ -737,7 +737,7 @@ VALUES('230925O0001','customer','2022-09-25',N'Đã hủy', N'Quân','0912345678
 GO
 
 INSERT INTO [OrderItem]([order_id],[bird_id],[nest_id],[accessory_id],[unit_price],[order_quantity])
-VALUES ('230925O0001','CW192',null,null,2500000,1),
+VALUES ('230925O0001','CW192',null,null,3500000,1),
 		('230925O0001',null,null,'LM001',450000,1),
 		('230915O0002',null,null,'LN001',13800000,2),
 		('230916O0003','WA301',null,null,4500000,1),

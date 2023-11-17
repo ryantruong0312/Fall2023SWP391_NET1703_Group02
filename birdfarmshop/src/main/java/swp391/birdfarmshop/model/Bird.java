@@ -24,7 +24,6 @@ public class Bird {
     private int discount;
     private String status;
     private String image_url;
-    private String breedName;
     private String mom_id;
     private String dad_id;
 
@@ -175,15 +174,7 @@ public class Bird {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    public String getBreedName() {
-        return breedName;
-    }
-
-    public void setBreedName(String breedName) {
-        this.breedName = breedName;
-    }
-
+    
     public String getMom_id() {
         return mom_id;
     }

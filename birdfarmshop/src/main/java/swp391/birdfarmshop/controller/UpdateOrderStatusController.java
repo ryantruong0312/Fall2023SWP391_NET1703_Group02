@@ -54,12 +54,13 @@ public class UpdateOrderStatusController extends HttpServlet {
                 String order_id = request.getParameter("order_id");
                 boolean isUpdated = orderDao.updateOrderStatus(order_id, statusUpdate, request);
                 if(isUpdated) {
-                    session.setAttribute("SUCCESS", "Cập nhật thành công");
+                    session.setAttribute("SUCCESS", "Cập nhật đơn hàng " + order_id + " thành công");
                 }else {
-                    session.setAttribute("ERROR", "Cập nhật thất bại");
+                    session.setAttribute("ERROR", "Cập nhật đơn hàng " + order_id + " thất bại");
                 }
                 
-                int recordsPerPage = 10;
+                System.out.println(date + " " + startDay + " " + endDay + " " + search + " " + filterStatus + " " + page);
+                int recordsPerPage = 20;
                 int numberOfOrder = orderDao.numberOfOrder(date, startDay, endDay, filterStatus, search);
                 int noOfPages = (int) Math.ceil(numberOfOrder * 1.0 / recordsPerPage);
                 ArrayList<Order>  orderList = orderDao.getAllOfOrder(date, startDay, endDay, filterStatus, search, page, recordsPerPage);
