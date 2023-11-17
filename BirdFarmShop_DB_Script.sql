@@ -50,14 +50,14 @@ CREATE TABLE [Bird]
 	[reproduction_history] SMALLINT,
 	[price] INT,
 	[description] NVARCHAR(MAX),
-	[dad_id] VARCHAR(10),
-	[mom_id] VARCHAR(10),
+	[dad_bird_id] VARCHAR(10),
+	[mom_bird_id] VARCHAR(10),
 	[discount] SMALLINT CONSTRAINT DF_Bird_discount DEFAULT 0,
 	[status] NVARCHAR(20),
 	CONSTRAINT PK_Bird PRIMARY KEY ([bird_id]),
 	CONSTRAINT FK_Bird_BirdBreed FOREIGN KEY ([breed_id]) REFERENCES [BirdBreed]([breed_id]),
-	CONSTRAINT FK_Dadbird FOREIGN KEY ([dad_id]) REFERENCES [Bird]([bird_id]),
-	CONSTRAINT FK_Mombird FOREIGN KEY ([mom_id]) REFERENCES [Bird]([bird_id])
+	CONSTRAINT FK_Dadbird FOREIGN KEY ([dad_bird_id]) REFERENCES [Bird]([bird_id]),
+	CONSTRAINT FK_Mombird FOREIGN KEY ([mom_bird_id]) REFERENCES [Bird]([bird_id])
 )
 GO
 
@@ -249,7 +249,7 @@ VALUES
 	('cage', N'Lồng & cây đứng', 'https://petmeshop.com/wp-content/uploads/2023/05/cay-dung-de-ban-inox-size-s-loai-a-27x29x14.png'),
 	('toy', N'Phụ kiện trang trí - Đồ chơi', 'https://petmeshop.com/wp-content/uploads/2020/09/Clicker-3.png')
 
-INSERT INTO [Bird] ([bird_id], [bird_name], [color], [birthday], [grown_age], [gender], [breed_id], [achievement], [reproduction_history], [price], [description],[dad_id] ,[mom_id] , [discount], [status]) 
+INSERT INTO [Bird] ([bird_id], [bird_name], [color], [birthday], [grown_age], [gender], [breed_id], [achievement], [reproduction_history], [price], [description],[dad_bird_id] ,[mom_bird_id] , [discount], [status]) 
 VALUES 
 	('XT001', N'Vẹt Xích Thái XT001', N'Xanh lá,vàng', '2021-01-01', 3, 1, 'asian', 
 	N'Giải 3 cuộc thi Vẹt Châu Á Schauwerbung 2023', 

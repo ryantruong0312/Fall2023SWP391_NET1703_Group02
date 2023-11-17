@@ -27,16 +27,18 @@ public class BirdDTO {
     private int reproduction_history;
     private int price;
     private String description;
+    private String dad_id;
+    private String dad_name;
+    private String mom_id;
+    private String mom_name;
     private int discount;
     private String status;
     private ArrayList<String> image_urls;
-    private String mom_id;
-    private String dad_id;
 
     public BirdDTO() {
     }
 
-    public BirdDTO(String bird_id, String bird_name, String color, Date birthday, int age, int grown_age, String gender, String breed_id, String breed_name, String achievement, int reproduction_history, int price, String description, int discount, String status, ArrayList<String> image_urls, String mom_id, String dad_id) {
+    public BirdDTO(String bird_id, String bird_name, String color, Date birthday, int age, int grown_age, String gender, String breed_id, String breed_name, String achievement, int reproduction_history, int price, String description, String dad_id, String dad_name, String mom_id, String mom_name, int discount, String status, ArrayList<String> image_urls) {
         this.bird_id = bird_id;
         this.bird_name = bird_name;
         this.color = color;
@@ -50,11 +52,13 @@ public class BirdDTO {
         this.reproduction_history = reproduction_history;
         this.price = price;
         this.description = description;
+        this.dad_id = dad_id;
+        this.dad_name = dad_name;
+        this.mom_id = mom_id;
+        this.mom_name = mom_name;
         this.discount = discount;
         this.status = status;
         this.image_urls = image_urls;
-        this.mom_id = mom_id;
-        this.dad_id = dad_id;
     }
 
     public ArrayList<String> getImage_urls() {
@@ -185,6 +189,22 @@ public class BirdDTO {
         this.birthday = birthday;
     }
 
+    public String getDad_id() {
+        return dad_id;
+    }
+
+    public void setDad_id(String dad_id) {
+        this.dad_id = dad_id;
+    }
+
+    public String getDad_name() {
+        return dad_name;
+    }
+
+    public void setDad_name(String dad_name) {
+        this.dad_name = dad_name;
+    }
+
     public String getMom_id() {
         return mom_id;
     }
@@ -193,14 +213,12 @@ public class BirdDTO {
         this.mom_id = mom_id;
     }
 
-    public String getDad_id() {
-        return dad_id;
+    public String getMom_name() {
+        return mom_name;
     }
 
-    public void setDad_id(String dad_id) {
-        this.dad_id = dad_id;
+    public void setMom_name(String mom_name) {
+        this.mom_name = mom_name;
     }
-    
-    
 
 }

@@ -53,12 +53,6 @@ public class RenderBirdDetailsController extends HttpServlet {
 
             StarDTO starCustomer = f.getRatingByIdProduct(bird_id);
             BirdDTO birdDetails = birdDao.getBirdDetailsById(bird_id);
-            String mom_id = birdDetails.getMom_id();
-            String dad_id = birdDetails.getDad_id();
-            BirdDTO birdMom = birdDao.getBirdDetailsById(mom_id);
-            BirdDTO birdDad = birdDao.getBirdDetailsById(dad_id);
-            request.setAttribute("birdMom", birdMom);
-            request.setAttribute("birdDad", birdDad);
             request.setAttribute("noOfPages", numberOfPage);
             request.setAttribute("currentPage", page);
             request.setAttribute("feedbackList", feedbackList);
