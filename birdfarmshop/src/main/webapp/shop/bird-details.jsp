@@ -193,7 +193,6 @@
                                 </c:otherwise>
                             </c:choose>
                             <div class="mt-2">
-
                                 <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Giống loài: </h4>
                                     <span style="display: inline; color: black;">${birdDetails.breed_name}</span>
@@ -253,7 +252,7 @@
                                 </c:if>
                                 <div>
                                     <c:if test="${sessionScope.LOGIN_USER.role == 'customer'}">
-                                        <c:if test="${bird.status ne 'Đã bán' && birdDetails.status ne 'Đang sinh sản' && birdDetails.status ne 'Đang ghép cặp'}">
+                                        <c:if test="${bird.status ne 'Hết hàng' && birdDetails.status ne 'Đang sinh sản' && birdDetails.status ne 'Đang ghép cặp'}">
                                             <div class="total" style="margin-top: 30px;">
                                                 <div class="main-border-button">
                                                     <a class="bird-cart btn-primary" style="cursor: pointer; color: white; border: 0px; border-radius: 20px;" data-value="${birdDetails.bird_id}">Thêm vào giỏ hàng</a>
@@ -262,7 +261,7 @@
                                         </c:if>
                                     </c:if>
                                     <c:if test="${sessionScope.LOGIN_USER == null}">
-                                        <c:if test="${bird.status ne 'Đã bán' && birdDetails.status ne 'Đang sinh sản' && birdDetails.status ne 'Đang ghép cặp'}">
+                                        <c:if test="${bird.status ne 'Hết hàng' && birdDetails.status ne 'Đang sinh sản' && birdDetails.status ne 'Đang ghép cặp'}">
                                             <div class="total" style="margin-top: 30px;">
                                                 <div class="main-border-button">
                                                     <a class="bird-cart btn-primary" style="cursor: pointer; color: white; border: 0px; border-radius: 20px;" href="MainController?action=NavToLogin">Thêm vào giỏ hàng</a>

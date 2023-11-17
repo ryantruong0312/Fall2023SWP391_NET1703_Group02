@@ -97,10 +97,10 @@
                                         </c:choose> 
                                         <li>${bird.color}</li>
                                         <li>${bird.age} tháng</li>
-                                        <c:if test="${bird.gender == false}">
+                                        <c:if test="${!bird.gender}">
                                         <li>Mái</li>
                                         </c:if>
-                                        <c:if test="${bird.gender == true}">
+                                        <c:if test="${bird.gender}">
                                         <li>Trống</li>
                                         </c:if>
                                         <li>${bird.reproduction_history} </li>

@@ -65,8 +65,10 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
-                    Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id,
-                            achievement, reproduction_history, price, description, discount, status, image_url);
+                    String mom_id = rs.getString("mom_id");
+                    String dad_id = rs.getString("dad_id");
+                    Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id, achievement, 
+                            reproduction_history, price, description, discount, status, image_url, mom_id, dad_id);
                     birdList.add(bird);
                 }
             }
@@ -180,8 +182,8 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
-                    Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id,
-                            achievement, reproduction_history, price, description, discount, status, image_url);
+                    Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id, achievement, 
+                            reproduction_history, price, description, discount, status, image_url);
                     birdList.add(bird);
                 }
             }
@@ -412,8 +414,10 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
-                    Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id,
-                            achievement, reproduction_history, price, description, discount, status, image_url);
+                    String mom_id = rs.getString("mom_id");
+                    String dad_id = rs.getString("dad_id");
+                    Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id, achievement, 
+                            reproduction_history, price, description, discount, status, image_url, mom_id, dad_id);
                     birdList.add(bird);
                 }
             }
@@ -458,8 +462,10 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
-                    b = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id,
-                            achievement, reproduction_history, price, description, discount, status, image_url);
+                    String mom_id = rs.getString("mom_id");
+                    String dad_id = rs.getString("dad_id");
+                    b = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id, achievement, 
+                            reproduction_history, price, description, discount, status, image_url, mom_id, dad_id);
 
                 }
             }
@@ -681,7 +687,7 @@ public class BirdDAO {
                 stm.setString(2, color.trim());
                 stm.setInt(3, Integer.parseInt(price));
                 stm.setInt(4, Integer.parseInt(discount));
-                if (!achievement.isEmpty()) {
+                if (!achievement.isBlank()) {
                     stm.setString(5, achievement.trim());
                 } else {
                     stm.setString(5, "Chưa có");
