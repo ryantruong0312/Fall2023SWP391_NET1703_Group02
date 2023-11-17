@@ -110,7 +110,6 @@
                 border: 1px solid;
             }
     </style>
-
     <body>
         <!-- Header Start -->
         <%@include file="../layout/header.jsp" %>
@@ -149,10 +148,12 @@
                         <div class="col-lg-6 form-custom">
                             <div class="form-add mb-3">
                                 <label>Giống loài</label>
-                                <select name="txtBirdBreed" class="input form-control" style="color: #0c5460;" id="mySelect" onchange="toggleInput()" required>
+                                <select name="txtBirdBreed" class="input form-control" style="color: #0c5460;" id="mySelect" onchange="getBreedId()" required>
                                     <option value="" disabled selected>Chọn giống loài</option>
                                     <c:forEach var="breed" items="${requestScope.BREED}">
-                                    <option ${requestScope.txtBirdBreed == breed.key ? "selected":""} value="${breed.key}">${breed.value}</option>
+                                        <c:if test="${breed.key != 'other'}">
+                                            <option ${requestScope.txtBirdBreed == breed.key ? "selected":""} value="${breed.key}">${breed.value}</option>
+                                        </c:if>
                                     </c:forEach>
                                     <option value="other">Khác</option>
                                 </select>
@@ -167,6 +168,18 @@
                                     <option value="" disabled selected>Chọn giới tính</option>
                                     <option ${requestScope.txtBirdGender == 'Đực' ? "selected":""} value="Đực" id="gender-1">Trống</option>
                                     <option ${requestScope.txtBirdGender == 'Cái' ? "selected":""} value="Cái" id="gender-0">Mái</option>
+                                </select>
+                            </div>
+                            <div class="form-add mb-3">
+                                <label>Mã vẹt cha (Nếu có)</label>
+                                <select id="dadBirdId" name="txtDadId" class="input form-control" style="color: #0c5460;">
+                                    <option value="" disabled selected>Chọn vẹt cha</option>
+                                </select>
+                            </div>
+                            <div class="form-add mb-3">
+                                <label>Mã vẹt mẹ (Nếu có)</label>
+                                <select id="momBirdId" name="txtMomId" class="input form-control" style="color: #0c5460;">
+                                    <option value="" disabled selected>Chọn vẹt mẹ</option>
                                 </select>
                             </div>
                             <div class="form-add mb-3">
@@ -282,7 +295,34 @@
         <!-- Global Init -->
         <script src="assets/js/custom.js"></script>
     </body>
+    
     <script>
+            function getBreedId() {
+                var selectedValue = document.getElementById("mySelect").value;
+                var dad = document.getElementById('dadBirdId');
+                <c:forEach items="${requestScope.BIRDLIST}" var="bird">
+                    var breed_id = '${bird.breed_id}';
+                    if(breed_id === selectedValue && '${bird.gender}' === 'Đực') {
+                        const dadOption = document.createElement('option');
+                        dadOption.value = '${bird.bird_id}';
+                        dadOption.text = '${bird.bird_name}';
+                        dad.appendChild(dadOption);
+                    }
+                </c:forEach>
+                var dad = document.getElementById('momBirdId');
+                <c:forEach items="${requestScope.BIRDLIST}" var="bird">
+                    var breed_id = '${bird.breed_id}';
+                    if(breed_id === selectedValue && '${bird.gender}' === 'Cái') {
+                        const dadOption = document.createElement('option');
+                        dadOption.value = '${bird.bird_id}';
+                        dadOption.text = '${bird.bird_name}';
+                        dad.appendChild(dadOption);
+                    }
+                </c:forEach>
+            }
+    </script>
+    <script>
+            
             function previewImage(imageNumber) {
                 var input = document.querySelector('input[name="txtImage_' + imageNumber + '"]');
                 var imagePreview = document.getElementById('image-preview-' + imageNumber);

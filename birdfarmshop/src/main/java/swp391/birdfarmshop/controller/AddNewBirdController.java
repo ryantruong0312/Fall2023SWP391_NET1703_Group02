@@ -51,7 +51,7 @@ public class AddNewBirdController extends HttpServlet {
         boolean success = true;
         String  txtBirdId = null, txtBirdName = null, txtBirdColor = null, txtBirdDate = null, txtBirdGrownAge = null, 
                 txtBirdGender = null, txtBirdBreed = null, txtBirdAchievement = null, txtBirdReproduction_history = null, 
-                txtBirdPrice = null, txtBirdDescription = null, txtBirdDiscount = null, txtBirdStatus = null;
+                txtBirdPrice = null, txtBirdDescription = null, txtDadId = null, txtMomId = null, txtBirdDiscount = null, txtBirdStatus = null;
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
@@ -64,6 +64,7 @@ public class AddNewBirdController extends HttpServlet {
                         breed.put(bird.getBreed_id(), bird.getBreed_name());
                     }
                 }
+                request.setAttribute("BIRDLIST", birds);
                 request.setAttribute("BREED", breed);
                 String btAction = request.getParameter("btAction");
                 txtBirdId = request.getParameter("txtBirdId");
@@ -78,6 +79,8 @@ public class AddNewBirdController extends HttpServlet {
                     txtBirdReproduction_history = request.getParameter("txtBirdReproduction_history");
                     txtBirdPrice = request.getParameter("txtBirdPrice");
                     txtBirdDescription = request.getParameter("txtBirdDescription");
+                    txtDadId = request.getParameter("txtBirdDescription");
+                    txtMomId = request.getParameter("txtBirdDescription");
                     txtBirdDiscount = request.getParameter("txtBirdDiscount");
                     txtBirdStatus = "Còn hàng";
                     for (BirdDTO bird : birds) {
@@ -92,7 +95,7 @@ public class AddNewBirdController extends HttpServlet {
                     check = birdDao.addNewBird(txtBirdId, txtBirdName + " " + txtBirdId, txtBirdColor,
                             txtBirdDate, txtBirdGrownAge, txtBirdGender, txtBirdBreed,
                             txtBirdAchievement, txtBirdReproduction_history, txtBirdPrice,
-                            txtBirdDescription, txtBirdDiscount, txtBirdStatus);
+                            txtBirdDescription, txtDadId, txtMomId, txtBirdDiscount, txtBirdStatus);
                     Part image_1 = request.getPart("txtImage_1");
                     Part image_2 = request.getPart("txtImage_2");
                     Part image_3 = request.getPart("txtImage_3");
@@ -130,6 +133,8 @@ public class AddNewBirdController extends HttpServlet {
                 request.setAttribute("txtBirdReproduction_history", txtBirdReproduction_history);
                 request.setAttribute("txtBirdPrice", txtBirdPrice);
                 request.setAttribute("txtBirdDescription", txtBirdDescription);
+                request.setAttribute("txtDadId", txtDadId);
+                request.setAttribute("txtMomId", txtMomId);
                 request.setAttribute("txtBirdDiscount", txtBirdDiscount);
             }
             request.getRequestDispatcher(url).forward(request, response);

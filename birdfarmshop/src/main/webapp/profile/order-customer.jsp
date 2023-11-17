@@ -762,14 +762,24 @@
                                                                                                                 <c:choose>
                                                                                                                     <c:when test="${orderItem.birdPair.birdCustomer != null}">
                                                                                                                         <div class="pair-img pl-3 py-3 text-center">
-                                                                                                                            <img style="width: 80px;" src="${orderItem.birdPair.birdCustomer.img_url}"/>
-                                                                                                                            <p>${orderItem.birdPair.birdCustomer.name}</p>
+                                                                                                                            <img style="width: 80px; height: 100px;" src="${orderItem.birdPair.birdCustomer.img_url}"/>
+                                                                                                                            <p>
+                                                                                                                                ${orderItem.birdPair.birdCustomer.name} 
+                                                                                                                                <c:choose>
+                                                                                                                                    <c:when test="${orderItem.birdPair.birdCustomer.gender}">
+                                                                                                                                        (Trống)
+                                                                                                                                    </c:when>
+                                                                                                                                    <c:otherwise>
+                                                                                                                                        (Mái)
+                                                                                                                                    </c:otherwise>
+                                                                                                                                </c:choose>
+                                                                                                                            </p>
                                                                                                                         </div>  
                                                                                                                     </c:when>
                                                                                                                     <c:otherwise>
                                                                                                                         <div class="pair-img pl-3 py-3 text-center">
-                                                                                                                            <img style="width: 80px;" src="${orderItem.birdPair.male_bird.image_url}"/>
-                                                                                                                            <p>${orderItem.birdPair.male_bird.bird_name}</p>
+                                                                                                                            <img style="width: 80px; height: 100px;" src="${orderItem.birdPair.male_bird.image_url}"/>
+                                                                                                                            <p style="width: 200px;">${orderItem.birdPair.male_bird.bird_name} (Trống)</p>
                                                                                                                         </div> 
                                                                                                                     </c:otherwise>
                                                                                                                 </c:choose>
@@ -782,14 +792,14 @@
                                                                                                                 <c:choose>
                                                                                                                     <c:when test="${orderItem.birdPair.female_bird != null}">
                                                                                                                         <div class="pair-img pl-3 py-3 text-center">
-                                                                                                                            <img style="width: 80px;" src="${orderItem.birdPair.female_bird.image_url}"/>
-                                                                                                                            <p>${orderItem.birdPair.female_bird.bird_name}</p>
+                                                                                                                            <img style="width: 80px; height: 100px;" src="${orderItem.birdPair.female_bird.image_url}"/>
+                                                                                                                            <p style="width: 200px;">${orderItem.birdPair.female_bird.bird_name} (Mái)</p>
                                                                                                                         </div>  
                                                                                                                     </c:when>
                                                                                                                     <c:otherwise>
                                                                                                                         <div class="pair-img pl-3 py-3 text-center">
-                                                                                                                            <img style="width: 80px;" src="${orderItem.birdPair.male_bird.image_url}"/>
-                                                                                                                            <p>${orderItem.birdPair.male_bird.bird_name}</p>
+                                                                                                                            <img style="width: 80px; height: 100px;" src="${orderItem.birdPair.male_bird.image_url}"/>
+                                                                                                                            <p style="width: 200px;">${orderItem.birdPair.male_bird.bird_name} (Trống)</p>
                                                                                                                         </div> 
                                                                                                                     </c:otherwise>
                                                                                                                 </c:choose>

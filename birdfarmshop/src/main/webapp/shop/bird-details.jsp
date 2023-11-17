@@ -199,6 +199,11 @@
                                 </div>
 
                                 <div style="white-space: nowrap; margin-top: 10px;">
+                                    <h4 style="display: inline;">Giới tính: </h4>
+                                    <span style="display: inline; color: black;">${birdDetails.gender}</span>
+                                </div>
+                                
+                                <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Màu sắc: </h4>
                                     <span style="display: inline; color: black;">${birdDetails.color}</span>
                                 </div>

@@ -316,9 +316,9 @@ public class BirdDAO {
                     boolean sex = rs.getBoolean("gender");
                     String gender = "";
                     if (sex) {
-                        gender = "Đực";
+                        gender = "Trống";
                     } else {
-                        gender = "Cái";
+                        gender = "Mái";
                     }
                     String breed_id = rs.getString("breed_id");
                     String breed_name = breedDao.getBreedNameById(breed_id);
@@ -473,7 +473,7 @@ public class BirdDAO {
 
     public boolean addNewBird(String bird_id, String bird_name, String color, String birthday, String grown_age,
             String gender, String breed_id, String achievement, String reproduction_history, String price, String description,
-            String discount, String status) throws SQLException, NumberFormatException, ParseException {
+            String dad_bird_id, String mom_bird_id,String discount, String status) throws SQLException, NumberFormatException, ParseException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -486,7 +486,7 @@ public class BirdDAO {
             if (con != null) {
                 stm = con.prepareStatement("INSERT INTO [dbo].[Bird]\n"
                         + "             ([bird_id],[bird_name],[color],[birthday],[grown_age],[gender],[breed_id],[achievement],"
-                        + "             [reproduction_history],[price],[description],[discount],[status])\n"
+                        + "             [reproduction_history],[price],[description],[dad_bird_id],[mom_bird_id],[discount],[status])\n"
                         + "             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) ");
                 stm.setString(1, bird_id);
                 if (!bird_name.isEmpty()) {
@@ -495,7 +495,7 @@ public class BirdDAO {
                     }
                     stm.setString(2, bird_name.trim());
                 }
-                if (!color.isEmpty()) {
+                if (!color.isBlank()) {
                     stm.setString(3, color.trim());
                 } else {
                     stm.setString(3, null);
@@ -505,20 +505,30 @@ public class BirdDAO {
                 sex = gender.equals("Đực");
                 stm.setBoolean(6, sex);
                 stm.setString(7, breed_id);
-                if (!achievement.isEmpty()) {
+                if (!achievement.isBlank()) {
                     stm.setString(8, achievement.trim());
                 } else {
                     stm.setString(8, null);
                 }
                 stm.setInt(9, Integer.parseInt(reproduction_history));
                 stm.setInt(10, Integer.parseInt(price));
-                if (!description.isEmpty()) {
+                if (!description.isBlank()) {
                     stm.setString(11, description.trim());
                 } else {
                     stm.setString(11, null);
                 }
-                stm.setInt(12, Integer.parseInt(discount));
-                stm.setString(13, status);
+                if (dad_bird_id != null && !dad_bird_id.isEmpty()) {
+                    stm.setString(12, dad_bird_id);
+                }else {
+                    stm.setString(12, null);
+                }
+                if (mom_bird_id != null && !mom_bird_id.isEmpty()) {
+                    stm.setString(13, mom_bird_id);
+                }else {
+                    stm.setString(13, null);
+                }
+                stm.setInt(14, Integer.parseInt(discount));
+                stm.setString(15, status);
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;
