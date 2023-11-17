@@ -197,6 +197,20 @@
                                     <h4 style="display: inline;">Giống loài: </h4>
                                     <span style="display: inline; color: black;">${birdDetails.breed_name}</span>
                                 </div>
+                                
+                                <c:if test="${birdDetails.dad_name != null}">
+                                <div style="white-space: nowrap; margin-top: 10px;">
+                                    <h4 style="display: inline;">Chim cha: </h4>
+                                    <span style="display: inline; color: black;">${birdDetails.dad_name}</span>
+                                </div>
+                                </c:if>
+                                
+                                <c:if test="${birdDetails.mom_name != null}">
+                                <div style="white-space: nowrap; margin-top: 10px;">
+                                    <h4 style="display: inline;">Chim mẹ: </h4>
+                                    <span style="display: inline; color: black;">${birdDetails.mom_name}</span>
+                                </div>
+                                </c:if>
 
                                 <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Giới tính: </h4>

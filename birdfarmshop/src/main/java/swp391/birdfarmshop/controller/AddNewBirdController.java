@@ -79,8 +79,8 @@ public class AddNewBirdController extends HttpServlet {
                     txtBirdReproduction_history = request.getParameter("txtBirdReproduction_history");
                     txtBirdPrice = request.getParameter("txtBirdPrice");
                     txtBirdDescription = request.getParameter("txtBirdDescription");
-                    txtDadId = request.getParameter("txtBirdDescription");
-                    txtMomId = request.getParameter("txtBirdDescription");
+                    txtDadId = request.getParameter("txtDadId");
+                    txtMomId = request.getParameter("txtMomId");
                     txtBirdDiscount = request.getParameter("txtBirdDiscount");
                     txtBirdStatus = "Còn hàng";
                     for (BirdDTO bird : birds) {

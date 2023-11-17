@@ -302,7 +302,7 @@
                 var dad = document.getElementById('dadBirdId');
                 <c:forEach items="${requestScope.BIRDLIST}" var="bird">
                     var breed_id = '${bird.breed_id}';
-                    if(breed_id === selectedValue && '${bird.gender}' === 'Đực') {
+                    if(breed_id === selectedValue && '${bird.gender}' === 'Đực' && '${bird.reproduction_history}' > 0) {
                         const dadOption = document.createElement('option');
                         dadOption.value = '${bird.bird_id}';
                         dadOption.text = '${bird.bird_name}';
@@ -312,7 +312,7 @@
                 var dad = document.getElementById('momBirdId');
                 <c:forEach items="${requestScope.BIRDLIST}" var="bird">
                     var breed_id = '${bird.breed_id}';
-                    if(breed_id === selectedValue && '${bird.gender}' === 'Cái') {
+                    if(breed_id === selectedValue && '${bird.gender}' === 'Cái' && '${bird.reproduction_history}' > 0) {
                         const dadOption = document.createElement('option');
                         dadOption.value = '${bird.bird_id}';
                         dadOption.text = '${bird.bird_name}';
