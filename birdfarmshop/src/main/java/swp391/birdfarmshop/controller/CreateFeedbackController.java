@@ -57,7 +57,7 @@ public class CreateFeedbackController extends HttpServlet {
                     url = SUCCESS;
                 }
                 System.out.println(status);
-                if(status != null && !status.isBlank()) {
+                if(status != null && !status.isEmpty()) {
                     request.setAttribute("status", status);
                 } else {
                     request.setAttribute("status", null);

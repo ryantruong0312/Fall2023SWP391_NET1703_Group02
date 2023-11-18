@@ -95,14 +95,6 @@ $('main #breedSelect2').change(function (event) {
             $('#birdSelect1').html(data);
         }
     });
-    $.ajax({
-        url: 'MainController?action=NavToPairBirds',
-        type: 'POST',
-        data: {breedIdFemale: breedSelect2},
-        success: function (data){
-            $('#birdSelect2').html(data);
-        }
-    });
      if(breedIntital !== null && breedSelect2 !== breedIntital){
         $('#birdInformation1').html(" <div class=\"bird-info-row\">\n"
             
@@ -118,6 +110,7 @@ $('main #breedSelect2').change(function (event) {
 //select bird1
 $('#birdSelect1').change(function (event){
     let birdId = $(this).val();
+    let breedID = $('#breedSelect1').val();
     if(!birdId){
            $('#birdInformation1').html(" <div class=\"bird-info-row\">\n"
             
@@ -132,8 +125,16 @@ $('#birdSelect1').change(function (event){
             $('#birdInformation1').html(data);
         }
     });
-    
+    $.ajax({
+        url: 'MainController?action=NavToPairBirds',
+        type: 'POST',
+        data: {breedIdFemale: breedID, birdId: birdId},
+        success: function (data){
+            $('#birdSelect2').html(data);
+        }
+    });
 });
+
 //select bird2
 $('#birdSelect2').change(function (event){
     let birdId = $(this).val();

@@ -19,6 +19,7 @@ import java.util.Locale;
 import swp391.birdfarmshop.dao.BirdBreedDAO;
 import swp391.birdfarmshop.dao.BirdCustomerDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
+import swp391.birdfarmshop.dto.BirdDTO;
 import swp391.birdfarmshop.model.BirdCustomer;
 import swp391.birdfarmshop.model.Bird;
 import swp391.birdfarmshop.model.BirdBreed;
@@ -66,6 +67,7 @@ public class RenderBirdPairController extends HttpServlet {
             }
             request.setAttribute("BIRD_BREEDS", breedList);
             NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
+            BirdDTO birdDetail = birdDao.getBirdDetailsById(birdId);
 
             if (breedIdMale == null
                     && breedIdFemale == null
@@ -84,7 +86,7 @@ public class RenderBirdPairController extends HttpServlet {
                 out.println("<option value = \"\">Chọn vẹt</option>");
                 for (Bird bird : birdList) {
                     if (bird.isGender() == false && bird.getAge() >= bird.getGrown_age()
-                            && bird.getStatus().equals("Còn hàng")) {
+                            && bird.getStatus().equals("Còn hàng") && (!birdDetail.getDad_id().equals(bird.getDad_id()) || !birdDetail.getMom_id().equals(bird.getMom_id()))) {
                         out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + " (" + bird.getAge() + " " + ")</option>");
                     };
                 }
@@ -95,7 +97,7 @@ public class RenderBirdPairController extends HttpServlet {
                 out.println("<option value = \"\">Chọn vẹt</option>");
                 for (Bird bird : birdList) {
                     if (bird.isGender() == true && bird.getAge() >= bird.getGrown_age()
-                            && bird.getStatus().equals("Còn hàng")) {
+                            && bird.getStatus().equals("Còn hàng") && (!birdDetail.getDad_id().equals(bird.getDad_id()) || !birdDetail.getMom_id().equals(bird.getMom_id()))) {
                         out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
                     };
                 }
@@ -112,14 +114,34 @@ public class RenderBirdPairController extends HttpServlet {
                     }
                 }
             }
-            if (breedIdFemale != null) {
+            if (breedIdFemale != null && birdId != null) {
                 List<Bird> birdList = new ArrayList<>();
                 birdList = birdDao.getBirdsByBreedId(breedIdFemale);
                 out.println("<option value = \"\">Chọn vẹt</option>");
                 for (Bird bird : birdList) {
                     if (bird.isGender() == false && bird.getAge() >= bird.getGrown_age()
-                            && bird.getStatus().equals("Còn hàng")) {
-                        out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
+                            && bird.getStatus().equals("Còn hàng")
+                            && !bird.getBird_id().equals(birdDetail.getDad_id())
+                            && !bird.getBird_id().equals(birdDetail.getMom_id())) {
+                        if (bird.getDad_id() == null || birdDetail.getDad_id() == null) {
+                            if (bird.getMom_id() == null || birdDetail.getMom_id() == null) {
+                                out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
+                            } else {
+                                if (!bird.getMom_id().equals(birdDetail.getMom_id())) {
+                                    out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
+                                }
+                            }
+                        } else {
+                            if (!bird.getDad_id().equals(birdDetail.getDad_id())) {
+                                if (bird.getMom_id() == null || birdDetail.getMom_id() == null) {
+                                    out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
+                                } else {
+                                    if (!bird.getMom_id().equals(birdDetail.getMom_id())) {
+                                        out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -148,12 +170,22 @@ public class RenderBirdPairController extends HttpServlet {
             }
             if (birdId != null) {
                 Bird bird = birdDao.getBirdById(birdId);
+                String gen = "";
+                if (bird.isGender()) {
+                    gen = "Trống";
+                } else {
+                    gen = "Mái";
+                }
                 out.println("                          <div class=\"bird-info-row\">\n"
                         + "                                <!-- Placeholder for bird image -->\n"
                         + "                                <img id=\"birdImage1\" src=\"" + bird.getImage_url() + "\" alt=\"" + bird.getBird_name() + "\">\n"
                         + "                            </div>\n"
                         + "                            <div class=\"bird-info-row info-name customer-hidden\">\n"
                         + "                                <span id=\"birdName1\">" + bird.getBird_name() + "</span>\n"
+                        + "                            </div>\n"
+                        + "                            <div class=\"bird-info-row customer-hidden\">\n"
+                        + "                                <span class=\"info-title\">Giới tính</span>\n"
+                        + "                                <span id=\"birdAge1\" class=\"info-content\">" + gen + "</span>\n"
                         + "                            </div>\n"
                         + "                            <div class=\"bird-info-row customer-hidden\">\n"
                         + "                                <span class=\"info-title\">Tuổi</span>\n"

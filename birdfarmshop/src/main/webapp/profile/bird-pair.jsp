@@ -311,3 +311,13 @@
         </script>
     </body>
 </html>
+
+<div class="bird-info-row" customer-hidden\">
+    <span class="info-title">Giới tính</span>
+    <c:if test="${!bird.gender}">
+        <span>Mái</span>
+    </c:if>
+    <c:if test="${bird.gender}">
+        <span>Trống</span>  
+    </c:if>
+</div>
