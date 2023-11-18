@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
-import java.sql.Array;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalTime;
@@ -21,10 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import swp391.birdfarmshop.dao.BirdBreedDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dao.ImageDAO;
 import swp391.birdfarmshop.dto.BirdDTO;
 import swp391.birdfarmshop.model.Bird;
+import swp391.birdfarmshop.model.BirdBreed;
 import swp391.birdfarmshop.model.Image;
 import swp391.birdfarmshop.model.User;
 import swp391.birdfarmshop.util.Constants;
@@ -60,15 +61,26 @@ public class UpdateBirdController extends HttpServlet {
                 url = SUCCESS;
                 String bird_id = request.getParameter("bird_id");             
                 BirdDAO birdDao = new BirdDAO();
+                //bird detail
                 BirdDTO birdDetails = birdDao.getBirdDetailsById(bird_id);
+                //mom dad
                 List<Bird> listBirdDad = birdDao.getBirdMomDadByGender(true);
                 List<Bird> listBirdMom = birdDao.getBirdMomDadByGender(false);
+                //get name only
                 String[] parts = birdDetails.getBird_name().split("[A-Z]{2}\\d{3}");
-                String tenVe = parts[0];
+                String name = parts[0];
+                //get images
                 ImageDAO imageDao = new ImageDAO();
                 ArrayList<Image> images = imageDao.getImagesFollowBirdId(bird_id);
+                //get birdList
+                List<BirdDTO> birds = birdDao.getAllBirds();
+                //get breedList
+                BirdBreedDAO breedDao = new BirdBreedDAO();
+                List<BirdBreed> breedList = breedDao.getBirdBreeds();
+                request.setAttribute("BIRDLIST", birds);
+                request.setAttribute("BREED", breedList);
                 request.setAttribute("BIRD", birdDetails);
-                request.setAttribute("name", tenVe);
+                request.setAttribute("name", name);
                 request.setAttribute("BIRDIMAGES", images);
                 request.setAttribute("listMom", listBirdMom);
                 request.setAttribute("listDad", listBirdDad);
