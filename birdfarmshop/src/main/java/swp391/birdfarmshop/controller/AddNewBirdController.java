@@ -5,7 +5,6 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
@@ -16,7 +15,6 @@ import jakarta.servlet.http.Part;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,7 +45,7 @@ public class AddNewBirdController extends HttpServlet {
     private static final String DETAIL = "MainController?action=NavToBirdDetails&bird_id=";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException, ParseException {
+            throws ServletException, IOException, SQLException, ParseException, ClassNotFoundException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         boolean success = true;
@@ -59,17 +57,15 @@ public class AddNewBirdController extends HttpServlet {
             User user = (User) session.getAttribute("LOGIN_USER");
             if (user != null && !user.getRole().equals("customer")) {
                 BirdDAO birdDao = new BirdDAO();
-                List<BirdDTO> birds = birdDao.getAllBirds();
-                HashMap<String, String> breed = new HashMap<>();
                 BirdBreedDAO breedDao = new BirdBreedDAO();
+                //breed list
                 List<BirdBreed> breedList = breedDao.getBirdBreeds();
-                for (BirdBreed birdBreed : breedList) {
-                    if (!breed.containsKey(birdBreed.getBreed_id())) {
-                        breed.put(birdBreed.getBreed_id(), birdBreed.getBreed_name());
-                    }
-                }
-                request.setAttribute("BIRDLIST", birds);
-                request.setAttribute("BREED", breed);
+                //mom dad list
+                List<BirdDTO> listBirdDad = birdDao.getBirdMomDadByGender(true);
+                List<BirdDTO> listBirdMom = birdDao.getBirdMomDadByGender(false);
+                request.setAttribute("DADLIST", listBirdDad);
+                request.setAttribute("MOMLIST", listBirdMom);
+                request.setAttribute("BREED", breedList);
                 String btAction = request.getParameter("btAction");
                 txtBirdId = request.getParameter("txtBirdId");
                 if (btAction != null) {
@@ -173,6 +169,8 @@ public class AddNewBirdController extends HttpServlet {
             Logger.getLogger(AddNewBirdController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
             Logger.getLogger(AddNewBirdController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AddNewBirdController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -192,6 +190,8 @@ public class AddNewBirdController extends HttpServlet {
         } catch (SQLException ex) {
             Logger.getLogger(AddNewBirdController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
+            Logger.getLogger(AddNewBirdController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
             Logger.getLogger(AddNewBirdController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
