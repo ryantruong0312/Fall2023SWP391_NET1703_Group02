@@ -33,7 +33,8 @@ public class BirdDAO {
             + "      ,DATEDIFF(MONTH, birthday, GETDATE()) AS age,[grown_age] ,[gender]\n"
             + "      ,[breed_id] ,[achievement]\n"
             + "      ,[reproduction_history]\n"
-            + "      ,[price],[description]\n"
+            + "      ,[price],[description],"
+            + "      ,[dad_bird_id],[mom_bird_id]\n"
             + "      ,[discount],[status]\n"
             + "  FROM [BirdFarmShop].[dbo].[Bird]\n"
             + "  WHERE breed_id = ?";
@@ -414,8 +415,8 @@ public class BirdDAO {
                     int discount = rs.getInt("discount");
                     String status = rs.getString("status");
                     String image_url = imgDao.getThumbnailUrlByBirdId(bird_id);
-                    String mom_id = rs.getString("mom_id");
-                    String dad_id = rs.getString("dad_id");
+                    String mom_id = rs.getString("mom_bird_id");
+                    String dad_id = rs.getString("dad_bird_id");
                     Bird bird = new Bird(bird_id, bird_name, color, age, grown_age, gender, breed_id, achievement, 
                             reproduction_history, price, description, discount, status, image_url, mom_id, dad_id);
                     birdList.add(bird);
@@ -499,7 +500,7 @@ public class BirdDAO {
                 stm = con.prepareStatement("INSERT INTO [dbo].[Bird]\n"
                         + "             ([bird_id],[bird_name],[color],[birthday],[grown_age],[gender],[breed_id],[achievement],"
                         + "             [reproduction_history],[price],[description],[dad_bird_id],[mom_bird_id],[discount],[status])\n"
-                        + "             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?) ");
+                        + "             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ");
                 stm.setString(1, bird_id);
                 if (!bird_name.isEmpty()) {
                     if (!bird_name.contains(bird_id)) {
@@ -514,33 +515,52 @@ public class BirdDAO {
                 }
                 stm.setDate(4, sqlDate);
                 stm.setInt(5, Integer.parseInt(grown_age));
-                sex = gender.equals("Đực");
+                sex = gender.equals("Trống");
                 stm.setBoolean(6, sex);
                 stm.setString(7, breed_id);
-                if (!achievement.isBlank()) {
-                    stm.setString(8, achievement.trim());
+                if(achievement != null) {
+                    if (!achievement.isBlank()) {
+                        stm.setString(8, achievement.trim());
+                    } else {
+                        stm.setString(8, null);
+                    }
                 } else {
                     stm.setString(8, null);
                 }
                 stm.setInt(9, Integer.parseInt(reproduction_history));
                 stm.setInt(10, Integer.parseInt(price));
-                if (!description.isBlank()) {
-                    stm.setString(11, description.trim());
+                if(description != null) {
+                    if (!description.isBlank()) {
+                        stm.setString(11, description.trim());
+                    }else {
+                        stm.setString(11, null);
+                    }
                 } else {
                     stm.setString(11, null);
                 }
-                if (dad_bird_id != null && !dad_bird_id.isEmpty()) {
-                    stm.setString(12, dad_bird_id);
+                if (dad_bird_id != null) {
+                    if(!dad_bird_id.isEmpty()) {
+                        stm.setString(12, dad_bird_id);
+                    } else {
+                        stm.setString(12, null);
+                    }
                 }else {
                     stm.setString(12, null);
                 }
-                if (mom_bird_id != null && !mom_bird_id.isEmpty()) {
-                    stm.setString(13, mom_bird_id);
+                if (mom_bird_id != null) {
+                    if(!mom_bird_id.isEmpty()) {
+                        stm.setString(13, mom_bird_id);
+                    } else {
+                        stm.setString(13, null);
+                    }
                 }else {
                     stm.setString(13, null);
                 }
                 stm.setInt(14, Integer.parseInt(discount));
                 stm.setString(15, status);
+                System.out.println(bird_id+bird_name+color+birthday+grown_age+" "+gender+
+                        breed_id+ achievement+ reproduction_history+ price+ description+
+                        dad_bird_id+ mom_bird_id+ discount+" "+ status);
                 int row = stm.executeUpdate();
                 if (row > 0) {
                     return true;
@@ -607,7 +627,7 @@ public class BirdDAO {
                         dad_name = birdDao.getBirdById(dad_id).getBird_name();
                     }
                     mom_id = rs.getString("mom_bird_id");
-                    if(dad_id != null) {
+                    if(mom_id != null) {
                         mom_name = birdDao.getBirdById(mom_id).getBird_name();
                     }
                     int discount = rs.getInt("discount");
@@ -679,7 +699,7 @@ public class BirdDAO {
             if (con != null) {
                 String query = "UPDATE [dbo].[Bird]\n"
                         + "  SET [bird_name] = ?, [color] = ?, [price] = ?,[discount] = ?,\n"
-                        + "      [achievement] = ?,[description] = ?, [dad_id] = ?, [mom_id] = ?, [status] = ?'\n"
+                        + "      [achievement] = ?,[description] = ?, [dad_bird_id] = ?, [mom_bird_id] = ?, [status] = ?'\n"
                         + "  WHERE [bird_id] = ?";
                 stm = con.prepareStatement(query);
                 stm.setString(1, bird_name + " " + bird_id);
@@ -802,7 +822,7 @@ public class BirdDAO {
             if (con != null) {
                 stm = con.prepareStatement("SELECT [bird_id],[bird_name],[color],DATEDIFF(MONTH, birthday, GETDATE()) AS age,[grown_age],[gender],[breed_id]"
                         + ",[achievement],[reproduction_history],[price],[description]"
-                        + ",[discount],[status],[dad_bird_id],[mom_bird_id]"
+                        + ",[dad_bird_id],[mom_bird_id],[discount],[status]"
                         + " FROM [BirdFarmShop].[dbo].[Bird]\n"
                         + " WHERE [gender] = ?");
                 stm.setBoolean(1, gen);
@@ -841,9 +861,37 @@ public class BirdDAO {
         }
         return arrlist_b;
     }
+    
+    public boolean isBirdIdExisted(String bird_id) throws SQLException, ParseException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                String query = "SELECT [bird_id] FROM [BirdFarmShop].[dbo].[Bird] WHERE [bird_id] = ?";
+                stm = con.prepareStatement(query);
+                stm.setString(1, bird_id);
+                int row = stm.executeUpdate();
+                if (row > 0) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         BirdDAO b = new BirdDAO();
-        System.out.println(b.getBirdById("CW192").getPrice());
+        List<BirdDTO> list = b.getAllBirds();
+        for (BirdDTO birdDTO : list) {
+        }
     }
 }
