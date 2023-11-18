@@ -20,9 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import swp391.birdfarmshop.dao.BirdBreedDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dao.ImageDAO;
 import swp391.birdfarmshop.dto.BirdDTO;
+import swp391.birdfarmshop.model.BirdBreed;
 import swp391.birdfarmshop.model.User;
 import swp391.birdfarmshop.util.Constants;
 import swp391.birdfarmshop.util.ImageUtils;
@@ -59,9 +61,11 @@ public class AddNewBirdController extends HttpServlet {
                 BirdDAO birdDao = new BirdDAO();
                 List<BirdDTO> birds = birdDao.getAllBirds();
                 HashMap<String, String> breed = new HashMap<>();
-                for (BirdDTO bird : birds) {
-                    if (!breed.containsKey(bird.getBreed_id())) {
-                        breed.put(bird.getBreed_id(), bird.getBreed_name());
+                BirdBreedDAO breedDao = new BirdBreedDAO();
+                List<BirdBreed> breedList = breedDao.getBirdBreeds();
+                for (BirdBreed birdBreed : breedList) {
+                    if (!breed.containsKey(birdBreed.getBreed_id())) {
+                        breed.put(birdBreed.getBreed_id(), birdBreed.getBreed_name());
                     }
                 }
                 request.setAttribute("BIRDLIST", birds);
@@ -83,16 +87,14 @@ public class AddNewBirdController extends HttpServlet {
                     txtMomId = request.getParameter("txtMomId");
                     txtBirdDiscount = request.getParameter("txtBirdDiscount");
                     txtBirdStatus = "Còn hàng";
-                    for (BirdDTO bird : birds) {
-                        if (bird.getBird_id().equals(txtBirdId)) {
-                            session.setAttribute("ERROR", "ID ĐÃ TỒN TẠI. NHẬP ID MỚI");
-                            success = false;
-                            url = SUCCESS;
-                            return;
-                        }
+                    boolean isExisted = birdDao.isBirdIdExisted(txtBirdId);
+                    if(isExisted) {
+                        session.setAttribute("ERROR", "ID ĐÃ TỒN TẠI. NHẬP ID MỚI");
+                        success = false;
+                        url = SUCCESS;
+                        return;
                     }
-                    boolean check = false;
-                    check = birdDao.addNewBird(txtBirdId, txtBirdName + " " + txtBirdId, txtBirdColor,
+                    boolean check = birdDao.addNewBird(txtBirdId, txtBirdName, txtBirdColor,
                             txtBirdDate, txtBirdGrownAge, txtBirdGender, txtBirdBreed,
                             txtBirdAchievement, txtBirdReproduction_history, txtBirdPrice,
                             txtBirdDescription, txtDadId, txtMomId, txtBirdDiscount, txtBirdStatus);

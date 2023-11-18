@@ -105,6 +105,18 @@
                 <form action="UpdateBirdController" method="POST" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-6 form-custom" style="margin-top: 8px;">
+                            <div class="form-add mb-3">
+                                <label>Giống loài</label>
+                                <select name="txtBirdBreed" class="input form-control" style="color: #0c5460;" id="mySelect" onchange="getParentByBreedId()" required>
+                                    <option value="" disabled selected>Chọn giống loài</option>
+                                    <c:forEach var="breed" items="${requestScope.BREED}">
+                                        <c:if test="${breed.key != 'other'}">
+                                            <option ${requestScope.txtBirdBreed == breed.key ? "selected":""} value="${breed.key}">${breed.value}</option>
+                                        </c:if>
+                                    </c:forEach>
+                                    <option value="other">Khác</option>
+                                </select>
+                            </div>
                             <input type="hidden" name="bird_id" value="${birdDetails.bird_id}"/>
                             <div class="form-add mb-3">
                                 <label>Tên vẹt cảnh</label>

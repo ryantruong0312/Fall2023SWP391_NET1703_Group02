@@ -198,20 +198,6 @@
                                     <span style="display: inline; color: black;">${birdDetails.breed_name}</span>
                                 </div>
 
-                                <c:if test="${birdMom.bird_name != null}">
-                                    <div class="bird-info" style="white-space: nowrap; margin-top: 10px;">                                   
-                                        <h4 style="display: inline;">Chim mẹ: </h4>
-                                        <span style="display: inline; color: black;"><a href="MainController?action=NavToBirdDetails&bird_id=${birdMom.bird_id}">${birdMom.bird_name}</a></span>                                  
-                                    </div>
-                                </c:if>
-
-                                <c:if test="${birdDad.bird_name != null}">
-                                    <div class="bird-info" style="white-space: nowrap; margin-top: 10px;">
-                                        <h4 style="display: inline;">Chim bố: </h4>
-                                        <span style="display: inline; color: black;"><a href="MainController?action=NavToBirdDetails&bird_id=${birdDad.bird_id}">${birdDad.bird_name}</a></span>
-                                    </div>
-                                </c:if>
-
                                 <div style="white-space: nowrap; margin-top: 10px;">
                                     <h4 style="display: inline;">Giới tính: </h4>
                                     <span style="display: inline; color: black;">${birdDetails.gender}</span>
