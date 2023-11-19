@@ -27,8 +27,6 @@
         <link rel="stylesheet" href="assets/css/owl-carousel.css">
         <link rel="stylesheet" href="assets/css/lightbox.css">
 
-    </head>
-
     <style>
         .form-add{
             position: relative
@@ -110,6 +108,8 @@
                 border: 1px solid;
             }
     </style>
+
+    </head>
     <body>
         <!-- Header Start -->
         <%@include file="../layout/header.jsp" %>
@@ -151,8 +151,8 @@
                                 <select name="txtBirdBreed" class="input form-control" style="color: #0c5460;" id="mySelect" onchange="getParentByBreedId()" required>
                                     <option value="" disabled selected>Chọn giống loài</option>
                                     <c:forEach var="breed" items="${requestScope.BREED}">
-                                        <c:if test="${breed.key != 'other'}">
-                                            <option ${requestScope.txtBirdBreed == breed.key ? "selected":""} value="${breed.key}">${breed.value}</option>
+                                        <c:if test="${breed.breed_id != 'other'}">
+                                            <option ${requestScope.txtBirdBreed == breed.breed_id ? "selected":""} value="${breed.breed_id}">${breed.breed_name}</option>
                                         </c:if>
                                     </c:forEach>
                                     <option value="other">Khác</option>
@@ -171,25 +171,25 @@
                                 </select>
                             </div>
                             <div class="form-add mb-3">
-                                <label>Mã vẹt cha (Nếu có)</label>
+                                <label>Tên vẹt cha (Nếu có)</label>
                                 <select id="txtDadId" name="txtDadId" class="input form-control" style="color: #0c5460;">
                                     <option value="" disabled selected>Chọn chim cha</option>
-                                    <option value="">Không chọn</option>
-                                    <c:forEach items="${requestScope.BIRDLIST}" var="bird">
-                                        <c:if test="${bird.gender == 'Trống' && bird.breed_id == requestScope.txtBirdBreed && bird.reproduction_history > 0}">
-                                            <option ${bird.bird_id == requestScope.txtDadId ? "selected" : ""} value="${bird.bird_id}">${bird.bird_name}</option>
+                                    <option value="">Không</option>
+                                    <c:forEach items="${requestScope.DADLIST}" var="dad">
+                                        <c:if test="${dad.breed_id == requestScope.txtBirdBreed}">
+                                            <option ${dad.bird_id == requestScope.txtDadId ? "selected" : ""} value="${dad.bird_id}">${dad.bird_name}</option>
                                         </c:if>
                                     </c:forEach>
                                 </select>
                             </div>
                             <div class="form-add mb-3">
-                                <label>Mã vẹt mẹ (Nếu có)</label>
+                                <label>Tên vẹt mẹ (Nếu có)</label>
                                 <select id="txtMomId" name="txtMomId" class="input form-control" style="color: #0c5460;">
                                     <option value="" disabled selected>Chọn chim mẹ</option>
-                                    <option value="">Không chọn</option>
-                                    <c:forEach items="${requestScope.BIRDLIST}" var="bird">
-                                        <c:if test="${bird.gender == 'Mái' && bird.breed_id == requestScope.txtBirdBreed && bird.reproduction_history > 0}">
-                                            <option ${bird.bird_id == requestScope.txtMomId ? "selected" : ""} value="${bird.bird_id}">${bird.bird_name}</option>
+                                    <option value="">Không</option>
+                                    <c:forEach items="${requestScope.MOMLIST}" var="mom">
+                                        <c:if test="${mom.breed_id == requestScope.txtBirdBreed}">
+                                            <option ${mom.bird_id == requestScope.txtMomId ? "selected" : ""} value="${mom.bird_id}">${mom.bird_name}</option>
                                         </c:if>
                                     </c:forEach>
                                 </select>
@@ -210,11 +210,11 @@
                         <div class="col-lg-6 form-custom">
                             <div class="form-add mb-3">
                                 <label>Thành tích thi đấu</label>
-                                <textarea rows="5" name="txtBirdAchievement" class="input form-control" value="">${requestScope.txtBirdAchievement}</textarea>
+                                <textarea rows="6" name="txtBirdAchievement" class="input form-control">${requestScope.txtBirdAchievement}</textarea>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Mô tả chi tiết</label>
-                                <textarea rows="5" name="txtBirdDescription" class="input form-control" value="">${requestScope.txtBirdDescription}</textarea>
+                                <textarea rows="6" name="txtBirdDescription" class="input form-control">${requestScope.txtBirdDescription}</textarea>
                             </div>
                             <div class="form-add mb-3 column-container">
                                 <label>Giá bán</label>
@@ -234,7 +234,7 @@
                             <div class="form-add mb-3 column-container">
                                 <label>Giảm giá</label>
                                 <div style="width: 100%; position: relative;">
-                                    <input style="width: 80%;" type="number" min="0" max="99" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${requestScope.txtBirdDiscount}" required/>
+                                    <input style="width: 80%;" type="number" min="0" max="100" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${requestScope.txtBirdDiscount}" required/>
                                     <span style="position: absolute; right: 36px; top: 50%; transform: translateY(-50%);">%</span>
                                 </div>
                                 <div style="margin-top: 15px;">
@@ -315,9 +315,9 @@
                 while (dad.options.length > 2) {
                     dad.remove(2);
                 }
-                <c:forEach items="${requestScope.BIRDLIST}" var="bird">
+                <c:forEach items="${requestScope.DADLIST}" var="bird">
                     var breed_id = '${bird.breed_id}';
-                    if(breed_id === selectedValue && '${bird.gender}' === 'Đực' && '${bird.reproduction_history}' > 0) {
+                    if(breed_id === selectedValue) {
                         const dadOption = document.createElement('option');
                         dadOption.value = '${bird.bird_id}';
                         dadOption.text = '${bird.bird_name}';
@@ -328,9 +328,9 @@
                 while (mom.options.length > 2) {
                     mom.remove(2);
                 }
-                <c:forEach items="${requestScope.BIRDLIST}" var="bird">
+                <c:forEach items="${requestScope.MOMLIST}" var="bird">
                     var breed_id = '${bird.breed_id}';
-                    if(breed_id === selectedValue && '${bird.gender}' === 'Cái' && '${bird.reproduction_history}' > 0) {
+                    if(breed_id === selectedValue) {
                         const momOption = document.createElement('option');
                         momOption.value = '${bird.bird_id}';
                         momOption.text = '${bird.bird_name}';

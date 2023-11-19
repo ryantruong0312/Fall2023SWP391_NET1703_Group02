@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import swp391.birdfarmshop.dto.BirdDTO;
 import swp391.birdfarmshop.model.Bird;
-import swp391.birdfarmshop.model.BirdCustomer;
 import swp391.birdfarmshop.util.DBUtils;
 
 /**

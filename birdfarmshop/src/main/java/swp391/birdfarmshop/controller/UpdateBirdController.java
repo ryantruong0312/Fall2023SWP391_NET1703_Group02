@@ -54,65 +54,72 @@ public class UpdateBirdController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         String url = ERROR;
+        String  txtBirdId = null, txtBirdName = null, txtBirdColor = null, txtBirdDate = null, txtBirdGrownAge = null, 
+                txtBirdGender = null, txtBirdBreed = null, txtBirdAchievement = null, txtBirdReproduction_history = null, 
+                txtBirdPrice = null, txtBirdDescription = null, txtDadId = null, txtMomId = null, txtBirdDiscount = null, txtBirdStatus = null;
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute("LOGIN_USER");
             if (user != null && !user.getRole().equals("customer")) {
                 url = SUCCESS;
-                String bird_id = request.getParameter("bird_id");             
+                txtBirdId = request.getParameter("bird_id");             
                 BirdDAO birdDao = new BirdDAO();
                 //bird detail
-                BirdDTO birdDetails = birdDao.getBirdDetailsById(bird_id);
-                //mom dad
-                List<Bird> listBirdDad = birdDao.getBirdMomDadByGender(true);
-                List<Bird> listBirdMom = birdDao.getBirdMomDadByGender(false);
-                //get name only
-                String[] parts = birdDetails.getBird_name().split("[A-Z]{2}\\d{3}");
-                String name = parts[0];
+                BirdDTO birdDetails = birdDao.getBirdDetailsById(txtBirdId);
+                //list bird divide by gender
+                ArrayList<BirdDTO> listBirdDad = new ArrayList<>();
+                ArrayList<BirdDTO> listBirdMom = new ArrayList<>();
+                listBirdDad = birdDao.getBirdMomDadByGender(true);
+                listBirdMom = birdDao.getBirdMomDadByGender(false);
                 //get images
                 ImageDAO imageDao = new ImageDAO();
-                ArrayList<Image> images = imageDao.getImagesFollowBirdId(bird_id);
-                //get birdList
-                List<BirdDTO> birds = birdDao.getAllBirds();
+                ArrayList<Image> images = imageDao.getImagesFollowBirdId(txtBirdId);
                 //get breedList
                 BirdBreedDAO breedDao = new BirdBreedDAO();
                 List<BirdBreed> breedList = breedDao.getBirdBreeds();
-                request.setAttribute("BIRDLIST", birds);
+                //get all status of bird
+                ArrayList<String> statuses = birdDao.getAllStatus();
+                request.setAttribute("STATUSES", statuses);
                 request.setAttribute("BREED", breedList);
                 request.setAttribute("BIRD", birdDetails);
-                request.setAttribute("name", name);
                 request.setAttribute("BIRDIMAGES", images);
-                request.setAttribute("listMom", listBirdMom);
-                request.setAttribute("listDad", listBirdDad);
+                request.setAttribute("MOMLIST", listBirdMom);
+                request.setAttribute("DADLIST", listBirdDad);
                 String btAction = request.getParameter("btAction");
                 if (btAction != null) {
                     if (btAction.equals("Update")) {
-                        String bird_name = request.getParameter("bird_name");
-                        String txtBirdColor = request.getParameter("txtBirdColor");
-                        String txtBirdAchievement = request.getParameter("txtBirdAchievement");
-                        String txtBirdPrice = request.getParameter("txtBirdPrice");
-                        String txtBirdDescription = request.getParameter("txtBirdDescription");
-                        String txtBirdDiscount = request.getParameter("txtBirdDiscount");
-                        String txtStatus = request.getParameter("txtStatus");
-                        String txtBirdMom = request.getParameter("txtBirdMom");
-                        String txtBirdDad = request.getParameter("txtBirdDad");
+                        txtBirdName = request.getParameter("txtBirdName");
+                        txtBirdColor = request.getParameter("txtBirdColor");
+                        txtBirdDate = request.getParameter("txtBirdDate");
+                        txtBirdGrownAge = request.getParameter("txtBirdGrownAge");
+                        txtBirdGender = request.getParameter("txtBirdGender");
+                        txtBirdBreed = request.getParameter("txtBirdBreed");
+                        txtBirdAchievement = request.getParameter("txtBirdAchievement");
+                        txtBirdReproduction_history = request.getParameter("txtBirdReproduction_history");
+                        txtBirdPrice = request.getParameter("txtBirdPrice");
+                        txtBirdDescription = request.getParameter("txtBirdDescription");
+                        txtDadId = request.getParameter("txtDadId");
+                        txtMomId = request.getParameter("txtMomId");
+                        txtBirdDiscount = request.getParameter("txtBirdDiscount");
+                        txtBirdStatus = request.getParameter("txtBirdStatus");
                         Part image_1 = request.getPart("txtImage_1");
                         Part image_2 = request.getPart("txtImage_2");
                         Part image_3 = request.getPart("txtImage_3");
                         if (image_1.getSize() > 0 && images.size() >= 1) {
-                            updateImage(image_1, bird_id, images.get(0).getImage_id());
+                            updateImage(image_1, txtBirdId, images.get(0).getImage_id());
                         }
                         if (image_2.getSize() > 0 && images.size() >= 2) {
-                            updateImage(image_2, bird_id, images.get(1).getImage_id());
+                            updateImage(image_2, txtBirdId, images.get(1).getImage_id());
                         }
                         if (image_3.getSize() > 0 && images.size() == 3) {
-                            updateImage(image_3, bird_id, images.get(2).getImage_id());
+                            updateImage(image_3, txtBirdId, images.get(2).getImage_id());
                         }
-                        boolean check = birdDao.updateBird(bird_id, bird_name ,txtBirdColor, txtBirdDiscount, txtBirdAchievement, 
-                                txtBirdPrice, txtBirdDescription, txtBirdMom, txtBirdDad, txtStatus);
+                        boolean check = birdDao.updateBird(txtBirdId, txtBirdName, txtBirdColor, txtBirdDate, txtBirdGrownAge,
+                                txtBirdGender, txtBirdBreed, txtBirdAchievement, txtBirdReproduction_history, 
+                                txtBirdPrice, txtBirdDescription, txtDadId, txtMomId, txtBirdDiscount, txtBirdStatus);
                         if (check) {
                             session.setAttribute("SUCCESS", "Cập nhật thành công");
-                            url = DETAIL + bird_id;
+                            url = DETAIL + txtBirdId;
                         } else {
                             session.setAttribute("ERROR", "Cập nhật thất bại");
                         }
