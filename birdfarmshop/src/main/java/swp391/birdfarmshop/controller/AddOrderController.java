@@ -65,7 +65,7 @@ public class AddOrderController extends HttpServlet {
                             String number = String.format("%04d", numberLast);
                             String order_id = formattedDate.substring(2) + 'O' + number;
                             int result = od.createNewOrder(order_id, u.getUsername(), "Chờ xử lý", name_receiver,
-                                    phone_receiver, address_receiver, "Chưa thanh toán", cart, 0, "Tiền mặt",null,null,null);
+                                    phone_receiver, address_receiver, "Chưa thanh toán", cart, null, "Tiền mặt",null,null,null);
                             if (result != 0) {
                                 EmailService.sendEmail(u.getEmail(), "Đơn đặt hàng của bạn",
                                         EmailUtils.sendOrderToCustomer(u.getFullName(), cart, order_id, name_receiver, phone_receiver, address_receiver, "Thanh toán khi nhận hàng"));

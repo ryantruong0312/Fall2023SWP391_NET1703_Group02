@@ -21,12 +21,12 @@ public class Order {
     private String address_receiver;
     private String payment_status;
     private int total_price;
-    private int point;
+    private String cancel_reason;
     private String vnpTeref;
     private String vnpDate;
     private String vnpTransaction;
     private String paymentType;
-    public Order(String order_id, String customer, Date order_date, String order_status, String name_receiver, int phone_receiver, String address_receiver, String payment_status, int total_price, int point) {
+    public Order(String order_id, String customer, Date order_date, String order_status, String name_receiver, int phone_receiver, String address_receiver, String payment_status, int total_price, String cancel_reason) {
         this.order_id = order_id;
         this.customer = customer;
         this.order_date = order_date;
@@ -36,10 +36,10 @@ public class Order {
         this.address_receiver = address_receiver;
         this.payment_status = payment_status;
         this.total_price = total_price;
-        this.point = point;
+        this.cancel_reason = cancel_reason;
     }
 
-    public Order(String order_id, String customer, Date order_date, String order_status, String name_receiver, int phone_receiver, String address_receiver, String payment_status, int total_price, int point, String vnpTeref, String vnpDate, String vnpTransaction,String paymentType) {
+    public Order(String order_id, String customer, Date order_date, String order_status, String name_receiver, int phone_receiver, String address_receiver, String payment_status, int total_price, String cancel_reason, String vnpTeref, String vnpDate, String vnpTransaction,String paymentType) {
         this.order_id = order_id;
         this.customer = customer;
         this.order_date = order_date;
@@ -49,7 +49,7 @@ public class Order {
         this.address_receiver = address_receiver;
         this.payment_status = payment_status;
         this.total_price = total_price;
-        this.point = point;
+        this.cancel_reason = cancel_reason;
         this.vnpTeref = vnpTeref;
         this.vnpDate = vnpDate;
         this.vnpTransaction = vnpTransaction;
@@ -131,14 +131,14 @@ public class Order {
         this.total_price = total_price;
     }
 
-    public int getPoint() {
-        return point;
+    public String getCancel_reason() {
+        return cancel_reason;
     }
 
-    public void setPoint(int point) {
-        this.point = point;
+    public void setCancel_reason(String cancel_reason) {
+        this.cancel_reason = cancel_reason;
     }
-
+    
     public String getVnpTeref() {
         return vnpTeref;
     }

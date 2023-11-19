@@ -51,12 +51,11 @@ public class CreateFeedbackController extends HttpServlet {
                 OrderDAO orderDao = new OrderDAO();
                 if (fb) {
                     if(item != null) {
-                        orderDao.updateOrderStatus(item.getOrder_id(), "Đã đánh giá", request);
+                        orderDao.updateOrderStatus(item.getOrder_id(), null, "Đã đánh giá", request);
                     }
                     session.setAttribute("SUCCESS", "Đã thêm đánh giá thành công");
                     url = SUCCESS;
                 }
-                System.out.println(status);
                 if(status != null && !status.isEmpty()) {
                     request.setAttribute("status", status);
                 } else {

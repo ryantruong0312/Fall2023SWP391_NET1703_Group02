@@ -194,7 +194,7 @@
                             <input type="hidden" name="filterStatus" value="${requestScope.filterStatus}"/>
                             <ul>
                                 <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=wait"><span class="btn btn-info ${requestScope.filterStatus eq 'wait' ? "active":""}">Chờ xử lý</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=inProgress"><span class="btn btn-info ${requestScope.filterStatus eq 'inProgress' ? "active":""}">Đang xử lý</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=inProgress"><span class="btn btn-info ${requestScope.filterStatus eq 'inProgress' ? "active":""}">Đang chuẩn bị</span></a></li>
                                 <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=delivering"><span class="btn btn-info ${requestScope.filterStatus eq 'delivering' ? "active":""}">Đang giao hàng</span></a></li>
                                 <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=delivered"><span class="btn btn-info ${requestScope.filterStatus eq 'delivered' ? "active":""}">Đã giao hàng</span></a></li>
                                 <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=rated"><span class="btn btn-info ${requestScope.filterStatus eq 'rated' ? "active":""}">Đã đánh giá</span></a></li>
@@ -250,7 +250,7 @@
                                                     <span>Trạng thái: Chờ xử lý</span>
                                                 </c:when>
                                                 <c:when test="${requestScope.filterStatus eq 'inProgress'}">
-                                                    <span>Trạng thái: Đang xử lý</span>
+                                                    <span>Trạng thái: Đang chuẩn bị</span>
                                                 </c:when>
                                                 <c:when test="${requestScope.filterStatus eq 'delivering'}">
                                                     <span>Trạng thái: Đang giao hàng</span>
@@ -293,6 +293,7 @@
                                                 <th>Tình trạng đơn hàng</th>
                                                 <th>Cập nhật</th>
                                                 <th>Hủy bỏ</th>
+                                                <th>Lí do hủy đơn</th>
                                                 <th>Tên người nhận</th>
                                                 <th>Sđt người nhận</th>
                                                 <th>Địa chỉ nhận hàng</th>
@@ -319,6 +320,7 @@
                                                                 <a onclick="showCancel('popupCancel', '${order.order_id}'); event.stopPropagation();" style="color: #007BFF; cursor: pointer"><span class="btn btn-danger text-white">Hủy đơn</span></a>
                                                             </c:if>
                                                         </td>
+                                                        <td>${order.cancel_reason}</td>
                                                         <td>${order.name_receiver}</td>
                                                         <td>0${order.phone_receiver}</td>
                                                         <td>${order.address_receiver}</td>
@@ -417,7 +419,7 @@
             <div class="vh-100 row">
                 <div class="h-100 m-auto d-flex align-items-center">
                     <div class="box-remove bg-white p-4">
-                        <div class="d-flex align-items-center justify-content-between">
+                        <div style="width: 400px;" class="d-flex align-items-center justify-content-between">
                             <h4>Hủy đơn hàng</h4>
                             <div onclick="hide('popupCancel')" class="btn-close">
                                 <i class="fa fa-times" aria-hidden="true"></i>
@@ -426,9 +428,6 @@
                         <p class="mb-4 mt-4">
                             Tại sao bạn muốn huỷ đơn hàng này ?
                         </p>
-                        <textarea rows="3" style="width: 100%;" name="cancelReason" value="">
-                            
-                        </textarea>
                         <div class="float-right">
                             <a id="cancelOrder"><span class="btn btn-primary">Xác nhận</span></a>
                             <a onclick="hide('popupCancel');"><span class="btn btn-danger">Hủy bỏ</span></a>
@@ -464,10 +463,10 @@
                                         const hiddenStatus1 = document.createElement('input');
                                         hiddenStatus1.type = 'hidden';
                                         hiddenStatus1.name = 'status';
-                                        hiddenStatus1.value = 'Đang xử lý';
+                                        hiddenStatus1.value = 'Đang chuẩn bị';
                                         list.appendChild(hiddenStatus1);
                                     }
-                                    if (orderStatus === 'Đang xử lý') {
+                                    if (orderStatus === 'Đang chuẩn bị') {
                                         const hiddenStatus2 = document.createElement('input');
                                         hiddenStatus2.type = 'hidden';
                                         hiddenStatus2.name = 'status';

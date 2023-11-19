@@ -52,29 +52,25 @@ public class UpdateOrderStatusController extends HttpServlet {
                 String[] statusArray = request.getParameterValues("status");
                 String statusUpdate = statusArray[statusArray.length - 1];
                 String order_id = request.getParameter("order_id");
-                boolean isUpdated = orderDao.updateOrderStatus(order_id, statusUpdate, request);
+                String reason = request.getParameter("reason");
+                boolean isUpdated = orderDao.updateOrderStatus(order_id, reason, statusUpdate, request);
                 if(isUpdated) {
                     session.setAttribute("SUCCESS", "Cập nhật đơn hàng " + order_id + " thành công");
                 }else {
                     session.setAttribute("ERROR", "Cập nhật đơn hàng " + order_id + " thất bại");
                 }
-                
-                System.out.println(date + " " + startDay + " " + endDay + " " + search + " " + filterStatus + " " + page);
                 int recordsPerPage = 20;
                 int numberOfOrder = orderDao.numberOfOrder(date, startDay, endDay, filterStatus, search);
                 int noOfPages = (int) Math.ceil(numberOfOrder * 1.0 / recordsPerPage);
                 ArrayList<Order>  orderList = orderDao.getAllOfOrder(date, startDay, endDay, filterStatus, search, page, recordsPerPage);
                 request.setAttribute("ORDERLIST", orderList);
-                request.setAttribute("date", date);
-                request.setAttribute("startDay", startDay);
-                request.setAttribute("endDay", endDay);
-                request.setAttribute("search", search);
-                request.setAttribute("filterStatus", filterStatus);
                 request.setAttribute("page", page);
                 request.setAttribute("noOfPages", noOfPages);
             } else if(user != null && user.getRole().equals("customer")){
                 String txtOrderId = request.getParameter("order_id");
-                boolean isUpdated = orderDao.updateOrderStatus(txtOrderId, "Đã hủy",request);
+                String reason = request.getParameter("reason");
+                reason = reason.replace("Tôi", "Khách hàng");
+                boolean isUpdated = orderDao.updateOrderStatus(txtOrderId, reason, "Đã hủy",request);
                 url = "MainController?action=NavToCustomerOrder";
                 if(isUpdated) {
                     session.setAttribute("SUCCESS", "Bạn đã hủy đơn hàng thành công");
@@ -85,11 +81,11 @@ public class UpdateOrderStatusController extends HttpServlet {
                 url = HOME;
             }
         } finally {
-          if( user != null && user.getRole().equals("customer")){
-              response.sendRedirect("MainController?action=NavToCustomerOrder");
-          }else{
-            request.getRequestDispatcher(url).forward(request, response);
-          }
+            if( user != null && user.getRole().equals("customer")){
+                response.sendRedirect("MainController?action=NavToCustomerOrder");
+            }else{
+                request.getRequestDispatcher(url).forward(request, response);
+            }
         }
     } 
 

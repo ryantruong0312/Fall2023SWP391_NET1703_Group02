@@ -184,7 +184,7 @@ public class RenderCustomerOrderController extends HttpServlet {
                                        orderItemList.remove(orderItemList.get(count-1));
                                        break;
                                     }
-                                }
+                            }
                             orderItemMap.put(order, orderItemList);
                         }
                     }

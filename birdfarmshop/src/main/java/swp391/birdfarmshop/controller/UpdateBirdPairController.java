@@ -51,7 +51,7 @@ public class UpdateBirdPairController extends HttpServlet {
                         session.setAttribute("SUCCESS", "Ghép lại thành công");
                     }
                 } else {
-                    boolean result = o.updateOrderStatus(order, "Đã hủy", request);
+                    boolean result = o.updateOrderStatus(order, "Trứng không nở thành con", "Đã hủy", request);
                     if (result == false) {
                         session.setAttribute("ERROR", "Hủy thất bại");
                     } else {

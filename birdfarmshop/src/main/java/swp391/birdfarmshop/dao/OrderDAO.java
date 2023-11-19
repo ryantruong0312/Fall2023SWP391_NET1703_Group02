@@ -21,7 +21,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.apache.http.HttpRequest;
 import swp391.birdfarmshop.dto.CartDTO;
 import swp391.birdfarmshop.dto.OrderItemDTO;
 import swp391.birdfarmshop.model.Accessory;
@@ -44,7 +43,7 @@ public class OrderDAO {
     public String error = null;
 
     public int createNewOrder(String order_id, String username, String status, String name_receiver, String phone_receiver,
-            String address_receiver, String payment_status, CartDTO cart, int point, String payment_type, String vnp_TxnRef, String vnp_date, String vnp_transaction) {
+            String address_receiver, String payment_status, CartDTO cart, String reason, String payment_type, String vnp_TxnRef, String vnp_date, String vnp_transaction) {
         int result = 0;
         Connection con = null;
         OrderItemDAO oid = new OrderItemDAO();
@@ -65,7 +64,7 @@ public class OrderDAO {
                         + ",[payment_status]\n"
                         + ",[payment_type]\n"
                         + ",[total_price]\n"
-                        + ",[applied_point]\n"
+                        + ",[cancel_reason]\n"
                         + ",[vnp_txnRef]\n"
                         + ",[vnp_date]\n"
                         + ",[vnp_transaction])\n"
@@ -84,7 +83,7 @@ public class OrderDAO {
                 pst.setString(8, payment_status);
                 pst.setString(9, payment_type);
                 pst.setInt(10, cart.getCartTotalPrice());
-                pst.setInt(11, point);
+                pst.setString(11, reason);
                 pst.setString(12, vnp_TxnRef);
                 pst.setString(13, vnp_date);
                 pst.setString(14, vnp_transaction);
@@ -480,7 +479,7 @@ public class OrderDAO {
                         + "      ,[address_receiver]\n"
                         + "      ,[payment_status]\n"
                         + "      ,[total_price]\n"
-                        + "      ,[applied_point]\n"
+                        + "      ,[cancel_reason]\n"
                         + "  FROM [BirdFarmShop].[dbo].[Order]\n"
                         + "  ORDER BY order_date DESC";
                 st = con.createStatement();
@@ -495,8 +494,8 @@ public class OrderDAO {
                     String address_receiver = rs.getString("address_receiver");
                     String payment_status = rs.getString("payment_status");
                     int total_price = rs.getInt("total_price");
-                    int point = rs.getInt("applied_point");
-                    o = new Order(order_id, customer, order_date, order_status, name_receiver, phone_receiver, address_receiver, payment_status, total_price, point);
+                    String cancel_reason = rs.getString("cancel_reason");
+                    o = new Order(order_id, customer, order_date, order_status, name_receiver, phone_receiver, address_receiver, payment_status, total_price, cancel_reason);
                 }
             }
         } catch (Exception e) {
@@ -597,7 +596,7 @@ public class OrderDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 String query = "SELECT [order_id],[customer],[order_date],[order_status],[name_receiver],\n"
-                        + "[phone_receiver],[address_receiver],[payment_status],[total_price],[applied_point]\n"
+                        + "[phone_receiver],[address_receiver],[payment_status],[total_price],[cancel_reason]\n"
                         + "FROM [BirdFarmShop].[dbo].[Order] WHERE 1 = 1 ";
                 if (date != null && !date.isEmpty()) {
                     switch (date) {
@@ -654,7 +653,7 @@ public class OrderDAO {
                             query += "AND ([order_status] = N'Chờ xử lý')";
                             break;
                         case "inProgress":
-                            query += "AND ([order_status] = N'Đang xử lý')";
+                            query += "AND ([order_status] = N'Đang chuẩn bị')";
                             break;
                         case "delivering":
                             query += "AND ([order_status] = N'Đang giao hàng')";
@@ -690,9 +689,9 @@ public class OrderDAO {
                     String address_receiver = rs.getString("address_receiver");
                     String payment_status = rs.getString("payment_status");
                     int total_price = rs.getInt("total_price");
-                    int point = rs.getInt("applied_point");
+                    String cancel_reason = rs.getString("cancel_reason");
                     order = new Order(order_id, customer, order_date, order_status, name_receiver,
-                            phone_receiver, address_receiver, payment_status, total_price, point);
+                            phone_receiver, address_receiver, payment_status, total_price, cancel_reason);
                     orderList.add(order);
                 }
             }
@@ -808,7 +807,7 @@ public class OrderDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 String query = "SELECT [customer],[order_date],[order_status],[name_receiver],\n"
-                        + "[phone_receiver],[address_receiver],[payment_status],[total_price],[applied_point]"
+                        + "[phone_receiver],[address_receiver],[payment_status],[total_price],[cancel_reason]"
                         + ",[vnp_txnRef],[vnp_date],[vnp_transaction],[payment_type]\n"
                         + "FROM [BirdFarmShop].[dbo].[Order] WHERE [order_id] = ?";
                 stm = con.prepareStatement(query);
@@ -823,13 +822,13 @@ public class OrderDAO {
                     String address_receiver = rs.getString("address_receiver");
                     String payment_status = rs.getString("payment_status");
                     int total_price = rs.getInt("total_price");
-                    int point = rs.getInt("applied_point");
+                    String cancel_reason = rs.getString("cancel_reason");
                     String vnpTxnref = rs.getString("vnp_TxnRef");
                     String vnpDate = rs.getString("vnp_date");
                     String vnpTransaction = rs.getString("vnp_transaction");
                     String paymentType = rs.getString("payment_type");
                     order = new Order(order_id, customer, order_date, order_status, name_receiver,
-                            phone_receiver, address_receiver, payment_status, total_price, point, vnpTxnref, vnpDate, vnpTransaction, paymentType);
+                            phone_receiver, address_receiver, payment_status, total_price, cancel_reason, vnpTxnref, vnpDate, vnpTransaction, paymentType);
                 }
             }
         } catch (ClassNotFoundException | SQLException e) {
@@ -879,7 +878,7 @@ public class OrderDAO {
         return statuses;
     }
 
-    public boolean updateOrderStatus(String order_id, String status, HttpServletRequest r) throws SQLException, ParseException, IOException {
+    public boolean updateOrderStatus(String order_id, String reason, String status, HttpServletRequest r) throws SQLException, ParseException, IOException {
         Connection con = null;
         PreparedStatement stm = null;
         boolean isUpdated = false;
@@ -934,10 +933,11 @@ public class OrderDAO {
                         }
                         break;
                 }
-                String query = "UPDATE [dbo].[Order] SET [order_status] = ? WHERE [order_id] = ?";
+                String query = "UPDATE [dbo].[Order] SET [order_status] = ?, [cancel_reason] = ? WHERE [order_id] = ?";
                 stm = con.prepareStatement(query);
                 stm.setString(1, status);
-                stm.setString(2, order_id);
+                stm.setString(2, reason);
+                stm.setString(3, order_id);
                 int rs = stm.executeUpdate();
                 if (rs > 0) {
                     isUpdated = true;
@@ -965,7 +965,7 @@ public class OrderDAO {
             con = DBUtils.getConnection();
             if (con != null) {
                 String query = "SELECT [order_id],[customer],[order_date],[order_status],[name_receiver],\n"
-                        + "[phone_receiver],[address_receiver],[payment_status],[total_price],[applied_point]\n"
+                        + "[phone_receiver],[address_receiver],[payment_status],[total_price],[cancel_reason]\n"
                         + "FROM [BirdFarmShop].[dbo].[Order] WHERE [customer] = ? ORDER BY [order_date] DESC";
                 stm = con.prepareStatement(query);
                 stm.setString(1, customer);
@@ -979,9 +979,9 @@ public class OrderDAO {
                     String address_receiver = rs.getString("address_receiver");
                     String payment_status = rs.getString("payment_status");
                     int total_price = rs.getInt("total_price");
-                    int point = rs.getInt("applied_point");
+                    String cancel_reason = rs.getString("cancel_reason");
                     order = new Order(order_id, customer, order_date, order_status, name_receiver,
-                            phone_receiver, address_receiver, payment_status, total_price, point);
+                            phone_receiver, address_receiver, payment_status, total_price, cancel_reason);
                     orderList.add(order);
                 }
             }
@@ -1047,7 +1047,7 @@ public class OrderDAO {
         try {
             con = DBUtils.getConnection();
             if (con != null) {
-                String query = "SELECT SUM(CASE WHEN order_status <> N'Đã hủy' AND payment_status = N'Đã thanh toán' THEN total_price END) AS [total_price], \n"
+                String query = "SELECT SUM(CASE WHEN (order_status = N'Đã giao hàng' OR order_status = N'Đã đánh giá') AND payment_status = N'Đã thanh toán' THEN total_price END) AS [total_price], \n"
                         + "       COUNT(order_id) AS[amount_order],\n"
                         + "       COUNT(CASE WHEN order_status = N'Đã hủy' THEN 1 END) AS [cancel_order]\n"
                         + "FROM [BirdFarmShop].[dbo].[Order]\n";
@@ -1100,7 +1100,7 @@ public class OrderDAO {
                         + "		ON oi.pair_id = bp.pair_id\n"
                         + "		RIGHT JOIN [BirdFarmShop].[dbo].[Order] o\n"
                         + "		ON oi.order_id = o.order_id\n"
-                        + "		WHERE bp.status = N'Đã thanh toán' \n";
+                        + "		WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá')) \n";
                 if (startDay != null) {
                     query += "		AND o.order_date >= '" + startDay + "'\n";
                 }
@@ -1108,7 +1108,7 @@ public class OrderDAO {
                         + "FROM [BirdFarmShop].[dbo].[OrderItem] oi\n"
                         + "RIGHT JOIN [BirdFarmShop].[dbo].[Order] o\n"
                         + "ON oi.order_id = o.order_id\n"
-                        + "WHERE (o.payment_status = N'Đã thanh toán' AND o.order_status <> N'Đã hủy')";
+                        + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))";
                 if (startDay != null) {
                     query += "WHERE o.order_date >= '" + startDay + "'";
                 }
@@ -1153,7 +1153,7 @@ public class OrderDAO {
                         + "		ON oi.pair_id = bp.pair_id\n"
                         + "		RIGHT JOIN [BirdFarmShop].[dbo].[Order] o\n"
                         + "		ON oi.[order_id] = o.[order_id]\n"
-                        + "		WHERE bp.status = N'Đã thanh toán' \n";
+                        + "		WHERE (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá') \n";
                 if (startDay != null && endDay == null) {
                     query += "	AND o.[order_date] >= '" + startDay + " 00:00:00.000'\n";
                 } else if (endDay != null && startDay == null) {
@@ -1165,7 +1165,7 @@ public class OrderDAO {
                         + "FROM [BirdFarmShop].[dbo].[OrderItem] oi\n"
                         + "RIGHT JOIN [BirdFarmShop].[dbo].[Order] o\n"
                         + "ON oi.[order_id] = o.[order_id]\n"
-                        + "WHERE (o.payment_status = N'Đã thanh toán' AND o.order_status <> N'Đã hủy')\n";
+                        + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n";
                 if (startDay != null && endDay == null) {
                     query += "AND o.[order_date] >= '" + startDay + " 00:00:00.000'\n";
                 } else if (endDay != null && startDay == null) {
@@ -1173,6 +1173,7 @@ public class OrderDAO {
                 } else if (startDay != null && endDay != null) {
                     query += "		AND (order_date >= '" + startDay + " 00:00:00.000' AND order_date < = '" + endDay + " 00:00:00.000')\n";
                 }
+                System.out.println(query);
                 stm = con.prepareStatement(query);
                 rs = stm.executeQuery();
                 if (rs != null && rs.next()) {
@@ -1213,7 +1214,7 @@ public class OrderDAO {
                 for (int i = 0; i < date.length - 1; i++) {
                     String query = "SELECT SUM(o.total_price) AS [total_price]\n"
                             + "FROM [BirdFarmShop].[dbo].[Order] o \n"
-                            + "WHERE (o.payment_status = N'Đã thanh toán' AND o.order_status <> N'Đã hủy')\n";
+                            + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n";
                     if (startDay != null) {
                         query += "       AND (o.order_date >= '" + startDay + " 00:00:00.000' \n"
                                 + "	   AND o.order_date < = '" + startDay + " 23:59:59.999')\n";
@@ -1269,7 +1270,7 @@ public class OrderDAO {
                             + "       FROM [BirdFarmShop].[dbo].[Order] o\n"
                             + "	   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
                             + "	   ON o.[order_id] = oi.[order_id]\n"
-                            + "WHERE (o.payment_status = N'Đã thanh toán' AND o.order_status <> N'Đã hủy')\n";
+                            + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n";
                     if (startDay != null) {
                         query += "       AND (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
                                 + "	   AND o.[order_date] < = '" + startDay + " 23:59:59.999')\n";
@@ -1290,7 +1291,7 @@ public class OrderDAO {
                                 + "   ON o.[order_id] = oi.[order_id]\n"
                                 + "   LEFT JOIN BirdPair bp \n"
                                 + "   ON oi.pair_id = bp.pair_id\n"
-                                + "WHERE (o.payment_status = N'Đã thanh toán' AND o.order_status <> N'Đã hủy')\n"
+                                + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n"
                                 + "       AND (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
                                 + "	   AND o.[order_date] < = '" + startDay + " 23:59:59.999')\n"
                                 + "   AND oi.pair_id IS NOT NULL";
@@ -1336,7 +1337,7 @@ public class OrderDAO {
                 for (int i = 0; i < 31; i++) {
                     String query = "SELECT SUM(o.total_price) AS [total_price]\n"
                             + "FROM [BirdFarmShop].[dbo].[Order] o \n"
-                            + "WHERE (o.payment_status = N'Đã thanh toán' AND o.order_status <> N'Đã hủy')\n";
+                            + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n";
                     if (startDay != null) {
                         query += "       AND (o.order_date >= '" + startDay + " 00:00:00.000' \n"
                                 + "	   AND o.order_date < = '" + startDay + " 23:59:59.999')\n";
@@ -1391,7 +1392,7 @@ public class OrderDAO {
                             + "       FROM [BirdFarmShop].[dbo].[Order] o\n"
                             + "	   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
                             + "	   ON o.[order_id] = oi.[order_id]\n"
-                            + "WHERE (o.payment_status = N'Đã thanh toán' AND o.order_status <> N'Đã hủy')\n";
+                            + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n";
                     if (startDay != null) {
                         query += "       AND (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
                                 + "	   AND o.[order_date] < = '" + startDay + " 23:59:59.999')\n";
@@ -1412,7 +1413,7 @@ public class OrderDAO {
                                 + "   ON o.[order_id] = oi.[order_id]\n"
                                 + "   LEFT JOIN BirdPair bp \n"
                                 + "   ON oi.pair_id = bp.pair_id\n"
-                                + "WHERE (o.payment_status = N'Đã thanh toán' AND o.order_status <> N'Đã hủy')\n"
+                                + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n"
                                 + "       AND (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
                                 + "	   AND o.[order_date] < = '" + startDay + " 23:59:59.999')\n"
                                 + "   AND oi.pair_id IS NOT NULL";
@@ -1461,7 +1462,7 @@ public class OrderDAO {
                     LocalDate localMaxDate = LocalDate.of(startDay.getYear(), startDay.getMonth(), maxDay);
                     String query = "SELECT SUM(o.total_price) AS [total_price]\n"
                             + "FROM [BirdFarmShop].[dbo].[Order] o \n"
-                            + "WHERE (o.payment_status = N'Đã thanh toán' AND o.order_status <> N'Đã hủy')\n";
+                            + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n";
                     if (startDay != null) {
                         query += "       AND (o.order_date >= '" + startDay + " 00:00:00.000' \n"
                                 + "	   AND o.order_date < = '" + localMaxDate + " 23:59:59.999')\n";
@@ -1483,7 +1484,7 @@ public class OrderDAO {
                     startDay = startDay.plusMonths(1);
                 }
             }
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
             if (st != null) {
@@ -1519,7 +1520,7 @@ public class OrderDAO {
                             + "       FROM [BirdFarmShop].[dbo].[Order] o\n"
                             + "	   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
                             + "	   ON o.[order_id] = oi.[order_id]\n"
-                            + "WHERE (o.payment_status = N'Đã thanh toán' AND o.order_status <> N'Đã hủy')\n";
+                            + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n";
                     if (startDay != null) {
                         query += "       AND (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
                                 + "	   AND o.[order_date] < = '" + localMaxDate + " 23:59:59.999')\n";
@@ -1540,7 +1541,7 @@ public class OrderDAO {
                                 + "   ON o.[order_id] = oi.[order_id]\n"
                                 + "   LEFT JOIN BirdPair bp \n"
                                 + "   ON oi.pair_id = bp.pair_id\n"
-                                + "WHERE (o.payment_status = N'Đã thanh toán' AND o.order_status <> N'Đã hủy')\n"
+                                + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n"
                                 + "       AND (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
                                 + "	   AND o.[order_date] < = '" + localMaxDate + " 23:59:59.999')\n"
                                 + "   AND oi.pair_id IS NOT NULL";
@@ -1556,8 +1557,7 @@ public class OrderDAO {
                     startDay = startDay.plusMonths(1);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException | SQLException e) {
         } finally {
             if (st != null) {
                 st.close();
@@ -1590,7 +1590,7 @@ public class OrderDAO {
                     LocalDate localMaxDate = LocalDate.of(startDate.getYear(), 12, 31);
                     String query = "SELECT SUM(o.total_price) AS [total_price]\n"
                             + "FROM [BirdFarmShop].[dbo].[Order] o \n"
-                            + "WHERE (o.payment_status = N'Đã thanh toán' AND o.order_status <> N'Đã hủy')\n"
+                            + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n"
                             + "       AND (o.order_date >= '" + startDate + " 00:00:00.000' \n"
                             + "	   AND o.order_date < = '" + localMaxDate + " 23:59:59.999')\n";
                     if (typeMoney != null && typeMoney.equals("online")) {
@@ -1610,8 +1610,7 @@ public class OrderDAO {
                     startDate = startDate.plusYears(1);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException | SQLException e) {
         } finally {
             if (st != null) {
                 st.close();
@@ -1647,7 +1646,7 @@ public class OrderDAO {
                             + "       FROM [BirdFarmShop].[dbo].[Order] o\n"
                             + "	   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
                             + "	   ON o.[order_id] = oi.[order_id]\n"
-                             + "WHERE (o.payment_status = N'Đã thanh toán' AND o.order_status <> N'Đã hủy')\n"
+                             + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n"
                             + "       AND (o.[order_date] >= '" + startDate + " 00:00:00.000' \n"
                             + "	   AND o.[order_date] < = '" + localMaxDate + " 23:59:59.999')\n";
                     if (typeMoney != null && typeMoney.equals("online")) {
@@ -1666,7 +1665,7 @@ public class OrderDAO {
                                 + "   ON o.[order_id] = oi.[order_id]\n"
                                 + "   LEFT JOIN BirdPair bp \n"
                                 + "   ON oi.pair_id = bp.pair_id\n"
-                                + "WHERE  o.order_status <> N'Đã hủy'\n"
+                                + "WHERE  (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá')\n"
                                 + "       AND (o.[order_date] >= '" + startDate + " 00:00:00.000' \n"
                                 + "	   AND o.[order_date] < = '" + localMaxDate + " 23:59:59.999')\n"
                                 + "   AND oi.pair_id IS NOT NULL";
@@ -1715,7 +1714,7 @@ public class OrderDAO {
                         + "      ,[address_receiver]\n"
                         + "      ,[payment_status]\n"
                         + "      ,[total_price]\n"
-                        + "      ,[applied_point]\n"
+                        + "      ,[cancel_reason]\n"
                         + "  FROM [BirdFarmShop].[dbo].[Order]\n"
                         + "  ORDER BY order_date ASC";
                 st = con.createStatement();
@@ -1730,8 +1729,8 @@ public class OrderDAO {
                     String address_receiver = rs.getString("address_receiver");
                     String payment_status = rs.getString("payment_status");
                     int total_price = rs.getInt("total_price");
-                    int point = rs.getInt("applied_point");
-                    o = new Order(order_id, customer, order_date, order_status, name_receiver, phone_receiver, address_receiver, payment_status, total_price, point);
+                    String cancel_reason = rs.getString("cancel_reason");
+                    o = new Order(order_id, customer, order_date, order_status, name_receiver, phone_receiver, address_receiver, payment_status, total_price, cancel_reason);
                 }
             }
         } catch (Exception e) {

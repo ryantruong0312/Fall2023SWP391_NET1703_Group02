@@ -594,17 +594,26 @@
                                                                                                                 </div>
                                                                                                                 <div class="info-right">
                                                                                                                     <div class="price">
+                                                                                                                        <c:if test="${not empty freeItemList}">
                                                                                                                             <c:forEach items="${freeItemList}" var="item">
                                                                                                                                 <c:if test="${orderItem.order_id eq item.order_id}">
                                                                                                                                     <span class="old-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (orderItem.order_quantity + item.order_quantity)}" pattern="#,###"/>₫</span>
-                                                                                                                                    <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
+                                                                                                                                    <span class="new-price"><fmt:formatNumber value="${orderItem.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
                                                                                                                                 </c:if>
-                                                                                                                            </c:forEach>
-                                                                                                                            <c:forEach items="${freeItemList}" var="item">
                                                                                                                                 <c:if test="${orderItem.order_id ne item.order_id}">
-                                                                                                                                    <span class="new-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
+                                                                                                                                    <c:if test="${orderItem.accessory.unit_price  != orderItem.unit_price}">
+                                                                                                                                        <span class="old-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
+                                                                                                                                    </c:if>
+                                                                                                                                    <span class="new-price"><fmt:formatNumber value="${orderItem.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
                                                                                                                                 </c:if>
                                                                                                                             </c:forEach>
+                                                                                                                        </c:if>
+                                                                                                                        <c:if test="${empty freeItemList}">
+                                                                                                                            <c:if test="${orderItem.accessory.unit_price  != orderItem.unit_price}">
+                                                                                                                                <span class="old-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
+                                                                                                                            </c:if>
+                                                                                                                            <span class="new-price"><fmt:formatNumber value="${orderItem.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
+                                                                                                                        </c:if>
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
@@ -889,7 +898,7 @@
         <section id="confirm-remove" class="container-fluid">
             <div class="vh-100 row">
                 <div class="h-100 m-auto d-flex align-items-center">
-                    <div class="box-remove bg-white p-4">
+                    <div  style="width: 400px" class="box-remove bg-white p-4">
                         <div class="d-flex align-items-center justify-content-between">
                             <h4>Xác nhận</h4>
                             <div onclick="hide()" class="btn-close">
@@ -897,14 +906,20 @@
                             </div>
                         </div> 
                         <p class="mb-4 mt-4">
-                            Bạn có muốn thực hiện thao tác này không ?
+                            Lý do hủy đơn của bạn là gì ?
                         </p>
                         <div class="float-right">
                             <form action="MainController" method="POST">
+                                <div style="float: left;">
+                                    <input type="radio" id="reason-1" name="reason" value="Tôi không có nhu cầu mua nữa" checked><label for="reason-1">Tôi không có nhu cầu mua nữa</label><br/>
+                                    <input type="radio" id="reason-2" name="reason" value="Tôi muốn cập nhật địa chỉ giao hàng"><label for="reason-2">Tôi muốn cập nhật địa chỉ giao hàng</label><br/>
+                                    <input type="radio" id="reason-3" name="reason" value="Tôi muốn thay đổi sản phẩm"><label for="reason-3">Tôi muốn thay đổi sản phẩm</label><br/>
+                                    <input type="radio" id="reason-4" name="reason" value="Tôi không tìm thấy lý do hủy phù hợp"><label for="reason-4">Tôi không tìm thấy lý do hủy phù hợp</label><br/>
+                                </div>
                                 <input type="hidden" name="action" value="NavToUpdateOrder"/>
                                 <input type="hidden" name="order_id" value=""/>
                                 <button id="btn-confirrm" class="btn btn-group-sm btn-primary">Xác nhận</button>
-                                <button  onclick="return hide();" class="btn btn-group-sm btn-secondary">Hủy</button>
+                                <button onclick="return hide();" class="btn btn-group-sm btn-secondary">Hủy</button>
                             </form>
                         </div>
                     </div>
