@@ -103,12 +103,54 @@ public class RenderBirdPairController extends HttpServlet {
                 }
             }
 
-            if (breedIdMale != null) {
+            if (breedIdMale != null && birdId == null) {
                 List<Bird> birdList = new ArrayList<>();
                 birdList = birdDao.getBirdsByBreedId(breedIdMale);
                 out.println("<option value = \"\">Chọn vẹt</option>");
                 for (Bird bird : birdList) {
                     if (bird.isGender() == true && bird.getAge() >= bird.getGrown_age()
+                            && bird.getStatus().equals("Còn hàng")) {
+                        out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
+                    }
+                }
+            }
+            if (breedIdMale != null && birdId != null) {
+                List<Bird> birdList = new ArrayList<>();
+                birdList = birdDao.getBirdsByBreedId(breedIdMale);
+                out.println("<option value = \"\">Chọn vẹt</option>");
+                for (Bird bird : birdList) {
+                    if (bird.isGender() == true && bird.getAge() >= bird.getGrown_age()
+                            && bird.getStatus().equals("Còn hàng")
+                            && !bird.getBird_id().equals(birdDetail.getDad_id())
+                            && !bird.getBird_id().equals(birdDetail.getMom_id())) {
+                        if (bird.getDad_id() == null || birdDetail.getDad_id() == null) {
+                            if (bird.getMom_id() == null || birdDetail.getMom_id() == null) {
+                                out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
+                            } else {
+                                if (!bird.getMom_id().equals(birdDetail.getMom_id())) {
+                                    out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
+                                }
+                            }
+                        } else {
+                            if (!bird.getDad_id().equals(birdDetail.getDad_id())) {
+                                if (bird.getMom_id() == null || birdDetail.getMom_id() == null) {
+                                    out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
+                                } else {
+                                    if (!bird.getMom_id().equals(birdDetail.getMom_id())) {
+                                        out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (breedIdFemale != null && birdId == null) {
+                List<Bird> birdList = new ArrayList<>();
+                birdList = birdDao.getBirdsByBreedId(breedIdFemale);
+                out.println("<option value = \"\">Chọn vẹt</option>");
+                for (Bird bird : birdList) {
+                    if (bird.isGender() == false && bird.getAge() >= bird.getGrown_age()
                             && bird.getStatus().equals("Còn hàng")) {
                         out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
                     }
