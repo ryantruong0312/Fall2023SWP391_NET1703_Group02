@@ -32,7 +32,7 @@ public class BirdDAO {
             + "      ,DATEDIFF(MONTH, birthday, GETDATE()) AS age,[grown_age] ,[gender]\n"
             + "      ,[breed_id] ,[achievement]\n"
             + "      ,[reproduction_history]\n"
-            + "      ,[price],[description],"
+            + "      ,[price],[description]"
             + "      ,[dad_bird_id],[mom_bird_id]\n"
             + "      ,[discount],[status]\n"
             + "  FROM [BirdFarmShop].[dbo].[Bird]\n"

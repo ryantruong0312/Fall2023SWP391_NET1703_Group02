@@ -724,7 +724,7 @@ GO
 
 INSERT INTO [Order]([order_id],[customer],[order_date],[order_status],[name_receiver],[phone_receiver],[address_receiver],[payment_status],[payment_type],[total_price],[cancel_reason])
 VALUES('230925O0001','customer','2022-09-25',N'Đã hủy', N'Quân','0912345678',null,N'Đã thanh toán',N'Chuyển khoản',3950000,N'Khách từ chối nhận hàng'),
-	  ('230915O0002','giaphong','2021-09-15',N'Đang chuẩn bị',N'Phong','0368445224',null,N'Đã thanh toán',N'Chuyển khoản',27600000,NULL),
+	  ('230915O0002','giaphong','2021-09-15',N'Đang xử lý',N'Phong','0368445224',null,N'Đã thanh toán',N'Chuyển khoản',27600000,NULL),
 	  ('230916O0003','nhathoang','2023-03-16',N'Đang giao hàng',N'Hoàng','0368445224',null,N'Chưa thanh toán',N'Tiền mặt',4950000,NULL),
 	  ('230917O0004','huynhduc','2023-09-17',N'Đang giao hàng',N'Đức','0912245678',null,N'Chưa thanh toán',N'Tiền mặt',710000,NULL),
 	  ('230918O0005','khachhangvip','2023-09-18',N'Đã hủy',N'Thuận','0932145678',null,N'Đã thanh toán',N'Chuyển khoản',3450000,N'Khách từ chối nhận hàng'),
