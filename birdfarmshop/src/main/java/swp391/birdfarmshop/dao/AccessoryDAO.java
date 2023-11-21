@@ -282,7 +282,7 @@ public class AccessoryDAO {
             if (con != null) {
                 stm = con.prepareStatement("SELECT *\n"
                         + "FROM [BirdFarmShop].[dbo].[Accessory]\n"
-                        + "WHERE [category_id] = 'cage'");
+                        + "WHERE [category_id] = 'cage' ORDER BY [unit_price]");
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     String accessory_id = rs.getString("accessory_id");

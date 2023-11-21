@@ -150,7 +150,11 @@ public class CartDTO {
         boolean check = false;
         if (!this.birdList.containsKey(bird.getBird_id())) {
             this.birdList.put(bird.getBird_id(), new OrderedBirdItem(bird, cage));
-            this.totalItem += 2;
+            if(cage != null) {
+                this.totalItem += 2;
+            } else {
+                this.totalItem += 1;
+            }
             cartTotalPrice += (bird.getPrice() - bird.getPrice() * bird.getDiscount() / 100);
             check = true;
         }

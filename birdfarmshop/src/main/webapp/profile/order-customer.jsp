@@ -578,13 +578,9 @@
                                                                                                                             <div class="product-name"><span>${orderItem.accessory.accessory_name}</span></div>
                                                                                                                         </div>
                                                                                                                         <div>
-                                                                                                                            <c:set var="isFree" value="false"/>
                                                                                                                             <c:forEach items="${freeItemList}" var="item">
-                                                                                                                                <c:if test="${orderItem.order_id eq item.order_id && orderItem.accessory.accessory_id eq 'LM001'}">
-                                                                                                                                    <c:set var="isFree" value="true"/>
-                                                                                                                                    <c:if test="${isFree}">
+                                                                                                                                <c:if test="${orderItem.order_id eq item.order_id && orderItem.accessory.accessory_id eq item.accessory.accessory_id}">
                                                                                                                                         <div class="product-category"><span>Tặng kèm: ${item.order_quantity}</span></div>
-                                                                                                                                    </c:if>
                                                                                                                                 </c:if>
                                                                                                                             </c:forEach>
                                                                                                                             <c:if test="${orderItem.order_quantity != 0}">
@@ -595,21 +591,30 @@
                                                                                                                 </div>
                                                                                                                 <div class="info-right">
                                                                                                                     <div class="price">
-                                                                                                                        <c:set var="isFree" value="false"/>
+                                                                                                                        <c:if test="${not empty freeItemList}">
+                                                                                                                            <c:set value="false" var="isFree"/>
                                                                                                                             <c:forEach items="${freeItemList}" var="item">
-                                                                                                                                <c:if test="${orderItem.order_id eq item.order_id && orderItem.accessory.accessory_id eq 'LM001' && orderItem.unit_price != 0}">
-                                                                                                                                    <c:set var="isFree" value="true"/>
-                                                                                                                                    <c:if test="${isFree}">
-                                                                                                                                        <span class="old-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (orderItem.order_quantity + item.order_quantity)}" pattern="#,###"/>₫</span>
-                                                                                                                                        <c:if test="${orderItem.unit_price == 0}">
-                                                                                                                                        <span class="new-price"><fmt:formatNumber value="${orderItem.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
-                                                                                                                                        </c:if>
-                                                                                                                                    </c:if>
+                                                                                                                                <c:if test="${orderItem.order_id eq item.order_id && orderItem.accessory.accessory_id eq item.accessory.accessory_id && orderItem.unit_price != 0}">
+                                                                                                                                    <c:set value="true" var="isFree"/>
+                                                                                                                                    <span class="old-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (orderItem.order_quantity + item.order_quantity)}" pattern="#,###"/>₫</span>
                                                                                                                                 </c:if>
                                                                                                                             </c:forEach>
+                                                                                                                            <c:if test="${orderItem.unit_price != orderItem.accessory.unit_price && !isFree}">
+                                                                                                                                <span class="old-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
+                                                                                                                            </c:if>
                                                                                                                             <c:if test="${orderItem.order_quantity != 0}">
                                                                                                                                 <span class="new-price"><fmt:formatNumber value="${orderItem.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
                                                                                                                             </c:if>
+                                                                                                                        </c:if>
+                                                                                                                        <c:if test="${empty freeItemList}">
+                                                                                                                            <c:if test="${orderItem.unit_price != orderItem.accessory.unit_price}">
+                                                                                                                                <span class="old-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
+                                                                                                                                <span class="new-price"><fmt:formatNumber value="${orderItem.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
+                                                                                                                            </c:if>
+                                                                                                                            <c:if test="${orderItem.unit_price == orderItem.accessory.unit_price}">
+                                                                                                                                <span class="new-price"><fmt:formatNumber value="${orderItem.unit_price * orderItem.order_quantity}" pattern="#,###"/>₫</span>
+                                                                                                                            </c:if>
+                                                                                                                        </c:if>
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
