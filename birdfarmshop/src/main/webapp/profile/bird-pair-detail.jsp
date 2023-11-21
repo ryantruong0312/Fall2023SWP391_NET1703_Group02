@@ -476,7 +476,7 @@
                             <label for="confirm-reason">
                                 Lý do hủy đơn: 
                             </label>
-                            <textarea id="confirm-reason" rows="3" class="reason-remove" name="reason" value=""></textarea>
+                            <textarea id="confirm-reason" rows="3" class="reason-remove" name="reason" value="" required=""></textarea>
                         </div>
                         <div class="float-right">
                             <button id="btn-confirrm" data-value="" class="btn btn-group-sm btn-primary">Xác nhận</button>
