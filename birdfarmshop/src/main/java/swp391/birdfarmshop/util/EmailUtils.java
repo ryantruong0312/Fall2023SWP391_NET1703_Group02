@@ -255,4 +255,43 @@ public class EmailUtils {
                 + "    </html>";
         return message;
     }
+    
+    public static String confirmBirdPair(String name, String orderID, int pairID){
+        String message = "<html>\n"
+                + "    <body>\n"
+                + "        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border-collapse:collapse;border:0;max-width:600px;background:#f8f9fa; margin: auto; margin-top: 40px\"width=\"100%\">\n"
+                + "            <tbody>\n"
+                + "                <tr>\n"
+                + "                    <td style=\"text-align:center;border-bottom-color:orange;border-bottom-style:solid;border-bottom-width:10px;border-top-width:0; padding-top: 15px; padding-bottom: 10px;\">\n"
+                + "                          <img src=\"" + Constants.C3_HOST + "logo.png\" alt=\"V.E.T\">    \n"
+                + "                    </td>\n"
+                + "                </tr>\n"
+                + "                <tr style=\"padding-top: 10px\">\n"
+                + "                    <td style=\"padding-top: 30px;padding-left: 20px; font-weight: bold;\">\n"
+                + "                        Xin chào " + name + ",  \n"
+                + "                    </td>\n"
+                + "                </tr>\n"
+                + "                <tr style=\"padding-top: 10px\">\n"
+                + "                    <td style=\"padding-top: 30px; padding-right: 40px ;padding-left: 20px;\">\n"
+                + "                        Chào mừng bạn đã đến với V.E.T - Thế giới vẹt cảnh. Đơn hàng của bạn đã ấp nở, vui lòng xác nhận đơn hàng. Nếu bạn không xác nhận đơn hàng trong vòng 15 ngày thì shop sẽ tự động hủy đơn và không hoàn tiền.\n"
+                + "                    </td>\n"
+                + "                </tr>\n"
+                + "                <tr style=\"padding-top: 10px; \">\n"
+                + "                    <td style=\"padding-top: 50px; padding-right: 40px ;padding-left: 20px; text-align: center; padding-bottom: 20px\">\n"
+                + "                        <a href=\"" + Constants.HOST + "MainController?action=NavToBirdPairDetail&order_id=" + orderID + "&pair_id=" + pairID + "\"><button style=\"background-color: orange; border:none; line-height: 40px; color: white; font-weight: bold; padding: 0 10px; cursor: pointer;\">Bấm nút</button></a>\n"
+                + "                    </td>\n"
+                + "                </tr>\n"
+                + "                <tr style=\"padding-top: 10px;\">\n"
+                + "                    <td style=\"padding-top: 30px; padding-right: 40px ;padding-left: 20px; padding-bottom: 40px\">\n"
+                + "                        Chúng tôi xin cảm ơn và chúc bạn có nhiều trải nghiệm tốt,\n"
+                + "                        <br>\n"
+                + "                        V.E.T\n"
+                + "                    </td>\n"
+                + "                </tr>\n"
+                + "            </tbody>\n"
+                + "        </table>\n"
+                + "    </body>\n"
+                + "</html>\n";
+        return message;
+    }
 }

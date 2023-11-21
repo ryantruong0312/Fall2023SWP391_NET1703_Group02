@@ -16,9 +16,12 @@ import jakarta.servlet.http.Part;
 import java.time.LocalTime;
 import swp391.birdfarmshop.dao.BirdPairDAO;
 import swp391.birdfarmshop.dao.TrackingBirdPairDAO;
+import swp391.birdfarmshop.dao.UserDAO;
 import swp391.birdfarmshop.dto.BirdPairDTO;
 import swp391.birdfarmshop.model.User;
+import swp391.birdfarmshop.services.EmailService;
 import swp391.birdfarmshop.util.Constants;
+import swp391.birdfarmshop.util.EmailUtils;
 import swp391.birdfarmshop.util.ImageUtils;
 import swp391.birdfarmshop.util.S3Utils;
 
@@ -83,6 +86,10 @@ public class UpdateStatusTrackingController extends HttpServlet {
                                 session.setAttribute("ERROR", "Số chim non không lớn hơn số trứng");
                                 check = false;
                             }
+                            UserDAO userDAO = new UserDAO();
+                            User customer = userDAO.getUserByUsername(pair.getUsername());
+                            System.out.println(pair.getUsername());
+                            EmailService.sendEmail(customer.getEmail(), "Xác nhận đơn hàng ghép cặp", EmailUtils.confirmBirdPair(customer.getFullName(), pair.getOrder_id(), pair.getPair_id()));
                             break;
                     }
                     if (check) {

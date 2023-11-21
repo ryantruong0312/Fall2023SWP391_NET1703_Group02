@@ -64,7 +64,7 @@ public class OnlinePaymentController extends HttpServlet {
             if(listBirdPair != null){
                    vnpay_price = String.valueOf(Long.parseLong(listBirdPair.get(3)) * 100);
             }else{
-                vnpay_price = String.valueOf(cart.getCartTotalPrice() * 100);
+                vnpay_price = String.valueOf(Long.parseLong(cart.getCartTotalPrice() + "") * 100);
             }
             // Calculate the createDateTime and expireDateTime in the format yymmddhhmmss
             LocalDateTime now = LocalDateTime.now();

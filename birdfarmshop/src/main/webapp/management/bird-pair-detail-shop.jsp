@@ -292,6 +292,11 @@
                                                                                 <button style="background-color: #007bff; color: white;" id="payment-youngBird" class="mt-3 py-2 px-3">Cập nhật theo dõi nhân giống</button>
                                                                             </div>
                                                                         </c:if>
+                                                                        <c:if test="${birdPair.status != 'Đã thanh toán'}">
+                                                                            <div class="text-center border-bottom-0">
+                                                                                <button style="background-color: #007bff; color: white;" id="" class="mt-3 py-2 px-3">Hủy đơn</button>
+                                                                            </div>
+                                                                        </c:if>
 
                                                                     </div>
                                                                 </c:when>
@@ -456,6 +461,10 @@
         <%@include file="../layout/footer.jsp" %>
         <!-- End Footer -->
         <script>
+            <c:if test="${not empty requestScope.TRACKINGLIST && requestScope.BIRDPAIR.status == 'Đã ấp nở'}">
+                var date = String(${requestScope.TRACKINGLIST.get(0).date});
+                console.log(date);
+            </c:if>
             $('#payment-youngBird').click(function () {
                 $('#confirm-payment').css('display', 'block');
             });
