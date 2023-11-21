@@ -164,6 +164,12 @@
                 border-radius: 0;
                 background-color: rgba(0, 0, 0, 0);
             }
+            .reason-remove{
+                width: 100%;
+            }
+            #reason{
+                display: none;
+            }
         </style>
 
     </head>
@@ -302,15 +308,17 @@
                                                                                         <button onclick="return check(this)"  style="background-color: #007bff" id="repair-youngBird" class="btn-primary mt-3 py-2 px-3">Ghép lại</button>
                                                                                     </form>
                                                                                 </div>
-                                                                                <div class="text-center border-bottom-0 ml-2">
-                                                                                    <form id="2" action="MainController" method="POST">
-                                                                                        <input type="hidden" name="action" value="UpdateBirdPair">
-                                                                                        <input type="hidden" name="orderId" value="${birdPair.order_id}"/>
-                                                                                        <input type="hidden" name="pairId" value="${birdPair.pair_id}"/>
-                                                                                        <input type="hidden" name="type" value="cancel"/>
-                                                                                        <button onclick="return check(this)"  id="cancel-youngBird" class="btn-danger mt-3 py-2 px-3">Hủy bỏ</button>
-                                                                                    </form>
-                                                                                </div>
+                                                                            </div>
+                                                                        </c:if>
+                                                                        <c:if test="${birdPair.status != 'Đã hủy'}">
+                                                                            <div class="text-center border-bottom-0 ml-2">
+                                                                                <form id="2" action="MainController" method="POST">
+                                                                                    <input type="hidden" name="action" value="UpdateBirdPair">
+                                                                                    <input type="hidden" name="orderId" value="${birdPair.order_id}"/>
+                                                                                    <input type="hidden" name="pairId" value="${birdPair.pair_id}"/>
+                                                                                    <input type="hidden" name="type" value="cancel"/>
+                                                                                    <button onclick="return check(this)"  id="cancel-youngBird" class="btn-danger mt-3 py-2 px-3">Hủy bỏ</button>
+                                                                                </form>
                                                                             </div>
                                                                         </c:if>
                                                                     </div>
@@ -414,17 +422,20 @@
                                                                                             <button onclick="return check(this)"  style="background-color: #007bff" id="repair-youngBird" class="btn-primary mt-3 py-2 px-3">Ghép lại</button>
                                                                                         </form>
                                                                                     </div>
-                                                                                    <div class="text-center border-bottom-0 ml-2">
-                                                                                        <form id="2" action="MainController" method="POST">
-                                                                                            <input type="hidden" name="action" value="UpdateBirdPair">
-                                                                                            <input type="hidden" name="orderId" value="${birdPair.order_id}"/>
-                                                                                            <input type="hidden" name="pairId" value="${birdPair.pair_id}"/>
-                                                                                            <input type="hidden" name="type" value="cancel"/>
-                                                                                            <button onclick="return check(this)"  id="cancel-youngBird" class="btn-danger mt-3 py-2 px-3">Hủy bỏ</button>
-                                                                                        </form>
-                                                                                    </div>
+
                                                                                 </div>
                                                                             </c:if>
+                                                                        </c:if>
+                                                                        <c:if test="${birdPair.status != 'Đã hủy'}">
+                                                                            <div class="text-center border-bottom-0 ml-2">
+                                                                                <form id="2" action="MainController" method="POST">
+                                                                                    <input type="hidden" name="action" value="UpdateBirdPair">
+                                                                                    <input type="hidden" name="orderId" value="${birdPair.order_id}"/>
+                                                                                    <input type="hidden" name="pairId" value="${birdPair.pair_id}"/>
+                                                                                    <input type="hidden" name="type" value="cancel"/>
+                                                                                    <button onclick="return check(this)"  id="cancel-youngBird" class="btn-danger mt-3 py-2 px-3">Hủy bỏ</button>
+                                                                                </form>
+                                                                            </div>
                                                                         </c:if>
                                                                     </div>        
                                                                 </c:otherwise>
@@ -451,7 +462,7 @@
         <section id="confirm-remove" class="container-fluid">
             <div class="vh-100 row">
                 <div class="h-100 m-auto d-flex align-items-center">
-                    <div class="box-remove bg-white p-4">
+                    <div class="box-remove bg-white p-4" style="width: 450px;">
                         <div class="d-flex align-items-center justify-content-between">
                             <h4>Xác nhận</h4>
                             <div onclick="cancelRemove()" class="btn-close">
@@ -459,8 +470,14 @@
                             </div>
                         </div> 
                         <p class="mb-4 mt-4" id="content-confirm">
-                            Bạn có muốn thực hiện thao tác này không ?
+                            Bạn có muốn thực hiện thao tác này không ?  
                         </p>
+                        <div id="reason" class="mb-4">
+                            <label for="confirm-reason">
+                                Lý do hủy đơn: 
+                            </label>
+                            <textarea id="confirm-reason" rows="3" class="reason-remove" name="reason" value=""></textarea>
+                        </div>
                         <div class="float-right">
                             <button id="btn-confirrm" data-value="" class="btn btn-group-sm btn-primary">Xác nhận</button>
                             <button  onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</button>
@@ -663,7 +680,7 @@
                                 <input type="hidden" name="action" value="NavToCheckoutBirdPair"/>
                                 <input type="hidden" name="order_id" value="${birdPair.order_id}"/>
                                 <input type="hidden" name="pair_id" value="${birdPair.pair_id}"/>
-                                <button id="btn-confirrm" class="btn btn-group-sm btn-primary mx-1">Không</button>
+                                <button id="btn-confirrm" class="btn btn-group-sm btn-primary mx-1">Chỉ chim non</button>
                             </form>
                             <button  onclick="cancelRemovePayment()" class="btn btn-group-sm btn-secondary mx-1">Hủy</button>
                         </div>
@@ -768,11 +785,13 @@
             function cancelRemove() {
                 $('#confirm-remove').css('display', 'none');
             }
-            $('#cancel-youngBird').click(function (event){
-                $('#content-confirm').html('Khi hủy đơn hàng bạn chỉ được hoàn trả một nửa số tiền ghép giống, để nhận lại tiền vui lòng liên hệ trực tiếp với cửa hàng.Bạn có muốn thực hiện thao tác này không ?')
+            $('#cancel-youngBird').click(function (event) {
+                $('#content-confirm').html('Khi hủy đơn hàng bạn thì số tiền ghép giống ban đầu sẽ không hoàn lại, nếu có thắc mắc gì xin liên hệ trực tiếp với cửa hàng?')
+                $('#reason').css('display', 'block');
             });
-             $('#repair-youngBird').click(function (event){
+            $('#repair-youngBird').click(function (event) {
                 $('#content-confirm').html('Bạn có muốn thực hiện thao tác này không ?')
+                $('#reason').css('display', 'none');
             });
         </script>
     </body>

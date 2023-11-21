@@ -207,20 +207,23 @@ public class CartDTO {
         }
         return check;
     }
-   public boolean removeAccessoryItem(Accessory accessory) throws SQLException {
+
+    public boolean removeAccessoryItem(Accessory accessory) throws SQLException {
         boolean check = false;
         if (accessory != null) {
             if (this.accessoryList.containsKey(accessory.getAccessory_id())) {
                 OrderedAccessoryItem item = this.accessoryList.get(accessory.getAccessory_id());
-               if(item.getOrder_quantity() - 1 >= 0){
+                if (item.getOrder_quantity() - 1 >= 0) {
                     item.setOrder_quantity(item.getOrder_quantity() - 1);
                     this.totalItem -= 1;
+                    this.cartTotalPrice -= ((accessory.getUnit_price() - (accessory.getUnit_price() * accessory.getDiscount() / 100)));
                     check = true;
-               }
-            } 
+                }
+            }
         }
         return check;
     }
+
     public boolean addCageToAccessory(Accessory accessory, int quantity) throws SQLException {
         boolean check = false;
         if (this.accessoryList.containsKey(accessory.getAccessory_id() + accessory.getDiscount())) {
@@ -258,10 +261,12 @@ public class CartDTO {
         this.totalItem -= order_quantity;
         this.cartTotalPrice -= ((accessory.getUnit_price() - (accessory.getUnit_price() * accessory.getDiscount() / 100)) * order_quantity);
     }
+
     public void removeCage(Accessory accessory) {
-         OrderedAccessoryItem item = this.accessoryList.get(accessory.getAccessory_id());
-         item.setFree_order(item.getFree_order() - 1);
+        OrderedAccessoryItem item = this.accessoryList.get(accessory.getAccessory_id());
+        item.setFree_order(item.getFree_order() - 1);
     }
+
     public void removeBirdPairFromCart(String key) {
         this.birdPairList.remove(key);
         this.totalItem -= 1;

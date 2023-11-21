@@ -168,7 +168,7 @@ public class BirdPairDAO {
             if (con != null) {
                 String sql = "SELECT bp.pair_id, bp.order_id, bp.young_bird_price,\n"
                         + "	   bp.bird_customer, bp.male_bird_id, bp.female_bird_id,\n"
-                        + "	   bp.number_egg, bp.number_young_bird, bp.[status]\n"
+                        + "	   bp.number_egg, bp.number_young_bird, bp.[status], o.[customer]\n"
                         + "FROM [BirdPair] bp\n"
                         + "RIGHT JOIN [Order] o\n"
                         + "ON bp.order_id = o.order_id\n"
@@ -186,8 +186,9 @@ public class BirdPairDAO {
                     int number_egg = rs.getInt("number_egg");
                     int number_young_bird = rs.getInt("number_young_bird");
                     String status = rs.getString("status");
+                    String customer = rs.getString("customer");
                     ArrayList<String> listPair = imgDao.getImagesByPairId(pair_id);
-                    bp = new BirdPairDTO(pair_id, order_id, young_bird_price, birdCustomer, male_bird, female_bird, number_egg, number_young_bird, status, listPair);
+                    bp = new BirdPairDTO(pair_id, order_id, young_bird_price, birdCustomer, male_bird, female_bird, number_egg, number_young_bird, status, listPair, customer);
                 }
             }
         } catch (Exception e) {
