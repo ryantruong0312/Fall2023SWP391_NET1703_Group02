@@ -58,7 +58,7 @@ public class RenderCustomerOrderController extends HttpServlet {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
                                 for (OrderItemDTO orderItemDTO : orderItemList) {
                                     count++;
-                                    if (orderItemDTO.getUnit_price() == 0) {
+                                    if (orderItemDTO.getUnit_price() == 0 && orderItemDTO.getAccessory() != null) {
                                         item = orderItemList.get(count - 1);
                                         freeItemList.add(item);
                                         orderItemList.remove(orderItemList.get(count - 1));
@@ -78,7 +78,7 @@ public class RenderCustomerOrderController extends HttpServlet {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
                                 for (OrderItemDTO orderItemDTO : orderItemList) {
                                     count++;
-                                    if (orderItemDTO.getUnit_price() == 0) {
+                                    if (orderItemDTO.getUnit_price() == 0 && orderItemDTO.getAccessory() != null) {
                                         item = orderItemList.get(count - 1);
                                         freeItemList.add(item);
                                         orderItemList.remove(orderItemList.get(count - 1));
@@ -98,7 +98,7 @@ public class RenderCustomerOrderController extends HttpServlet {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
                                 for (OrderItemDTO orderItemDTO : orderItemList) {
                                     count++;
-                                    if (orderItemDTO.getUnit_price() == 0) {
+                                    if (orderItemDTO.getUnit_price() == 0 && orderItemDTO.getAccessory() != null) {
                                         item = orderItemList.get(count - 1);
                                         freeItemList.add(item);
                                         orderItemList.remove(orderItemList.get(count - 1));
@@ -118,7 +118,7 @@ public class RenderCustomerOrderController extends HttpServlet {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
                                 for (OrderItemDTO orderItemDTO : orderItemList) {
                                     count++;
-                                    if (orderItemDTO.getUnit_price() == 0) {
+                                    if (orderItemDTO.getUnit_price() == 0 && orderItemDTO.getAccessory() != null) {
                                         item = orderItemList.get(count - 1);
                                         freeItemList.add(item);
                                         orderItemList.remove(orderItemList.get(count - 1));
@@ -138,7 +138,7 @@ public class RenderCustomerOrderController extends HttpServlet {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
                                 for (OrderItemDTO orderItemDTO : orderItemList) {
                                     count++;
-                                    if (orderItemDTO.getUnit_price() == 0) {
+                                    if (orderItemDTO.getUnit_price() == 0 && orderItemDTO.getAccessory() != null) {
                                         item = orderItemList.get(count - 1);
                                         freeItemList.add(item);
                                         orderItemList.remove(orderItemList.get(count - 1));
@@ -158,7 +158,7 @@ public class RenderCustomerOrderController extends HttpServlet {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
                                 for (OrderItemDTO orderItemDTO : orderItemList) {
                                     count++;
-                                    if (orderItemDTO.getUnit_price() == 0) {
+                                    if (orderItemDTO.getUnit_price() == 0 && orderItemDTO.getAccessory() != null) {
                                         item = orderItemList.get(count - 1);
                                         freeItemList.add(item);
                                         orderItemList.remove(orderItemList.get(count - 1));
@@ -178,7 +178,7 @@ public class RenderCustomerOrderController extends HttpServlet {
                             orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
                             for (OrderItemDTO orderItemDTO : orderItemList) {
                                 count++;
-                                if (orderItemDTO.getUnit_price() == 0) {
+                                if (orderItemDTO.getUnit_price() == 0 && orderItemDTO.getAccessory() != null) {
                                     item = orderItemList.get(count - 1);
                                     freeItemList.add(item);
                                     System.out.println(item.getOrder_item_id());

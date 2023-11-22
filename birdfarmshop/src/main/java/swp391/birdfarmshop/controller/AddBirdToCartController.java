@@ -101,7 +101,6 @@ public class AddBirdToCartController extends HttpServlet {
                     orderQuantity = cart.getAccessoryList().get(cheapestCage.getAccessory_id()).getOrder_quantity();
                     freeQuantity = cart.getAccessoryList().get(cheapestCage.getAccessory_id()).getFree_order();
                 }
-                System.out.println(orderQuantity + " " + freeQuantity);
                 if (bird.getStatus().equals("Còn hàng")) {
                     if(orderQuantity + freeQuantity + 1 <= stockQuantity) {
                         boolean checkAdd = cart.addBirdToCart(bird, cheapestCage);
@@ -124,7 +123,11 @@ public class AddBirdToCartController extends HttpServlet {
                         }
                         if (checkAdd) {
                             status.setStatus("Thành công");
-                            status.setContent("Thêm sản phẩm vào giỏ hàng thành công");
+                            if(orderQuantity > 1) {
+                                status.setContent("Vì số lượng sản phẩm không đủ. Cửa hàng sẽ tặng bạn 1 chiếc lồng trong giỏ hàng của bạn.");
+                            }else {
+                                status.setContent("Thêm sản phẩm vào giỏ hàng thành công");
+                            }
                             status.setType("success");
                             status.setQuantity(cart.getTotalItem());
                             session.setAttribute("CART", cart);

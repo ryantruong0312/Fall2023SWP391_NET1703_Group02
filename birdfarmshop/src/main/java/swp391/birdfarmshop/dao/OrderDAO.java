@@ -110,7 +110,7 @@ public class OrderDAO {
                             break;
                         } else {
                             String updateBird = "UPDATE [Bird]\n"
-                                    + "SET [status] = N'Đã bán'\n"
+                                    + "SET [status] = N'Hết hàng'\n"
                                     + "WHERE [bird_id] = ?";
                             pst = con.prepareStatement(updateBird);
                             pst.setString(1, b.getBird_id());

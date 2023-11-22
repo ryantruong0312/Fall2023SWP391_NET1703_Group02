@@ -255,8 +255,7 @@ public class CartDTO {
 
     public void removeBirdFromCart(Bird bird) {
         OrderedBirdItem item = this.birdList.remove(bird.getBird_id());
-        removeCage(item.getCage());
-        this.totalItem -= 2;
+        this.totalItem -= 1;
         this.cartTotalPrice -= (bird.getPrice() - bird.getPrice() * bird.getDiscount() / 100);
     }
 
@@ -268,6 +267,7 @@ public class CartDTO {
 
     public void removeCage(Accessory accessory) {
         OrderedAccessoryItem item = this.accessoryList.get(accessory.getAccessory_id());
+        this.totalItem -= 1;
         item.setFree_order(item.getFree_order() - 1);
     }
 

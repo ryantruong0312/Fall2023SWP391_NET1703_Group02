@@ -44,7 +44,7 @@ public class RenderOrderItemsController extends HttpServlet {
                 OrderItemDTO item = null;
                 for (OrderItemDTO orderItemDTO : itemList) {
                     count++;
-                    if(orderItemDTO.getUnit_price() == 0) {
+                    if(orderItemDTO.getUnit_price() == 0 && orderItemDTO.getAccessory() != null) {
                        item = itemList.get(count-1);
                        itemList.remove(itemList.get(count-1));
                        break;

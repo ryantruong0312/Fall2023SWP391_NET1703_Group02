@@ -12,9 +12,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import swp391.birdfarmshop.dao.AccessoryDAO;
 import swp391.birdfarmshop.dao.BirdDAO;
 import swp391.birdfarmshop.dto.CartDTO;
+import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
+import swp391.birdfarmshop.model.OrderedAccessoryItem;
 
 /**
  *
@@ -31,6 +35,9 @@ public class RemoveBirdFromCartController extends HttpServlet {
         String url = SUCCESS;
         try {
             String bird_id = request.getParameter("bird_id");
+            AccessoryDAO accessoryDao = new AccessoryDAO();
+            List<Accessory> cageList = accessoryDao.getCageList();
+            Accessory cheapestCage = cageList.get(0);
             BirdDAO birdDao = new BirdDAO();
             Bird bird = birdDao.getBirdById(bird_id);
             HttpSession session = request.getSession();
@@ -38,6 +45,13 @@ public class RemoveBirdFromCartController extends HttpServlet {
             if (cart != null) {
                 if (cart.getBirdList().containsKey(bird.getBird_id())) {
                     cart.removeBirdFromCart(bird);
+                    int freeQuantity = 0;
+                    if(cart.getAccessoryList().get(cheapestCage.getAccessory_id()) != null) {
+                        freeQuantity = cart.getAccessoryList().get(cheapestCage.getAccessory_id()).getFree_order();
+                    }
+                    if(freeQuantity > 0) {
+                        cart.removeCage(cheapestCage);
+                    }
                     session.setAttribute("SUCCESS", "Xóa sản phẩm thành công");
                 } else {
                     session.setAttribute("ERROR", "Không tìm thấy sản phẩm này");
