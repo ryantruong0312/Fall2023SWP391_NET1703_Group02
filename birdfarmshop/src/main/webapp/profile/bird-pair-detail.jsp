@@ -294,7 +294,7 @@
                                                                         </div>
                                                                         <c:if test="${birdPair.status == 'Đã ấp nở' && birdPair.number_young_bird > 0}">
                                                                             <div class="text-center  border-0">
-                                                                                <button id="payment-youngBird" class="btn-danger mt-3 py-2 px-3">Xác nhận thanh toán</button>
+                                                                                <button style="border-radius: 20px;" id="payment-youngBird" class="btn-danger mt-3 py-2 px-3">Xác nhận thanh toán</button>
                                                                             </div>
                                                                         </c:if>
                                                                         <c:if test="${birdPair.status == 'Đã ấp nở' && birdPair.number_young_bird == 0}">
@@ -408,7 +408,8 @@
                                                                             </div>
                                                                             <c:if test="${birdPair.status == 'Đã ấp nở' && birdPair.number_young_bird > 0}">
                                                                                 <div class="text-center border-bottom-0">
-                                                                                    <button id="payment-youngBird" class="btn-danger mt-3 py-2 px-3">Xác nhận thanh toán</button>
+                                                                                    <button style="border-radius: 20px;" id="payment-youngBird" class="btn-danger mt-3 py-2 px-3">Xác nhận thanh toán</button>
+                                                                                
                                                                                 </div>
                                                                             </c:if>
                                                                             <c:if test="${birdPair.status == 'Đã ấp nở' && birdPair.number_young_bird == 0}">
@@ -422,7 +423,6 @@
                                                                                             <button onclick="return check(this)"  style="background-color: #007bff" id="repair-youngBird" class="btn-primary mt-3 py-2 px-3">Ghép lại</button>
                                                                                         </form>
                                                                                     </div>
-
                                                                                 </div>
                                                                             </c:if>
                                                                         </c:if>
@@ -433,7 +433,7 @@
                                                                                     <input type="hidden" name="orderId" value="${birdPair.order_id}"/>
                                                                                     <input type="hidden" name="pairId" value="${birdPair.pair_id}"/>
                                                                                     <input type="hidden" name="type" value="cancel"/>
-                                                                                    <button onclick="return check(this)"  id="cancel-youngBird" class="btn-danger mt-3 py-2 px-3">Hủy bỏ</button>
+                                                                                    <button style="border-radius: 20px;" onclick="return check(this)"  id="cancel-youngBird" class="btn-danger mt-3 py-2 px-3">Hủy bỏ</button>
                                                                                 </form>
                                                                             </div>
                                                                         </c:if>
@@ -476,7 +476,7 @@
                             <label for="confirm-reason">
                                 Lý do hủy đơn: 
                             </label>
-                            <textarea id="confirm-reason" rows="3" class="reason-remove" name="reason" value=""></textarea>
+                            <textarea id="confirm-reason" rows="3" class="reason-remove" name="reason" required></textarea>
                         </div>
                         <div class="float-right">
                             <button id="btn-confirrm" data-value="" class="btn btn-group-sm btn-primary">Xác nhận</button>
