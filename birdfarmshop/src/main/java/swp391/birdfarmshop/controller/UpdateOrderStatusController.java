@@ -27,7 +27,7 @@ import swp391.birdfarmshop.model.User;
 public class UpdateOrderStatusController extends HttpServlet {
    
     private static final String ERROR = "errorpages/error.jsp";
-    private static final String SUCCESS = "management/shop-orders.jsp";
+    private static final String SUCCESS = "MainController?action=NavToShopOrders";
     private static final String HOME = "MainController?action=NavToHome";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -46,7 +46,9 @@ public class UpdateOrderStatusController extends HttpServlet {
                 String order_id = request.getParameter("order_id");
                 String reason = request.getParameter("reason");
                 if(reason != null) {
-                    if(reason.isBlank()) {
+                    if(reason.isBlank() && statusUpdate.equals("Đã hủy")) {
+                        reason = user.getUsername() + " đã hủy đơn hàng không lí do";
+                    } else if(reason.isBlank() && statusUpdate.equals("Đã giao hàng")) {
                         reason = null;
                     } else {
                         reason += " (" + user.getUsername() + ")";
@@ -61,7 +63,9 @@ public class UpdateOrderStatusController extends HttpServlet {
                         isUpdated = orderDao.updateOrderStatus(order_id, reason, statusUpdate, request);
                     }
                 }
-                if(isUpdated) {
+                if(reason != null) {
+                    session.setAttribute("SUCCESS", "Hủy đơn hàng " + order_id + " thành công");
+                }else if(isUpdated) {
                     session.setAttribute("SUCCESS", "Cập nhật đơn hàng " + order_id + " thành công");
                 }else {
                     session.setAttribute("ERROR", "Cập nhật đơn hàng " + order_id + " thất bại");
@@ -90,7 +94,7 @@ public class UpdateOrderStatusController extends HttpServlet {
                 }
                 url = "MainController?action=NavToCustomerOrder";
                 if(isUpdated) {
-                    session.setAttribute("SUCCESS", "Bạn đã hủy đơn hàng" + txtOrderId + " thành công");
+                    session.setAttribute("SUCCESS", "Bạn đã hủy đơn hàng " + txtOrderId + " thành công");
                 } else {
                     session.setAttribute("ERROR", "Bạn hủy đơn hàng thất bại. Liên hệ nhân viên để biết thêm thông tin.");
                 }

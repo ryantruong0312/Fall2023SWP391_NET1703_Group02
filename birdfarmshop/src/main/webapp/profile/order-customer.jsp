@@ -529,7 +529,7 @@
                                                                                                                 </c:if>
                                                                                                             </c:if>
                                                                                                             <!-- Modal -->
-                                                                                                            <form action = "MainController">
+                                                                                                            <form action = "MainController" method="POST">
                                                                                                                 <c:if test="${param.status != null}">
                                                                                                                     <input type="hidden" name="status" value="${param.status}"/>
                                                                                                                 </c:if>
@@ -597,6 +597,9 @@
                                                                                                                                 <c:if test="${orderItem.order_id eq item.order_id && orderItem.accessory.accessory_id eq item.accessory.accessory_id && orderItem.unit_price != 0}">
                                                                                                                                     <c:set value="true" var="isFree"/>
                                                                                                                                     <span class="old-price"><fmt:formatNumber value="${orderItem.accessory.unit_price * (orderItem.order_quantity + item.order_quantity)}" pattern="#,###"/>₫</span>
+                                                                                                                                    <c:if test="${orderItem.order_quantity == 0}">
+                                                                                                                                        <span class="new-price">0₫</span>
+                                                                                                                                    </c:if>
                                                                                                                                 </c:if>
                                                                                                                             </c:forEach>
                                                                                                                             <c:if test="${orderItem.unit_price != orderItem.accessory.unit_price && !isFree}">
@@ -632,7 +635,7 @@
                                                                                                                 </c:if>
                                                                                                             </c:if>
                                                                                                             <!-- Modal -->
-                                                                                                            <form action = "MainController">
+                                                                                                            <form action = "MainController" method="POST">
                                                                                                                 <c:if test="${param.status != null}">
                                                                                                                     <input type="hidden" name="status" value="${param.status}"/>
                                                                                                                 </c:if>
@@ -706,7 +709,7 @@
                                                                                                                 </c:if>
                                                                                                             </c:if>
                                                                                                             <!-- Modal -->
-                                                                                                            <form action = "MainController">
+                                                                                                            <form action = "MainController" method="POST">
                                                                                                                 <c:if test="${param.status != null}">
                                                                                                                     <input type="hidden" name="status" value="${param.status}"/>
                                                                                                                 </c:if>
@@ -797,7 +800,7 @@
                                                                                                                 </c:if>
                                                                                                             </c:if>
                                                                                                             <!-- Modal -->
-                                                                                                            <form action = "MainController">
+                                                                                                            <form action = "MainController" method="POST">
                                                                                                                 <c:if test="${param.status != null}">
                                                                                                                     <input type="hidden" name="status" value="${param.status}"/>
                                                                                                                 </c:if>

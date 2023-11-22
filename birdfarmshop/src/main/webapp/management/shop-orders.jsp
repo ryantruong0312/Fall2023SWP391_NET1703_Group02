@@ -405,7 +405,7 @@
                             <div id="choosing" class="mb-4" style="display: none; white-space: nowrap;">
                                 <input type="radio" name="status" value="Đã giao hàng" id="option1" onclick="showText()" checked><label class="ml-2" for="option1">Giao hàng thành công</label><br/>
                                 <input type="radio" name="status" value="Đã hủy" id="option2" onclick="showText()"><label class="ml-2" for="option2">Giao hàng thất bại</label><br/>
-                                <textarea rows="3" style="width: 100%; display: none;" id="reason" name="reason" placeholder="Lí do giao hàng thất bại là gì?" required> </textarea>
+                                <textarea rows="3" style="width: 100%; display: none;" id="reason" name="reason" placeholder="Lí do giao hàng thất bại là gì?"></textarea>
                                 <script>
                                     var fail = document.getElementById("option2");
                                     var reason = document.getElementById("reason");
@@ -414,7 +414,6 @@
                                             reason.style.display = 'none';
                                         } else {
                                             reason.style.display = 'block';
-                                            reason.value = "";
                                         }
                                     }
                                 </script>

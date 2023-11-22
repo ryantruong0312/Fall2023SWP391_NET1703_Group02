@@ -154,21 +154,16 @@
                                                                             <i class="fa fa-eye"></i>
                                                                         </a>
                                                                     </li>
+                                                                    <c:if test="${(sessionScope.LOGIN_USER.role == 'customer') && bird.status == 'Còn hàng'}">
                                                                     <li bird-compare-id="${bird.bird_id}">
                                                                         <a class="bird-compare" data-bird-id="${bird.bird_id}">
                                                                             <img src="assets/images/compare.png" style="width: 16px; height: 16px;"/>
                                                                         </a>
                                                                     </li>
-                                                                    <c:if test="${(sessionScope.LOGIN_USER.role == 'customer') && bird.status == 'Còn hàng'}">
+                                                                    </c:if>
+                                                                    <c:if test="${(sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer') && bird.status == 'Còn hàng'}">
                                                                         <li>
                                                                             <a class="bird-cart" data-value="${bird.bird_id}">
-                                                                                <i class="fa fa-shopping-cart"></i>
-                                                                            </a>
-                                                                        </li>
-                                                                    </c:if>
-                                                                    <c:if test="${(sessionScope.LOGIN_USER == null) && bird.status == 'Còn hàng'}">
-                                                                        <li>
-                                                                            <a href="MainController?action=NavToLogin">
                                                                                 <i class="fa fa-shopping-cart"></i>
                                                                             </a>
                                                                         </li>

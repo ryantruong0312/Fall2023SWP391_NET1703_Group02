@@ -202,14 +202,9 @@ Author     : tlminh
                                                                             <i class="fa fa-eye"></i>
                                                                         </a>
                                                                     </li>
-                                                                    <c:if test="${(sessionScope.LOGIN_USER.role == 'customer')}">
+                                                                    <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer'}">
                                                                         <c:if test="${accessory.stock_quantity > 0}">
                                                                             <li><a style="cursor: pointer" class="accessory-cart" data-value="${accessory.accessory_id}"><i class="fa fa-shopping-cart"></i></a></li>
-                                                                        </c:if>
-                                                                    </c:if>
-                                                                    <c:if test="${(sessionScope.LOGIN_USER == null)}">
-                                                                        <c:if test="${accessory.stock_quantity > 0}">
-                                                                            <li><a href="MainController?action=NavToLogin"><i class="fa fa-shopping-cart"></i></a></li>
                                                                         </c:if>
                                                                     </c:if>
                                                                 </ul>

@@ -235,11 +235,8 @@
                                     </c:choose>
                                     <div class="main-border-button">
                                         <input type="hidden" name="accessory_id" value="${a.accessory_id}" />
-                                        <c:if test="${sessionScope.LOGIN_USER.role == 'customer'}">
+                                        <c:if test="${sessionScope.LOGIN_USER == null || sessionScope.LOGIN_USER.role == 'customer'}">
                                         <a class="accessory-cart btn-primary" style="cursor: pointer; color: white; border: 0px; border-radius: 20px;" data-value="${a.accessory_id}">Thêm vào giỏ hàng</a>
-                                        </c:if>
-                                        <c:if test="${sessionScope.LOGIN_USER == null}">
-                                        <a class="accessory-cart btn-primary" style="cursor: pointer; color: white; border: 0px; border-radius: 20px;" href="MainController?action=NavToLogin">Thêm vào giỏ hàng</a>
                                         </c:if>
                                     </div>
                                 </div>

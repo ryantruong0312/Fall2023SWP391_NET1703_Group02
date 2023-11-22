@@ -29,7 +29,7 @@ import swp391.birdfarmshop.util.VNPAYUtils;
 @WebServlet(name = "AddOrderByOnlineController", urlPatterns = {"/AddOrderByOnlineController"})
 public class AddOrderByOnlineController extends HttpServlet {
 
-    private static final String DEST_NAV_HOME = "RenderHomeController";
+    private static final String DEST_NAV_HOME = "MainController?action=NavToHome";
     private static final String DEST_NAV_CHECKOUT = "RenderCheckOutController";
 
     /**
