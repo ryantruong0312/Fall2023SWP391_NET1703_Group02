@@ -50,7 +50,17 @@ public class UpdateAccessoryCartController extends HttpServlet {
                     if (cart == null) {
                         cart = new CartDTO();
                     }
-                    boolean checkAdd = cart.addAccessoryToCart(accessory, 1);
+                    int stockQuantity = accessory.getStock_quantity();
+                    //lấy ra số lượng trong cart 
+                    int orderQuantity = 0, freeQuantity = 0;
+                    if(cart.getAccessoryList().get(accessory.getAccessory_id()) != null) {
+                        orderQuantity = cart.getAccessoryList().get(accessory.getAccessory_id()).getOrder_quantity();
+                        freeQuantity = cart.getAccessoryList().get(accessory.getAccessory_id()).getFree_order();
+                    }
+                    boolean checkAdd = false;
+                    if(orderQuantity + freeQuantity + 1 <= stockQuantity) {
+                        checkAdd = cart.addAccessoryToCart(accessory, 1);
+                    }
                     if (checkAdd) {
                         OrderedAccessoryItem item = cart.getAccessoryList().get(accessory_id);
                         int price = accessory.getUnit_price() * item.getOrder_quantity();

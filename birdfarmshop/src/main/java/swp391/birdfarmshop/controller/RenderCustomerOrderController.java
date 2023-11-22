@@ -49,8 +49,8 @@ public class RenderCustomerOrderController extends HttpServlet {
                 ArrayList<OrderItemDTO> freeItemList = new ArrayList<>();
                 FeedbackDAO feedbackDao = new FeedbackDAO();
                 ArrayList<Feedback> feedbacks = feedbackDao.getFeedbackByCustomer(user.getUsername());
-                if(status != null) {
-                    if(status.equals("wait")) {
+                if (status != null) {
+                    if (status.equals("wait")) {
                         for (Order order : orderList) {
                             int count = 0;
                             OrderItemDTO item = null;
@@ -58,11 +58,11 @@ public class RenderCustomerOrderController extends HttpServlet {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
                                 for (OrderItemDTO orderItemDTO : orderItemList) {
                                     count++;
-                                    if(orderItemDTO.getUnit_price() == 0) {
-                                       item = orderItemList.get(count-1);
-                                       freeItemList.add(item);
-                                       orderItemList.remove(orderItemList.get(count-1));
-                                       break;
+                                    if (orderItemDTO.getUnit_price() == 0) {
+                                        item = orderItemList.get(count - 1);
+                                        freeItemList.add(item);
+                                        orderItemList.remove(orderItemList.get(count - 1));
+                                        break;
                                     }
                                 }
                                 orderItemMap.put(order, orderItemList);
@@ -70,7 +70,7 @@ public class RenderCustomerOrderController extends HttpServlet {
                         }
                         request.setAttribute("status", "wait");
                     }
-                    if(status.equals("inProgress")) {
+                    if (status.equals("inProgress")) {
                         for (Order order : orderList) {
                             int count = 0;
                             OrderItemDTO item = null;
@@ -78,11 +78,11 @@ public class RenderCustomerOrderController extends HttpServlet {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
                                 for (OrderItemDTO orderItemDTO : orderItemList) {
                                     count++;
-                                    if(orderItemDTO.getUnit_price() == 0) {
-                                       item = orderItemList.get(count-1);
-                                       freeItemList.add(item);
-                                       orderItemList.remove(orderItemList.get(count-1));
-                                       break;
+                                    if (orderItemDTO.getUnit_price() == 0) {
+                                        item = orderItemList.get(count - 1);
+                                        freeItemList.add(item);
+                                        orderItemList.remove(orderItemList.get(count - 1));
+                                        break;
                                     }
                                 }
                                 orderItemMap.put(order, orderItemList);
@@ -90,7 +90,7 @@ public class RenderCustomerOrderController extends HttpServlet {
                         }
                         request.setAttribute("status", "inProgress");
                     }
-                    if(status.equals("delivering")) {
+                    if (status.equals("delivering")) {
                         for (Order order : orderList) {
                             int count = 0;
                             OrderItemDTO item = null;
@@ -98,11 +98,11 @@ public class RenderCustomerOrderController extends HttpServlet {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
                                 for (OrderItemDTO orderItemDTO : orderItemList) {
                                     count++;
-                                    if(orderItemDTO.getUnit_price() == 0) {
-                                       item = orderItemList.get(count-1);
-                                       freeItemList.add(item);
-                                       orderItemList.remove(orderItemList.get(count-1));
-                                       break;
+                                    if (orderItemDTO.getUnit_price() == 0) {
+                                        item = orderItemList.get(count - 1);
+                                        freeItemList.add(item);
+                                        orderItemList.remove(orderItemList.get(count - 1));
+                                        break;
                                     }
                                 }
                                 orderItemMap.put(order, orderItemList);
@@ -110,7 +110,7 @@ public class RenderCustomerOrderController extends HttpServlet {
                         }
                         request.setAttribute("status", "delivering");
                     }
-                    if(status.equals("delivered")) {
+                    if (status.equals("delivered")) {
                         for (Order order : orderList) {
                             int count = 0;
                             OrderItemDTO item = null;
@@ -118,11 +118,11 @@ public class RenderCustomerOrderController extends HttpServlet {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
                                 for (OrderItemDTO orderItemDTO : orderItemList) {
                                     count++;
-                                    if(orderItemDTO.getUnit_price() == 0) {
-                                       item = orderItemList.get(count-1);
-                                       freeItemList.add(item);
-                                       orderItemList.remove(orderItemList.get(count-1));
-                                       break;
+                                    if (orderItemDTO.getUnit_price() == 0) {
+                                        item = orderItemList.get(count - 1);
+                                        freeItemList.add(item);
+                                        orderItemList.remove(orderItemList.get(count - 1));
+                                        break;
                                     }
                                 }
                                 orderItemMap.put(order, orderItemList);
@@ -130,7 +130,7 @@ public class RenderCustomerOrderController extends HttpServlet {
                         }
                         request.setAttribute("status", "delivered");
                     }
-                    if(status.equals("rated")) {
+                    if (status.equals("rated")) {
                         for (Order order : orderList) {
                             int count = 0;
                             OrderItemDTO item = null;
@@ -138,11 +138,11 @@ public class RenderCustomerOrderController extends HttpServlet {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
                                 for (OrderItemDTO orderItemDTO : orderItemList) {
                                     count++;
-                                    if(orderItemDTO.getUnit_price() == 0) {
-                                       item = orderItemList.get(count-1);
-                                       freeItemList.add(item);
-                                       orderItemList.remove(orderItemList.get(count-1));
-                                       break;
+                                    if (orderItemDTO.getUnit_price() == 0) {
+                                        item = orderItemList.get(count - 1);
+                                        freeItemList.add(item);
+                                        orderItemList.remove(orderItemList.get(count - 1));
+                                        break;
                                     }
                                 }
                                 orderItemMap.put(order, orderItemList);
@@ -150,7 +150,7 @@ public class RenderCustomerOrderController extends HttpServlet {
                         }
                         request.setAttribute("status", "rated");
                     }
-                    if(status.equals("cancel")) {
+                    if (status.equals("cancel")) {
                         for (Order order : orderList) {
                             int count = 0;
                             OrderItemDTO item = null;
@@ -158,11 +158,11 @@ public class RenderCustomerOrderController extends HttpServlet {
                                 orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
                                 for (OrderItemDTO orderItemDTO : orderItemList) {
                                     count++;
-                                    if(orderItemDTO.getUnit_price() == 0) {
-                                       item = orderItemList.get(count-1);
-                                       freeItemList.add(item);
-                                       orderItemList.remove(orderItemList.get(count-1));
-                                       break;
+                                    if (orderItemDTO.getUnit_price() == 0) {
+                                        item = orderItemList.get(count - 1);
+                                        freeItemList.add(item);
+                                        orderItemList.remove(orderItemList.get(count - 1));
+                                        break;
                                     }
                                 }
                                 orderItemMap.put(order, orderItemList);
@@ -177,13 +177,14 @@ public class RenderCustomerOrderController extends HttpServlet {
                         if (!orderItemMap.containsKey(order)) {
                             orderItemList = orderItemDao.getItemByOrderId(order.getOrder_id());
                             for (OrderItemDTO orderItemDTO : orderItemList) {
-                                    count++;
-                                    if(orderItemDTO.getUnit_price() == 0) {
-                                       item = orderItemList.get(count-1);
-                                       freeItemList.add(item);
-                                       orderItemList.remove(orderItemList.get(count-1));
-                                       break;
-                                    }
+                                count++;
+                                if (orderItemDTO.getUnit_price() == 0) {
+                                    item = orderItemList.get(count - 1);
+                                    freeItemList.add(item);
+                                    System.out.println(item.getOrder_item_id());
+                                    orderItemList.remove(orderItemList.get(count - 1));
+                                    break;
+                                }
                             }
                             orderItemMap.put(order, orderItemList);
                         }

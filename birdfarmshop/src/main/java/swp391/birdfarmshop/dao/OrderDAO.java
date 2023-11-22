@@ -99,15 +99,8 @@ public class OrderDAO {
                         if (b.getDiscount() > 0) {
                             realPrice = b.getPrice() - b.getPrice() * b.getDiscount() / 100;
                         }
-                        String checkOrderBird = "SELECT [order_item_id]\n"
-                                + "      ,[order_id]\n"
-                                + "      ,[bird_id]\n"
-                                + "      ,[nest_id]\n"
-                                + "      ,[accessory_id]\n"
-                                + "      ,[unit_price]\n"
-                                + "      ,[order_quantity]\n"
-                                + "  FROM [BirdFarmShop].[dbo].[OrderItem]\n"
-                                + "  WHERE [bird_id] = ?";
+                        String checkOrderBird = "SELECT [status]\n" +
+                                "FROM [BirdFarmShop].[dbo].[Bird] WHERE [bird_id] = ? AND [status] <> N'Còn hàng'";
                         pst = con.prepareStatement(checkOrderBird);
                         pst.setString(1, b.getBird_id());
                         rs = pst.executeQuery();
@@ -653,7 +646,7 @@ public class OrderDAO {
                             query += "AND ([order_status] = N'Chờ xử lý')";
                             break;
                         case "inProgress":
-                            query += "AND ([order_status] = N'Đang chuẩn bị')";
+                            query += "AND ([order_status] = N'Đang xử lý')";
                             break;
                         case "delivering":
                             query += "AND ([order_status] = N'Đang giao hàng')";

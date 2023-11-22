@@ -194,7 +194,7 @@
                             <input type="hidden" name="filterStatus" value="${requestScope.filterStatus}"/>
                             <ul>
                                 <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=wait"><span class="btn btn-info ${requestScope.filterStatus eq 'wait' ? "active":""}">Chờ xử lý</span></a></li>
-                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=inProgress"><span class="btn btn-info ${requestScope.filterStatus eq 'inProgress' ? "active":""}">Đang chuẩn bị</span></a></li>
+                                <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=inProgress"><span class="btn btn-info ${requestScope.filterStatus eq 'inProgress' ? "active":""}">Đang xử lý</span></a></li>
                                 <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=delivering"><span class="btn btn-info ${requestScope.filterStatus eq 'delivering' ? "active":""}">Đang giao hàng</span></a></li>
                                 <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=delivered"><span class="btn btn-info ${requestScope.filterStatus eq 'delivered' ? "active":""}">Đã giao hàng</span></a></li>
                                 <li><a class="bordered-link" href="<%= fullURL.replace(statusReq, "").replace(pageReq, "") %>&filterStatus=rated"><span class="btn btn-info ${requestScope.filterStatus eq 'rated' ? "active":""}">Đã đánh giá</span></a></li>
@@ -250,7 +250,7 @@
                                                     <span>Trạng thái: Chờ xử lý</span>
                                                 </c:when>
                                                 <c:when test="${requestScope.filterStatus eq 'inProgress'}">
-                                                    <span>Trạng thái: Đang chuẩn bị</span>
+                                                    <span>Trạng thái: Đang xử lý</span>
                                                 </c:when>
                                                 <c:when test="${requestScope.filterStatus eq 'delivering'}">
                                                     <span>Trạng thái: Đang giao hàng</span>
@@ -320,7 +320,7 @@
                                                                 <a onclick="showCancel('popupCancel', '${order.order_id}'); event.stopPropagation();" style="color: #007BFF; cursor: pointer"><span class="btn btn-danger text-white">Hủy đơn</span></a>
                                                             </c:if>
                                                         </td>
-                                                        <td>${order.cancel_reason}</td>
+                                                        <td style="white-space: pre-line;">${order.cancel_reason}</td>
                                                         <td>${order.name_receiver}</td>
                                                         <td>0${order.phone_receiver}</td>
                                                         <td>${order.address_receiver}</td>
@@ -391,8 +391,8 @@
             <form action="MainController" method="POST">
                 <input type="hidden" name="action" value="NavToUpdateOrder"/>
                 <div class="vh-100 row">
-                    <div class="h-100 m-auto d-flex align-items-center">
-                        <div class="box-remove bg-white p-4">
+                    <div style="width: 500px;" class="h-100 m-auto d-flex align-items-center">
+                        <div style="width: 100%;" class="box-remove bg-white p-4">
                             <div class="d-flex align-items-center justify-content-between">
                                 <h4>Cập nhật đơn hàng</h4>
                                 <div onclick="hide('popup')" class="btn-close">
@@ -403,8 +403,21 @@
                                 Bạn có muốn cập nhật đơn hàng này không ?
                             </p>
                             <div id="choosing" class="mb-4" style="display: none; white-space: nowrap;">
-                                <li id="status1"><input type="radio" name="status" value="Đã giao hàng" id="option1" checked><label class="ml-2" for="option1">Giao hàng thành công</label></li>
-                                <li id="status2"><input type="radio" name="status" value="Đã hủy" id="option2"><label class="ml-2" for="option2">Giao hàng thất bại</label></li>
+                                <input type="radio" name="status" value="Đã giao hàng" id="option1" onclick="showText()" checked><label class="ml-2" for="option1">Giao hàng thành công</label><br/>
+                                <input type="radio" name="status" value="Đã hủy" id="option2" onclick="showText()"><label class="ml-2" for="option2">Giao hàng thất bại</label><br/>
+                                <textarea rows="3" style="width: 100%; display: none;" id="reason" name="reason" placeholder="Lí do giao hàng thất bại là gì?" required> </textarea>
+                                <script>
+                                    var fail = document.getElementById("option2");
+                                    var reason = document.getElementById("reason");
+                                    function showText() {
+                                        if(!fail.checked) {
+                                            reason.style.display = 'none';
+                                        } else {
+                                            reason.style.display = 'block';
+                                            reason.value = "";
+                                        }
+                                    }
+                                </script>
                             </div>
                             <div class="float-right" id="update-form">
                                 <button class="btn btn-primary" id="updateOrder" type="submit" name="action" value="NavToUpdateOrder"><span>Xác nhận</span></button>
@@ -416,25 +429,29 @@
             </form>
         </div>
         <div id="popupCancel" class="container-fluid">
-            <div class="vh-100 row">
-                <div class="h-100 m-auto d-flex align-items-center">
-                    <div class="box-remove bg-white p-4">
-                        <div style="width: 400px;" class="d-flex align-items-center justify-content-between">
-                            <h4>Hủy đơn hàng</h4>
-                            <div onclick="hide('popupCancel')" class="btn-close">
-                                <i class="fa fa-times" aria-hidden="true"></i>
+            <form action="MainController" method="POST">
+                <input type="hidden" name="status" value="Đã hủy"/>
+                <div class="vh-100 row">
+                    <div style="width: 500px;" class="h-100 m-auto d-flex align-items-center">
+                        <div style="width: 100%;" class="box-remove bg-white p-4">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h4>Hủy đơn hàng</h4>
+                                <div onclick="hide('popupCancel')" class="btn-close">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </div>
+                            </div> 
+                            <p class="mb-4 mt-4">
+                                Lý do bạn muốn hủy đơn hàng là gì ?
+                            </p>
+                            <textarea rows="3" style="width: 100%;" name="reason" placeholder="" required></textarea>
+                            <div class="float-right" id="cancel-form">
+                                <button class="btn btn-primary" id="updateOrder" type="submit" name="action" value="NavToUpdateOrder"><span>Xác nhận</span></button>
+                                <a class="bordered-link" onclick="hide('popupCancel');" style="width: 165px; height: 58px;"><span class="centered-text btn btn-danger">Hủy bỏ</span></a>
                             </div>
-                        </div> 
-                        <p class="mb-4 mt-4">
-                            Tại sao bạn muốn huỷ đơn hàng này ?
-                        </p>
-                        <div class="float-right">
-                            <a id="cancelOrder"><span class="btn btn-primary">Xác nhận</span></a>
-                            <a onclick="hide('popupCancel');"><span class="btn btn-danger">Hủy bỏ</span></a>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
         <!-- Start Footer -->
         <%@include file="../layout/message.jsp" %>
@@ -463,10 +480,10 @@
                                         const hiddenStatus1 = document.createElement('input');
                                         hiddenStatus1.type = 'hidden';
                                         hiddenStatus1.name = 'status';
-                                        hiddenStatus1.value = 'Đang chuẩn bị';
+                                        hiddenStatus1.value = 'Đang xử lý';
                                         list.appendChild(hiddenStatus1);
                                     }
-                                    if (orderStatus === 'Đang chuẩn bị') {
+                                    if (orderStatus === 'Đang xử lý') {
                                         const hiddenStatus2 = document.createElement('input');
                                         hiddenStatus2.type = 'hidden';
                                         hiddenStatus2.name = 'status';
@@ -482,12 +499,18 @@
                                     inputHidden.name = 'order_id';
                                     inputHidden.value = orderId;
                                     list.appendChild(inputHidden);
+                                    console.log(orderId);
                                 }
                                 function showCancel(id, orderId) {
-                                    var list = document.getElementById(id);
-                                    list.style.display = "block";
-                                    var aHref = document.getElementById("cancelOrder");
-                                    aHref.href = "MainController?action=NavToUpdateOrder&order_id=" + orderId + "&status=Đã hủy";
+                                    var cancel = document.getElementById(id);
+                                    cancel.style.display = "block";
+                                    cancel = document.getElementById("cancel-form");
+                                    const inputHiddenCancel = document.createElement('input');
+                                    inputHiddenCancel.type = 'hidden';
+                                    inputHiddenCancel.name = 'order_id';
+                                    inputHiddenCancel.value = orderId;
+                                    cancel.appendChild(inputHiddenCancel);
+                                    console.log(orderId);
                                 }
                                 function hide(id) {
                                     var list = document.getElementById(id);

@@ -23,6 +23,7 @@ import swp391.birdfarmshop.dto.BirdDTO;
 import swp391.birdfarmshop.dto.CartDTO;
 import swp391.birdfarmshop.model.Accessory;
 import swp391.birdfarmshop.model.Bird;
+import swp391.birdfarmshop.model.OrderedAccessoryItem;
 import swp391.birdfarmshop.model.OrderedBirdItem;
 
 /**
@@ -90,24 +91,47 @@ public class AddBirdToCartController extends HttpServlet {
                 Bird bird = birdDao.getBirdById(bird_id);
                 List<Accessory> cageList = adao.getCageList();
                 Accessory cheapestCage = cageList.get(0);
-                int cheapestCagePrice = cheapestCage.getUnit_price() - cheapestCage.getUnit_price() * cheapestCage.getDiscount() / 100;
-                for (Accessory cage : cageList) {
-                    if ((cage.getUnit_price() - cage.getUnit_price() * cage.getDiscount() / 100) < cheapestCagePrice) {
-                        cheapestCage = cage;
-                    }
+                //lấy ra số lượng trong kho
+                int stockQuantity = cheapestCage.getStock_quantity();
+                //lấy ra số lượng trong cart 
+                OrderedAccessoryItem accessoryInCart = null;
+                int orderQuantity = 0, freeQuantity = 0;
+                if(cart.getAccessoryList().get(cheapestCage.getAccessory_id()) != null) {
+                    accessoryInCart = cart.getAccessoryList().get(cheapestCage.getAccessory_id());
+                    orderQuantity = cart.getAccessoryList().get(cheapestCage.getAccessory_id()).getOrder_quantity();
+                    freeQuantity = cart.getAccessoryList().get(cheapestCage.getAccessory_id()).getFree_order();
                 }
+                System.out.println(orderQuantity + " " + freeQuantity);
                 if (bird.getStatus().equals("Còn hàng")) {
-                    boolean checkAdd = cart.addBirdToCart(bird, cheapestCage);
-                    if (checkAdd) {
-                        cart.addAccessoryToCart(cheapestCage, 1, 1);
-                        status.setStatus("Thành công");
-                        status.setContent("Thêm sản phẩm vào giỏ hàng thành công");
-                        status.setType("success");
-                        status.setQuantity(cart.getTotalItem());
-                        session.setAttribute("CART", cart);
+                    if(orderQuantity + freeQuantity + 1 <= stockQuantity) {
+                        boolean checkAdd = cart.addBirdToCart(bird, cheapestCage);
+                        if (checkAdd) {
+                            cart.addAccessoryToCart(cheapestCage, 1, 1);
+                            status.setStatus("Thành công");
+                            status.setContent("Thêm sản phẩm vào giỏ hàng thành công");
+                            status.setType("success");
+                            status.setQuantity(cart.getTotalItem());
+                            session.setAttribute("CART", cart);
+                        } else {
+                            status.setQuantity(cart.getTotalItem());
+                            status.setContent("Sản phẩm này đã có trong giỏ hàng");
+                        }
                     } else {
-                        status.setQuantity(cart.getTotalItem());
-                        status.setContent("Sản phẩm này đã có trong giỏ hàng");
+                        boolean checkAdd = cart.addBirdToCart(bird, null);
+                        if(orderQuantity > 1) {
+                            accessoryInCart.setOrder_quantity(orderQuantity - 1);
+                            accessoryInCart.setFree_order(freeQuantity + 1);
+                        }
+                        if (checkAdd) {
+                            status.setStatus("Thành công");
+                            status.setContent("Thêm sản phẩm vào giỏ hàng thành công");
+                            status.setType("success");
+                            status.setQuantity(cart.getTotalItem());
+                            session.setAttribute("CART", cart);
+                        } else {
+                            status.setQuantity(cart.getTotalItem());
+                            status.setContent("Sản phẩm này đã có trong giỏ hàng");
+                        }
                     }
                 } else {
                     status.setQuantity(cart.getTotalItem());

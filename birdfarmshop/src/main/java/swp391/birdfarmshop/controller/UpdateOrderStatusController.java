@@ -40,40 +40,57 @@ public class UpdateOrderStatusController extends HttpServlet {
         try {
             if (user != null && !user.getRole().equals("customer")) {
                 url = SUCCESS;
-                String page = "1";
-                if(request.getParameter("page") != null) {
-                    page = request.getParameter("page");
-                }
-                String date = request.getParameter("date");
-                String startDay = request.getParameter("startDay");
-                String endDay = request.getParameter("endDay");
-                String search = request.getParameter("search");
-                String filterStatus = request.getParameter("filterStatus");
                 String[] statusArray = request.getParameterValues("status");
                 String statusUpdate = statusArray[statusArray.length - 1];
+                System.out.println(request.getParameter("status"));
                 String order_id = request.getParameter("order_id");
                 String reason = request.getParameter("reason");
-                boolean isUpdated = orderDao.updateOrderStatus(order_id, reason, statusUpdate, request);
+                if(reason != null) {
+                    if(reason.isBlank()) {
+                        reason = null;
+                    } else {
+                        reason += " (" + user.getUsername() + ")";
+                    }
+                }
+                Order thisOrder = orderDao.getOrderById(order_id);
+                boolean isUpdated = false;
+                if(!thisOrder.getOrder_status().equals("Đã hủy")) {
+                    isUpdated = orderDao.updateOrderStatus(order_id, reason, statusUpdate, request);
+                } else {
+                    if(thisOrder.getCancel_reason().equals(reason)) {
+                        isUpdated = orderDao.updateOrderStatus(order_id, reason, statusUpdate, request);
+                    }
+                }
                 if(isUpdated) {
                     session.setAttribute("SUCCESS", "Cập nhật đơn hàng " + order_id + " thành công");
                 }else {
                     session.setAttribute("ERROR", "Cập nhật đơn hàng " + order_id + " thất bại");
                 }
                 int recordsPerPage = 20;
-                int numberOfOrder = orderDao.numberOfOrder(date, startDay, endDay, filterStatus, search);
+                int numberOfOrder = orderDao.numberOfOrder(null, null, null, null, null);
                 int noOfPages = (int) Math.ceil(numberOfOrder * 1.0 / recordsPerPage);
-                ArrayList<Order>  orderList = orderDao.getAllOfOrder(date, startDay, endDay, filterStatus, search, page, recordsPerPage);
+                ArrayList<Order>  orderList = orderDao.getAllOfOrder(null, null, null, null, null, "1", recordsPerPage);
                 request.setAttribute("ORDERLIST", orderList);
-                request.setAttribute("page", page);
                 request.setAttribute("noOfPages", noOfPages);
             } else if(user != null && user.getRole().equals("customer")){
                 String txtOrderId = request.getParameter("order_id");
                 String reason = request.getParameter("reason");
-                reason = reason.replace("Tôi", "Khách hàng");
-                boolean isUpdated = orderDao.updateOrderStatus(txtOrderId, reason, "Đã hủy",request);
+                if(reason != null) {
+                    if(reason.isBlank()) {
+                        reason = null;
+                    } else {
+                        reason = reason.replace("Tôi", "Khách");
+                        reason += " (" + user.getUsername() + ")";
+                    }
+                }
+                Order thisOrder = orderDao.getOrderById(txtOrderId);
+                boolean isUpdated = false;
+                if(thisOrder.getOrder_status().equals("Chờ xử lý")) {
+                    isUpdated = orderDao.updateOrderStatus(txtOrderId, reason, "Đã hủy",request);
+                }
                 url = "MainController?action=NavToCustomerOrder";
                 if(isUpdated) {
-                    session.setAttribute("SUCCESS", "Bạn đã hủy đơn hàng thành công");
+                    session.setAttribute("SUCCESS", "Bạn đã hủy đơn hàng" + txtOrderId + " thành công");
                 } else {
                     session.setAttribute("ERROR", "Bạn hủy đơn hàng thất bại. Liên hệ nhân viên để biết thêm thông tin.");
                 }
