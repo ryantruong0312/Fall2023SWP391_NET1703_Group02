@@ -42,15 +42,17 @@ public class UpdateOrderStatusController extends HttpServlet {
                 url = SUCCESS;
                 String[] statusArray = request.getParameterValues("status");
                 String statusUpdate = statusArray[statusArray.length - 1];
-                System.out.println(request.getParameter("status"));
                 String order_id = request.getParameter("order_id");
                 String reason = request.getParameter("reason");
                 if(reason != null) {
-                    if(reason.isBlank() && statusUpdate.equals("Đã hủy")) {
-                        reason = user.getUsername() + " đã hủy đơn hàng không lí do";
-                    } else if(reason.isBlank() && statusUpdate.equals("Đã giao hàng")) {
-                        reason = null;
-                    } else {
+                    if(reason.isBlank()) {
+                        if(statusUpdate.equals("Đã hủy")) {
+                            reason = user.getUsername() + " đã hủy đơn hàng không lí do";
+                        }
+                        if(!statusUpdate.equals("Đã hủy")) {
+                            reason = null;
+                        }
+                    }  else {
                         reason += " (" + user.getUsername() + ")";
                     }
                 }
