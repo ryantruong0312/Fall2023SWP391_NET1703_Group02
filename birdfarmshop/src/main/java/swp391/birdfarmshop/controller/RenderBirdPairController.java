@@ -60,10 +60,6 @@ public class RenderBirdPairController extends HttpServlet {
             if (u != null) {
                 ArrayList<BirdCustomer> bcList = bcd.getBirdCustomerByCustomer(u.getUsername());
                 request.setAttribute("BIRDCUSTOMER", bcList);
-            } else {
-                session.setAttribute("ERROR", "Bạn cần đăng nhập để dùng tính năng này");
-                request.getRequestDispatcher("MainController?action=NavToLogin").forward(request, response);
-                return;
             }
             request.setAttribute("BIRD_BREEDS", breedList);
             NumberFormat numberFormat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
