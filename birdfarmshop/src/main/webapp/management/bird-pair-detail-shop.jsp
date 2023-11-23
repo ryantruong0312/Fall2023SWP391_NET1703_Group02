@@ -200,6 +200,12 @@
                                                                             <div class="pair-img pl-3 py-3 text-center">
                                                                                 <img src="${birdPair.birdCustomer.img_url}" alt="${birdPair.birdCustomer.name}" />
                                                                                 <p>${birdPair.birdCustomer.name}</p>
+                                                                                <c:if test="${birdPair.birdCustomer.gender}">
+                                                                                    (Trống)
+                                                                                </c:if>
+                                                                                <c:if test="${!birdPair.birdCustomer.gender}">
+                                                                                    (Mái)
+                                                                                </c:if>
                                                                             </div>
                                                                             <div class="text-center">
                                                                                 <div class="pair-status mb-4">
@@ -212,6 +218,7 @@
                                                                                         <div class="pair-img pl-3 py-3 text-center">
                                                                                             <img src="${birdPair.male_bird.image_url}" alt="${birdPair.male_bird.bird_name}"/>
                                                                                             <p>${birdPair.male_bird.bird_name}</p>
+                                                                                            <p>Trống</p>
                                                                                         </div>
                                                                                     </a>
                                                                                 </c:when>
@@ -220,6 +227,7 @@
                                                                                         <div class="pair-img pr-3 py-3 text-center">
                                                                                             <img src="${birdPair.female_bird.image_url}" alt="${birdPair.female_bird.bird_name}"/>
                                                                                             <p>${birdPair.female_bird.bird_name}</p>
+                                                                                            <p>(Mái)</p>
                                                                                         </div>
                                                                                     </a>
                                                                                 </c:otherwise>
@@ -289,15 +297,9 @@
 
                                                                         <c:if test="${birdPair.status == 'Chờ lấy chim' || birdPair.status == 'Đang ghép cặp'||birdPair.status == 'Đã sinh sản'}">
                                                                             <div class="text-center border-bottom-0">
-                                                                                <button style="background-color: #007bff; color: white;" id="payment-youngBird" class="mt-3 py-2 px-3">Cập nhật theo dõi nhân giống</button>
+                                                                                <button style="background-color: #007bff; color: white; border-radius: 20px;" id="payment-youngBird" class="mt-3 py-2 px-3">Cập nhật theo dõi nhân giống</button>
                                                                             </div>
                                                                         </c:if>
-                                                                        <c:if test="${birdPair.status != 'Đã thanh toán'}">
-                                                                            <div class="text-center border-bottom-0">
-                                                                                <button style="background-color: #007bff; color: white;" id="" class="mt-3 py-2 px-3">Hủy đơn</button>
-                                                                            </div>
-                                                                        </c:if>
-
                                                                     </div>
                                                                 </c:when>
                                                                 <c:otherwise>
@@ -307,6 +309,9 @@
                                                                                 <div class="pair-img pl-3 py-3 text-center">
                                                                                     <img src="${birdPair.male_bird.image_url}" alt="${birdPair.male_bird.bird_name}"/>
                                                                                     <p>${birdPair.male_bird.bird_name}</p>
+                                                                                    <c:if test="${birdPair.male_bird.gender}">
+                                                                                        <p>(Trống)</p>
+                                                                                    </c:if>
                                                                                 </div>
                                                                             </a>
                                                                             <div class="text-center">
@@ -318,6 +323,9 @@
                                                                                 <div class="pair-img pr-3 py-3 text-center">
                                                                                     <img src="${birdPair.female_bird.image_url}" alt="${birdPair.female_bird.bird_name}"/>
                                                                                     <p>${birdPair.female_bird.bird_name}</p>
+                                                                                    <c:if test="${birdPair.male_bird.gender}">
+                                                                                        <p>(Mái)</p>
+                                                                                    </c:if>
                                                                                 </div>
                                                                             </a>
                                                                         </div>
@@ -462,8 +470,8 @@
         <!-- End Footer -->
         <script>
             <c:if test="${not empty requestScope.TRACKINGLIST && requestScope.BIRDPAIR.status == 'Đã ấp nở'}">
-                var date = String(${requestScope.TRACKINGLIST.get(0).date});
-                console.log(date);
+            var date = String(${requestScope.TRACKINGLIST.get(0).date});
+            console.log(date);
             </c:if>
             $('#payment-youngBird').click(function () {
                 $('#confirm-payment').css('display', 'block');

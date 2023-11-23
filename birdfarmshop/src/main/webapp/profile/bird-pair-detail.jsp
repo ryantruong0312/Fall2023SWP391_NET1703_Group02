@@ -330,6 +330,7 @@
                                                                                 <div class="pair-img pl-3 py-3 text-center">
                                                                                     <img src="${birdPair.male_bird.image_url}" alt="${birdPair.male_bird.bird_name}"/>
                                                                                     <p>${birdPair.male_bird.bird_name}</p>
+                                                                                    <p>(Trống)</p>
                                                                                 </div>
                                                                             </a>
                                                                             <div class="text-center">
@@ -341,6 +342,7 @@
                                                                                 <div class="pair-img pr-3 py-3 text-center">
                                                                                     <img src="${birdPair.female_bird.image_url}" alt="${birdPair.female_bird.bird_name}"/>
                                                                                     <p>${birdPair.female_bird.bird_name}</p>
+                                                                                    <p>(Mái)</p>
                                                                                 </div>
                                                                             </a>
                                                                         </div>
