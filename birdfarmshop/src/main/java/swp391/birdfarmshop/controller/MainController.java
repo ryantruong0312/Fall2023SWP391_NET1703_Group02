@@ -143,6 +143,9 @@ public class MainController extends HttpServlet {
     private static final String DEST_ADD_BIRDNEST_TO_CART = "AddBirdNestToCartController";
     private static final String ACT_UPDATE_BIRD_PAIR = "UpdateBirdPair";
     private static final String DEST_UPDATE_BIRD_PAIR = "UpdateBirdPairController";
+    private static final String NAV_TO_CANCEL_BIRD_PAIR = "NavToCancelBirdPair";
+    private static final String DEST_CANCEL_BIRD_PAIR = "CancelBirdPairController";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = ERROR;
@@ -338,7 +341,10 @@ public class MainController extends HttpServlet {
                     break;
                 case ACT_UPDATE_BIRD_PAIR:
                     url = DEST_UPDATE_BIRD_PAIR;
-                 break;
+                    break;
+                case NAV_TO_CANCEL_BIRD_PAIR:
+                    url = DEST_CANCEL_BIRD_PAIR;
+                    break;
                 default:
                     break;
             }

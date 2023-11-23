@@ -305,7 +305,7 @@
                                                                                         <input type="hidden" name="orderId" value="${birdPair.order_id}"/>
                                                                                         <input type="hidden" name="pairId" value="${birdPair.pair_id}"/>
                                                                                         <input type="hidden" name="type" value="repair"/>
-                                                                                        <button onclick="return check(this)"  style="background-color: #007bff" id="repair-youngBird" class="btn-primary mt-3 py-2 px-3">Ghép lại</button>
+                                                                                        <button onclick="return check(this)"  style="background-color: #007bff; border-radius: 20px; margin-left: 15px;" id="repair-youngBird" class="btn-primary mt-3 py-2 px-3">Ghép lại</button>
                                                                                     </form>
                                                                                 </div>
                                                                             </div>
@@ -409,7 +409,7 @@
                                                                             <c:if test="${birdPair.status == 'Đã ấp nở' && birdPair.number_young_bird > 0}">
                                                                                 <div class="text-center border-bottom-0">
                                                                                     <button style="border-radius: 20px;" id="payment-youngBird" class="btn-danger mt-3 py-2 px-3">Xác nhận thanh toán</button>
-                                                                                
+
                                                                                 </div>
                                                                             </c:if>
                                                                             <c:if test="${birdPair.status == 'Đã ấp nở' && birdPair.number_young_bird == 0}">
@@ -420,7 +420,7 @@
                                                                                             <input type="hidden" name="orderId" value="${birdPair.order_id}"/>
                                                                                             <input type="hidden" name="pairId" value="${birdPair.pair_id}"/>
                                                                                             <input type="hidden" name="type" value="repair"/>
-                                                                                            <button onclick="return check(this)"  style="background-color: #007bff" id="repair-youngBird" class="btn-primary mt-3 py-2 px-3">Ghép lại</button>
+                                                                                            <button onclick="return check(this)"  style="background-color: #007bff; border-radius: 20px; margin-left: 15px;" id="repair-youngBird" class="btn-primary mt-3 py-2 px-3">Ghép lại</button>
                                                                                         </form>
                                                                                     </div>
                                                                                 </div>
@@ -472,16 +472,20 @@
                         <p class="mb-4 mt-4" id="content-confirm">
                             Bạn có muốn thực hiện thao tác này không ?  
                         </p>
-                        <div id="reason" class="mb-4">
-                            <label for="confirm-reason">
-                                Lý do hủy đơn: 
-                            </label>
-                            <textarea id="confirm-reason" rows="3" class="reason-remove" name="reason" required></textarea>
-                        </div>
-                        <div class="float-right">
-                            <button id="btn-confirrm" data-value="" class="btn btn-group-sm btn-primary">Xác nhận</button>
-                            <button  onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</button>
-                        </div>
+                        <form action="MainController" method="GET">
+                            <div id="reason" class="mb-4">
+                                <label for="confirm-reason">
+                                    Lý do hủy đơn: 
+                                </label>
+                                <textarea id="confirm-reason" rows="3" class="reason-remove" name="reason" required placeholder="Vui lòng nhập lý do hủy đơn"></textarea>
+                                <input type="hidden" name="orderId" value="${birdPair.order_id}"/>
+                                <input type="hidden" name="pairId" value="${birdPair.pair_id}"/>
+                            </div>
+                            <div class="float-right">
+                                <button  class="btn btn-group-sm btn-primary" name="action" value="NavToCancelBirdPair">Xác nhận</button>
+                                <a type="button" href="#" onclick="cancelRemove()" class="btn btn-group-sm btn-secondary">Hủy</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

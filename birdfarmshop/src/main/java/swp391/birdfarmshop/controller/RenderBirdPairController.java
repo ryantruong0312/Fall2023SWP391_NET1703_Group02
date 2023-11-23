@@ -122,7 +122,9 @@ public class RenderBirdPairController extends HttpServlet {
                     if (bird.isGender() == true && bird.getAge() >= bird.getGrown_age()
                             && bird.getStatus().equals("Còn hàng")
                             && !bird.getBird_id().equals(birdDetail.getDad_id())
-                            && !bird.getBird_id().equals(birdDetail.getMom_id())) {
+                            && !bird.getBird_id().equals(birdDetail.getMom_id())
+                            && !birdDetail.getBird_id().equals(bird.getDad_id())
+                            && !birdDetail.getBird_id().equals(bird.getMom_id())) {
                         if (bird.getDad_id() == null || birdDetail.getDad_id() == null) {
                             if (bird.getMom_id() == null || birdDetail.getMom_id() == null) {
                                 out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
@@ -164,7 +166,9 @@ public class RenderBirdPairController extends HttpServlet {
                     if (bird.isGender() == false && bird.getAge() >= bird.getGrown_age()
                             && bird.getStatus().equals("Còn hàng")
                             && !bird.getBird_id().equals(birdDetail.getDad_id())
-                            && !bird.getBird_id().equals(birdDetail.getMom_id())) {
+                            && !bird.getBird_id().equals(birdDetail.getMom_id())
+                            && !birdDetail.getBird_id().equals(bird.getDad_id())
+                            && !birdDetail.getBird_id().equals(bird.getMom_id())) {
                         if (bird.getDad_id() == null || birdDetail.getDad_id() == null) {
                             if (bird.getMom_id() == null || birdDetail.getMom_id() == null) {
                                 out.println("<option value=\"" + bird.getBird_id() + "\">" + bird.getBird_name() + "</option>");
