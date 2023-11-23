@@ -167,7 +167,11 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="card-body">
-                                                        <h3 class="card-title">${item.bird.bird_name}</h3>
+                                                        <h3 class="card-title">
+                                                            ${item.bird.bird_name}
+                                                            <c:if test="${item.bird.gender}"> (Trống)</c:if>
+                                                            <c:if test="${!item.bird.gender}"> (Trống)</c:if>
+                                                        </h3>
                                                         <c:forEach items="${requestScope.BREEDS}" var="breed">
                                                             <c:if test="${breed.breed_id eq item.bird.breed_id}">
                                                                 <h5 class="card-title">${breed.breed_name}</h5>

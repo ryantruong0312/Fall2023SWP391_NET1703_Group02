@@ -501,7 +501,13 @@
                                                                                                                     <img src="${orderItem.bird.image_url}" class="product-image" alt="" />
                                                                                                                     <div class="showAll">
                                                                                                                         <div>
-                                                                                                                            <div class="product-name"><span>${orderItem.bird.bird_name}</span></div>
+                                                                                                                            <div class="product-name">
+                                                                                                                                <span>
+                                                                                                                                    ${orderItem.bird.bird_name}
+                                                                                                                                    <c:if test="${orderItem.bird.gender}"> (Trống)</c:if>
+                                                                                                                                    <c:if test="${!orderItem.bird.gender}"> (Mái)</c:if>
+                                                                                                                                </span>
+                                                                                                                            </div>
                                                                                                                         </div>
                                                                                                                         <div>
                                                                                                                             <div class="product-category"><span></span></div>
@@ -755,13 +761,16 @@
                                                                                                                     <c:when test="${orderItem.birdPair.birdCustomer != null}">
                                                                                                                         <div class="pair-img pl-3 py-3 text-center">
                                                                                                                             <img style="width: 80px;" src="${orderItem.birdPair.birdCustomer.img_url}"/>
-                                                                                                                            <p>${orderItem.birdPair.birdCustomer.name}</p>
+                                                                                                                            <p>${orderItem.birdPair.birdCustomer.name}
+                                                                                                                                <c:if test="${orderItem.birdPair.birdCustomer.gender}"> (Trống)</c:if>
+                                                                                                                                <c:if test="${!orderItem.birdPair.birdCustomer.gender}"> (Mái)</c:if>
+                                                                                                                            </p>
                                                                                                                         </div>  
                                                                                                                     </c:when>
                                                                                                                     <c:otherwise>
                                                                                                                         <div class="pair-img pl-3 py-3 text-center">
                                                                                                                             <img style="width: 80px;" src="${orderItem.birdPair.male_bird.image_url}"/>
-                                                                                                                            <p>${orderItem.birdPair.male_bird.bird_name}</p>
+                                                                                                                            <p>${orderItem.birdPair.male_bird.bird_name} (Trống)</p>
                                                                                                                         </div> 
                                                                                                                     </c:otherwise>
                                                                                                                 </c:choose>
@@ -775,7 +784,7 @@
                                                                                                                     <c:when test="${orderItem.birdPair.female_bird != null}">
                                                                                                                         <div class="pair-img pl-3 py-3 text-center">
                                                                                                                             <img style="width: 80px;" src="${orderItem.birdPair.female_bird.image_url}"/>
-                                                                                                                            <p>${orderItem.birdPair.female_bird.bird_name}</p>
+                                                                                                                            <p>${orderItem.birdPair.female_bird.bird_name} (Mái)</p>
                                                                                                                         </div>  
                                                                                                                     </c:when>
                                                                                                                     <c:otherwise>
