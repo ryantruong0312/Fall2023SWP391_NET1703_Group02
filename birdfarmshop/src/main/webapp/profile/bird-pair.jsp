@@ -244,13 +244,13 @@
                                                                                         <c:when test="${not empty birdPair.male_bird}">
                                                                                             <div class="pair-img pr-3 py-3 text-center">
                                                                                                 <img src="${birdPair.male_bird.image_url}" alt="${birdPair.male_bird.bird_name}"/>
-                                                                                                <p>${birdPair.male_bird.bird_name}</p>
+                                                                                                <p>${birdPair.male_bird.bird_name} (Trống)</p>
                                                                                             </div>
                                                                                         </c:when>
                                                                                         <c:otherwise>
                                                                                             <div class="pair-img pr-3 py-3 text-center">
                                                                                                 <img src="${birdPair.female_bird.image_url}" alt="${birdPair.female_bird.bird_name}"/>
-                                                                                                <p>${birdPair.female_bird.bird_name}</p>
+                                                                                                <p>${birdPair.female_bird.bird_name} (Mái)</p>
                                                                                             </div>
                                                                                         </c:otherwise>
                                                                                     </c:choose>
@@ -263,7 +263,7 @@
                                                                                 <div class="d-flex align-items-center justify-content-between">
                                                                                     <div class="pair-img pl-3 py-3 text-center">
                                                                                         <img src="${birdPair.male_bird.image_url}" alt="${birdPair.male_bird.bird_name}"/>
-                                                                                        <p>${birdPair.male_bird.bird_name}</p>
+                                                                                        <p>${birdPair.male_bird.bird_name} (Trống)</p>
                                                                                     </div>
                                                                                     <div class="text-center">
                                                                                         <div class="pair-status mb-4">
@@ -273,7 +273,7 @@
                                                                                     </div>
                                                                                     <div class="pair-img pr-3 py-3 text-center">
                                                                                         <img src="${birdPair.female_bird.image_url}" alt="${birdPair.female_bird.bird_name}"/>
-                                                                                        <p>${birdPair.female_bird.bird_name}</p>
+                                                                                        <p>${birdPair.female_bird.bird_name} (Mái)</p>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>   
