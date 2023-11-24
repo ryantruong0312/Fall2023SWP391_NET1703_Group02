@@ -13,11 +13,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import swp391.birdfarmshop.dao.BirdPairDAO;
+import swp391.birdfarmshop.dao.OrderDAO;
 import swp391.birdfarmshop.dao.TrackingBirdPairDAO;
 import swp391.birdfarmshop.dao.UserDAO;
 import swp391.birdfarmshop.dto.BirdPairDTO;
+import swp391.birdfarmshop.model.Order;
 import swp391.birdfarmshop.model.User;
 import swp391.birdfarmshop.services.EmailService;
 import swp391.birdfarmshop.util.Constants;
@@ -88,9 +92,25 @@ public class UpdateStatusTrackingController extends HttpServlet {
                             }
                             UserDAO userDAO = new UserDAO();
                             User customer = userDAO.getUserByUsername(pair.getUsername());
-                            System.out.println(pair.getUsername());
                             EmailService.sendEmail(customer.getEmail(), "Xác nhận đơn hàng ghép cặp", EmailUtils.confirmBirdPair(customer.getFullName(), pair.getOrder_id(), pair.getPair_id()));
                             break;
+
+                        case "Đã ấp nở":
+                            OrderDAO orderDao = new OrderDAO();
+                            String txtOrderId = request.getParameter("order_id");
+                            Order thisOrder = orderDao.getOrderById(txtOrderId);
+                            java.sql.Date sqlDate = java.sql.Date.valueOf(LocalDate.now().minusDays(15));
+                            if (sqlDate.after(thisOrder.getOrder_date())) {
+                                boolean isUpdated = orderDao.updateOrderStatus(txtOrderId, "Khách hàng không xác nhận đơn sau 15 ngày", "Đã hủy", request);
+                                if (isUpdated) {
+                                    session.setAttribute("SUCCESS", "Bạn đã hủy đơn hàng " + txtOrderId + " thành công");
+                                } else {
+                                    session.setAttribute("ERROR", "Bạn hủy đơn hàng thất bại. Liên hệ nhân viên để biết thêm thông tin.");
+                                }
+                            } else {
+                                session.setAttribute("ERROR", "Không thể hủy do đơn hàng chưa đủ 15 ngày");
+                            }
+                            request.getRequestDispatcher(url).forward(request, response);
                     }
                     if (check) {
                         if (part.getSize() < 1048576) {

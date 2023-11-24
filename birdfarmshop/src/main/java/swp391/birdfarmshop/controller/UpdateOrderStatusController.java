@@ -45,7 +45,7 @@ public class UpdateOrderStatusController extends HttpServlet {
                 String order_id = request.getParameter("order_id");
                 String reason = request.getParameter("reason");
                 if(reason != null) {
-                    if(reason.isBlank()) {
+                    if(reason.isEmpty()) {
                         if(statusUpdate.equals("Đã hủy")) {
                             reason = user.getUsername() + " đã hủy đơn hàng không lí do";
                         }
@@ -82,7 +82,7 @@ public class UpdateOrderStatusController extends HttpServlet {
                 String txtOrderId = request.getParameter("order_id");
                 String reason = request.getParameter("reason");
                 if(reason != null) {
-                    if(reason.isBlank()) {
+                    if(reason.isEmpty()) {
                         reason = null;
                     } else {
                         reason = reason.replace("Tôi", "Khách");

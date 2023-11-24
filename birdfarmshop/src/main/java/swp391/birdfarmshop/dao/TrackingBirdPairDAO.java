@@ -272,4 +272,57 @@ public class TrackingBirdPairDAO {
 
         return result;
     }
+
+    public boolean insertContent(int pair_id, String username, String content) {
+        int result = 0;
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        String sql = "";
+        try {
+            con = DBUtils.getConnection();
+            if (con != null) {
+                con.setAutoCommit(false);
+                sql = "INSERT INTO [PairTracking]([pair_id],[create_user],[content],[date_content])\n"
+                        + "VALUES(?,?,?,?)";
+                pst = con.prepareStatement(sql);
+                pst.setInt(1, pair_id);
+                pst.setString(2, username);
+                pst.setString(3, content);
+                Timestamp date = new Timestamp(System.currentTimeMillis());
+                pst.setTimestamp(4, date);
+                result = pst.executeUpdate();
+                if(result > 0){
+                    return true;
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (pst != null) {
+                try {
+                    pst.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return false;
+    }
 }

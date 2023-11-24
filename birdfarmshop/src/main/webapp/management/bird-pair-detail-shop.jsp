@@ -300,6 +300,15 @@
                                                                                 <button style="background-color: #007bff; color: white; border-radius: 20px;" id="payment-youngBird" class="mt-3 py-2 px-3">Cập nhật theo dõi nhân giống</button>
                                                                             </div>
                                                                         </c:if>
+                                                                        <c:if test="${birdPair.status == 'Đã ấp nở'}">
+                                                                            <form id="update-tracking" action="UpdateStatusTrackingController" method="POST" enctype="multipart/form-data">
+                                                                                <input type="hidden" name="pair_id" value="${requestScope.BIRDPAIR.pair_id}"/>
+                                                                                <input type="hidden" name="order_id" value="${requestScope.BIRDPAIR.order_id}" />
+                                                                                <div class="text-center border-bottom-0">
+                                                                                    <button style="background-color: #007bff; color: white; border-radius: 20px;" onclick="return checkUser(this)" id="payment-youngBird" class="mt-3 py-2 px-3">Hủy đơn</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </c:if>
                                                                     </div>
                                                                 </c:when>
                                                                 <c:otherwise>
@@ -393,6 +402,15 @@
                                                                             <div class="text-center border-bottom-0">
                                                                                 <button style="background-color: #007bff; color: white;" id="payment-youngBird" class="mt-3 py-2 px-3">Cập nhật theo dõi nhân giống</button>
                                                                             </div>
+                                                                        </c:if>
+                                                                        <c:if test="${birdPair.status == 'Đã ấp nở'}">
+                                                                            <form id="update-tracking" action="UpdateStatusTrackingController" method="POST" enctype="multipart/form-data">
+                                                                                <input type="hidden" name="pair_id" value="${requestScope.BIRDPAIR.pair_id}"/>
+                                                                                <input type="hidden" name="order_id" value="${requestScope.BIRDPAIR.order_id}" />
+                                                                                <div class="text-center border-bottom-0">
+                                                                                    <button style="background-color: #007bff; color: white; border-radius: 20px;" onclick="return checkUser(this)" id="payment-youngBird" class="mt-3 py-2 px-3">Hủy đơn</button>
+                                                                                </div>
+                                                                            </form>
                                                                         </c:if>
                                                                     </div>        
                                                                 </c:otherwise>
@@ -571,6 +589,7 @@
                 numberBirdNode.val(0);
                 numberBirdNode.attr('max', $(this).val());
             });
+
         </script>
     </body>
 </html>

@@ -5,7 +5,6 @@
 package swp391.birdfarmshop.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,7 +16,7 @@ import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import swp391.birdfarmshop.dao.OrderDAO;
-import swp391.birdfarmshop.model.Order;
+//import swp391.birdfarmshop.model.Order;
 import swp391.birdfarmshop.model.User;
 
 /**
@@ -60,10 +59,9 @@ public class CancelBirdPairController extends HttpServlet {
             } else {
                 url = HOME;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        } 
-        finally {
+        } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
     }

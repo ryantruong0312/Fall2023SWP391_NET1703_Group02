@@ -60,8 +60,7 @@ public class RenderBirdPairDetailShopController extends HttpServlet {
                     if (birdPair.getStatus().equalsIgnoreCase("Đã sinh sản")) {
                         BirdDAO birdDAO = new BirdDAO();
                         boolean checkFemale_bird = birdDAO.updateReproductionHistory(birdPair.getFemale_bird().getBird_id(), birdPair.getFemale_bird().getReproduction_history());
-                        boolean checkMale_bird = birdDAO.updateReproductionHistory(birdPair.getMale_bird().getBird_id(), birdPair.getMale_bird().getReproduction_history());
-                        
+                        boolean checkMale_bird = birdDAO.updateReproductionHistory(birdPair.getMale_bird().getBird_id(), birdPair.getMale_bird().getReproduction_history());                      
                     }
                 } else {
                     session.setAttribute("ERROR", "Bạn không có quyền truy cấp");

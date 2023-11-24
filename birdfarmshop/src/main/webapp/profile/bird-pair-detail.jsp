@@ -422,7 +422,7 @@
                                                                                             <input type="hidden" name="orderId" value="${birdPair.order_id}"/>
                                                                                             <input type="hidden" name="pairId" value="${birdPair.pair_id}"/>
                                                                                             <input type="hidden" name="type" value="repair"/>
-                                                                                            <button onclick="return check(this)"  style="background-color: #007bff; border-radius: 20px; margin-left: 15px;" id="repair-youngBird" class="btn-primary mt-3 py-2 px-3">Ghép lại</button>
+                                                                                            <button type="submit" style="background-color: #007bff; border-radius: 20px; margin-left: 15px;" id="repair-youngBird" class="btn-primary mt-3 py-2 px-3">Ghép lại</button>
                                                                                         </form>
                                                                                     </div>
                                                                                 </div>
@@ -792,7 +792,7 @@
                 $('#confirm-remove').css('display', 'none');
             }
             $('#cancel-youngBird').click(function (event) {
-                $('#content-confirm').html('Khi hủy đơn hàng bạn thì số tiền ghép giống ban đầu sẽ không hoàn lại, nếu có thắc mắc gì xin liên hệ trực tiếp với cửa hàng?')
+                $('#content-confirm').html('Khi hủy đơn hàng bạn thì số tiền ghép giống ban đầu sẽ không hoàn lại. Nếu có thắc mắc gì xin liên hệ trực tiếp với cửa hàng.')
                 $('#reason').css('display', 'block');
             });
             $('#repair-youngBird').click(function (event) {

@@ -915,7 +915,7 @@ public class OrderDAO {
                                 if (orderDetail.getBirdPair().getBirdCustomer() != null) {
                                     birdCustomerDao.updateBirdCustomerStatus(orderDetail.getBirdPair().getUsername(), "Chưa ghép cặp");
                                 }
-                                trackingDao.updateTrackingBirdPair(orderDetail.getBirdPair().getPair_id() + "", "Khách hàng đã hủy đơn", "Đã hủy");
+                                trackingDao.updateTrackingBirdPair(orderDetail.getBirdPair().getPair_id() + "", "Đơn hàng huỷ do khách hàng không xác nhận thanh toán", "Đã hủy");
                                 if(!orderDetail.getBirdPair().getStatus().equals("Chờ lấy chim")){
                                    check = false;
                                 }
