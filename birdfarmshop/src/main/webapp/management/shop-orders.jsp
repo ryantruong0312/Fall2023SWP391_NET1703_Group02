@@ -309,7 +309,7 @@
                                                         <td>${order.order_id}</td>
                                                         <td><a href="MainController?action=NavToProfile&username=${order.customer}">${order.customer}</a></td>
                                                         <td><fmt:formatDate value="${order.order_date}" pattern="dd-MM-yyyy"/></td>
-                                                        <td>${order.order_status}</td>
+                                                        <td style="color: #006699">${order.order_status}</td>
                                                         <td>
                                                             <c:if test="${order.order_status ne 'Đã hủy' && order.order_status ne 'Đã giao hàng' && order.order_status ne 'Đã đánh giá'}">
                                                                 <a onclick="show('popup', '${order.order_id}', '${order.order_status}'); event.stopPropagation();" style="color: #007BFF;cursor: pointer"><span class="btn btn-primary text-white">Cập nhật</span></a>

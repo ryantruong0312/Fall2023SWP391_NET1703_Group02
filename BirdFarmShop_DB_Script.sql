@@ -305,6 +305,11 @@ VALUES
     N'Vẹt Lovebird African có lông màu rực rỡ, thường là xanh, đỏ và cam. Tính cách thường thân thiện, tò mò và dễ huấn luyện cho việc học các lệnh cơ bản. Tuy nhiên, tính cách có thể thay đổi tùy từng cá thể và đòi hỏi kiên nhẫn trong quá trình huấn luyện.', 
     NULL, NULL, 0, N'Đang sinh sản'),
 
+	('CP601', N'Vẹt xám CP601', N'Xám', '2023-01-01', 4, 1, 'african', N'Chưa có', 0, 
+	2500000, 
+	N'Vẹt Xám African, hoặc African Grey Parrot, là một loài vẹt thông minh và nổi tiếng với bộ lông màu xám, mỏ màu đen, và mắt vàng. Chúng có khả năng học nói và hiểu ngôn ngữ, thể hiện sự tò mò và thông minh cao. Tính cách cá nhân có thể biến đổi, nhưng chung quy là vui vẻ và thân thiện. Việc huấn luyện vẹt Xám African có thể đòi hỏi kiên nhẫn và thời gian do tính cách đôi khi cứng đầu.', 
+    'CP101', NULL, 15, N'Còn hàng'),
+
 	('WA301', N'Vẹt Orange Winged Amazon WA301', N'xanh lá, vàng', '2022-02-01', 1, 1, 'amazon', 
 	N'Giải khuyến khích cuộc thi Phong trào vẹt kiểng Sài Gòn 2020', 0, 3000000, 
 	N'Vẹt Orange-winged Amazon có lông màu xanh với đốm da cam trên cánh. Tính cách thân thiện và hướng ngoại, chúng có khả năng học nói và huấn luyện dễ dàng hơn so với nhiều loài vẹt khác.', 
@@ -601,6 +606,13 @@ VALUES
 	0, 'CP501', NULL, NULL),
 	('https://my-pet.vn/wp-content/uploads/2022/12/vet-Lovebird-1.jpg', 
 	0, 'CP501', NULL, NULL),
+
+	('https://image.bnews.vn/MediaUpload/Org/2016/10/03/155908_vet-xam-chau-phi.jpg', 
+	1, 'CP601', NULL, NULL),
+	('https://vcdn-vnexpress.vnecdn.net/2020/09/29/Swearing-parrot-Billy-3410-160-3035-4175-1601367443.jpg', 
+	0, 'CP601', NULL, NULL),
+	('https://scontent.fsgn8-4.fna.fbcdn.net/v/t1.6435-9/122119811_1334076986941333_1776507504325160922_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=dd63ad&_nc_ohc=i9MhujwyUI4AX9r8xuE&_nc_ht=scontent.fsgn8-4.fna&oh=00_AfCKLUi4sGGOSdwl_r8vdbph-SdJGsn4s3gi2mOr8apbQg&oe=658AF803', 
+	0, 'CP601', NULL, NULL),
 
 	('https://petmeshop.com/wp-content/uploads/2020/09/vet-orange-winged-amazon.jpg', 
 	1, 'WA301', NULL, NULL),

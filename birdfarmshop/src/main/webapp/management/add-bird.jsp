@@ -138,11 +138,6 @@
                 </div>
             </div>
             <div class="container">
-                <c:if test="${MESSAGE != null}">
-                    <script>
-                        alert("${MESSAGE}");
-                    </script>
-                </c:if>
                 <form action="AddNewBirdController" method="POST" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-lg-6 form-custom">
@@ -160,7 +155,7 @@
                             </div>
                             <div class="form-add mb-3">
                                 <label>Ngày Sinh</label>
-                                <input id="birthday" style="float: right; width: 50%;" type="date" name="txtBirdDate" value="${requestScope.txtBirdDate}" required/>
+                                <input id="birthday" style="float: right; width: 50%;" type="date" name="txtBirdDate" onchange="checkDay()" value="${requestScope.txtBirdDate}" required/>
                             </div>
                             <div class="form-add mb-3">
                                 <label>Giới tính</label>
@@ -219,13 +214,13 @@
                             <div class="form-add mb-3 column-container">
                                 <label>Giá bán</label>
                                 <div style="width: 100%; position: relative;">
-                                    <input style="width: 80%;" type="number" min="0" name="txtBirdPrice" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${requestScope.txtBirdPrice}" required/>
+                                    <input style="width: 80%;" type="number" min="0" name="txtBirdPrice" class="input form-control" value="${requestScope.txtBirdPrice}" required/>
                                     <span style="position: absolute; right: 37px; top: 50%; transform: translateY(-50%);">₫</span>
                                 </div>
                                 <div style="margin-top: 15px;">
                                     <label>Tuổi trưởng thành</label>
                                     <div style="width: 100%; position: relative;">
-                                        <input style="width: 80%;" type="number" min="1" name="txtBirdGrownAge" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${requestScope.txtBirdGrownAge}" required/>
+                                        <input style="width: 80%;" type="number" min="1" name="txtBirdGrownAge" class="input form-control" value="${requestScope.txtBirdGrownAge}" required/>
                                         <span style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%);">tháng</span>
                                     </div>
                                 </div>
@@ -234,13 +229,13 @@
                             <div class="form-add mb-3 column-container">
                                 <label>Giảm giá</label>
                                 <div style="width: 100%; position: relative;">
-                                    <input style="width: 80%;" type="number" min="0" max="100" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${requestScope.txtBirdDiscount}" required/>
+                                    <input style="width: 80%;" type="number" min="0" max="100" name="txtBirdDiscount" class="input form-control" value="${requestScope.txtBirdDiscount}" required/>
                                     <span style="position: absolute; right: 36px; top: 50%; transform: translateY(-50%);">%</span>
                                 </div>
                                 <div style="margin-top: 15px;">
                                     <label>Lịch sử sinh sản</label>
                                     <div style="width: 100%; position: relative;">
-                                        <input style="width: 80%;" type="number" min="0" name="txtBirdReproduction_history" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${txtBirdReproduction_history}" required/>
+                                        <input style="width: 80%;" type="number" min="0" name="txtBirdReproduction_history" class="input form-control" value="${txtBirdReproduction_history}" required/>
                                         <span style="position: absolute; right: 27px; top: 50%; transform: translateY(-50%);">lứa</span>
                                     </div>
                                 </div>
@@ -262,11 +257,9 @@
                             </div>
                         </div>
                         <div class="col-lg-12" style="margin-top: 15px;">
-                            <button style="float: right; margin-left: 10px;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit" formnovalidate>Hủy bỏ</button>
+                            <button style="float: right; margin-left: 10px;" onclick="showRemove()" type="submit" class="btn btn-danger button-submit">Hủy bỏ</button>
                             <button class="btn-primary button-submit" style="margin-left: 10px;" type="submit" name="btAction" value="Add"><span style="color:white;">Lưu và tiếp tục</span></button>
-                            <button class="btn-success button-submit" type="submit" name="btAction" value="Add&Return">
-                                <span style="color:white;">Lưu và đóng</span>    
-                            </button>
+                            <button class="btn-success button-submit" type="submit" name="btAction" value="Add&Return"><span style="color:white;">Lưu và đóng</span></button>
                         </div>
                     </div>
                 </form>
@@ -356,24 +349,24 @@
                     reader.readAsDataURL(input.files[0]);
                 }
             }
-            function checkUser(event) {
+            function showRemove() {
                 $('#confirm-remove').css('display', 'block');
-                let idForm = event.form.id;
-                $('#btn-confirrm').attr('data-value', idForm);
-                return false;
             }
             function cancelRemove() {
                 $('#confirm-remove').css('display', 'none');
             }
-            var dateInput = document.getElementById("birthday");
-            var today = new Date();
-            console.log(today);
-            dateInput.addEventListener("change", function () {
+            
+            function checkDay() {
+                var dateInput = document.getElementById("birthday");
                 var selectedDate = new Date(dateInput.value);
+                var today = new Date();
+                today.setHours(today.getHours() + 7);
+                console.log(today);
+                console.log(selectedDate);
                 if (selectedDate > today) {
                   alert("Ngày được chọn không thể là một ngày trong tương lai. Vui lòng chọn lại.");
                   dateInput.value = "";
                 }
-            });
+            }
     </script>
 </html>

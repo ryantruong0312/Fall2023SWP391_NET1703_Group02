@@ -42,7 +42,8 @@ public class UpdateOrderStatusController extends HttpServlet {
                 url = SUCCESS;
                 String[] statusArray = request.getParameterValues("status");
                 String statusUpdate = statusArray[statusArray.length - 1];
-                String order_id = request.getParameter("order_id");
+                String[] orderIdArray = request.getParameterValues("order_id");
+                String order_id = orderIdArray[orderIdArray.length - 1];
                 String reason = request.getParameter("reason");
                 if(reason != null) {
                     if(reason.isEmpty()) {

@@ -105,13 +105,13 @@ public class UpdateBirdController extends HttpServlet {
                         Part image_1 = request.getPart("txtImage_1");
                         Part image_2 = request.getPart("txtImage_2");
                         Part image_3 = request.getPart("txtImage_3");
-                        if (image_1.getSize() > 0 && images.size() >= 1) {
+                        if (image_1.getSize() > 0) {
                             updateImage(image_1, txtBirdId, images.get(0).getImage_id());
                         }
-                        if (image_2.getSize() > 0 && images.size() >= 2) {
+                        if (image_2.getSize() > 0) {
                             updateImage(image_2, txtBirdId, images.get(1).getImage_id());
                         }
-                        if (image_3.getSize() > 0 && images.size() == 3) {
+                        if (image_3.getSize() > 0) {
                             updateImage(image_3, txtBirdId, images.get(2).getImage_id());
                         }
                         boolean check = birdDao.updateBird(txtBirdId, txtBirdName, txtBirdColor, txtBirdDate, txtBirdGrownAge,

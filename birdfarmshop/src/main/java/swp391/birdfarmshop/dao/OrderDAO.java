@@ -1166,7 +1166,6 @@ public class OrderDAO {
                 } else if (startDay != null && endDay != null) {
                     query += "		AND (order_date >= '" + startDay + " 00:00:00.000' AND order_date < = '" + endDay + " 00:00:00.000')\n";
                 }
-                System.out.println(query);
                 stm = con.prepareStatement(query);
                 rs = stm.executeQuery();
                 if (rs != null && rs.next()) {

@@ -189,13 +189,13 @@
                             <div class="form-add mb-3 column-container">
                                 <label>Giá bán</label>
                                 <div style="width: 100%; position: relative;">
-                                    <input style="width: 80%;" type="number" min="0" name="txtBirdPrice" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${birdDetails.price}" required/>
+                                    <input style="width: 80%;" type="number" min="0" name="txtBirdPrice" class="input form-control" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${birdDetails.price}" required/>
                                     <span style="position: absolute; right: 37px; top: 50%; transform: translateY(-50%);">₫</span>
                                 </div>
                                 <div style="margin-top: 15px;">
                                     <label>Tuổi trưởng thành</label>
                                     <div style="width: 100%; position: relative;">
-                                        <input style="width: 80%;" type="number" min="1" name="txtBirdGrownAge" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${birdDetails.grown_age}" required/>
+                                        <input style="width: 80%;" type="number" min="1" name="txtBirdGrownAge" class="input form-control" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${birdDetails.grown_age}" required/>
                                         <span style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%);">tháng</span>
                                     </div>
                                 </div>
@@ -204,13 +204,13 @@
                             <div class="form-add mb-3 column-container">
                                 <label>Giảm giá</label>
                                 <div style="width: 100%; position: relative;">
-                                    <input style="width: 80%;" type="number" min="0" max="100" name="txtBirdDiscount" class="input form-control" pattern="^(?:[0-9]|[1-9][0-9])$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${birdDetails.discount}" required/>
+                                    <input style="width: 80%;" type="number" min="0" max="100" name="txtBirdDiscount" class="input form-control" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${birdDetails.discount}" required/>
                                     <span style="position: absolute; right: 36px; top: 50%; transform: translateY(-50%);">%</span>
                                 </div>
                                 <div style="margin-top: 15px;">
                                     <label>Lịch sử sinh sản</label>
                                     <div style="width: 100%; position: relative;">
-                                        <input style="width: 80%;" type="number" min="0" name="txtBirdReproduction_history" class="input form-control" pattern="^[0-9]+$" onkeydown="if(event.key === '-') event.preventDefault();" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${birdDetails.reproduction_history}" required/>
+                                        <input style="width: 80%;" type="number" min="0" name="txtBirdReproduction_history" class="input form-control" title="Vui lòng chỉ nhập chữ số lớn hơn 0" value="${birdDetails.reproduction_history}" required/>
                                         <span style="position: absolute; right: 27px; top: 50%; transform: translateY(-50%);">lứa</span>
                                     </div>
                                 </div>
@@ -321,7 +321,7 @@
 
                                     if (input.files && input.files[0]) {
                                         var reader = new FileReader();
-
+                                        
                                         reader.onload = function (e) {
                                             imagePreview.src = e.target.result;
                                             imagePreview.style.display = 'block';
@@ -333,6 +333,7 @@
                                 var dateInput = document.getElementById("birthday");
                                 var birdDate = document.getElementById("birdDate");
                                 var today = new Date();
+                                today.setHours(today.getHours() + 7);
                                 dateInput.addEventListener("change", function () {
                                     var selectedDate = new Date(dateInput.value);
                                     if (selectedDate > today) {

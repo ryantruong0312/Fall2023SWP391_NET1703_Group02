@@ -67,8 +67,15 @@ public class AddNewBirdController extends HttpServlet {
                 request.setAttribute("MOMLIST", listBirdMom);
                 request.setAttribute("BREED", breedList);
                 String btAction = request.getParameter("btAction");
-                txtBirdId = request.getParameter("txtBirdId");
                 if (btAction != null) {
+                    txtBirdId = request.getParameter("txtBirdId");
+                    boolean isExisted = birdDao.isBirdIdExisted(txtBirdId);
+                    if(isExisted) {
+                        session.setAttribute("ERROR", "ID ĐÃ TỒN TẠI. NHẬP ID MỚI");
+                        success = false;
+                        url = SUCCESS;
+                        return;
+                    }
                     txtBirdName = request.getParameter("txtBirdName");
                     txtBirdColor = request.getParameter("txtBirdColor");
                     txtBirdDate = request.getParameter("txtBirdDate");
@@ -83,13 +90,6 @@ public class AddNewBirdController extends HttpServlet {
                     txtMomId = request.getParameter("txtMomId");
                     txtBirdDiscount = request.getParameter("txtBirdDiscount");
                     txtBirdStatus = "Còn hàng";
-                    boolean isExisted = birdDao.isBirdIdExisted(txtBirdId);
-                    if(isExisted) {
-                        session.setAttribute("ERROR", "ID ĐÃ TỒN TẠI. NHẬP ID MỚI");
-                        success = false;
-                        url = SUCCESS;
-                        return;
-                    }
                     boolean check = birdDao.addNewBird(txtBirdId, txtBirdName, txtBirdColor,
                             txtBirdDate, txtBirdGrownAge, txtBirdGender, txtBirdBreed,
                             txtBirdAchievement, txtBirdReproduction_history, txtBirdPrice,

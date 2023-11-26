@@ -25,9 +25,9 @@ public class Constants {
     public static final String SECRET_KEY ="zpxzaesjzzglhnyx";
     public static final String HOST= "http://localhost:8080/birdfarmshop/";
     
-    public static final String C3_KEY = "AKIA2SM4QLQQLKZRIO7G";
-    public static final String C3_SECRET_KEY = "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";
-    public static final String C3_HOST = "https://birdfarmshop.s3.amazonaws.com/";
+    public static final String C3_KEY = "AKIAVOSH4FPLQHGLLMA5";
+    public static final String C3_SECRET_KEY = "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";
+    public static final String C3_HOST = "https://birdfarmshop.s3.ap-southeast-1.amazonaws.com/";
     
     public static final String VNPAY_KEY = "VSQ6NENZ";
     public static final String VNPAY_SECRET_KEY = "FZHSMOLLELQBQCZDCQWEANKTEEITDIIL";
