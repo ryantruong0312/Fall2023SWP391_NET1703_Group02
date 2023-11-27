@@ -257,7 +257,7 @@
                             </div>
                         </div>
                         <div class="col-lg-12" style="margin-top: 15px;">
-                            <button style="float: right; margin-left: 10px;" onclick="showRemove()" type="submit" class="btn btn-danger button-submit">Hủy bỏ</button>
+                            <button style="float: right; margin-left: 10px;" onclick="showRemove()" type="button" class="btn btn-danger button-submit">Hủy bỏ</button>
                             <button class="btn-primary button-submit" style="margin-left: 10px;" type="submit" name="btAction" value="Add"><span style="color:white;">Lưu và tiếp tục</span></button>
                             <button class="btn-success button-submit" type="submit" name="btAction" value="Add&Return"><span style="color:white;">Lưu và đóng</span></button>
                         </div>

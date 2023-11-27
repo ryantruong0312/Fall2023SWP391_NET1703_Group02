@@ -242,7 +242,7 @@
                             </div>
                         </div>
                         <div class="col-lg-12" style="margin-top: 15px;">
-                            <button style="float: right;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit">Hủy bỏ</button>
+                            <button style="float: right;" onclick="showRemove()" type="button" class="btn btn-danger button-submit">Hủy bỏ</button>
                             <button style="margin-right: 10px; float: right;" class="button-submit btn-primary" type="submit" name="btAction" value="Update"><span>Cập nhật</span></button>
                         </div>
                     </div>
@@ -341,11 +341,8 @@
                                         dateInput.value = birdDate.value;
                                     }
                                 });
-                                function checkUser(event) {
+                                function showRemove() {
                                     $('#confirm-remove').css('display', 'block');
-                                    let idForm = event.form.id;
-                                    $('#btn-confirrm').attr('data-value', idForm);
-                                    return false;
                                 }
                                 function cancelRemove() {
                                     $('#confirm-remove').css('display', 'none');

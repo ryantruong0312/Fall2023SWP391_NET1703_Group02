@@ -412,6 +412,7 @@
                                     function showText() {
                                         if(!fail.checked) {
                                             reason.style.display = 'none';
+                                            reason.value = '';
                                         } else {
                                             reason.style.display = 'block';
                                         }
@@ -519,7 +520,6 @@
                                 var sdateInput = document.getElementById("startDay");
                                 var edateInput = document.getElementById("endDay");
                                 var today = new Date();
-                                console.log(today);
                                 today.setHours(today.getHours() + 7);
                                 console.log(today);
                                 sdateInput.addEventListener("change", function () {

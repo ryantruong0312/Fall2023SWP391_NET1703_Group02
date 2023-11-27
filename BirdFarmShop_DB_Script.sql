@@ -308,7 +308,7 @@ VALUES
 	('CP601', N'Vẹt xám CP601', N'Xám', '2023-01-01', 4, 1, 'african', N'Chưa có', 0, 
 	2500000, 
 	N'Vẹt Xám African, hoặc African Grey Parrot, là một loài vẹt thông minh và nổi tiếng với bộ lông màu xám, mỏ màu đen, và mắt vàng. Chúng có khả năng học nói và hiểu ngôn ngữ, thể hiện sự tò mò và thông minh cao. Tính cách cá nhân có thể biến đổi, nhưng chung quy là vui vẻ và thân thiện. Việc huấn luyện vẹt Xám African có thể đòi hỏi kiên nhẫn và thời gian do tính cách đôi khi cứng đầu.', 
-    'CP101', NULL, 15, N'Còn hàng'),
+    'CP301', NULL, 15, N'Còn hàng'),
 
 	('WA301', N'Vẹt Orange Winged Amazon WA301', N'xanh lá, vàng', '2022-02-01', 1, 1, 'amazon', 
 	N'Giải khuyến khích cuộc thi Phong trào vẹt kiểng Sài Gòn 2020', 0, 3000000, 
@@ -736,7 +736,7 @@ GO
 
 INSERT INTO [Order]([order_id],[customer],[order_date],[order_status],[name_receiver],[phone_receiver],[address_receiver],[payment_status],[payment_type],[total_price],[cancel_reason])
 VALUES('230925O0001','customer','2022-09-25',N'Đã hủy', N'Quân','0912345678',null,N'Đã thanh toán',N'Chuyển khoản',3950000,N'Khách từ chối nhận hàng'),
-	  ('230915O0002','giaphong','2021-09-15',N'Đang xử lý',N'Phong','0368445224',null,N'Đã thanh toán',N'Chuyển khoản',27600000,NULL),
+	  ('230915O0002','giaphong','2023-09-15',N'Đã giao hàng',N'Phong','0368445224',null,N'Đã thanh toán',N'Chuyển khoản',27600000,NULL),
 	  ('230916O0003','nhathoang','2023-03-16',N'Đang giao hàng',N'Hoàng','0368445224',null,N'Chưa thanh toán',N'Tiền mặt',4950000,NULL),
 	  ('230917O0004','huynhduc','2023-09-17',N'Đang giao hàng',N'Đức','0912245678',null,N'Chưa thanh toán',N'Tiền mặt',710000,NULL),
 	  ('230918O0005','khachhangvip','2023-09-18',N'Đã hủy',N'Thuận','0932145678',null,N'Đã thanh toán',N'Chuyển khoản',3450000,N'Khách từ chối nhận hàng'),
