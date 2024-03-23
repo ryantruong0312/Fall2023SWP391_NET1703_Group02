@@ -30,20 +30,20 @@ public class FeedbackDAO {
         PreparedStatement pst = null;
         ResultSet rs = null;
         try {
-            cnn = DBUtils.getConnection();
+            cnn = DBUtils.getConnection(true);
             if (cnn != null) {
-                String sql = "SELECT [full_name]\n"
-                        + "      ,[email]\n"
-                        + "      ,[rating]\n"
-                        + "      ,[comment]\n"
-                        + "      ,[feedback_date]\n"
-                        + "      ,[bird_id]\n"
-                        + "      ,[bird_name]\n"
-                        + "      ,[accessory_id]\n"
-                        + "      ,[accessory_name]\n"
-                        + "      ,[image_url]\n"
-                        + "  FROM [BirdFarmShop].[dbo].[View_Feedback]\n"
-                        + "WHERE [bird_id] = ? OR [accessory_id] = ? \n";
+                String sql = "SELECT full_name\n"
+                        + "      ,email\n"
+                        + "      ,rating\n"
+                        + "      ,comment\n"
+                        + "      ,feedback_date\n"
+                        + "      ,bird_id\n"
+                        + "      ,bird_name\n"
+                        + "      ,accessory_id\n"
+                        + "      ,accessory_name\n"
+                        + "      ,image_url\n"
+                        + "  FROM View_Feedback\n"
+                        + "WHERE bird_id = ? OR accessory_id = ? \n";
                 if (page != null) {
                     int pageNumber = Integer.parseInt(page);
                     int start = (pageNumber - 1) * recordsPerPage;
@@ -103,11 +103,11 @@ public class FeedbackDAO {
         PreparedStatement pst = null;
         ResultSet rs = null;
         try {
-            cnn = DBUtils.getConnection();
+            cnn = DBUtils.getConnection(true);
             if (cnn != null) {
                 String sql = "SELECT COUNT(feedback_date) AS Amount"
-                        + "  FROM [BirdFarmShop].[dbo].[View_Feedback]\n"
-                        + "WHERE [bird_id] = ? OR [accessory_id] = ? \n";
+                        + "  FROM View_Feedback\n"
+                        + "WHERE bird_id = ? OR accessory_id = ? \n";
                 pst = cnn.prepareStatement(sql);
                 pst.setString(1, id);
                 pst.setString(2, id);
@@ -150,25 +150,25 @@ public class FeedbackDAO {
         PreparedStatement pst = null;
         ResultSet rs = null;
         try {
-            cnn = DBUtils.getConnection();
+            cnn = DBUtils.getConnection(true);
             if (cnn != null) {
                 String sql = "WITH RankedStar AS (	\n"
-                        + "SELECT COUNT(CASE WHEN f.rating = 1 THEN 1 END) AS [oneStar],  COUNT(CASE WHEN f.rating = 2 THEN 1 END) AS [twoStar],\n"
-                        + "			COUNT(CASE WHEN f.rating = 3 THEN 1 END) AS [threeStar],COUNT(CASE WHEN f.rating = 4 THEN 1 END) AS [fourStar],\n"
-                        + "			COUNT(CASE WHEN f.rating = 5 THEN 1 END) AS [fiveStar]\n"
-                        + "FROM [Feedback] f\n"
-                        + "RIGHT JOIN [OrderItem] o\n"
+                        + "SELECT COUNT(CASE WHEN f.rating = 1 THEN 1 END) AS oneStar,  COUNT(CASE WHEN f.rating = 2 THEN 1 END) AS twoStar,\n"
+                        + "			COUNT(CASE WHEN f.rating = 3 THEN 1 END) AS threeStar,COUNT(CASE WHEN f.rating = 4 THEN 1 END) AS fourStar,\n"
+                        + "			COUNT(CASE WHEN f.rating = 5 THEN 1 END) AS fiveStar\n"
+                        + "FROM Feedback f\n"
+                        + "RIGHT JOIN OrderItem o\n"
                         + "ON o.order_item_id = f.order_item_id\n"
-                        + "LEFT JOIN [Bird] b\n"
+                        + "LEFT JOIN Bird b\n"
                         + "ON o.bird_id = b.bird_id\n"
-                        + "LEFT JOIN [Accessory] a\n"
+                        + "LEFT JOIN Accessory a\n"
                         + "ON o.accessory_id = a.accessory_id\n"
                         + "WHERE o.bird_id = ? OR a.accessory_id = ?\n"
                         + "GROUP BY f.rating \n"
                         + ")\n"
-                        + "SELECT SUM(rs.oneStar) AS [totalOneStar],SUM(rs.twoStar) AS [totalTwoStar],\n"
-                        + "		SUM(rs.threeStar) AS [totalThreeStar],SUM(rs.fourStar) AS [totalFourStar],\n"
-                        + "		SUM(rs.fiveStar) AS [totalFiveStar]\n"
+                        + "SELECT SUM(rs.oneStar) AS totalOneStar,SUM(rs.twoStar) AS totalTwoStar,\n"
+                        + "		SUM(rs.threeStar) AS totalThreeStar,SUM(rs.fourStar) AS totalFourStar,\n"
+                        + "		SUM(rs.fiveStar) AS totalFiveStar\n"
                         + "FROM RankedStar rs";
                 pst = cnn.prepareStatement(sql);
                 pst.setString(1, id);
@@ -217,13 +217,13 @@ public class FeedbackDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 LocalDateTime customDateTime = LocalDateTime.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
                 String sqlDate = customDateTime.format(formatter);
-                stm = con.prepareStatement("INSERT INTO [dbo].[Feedback]\n"
-                        + "             ([customer],[order_item_id],[rating],[comment],[feedback_date])"
+                stm = con.prepareStatement("INSERT INTO dbo.Feedback\n"
+                        + "             (customer,order_item_id,rating,comment,feedback_date)"
                         + "             VALUES (?,?,?,?,?) ");
                 stm.setString(1, fb.getCustomer());
                 stm.setInt(2, fb.getOrder_item_id());
@@ -255,12 +255,12 @@ public class FeedbackDAO {
         PreparedStatement pst = null;
         ResultSet rs = null;
         try {
-            cnn = DBUtils.getConnection();
+            cnn = DBUtils.getConnection(true);
             if (cnn != null) {
-                String sql =    "SELECT TOP (1000) [feedback_id],[customer],[order_item_id],\n" +
-                                "[rating],[comment],[feedback_date]\n" +
-                                "FROM [BirdFarmShop].[dbo].[Feedback]\n" +
-                                "WHERE [customer] = ?";
+                String sql =    "SELECT TOP (1000) feedback_id,customer,order_item_id,\n" +
+                                "rating,comment,feedback_date\n" +
+                                "FROM Feedback\n" +
+                                "WHERE customer = ?";
                 pst = cnn.prepareStatement(sql);
                 pst.setString(1, customer);
                 rs = pst.executeQuery();

@@ -22,66 +22,10 @@ import swp391.birdfarmshop.util.DBUtils;
  */
 public class UserDAO {
 
-    private static final String GET_ACCOUNT_LIST = "SELECT [username], [full_name], [role], [status] FROM [User]\n";
-    private static final String GET_USER_BY_USERNAME = "SELECT [username], [full_name], [role], [email], [phone],"
-            + " [register_date], [point], [address],[login_by], [status] FROM [User] WHERE username = ?";
-
-    public User getUser(String username, String password) {
-        User u = null;
-        Connection cnn = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
-        try {
-            cnn = DBUtils.getConnection();
-            if (cnn != null) {
-                String sql = "SELECT [username],[password], [full_name],[phone],[email],[role],[address],[point],[register_date],[login_by],[status] FROM [User] \n"
-                        + "WHERE (username = ? OR email = ?)AND [password] = ? COLLATE Latin1_General_CS_AS";
-                pst = cnn.prepareStatement(sql);
-                pst.setString(1, username);
-                pst.setString(2, username);
-                pst.setString(3, password);
-                rs = pst.executeQuery();
-                if (rs != null && rs.next()) {
-                    String user = rs.getString("username");
-                    String fullName = rs.getString("full_name");
-                    String phone = rs.getString("phone");
-                    String email = rs.getString("email");
-                    String role = rs.getString("role");
-                    String address = rs.getString("address");
-                    int point = rs.getInt("point");
-                    Date registerDate = rs.getDate("register_date");
-                    String loginBy = rs.getString("login_by");
-                    String status = rs.getString("status");
-                    u = new User(user, password, fullName, phone, email, role, address, point, registerDate, loginBy, status);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (cnn != null) {
-                try {
-                    cnn.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (pst != null) {
-                try {
-                    pst.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return u;
-    }
+    private static final String GET_ACCOUNT_LIST = "SELECT username, full_name, role, status FROM Users\n";
+    private static final String GET_USER_BY_USERNAME = "SELECT username, full_name, role, email, phone, register_date, point, address, login_by, status \n" +
+"FROM Users \n" +
+"WHERE username = ?;";
 
     public User findUser(String username, String emailFind) {
         User u = null;
@@ -89,13 +33,15 @@ public class UserDAO {
         PreparedStatement pst = null;
         ResultSet rs = null;
         try {
-            cnn = DBUtils.getConnection();
+            cnn = DBUtils.getConnection(true);
             if (cnn != null) {
-                String sql = "SELECT [username],[password], [full_name],[phone],[email],[role],[address],[point],[register_date],[login_by],[status] FROM [User] \n"
-                        + "WHERE username = ? OR email = ? ";
+                String sql = "SELECT username, password, full_name, phone, email, role, address, point, register_date, login_by, status \n" +
+"FROM Users\n" +
+"WHERE username = ? OR email = ?";
                 pst = cnn.prepareStatement(sql);
                 pst.setString(1, username);
                 pst.setString(2, emailFind);
+                System.out.println(pst);
                 rs = pst.executeQuery();
                 if (rs != null && rs.next()) {
                     username = rs.getString("username");
@@ -145,8 +91,8 @@ public class UserDAO {
         Connection cnn = null;
         PreparedStatement pst = null;
         try {
-            cnn = DBUtils.getConnection();
-            String sql = "INSERT INTO [User](username,[password],full_name,phone,email,register_date,[role],[login_by],[status])\n"
+            cnn = DBUtils.getConnection(true);
+            String sql = "INSERT INTO Users(username,password,full_name,phone,email,register_date,role,login_by,status)\n"
                     + "VALUES(?,?,?,?,?,?,?,?,?)";
             pst = cnn.prepareStatement(sql);
             pst.setString(1, user);
@@ -186,11 +132,11 @@ public class UserDAO {
         Connection cnn = null;
         PreparedStatement pst = null;
         try {
-            cnn = DBUtils.getConnection();
+            cnn = DBUtils.getConnection(true);
             if (cnn != null) {
-                String sql = "UPDATE [User]\n"
-                        + "SET [password] = ?\n"
-                        + "WHERE [username] = ?";
+                String sql = "UPDATE Users\n"
+                        + "SET password = ?\n"
+                        + "WHERE username = ?";
                 pst = cnn.prepareStatement(sql);
                 pst.setString(1, password);
                 pst.setString(2, user);
@@ -222,11 +168,11 @@ public class UserDAO {
         Connection cnn = null;
         PreparedStatement pst = null;
         try {
-            cnn = DBUtils.getConnection();
+            cnn = DBUtils.getConnection(true);
             if (cnn != null) {
-                String sql = "UPDATE [User]\n"
-                        + "SET [status] = ?\n"
-                        + "WHERE [username] = ?";
+                String sql = "UPDATE Users\n"
+                        + "SET status = ?\n"
+                        + "WHERE username = ?";
                 pst = cnn.prepareStatement(sql);
                 pst.setString(1, active);
                 pst.setString(2, username);
@@ -260,17 +206,17 @@ public class UserDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 String sql = GET_ACCOUNT_LIST;
                 if (search != null) {
-                    sql += " WHERE username LIKE N'%" + search + "%' "
-                            + "OR full_name LIKE N'%" + search + "%' \n";
+                    sql += " WHERE username LIKE '%" + search + "%' COLLATE \"default\""
+                            + "OR full_name LIKE '%" + search + "%' COLLATE \"default\"\n";
                 }
                 if (page != null) {
                     int pageNumber = Integer.parseInt(page);
                     int start = (pageNumber - 1) * recordsPerPage;
-                    sql += "ORDER BY [register_date] DESC OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
+                    sql += "ORDER BY register_date DESC OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
                 }
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
@@ -303,30 +249,30 @@ public class UserDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 String sql = GET_ACCOUNT_LIST;
                 if (search != null) {
                     if (roles.equals("all")) {
-                        sql += " WHERE username LIKE N'%" + search + "%' "
-                                + "OR full_name LIKE N'%" + search + "%' \n";
+                        sql += " WHERE username LIKE '%" + search + "%' COLLATE \"default\""
+                                + "OR full_name LIKE '%" + search + "%' COLLATE \"default\"\n";
                     } else {
-                        sql += " WHERE (username LIKE N'%" + search + "%' "
-                                + "OR full_name LIKE N'%" + search + "%' )\n"
-                                + "AND role LIKE N'%" + roles + "%'";
+                        sql += " WHERE (username LIKE '%" + search + "%' COLLATE \"default\""
+                                + "OR full_name LIKE '%" + search + "%' COLLATE \"default\")\n"
+                                + "AND role LIKE '%" + roles + "%' COLLATE \"default\"";
                     }
                 }
                 if (search == null && roles != null) {
                     if (roles.equals("all")) {
                         sql = GET_ACCOUNT_LIST;
                     } else {
-                        sql += " WHERE role LIKE N'%" + roles + "%' ";
+                        sql += " WHERE role LIKE '%" + roles + "%' COLLATE \"default\"";
                     }
                 }
                 if (page != null) {
                     int pageNumber = Integer.parseInt(page);
                     int start = (pageNumber - 1) * recordsPerPage;
-                    sql += "ORDER BY [register_date] DESC OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
+                    sql += "ORDER BY register_date DESC OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
                 }
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
@@ -359,19 +305,19 @@ public class UserDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "SELECT COUNT(username) AS [Amount] \n"
-                        + "FROM [User]";
+                String sql = "SELECT COUNT(username) AS Amount \n"
+                        + "FROM Users";
                 if (search != null) {
-                    sql += " WHERE (username LIKE N'%" + search + "%' "
-                            + "OR full_name LIKE N'%" + search + "%' )\n";
+                    sql += " WHERE (username LIKE '%" + search + "%' COLLATE \"default\""
+                            + "OR full_name LIKE '%" + search + "%' COLLATE \"default\")\n";
                     if(role != null){
-                        sql += "  role LIKE N'%" + role + "%' \n";
+                        sql += "  role LIKE '%" + role + "%' COLLATE \"default\"\n";
                     }
                 }
                 if(role != null && search == null){
-                    sql += " WHERE role LIKE N'%" + role + "%' \n";
+                    sql += " WHERE role LIKE '%" + role + "%' COLLATE \"default\"\n";
                 }
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
@@ -399,15 +345,16 @@ public class UserDAO {
         Connection con = null;
         PreparedStatement stm = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                stm = con.prepareStatement("UPDATE [dbo].[User]\n"
-                        + "SET [full_name] = ?,[phone] = ?,[address] = ?\n"
-                        + "WHERE [username] = ?");
+                stm = con.prepareStatement("UPDATE Users\n"
+                        + "SET full_name = ? COLLATE \"default\",phone = ?,address = ?\n"
+                        + "WHERE username = ?");
                 stm.setString(1, fullName);
                 stm.setString(2, phone);
                 stm.setString(3, address);
                 stm.setString(4, username);
+                System.out.println(stm);
                 int rowsAffected = stm.executeUpdate();
                 return rowsAffected > 0;
             }
@@ -429,7 +376,7 @@ public class UserDAO {
         PreparedStatement ptm = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 ptm = con.prepareStatement(GET_USER_BY_USERNAME);
                 ptm.setString(1, username);
@@ -470,10 +417,10 @@ public class UserDAO {
         Statement st = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "SELECT COUNT(username) AS [amount]\n"
-                        + "  FROM [BirdFarmShop].[dbo].[User]\n"
+                String sql = "SELECT COUNT(username) AS amount\n"
+                        + "  FROM Users\n"
                         + " WHERE role = 'customer'\n";
                 if (startDay != null && endDay == null) {
                     sql += " AND register_date >= '" + startDay + "'\n";

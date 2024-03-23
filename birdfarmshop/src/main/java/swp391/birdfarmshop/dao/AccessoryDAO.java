@@ -32,9 +32,9 @@ public class AccessoryDAO {
         ResultSet rs = null;
         ImageDAO ID = new ImageDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "SELECT * FROM [BirdFarmShop].[dbo].[Accessory]";
+                String sql = "SELECT * FROM Accessory";
                 st = con.prepareStatement(sql);
                 rs = st.executeQuery();
                 while (rs.next()) {
@@ -75,11 +75,11 @@ public class AccessoryDAO {
         ResultSet rs = null;
         ImageDAO ID = new ImageDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "SELECT * FROM [BirdFarmShop].[dbo].[Accessory]\n";
+                String sql = "SELECT * FROM Accessory\n";
                 if (search != null) {
-                    sql += " WHERE accessory_name LIKE N'%" + search + "%'\n";
+                    sql += " WHERE accessory_name LIKE '%" + search + "%' COLLATE \"default\"\n";
                     if (category != null) {
                         sql += " AND category_id = " + "'" + category + "'" + "\n";
                     }
@@ -141,11 +141,11 @@ public class AccessoryDAO {
         ResultSet rs = null;
         int number = 0;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "SELECT COUNT(accessory_id)AS Amount FROM [BirdFarmShop].[dbo].[Accessory]\n";
+                String sql = "SELECT COUNT(accessory_id) AS Amount FROM Accessory\n";
                 if (search != null) {
-                    sql += " WHERE accessory_name LIKE N'%" + search + "%'\n";
+                    sql += " WHERE accessory_name LIKE '%" + search + "%' COLLATE \"default\"\n";
                     if (category != null) {
                         sql += " AND category_id = " + "'" + category + "'" + "\n";
                     }
@@ -194,9 +194,9 @@ public class AccessoryDAO {
         ResultSet rs = null;
         ImageDAO ID = new ImageDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "SELECT * FROM [BirdFarmShop].[dbo].[Accessory] WHERE [accessory_id] = ?";
+                String sql = "SELECT * FROM Accessory WHERE accessory_id = ?";
                 st = con.prepareStatement(sql);
                 st.setString(1, accessory_id);
                 rs = st.executeQuery();
@@ -238,7 +238,7 @@ public class AccessoryDAO {
         ResultSet rs = null;
         ImageDAO imgDao = new ImageDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 stm = con.prepareStatement(GET_ACCESSORY_BY_ID);
                 stm.setString(1, accessoryId);
@@ -278,11 +278,11 @@ public class AccessoryDAO {
         ResultSet rs = null;
         ImageDAO imgDao = new ImageDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 stm = con.prepareStatement("SELECT *\n"
-                        + "FROM [BirdFarmShop].[dbo].[Accessory]\n"
-                        + "WHERE [category_id] = 'cage' ORDER BY [unit_price]");
+                        + "FROM Accessory\n"
+                        + "WHERE category_id = 'cage' ORDER BY unit_price");
                 rs = stm.executeQuery();
                 while (rs.next()) {
                     String accessory_id = rs.getString("accessory_id");
@@ -321,17 +321,17 @@ public class AccessoryDAO {
         int rs;
         ImageDAO im = new ImageDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                stm = con.prepareStatement("INSERT INTO [BirdFarmShop].[dbo].[Accessory]\n"
-                        + "           ([accessory_id]\n"
-                        + "           ,[accessory_name]\n"
-                        + "           ,[category_id]\n"
-                        + "           ,[unit_price]\n"
-                        + "           ,[stock_quantity]\n"
-                        + "           ,[description]\n"
-                        + "           ,[discount]\n"
-                        + "           ,[status])\n"
+                stm = con.prepareStatement("INSERT INTO Accessory\n"
+                        + "           (accessory_id\n"
+                        + "           ,accessory_name\n"
+                        + "           ,category_id\n"
+                        + "           ,unit_price\n"
+                        + "           ,stock_quantity\n"
+                        + "           ,description\n"
+                        + "           ,discount\n"
+                        + "           ,status)\n"
                         + "     VALUES\n"
                         + "           (?, ?, ?, ?, ?, ?, ?, ?)");
                 stm.setString(1, txtAccessoryID);
@@ -392,18 +392,18 @@ public class AccessoryDAO {
         PreparedStatement stm = null;
         int rs = 0;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                stm = con.prepareStatement("  UPDATE [BirdFarmShop].[dbo].[Accessory]\n"
+                stm = con.prepareStatement("  UPDATE Accessory\n"
                         + "    SET  "
-                        + "    [accessory_name] = ?,\n"
-                        + "    [category_id] = ?,\n"
-                        + "    [unit_price] = ?,\n"
-                        + "    [stock_quantity] = ?,\n"
-                        + "    [description] = ?,\n"
-                        + "    [discount] = ?,\n"
-                        + "    [status] = ?"
-                        + "    WHERE [accessory_id] = ?; ");
+                        + "    accessory_name = ?,\n"
+                        + "    category_id = ?,\n"
+                        + "    unit_price = ?,\n"
+                        + "    stock_quantity = ?,\n"
+                        + "    description = ?,\n"
+                        + "    discount = ?,\n"
+                        + "    status = ?"
+                        + "    WHERE accessory_id = ?; ");
 
                 stm.setString(1, txtAccessoryName);
                 stm.setString(2, txtCategoryID);
@@ -442,9 +442,9 @@ public class AccessoryDAO {
         PreparedStatement stm = null;
         int rs = 0;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                stm = con.prepareStatement("UPDATE [BirdFarmShop].[dbo].[Accessory] SET [stock_quantity] = ?, [status] = ? WHERE [accessory_id] = ?;");
+                stm = con.prepareStatement("UPDATE Accessory SET stock_quantity = ?, status = ? WHERE accessory_id = ?;");
 
                 stm.setInt(1, Integer.parseInt(txtStockQuantity));
                 if (Integer.parseInt(txtStockQuantity) > 0) {
@@ -478,12 +478,12 @@ public class AccessoryDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 stm = con.prepareStatement("SELECT COUNT([accessory_id]) AS totalAccessory,\n"
-                        + "	   SUM(CASE WHEN [stock_quantity] > 0 THEN 1 END) AS Available,\n"
-                        + "	   COUNT(CASE WHEN [stock_quantity] = 0 THEN 1 END) AS OutOfStock\n"
-                        + "FROM [BirdFarmShop].[dbo].[Accessory]");
+                        + "	   SUM(CASE WHEN stock_quantity > 0 THEN 1 END) AS Available,\n"
+                        + "	   COUNT(CASE WHEN stock_quantity = 0 THEN 1 END) AS OutOfStock\n"
+                        + "FROM Accessory");
             }
             rs = stm.executeQuery();
             if(rs!= null && rs.next()){

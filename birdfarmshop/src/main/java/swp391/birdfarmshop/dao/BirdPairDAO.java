@@ -29,25 +29,26 @@ public class BirdPairDAO {
         BirdCustomerDAO bsd = new BirdCustomerDAO();
         BirdDAO bd = new BirdDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 String sql = "SELECT bp.pair_id, bp.order_id, bp.young_bird_price,\n"
                         + "	   bp.bird_customer, bp.male_bird_id, bp.female_bird_id,\n"
-                        + "	   bp.number_egg, bp.number_young_bird, bp.[status]\n"
-                        + "FROM [BirdPair] bp\n"
-                        + "LEFT JOIN [Order] o\n"
+                        + "	   bp.number_egg, bp.number_young_bird, bp.status\n"
+                        + "FROM BirdPair bp\n"
+                        + "LEFT JOIN Orders o\n"
                         + "ON bp.order_id = o.order_id\n";
                 if (username != null) {
                     sql += "WHERE o.customer = '" + username + "'\n";
                     if (status != null) {
-                        sql += " AND bp.[status] = N'" + status + "'\n";
+                        sql += " AND bp.status = '" + status + "' COLLATE \"default\"\n";
                     }
                 }
                 if (username == null && status != null) {
-                    sql += "WHERE bp.[status] = N'" + status + "'\n";
+                    sql += "WHERE bp.status = '" + status + "' COLLATE \"default\"\n";
                 }
                 sql += "ORDER BY bp.pair_id DESC";
                 st = con.createStatement();
+                System.out.println(sql);
                 rs = st.executeQuery(sql);
                 while (rs.next()) {
                     int pair_id = rs.getInt("pair_id");
@@ -102,13 +103,13 @@ public class BirdPairDAO {
         BirdDAO bd = new BirdDAO();
         ImageDAO imgDao = new ImageDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 String sql = "SELECT bp.pair_id, bp.order_id, bp.young_bird_price,\n"
                         + "	   bp.bird_customer, bp.male_bird_id, bp.female_bird_id,\n"
-                        + "	   bp.number_egg, bp.number_young_bird, bp.[status]\n"
-                        + "FROM [BirdPair] bp\n"
-                        + "LEFT JOIN [Order] o\n"
+                        + "	   bp.number_egg, bp.number_young_bird, bp.status\n"
+                        + "FROM BirdPair bp\n"
+                        + "LEFT JOIN Orders o\n"
                         + "ON bp.order_id = o.order_id\n"
                         + "WHERE o.order_id = ?";
                 pst = con.prepareStatement(sql);
@@ -164,13 +165,13 @@ public class BirdPairDAO {
         BirdDAO bd = new BirdDAO();
         ImageDAO imgDao = new ImageDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 String sql = "SELECT bp.pair_id, bp.order_id, bp.young_bird_price,\n"
                         + "	   bp.bird_customer, bp.male_bird_id, bp.female_bird_id,\n"
-                        + "	   bp.number_egg, bp.number_young_bird, bp.[status], o.[customer]\n"
-                        + "FROM [BirdPair] bp\n"
-                        + "RIGHT JOIN [Order] o\n"
+                        + "	   bp.number_egg, bp.number_young_bird, bp.status, o.customer\n"
+                        + "FROM BirdPair bp\n"
+                        + "RIGHT JOIN Orders o\n"
                         + "ON bp.order_id = o.order_id\n"
                         + "WHERE bp.pair_id = ?";
                 pst = con.prepareStatement(sql);
@@ -228,16 +229,16 @@ public class BirdPairDAO {
         BirdCustomerDAO bsd = new BirdCustomerDAO();
         BirdDAO bd = new BirdDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 String sql = "SELECT bp.pair_id, bp.order_id, bp.young_bird_price,\n"
                         + "	   bp.bird_customer, bp.male_bird_id, bp.female_bird_id,\n"
-                        + "	   bp.number_egg, bp.number_young_bird, bp.[status],o.[customer],o.[order_date]\n"
-                        + "FROM [BirdPair] bp\n"
-                        + "LEFT JOIN [Order] o\n"
+                        + "	   bp.number_egg, bp.number_young_bird, bp.status,o.customer,o.order_date\n"
+                        + "FROM BirdPair bp\n"
+                        + "LEFT JOIN Orders o\n"
                         + "ON bp.order_id = o.order_id\n";
                 if (search != null) {
-                    sql += "WHERE o.[customer] = '" + search + "'\n";
+                    sql += "WHERE o.customer = '" + search + "'\n";
                 }
                 if (page != null) {
                     int pageNumber = Integer.parseInt(page);
@@ -299,14 +300,14 @@ public class BirdPairDAO {
         BirdCustomerDAO bsd = new BirdCustomerDAO();
         BirdDAO bd = new BirdDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "SELECT COUNT(bp.[pair_id]) AS Amount\n"
-                        + "FROM [BirdPair] bp\n"
-                        + "LEFT JOIN [Order] o\n"
+                String sql = "SELECT COUNT(bp.pair_id) AS Amount\n"
+                        + "FROM BirdPair bp\n"
+                        + "LEFT JOIN Orders o\n"
                         + "ON bp.order_id = o.order_id\n";
                 if (search != null) {
-                    sql += "WHERE o.[customer] = '" + search + "'\n";
+                    sql += "WHERE o.customer = '" + search + "'\n";
                 }
                 st = con.createStatement();
                 rs = st.executeQuery(sql);
@@ -350,15 +351,15 @@ public class BirdPairDAO {
         BirdCustomerDAO bsd = new BirdCustomerDAO();
         BirdDAO bd = new BirdDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "SELECT COUNT(pair_id) AS [total_birdPair],\n"
-                        + "	   COUNT(CASE WHEN [status]= N'Đã thanh toán' THEN 1 END) AS [payment],\n"
-                        + "	   COUNT(CASE WHEN [status]= N'Chờ lấy chim' THEN 1 END) AS [waiting_bird],\n"
-                        + "	   COUNT(CASE WHEN [status]= N'Đang ghép cặp' THEN 1 END) AS [pairing],\n"
-                        + "	   COUNT(CASE WHEN [status]= N'Đã sinh sản' THEN 1 END) AS [spawned],\n"
-                        + "	   COUNT(CASE WHEN [status]= N'Đã ấp nở' THEN 1 END) AS [hatched]\n"
-                        + "FROM [BirdFarmShop].[dbo].[BirdPair]";
+                String sql = "SELECT COUNT(pair_id) AS total_birdPair,\n"
+                        + "	   COUNT(CASE WHEN status= 'Đã thanh toán' COLLATE \"default\" THEN 1 END) AS payment,\n"
+                        + "	   COUNT(CASE WHEN status= 'Chờ lấy chim' COLLATE \"default\" THEN 1 END) AS waiting_bird,\n"
+                        + "	   COUNT(CASE WHEN status= 'Đang ghép cặp' COLLATE \"default\" THEN 1 END) AS pairing,\n"
+                        + "	   COUNT(CASE WHEN status= 'Đã sinh sản' COLLATE \"default\" THEN 1 END) AS spawned,\n"
+                        + "	   COUNT(CASE WHEN status= 'Đã ấp nở' COLLATE \"default\" THEN 1 END) AS hatched\n"
+                        + "FROM BirdPair";
                 st = con.createStatement();
                 rs = st.executeQuery(sql);
                 if (rs != null && rs.next()) {

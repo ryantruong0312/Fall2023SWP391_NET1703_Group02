@@ -25,12 +25,12 @@ public class TrackingBirdPairDAO {
         PreparedStatement pst = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "SELECT [content],[create_user]\n"
-                        + "      ,[date_content]\n"
-                        + "FROM [BirdFarmShop].[dbo].[PairTracking]\n"
-                        + "WHERE [pair_id] = ?\n"
+                String sql = "SELECT content,create_user\n"
+                        + "      ,date_content\n"
+                        + "FROM PairTracking\n"
+                        + "WHERE pair_id = ?\n"
                         + "ORDER BY tracking_id DESC";
                 pst = con.prepareStatement(sql);
                 pst.setInt(1, pair_id);
@@ -79,12 +79,12 @@ public class TrackingBirdPairDAO {
         PreparedStatement pst = null;
         boolean check = false;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 con.setAutoCommit(false);
                 String sql;
                 if (url != null) {
-                    sql = "INSERT INTO [Image]([image_url],[pair_id])\n"
+                    sql = "INSERT INTO Image(image_url,pair_id)\n"
                             + "VALUES(?,?)";
                     pst = con.prepareStatement(sql);
                     pst.setString(1, url);
@@ -94,7 +94,7 @@ public class TrackingBirdPairDAO {
                     result = 1;
                 }
                 if (result > 0) {
-                    sql = "INSERT INTO [PairTracking]([pair_id],[create_user],[content],[date_content])\n"
+                    sql = "INSERT INTO PairTracking(pair_id,create_user,content,date_content)\n"
                             + "VALUES(?,?,?,?)";
                     pst = con.prepareStatement(sql);
                     pst.setInt(1, pair_id);
@@ -104,11 +104,11 @@ public class TrackingBirdPairDAO {
                     pst.setTimestamp(4, date);
                     result = pst.executeUpdate();
                     if (result > 0) {
-                        sql = "UPDATE [BirdPair]\n"
-                                + "SET [number_egg] = ?,\n"
-                                + "[number_young_bird] = ?,\n"
-                                + "[status] = ?\n"
-                                + "WHERE [pair_id] = ?";
+                        sql = "UPDATE BirdPair\n"
+                                + "SET number_egg = ?,\n"
+                                + "number_young_bird = ?,\n"
+                                + "status = ?\n"
+                                + "WHERE pair_id = ?";
                         pst = con.prepareStatement(sql);
                         pst.setString(1, quantity_egg);
                         pst.setString(2, quantity_young_bird);
@@ -157,10 +157,10 @@ public class TrackingBirdPairDAO {
         ResultSet rs = null;
         boolean check = false;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 con.setAutoCommit(false);
-                String sql = "INSERT INTO [PairTracking]([pair_id],[content],[date_content])\n"
+                String sql = "INSERT INTO PairTracking(pair_id,content,date_content)\n"
                         + "VALUES(?,?,?)";
                 pst = con.prepareStatement(sql);
                 pst.setString(1, pair_id);
@@ -169,9 +169,9 @@ public class TrackingBirdPairDAO {
                 pst.setTimestamp(3, date);
                 result = pst.executeUpdate();
                 if (result > 0) {
-                    sql = "UPDATE [BirdPair]\n"
-                            + "SET [status] = ?\n"
-                            + "WHERE [pair_id] = ?";
+                    sql = "UPDATE BirdPair\n"
+                            + "SET status = ?\n"
+                            + "WHERE pair_id = ?";
                     pst = con.prepareStatement(sql);
                     pst.setString(1, status);
                     pst.setString(2, pair_id);
@@ -181,17 +181,17 @@ public class TrackingBirdPairDAO {
                     }
                 }
                 if ("Đã hủy".equals(status)) {
-                    String selectPair = "SELECT [pair_id]\n"
-                            + "      ,[order_id]\n"
-                            + "      ,[young_bird_price]\n"
-                            + "      ,[bird_customer]\n"
-                            + "      ,[male_bird_id]\n"
-                            + "      ,[female_bird_id]\n"
-                            + "      ,[number_egg]\n"
-                            + "      ,[number_young_bird]\n"
-                            + "      ,[status]\n"
-                            + "  FROM [BirdFarmShop].[dbo].[BirdPair]\n"
-                            + "  WHERE [pair_id] = ?";
+                    String selectPair = "SELECT pair_id\n"
+                            + "      ,order_id\n"
+                            + "      ,young_bird_price\n"
+                            + "      ,bird_customer\n"
+                            + "      ,male_bird_id\n"
+                            + "      ,female_bird_id\n"
+                            + "      ,number_egg\n"
+                            + "      ,number_young_bird\n"
+                            + "      ,status\n"
+                            + "  FROM BirdPair\n"
+                            + "  WHERE pair_id = ?";
                     pst = con.prepareStatement(selectPair);
                     pst.setString(1, pair_id);
                     rs = pst.executeQuery();
@@ -200,9 +200,9 @@ public class TrackingBirdPairDAO {
                         String idFemale = rs.getString("female_bird_id");
                         String idCustomer = rs.getString("bird_customer");
                         if (idMale != null) {
-                            String updateMaleBird = "UPDATE [Bird]\n"
-                                    + "SET [status] = N'Còn hàng'\n"
-                                    + "WHERE [bird_id] = ?";
+                            String updateMaleBird = "UPDATE Bird\n"
+                                    + "SET status = 'Còn hàng'\n"
+                                    + "WHERE bird_id = ?";
                             pst = con.prepareStatement(updateMaleBird);
                             pst.setString(1, idMale);
                             result = pst.executeUpdate();
@@ -211,9 +211,9 @@ public class TrackingBirdPairDAO {
                             }
                         }
                         if (idFemale != null) {
-                            String updateFemaleBird = "UPDATE [Bird]\n"
-                                    + "SET [status] = N'Còn hàng'\n"
-                                    + "WHERE [bird_id] = ?";
+                            String updateFemaleBird = "UPDATE Bird\n"
+                                    + "SET status = 'Còn hàng'\n"
+                                    + "WHERE bird_id = ?";
                             pst = con.prepareStatement(updateFemaleBird);
                             pst.setString(1, idFemale);
                             result = pst.executeUpdate();
@@ -222,9 +222,9 @@ public class TrackingBirdPairDAO {
                             }
                         }
                         if (idCustomer != null) {
-                            String updateCustomerBird = "UPDATE [CustomerBird]\n"
-                                    + "SET [status] = N'Chưa ghép cặp'\n"
-                                    + "WHERE [bird_id] = ?";
+                            String updateCustomerBird = "UPDATE CustomerBird\n"
+                                    + "SET status = N'Chưa ghép cặp'\n"
+                                    + "WHERE bird_id = ?";
                             pst = con.prepareStatement(updateCustomerBird);
                             pst.setString(1, idCustomer);
                             result = pst.executeUpdate();
@@ -280,10 +280,10 @@ public class TrackingBirdPairDAO {
         ResultSet rs = null;
         String sql = "";
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 con.setAutoCommit(false);
-                sql = "INSERT INTO [PairTracking]([pair_id],[create_user],[content],[date_content])\n"
+                sql = "INSERT INTO PairTracking(pair_id,create_user,content,date_content)\n"
                         + "VALUES(?,?,?,?)";
                 pst = con.prepareStatement(sql);
                 pst.setInt(1, pair_id);

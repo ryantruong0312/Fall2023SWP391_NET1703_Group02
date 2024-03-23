@@ -94,12 +94,12 @@ public class AddNewBirdController extends HttpServlet {
                             txtBirdDate, txtBirdGrownAge, txtBirdGender, txtBirdBreed,
                             txtBirdAchievement, txtBirdReproduction_history, txtBirdPrice,
                             txtBirdDescription, txtDadId, txtMomId, txtBirdDiscount, txtBirdStatus);
-                    Part image_1 = request.getPart("txtImage_1");
-                    Part image_2 = request.getPart("txtImage_2");
-                    Part image_3 = request.getPart("txtImage_3");
-                    addNewImage(image_1, "1", txtBirdId);
-                    addNewImage(image_2, "0", txtBirdId);
-                    addNewImage(image_3, "0", txtBirdId);
+//                    Part image_1 = request.getPart("txtImage_1");
+//                    Part image_2 = request.getPart("txtImage_2");
+//                    Part image_3 = request.getPart("txtImage_3");
+//                    addNewImage(image_1, "1", txtBirdId);
+//                    addNewImage(image_2, "0", txtBirdId);
+//                    addNewImage(image_3, "0", txtBirdId);
                     if (check) {
                         session.setAttribute("SUCCESS", "Tạo mới thành công");
                     } else {

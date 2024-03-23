@@ -20,4 +20,11 @@ public class DBUtils {
         conn = DriverManager.getConnection(url, "sa", "12345");
         return conn;
     }
+    public static Connection getConnection(boolean isPosstgre) throws SQLException, ClassNotFoundException {
+        Connection conn = null;
+        Class.forName("org.postgresql.Driver");
+        String url = "jdbc:postgresql://localhost:5432/BirdFarmShop";
+        conn = DriverManager.getConnection(url, "postgres", "12345");
+        return conn;
+    }
 }

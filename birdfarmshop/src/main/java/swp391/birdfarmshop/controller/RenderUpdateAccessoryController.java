@@ -96,24 +96,24 @@ public class RenderUpdateAccessoryController extends HttpServlet {
                         String txtDiscount = request.getParameter("txtDiscount");
 
                         Part txtImage = request.getPart("txtImage");
-                        Part txtImage_1 = request.getPart("txtImage_1");
-                        Part txtImage_2 = request.getPart("txtImage_2");
 
                         if (txtImage.getSize() > 0 && txtImage.getSize() < 1048576) {
                             String imageURL = returnUrl(txtImage);
                             boolean checkImage = i.updateImageAccessory(txtAccessoryID, true, imageURL, null);
                         }
-
-                        if (txtImage_1.getSize() > 0 && txtImage_1.getSize() < 1048576) {
-                            String imageURL = returnUrl(txtImage_1);
-                            String Image_id = request.getParameter("Image_id_1");
-                            boolean checkImage = i.updateImageAccessory(txtAccessoryID, false, imageURL, Image_id);
-                        }
-
-                        if (txtImage_2.getSize() > 0 && txtImage_2.getSize() < 1048576) {
-                            String imageURL = returnUrl(txtImage_2);
-                            String Image_id = request.getParameter("Image_id_2");
-                            boolean checkImage = i.updateImageAccessory(txtAccessoryID, false, imageURL, Image_id);
+                        if(!list.isEmpty()) {
+                            Part txtImage1 = request.getPart("txtImage_1");
+                            Part txtImage2 = request.getPart("txtImage_2");
+                            if (txtImage1.getSize() > 0 && txtImage1.getSize() < 1048576) {
+                                String imageURL = returnUrl(txtImage1);
+                                String Image_id = request.getParameter("Image_id_1");
+                                boolean checkImage = i.updateImageAccessory(txtAccessoryID, false, imageURL, Image_id);
+                            }
+                            if (txtImage2.getSize() > 0 && txtImage2.getSize() < 1048576) {
+                                String imageURL = returnUrl(txtImage2);
+                                String Image_id = request.getParameter("Image_id_2");
+                                boolean checkImage = i.updateImageAccessory(txtAccessoryID, false, imageURL, Image_id);
+                            }
                         }
 
                         boolean rs = d.updateAccessory(txtAccessoryID, txtAccessoryName, txtCategoryID, txtPrice, txtStockQuantity, txtDescribe, txtDiscount);

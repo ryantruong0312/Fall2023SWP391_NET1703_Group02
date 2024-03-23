@@ -25,18 +25,17 @@ public class BirdCustomerDAO {
         Connection cnn = null;
         PreparedStatement pst = null;
         try {
-            cnn = DBUtils.getConnection();
+            cnn = DBUtils.getConnection(true);
             if (cnn != null) {
-                String sql = "INSERT INTO [CustomerBird]([customer_id],[bird_name],"
-                        + "               [breed_id],[gender],[status],[image_url]) \n"
-                        + "   VALUES (?,?,?,?,?,?)";
+                String sql = "INSERT INTO CustomerBird(customer_id,bird_name,"
+                        + "               breed_id,gender,status,image_url) \n"
+                        + "   VALUES (?,?,?,"+ (gender.equals("Trống") ? "B'1'" : "B'0'") +",?,?)";
                 pst = cnn.prepareStatement(sql);
                 pst.setString(1, username);
                 pst.setString(2, name);
                 pst.setString(3, breed_id);
-                pst.setString(4, gender);
-                pst.setString(5, status);
-                pst.setString(6, image_url);
+                pst.setString(4, status);
+                pst.setString(5, image_url);
                 result = pst.executeUpdate();
             }
         } catch (Exception e) {
@@ -66,13 +65,13 @@ public class BirdCustomerDAO {
         Statement st = null;
         ResultSet rs = null;
         try {
-            cnn = DBUtils.getConnection();
+            cnn = DBUtils.getConnection(true);
             if (cnn != null) {
-                String sql = "SELECT [bird_id],[bird_name],[gender],[breed_id],\n"
-                        + "	     [customer_id],[image_url],[status]\n"
+                String sql = "SELECT bird_id,bird_name,gender,breed_id,\n"
+                        + "	     customer_id,image_url,status\n"
                         + "FROM CustomerBird\n";
                 if (search != null) {
-                    sql += " WHERE bird_name LIKE N'%" + search + "%'\n";
+                    sql += " WHERE bird_name LIKE '%" + search + "%' COLLATE \"default\"\n";
                 }
                 if (page != null) {
                     if (page != null) {
@@ -129,10 +128,10 @@ public class BirdCustomerDAO {
         Statement st = null;
         ResultSet rs = null;
         try {
-            cnn = DBUtils.getConnection();
+            cnn = DBUtils.getConnection(true);
             if (cnn != null) {
-                String sql = "SELECT [bird_id],[bird_name],[gender],[breed_id],\n"
-                        + "	     [customer_id],[image_url],[status]\n"
+                String sql = "SELECT bird_id,bird_name,gender,breed_id,\n"
+                        + "	     customer_id,image_url,status\n"
                         + "FROM CustomerBird\n";
                 if (customer != null) {
                     sql += " WHERE customer_id = '" + customer + "'\n";
@@ -197,16 +196,16 @@ public class BirdCustomerDAO {
         PreparedStatement pst = null;
         ResultSet rs = null;
         try {
-            cnn = DBUtils.getConnection();
+            cnn = DBUtils.getConnection(true);
             if (cnn != null) {
-                String sql = "SELECT [bird_id],[bird_name],[gender],[breed_id],\n"
-                        + "	     [customer_id],[image_url],[status]\n"
+                String sql = "SELECT *\n"
                         + "FROM CustomerBird\n"
                         + "WHERE bird_id = ?";
                 pst = cnn.prepareStatement(sql);
-                pst.setString(1, birdId);
+                pst.setInt(1, Integer.parseInt(birdId));
+                System.out.println(pst);
                 rs = pst.executeQuery();
-                if (rs != null && rs.next()) {
+                if (rs.next()) {
                     int bird_id = rs.getInt("bird_id");
                     String bird_name = rs.getString("bird_name");
                     boolean gender = rs.getBoolean("gender");
@@ -249,9 +248,9 @@ public class BirdCustomerDAO {
         Connection con = null;
         PreparedStatement stm = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String query = "UPDATE [BirdFarmShop].[dbo].[CustomerBird] SET [status] = ? WHERE [customer_id] = ?";
+                String query = "UPDATE CustomerBird SET status = ? WHERE customer_id = ?";
                 stm = con.prepareStatement(query);
                 stm.setString(1, status);
                 stm.setString(2, customer_id);
@@ -277,13 +276,13 @@ public class BirdCustomerDAO {
         Statement st = null;
         ResultSet rs = null;
         try {
-            cnn = DBUtils.getConnection();
+            cnn = DBUtils.getConnection(true);
             if (cnn != null) {
-                String sql = "SELECT [bird_id],[bird_name],[gender],cb.[breed_id],\n"
-                        + "	     [customer_id],[image_url],[status],bb.[breed_name]\n"
+                String sql = "SELECT bird_id,bird_name,gender,cb.breed_id,\n"
+                        + "	     customer_id,image_url,status,bb.breed_name\n"
                         + "FROM CustomerBird cb\n"
                         + "LEFT JOIN BirdBreed bb\n"
-                        + "ON cb.[breed_id] = bb.[breed_id]";
+                        + "ON cb.breed_id = bb.breed_id";
                 if (customer != null) {
                     sql += " WHERE customer_id = '" + customer + "'\n";
                 }

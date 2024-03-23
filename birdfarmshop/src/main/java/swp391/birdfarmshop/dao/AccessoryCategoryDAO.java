@@ -19,8 +19,8 @@ import swp391.birdfarmshop.util.DBUtils;
  */
 public class AccessoryCategoryDAO {
 
-    private static final String GET_ACCESSORY_CATEGORY_LIST = "SELECT * FROM [AccessoryCategory]";
-    private static final String GET_ACCESSORY_CATEGORY_NAME_BY_ID = "SELECT [category_name] FROM [AccessoryCategory] WHERE [category_id] = ?";
+    private static final String GET_ACCESSORY_CATEGORY_LIST = "SELECT * FROM AccessoryCategory";
+    private static final String GET_ACCESSORY_CATEGORY_NAME_BY_ID = "SELECT category_name FROM AccessoryCategory WHERE category_id = ?";
 
     public List<AccessoryCategory> getAccessoryCategories() throws SQLException {
         List<AccessoryCategory> categoryList = new ArrayList<>();
@@ -28,7 +28,7 @@ public class AccessoryCategoryDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 stm = con.prepareStatement(GET_ACCESSORY_CATEGORY_LIST);
                 rs = stm.executeQuery();
@@ -59,7 +59,7 @@ public class AccessoryCategoryDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 stm = con.prepareStatement(GET_ACCESSORY_CATEGORY_NAME_BY_ID);
                 stm.setString(1, category_id);
@@ -86,12 +86,12 @@ public class AccessoryCategoryDAO {
         PreparedStatement stm = null;
         int rs;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                stm = con.prepareStatement("INSERT INTO [BirdFarmShop].[dbo].[AccessoryCategory]\n"
-                        + "                             ([category_id]\n"
-                        + "                             ,[category_name]\n"
-                        + "                             ,[category_thumbnail])\n"
+                stm = con.prepareStatement("INSERT INTO AccessoryCategory\n"
+                        + "                             (category_id\n"
+                        + "                             ,category_name\n"
+                        + "                             ,category_thumbnail)\n"
                         + "                 VALUES (?, ?, ?)");
                 stm.setString(1, txtCategoryid);
                 stm.setString(2, "Khác");
@@ -116,6 +116,5 @@ public class AccessoryCategoryDAO {
     
     public static void main(String[] args) throws SQLException {
         AccessoryCategoryDAO d = new AccessoryCategoryDAO();
-        System.out.println(d.createCategory("other"));
     }
 }

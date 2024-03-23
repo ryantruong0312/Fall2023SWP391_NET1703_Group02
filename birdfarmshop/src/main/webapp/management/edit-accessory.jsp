@@ -168,7 +168,6 @@
                                 </div>
                             </div>
 
-                            <c:if test="${requestScope.list != null}">
                                 <c:forEach var="image" items="${list}" varStatus="loop">
                                     <div class="form-outline mt-2">
                                         <div class="row">
@@ -182,8 +181,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </c:forEach>
-                            </c:if>                                
+                                </c:forEach>                            
                         </div>
                         <div class="col-lg-12" style="margin-top: 10px;">
                             <button style="float: right;" onclick="return checkUser(this)" type="submit" class="btn btn-danger button-submit">Hủy bỏ</button>

@@ -35,12 +35,12 @@ public class OrderItemDAO {
         AccessoryDAO accessoryDao = new AccessoryDAO();
         BirdPairDAO bpDao = new BirdPairDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                stm = con.prepareStatement("SELECT [order_item_id],[bird_id],[nest_id],"
-                        + "                 [accessory_id],[pair_id],[unit_price],[order_quantity]\n"
-                        + "                 FROM [dbo].[OrderItem]\n"
-                        + "                 WHERE [order_id] = ?");
+                stm = con.prepareStatement("SELECT order_item_id,bird_id,nest_id,"
+                        + "                 accessory_id,pair_id,unit_price,order_quantity\n"
+                        + "                 FROM OrderItem\n"
+                        + "                 WHERE order_id = ?");
                 stm.setString(1, order_id);
                 rs = stm.executeQuery();
                 while (rs.next()) {
@@ -85,14 +85,14 @@ public class OrderItemDAO {
         boolean checkMoney = true;
         boolean checkPair = true;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 con.setAutoCommit(false);
                 if (male_bird_id != null) {
-                    String maleBird = "SELECT [price]\n"
-                            + "      ,[discount]\n"
-                            + "FROM [BirdFarmShop].[dbo].[Bird]\n"
-                            + "WHERE [bird_id]= ? AND [status]= ?";
+                    String maleBird = "SELECT price\n"
+                            + "      ,discount\n"
+                            + "FROM Bird\n"
+                            + "WHERE bird_id= ? AND status= ?";
                     pst = con.prepareStatement(maleBird);
                     pst.setString(1, male_bird_id);
                     pst.setString(2, "Đang sinh sản");
@@ -103,15 +103,15 @@ public class OrderItemDAO {
                         if (discount > 0) {
                             realPrice = realPrice - realPrice * discount / 100;
                         }
-                        String updateMaleBird = "UPDATE [Bird]\n"
-                                + "SET [status] = N'Đã bán'\n"
-                                + "WHERE [bird_id] = ?";
+                        String updateMaleBird = "UPDATE Bird\n"
+                                + "SET status = 'Đã bán'\n"
+                                + "WHERE bird_id = ?";
                         pst = con.prepareStatement(updateMaleBird);
                         pst.setString(1, male_bird_id);
                         result = pst.executeUpdate();
                         if (result > 0) {
-                            String insertBird = "INSERT INTO [OrderItem]([order_id],[bird_id],\n"
-                                    + "		  [unit_price],[order_quantity])\n"
+                            String insertBird = "INSERT INTO OrderItem(order_id,bird_id,\n"
+                                    + "		  unit_price,order_quantity)\n"
                                     + "   VALUES(?,?,?,?)";
                             pst = con.prepareStatement(insertBird);
                             pst.setString(1, order_id);
@@ -128,18 +128,18 @@ public class OrderItemDAO {
                         checkBird = false;
                     }
                 } else {
-                    String SelectBirdPair = "SELECT [male_bird_id]\n"
-                            + "FROM [BirdPair]\n"
-                            + "WHERE [pair_id] = ?";
+                    String SelectBirdPair = "SELECT male_bird_id\n"
+                            + "FROM BirdPair\n"
+                            + "WHERE pair_id = ?";
                     pst = con.prepareStatement(SelectBirdPair);
                     pst.setInt(1, pair_id);
                     rs = pst.executeQuery();
                     if (rs != null && rs.next()) {
                         String id = rs.getString("male_bird_id");
                         if (id != null) {
-                            String updateMaleBird = "UPDATE [Bird]\n"
-                                    + "SET [status] = N'Còn hàng'\n"
-                                    + "WHERE [bird_id] = ?";
+                            String updateMaleBird = "UPDATE Bird\n"
+                                    + "SET status = 'Còn hàng'\n"
+                                    + "WHERE bird_id = ?";
                             pst = con.prepareStatement(updateMaleBird);
                             pst.setString(1, id);
                             result = pst.executeUpdate();
@@ -152,10 +152,10 @@ public class OrderItemDAO {
                     }
                 }
                 if (female_bird_id != null) {
-                    String checkFemaleBird = "SELECT [price]\n"
-                            + "      ,[discount]\n"
-                            + "FROM [BirdFarmShop].[dbo].[Bird]\n"
-                            + "WHERE [bird_id]= ? AND [status] = ?";
+                    String checkFemaleBird = "SELECT price\n"
+                            + "      ,discount\n"
+                            + "FROM Bird\n"
+                            + "WHERE bird_id= ? AND status = ?";
                     pst = con.prepareStatement(checkFemaleBird);
                     pst.setString(1, female_bird_id);
                     pst.setString(2, "Đang sinh sản");
@@ -166,9 +166,9 @@ public class OrderItemDAO {
                         if (discount > 0) {
                             realPrice = realPrice - realPrice * discount / 100;
                         }
-                        String updateBird = "UPDATE [Bird]\n"
-                                + "SET [status] = N'Đã bán'\n"
-                                + "WHERE [bird_id] = ?";
+                        String updateBird = "UPDATE Bird\n"
+                                + "SET status = 'Đã bán'\n"
+                                + "WHERE bird_id = ?";
                         pst = con.prepareStatement(updateBird);
                         pst.setString(1, female_bird_id);
                         result = pst.executeUpdate();
@@ -176,8 +176,8 @@ public class OrderItemDAO {
                             checkBird = false;
 
                         } else {
-                            String insertBird = "INSERT INTO [OrderItem]([order_id],[bird_id],\n"
-                                    + "		  [unit_price],[order_quantity])\n"
+                            String insertBird = "INSERT INTO OrderItem(order_id,bird_id,\n"
+                                    + "		  unit_price,order_quantity)\n"
                                     + "   VALUES(?,?,?,?)";
                             pst = con.prepareStatement(insertBird);
                             pst.setString(1, order_id);
@@ -194,18 +194,18 @@ public class OrderItemDAO {
                         checkBird = false;
                     }
                 } else {
-                    String SelectBirdPair = "SELECT [female_bird_id]\n"
-                            + "FROM [BirdPair]\n"
-                            + "WHERE [pair_id] = ?";
+                    String SelectBirdPair = "SELECT female_bird_id\n"
+                            + "FROM BirdPair\n"
+                            + "WHERE pair_id = ?";
                     pst = con.prepareStatement(SelectBirdPair);
                     pst.setInt(1, pair_id);
                     rs = pst.executeQuery();
                     if (rs != null && rs.next()) {
                         String id = rs.getString("female_bird_id");
                         if (id != null) {
-                            String updateMaleBird = "UPDATE [Bird]\n"
-                                    + "SET [status] = N'Còn hàng'\n"
-                                    + "WHERE [bird_id] = ?";
+                            String updateMaleBird = "UPDATE Bird\n"
+                                    + "SET status = N'Còn hàng'\n"
+                                    + "WHERE bird_id = ?";
                             pst = con.prepareStatement(updateMaleBird);
                             pst.setString(1, id);
                             result = pst.executeUpdate();
@@ -218,9 +218,9 @@ public class OrderItemDAO {
                     }
                 }
                 if (accessory_id != null) {
-                    String getAccessoryOrder = "SELECT [order_quantity]\n"
-                            + "FROM [BirdFarmShop].[dbo].[OrderItem]\n"
-                            + "WHERE [accessory_id]= ? AND [unit_price] = ? AND order_id = ?";
+                    String getAccessoryOrder = "SELECT order_quantity\n"
+                            + "FROM OrderItem\n"
+                            + "WHERE accessory_id= ? AND unit_price = ? AND order_id = ?";
 
                     pst = con.prepareStatement(getAccessoryOrder);
                     pst.setString(1, accessory_id);
@@ -229,9 +229,9 @@ public class OrderItemDAO {
                     rs = pst.executeQuery();
                     if (rs != null && rs.next()) {
                         int quantity = rs.getInt("order_quantity");
-                        String getStockAccessory = "SELECT [stock_quantity]\n"
-                                + "FROM [BirdFarmShop].[dbo].[Accessory]\n"
-                                + "WHERE [accessory_id] = ?";
+                        String getStockAccessory = "SELECT stock_quantity\n"
+                                + "FROM Accessory\n"
+                                + "WHERE accessory_id = ?";
                         pst = con.prepareStatement(getStockAccessory);
                         pst.setString(1, accessory_id);
                         rs = pst.executeQuery();
@@ -253,9 +253,9 @@ public class OrderItemDAO {
                                         return 0;
                                     }
                                 }
-                                String updateQuantity = "UPDATE [Accessory]\n"
-                                        + "SET [stock_quantity] = ?\n"
-                                        + "WHERE [accessory_id] = ?";
+                                String updateQuantity = "UPDATE Accessory\n"
+                                        + "SET stock_quantity = ?\n"
+                                        + "WHERE accessory_id = ?";
                                 pst = con.prepareStatement(updateQuantity);
                                 pst.setInt(1, newStock);
                                 pst.setString(2, accessory_id);
@@ -263,10 +263,10 @@ public class OrderItemDAO {
                                 if (result == 0) {
                                     checkAccessory = false;
                                 } else {
-                                    String updateOrder = "UPDATE [OrderItem]\n"
-                                            + "SET [order_quantity] = ?\n"
-                                            + "WHERE [order_id] = ? \n"
-                                            + "AND [accessory_id] = ?;";
+                                    String updateOrder = "UPDATE OrderItem\n"
+                                            + "SET order_quantity = ?\n"
+                                            + "WHERE order_id = ? \n"
+                                            + "AND accessory_id = ?;";
                                     pst = con.prepareStatement(updateOrder);
                                     pst.setInt(1, quantity + 1);
                                     pst.setString(2, order_id);
@@ -283,9 +283,9 @@ public class OrderItemDAO {
                             checkAccessory = false;
                         }
                     } else {
-                        String getStockAccessory = "SELECT [stock_quantity]\n"
-                                + "FROM [BirdFarmShop].[dbo].[Accessory]\n"
-                                + "WHERE [accessory_id] = ?";
+                        String getStockAccessory = "SELECT stock_quantity\n"
+                                + "FROM Accessory\n"
+                                + "WHERE accessory_id = ?";
                         pst = con.prepareStatement(getStockAccessory);
                         pst.setString(1, accessory_id);
                         rs = pst.executeQuery();
@@ -308,9 +308,9 @@ public class OrderItemDAO {
                                         return 0;
                                     }
                                 }
-                                String updateQuantity = "UPDATE [Accessory]\n"
-                                        + "SET [stock_quantity] = ?\n"
-                                        + "WHERE [accessory_id] = ?";
+                                String updateQuantity = "UPDATE Accessory\n"
+                                        + "SET stock_quantity = ?\n"
+                                        + "WHERE accessory_id = ?";
                                 pst = con.prepareStatement(updateQuantity);
                                 pst.setInt(1, newStock);
                                 pst.setString(2, accessory_id);
@@ -318,8 +318,8 @@ public class OrderItemDAO {
                                 if (result == 0) {
                                     checkAccessory = false;
                                 } else {
-                                    String insertAccessory = "INSERT INTO [OrderItem]([order_id],\n"
-                                            + "		  [accessory_id],[unit_price],[order_quantity])\n"
+                                    String insertAccessory = "INSERT INTO OrderItem(order_id,\n"
+                                            + "		  accessory_id,unit_price,order_quantity)\n"
                                             + "               VALUES(?,?,?,?)";
                                     pst = con.prepareStatement(insertAccessory);
                                     pst.setString(1, order_id);
@@ -339,8 +339,8 @@ public class OrderItemDAO {
                     }
                 }
                 if (totalPrice > 0) {
-                    String query = "SELECT [total_price]\n"
-                            + "FROM [BirdFarmShop].[dbo].[Order] WHERE [order_id] = ?";
+                    String query = "SELECT total_price\n"
+                            + "FROM Order WHERE order_id = ?";
                     pst = con.prepareStatement(query);
                     pst.setString(1, order_id);
                     rs = pst.executeQuery();
@@ -348,18 +348,18 @@ public class OrderItemDAO {
                         int oldPrice = rs.getInt("total_price");
                         totalPrice += oldPrice;
                         if (typePayment == false) {
-                            String update = "UPDATE [ORDER]\n"
-                                    + "SET [total_price] = ?\n"
-                                    + "WHERE [order_id] = ?";
+                            String update = "UPDATE ORDER\n"
+                                    + "SET total_price = ?\n"
+                                    + "WHERE order_id = ?";
                             pst = con.prepareStatement(update);
                             pst.setInt(1, totalPrice);
                             pst.setString(2, order_id);
                         } else {
-                            String update = "UPDATE [ORDER]\n"
-                                    + "SET [total_price] = ?, \n"
-                                    + "[payment_type] = N'Chuyển khoản',\n"
-                                    + "[payment_status] = N'Đã thanh toán'\n"
-                                    + "WHERE [order_id] = ?";
+                            String update = "UPDATE ORDER\n"
+                                    + "SET total_price = ?, \n"
+                                    + "payment_type = 'Chuyển khoản',\n"
+                                    + "payment_status = 'Đã thanh toán'\n"
+                                    + "WHERE order_id = ?";
                             pst = con.prepareStatement(update);
                             pst.setInt(1, totalPrice);
                             pst.setString(2, order_id);
@@ -373,9 +373,9 @@ public class OrderItemDAO {
                     }
                 }
                 if (pair_id > 0) {
-                    String updateStatusBirdPair = "UPDATE [BirdPair]\n"
-                            + "SET [status] = ?\n"
-                            + "WHERE [pair_id] = ?";
+                    String updateStatusBirdPair = "UPDATE BirdPair\n"
+                            + "SET status = ?\n"
+                            + "WHERE pair_id = ?";
                     pst = con.prepareStatement(updateStatusBirdPair);
                     pst.setString(1, "Đã thanh toán");
                     pst.setInt(2, pair_id);
@@ -384,18 +384,18 @@ public class OrderItemDAO {
                         checkPair = false;
                     }
                 }
-                String SelectBirdPair = "SELECT [bird_customer]\n"
-                        + "FROM [BirdPair]\n"
-                        + "WHERE [pair_id] = ?";
+                String SelectBirdPair = "SELECT bird_customer\n"
+                        + "FROM BirdPair\n"
+                        + "WHERE pair_id = ?";
                 pst = con.prepareStatement(SelectBirdPair);
                 pst.setInt(1, pair_id);
                 rs = pst.executeQuery();
                 if (rs != null && rs.next()) {
                     String id = rs.getString("bird_customer");
                     if (id != null) {
-                        String updateMaleBird = "UPDATE [CustomerBird]\n"
-                                + "SET [status] = N'Chưa ghép cặp'\n"
-                                + "WHERE [bird_id] = ?";
+                        String updateMaleBird = "UPDATE CustomerBird\n"
+                                + "SET status = 'Chưa ghép cặp'\n"
+                                + "WHERE bird_id = ?";
                         pst = con.prepareStatement(updateMaleBird);
                         pst.setString(1, id);
                         result = pst.executeUpdate();
@@ -451,13 +451,13 @@ public class OrderItemDAO {
         AccessoryDAO accessoryDao = new AccessoryDAO();
         BirdPairDAO bpDao = new BirdPairDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                stm = con.prepareStatement("SELECT Item.[order_item_id],Item.[order_id],[Order].[order_status]\n"
-                        + "                            ,Item.[bird_id],Item.[nest_id],Item.[accessory_id],Item.[pair_id],Item.[unit_price],Item.[order_quantity]\n"
-                        + "                            FROM [BirdFarmShop].[dbo].[OrderItem] AS Item\n"
-                        + "                            LEFT JOIN [BirdFarmShop].[dbo].[Order] ON Item.[order_id] = [Order].[order_id]\n"
-                        + "                            WHERE Item.[order_id] = ?");
+                stm = con.prepareStatement("SELECT Item.order_item_id,Item.order_id,Order.order_status\n"
+                        + "                            ,Item.bird_id,Item.nest_id,Item.accessory_id,Item.pair_id,Item.unit_price,Item.order_quantity\n"
+                        + "                            FROM OrderItem AS Item\n"
+                        + "                            LEFT JOIN Order ON Item.order_id = Order.order_id\n"
+                        + "                            WHERE Item.order_id = ?");
                 stm.setString(1, order_id);
                 rs = stm.executeQuery();
                 while (rs.next()) {
@@ -500,12 +500,12 @@ public class OrderItemDAO {
         AccessoryDAO accessoryDao = new AccessoryDAO();
         BirdPairDAO bpDao = new BirdPairDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                stm = con.prepareStatement("SELECT [order_id],[bird_id],[nest_id],"
-                        + "                 [accessory_id],[unit_price],[order_quantity]\n"
-                        + "                 FROM [dbo].[OrderItem]\n"
-                        + "                 WHERE [order_item_id] = ?");
+                stm = con.prepareStatement("SELECT order_id,bird_id,nest_id,"
+                        + "                 accessory_id,unit_price,order_quantity\n"
+                        + "                 FROM OrderItem\n"
+                        + "                 WHERE order_item_id = ?");
                 stm.setInt(1, order_item_id);
                 rs = stm.executeQuery();
                 while (rs.next()) {

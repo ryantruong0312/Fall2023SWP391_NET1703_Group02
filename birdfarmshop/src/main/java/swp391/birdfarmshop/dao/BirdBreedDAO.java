@@ -21,7 +21,7 @@ import swp391.birdfarmshop.util.DBUtils;
 public class BirdBreedDAO {
 
     private static final String GET_BIRD_BREED_LIST = "SELECT * FROM BirdBreed";
-    private static final String GET_BREED_NAME_BY_ID = "SELECT [breed_name] FROM [BirdBreed] WHERE [breed_id] = ?";
+    private static final String GET_BREED_NAME_BY_ID = "SELECT breed_name FROM BirdBreed WHERE breed_id = ?";
 
     public List<BirdBreed> getBirdBreeds() throws SQLException {
         List<BirdBreed> birdBreedList = new ArrayList<>();
@@ -29,7 +29,7 @@ public class BirdBreedDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 stm = con.prepareStatement(GET_BIRD_BREED_LIST);
                 rs = stm.executeQuery();
@@ -60,7 +60,7 @@ public class BirdBreedDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 stm = con.prepareStatement(GET_BREED_NAME_BY_ID);
                 stm.setString(1, breed_id);

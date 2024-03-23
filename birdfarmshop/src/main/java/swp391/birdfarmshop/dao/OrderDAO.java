@@ -51,24 +51,24 @@ public class OrderDAO {
         PreparedStatement pst = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 con.setAutoCommit(false);
-                String insertOrder = "INSERT INTO [ORDER]([order_id]\n"
-                        + ",[customer]\n"
-                        + ",[order_date]\n"
-                        + ",[order_status]\n"
-                        + ",[name_receiver]\n"
-                        + ",[phone_receiver]\n"
-                        + ",[address_receiver]\n"
-                        + ",[payment_status]\n"
-                        + ",[payment_type]\n"
-                        + ",[total_price]\n"
-                        + ",[cancel_reason]\n"
-                        + ",[vnp_txnRef]\n"
-                        + ",[vnp_date]\n"
-                        + ",[vnp_transaction])\n"
-                        + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                String insertOrder = "INSERT INTO Orders(order_id\n"
+                        + ",customer\n"
+                        + ",order_date\n"
+                        + ",order_status\n"
+                        + ",name_receiver\n"
+                        + ",phone_receiver\n"
+                        + ",address_receiver\n"
+                        + ",payment_status\n"
+                        + ",payment_type\n"
+                        + ",total_price\n"
+                        + ",cancel_reason\n"
+                        + ",vnp_txnRef\n"
+                        + ",vnp_date\n"
+                        + ",vnp_transaction)\n"
+                        + "VALUES(?,?,?::timestamp without time zone,?,?,?,?,?,?,?,?,?,?,?)";
                 pst = con.prepareStatement(insertOrder);
                 pst.setString(1, order_id);
                 pst.setString(2, username);
@@ -87,6 +87,7 @@ public class OrderDAO {
                 pst.setString(12, vnp_TxnRef);
                 pst.setString(13, vnp_date);
                 pst.setString(14, vnp_transaction);
+                System.out.println(pst);
                 result = pst.executeUpdate();
                 boolean checkBird = true;
                 boolean checkAccessory = true;
@@ -99,8 +100,8 @@ public class OrderDAO {
                         if (b.getDiscount() > 0) {
                             realPrice = b.getPrice() - b.getPrice() * b.getDiscount() / 100;
                         }
-                        String checkOrderBird = "SELECT [status]\n" +
-                                "FROM [BirdFarmShop].[dbo].[Bird] WHERE [bird_id] = ? AND [status] <> N'Còn hàng'";
+                        String checkOrderBird = "SELECT status\n" +
+                                "FROM Bird WHERE bird_id = ? AND status <> 'Còn hàng' COLLATE \"default\"";
                         pst = con.prepareStatement(checkOrderBird);
                         pst.setString(1, b.getBird_id());
                         rs = pst.executeQuery();
@@ -109,9 +110,9 @@ public class OrderDAO {
                             checkBird = false;
                             break;
                         } else {
-                            String updateBird = "UPDATE [Bird]\n"
-                                    + "SET [status] = N'Hết hàng'\n"
-                                    + "WHERE [bird_id] = ?";
+                            String updateBird = "UPDATE Bird\n"
+                                    + "SET status = 'Hết hàng'\n"
+                                    + "WHERE bird_id = ?";
                             pst = con.prepareStatement(updateBird);
                             pst.setString(1, b.getBird_id());
                             result = pst.executeUpdate();
@@ -119,8 +120,8 @@ public class OrderDAO {
                                 checkBird = false;
                                 break;
                             } else {
-                                String insertBird = "INSERT INTO [OrderItem]([order_id],[bird_id],\n"
-                                        + "		  [unit_price],[order_quantity])\n"
+                                String insertBird = "INSERT INTO OrderItem(order_id,bird_id,\n"
+                                        + "		  unit_price,order_quantity)\n"
                                         + "   VALUES(?,?,?,?)";
                                 pst = con.prepareStatement(insertBird);
                                 pst.setString(1, order_id);
@@ -146,9 +147,9 @@ public class OrderDAO {
                         if (oa.getFree_order() > 0) {
                             quantity = oa.getFree_order() + oa.getOrder_quantity();
                         }
-                        String getStockAccessory = "SELECT [stock_quantity]\n"
-                                + "FROM [BirdFarmShop].[dbo].[Accessory]\n"
-                                + "WHERE [accessory_id] = ?";
+                        String getStockAccessory = "SELECT stock_quantity\n"
+                                + "FROM Accessory\n"
+                                + "WHERE accessory_id = ?";
                         pst = con.prepareStatement(getStockAccessory);
                         pst.setString(1, a.getAccessory_id());
                         rs = pst.executeQuery();
@@ -164,9 +165,9 @@ public class OrderDAO {
                                 break;
                             } else {
                                 int newStock = numberAccessory - quantity;
-                                String updateQuantity = "UPDATE [Accessory]\n"
-                                        + "SET [stock_quantity] = ?\n"
-                                        + "WHERE [accessory_id] = ?";
+                                String updateQuantity = "UPDATE Accessory\n"
+                                        + "SET stock_quantity = ?\n"
+                                        + "WHERE accessory_id = ?";
                                 pst = con.prepareStatement(updateQuantity);
                                 pst.setInt(1, newStock);
                                 pst.setString(2, a.getAccessory_id());
@@ -175,8 +176,8 @@ public class OrderDAO {
                                     checkAccessory = false;
                                     break;
                                 } else {
-                                    String insertAccessory = "INSERT INTO [OrderItem]([order_id],\n"
-                                            + "		  [accessory_id],[unit_price],[order_quantity])\n"
+                                    String insertAccessory = "INSERT INTO OrderItem(order_id,\n"
+                                            + "		  accessory_id,unit_price,order_quantity)\n"
                                             + "               VALUES(?,?,?,?)";
                                     pst = con.prepareStatement(insertAccessory);
                                     pst.setString(1, order_id);
@@ -189,8 +190,8 @@ public class OrderDAO {
                                         break;
                                     }
                                     if (oa.getFree_order() > 0) {
-                                        insertAccessory = "INSERT INTO [OrderItem]([order_id],\n"
-                                                + "		  [accessory_id],[unit_price],[order_quantity])\n"
+                                        insertAccessory = "INSERT INTO OrderItem(order_id,\n"
+                                                + "		  accessory_id,unit_price,order_quantity)\n"
                                                 + "               VALUES(?,?,?,?)";
                                         pst = con.prepareStatement(insertAccessory);
                                         pst.setString(1, order_id);
@@ -219,20 +220,20 @@ public class OrderDAO {
                             Bird birdShop = opi.getBirdShop();
                             if (customer != null && birdShop != null) {
                                 String checkBirdShop = "SELECT *\n"
-                                        + "FROM [BirdFarmShop].[dbo].[Bird]\n"
-                                        + "WHERE [bird_id] = ? AND [status] = N'Còn hàng'";
+                                        + "FROM Bird\n"
+                                        + "WHERE bird_id = ? AND status = 'Còn hàng' COLLATE \"default\"";
                                 pst = con.prepareStatement(checkBirdShop);
                                 pst.setString(1, birdShop.getBird_id());
                                 rs = pst.executeQuery();
                                 if (rs != null && rs.next()) {
                                     String checkBirdCustomer = "SELECT *\n"
-                                            + "FROM [BirdFarmShop].[dbo].[CustomerBird]\n"
-                                            + "WHERE [bird_id] = ? AND [status] = N'Chưa ghép cặp'";
+                                            + "FROM CustomerBird\n"
+                                            + "WHERE bird_id = ? AND status = 'Chưa ghép cặp' COLLATE \"default\"";
                                     pst = con.prepareStatement(checkBirdCustomer);
                                     pst.setInt(1, customer.getBird_id());
                                     rs = pst.executeQuery();
                                     if (rs != null && rs.next()) {
-                                        String insertBirdPair = "INSERT INTO [BirdPair]([order_id],[young_bird_price],[bird_customer],[male_bird_id],[female_bird_id],[status])\n"
+                                        String insertBirdPair = "INSERT INTO BirdPair(order_id,young_bird_price,bird_customer,male_bird_id,female_bird_id,status)\n"
                                                 + "VALUES(?,?,?,?,?,?)";
                                         pst = con.prepareStatement(insertBirdPair);
                                         pst.setString(1, order_id);
@@ -253,8 +254,8 @@ public class OrderDAO {
                                             checkBirdPair = false;
                                             break;
                                         } else {
-                                            String updateBirdCustomer = "UPDATE [CustomerBird]\n"
-                                                    + "SET [status] = N'Đang ghép cặp'\n"
+                                            String updateBirdCustomer = "UPDATE CustomerBird\n"
+                                                    + "SET status = 'Đang ghép cặp' COLLATE \"default\"\n"
                                                     + "WHERE bird_id = ?";
                                             pst = con.prepareStatement(updateBirdCustomer);
                                             pst.setInt(1, customer.getBird_id());
@@ -263,8 +264,8 @@ public class OrderDAO {
                                                 checkBirdPair = false;
                                                 break;
                                             }
-                                            String updateBirdShop = "UPDATE [Bird]\n"
-                                                    + "SET [status] = N'Đang sinh sản'\n"
+                                            String updateBirdShop = "UPDATE Bird\n"
+                                                    + "SET status = 'Đang sinh sản' COLLATE \"default\"\n"
                                                     + "WHERE bird_id = ?";
                                             pst = con.prepareStatement(updateBirdShop);
                                             pst.setString(1, birdShop.getBird_id());
@@ -273,15 +274,15 @@ public class OrderDAO {
                                                 checkBirdPair = false;
                                                 break;
                                             }
-                                            String selectBirdPair = "SELECT TOP 1 [pair_id]\n"
-                                                    + "FROM [BirdFarmShop].[dbo].[BirdPair]\n"
-                                                    + "WHERE [order_id] = ?";
+                                            String selectBirdPair = "SELECT TOP 1 pair_id\n"
+                                                    + "FROM BirdPair\n"
+                                                    + "WHERE order_id = ?";
                                             pst = con.prepareStatement(selectBirdPair);
                                             pst.setString(1, order_id);
                                             rs = pst.executeQuery();
                                             if (rs != null && rs.next()) {
                                                 int pair_id = rs.getInt("pair_id");
-                                                String insertTracking = "INSERT INTO [PairTracking]([pair_id],[content],[date_content])\n"
+                                                String insertTracking = "INSERT INTO PairTracking(pair_id,content,date_content)\n"
                                                         + "VALUES(?,?,?)";
                                                 pst = con.prepareStatement(insertTracking);
                                                 pst.setInt(1, pair_id);
@@ -291,8 +292,8 @@ public class OrderDAO {
                                                     checkBirdPair = false;
                                                     break;
                                                 }
-                                                String insertBirdPairOrderItem = "INSERT INTO [OrderItem]([order_id],[pair_id],\n"
-                                                        + "		  [unit_price],[order_quantity])\n"
+                                                String insertBirdPairOrderItem = "INSERT INTO OrderItem(order_id,pair_id,\n"
+                                                        + "		  unit_price,order_quantity)\n"
                                                         + "   VALUES(?,?,?,?)";
                                                 pst = con.prepareStatement(insertBirdPairOrderItem);
                                                 pst.setString(1, order_id);
@@ -322,20 +323,20 @@ public class OrderDAO {
                             }
                             if (male != null && female != null) {
                                 String checkBirdMale = "SELECT *\n"
-                                        + "FROM [BirdFarmShop].[dbo].[Bird]\n"
-                                        + "WHERE [bird_id] = ? AND [status] = N'Còn hàng'";
+                                        + "FROM Bird\n"
+                                        + "WHERE bird_id = ? AND status = 'Còn hàng' COLLATE \"default\"";
                                 pst = con.prepareStatement(checkBirdMale);
                                 pst.setString(1, male.getBird_id());
                                 rs = pst.executeQuery();
                                 if (rs != null && rs.next()) {
                                     String checkBirdFemale = "SELECT *\n"
-                                            + "FROM [BirdFarmShop].[dbo].[Bird]\n"
-                                            + "WHERE [bird_id] = ? AND [status] = N'Còn hàng'";
+                                            + "FROM Bird\n"
+                                            + "WHERE bird_id = ? AND status = 'Còn hàng' COLLATE \"default\"";
                                     pst = con.prepareStatement(checkBirdFemale);
                                     pst.setString(1, female.getBird_id());
                                     rs = pst.executeQuery();
                                     if (rs != null && rs.next()) {
-                                        String insertBirdPair = "INSERT INTO [BirdPair]([order_id],[young_bird_price],[male_bird_id],[female_bird_id],[status])\n"
+                                        String insertBirdPair = "INSERT INTO BirdPair(order_id,young_bird_price,male_bird_id,female_bird_id,status)\n"
                                                 + "VALUES(?,?,?,?,?)";
                                         pst = con.prepareStatement(insertBirdPair);
                                         pst.setString(1, order_id);
@@ -349,8 +350,8 @@ public class OrderDAO {
                                         if (result == 0) {
                                             break;
                                         } else {
-                                            String updateBirdMale = "UPDATE [Bird]\n"
-                                                    + "SET [status] = N'Đang sinh sản'\n"
+                                            String updateBirdMale = "UPDATE Bird\n"
+                                                    + "SET status = 'Đang sinh sản'\n"
                                                     + "WHERE bird_id = ?";
                                             pst = con.prepareStatement(updateBirdMale);
                                             pst.setString(1, male.getBird_id());
@@ -360,8 +361,8 @@ public class OrderDAO {
                                                 checkBirdPair = false;
                                                 break;
                                             }
-                                            String updateBirdFemale = "UPDATE [Bird]\n"
-                                                    + "SET [status] = N'Đang sinh sản'\n"
+                                            String updateBirdFemale = "UPDATE Bird\n"
+                                                    + "SET status = 'Đang sinh sản'\n"
                                                     + "WHERE bird_id = ?";
                                             pst = con.prepareStatement(updateBirdFemale);
                                             pst.setString(1, female.getBird_id());
@@ -370,15 +371,15 @@ public class OrderDAO {
                                                 checkBirdPair = false;
                                                 break;
                                             }
-                                            String selectBirdPair = "SELECT TOP 1 [pair_id]\n"
-                                                    + "FROM [BirdFarmShop].[dbo].[BirdPair]\n"
-                                                    + "WHERE [order_id] = ?";
+                                            String selectBirdPair = "SELECT TOP 1 pair_id\n"
+                                                    + "FROM BirdPair\n"
+                                                    + "WHERE order_id = ?";
                                             pst = con.prepareStatement(selectBirdPair);
                                             pst.setString(1, order_id);
                                             rs = pst.executeQuery();
                                             if (rs != null && rs.next()) {
                                                 int pair_id = rs.getInt("pair_id");
-                                                String insertTracking = "INSERT INTO [PairTracking]([pair_id],[content],[date_content])\n"
+                                                String insertTracking = "INSERT INTO PairTracking(pair_id,content,date_content)\n"
                                                         + "VALUES(?,?,?)";
                                                 pst = con.prepareStatement(insertTracking);
                                                 pst.setInt(1, pair_id);
@@ -389,8 +390,8 @@ public class OrderDAO {
                                                     checkBirdPair = false;
                                                     break;
                                                 }
-                                                String insertBirdPairOrderItem = "INSERT INTO [OrderItem]([order_id],[pair_id],\n"
-                                                        + "		  [unit_price],[order_quantity])\n"
+                                                String insertBirdPairOrderItem = "INSERT INTO OrderItem(order_id,pair_id,\n"
+                                                        + "		  unit_price,order_quantity)\n"
                                                         + "   VALUES(?,?,?,?)";
                                                 pst = con.prepareStatement(insertBirdPairOrderItem);
                                                 pst.setString(1, order_id);
@@ -461,20 +462,21 @@ public class OrderDAO {
         Statement st = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "SELECT TOP 1 [order_id]\n"
-                        + "      ,[customer]\n"
-                        + "      ,[order_date]\n"
-                        + "      ,[order_status]\n"
-                        + "      ,[name_receiver]\n"
-                        + "      ,[phone_receiver]\n"
-                        + "      ,[address_receiver]\n"
-                        + "      ,[payment_status]\n"
-                        + "      ,[total_price]\n"
-                        + "      ,[cancel_reason]\n"
-                        + "  FROM [BirdFarmShop].[dbo].[Order]\n"
-                        + "  ORDER BY order_date DESC";
+                String sql = "SELECT order_id\n"
+                        + "      ,customer\n"
+                        + "      ,order_date::date\n"
+                        + "      ,order_status\n"
+                        + "      ,name_receiver\n"
+                        + "      ,phone_receiver\n"
+                        + "      ,address_receiver\n"
+                        + "      ,payment_status\n"
+                        + "      ,total_price\n"
+                        + "      ,cancel_reason\n"
+                        + "  FROM Orders\n"
+                        + "  ORDER BY order_date DESC"
+                        + "  LIMIT 1";
                 st = con.createStatement();
                 rs = st.executeQuery(sql);
                 if (rs != null && rs.next()) {
@@ -525,17 +527,17 @@ public class OrderDAO {
         PreparedStatement pst = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "SELECT [order_item_id]\n"
-                        + "      ,[order_id]\n"
-                        + "      ,[bird_id]\n"
-                        + "      ,[nest_id]\n"
-                        + "      ,[accessory_id]\n"
-                        + "      ,[unit_price]\n"
-                        + "      ,[order_quantity]\n"
-                        + "  FROM [BirdFarmShop].[dbo].[OrderItem]\n"
-                        + "  WHERE [bird_id] = ?";
+                String sql = "SELECT order_item_id\n"
+                        + "      ,order_id\n"
+                        + "      ,bird_id\n"
+                        + "      ,nest_id\n"
+                        + "      ,accessory_id\n"
+                        + "      ,unit_price\n"
+                        + "      ,order_quantity\n"
+                        + "  FROM OrderItem\n"
+                        + "  WHERE bird_id = ?";
                 pst = con.prepareStatement(sql);
                 pst.setString(1, bird_id);
                 rs = pst.executeQuery();
@@ -586,89 +588,89 @@ public class OrderDAO {
         Order order;
         LocalDate today = LocalDate.now();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String query = "SELECT [order_id],[customer],[order_date],[order_status],[name_receiver],\n"
-                        + "[phone_receiver],[address_receiver],[payment_status],[total_price],[cancel_reason]\n"
-                        + "FROM [BirdFarmShop].[dbo].[Order] WHERE 1 = 1 ";
+                String query = "SELECT order_id,customer,order_date,order_status,name_receiver,\n"
+                        + "phone_receiver,address_receiver,payment_status,total_price,cancel_reason\n"
+                        + "FROM Orders WHERE 1 = 1 ";
                 if (date != null && !date.isEmpty()) {
                     switch (date) {
                         case "today":
-                            query += "AND [order_date] = '" + today + "'";
+                            query += "AND order_date = '" + today + "'";
                             break;
                         case "yesterday":
                             LocalDate yesterday = today.minus(1, ChronoUnit.DAYS);
-                            query += "AND [order_date] = '" + yesterday + "'";
+                            query += "AND order_date = '" + yesterday + "'";
                             break;
                         case "thisWeek":
                             LocalDate firstDayOfWeek = today.minusDays(today.getDayOfWeek().getValue() - DayOfWeek.MONDAY.getValue());
                             LocalDate lastDayOfWeek = firstDayOfWeek.plusDays(6);
-                            query += "AND ([order_date] >= '" + firstDayOfWeek + "' AND [order_date] <= '" + lastDayOfWeek + "')";
+                            query += "AND (order_date >= '" + firstDayOfWeek + "' AND order_date <= '" + lastDayOfWeek + "')";
                             break;
                         case "thisMonth":
                             LocalDate firstDayOfMonth = LocalDate.of(today.getYear(), today.getMonth(), 1);
                             LocalDate lastDayOfMonth = YearMonth.from(today).atEndOfMonth();
-                            query += "AND ([order_date] >= '" + firstDayOfMonth + "' AND [order_date] <= '" + lastDayOfMonth + "')";
+                            query += "AND (order_date >= '" + firstDayOfMonth + "' AND order_date <= '" + lastDayOfMonth + "')";
                             break;
                         case "thisYear":
                             LocalDate firstDayOfYear = LocalDate.of(today.getYear(), 1, 1);
                             LocalDate lastDayOfYear = LocalDate.of(today.getYear(), 12, 31);
-                            query += "AND ([order_date] >= '" + firstDayOfYear + "' AND [order_date] <= '" + lastDayOfYear + "')";
+                            query += "AND (order_date >= '" + firstDayOfYear + "' AND order_date <= '" + lastDayOfYear + "')";
                             break;
                     }
                 }
                 if (startDay != null && endDay != null) {
                     if (!startDay.isEmpty() && !endDay.isEmpty()) {
-                        query += "AND ([order_date] >= '" + startDay + "' AND [order_date] <= '" + endDay + "')";
+                        query += "AND (order_date >= '" + startDay + "' AND order_date <= '" + endDay + "')";
                     } else {
                         if (!startDay.isEmpty()) {
-                            query += "AND ([order_date] >= '" + startDay + "')";
+                            query += "AND (order_date >= '" + startDay + "')";
                         }
                         if (!endDay.isEmpty()) {
-                            query += "AND ([order_date] <= '" + endDay + "')";
+                            query += "AND (order_date <= '" + endDay + "')";
                         }
                     }
                 } else {
                     if (startDay != null) {
                         if (!startDay.isEmpty()) {
-                            query += "AND ([order_date] >= '" + startDay + "')";
+                            query += "AND (order_date >= '" + startDay + "')";
                         }
                     }
                     if (endDay != null) {
                         if (!endDay.isEmpty()) {
-                            query += "AND ([order_date] <= '" + endDay + "')";
+                            query += "AND (order_date <= '" + endDay + "')";
                         }
                     }
                 }
                 if (status != null && !status.isEmpty()) {
                     switch (status) {
                         case "wait":
-                            query += "AND ([order_status] = N'Chờ xử lý')";
+                            query += "AND (order_status = 'Chờ xử lý' COLLATE \"default\")";
                             break;
                         case "inProgress":
-                            query += "AND ([order_status] = N'Đang xử lý')";
+                            query += "AND (order_status = 'Đang xử lý' COLLATE \"default\")";
                             break;
                         case "delivering":
-                            query += "AND ([order_status] = N'Đang giao hàng')";
+                            query += "AND (order_status = 'Đang giao hàng' COLLATE \"default\")";
                             break;
                         case "delivered":
-                            query += "AND ([order_status] = N'Đã giao hàng')";
+                            query += "AND (order_status = 'Đã giao hàng' COLLATE \"default\")";
                             break;
                         case "rated":
-                            query += "AND ([order_status] = N'Đã đánh giá')";
+                            query += "AND (order_status = 'Đã đánh giá' COLLATE \"default\")";
                             break;
                         case "cancel":
-                            query += "AND ([order_status] = N'Đã hủy')";
+                            query += "AND (order_status = 'Đã hủy' COLLATE \"default\")";
                             break;
                     }
                 }
                 if (search != null && !search.isEmpty()) {
-                    query += "AND ([order_id] LIKE '%" + search + "%' OR [customer] LIKE '%" + search + "%')";
+                    query += "AND (order_id LIKE '%" + search + "%' COLLATE \"default\" OR customer LIKE '%" + search + "%' COLLATE \"default\")";
                 }
                 if (page != null) {
                     int pageNumber = Integer.parseInt(page);
                     int start = (pageNumber - 1) * recordsPerPage;
-                    query += "ORDER BY [order_date] DESC OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
+                    query += "ORDER BY order_date DESC OFFSET " + start + " ROWS FETCH NEXT " + recordsPerPage + " ROWS ONLY";
                 }
                 stm = con.prepareStatement(query);
                 rs = stm.executeQuery();
@@ -711,33 +713,33 @@ public class OrderDAO {
         ResultSet rs = null;
         LocalDate today = LocalDate.now();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String query = "SELECT COUNT([order_id]) AS numberOfOrder\n"
-                        + "FROM [BirdFarmShop].[dbo].[Order] WHERE 1 = 1 ";
+                String query = "SELECT COUNT(order_id) AS numberOfOrder\n"
+                        + "FROM Orders WHERE 1 = 1 ";
                 if (date != null) {
                     switch (date) {
                         case "today":
-                            query += "AND [order_date] = '" + today + "'";
+                            query += "AND order_date = '" + today + "'";
                             break;
                         case "yesterday":
                             LocalDate yesterday = today.minus(1, ChronoUnit.DAYS);
-                            query += "AND [order_date] = '" + yesterday + "'";
+                            query += "AND order_date = '" + yesterday + "'";
                             break;
                         case "thisWeek":
                             LocalDate firstDayOfWeek = today.minusDays(today.getDayOfWeek().getValue() - DayOfWeek.MONDAY.getValue());
                             LocalDate lastDayOfWeek = firstDayOfWeek.plusDays(6);
-                            query += "AND ([order_date] >= '" + firstDayOfWeek + "' AND [order_date] <= '" + lastDayOfWeek + "')";
+                            query += "AND (order_date >= '" + firstDayOfWeek + "' AND order_date <= '" + lastDayOfWeek + "')";
                             break;
                         case "thisMonth":
                             LocalDate firstDayOfMonth = LocalDate.of(today.getYear(), today.getMonth(), 1);
                             LocalDate lastDayOfMonth = YearMonth.from(today).atEndOfMonth();
-                            query += "AND ([order_date] >= '" + firstDayOfMonth + "' AND [order_date] <= '" + lastDayOfMonth + "')";
+                            query += "AND (order_date >= '" + firstDayOfMonth + "' AND order_date <= '" + lastDayOfMonth + "')";
                             break;
                         case "thisYear":
                             LocalDate firstDayOfYear = LocalDate.of(today.getYear(), 1, 1);
                             LocalDate lastDayOfYear = LocalDate.of(today.getYear(), 12, 31);
-                            query += "AND ([order_date] >= '" + firstDayOfYear + "' AND [order_date] <= '" + lastDayOfYear + "')";
+                            query += "AND (order_date >= '" + firstDayOfYear + "' AND order_date <= '" + lastDayOfYear + "')";
                             break;
                     }
                 }
@@ -745,29 +747,29 @@ public class OrderDAO {
                     if (!startDay.isEmpty() && !endDay.isEmpty()) {
                         String dateFormatPattern = "\\d{4}-\\d{2}-\\d{2}";
                         if (startDay.matches(dateFormatPattern) && endDay.matches(dateFormatPattern)) {
-                            query += "AND ([order_date] >= '" + startDay + "' AND [order_date] <= '" + endDay + "')";
+                            query += "AND (order_date >= '" + startDay + "' AND order_date <= '" + endDay + "')";
                         } else {
                             if (startDay.matches(dateFormatPattern)) {
-                                query += "AND ([order_date] >= '" + startDay + "')";
+                                query += "AND (order_date >= '" + startDay + "')";
                             }
                             if (endDay.matches(dateFormatPattern)) {
-                                query += "AND ([order_date] <= '" + endDay + "')";
+                                query += "AND (order_date <= '" + endDay + "')";
                             }
                         }
                     } else {
                         if (!startDay.isEmpty()) {
-                            query += "AND ([order_date] >= '" + startDay + "')";
+                            query += "AND (order_date >= '" + startDay + "')";
                         }
                         if (!endDay.isEmpty()) {
-                            query += "AND ([order_date] <= '" + endDay + "')";
+                            query += "AND (order_date <= '" + endDay + "')";
                         }
                     }
                 }
                 if (status != null && !status.isEmpty()) {
-                    query += "AND ([order_status] = '" + status + "')";
+                    query += "AND (order_status = '" + status + "')";
                 }
                 if (search != null && !search.isEmpty()) {
-                    query += "AND ([order_id] LIKE '%" + search + "%' OR [customer] LIKE '%" + search + "%')";
+                    query += "AND (order_id LIKE '%" + search + "%' COLLATE \"default\" OR customer LIKE '%" + search + "%' COLLATE \"default\")";
                 }
                 stm = con.prepareStatement(query);
                 rs = stm.executeQuery();
@@ -797,12 +799,12 @@ public class OrderDAO {
         ResultSet rs = null;
         Order order = new Order();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String query = "SELECT [customer],[order_date],[order_status],[name_receiver],\n"
-                        + "[phone_receiver],[address_receiver],[payment_status],[total_price],[cancel_reason]"
-                        + ",[vnp_txnRef],[vnp_date],[vnp_transaction],[payment_type]\n"
-                        + "FROM [BirdFarmShop].[dbo].[Order] WHERE [order_id] = ?";
+                String query = "SELECT customer,order_date,order_status,name_receiver,\n"
+                        + "phone_receiver,address_receiver,payment_status,total_price,cancel_reason"
+                        + ",vnp_txnRef,vnp_date,vnp_transaction,payment_type\n"
+                        + "FROM Orders WHERE order_id = ?";
                 stm = con.prepareStatement(query);
                 stm.setString(1, order_id);
                 rs = stm.executeQuery();
@@ -845,10 +847,10 @@ public class OrderDAO {
         ResultSet rs = null;
         ArrayList<String> statuses = new ArrayList<>();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String query = "SELECT DISTINCT [order_status]\n"
-                        + "  FROM [BirdFarmShop].[dbo].[Order]";
+                String query = "SELECT DISTINCT order_status\n"
+                        + "  FROM Orders";
                 stm = con.prepareStatement(query);
                 rs = stm.executeQuery();
                 while (rs.next()) {
@@ -883,7 +885,7 @@ public class OrderDAO {
         BirdCustomerDAO birdCustomerDao = new BirdCustomerDAO();
         TrackingBirdPairDAO trackingDao = new TrackingBirdPairDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 switch (status) {
                     case "Đã giao hàng":
@@ -926,7 +928,7 @@ public class OrderDAO {
                         }
                         break;
                 }
-                String query = "UPDATE [dbo].[Order] SET [order_status] = ?, [cancel_reason] = ? WHERE [order_id] = ?";
+                String query = "UPDATE Orders SET order_status = ?, cancel_reason = ? WHERE order_id = ?";
                 stm = con.prepareStatement(query);
                 stm.setString(1, status);
                 stm.setString(2, reason);
@@ -955,11 +957,11 @@ public class OrderDAO {
         Order order;
         ArrayList<Order> orderList = new ArrayList<>();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String query = "SELECT [order_id],[customer],[order_date],[order_status],[name_receiver],\n"
-                        + "[phone_receiver],[address_receiver],[payment_status],[total_price],[cancel_reason]\n"
-                        + "FROM [BirdFarmShop].[dbo].[Order] WHERE [customer] = ? ORDER BY [order_date] DESC";
+                String query = "SELECT order_id,customer,order_date,order_status,name_receiver,\n"
+                        + "phone_receiver,address_receiver,payment_status,total_price,cancel_reason\n"
+                        + "FROM Orders WHERE customer = ? ORDER BY order_date DESC";
                 stm = con.prepareStatement(query);
                 stm.setString(1, customer);
                 rs = stm.executeQuery();
@@ -999,7 +1001,7 @@ public class OrderDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
 
             }
@@ -1038,19 +1040,19 @@ public class OrderDAO {
         Statement st = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String query = "SELECT SUM(CASE WHEN (order_status = N'Đã giao hàng' OR order_status = N'Đã đánh giá') AND payment_status = N'Đã thanh toán' THEN total_price END) AS [total_price], \n"
-                        + "       COUNT(order_id) AS[amount_order],\n"
-                        + "       COUNT(CASE WHEN order_status = N'Đã hủy' THEN 1 END) AS [cancel_order]\n"
-                        + "FROM [BirdFarmShop].[dbo].[Order]\n";
+                String query = "SELECT SUM(CASE WHEN (order_status = 'Đã giao hàng' COLLATE \"default\" OR order_status = 'Đã đánh giá' COLLATE \"default\") AND payment_status = 'Đã thanh toán' COLLATE \"default\" THEN total_price END) AS total_price, \n"
+                        + "       COUNT(order_id) ASamount_order,\n"
+                        + "       COUNT(CASE WHEN order_status = 'Đã hủy' COLLATE \"default\" THEN 1 END) AS cancel_order\n"
+                        + "FROM Orders\n";
                 if (startDay != null && endDay == null) {
-                    query += "WHERE [order_date] >= '" + startDay + " 00:00:00.000'";
+                    query += "WHERE order_date >= '" + startDay + " 00:00:00.000'";
                 } else if (endDay != null && startDay == null) {
-                    query += "WHERE [order_date] <= '" + endDay + " 00:00:00.000'";
+                    query += "WHERE order_date <= '" + endDay + " 00:00:00.000'";
                 } else if (endDay != null && startDay != null) {
-                    query += "WHERE [order_date] >= '" + startDay + " 00:00:00.000'\n"
-                            + " AND [order_date] <= '" + endDay + " 00:00:00.000'";
+                    query += "WHERE order_date >= '" + startDay + " 00:00:00.000'\n"
+                            + " AND order_date <= '" + endDay + " 00:00:00.000'";
                 }
                 st = con.createStatement();
                 rs = st.executeQuery(query);
@@ -1082,26 +1084,26 @@ public class OrderDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 String query = "SELECT COUNT(order_item_id) AS totalProduct,\n"
                         + "       COUNT( bird_id ) AS bird,\n"
                         + "       COUNT( accessory_id ) AS accessory,\n"
                         + "       (SELECT COUNT(oi.pair_id)\n"
-                        + "		FROM [BirdFarmShop].[dbo].[OrderItem] oi\n"
-                        + "		LEFT JOIN [BirdFarmShop].[dbo].BirdPair bp\n"
+                        + "		FROM OrderItem oi\n"
+                        + "		LEFT JOIN BirdPair bp\n"
                         + "		ON oi.pair_id = bp.pair_id\n"
-                        + "		RIGHT JOIN [BirdFarmShop].[dbo].[Order] o\n"
+                        + "		RIGHT JOIN Order o\n"
                         + "		ON oi.order_id = o.order_id\n"
-                        + "		WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá')) \n";
+                        + "		WHERE (o.payment_status = 'Đã thanh toán' COLLATE \"default\" AND (o.order_status = 'Đã giao hàng' COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\")) \n";
                 if (startDay != null) {
                     query += "		AND o.order_date >= '" + startDay + "'\n";
                 }
                 query += "	 	)AS pair\n"
-                        + "FROM [BirdFarmShop].[dbo].[OrderItem] oi\n"
-                        + "RIGHT JOIN [BirdFarmShop].[dbo].[Order] o\n"
+                        + "FROM OrderItem oi\n"
+                        + "RIGHT JOIN Order o\n"
                         + "ON oi.order_id = o.order_id\n"
-                        + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))";
+                        + "WHERE (o.payment_status = 'Đã thanh toán' COLLATE \"default\" AND (o.order_status = 'Đã giao hàng' COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\"))";
                 if (startDay != null) {
                     query += "WHERE o.order_date >= '" + startDay + "'";
                 }
@@ -1136,33 +1138,33 @@ public class OrderDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 String query = "SELECT COUNT( bird_id ) AS bird,\n"
                         + "       SUM(CASE WHEN oi.unit_price > 0 AND oi.accessory_id IS NOT NULL THEN oi.order_quantity END) AS accessory,\n"
                         + "       (SELECT COUNT(oi.pair_id)\n"
-                        + "		FROM [BirdFarmShop].[dbo].[OrderItem] oi\n"
-                        + "		LEFT JOIN [BirdFarmShop].[dbo].BirdPair bp\n"
+                        + "		FROM OrderItem oi\n"
+                        + "		LEFT JOIN BirdPair bp\n"
                         + "		ON oi.pair_id = bp.pair_id\n"
-                        + "		RIGHT JOIN [BirdFarmShop].[dbo].[Order] o\n"
-                        + "		ON oi.[order_id] = o.[order_id]\n"
-                        + "		WHERE (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá') \n";
+                        + "		RIGHT JOIN Order o\n"
+                        + "		ON oi.order_id = o.order_id\n"
+                        + "		WHERE (o.order_status = 'Đã giao hàng' COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\") \n";
                 if (startDay != null && endDay == null) {
-                    query += "	AND o.[order_date] >= '" + startDay + " 00:00:00.000'\n";
+                    query += "	AND o.order_date >= '" + startDay + " 00:00:00.000'\n";
                 } else if (endDay != null && startDay == null) {
-                    query += "	AND o.[order_date] <= '" + endDay + " 00:00:00.000'\n";
+                    query += "	AND o.order_date <= '" + endDay + " 00:00:00.000'\n";
                 } else if (startDay != null && endDay != null) {
                     query += "	AND   (order_date >= '" + startDay + " 00:00:00.000' AND order_date < = '" + endDay + " 00:00:00.000')\n";
                 }
                 query += "	 	)AS pair\n"
-                        + "FROM [BirdFarmShop].[dbo].[OrderItem] oi\n"
-                        + "RIGHT JOIN [BirdFarmShop].[dbo].[Order] o\n"
-                        + "ON oi.[order_id] = o.[order_id]\n"
-                        + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n";
+                        + "FROM OrderItem oi\n"
+                        + "RIGHT JOIN Orders o\n"
+                        + "ON oi.order_id = o.order_id\n"
+                        + "WHERE (o.payment_status = 'Đã thanh toán' COLLATE \"default\" AND (o.order_status = 'Đã giao hàng' COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\"))\n";
                 if (startDay != null && endDay == null) {
-                    query += "AND o.[order_date] >= '" + startDay + " 00:00:00.000'\n";
+                    query += "AND o.order_date >= '" + startDay + " 00:00:00.000'\n";
                 } else if (endDay != null && startDay == null) {
-                    query += "		AND o.[order_date] <= '" + endDay + " 00:00:00.000'\n";
+                    query += "		AND o.order_date <= '" + endDay + " 00:00:00.000'\n";
                 } else if (startDay != null && endDay != null) {
                     query += "		AND (order_date >= '" + startDay + " 00:00:00.000' AND order_date < = '" + endDay + " 00:00:00.000')\n";
                 }
@@ -1201,20 +1203,20 @@ public class OrderDAO {
         LocalDate dateNow = LocalDate.now();
         String[] date = {"Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "Chủ Nhật"};
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 for (int i = 0; i < date.length - 1; i++) {
-                    String query = "SELECT SUM(o.total_price) AS [total_price]\n"
-                            + "FROM [BirdFarmShop].[dbo].[Order] o \n"
-                            + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n";
+                    String query = "SELECT SUM(o.total_price) AS total_price\n"
+                            + "FROM Orders o \n"
+                            + "WHERE (o.payment_status = 'Đã thanh toán' COLLATE \"default\" AND (o.order_status = 'Đã giao hàng' COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\"))\n";
                     if (startDay != null) {
                         query += "       AND (o.order_date >= '" + startDay + " 00:00:00.000' \n"
                                 + "	   AND o.order_date < = '" + startDay + " 23:59:59.999')\n";
                     }
                     if (typeMoney != null && typeMoney.equals("online")) {
-                        query += "   AND o.payment_type = N'Chuyển khoản'\n";
+                        query += "   AND o.payment_type = 'Chuyển khoản' COLLATE \"default\"\n";
                     } else if (typeMoney != null && typeMoney.equals("receiver")) {
-                        query += "   AND o.payment_type = N'Tiền mặt'\n";
+                        query += "   AND o.payment_type = 'Tiền mặt' COLLATE \"default\"\n";
                     }
                     st = con.createStatement();
                     rs = st.executeQuery(query);
@@ -1255,37 +1257,37 @@ public class OrderDAO {
         ResultSet rs = null;
         LocalDate dateNow = LocalDate.now();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 for (int i = 0; i < 6; i++) {
-                    String query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]) AS [total_price]\n"
-                            + "       FROM [BirdFarmShop].[dbo].[Order] o\n"
-                            + "	   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
-                            + "	   ON o.[order_id] = oi.[order_id]\n"
-                            + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n";
+                    String query = "SELECT SUM(oi.unit_price*oi.order_quantity) AS total_price\n"
+                            + "       FROM Orders o\n"
+                            + "	   LEFT JOIN OrderItem oi\n"
+                            + "	   ON o.order_id = oi.order_id\n"
+                            + "WHERE (o.payment_status = 'Đã thanh toán'COLLATE \"default\" AND (o.order_status = 'Đã giao hàng'COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\"))\n";
                     if (startDay != null) {
-                        query += "       AND (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
-                                + "	   AND o.[order_date] < = '" + startDay + " 23:59:59.999')\n";
+                        query += "       AND (o.order_date >= '" + startDay + " 00:00:00.000' \n"
+                                + "	   AND o.order_date < = '" + startDay + " 23:59:59.999')\n";
                     }
                     if (typeMoney != null && typeMoney.equals("online")) {
-                        query += "   AND o.payment_type = N'Chuyển khoản'\n";
+                        query += "   AND o.payment_type = 'Chuyển khoản' COLLATE \"default\"\n";
                     } else if (typeMoney != null && typeMoney.equals("receiver")) {
-                        query += "   AND o.payment_type = N'Tiền mặt'\n";
+                        query += "   AND o.payment_type = 'Tiền mặt' COLLATE \"default\"\n";
                     }
                     if (bird) {
                         query += " AND oi.bird_id IS NOT NULL\n";
                     } else if (accessory) {
                         query += "AND oi.accessory_id IS NOT NULL\n";
                     } else {
-                        query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]+CASE WHEN bp.number_young_bird IS NOT NULL THEN bp.young_bird_price * bp.number_young_bird ELSE 0 END) AS [total_price]\n"
-                                + "  FROM [BirdFarmShop].[dbo].[Order] o\n"
-                                + "   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
-                                + "   ON o.[order_id] = oi.[order_id]\n"
+                        query = "SELECT SUM(oi.unit_price*oi.order_quantity+CASE WHEN bp.number_young_bird IS NOT NULL THEN bp.young_bird_price * bp.number_young_bird ELSE 0 END) AS total_price\n"
+                                + "  FROM Orders o\n"
+                                + "   LEFT JOIN OrderItem oi\n"
+                                + "   ON o.order_id = oi.order_id\n"
                                 + "   LEFT JOIN BirdPair bp \n"
                                 + "   ON oi.pair_id = bp.pair_id\n"
-                                + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n"
-                                + "       AND (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
-                                + "	   AND o.[order_date] < = '" + startDay + " 23:59:59.999')\n"
+                                + "WHERE (o.payment_status = 'Đã thanh toán' COLLATE \"default\" AND (o.order_status = 'Đã giao hàng' COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\"))\n"
+                                + "       AND (o.order_date >= '" + startDay + " 00:00:00.000' \n"
+                                + "	   AND o.order_date < = '" + startDay + " 23:59:59.999')\n"
                                 + "   AND oi.pair_id IS NOT NULL";
                     }
                     st = con.createStatement();
@@ -1324,20 +1326,20 @@ public class OrderDAO {
         ResultSet rs = null;
         LocalDate dateNow = LocalDate.now();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 for (int i = 0; i < 31; i++) {
-                    String query = "SELECT SUM(o.total_price) AS [total_price]\n"
-                            + "FROM [BirdFarmShop].[dbo].[Order] o \n"
-                            + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n";
+                    String query = "SELECT SUM(o.total_price) AS total_price\n"
+                            + "FROM Orders o \n"
+                            + "WHERE (o.payment_status = 'Đã thanh toán' COLLATE \"default\" AND (o.order_status = 'Đã giao hàng' COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\"))\n";
                     if (startDay != null) {
                         query += "       AND (o.order_date >= '" + startDay + " 00:00:00.000' \n"
                                 + "	   AND o.order_date < = '" + startDay + " 23:59:59.999')\n";
                     }
                     if (typeMoney != null && typeMoney.equals("online")) {
-                        query += "   AND o.payment_type = N'Chuyển khoản'\n";
+                        query += "   AND o.payment_type = 'Chuyển khoản' COLLATE \"default\" \n";
                     } else if (typeMoney != null && typeMoney.equals("receiver")) {
-                        query += "   AND o.payment_type = N'Tiền mặt'\n";
+                        query += "   AND o.payment_type = 'Tiền mặt' COLLATE \"default\"\n";
                     }
                     st = con.createStatement();
                     rs = st.executeQuery(query);
@@ -1377,37 +1379,37 @@ public class OrderDAO {
         ResultSet rs = null;
         LocalDate dateNow = LocalDate.now();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 for (int i = 0; i < 31; i++) {
-                    String query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]) AS [total_price]\n"
-                            + "       FROM [BirdFarmShop].[dbo].[Order] o\n"
-                            + "	   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
-                            + "	   ON o.[order_id] = oi.[order_id]\n"
-                            + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n";
+                    String query = "SELECT SUM(oi.unit_price*oi.order_quantity) AS total_price\n"
+                            + "       FROM Orders o\n"
+                            + "	   LEFT JOIN OrderItem oi\n"
+                            + "	   ON o.order_id = oi.order_id\n"
+                            + "WHERE (o.payment_status = 'Đã thanh toán' COLLATE \"default\" AND (o.order_status = 'Đã giao hàng' COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\"))\n";
                     if (startDay != null) {
-                        query += "       AND (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
-                                + "	   AND o.[order_date] < = '" + startDay + " 23:59:59.999')\n";
+                        query += "       AND (o.order_date >= '" + startDay + " 00:00:00.000' \n"
+                                + "	   AND o.order_date < = '" + startDay + " 23:59:59.999')\n";
                     }
                     if (typeMoney != null && typeMoney.equals("online")) {
-                        query += "   AND o.payment_type = N'Chuyển khoản'\n";
+                        query += "   AND o.payment_type = 'Chuyển khoản' COLLATE \"default\" \n";
                     } else if (typeMoney != null && typeMoney.equals("receiver")) {
-                        query += "   AND o.payment_type = N'Tiền mặt'\n";
+                        query += "   AND o.payment_type = 'Tiền mặt' COLLATE \"default\" \n";
                     }
                     if (bird) {
                         query += " AND oi.bird_id IS NOT NULL\n";
                     } else if (accessory) {
                         query += "AND oi.accessory_id IS NOT NULL\n";
                     } else {
-                        query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]+CASE WHEN bp.number_young_bird IS NOT NULL THEN bp.young_bird_price * bp.number_young_bird ELSE 0 END) AS [total_price]\n"
-                                + "  FROM [BirdFarmShop].[dbo].[Order] o\n"
-                                + "   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
-                                + "   ON o.[order_id] = oi.[order_id]\n"
+                        query = "SELECT SUM(oi.unit_price*oi.order_quantity+CASE WHEN bp.number_young_bird IS NOT NULL THEN bp.young_bird_price * bp.number_young_bird ELSE 0 END) AS total_price\n"
+                                + "  FROM Orders o\n"
+                                + "   LEFT JOIN OrderItem oi\n"
+                                + "   ON o.order_id = oi.order_id\n"
                                 + "   LEFT JOIN BirdPair bp \n"
                                 + "   ON oi.pair_id = bp.pair_id\n"
-                                + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n"
-                                + "       AND (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
-                                + "	   AND o.[order_date] < = '" + startDay + " 23:59:59.999')\n"
+                                + "WHERE (o.payment_status = 'Đã thanh toán' COLLATE \"default\" AND (o.order_status = 'Đã giao hàng' COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\"))\n"
+                                + "       AND (o.order_date >= '" + startDay + " 00:00:00.000' \n"
+                                + "	   AND o.order_date < = '" + startDay + " 23:59:59.999')\n"
                                 + "   AND oi.pair_id IS NOT NULL";
                     }
                     st = con.createStatement();
@@ -1447,22 +1449,22 @@ public class OrderDAO {
         LocalDate dateNow = LocalDate.now();
         String[] month = {"Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"};
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 for (int i = 0; i < month.length - 1; i++) {
                     int maxDay = startDay.lengthOfMonth();
                     LocalDate localMaxDate = LocalDate.of(startDay.getYear(), startDay.getMonth(), maxDay);
-                    String query = "SELECT SUM(o.total_price) AS [total_price]\n"
-                            + "FROM [BirdFarmShop].[dbo].[Order] o \n"
-                            + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n";
+                    String query = "SELECT SUM(o.total_price) AS total_price\n"
+                            + "FROM Orders o \n"
+                            + "WHERE (o.payment_status = 'Đã thanh toán' COLLATE \"default\" AND (o.order_status = 'Đã giao hàng' COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\"))\n";
                     if (startDay != null) {
                         query += "       AND (o.order_date >= '" + startDay + " 00:00:00.000' \n"
                                 + "	   AND o.order_date < = '" + localMaxDate + " 23:59:59.999')\n";
                     }
                     if (typeMoney != null && typeMoney.equals("online")) {
-                        query += "   AND o.payment_type = N'Chuyển khoản'\n";
+                        query += "   AND o.payment_type = 'Chuyển khoản' COLLATE \"default\" \n";
                     } else if (typeMoney != null && typeMoney.equals("receiver")) {
-                        query += "   AND o.payment_type = N'Tiền mặt'\n";
+                        query += "   AND o.payment_type = 'Tiền mặt' COLLATE \"default\" \n";
                     }
                     st = con.createStatement();
                     rs = st.executeQuery(query);
@@ -1503,39 +1505,39 @@ public class OrderDAO {
         ResultSet rs = null;
         LocalDate dateNow = LocalDate.now();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 for (int i = 0; i < 11; i++) {
                     int maxDay = startDay.lengthOfMonth();
                     LocalDate localMaxDate = LocalDate.of(startDay.getYear(), startDay.getMonth(), maxDay);
-                    String query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]) AS [total_price]\n"
-                            + "       FROM [BirdFarmShop].[dbo].[Order] o\n"
-                            + "	   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
-                            + "	   ON o.[order_id] = oi.[order_id]\n"
-                            + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n";
+                    String query = "SELECT SUM(oi.unit_price*oi.order_quantity) AS total_price\n"
+                            + "       FROM Orders o\n"
+                            + "	   LEFT JOIN OrderItem oi\n"
+                            + "	   ON o.order_id = oi.order_id\n"
+                            + "WHERE (o.payment_status = 'Đã thanh toán' COLLATE \"default\" AND (o.order_status = 'Đã giao hàng' COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\"))\n";
                     if (startDay != null) {
-                        query += "       AND (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
-                                + "	   AND o.[order_date] < = '" + localMaxDate + " 23:59:59.999')\n";
+                        query += "       AND (o.order_date >= '" + startDay + " 00:00:00.000' \n"
+                                + "	   AND o.order_date < = '" + localMaxDate + " 23:59:59.999')\n";
                     }
                     if (typeMoney != null && typeMoney.equals("online")) {
-                        query += "   AND o.payment_type = N'Chuyển khoản'\n";
+                        query += "   AND o.payment_type = 'Chuyển khoản' COLLATE \"default\" \n";
                     } else if (typeMoney != null && typeMoney.equals("receiver")) {
-                        query += "   AND o.payment_type = N'Tiền mặt'\n";
+                        query += "   AND o.payment_type = 'Tiền mặt' COLLATE \"default\" \n";
                     }
                     if (bird) {
                         query += " AND oi.bird_id IS NOT NULL\n";
                     } else if (accessory) {
                         query += "AND oi.accessory_id IS NOT NULL\n";
                     } else {
-                        query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]+CASE WHEN bp.number_young_bird IS NOT NULL THEN bp.young_bird_price * bp.number_young_bird ELSE 0 END) AS [total_price]\n"
-                                + "  FROM [BirdFarmShop].[dbo].[Order] o\n"
-                                + "   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
-                                + "   ON o.[order_id] = oi.[order_id]\n"
+                        query = "SELECT SUM(oi.unit_price*oi.order_quantity+CASE WHEN bp.number_young_bird IS NOT NULL THEN bp.young_bird_price * bp.number_young_bird ELSE 0 END) AS total_price\n"
+                                + "  FROM Orders o\n"
+                                + "   LEFT JOIN OrderItem oi\n"
+                                + "   ON o.order_id = oi.order_id\n"
                                 + "   LEFT JOIN BirdPair bp \n"
                                 + "   ON oi.pair_id = bp.pair_id\n"
-                                + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n"
-                                + "       AND (o.[order_date] >= '" + startDay + " 00:00:00.000' \n"
-                                + "	   AND o.[order_date] < = '" + localMaxDate + " 23:59:59.999')\n"
+                                + "WHERE (o.payment_status = 'Đã thanh toán' COLLATE \"default\" AND (o.order_status = 'Đã giao hàng' COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\"))\n"
+                                + "       AND (o.order_date >= '" + startDay + " 00:00:00.000' \n"
+                                + "	   AND o.order_date < = '" + localMaxDate + " 23:59:59.999')\n"
                                 + "   AND oi.pair_id IS NOT NULL";
                     }
                     st = con.createStatement();
@@ -1576,19 +1578,19 @@ public class OrderDAO {
         LocalDate dateOrder = order.getFirstOrder().getOrder_date().toLocalDate();
         LocalDate startDate = LocalDate.of(dateOrder.getYear(), 1, 1);
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 for (int i = 0; i < 11; i++) {
                     LocalDate localMaxDate = LocalDate.of(startDate.getYear(), 12, 31);
-                    String query = "SELECT SUM(o.total_price) AS [total_price]\n"
-                            + "FROM [BirdFarmShop].[dbo].[Order] o \n"
-                            + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n"
+                    String query = "SELECT SUM(o.total_price) AS total_price\n"
+                            + "FROM Orders o \n"
+                            + "WHERE (o.payment_status = 'Đã thanh toán' COLLATE \"default\" AND (o.order_status = 'Đã giao hàng' COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\"))\n"
                             + "       AND (o.order_date >= '" + startDate + " 00:00:00.000' \n"
                             + "	   AND o.order_date < = '" + localMaxDate + " 23:59:59.999')\n";
                     if (typeMoney != null && typeMoney.equals("online")) {
-                        query += "   AND o.payment_type = N'Chuyển khoản'\n";
+                        query += "   AND o.payment_type = 'Chuyển khoản' COLLATE \"default\" \n";
                     } else if (typeMoney != null && typeMoney.equals("receiver")) {
-                        query += "   AND o.payment_type = N'Tiền mặt'\n";
+                        query += "   AND o.payment_type = 'Tiền mặt' COLLATE \"default\" \n";
                     }
                     st = con.createStatement();
                     rs = st.executeQuery(query);
@@ -1630,36 +1632,36 @@ public class OrderDAO {
         LocalDate dateOrder = order.getFirstOrder().getOrder_date().toLocalDate();
         LocalDate startDate = LocalDate.of(dateOrder.getYear(), 1, 1);
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
                 for (int i = 0; i < 11; i++) {
                     LocalDate localMaxDate = LocalDate.of(startDate.getYear(), 12, 31);
-                    String query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]) AS [total_price]\n"
-                            + "       FROM [BirdFarmShop].[dbo].[Order] o\n"
-                            + "	   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
-                            + "	   ON o.[order_id] = oi.[order_id]\n"
-                             + "WHERE (o.payment_status = N'Đã thanh toán' AND (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá'))\n"
-                            + "       AND (o.[order_date] >= '" + startDate + " 00:00:00.000' \n"
-                            + "	   AND o.[order_date] < = '" + localMaxDate + " 23:59:59.999')\n";
+                    String query = "SELECT SUM(oi.unit_price*oi.order_quantity) AS total_price\n"
+                            + "       FROM Orders o\n"
+                            + "	   LEFT JOIN OrderItem oi\n"
+                            + "	   ON o.order_id = oi.order_id\n"
+                             + "WHERE (o.payment_status = 'Đã thanh toán' COLLATE \"default\" AND (o.order_status = 'Đã giao hàng' COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\"))\n"
+                            + "       AND (o.order_date >= '" + startDate + " 00:00:00.000' \n"
+                            + "	   AND o.order_date < = '" + localMaxDate + " 23:59:59.999')\n";
                     if (typeMoney != null && typeMoney.equals("online")) {
-                        query += "   AND o.payment_type = N'Chuyển khoản'\n";
+                        query += "   AND o.payment_type = 'Chuyển khoản' COLLATE \"default\" \n";
                     } else if (typeMoney != null && typeMoney.equals("receiver")) {
-                        query += "   AND o.payment_type = N'Tiền mặt'\n";
+                        query += "   AND o.payment_type = 'Tiền mặt' COLLATE \"default\" \n";
                     }
                     if (bird) {
                         query += " AND oi.bird_id IS NOT NULL\n";
                     } else if (accessory) {
                         query += "AND oi.accessory_id IS NOT NULL\n";
                     } else {
-                        query = "SELECT SUM(oi.[unit_price]*oi.[order_quantity]+ CASE WHEN bp.number_young_bird IS NOT NULL THEN bp.young_bird_price * bp.number_young_bird ELSE 0 END) AS [total_price]\n"
-                                + "  FROM [BirdFarmShop].[dbo].[Order] o\n"
-                                + "   LEFT JOIN [BirdFarmShop].[dbo].[OrderItem] oi\n"
-                                + "   ON o.[order_id] = oi.[order_id]\n"
+                        query = "SELECT SUM(oi.unit_price*oi.order_quantity+ CASE WHEN bp.number_young_bird IS NOT NULL THEN bp.young_bird_price * bp.number_young_bird ELSE 0 END) AS total_price\n"
+                                + "  FROM Orders o\n"
+                                + "   LEFT JOIN OrderItem oi\n"
+                                + "   ON o.order_id = oi.order_id\n"
                                 + "   LEFT JOIN BirdPair bp \n"
                                 + "   ON oi.pair_id = bp.pair_id\n"
-                                + "WHERE  (o.order_status = N'Đã giao hàng' OR o.order_status = N'Đã đánh giá')\n"
-                                + "       AND (o.[order_date] >= '" + startDate + " 00:00:00.000' \n"
-                                + "	   AND o.[order_date] < = '" + localMaxDate + " 23:59:59.999')\n"
+                                + "WHERE  (o.order_status = 'Đã giao hàng' COLLATE \"default\" OR o.order_status = 'Đã đánh giá' COLLATE \"default\")\n"
+                                + "       AND (o.order_date >= '" + startDate + " 00:00:00.000' \n"
+                                + "	   AND o.order_date < = '" + localMaxDate + " 23:59:59.999')\n"
                                 + "   AND oi.pair_id IS NOT NULL";
                     }
                      st = con.createStatement();
@@ -1695,19 +1697,19 @@ public class OrderDAO {
         Statement st = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "SELECT TOP 1 [order_id]\n"
-                        + "      ,[customer]\n"
-                        + "      ,[order_date]\n"
-                        + "      ,[order_status]\n"
-                        + "      ,[name_receiver]\n"
-                        + "      ,[phone_receiver]\n"
-                        + "      ,[address_receiver]\n"
-                        + "      ,[payment_status]\n"
-                        + "      ,[total_price]\n"
-                        + "      ,[cancel_reason]\n"
-                        + "  FROM [BirdFarmShop].[dbo].[Order]\n"
+                String sql = "SELECT TOP 1 order_id\n"
+                        + "      ,customer\n"
+                        + "      ,order_date\n"
+                        + "      ,order_status\n"
+                        + "      ,name_receiver\n"
+                        + "      ,phone_receiver\n"
+                        + "      ,address_receiver\n"
+                        + "      ,payment_status\n"
+                        + "      ,total_price\n"
+                        + "      ,cancel_reason\n"
+                        + "  FROM Orders\n"
                         + "  ORDER BY order_date ASC";
                 st = con.createStatement();
                 rs = st.executeQuery(sql);
@@ -1757,9 +1759,9 @@ public class OrderDAO {
         Connection con = null;
         PreparedStatement stm = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String query = "UPDATE [dbo].[Order] SET [payment_status] = ? WHERE [order_id] = ?";
+                String query = "UPDATE Orders SET payment_status = ? WHERE order_id = ?";
                 stm = con.prepareStatement(query);
                 stm.setString(1, status);
                 stm.setString(2, order_id);

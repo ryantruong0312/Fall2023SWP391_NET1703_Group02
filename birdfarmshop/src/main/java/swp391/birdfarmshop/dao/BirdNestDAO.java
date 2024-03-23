@@ -30,13 +30,13 @@ public class BirdNestDAO {
         ResultSet rs = null;
         ImageDAO imgDao = new ImageDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "SELECT [nest_id],[nest_name],[breed_id],[dad_bird_id],[mom_bird_id],\n"
-                        + "       [baby_quantity],[status],[price],[discount],[description]\n"
-                        + "FROM [BirdFarmShop].[dbo].[BirdNest]";
+                String sql = "SELECT nest_id,nest_name,breed_id,dad_bird_id,mom_bird_id,\n"
+                        + "       baby_quantity,status,price,discount,description\n"
+                        + "FROM BirdNest";
                 if (search != null) {
-                    sql += " WHERE nest_name LIKE N'%" + search + "%'";
+                    sql += " WHERE nest_name LIKE '%" + search + "%' COLLATE \"default\"";
                     if (breed != null) {
                         sql += " AND breed_id = " + "'" + breed + "'" + "";
                     }
@@ -101,13 +101,13 @@ public class BirdNestDAO {
         ResultSet rs = null;
         ImageDAO imgDao = new ImageDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "SELECT COUNT(nest_id) AS [Amount] [nest_id],[nest_name],[breed_id],[dad_bird_id],[mom_bird_id],\n"
-                        + "       [baby_quantity],[status],[price],[discount],[description]\n"
-                        + "FROM [BirdFarmShop].[dbo].[BirdNest]";
+                String sql = "SELECT COUNT(nest_id) AS Amount, nest_id,nest_name,breed_id,dad_bird_id,mom_bird_id,\n"
+                        + "       baby_quantity,status,price,discount,description\n"
+                        + "FROM BirdNest";
                 if (search != null) {
-                    sql += " WHERE nest_name LIKE N'%" + search + "%'";
+                    sql += " WHERE nest_name LIKE '%" + search + "%' COLLATE \"default\"";
                     if (breed != null) {
                         sql += " AND breed_id = " + "'" + breed + "'" + "";
                     }
@@ -161,12 +161,12 @@ public class BirdNestDAO {
         ResultSet rs = null;
         ImageDAO imgDao = new ImageDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "SELECT [nest_name],[breed_id],[dad_bird_id],[mom_bird_id],\n"
-                        + "[baby_quantity],[status],[price],[discount],[description]\n"
-                        + "FROM [BirdFarmShop].[dbo].[BirdNest]\n"
-                        + "WHERE [nest_id] = ?";
+                String sql = "SELECT nest_name,breed_id,dad_bird_id,mom_bird_id,\n"
+                        + "baby_quantity,status,price,discount,description\n"
+                        + "FROM BirdNest\n"
+                        + "WHERE nest_id = ?";
 
                 stm = con.prepareStatement(sql);
                 stm.setString(1, nest_id);
@@ -206,11 +206,11 @@ public class BirdNestDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                stm = con.prepareStatement("INSERT INTO [dbo].[BirdNest]\n"
-                        + "             ([nest_id],[nest_name],[breed_id],[dad_bird_id],[mom_bird_id],[baby_quantity]"
-                        + "             ,[price],[description],[discount],[status])\n"
+                stm = con.prepareStatement("INSERT INTO  dbo . BirdNest \n"
+                        + "             ( nest_id , nest_name , breed_id , dad_bird_id , mom_bird_id , baby_quantity "
+                        + "             , price , description , discount , status )\n"
                         + "             VALUES (?,?,?,?,?,?,?,?,?,?) ");
                 stm.setString(1, dto.getNest_id());
                 stm.setString(2, dto.getNest_name());
@@ -248,11 +248,11 @@ public class BirdNestDAO {
         ResultSet rs = null;
         ImageDAO imgDao = new ImageDAO();
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                stm = con.prepareStatement("SELECT [nest_id],[nest_name],[breed_id],[dad_bird_id],[mom_bird_id],\n"
-                        + "       [baby_quantity],[status],[price],[discount],[description]\n"
-                        + "FROM [BirdFarmShop].[dbo].[BirdNest] WHERE [nest_id] = ? ");
+                stm = con.prepareStatement("SELECT  nest_id , nest_name , breed_id , dad_bird_id , mom_bird_id ,\n"
+                        + "        baby_quantity , status , price , discount , description \n"
+                        + "FROM  BirdFarmShop . dbo . BirdNest  WHERE  nest_id  = ? ");
                 stm.setString(1, id);
                 rs = stm.executeQuery();
                 while (rs.next()) {
@@ -289,33 +289,33 @@ public class BirdNestDAO {
         PreparedStatement stm = null;
         
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "  UPDATE [BirdFarmShop].[dbo].[BirdNest] "
+                String sql = "  UPDATE  BirdFarmShop . dbo . BirdNest  "
                         + "    SET  "
-                        + "    [nest_name] = ?, "
-                        + "    [description] = ?, "
-                        + "    [breed_id] = ?, "
-                        + "    [dad_bird_id] = ?, "
-                        + "    [mom_bird_id] = ?, "
-                        + "    [baby_quantity] = ?, "
-                        + "    [status] = ?, "
-                        + "    [price] = ?, "
-                        + "    [discount] = ? "
-                        + "    WHERE [nest_id] = ?; ";
+                        + "     nest_name  = ?, "
+                        + "     description  = ?, "
+                        + "     breed_id  = ?, "
+                        + "     dad_bird_id  = ?, "
+                        + "     mom_bird_id  = ?, "
+                        + "     baby_quantity  = ?, "
+                        + "     status  = ?, "
+                        + "     price  = ?, "
+                        + "     discount  = ? "
+                        + "    WHERE  nest_id  = ?; ";
                 stm = con.prepareStatement(sql);
-//                stm = con.prepareStatement("  UPDATE [BirdFarmShop].[dbo].[BirdNest]\n"
+//                stm = con.prepareStatement("  UPDATE  BirdFarmShop . dbo . BirdNest \n"
 //                        + "    SET  "
-//                        + "    [nest_name] = ?,\n"
-//                        + "    [description] = ?,\n"
-//                        + "    [breed_id] = ?,\n"
-//                        + "    [dad_bird_id] = ?,\n"
-//                        + "    [mom_bird_id] = ?,\n"
-//                        + "    [baby_quantity] = ?,\n"
-//                        + "    [status] = ?,\n"
-//                        + "    [price] = ?,\n"
-//                        + "    [discount] = ?\n"
-//                        + "    WHERE [nest_id] = ?; ");
+//                        + "     nest_name  = ?,\n"
+//                        + "     description  = ?,\n"
+//                        + "     breed_id  = ?,\n"
+//                        + "     dad_bird_id  = ?,\n"
+//                        + "     mom_bird_id  = ?,\n"
+//                        + "     baby_quantity  = ?,\n"
+//                        + "     status  = ?,\n"
+//                        + "     price  = ?,\n"
+//                        + "     discount  = ?\n"
+//                        + "    WHERE  nest_id  = ?; ");
 
                 stm.setString(1, dto.getNest_name());
                 stm.setString(2, dto.getDescription());
@@ -353,11 +353,11 @@ public class BirdNestDAO {
         PreparedStatement stm = null;
         
         try {
-            con = DBUtils.getConnection();
+            con = DBUtils.getConnection(true);
             if (con != null) {
-                String sql = "  UPDATE [BirdFarmShop].[dbo].[BirdNest] "
-                        + "    SET [baby_quantity] = ? "
-                        + "    WHERE [nest_id] = ?; ";
+                String sql = "  UPDATE  BirdFarmShop . dbo . BirdNest  "
+                        + "    SET  baby_quantity  = ? "
+                        + "    WHERE  nest_id  = ?; ";
                 stm = con.prepareStatement(sql);
                 stm.setInt(1, baby_quantity);
                 stm.setString(2, nest_id);
@@ -377,9 +377,5 @@ public class BirdNestDAO {
             
         }
         return false;
-    }
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        BirdNestDAO dao = new BirdNestDAO();
-        dao.updateBirdNestBaby(10, "BN001");
     }
 }

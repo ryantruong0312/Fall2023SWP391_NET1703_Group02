@@ -62,7 +62,6 @@ Author     : tlminh
                                                                 <p class="mb-0" style="font-size: 14px; color: black; display: inline-block"><fmt:formatNumber value="${bird.value.bird.price}" pattern="#,###"/> ₫</p>
                                                             </c:otherwise>
                                                         </c:choose> 
-                                                        </p>
                                                     </div>
                                                 </div>
                                                 <div class="price-item ml-4 px-3 col-lg-2 col-md-3 col-sm-2 col-2">
@@ -100,8 +99,7 @@ Author     : tlminh
                                                             <c:when test="${accessory.value.accessory.discount == 0 && accessory.value.order_quantity > 0}">
                                                                 <p class="mb-0">Mua: ${accessory.value.order_quantity} x <fmt:formatNumber value="${accessory.value.accessory.unit_price}" pattern="#,###"/> ₫</p>
                                                             </c:when>
-                                                        </c:choose> 
-                                                        </p>
+                                                        </c:choose>
                                                     </div>
                                                 </div>
                                                 <div class="price-item ml-2 px-3 col-lg-2 col-md-3 col-sm-2 col-2">
